@@ -1,0 +1,1 @@
+{"id":"R4-08","description":"Abort attributes are branded readonly properties in both compatibility modes","command":["python3","run.py"],"runtimes":["celld","workerd"],"profiles":["quick","full"],"timeout_seconds":180,"expected_failure":null}

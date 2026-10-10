@@ -571,6 +571,11 @@ pub(super) fn inject_compatibility_flags(scope: &mut v8::PinScope, compat: Compa
         flags.set(scope, key.into(), value.into());
     };
     set_flag(scope, "upper_case_all_http_methods", true);
+    set_flag(
+        scope,
+        "workers_api_getters_setters_on_prototype",
+        compat.workers_api_getters_setters_on_prototype,
+    );
     // Cells' async stream/pipe methods return rejected promises
     // rather than throwing synchronously, which is exactly the
     // behavior this flag names.

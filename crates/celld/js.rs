@@ -6481,11 +6481,11 @@ impl Worker {
 
             let arguments = install_ops(scope);
             install_prelude(scope, &arguments)?; // Web Platform APIs
+            inject_compatibility_flags(scope, compat)?;
             install_harness(scope, &arguments)?; // DO object model + minimal Response
             install_lazy_globals(scope)?;
             // A global, so it must exist before the module evaluates: bundles
             // read Cloudflare.compatibilityFlags at module scope.
-            inject_compatibility_flags(scope, compat)?;
             inject_storage_compatibility(scope, compat)?;
 
             let module = match compile_module(scope, &config.main_module_name, src) {
@@ -10556,6 +10556,39 @@ fn op_io_context_end(
 ///
 /// The default returns the resource origin. A true argument returns the
 /// operation driver, so a nested block can refuse a retained stale context.
+// V8 native data properties retain dynamic reads while reflecting as readonly
+// data descriptors. This is workerd/JSG's legacy instance-attribute mechanism.
+fn op_native_readonly(
+    scope: &mut v8::PinScope,
+    args: v8::FunctionCallbackArguments,
+    _rv: v8::ReturnValue<v8::Value>,
+) {
+    let (Ok(object), Ok(name), Ok(getter)) = (
+        args.get(0).try_cast::<v8::Object>(),
+        args.get(1).try_cast::<v8::Name>(),
+        args.get(2).try_cast::<v8::Function>(),
+    ) else {
+        return loader_throw(scope, "invalid native readonly property");
+    };
+    fn read(
+        scope: &mut v8::PinScope,
+        _name: v8::Local<v8::Name>,
+        args: v8::PropertyCallbackArguments,
+        mut rv: v8::ReturnValue<v8::Value>,
+    ) {
+        let getter = args.data().try_cast::<v8::Function>().unwrap();
+        if let Some(value) = getter.call(scope, args.holder().into(), &[]) {
+            rv.set(value);
+        }
+    }
+    let configuration = v8::AccessorConfiguration::new(read)
+        .data(getter.into())
+        .property_attribute(v8::PropertyAttribute::READ_ONLY);
+    if object.set_accessor_with_configuration(scope, name, configuration) != Some(true) {
+        loader_throw(scope, "cannot define native readonly property");
+    }
+}
+
 fn op_io_context_id(
     scope: &mut v8::PinScope,
     args: v8::FunctionCallbackArguments,
