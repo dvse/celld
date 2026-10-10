@@ -6376,14 +6376,29 @@ const __rpcOut = (value, lift,
 const __rpcErrOut = (error) => {
   // `name` rides in the props: V8 only round-trips the standard
   // Error subclass names, and e.g. DataCloneError must survive.
-  const props = error instanceof Error
-    ? { ...error, name: error.name } : {};
+  // As workerd's enhanced error serialization (jsg/ser.c++), every own
+  // property but name/message/stack crosses, enumerable or not; a value that
+  // cannot be cloned is skipped rather than collapsing the whole error.
+  const props = {};
+  const isError = error instanceof Error || error instanceof DOMException;
+  if (isError) {
+    for (const key of Object.getOwnPropertyNames(error)) {
+      if (key === "name" || key === "message" || key === "stack") continue;
+      let value;
+      try { value = error[key]; __sc_encode(value); } catch { continue; }
+      props[key] = value;
+    }
+    props.name = error.name;
+  }
+  // A DOMException is rebuilt by name on the caller (jsg/util.c++).
+  const kind = error instanceof DOMException ? "dom" : null;
   let sc;
   try {
-    sc = __sc_encode([error, props]);
+    sc = __sc_encode([error, props, kind]);
   } catch {
     const error_ = new Error(String(error?.message ?? error));
-    sc = __sc_encode([error_, { name: String(error?.name ?? "Error") }]);
+    try { sc = __sc_encode([error_, props, kind]); }
+    catch { sc = __sc_encode([error_, { name: String(error?.name ?? "Error") }, kind]); }
   }
   return __tagged(0, sc);
 };
@@ -6450,10 +6465,20 @@ const __rpcDes = (wire) => __rpcRead(wire, (bytes, session, take) => {
     }
     return value;
   }
-  const [error, props] = __sc_decode(bytes.subarray(1));
+  let [error, props, kind] = __sc_decode(bytes.subarray(1));
+  if (kind === "dom" && (error instanceof Error || error instanceof DOMException)) {
+    const dom = new DOMException(String(error.message), String(props?.name ?? "Error"));
+    const { name: _name, ...rest } = props ?? {};
+    for (const [key, value] of Object.entries(rest))
+      Object.defineProperty(dom, key, { value, writable: true, configurable: true, enumerable: true });
+    dom.remote = true;
+    throw dom;
+  }
   if (error instanceof Error) {
     Object.assign(error, props);
     error.remote = true;
+    // workerd does not carry the callee's stack across RPC
+    // (api/worker-rpc.c++ deserializeJsValue: preserveStackInErrors = false).
     const local = new Error().stack;
     error.stack = error.name + ": " + error.message +
       local.slice(local.indexOf("\n"));
