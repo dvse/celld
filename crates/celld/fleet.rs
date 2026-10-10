@@ -825,11 +825,20 @@ async fn load_worker_at_pointer(
         };
         modules.push(entry);
     }
+    // A binding to another script's class carries that script after an `@`,
+    // which no JavaScript class name contains; `build_env` splits it.
     let do_bindings = bindings(&manifest, "durable_object_namespace")
         .filter_map(|binding| {
+            let class = binding.get("class_name")?.as_str()?;
             Some((
                 binding.get("name")?.as_str()?.to_string(),
-                binding.get("class_name")?.as_str()?.to_string(),
+                match binding
+                    .get("script_name")
+                    .and_then(serde_json::Value::as_str)
+                {
+                    Some(script) => format!("{class}@{script}"),
+                    None => class.to_string(),
+                },
             ))
         })
         .collect();
@@ -897,6 +906,22 @@ async fn load_worker_at_pointer(
         .filter_map(|binding| binding.get("name")?.as_str().map(str::to_string))
         .collect();
     let services = service_bindings(&manifest);
+    let json_vars = bindings(&manifest, "json")
+        .filter_map(|binding| {
+            Some((
+                binding.get("name")?.as_str()?.to_string(),
+                serde_json::to_string(binding.get("json")?).ok()?,
+            ))
+        })
+        .collect();
+    let service_props = bindings(&manifest, "service")
+        .filter_map(|binding| {
+            Some((
+                binding.get("name")?.as_str()?.to_string(),
+                serde_json::to_string(binding.get("props")?).ok()?,
+            ))
+        })
+        .collect();
     let vars = worker_vars(&manifest);
     let compat = crate::worker_compat(&manifest.raw_metadata);
     let assets = match &manifest.assets {
@@ -954,6 +979,8 @@ async fn load_worker_at_pointer(
         loader_bindings,
         assets,
         services,
+        json_vars,
+        service_props,
         crons,
         containers,
         fence_image,
@@ -972,6 +999,10 @@ pub struct LoadedDeployment {
     pub loader_bindings: Vec<String>,
     pub assets: Option<crate::assets::AssetResolver>,
     pub services: Vec<(String, String, Option<String>)>,
+    /// (binding name, JSON text) of each JSON var and of each service
+    /// binding's static props. See `WorkerConfig::with_binding_data`.
+    pub json_vars: Vec<(String, String)>,
+    pub service_props: Vec<(String, String)>,
     /// `triggers.crons` from the manifest, driving the reserved cron cell.
     pub crons: Vec<String>,
     /// `containers` from the manifest: the classes whose cells supervise a

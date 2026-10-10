@@ -621,10 +621,19 @@ pub(super) fn build_env(scope: &mut v8::PinScope, config: &WorkerConfig) -> Resu
     let src = {
         let mut lines = String::from("const e = __celld.__cell.env;\n");
         for (bname, cname) in bindings {
-            lines.push_str(&format!(
-                "e[{:?}] = __celld.__cell.makeNamespace({:?});\n",
-                bname, cname
-            ));
+            match cname.split_once('@') {
+                // Another script's class: ids derive from that script's key.
+                Some((class, script)) => lines.push_str(&format!(
+                    "e[{:?}] = __celld.__cell.makeForeignNamespace({:?}, {:?});\n",
+                    bname,
+                    class,
+                    super::namespace_key(script, class)
+                )),
+                None => lines.push_str(&format!(
+                    "e[{:?}] = __celld.__cell.makeNamespace({:?});\n",
+                    bname, cname
+                )),
+            }
         }
         for (name, bucket) in r2_bindings {
             lines.push_str(&format!(
@@ -673,13 +682,24 @@ pub(super) fn build_env(scope: &mut v8::PinScope, config: &WorkerConfig) -> Resu
                 Some(name) => format!("{name:?}"),
                 None => "null".to_string(),
             };
+            // Props travel as JSON text in a string literal and are parsed in
+            // the isolate, so config data never becomes code.
+            let props = config
+                .service_props
+                .iter()
+                .find(|(name, _)| name == binding)
+                .map(|(_, json)| format!(", __celld.__servicePropsSc(JSON.parse({json:?}))"))
+                .unwrap_or_default();
             lines.push_str(&format!(
-                "e[{:?}] = __celld.__makeServiceBinding({:?}, {});\n",
-                binding, script, entrypoint
+                "e[{:?}] = __celld.__makeServiceBinding({:?}, {}{});\n",
+                binding, script, entrypoint, props
             ));
         }
         for (name, value) in vars {
             lines.push_str(&format!("e[{:?}] = {:?};\n", name, value));
+        }
+        for (name, json) in &config.json_vars {
+            lines.push_str(&format!("e[{:?}] = JSON.parse({:?});\n", name, json));
         }
         if let Some(name) = asset_binding {
             lines.push_str(&format!(
@@ -1021,6 +1041,7 @@ fn finish_cell_adoption(tc: &mut v8::PinScope, cell: &str, owned: bool) -> Resul
     // The release loses nothing the cell needs back: `register_actor_name`
     // persists the id name before writing it here, so the take-in below reads
     // it back.
+    actor_runtime_state(tc).release_actor_context(cell);
     let source = format!("__celld.__cell.release({cell:?});");
     run_internal_snippet(tc, &source).ok_or_else(|| anyhow!("adopt failed"))?;
     if !owned {

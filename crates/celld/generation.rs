@@ -258,10 +258,19 @@ fn dependencies_of(loaded: &LoadedDeployment) -> VecDeque<Dependency> {
             std::iter::once(consumer.queue.clone()).chain(consumer.dead_letter_queue.clone())
         }))
         .collect::<BTreeSet<_>>();
+    // A Durable Object binding to another script's class (`Class@script`, see
+    // `fleet.rs`) needs that script co-hosted, like a service binding does.
+    let class_owners = loaded
+        .options
+        .bindings
+        .iter()
+        .filter_map(|(_, class)| class.split_once('@').map(|(_, script)| script.to_string()));
     loaded
         .services
         .iter()
-        .map(|(_, script, _)| Dependency::Service(script.clone()))
+        .map(|(_, script, _)| script.clone())
+        .chain(class_owners)
+        .map(Dependency::Service)
         .chain(queues.into_iter().map(Dependency::Queue))
         .collect()
 }
@@ -567,6 +576,8 @@ impl Generation {
                 loader_bindings,
                 assets: resolver,
                 services,
+                json_vars,
+                service_props,
                 crons,
                 containers,
                 fence_image: fence,
@@ -581,6 +592,7 @@ impl Generation {
             let config = Arc::new(
                 WorkerConfig::new(options)
                     .with_services(services)
+                    .with_binding_data(json_vars, service_props)
                     .with_asset_binding(asset_binding)
                     .with_loaders(loader_bindings)
                     .with_queue_consumers(queue_catalog.clone())

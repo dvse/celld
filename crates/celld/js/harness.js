@@ -3605,6 +3605,11 @@ __celld.__makeLoader = () => {
   };
 };
 
+// Static service-binding props, encoded as ctx.exports props are.
+__celld.__servicePropsSc = (props) => __rpcOut(props, false);
+// Service bindings made from configuration. One passed over RPC revives as a
+// service binding again, so its fetch() keeps HTTP semantics (WebSocket
+// upgrades included), as a Fetcher passed over RPC does in workerd.
 const __makeServiceBinding = __celld.__makeServiceBinding =
   (script, entrypoint = null, propsSc = undefined) => {
   const target = {
@@ -5655,6 +5660,10 @@ const __fetcherHelper = (fetch, prop) => {
     __fetcherStatus(await fetch(url, { method: "DELETE" }), "DELETE");
   };
 };
+// A binding to a class another co-hosted script exports (`script_name`).
+function makeForeignNamespace(className, namespaceKey) {
+  return new DurableObjectNamespace(className, namespaceKey);
+}
 function makeNamespace(className) {
   const namespaceKey = __cell.namespaceKeys[className];
   if (typeof namespaceKey !== "string")
@@ -6563,6 +6572,7 @@ const __cell = __celld.__cell = {
   deleteAllDeletesAlarm: false,
   compat: { jsRpc: false, fetcherGetPutDelete: false, queueJsonMessages: false },
   makeNamespace,
+  makeForeignNamespace,
   release: __cellRelease,
 };
 // A class the runtime supplies. RPC on a stub needs `extends DurableObject`
