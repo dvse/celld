@@ -3375,7 +3375,7 @@ __celld.__makeLoader = () => {
         const loaded = __loader_fetch(
           id, req.url, req.method, body, headers, streamId, entrypoint,
           propsSnapshot?.encode(false) ?? new Uint8Array(),
-          limitsJson, tails.length !== 0, signal != null);
+          limitsJson, tails.length !== 0, signal != null, __fetchRestoreBytes());
         const dispatch = tails.length === 0 ? loaded : loaded[0];
         const response = signal
           ? __awaitCancellableDoCall(dispatch, signal)
@@ -3638,6 +3638,7 @@ __celld.__servicePropsSc = (props) => __rpcOut(props, false);
 // Service bindings made from configuration. One passed over RPC revives as a
 // service binding again, so its fetch() keeps HTTP semantics (WebSocket
 // upgrades included), as a Fetcher passed over RPC does in workerd.
+const __serviceBindings = new WeakSet();
 const __makeServiceBinding = __celld.__makeServiceBinding =
   (script, entrypoint = null, propsSc = undefined) => {
   const target = {
@@ -3661,7 +3662,7 @@ const __makeServiceBinding = __celld.__makeServiceBinding =
     // inside its own event so the target's waitUntil does not attach to
     // the caller's. Cross-script targets still need their own isolate.
     if (script === __cell.script && entrypoint !== null &&
-        propsSc === undefined) {
+        propsSc === undefined && !__als_get()?.has(__fetchRestoreContextKey)) {
       // Mirror __dispatchTo: the target sees a fresh incoming signal,
       // aborted with "The client has disconnected" when the caller
       // abandons the call or cancels the response body; the caller's
@@ -3684,7 +3685,7 @@ const __makeServiceBinding = __celld.__makeServiceBinding =
       return __finishServiceFetch(response, req, redirectState);
     }
     if (script === __cell.script && entrypoint === null &&
-        typeof __cell.selfFetch === "function") {
+        typeof __cell.selfFetch === "function" && !__als_get()?.has(__fetchRestoreContextKey)) {
       if (__cell.svcDepth >= 8)
         throw new Error(
           "Service binding recursion limit exceeded (8)");
@@ -3782,6 +3783,7 @@ const __makeServiceBinding = __celld.__makeServiceBinding =
   }});
   __rawRpcMeta.set(binding, session);
   __outboundMeta.set(binding, { script, entrypoint, propsSc });
+  __serviceBindings.add(binding);
   return binding;
 };
 
@@ -5530,7 +5532,7 @@ const __entrypointSession = (name, local, script, makeInst, propsSc) => ({
   get: (path) => local
     ? (async () => __rpcDes(
         await __entrypointOp(name, path, null, true, makeInst,
-          propsSc === undefined || propsSc.length === 0 ? undefined : __rpcDes(propsSc))))()
+          propsSc, propsSc !== undefined && propsSc.length !== 0)))()
     : (async () => __rpcDes(
         await __svc_rpc(
           script, name, JSON.stringify(path), null, propsSc)))(),
@@ -5539,7 +5541,7 @@ const __entrypointSession = (name, local, script, makeInst, propsSc) => ({
     if (local)
       return __rpcDes(await __entrypointOp(
         name, path, argsSc, true, makeInst,
-        propsSc === undefined || propsSc.length === 0 ? undefined : __rpcDes(propsSc)));
+        propsSc, propsSc !== undefined && propsSc.length !== 0));
     return __rpcDes(
       await __svc_rpc(
         script, name, JSON.stringify(path), argsSc, propsSc));
@@ -5554,12 +5556,32 @@ const __entrypointSession = (name, local, script, makeInst, propsSc) => ({
 // property or calling through the node gets Workerd's
 // cross-context error. Depth is capped like Workerd's
 // MAX_PROPERTY_DEPTH.
-const __makeNode = (session, path, ctx) => {
+// workerd's RPC promise is disposable: disposing it disposes the result once it
+// settles, so callers can `using pending = stub.method()`.
+const __disposeWhenSettled = (promise) => () => {
+  promise.then((result) => {
+    if (result !== null && (typeof result === "object" || typeof result === "function")) {
+      const dispose = result[Symbol.dispose];
+      if (typeof dispose === "function") dispose.call(result);
+    }
+  }, () => {});
+};
+const __disposablePromise = (promise) => {
+  Object.defineProperty(promise, Symbol.dispose,
+    { configurable: true, value: __disposeWhenSettled(promise) });
+  return promise;
+};
+const __makeNode = (session, path, ctx, root) => {
   let promise;
-  const value = () => promise ??= (() => {
-    if (path.length === 0) return session.root();
-    if (ctx !== null && ctx !== __ctxNow())
+  // Disposal ends pipeline dispatch; ordinary promise observation survives.
+  root ??= { disposed: false };
+  const disposedError = () => new Error("RPC promise used after being disposed.");
+  const value = () => {
+    if (path.length === 0) return promise ??= session.root();
+    if (root.disposed) return Promise.reject(disposedError());
+    if (ctx !== null && ctx !== __io_context_id())
       return Promise.reject(__ctxError("Pipeline"));
+    // Each RpcProperty observation is a new GET, unlike an RpcPromise.
     return session.get(path);
   };
   const brand =
@@ -5656,22 +5678,8 @@ const __reviveDurableService = (marker, revive) => {
     persistent: Object.hasOwn(marker, "a") && marker.a === true });
   return binding;
 };
-const __entrypointStub = (name, props) => {
-  let inst;
-  const makeInst = props === undefined ? undefined : () => {
-    if (inst !== undefined) return inst;
-    const cls = __cell.entrypoints[name];
-    if (typeof cls !== "function")
-      throw new TypeError(
-        "The entrypoint " + name + " cannot carry props.");
-    // Construction gets its own event, like a top-level invocation, and hands
-    // that event's drain to the enclosing one. This runs inside the event of
-    // the first method call on the stub, so a ctx.waitUntil() call in the
-    // constructor drains before that call replies.
-    inst = __newEntrypointInstance(name, props);
-    return inst;
-  };
-  const session = __entrypointSession(name, true, null, makeInst);
+const __entrypointStub = (name, props, propsSc = __capturePropsBytes(props)) => {
+  const session = __entrypointSession(name, true, null, undefined, propsSc);
   const stub = new Proxy(function () {}, {
     getPrototypeOf: () => __cf.ServiceStub.prototype,
     get: (_b, prop) => {
@@ -6683,7 +6691,7 @@ __celld.__makeIncomingRequest = (
   streamId === undefined ? body : new CelldHttpBodyStream(streamId),
   headersJson, undefined, true);
 const __dispatchTo = __celld.__dispatchTo = async (
-  scope, url, method, body, headersJson, requestId = null, bodyStreamId = null,
+  scope, url, method, body, headersJson, requestId = null, bodyStreamId = null, restore = null,
 ) => {
   // A routed body that must not be collected crosses as a host stream id; the
   // handler here reads it in parts. A held body arrives as its bytes.
@@ -6699,7 +6707,7 @@ const __dispatchTo = __celld.__dispatchTo = async (
   try {
     const dispatch = (async () => {
       const inst = await _readyInstance(scope);
-      return await __ctxRun(undefined, () => inst.fetch(
+      return await __ctxRun(undefined, () => __invokeRestoredHttp(restore, () => inst.fetch(
         __makeRequest(
           url,
           method,
@@ -6707,7 +6715,7 @@ const __dispatchTo = __celld.__dispatchTo = async (
           headersJson,
           requestController.signal,
           true,
-        )));
+        ))));
     })();
     // The caller's abandonment reaches the target through
     // __do_call_cancel/__abortIncomingRequest, which aborts the fresh incoming
@@ -6862,15 +6870,16 @@ const __noHandler = (name, method) =>
     : new TypeError(
       `Entrypoint ${JSON.stringify(name)} has no ${method} handler`);
 
-const __dispatchEntrypointMethod = async (name, method, arg, props) => {
+const __dispatchEntrypointMethod = async (name, method, arg, props, restore, encodedProps = false) =>
+  __ctxRun(undefined, async () => {
+  if (encodedProps) props = props?.length ? __rpcDes(props) : undefined;
   const handler = __cell.objectEntrypoints[name];
   if (handler !== undefined) {
     if (typeof handler[method] !== "function")
       throw __noHandler(name, method);
     const ctx = __beginEvent(props);
     try {
-      return await __ctxRun(undefined,
-        () => handler[method](arg, __cell.env, ctx));
+      return await __invokeRestoredHttp(restore, () => handler[method](arg, __cell.env, ctx));
     } finally {
       __endEvent();
     }
@@ -6880,8 +6889,8 @@ const __dispatchEntrypointMethod = async (name, method, arg, props) => {
   const inst = __newEntrypointInstance(name, props);
   if (typeof inst[method] !== "function")
     throw __noHandler(name, method);
-  return await __ctxRun(undefined, () => inst[method](arg));
-};
+  return await __invokeRestoredHttp(restore, () => inst[method](arg));
+});
 // Invoke a handler inside the event frame that the host already opened. A
 // Queue dispatch uses this form because its host driver must receive and keep
 // driving the handler's waitUntil aggregate after the settlement is returned.
@@ -6899,11 +6908,9 @@ const __dispatchEntrypointMethodInCurrentEvent = async (name, method, arg) => {
   return await __ctxRun(undefined, () => inst[method](arg));
 };
 const __dispatchEntrypointFetch = __celld.__dispatchEntrypointFetch =
-  (name, request, propsSc = null) =>
+  (name, request, propsSc = null, restore = null) =>
   __dispatchEntrypointMethod(
-    name, "fetch", request,
-    propsSc === null || propsSc.length === 0
-      ? undefined : __rpcDes(propsSc));
+    name, "fetch", request, propsSc, restore, true);
 __celld.__dispatchEntrypointScheduled = (name, ctrl) =>
   __dispatchEntrypointMethod(name, "scheduled", ctrl);
 // A queue batch owns mutable settlement state only while its handler runs.

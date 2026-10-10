@@ -598,6 +598,7 @@ pub enum AlarmDispatch {
 /// handler to run.
 pub enum CellJob {
     Fetch {
+        restore: Option<Vec<u8>>,
         request_id: Option<RequestId>,
         scope: String,
         name: Option<String>,
@@ -5051,6 +5052,20 @@ fn begin<'s>(
     else {
         return Begun::Nothing;
     };
+    if entrypoint
+        .as_ref()
+        .is_some_and(|entry| entry.name == crate::capability::FETCH_ENTRYPOINT)
+    {
+        return capability_ops::begin_fetch(
+            tc,
+            entrypoint.unwrap().props,
+            url,
+            method,
+            body,
+            headers,
+            reply,
+        );
+    }
     let runtime_state = actor_runtime_state(tc);
     let tail_reporting = tail_report.is_some();
     debug_assert!(
@@ -5806,6 +5821,7 @@ fn facet_socket_refusal(scope: &str, facet_opening: Option<u64>) -> Option<anyho
 fn begin_cell(tc: &mut v8::PinScope, job: CellJob, event_time: i64) -> Begun {
     match job {
         CellJob::Fetch {
+            restore,
             request_id,
             scope,
             name,
@@ -5855,6 +5871,7 @@ fn begin_cell(tc: &mut v8::PinScope, job: CellJob, event_time: i64) -> Begun {
                             None => v8::null(tc).into(),
                         },
                         stream_id,
+                        bytes_value(tc, restore.unwrap_or_default()),
                     ];
                     let recv = v8::undefined(tc).into();
                     f.call(tc, recv, &arguments)
@@ -6306,11 +6323,12 @@ fn start_fetch<'s>(
             let dispatch = internal_function(tc, "__dispatchEntrypointFetch")?;
             let name = v8::String::new(tc, &entrypoint.name).unwrap();
             let props = bytes_value(tc, entrypoint.props);
+            let restore = bytes_value(tc, entrypoint.restore.unwrap_or_default());
             // Settlement and synchronous-throw cleanup both close this host
             // frame. The dispatcher supplies its own handler context, but
             // omitting the outer frame would leave those paths unbalanced.
             begin_event_context(tc)?;
-            dispatch.call(tc, recv, &[name.into(), req, props])
+            dispatch.call(tc, recv, &[name.into(), req, props, restore])
         }
         FetchTarget::Default(fetch) => {
             let env = harness_env(tc)?;
@@ -7770,6 +7788,7 @@ fn op_svc_call_impl(
         .is_string()
         .then(|| crate::WorkerFetchEntrypoint {
             name: entrypoint_arg.to_rust_string_lossy(scope),
+            restore: None,
             props,
         });
     let body = if stream_arg.is_number() {
@@ -8266,7 +8285,11 @@ fn op_loader_load(
             }
         };
         let entrypoint = match route.entrypoint {
-            Some(name) => Some(crate::WorkerFetchEntrypoint { name, props }),
+            Some(name) => Some(crate::WorkerFetchEntrypoint {
+                name,
+                props,
+                restore: None,
+            }),
             None if props.is_empty() => None,
             None => {
                 return loader_throw(
@@ -8372,11 +8395,14 @@ fn op_loader_fetch(
     // must instead use the harness dispatcher, so an absent name fails rather
     // than falling back to the default export. A props-carrying default fetch
     // also needs that dispatcher because the direct path cannot install props.
-    let entrypoint =
-        (entrypoint != "default" || !props.is_empty()).then_some(crate::WorkerFetchEntrypoint {
+    let restore = view_bytes(args.get(11)).filter(|bytes| !bytes.is_empty());
+    let entrypoint = (entrypoint != "default" || !props.is_empty() || restore.is_some()).then_some(
+        crate::WorkerFetchEntrypoint {
             name: entrypoint,
             props,
-        });
+            restore,
+        },
+    );
     let stream_arg = args.get(5);
     let body = if stream_arg.is_number() {
         RequestBody::Stream(stream_arg.number_value(scope).unwrap_or(0.0) as u64)
@@ -9178,6 +9204,7 @@ fn op_facet_fetch(
         }
         Err(error) => return loader_throw(scope, &error.to_string()),
     };
+    let restore = view_bytes(args.get(12)).filter(|bytes| !bytes.is_empty());
     let host = FacetHost::of(loader, &class_name);
     let trace = current_trace_context(scope);
     let response_context = require_event_context!(scope);
@@ -9198,6 +9225,7 @@ fn op_facet_fetch(
         .await?;
         let (reply, receive) = tokio::sync::oneshot::channel();
         let job = CellJob::Fetch {
+            restore,
             request_id: None,
             scope: facet.scope.clone(),
             name: None,

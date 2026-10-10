@@ -1,0 +1,1 @@
+{"id": "R4-05", "description": "A restored Fetcher retains HTTP semantics (fixed by R5-04)", "command": ["python3", "../http_case.py"], "runtimes": ["celld", "workerd"], "profiles": ["quick", "full"], "timeout_seconds": 120, "expected_failure": null}

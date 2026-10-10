@@ -571,6 +571,9 @@ pub(crate) async fn outbound_websocket_task(
         reply,
     } = request;
     if let Some(target) = target {
+        if let Some(parked) = target.tunnel {
+            return tunneled_websocket_pipe(id, parked, pull, reply).await;
+        }
         return local_websocket_pipe(app, id, target, pull, reply).await;
     }
     let sink = match pull {
@@ -1316,4 +1319,108 @@ fn emit_websocket_connection_timing(
 #[cfg(all(test, celld_internal_tests))]
 mod socket_cancel_private {
     include!(env!("CELLD_CONFORMANCE_SOCKET_CANCEL_TESTS"));
+}
+
+/// A capability HTTP tunnel uses the existing Worker/cell/tunnel ownership
+/// and handshake path, including ordinary headers and disconnect cleanup.
+pub(super) async fn reply_to_tunnel(
+    app: AppHandle,
+    mut worker: HttpResponse,
+    upgrade: Option<(
+        Response<http_body_util::Empty<Bytes>>,
+        fastwebsockets::upgrade::UpgradeFut,
+    )>,
+    head: bool,
+) -> HttpReply {
+    let Some(socket) = worker.websocket.take() else {
+        return runtime_response(worker, head);
+    };
+    if worker.status != 101 {
+        return refuse_websocket_without_upgrade(&app, socket).await;
+    }
+    let Some((mut response, upgrade)) = upgrade else {
+        return refuse_websocket_without_upgrade(&app, socket).await;
+    };
+    let pending = match PendingWebSocket::new(socket) {
+        Ok(pending) => pending,
+        Err(error) => return super::response(StatusCode::BAD_GATEWAY, format!("{error}")),
+    };
+    if let PendingWebSocket::Cell(target) = &pending {
+        let (cell, hibernatable) = celld::js::ws_core_registration(target);
+        let kind = if hibernatable {
+            WebSocketKind::Hibernatable
+        } else {
+            WebSocketKind::Regular
+        };
+        if let Err(error) = app.websocket_opened(cell, target.id, kind).await {
+            reject_accepted_websocket(&app, target, "WebSocket registration failed").await;
+            return super::response(StatusCode::SERVICE_UNAVAILABLE, format!("{error}"));
+        }
+    }
+    for (name, value) in &worker.headers {
+        if !forwards_worker_websocket_header(name) {
+            continue;
+        }
+        let parsed = hyper::header::HeaderName::from_bytes(name.as_bytes())
+            .ok()
+            .zip(hyper::header::HeaderValue::from_str(value).ok());
+        let Some((name, value)) = parsed else {
+            if let PendingWebSocket::Cell(target) = &pending {
+                reject_accepted_websocket(&app, target, "invalid WebSocket response header").await;
+            }
+            return super::response(StatusCode::BAD_GATEWAY, "invalid WebSocket response header");
+        };
+        response.headers_mut().append(name, value);
+    }
+    tokio::spawn(run_websocket_upgrade(app, upgrade, pending));
+    response.map(|body| body.map_err(|never| match never {}).boxed_unsync())
+}
+
+/// Accepting a Fetcher's remote 101 owns the parked stream, not a local actor
+/// with the peer's numeric socket ID. Reuse the regular client frame pump.
+async fn tunneled_websocket_pipe(
+    id: u64,
+    parked: u64,
+    pull: Option<celld::js::WsPullSender>,
+    reply: tokio::sync::oneshot::Sender<anyhow::Result<celld::js::OutboundWsOpen>>,
+) -> anyhow::Result<()> {
+    let connected = async {
+        let pull = pull.context("a tunnel WebSocket needs an isolate queue")?;
+        let claim = super::peer_tunnel::claim_upgrade(parked)?;
+        let upgraded = claim.into_upgrade().await?;
+        Ok::<_, anyhow::Error>((pull, upgraded))
+    }
+    .await;
+    let (pull, upgraded) = match connected {
+        Ok(connection) => connection,
+        Err(error) => {
+            let _ = reply.send(Err(error));
+            return Ok(());
+        }
+    };
+    let socket = fastwebsockets::WebSocket::after_handshake(
+        hyper_util::rt::TokioIo::new(upgraded),
+        fastwebsockets::Role::Client,
+    );
+    let sink = OutboundWebSocketSink::Isolate(pull);
+    let (outbound, mut outputs) = mpsc::unbounded_channel();
+    celld::js::ws_register(id, outbound);
+    if reply
+        .send(Ok(celld::js::OutboundWsOpen {
+            protocol: None,
+            declined: None,
+        }))
+        .is_err()
+    {
+        celld::js::ws_unregister(id);
+        return Ok(());
+    }
+    let (close, _) =
+        pump_cell_socket(socket, &mut outputs, true, |data| sink.message(id, data)).await;
+    let _ = sink
+        .closed(id, close.state.0, close.state.1, close.state.2)
+        .await;
+    celld::js::ws_unregister(id);
+    celld::js::ws_pull_unregister(id);
+    Ok(())
 }

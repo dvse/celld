@@ -370,6 +370,96 @@ pub(super) fn restore_control_token(
     rv.set(v8::String::new(scope, &token).unwrap().into());
 }
 
+pub(super) fn fetch(
+    scope: &mut v8::PinScope,
+    args: v8::FunctionCallbackArguments,
+    mut rv: v8::ReturnValue<v8::Value>,
+) {
+    let context = require_event_context!(scope);
+    if let Err(error) = context.charge_subrequest() {
+        return loader_throw(scope, &error);
+    }
+    let control: crate::capability::FetchControl =
+        match serde_json::from_str(&args.get(0).to_rust_string_lossy(scope)) {
+            Ok(control) => control,
+            Err(error) => return loader_throw(scope, &format!("capability HTTP control: {error}")),
+        };
+    let url = args.get(1).to_rust_string_lossy(scope);
+    let method = args.get(2).to_rust_string_lossy(scope);
+    let headers = match serde_json::from_str(&args.get(4).to_rust_string_lossy(scope)) {
+        Ok(headers) => headers,
+        Err(error) => return loader_throw(scope, &format!("capability HTTP headers: {error}")),
+    };
+    let body = if args.get(5).is_number() {
+        RequestBody::Stream(args.get(5).number_value(scope).unwrap_or(0.0) as u64)
+    } else {
+        RequestBody::Bytes(view_bytes(args.get(3)).unwrap_or_default().into())
+    };
+    let mut body_guard = match body.stream_id() {
+        // A promised Fetcher forwards in its capability's resource context,
+        // while the incoming HTTP argument initially belongs to the native
+        // call driver. Either exact owner can transfer it once; never recover
+        // an arbitrary stream from the process-wide registry.
+        Some(id) => match context
+            .transfer_body_stream(id)
+            .or_else(|| operation_driver_context(scope)?.transfer_body_stream(id))
+        {
+            Some(guard) => guard,
+            None => return loader_throw(scope, "capability request body is not owned"),
+        },
+        None => RequestBodyGuard::of(&body),
+    };
+    let gate = egress_gate_request(&context, celld_logic::Channel::Service);
+    let streams = http_stream_service();
+    let slot = crate::capability::CallerOrderSlot::new(
+        &control.route,
+        control.order.as_ref(),
+        control.session.as_deref(),
+    );
+    let id = asyncrt::enqueue(async move {
+        await_egress_gate(gate)
+            .await
+            .map_err(|error| format!("capability HTTP output gate: {error}"))?;
+        let response = crate::capability::fetch_ordered(
+            crate::capability::Fetch {
+                control,
+                url,
+                method,
+                body,
+                headers,
+            },
+            slot,
+        )
+        .await
+        .map_err(|error| format!("capability HTTP: {error:#}"))?;
+        body_guard.disarm();
+        encode_http_response(response, true, &streams, |worker| {
+            websocket::park_worker_websocket_handoff(worker, &context)
+        })
+    });
+    rv.set(promise_for(scope, id));
+}
+fn invoke_fetch<'s>(
+    tc: &mut v8::PinScope<'s, '_>,
+    route: &crate::capability::Route,
+    restore: Vec<u8>,
+    started: &str,
+    url: &str,
+    method: &str,
+    body: RequestBody,
+    headers: &[(String, String)],
+) -> Result<v8::Local<'s, v8::Value>> {
+    let token = crate::capability::validate(route)?;
+    let dispatch = internal_function(tc, "__dispatchCapabilityFetch")?;
+    let token = v8::String::new(tc, &token).unwrap();
+    let restore = bytes_value(tc, restore);
+    let started = v8::String::new(tc, started).unwrap();
+    let request = make_incoming_request(tc, url, method, body, headers)?;
+    let recv = v8::undefined(tc).into();
+    dispatch
+        .call(tc, recv, &[token.into(), restore, request, started.into()])
+        .ok_or_else(|| anyhow!("capability HTTP dispatch threw"))
+}
 pub(super) fn begin_fetch(
     tc: &mut v8::PinScope,
     props: Vec<u8>,
