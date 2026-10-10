@@ -48,6 +48,9 @@ const RECLAIM_RETRY: Duration = Duration::from_millis(10);
 /// blocking run loop's own cap, which exists for the same reason: a client
 /// disconnect is raised on another thread and has nothing to wake this one.
 const CANCELLATION_TICK: Duration = Duration::from_millis(10);
+/// How often an entry that has waited on nothing for longer than the handler
+/// budget looks in to see whether another entry settled it.
+const LONG_WAIT_POLL: Duration = Duration::from_millis(250);
 /// Cell fetches that one target can hold before celld refuses excess work.
 ///
 /// The last nonsaturated Queue step in the AWS partition staircase held
@@ -2622,10 +2625,22 @@ async fn wake(ops: &mut Ops, entry: &mut js::InFlight, budget: Duration) -> Wake
         // listener otherwise hides the empty-op path that lets a loopback
         // entry make progress, and both events wait on each other forever.
         let only_unrefed = !ops.is_empty() && !entry.has_refed_ops();
-        let capped = if entry.cancellable() || only_unrefed {
-            left.min(CANCELLATION_TICK)
+        // An event awaiting referenced I/O has no wall-clock limit in
+        // workerd, except an alarm's 15 minutes (`InFlight::wall_limit_left`).
+        // The handler budget stays the verdict on an event that awaits
+        // nothing: no op, or only unreferenced ones.
+        let limit = if ops.is_empty() || only_unrefed {
+            Some(left)
         } else {
-            left
+            entry.wall_limit_left()
+        };
+        let capped = match limit {
+            Some(limit) if entry.cancellable() || only_unrefed => {
+                Some(limit.min(CANCELLATION_TICK))
+            }
+            Some(limit) => Some(limit),
+            None if entry.cancellable() => Some(CANCELLATION_TICK),
+            None => None,
         };
         // Nothing of this entry's own is outstanding, so there is no future
         // to wait on — only the chance that some *other* entry in this
@@ -2639,9 +2654,30 @@ async fn wake(ops: &mut Ops, entry: &mut js::InFlight, budget: Duration) -> Wake
         // an empty op set proves.
         let context = entry.io_context();
         if ops.is_empty() {
-            if left.is_zero() {
+            // Another event of the same object can still settle a promise
+            // this one awaits, so it is not hung while one runs.
+            if left.is_zero() && !entry.object_has_other_events() {
                 return Wake::Idle;
             }
+            // Past the handler budget this entry is a long wait (a capability
+            // call, or a request whose object still has other work), not a
+            // stall. Looking in every cancellation tick for as long as it
+            // lasts would cost a turn every 10 ms per waiter, so it looks
+            // less often; a hand-off still wakes it at once.
+            let long_wait = entry
+                .remaining(js::handler_budget())
+                .is_some_and(|left| left.is_zero());
+            let pause = if long_wait {
+                LONG_WAIT_POLL
+            } else {
+                capped.map_or(CANCELLATION_TICK, |capped| {
+                    if capped.is_zero() {
+                        CANCELLATION_TICK
+                    } else {
+                        capped.min(CANCELLATION_TICK)
+                    }
+                })
+            };
             // The handed wake belongs on this path too. This entry holds no op
             // of its own, so without it a handed op waits out the whole
             // cancellation tick before the next pass can take it — the delay
@@ -2649,7 +2685,7 @@ async fn wake(ops: &mut Ops, entry: &mut js::InFlight, budget: Duration) -> Wake
             asyncrt::select_biased! {
                 "an op another turn hands over wins a tie with the cancellation tick";
                 _ = context.handed_ready() => {},
-                _ = tokio::time::sleep(capped.min(CANCELLATION_TICK)) => {},
+                _ = tokio::time::sleep(pause) => {},
             }
             // Re-read the flag on this path too. A request with nothing
             // outstanding can still have its client hang up, and only the
@@ -2659,14 +2695,17 @@ async fn wake(ops: &mut Ops, entry: &mut js::InFlight, budget: Duration) -> Wake
             }
             return Wake::Poll;
         }
-        let next = tokio::time::timeout(capped, async {
+        let waiting = async {
             asyncrt::select_biased! {
                 "an operation result wins a tie with an op another turn hands over";
                 result = ops.next() => Some(result),
                 _ = context.handed_ready() => None,
             }
-        })
-        .await;
+        };
+        let next = match capped {
+            Some(capped) => tokio::time::timeout(capped, waiting).await,
+            None => Ok(waiting.await),
+        };
         match next {
             Ok(Some(Some((op, result)))) => return Wake::Op(op, result),
             Ok(Some(None)) => return Wake::Idle,
@@ -2676,7 +2715,7 @@ async fn wake(ops: &mut Ops, entry: &mut js::InFlight, budget: Duration) -> Wake
                 if let Some(cancelled) = take_cancellation_wake(entry.request_id()) {
                     return cancelled;
                 }
-                if capped == left {
+                if capped == limit {
                     return Wake::Expired;
                 }
                 if only_unrefed {

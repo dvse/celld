@@ -298,3 +298,4 @@ fn critical_section_cannot_borrow_driver_after_retirement() {
     });
 }
 
+include!("../../../tests/regressions/R4-04/native.rs");
