@@ -1,0 +1,2 @@
+{"name": "self-forward-runner", "main": "index.js", "compatibility_date": "2026-08-14",
+ "services": [{"binding": "PORTAL", "service": "self-forward-portal", "entrypoint": "Portal"}]}

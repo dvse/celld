@@ -1,0 +1,6 @@
+{"name": "self-forward", "main": "index.js", "compatibility_date": "2026-08-14",
+ "compatibility_flags": ["allow_irrevocable_stub_storage"],
+ "services": [{"binding": "RUNNER", "service": "self-forward-runner", "entrypoint": "Runner"},
+              {"binding": "PORTAL", "service": "self-forward-portal", "entrypoint": "Portal"}],
+ "worker_loaders": [{"binding": "LOADER"}],
+ "migrations": [{"tag": "v1", "new_sqlite_classes": ["Overseer"]}]}
