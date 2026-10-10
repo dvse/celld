@@ -1,0 +1,1 @@
+{"id": "R5-06", "description": "Token-only persistent clients retain their creating IoContext owner", "command": ["python3", "../http_case.py"], "runtimes": ["celld", "workerd"], "profiles": ["quick", "full"], "timeout_seconds": 120, "expected_failure": null}

@@ -2105,30 +2105,47 @@ const __loaderPropsFinalizer = new FinalizationRegistry(snapshot => {
 // clients owned by the specializing caller. Each receiver decodes independently.
 const __capturePropsBytes = (props) => {
   if (props === undefined) return undefined;
-  const bytes = __rpcOut(props, true, true);
-  const context = __nextCtxId++;
-  let value;
-  try { value = __ctxRun(context, () => __rpcDes(bytes)); }
-  catch (error) { __ctxEnd(context); throw error; }
+  const tree = __storedLift(props, true);
+  return tree === null ? __sc_encode(props) : __tagged(1, __sc_encode(tree));
+};
+// Validate already captured channel graphs without restoring clients. STORAGE
+// usage is transitive through opaque props, as ChannelTokenContext::encode() is.
+const __validateStoredProps = (bytes) => {
+  if (bytes === undefined || bytes.length === 0 || bytes[0] !== 1) return;
+  const seen = new Set();
+  const visit = value => {
+    if (value === null || typeof value !== "object" || seen.has(value)) return;
+    seen.add(value);
+    if (Object.hasOwn(value, "__celld$svc") && value.a !== true)
+      throw new DOMException("The nested target worker did not enable allow_irrevocable_stub_storage.", "DataCloneError");
+    if (Object.hasOwn(value, "__celld$class") &&
+        JSON.parse(value["__celld$class"]).allow_storage !== true)
+      throw new DOMException("The nested class target did not enable allow_irrevocable_stub_storage.", "DataCloneError");
+    // Configured bindings have no durable channel token in celld. The same
+    // restriction applies whether the binding is direct or hidden in props.
+    if (Object.hasOwn(value, "__celld$svcb"))
+      throw new DOMException("Configured service bindings cannot be stored without a persistent channel.", "DataCloneError");
+    if ((Object.hasOwn(value, "__celld$svc") || Object.hasOwn(value, "__celld$class")) &&
+        Object.hasOwn(value, "q")) __validateStoredProps(value.q);
+    if (value instanceof Map) for (const [k,v] of value) { visit(k); visit(v); }
+    else if (value instanceof Set) for (const v of value) visit(v);
+    else if (Object.getPrototypeOf(value) === Object.prototype ||
+        Object.getPrototypeOf(value) === null || Array.isArray(value))
+      for (const key of Object.keys(value)) visit(value[key]);
+  };
+  visit(__sc_decode(bytes.subarray(1)));
+};
+const __captureLoaderProps = (props) => {
+  let bytes = __capturePropsBytes(props);
+  if (bytes === undefined) return undefined;
   let disposed = false;
   return {
     encode(owned = true) {
       if (disposed) throw new Error("Loader entrypoint props were disposed.");
-      const bytes = __ctxRun(context, () => __rpcOut(value, true, true));
-      if (!owned) return bytes;
-      // Private loader-props ownership envelope. Existing service/facet
-      // formats are unchanged; the callee decodes this in its fresh context.
-      const envelope = new Uint8Array(bytes.length + 1);
-      envelope[0] = 3;
-      envelope.set(bytes, 1);
-      return envelope;
+      const copy = bytes.slice();
+      return owned ? __capability_packet_loader(copy) : copy;
     },
-    dispose() {
-      if (disposed) return;
-      disposed = true;
-      try { return __ctxRun(context, () => value?.[Symbol.dispose]?.()); }
-      finally { __ctxEnd(context); value = undefined; }
-    },
+    dispose() { disposed = true; bytes = undefined; },
   };
 };
 const __ownLoaderProps = (owner, loadPromise, snapshot) => {
@@ -2177,13 +2194,13 @@ const __classReference = (meta) => {
     throw new DOMException("This class has no transferable static deployment identity.", "DataCloneError");
   return meta.reference = reference;
 };
-const __reviveClassReference = (reference, props) => {
+const __reviveClassReference = (reference, props, encoded = false) => {
   const id = __loadStaticClass(reference);
   const info = JSON.parse(reference); // host verified the sealed reference
   const loadPromise = Promise.resolve({ id });
   __importedClassFinalizer.register(loadPromise, id);
   return __makeDurableObjectClass(loadPromise, info.name,
-    __rpcOut(props ?? {}, true, true), info.script, reference);
+    encoded ? props : __capturePropsBytes(props ?? {}), info.script, reference);
 };
 const __importedClassFinalizer = new FinalizationRegistry(id => __loader_drop(id));
 const __makeLoopbackDurableObjectClass = (name) => {
@@ -2199,10 +2216,10 @@ const __makeLoopbackDurableObjectClass = (name) => {
         (props === null || (typeof props !== "object" && typeof props !== "function")))
       throw new TypeError("DurableObjectClass props must be an object.");
     return __makeDurableObjectClass(
-      loadPromise, name, __rpcOut(props === undefined ? {} : props, false), __cell.script);
+      loadPromise, name, __capturePropsBytes(props === undefined ? {} : props), __cell.script);
   };
   __durableClassMeta.set(specialize, {
-    loadPromise, name, propsSc: __rpcOut({}, false), script: __cell.script,
+    loadPromise, name, propsSc: __capturePropsBytes({}), script: __cell.script,
   });
   if (Object.hasOwn(__cell.namespaceKeys, name)) {
     const namespace = __cell.makeNamespace(name);
@@ -2683,7 +2700,7 @@ class DurableObjectState {
         className, separator < 0 ? scope : scope.slice(separator + 1),
         __cell.idNames[scope])
       : typeof facet.id === "string" ? facet.id : new DurableObjectId(...facet.id);
-    this.props = facet?.props;
+    this.props = facet?.propsSc?.length ? __rpcDes(facet.propsSc) : undefined;
     // A class outside `containers` has no `ctx.container`, which is what
     // the `@cloudflare/containers` constructor checks.
     if (__cell.containers[className]) this.container = new Container(scope);
@@ -5682,11 +5699,23 @@ const __entrypointStub = (name, props) => {
 const __restoreSymbol = Symbol("cloudflare:workers.restore");
 const __persistentMeta = new WeakMap();
 const __rawRpcMeta = new WeakMap();
+const __nontransferableFacets = new WeakSet();
 const __restoreReceivers = new WeakMap();
 const __restoreOrigins = new WeakMap();
 const __restoreContextKey = Symbol("celld.restore-chain");
-const __restoreReplay = "__celld$restore$replay";
-const __restoreInvoke = "__celld$restore$invoke";
+const __fetchRestoreContextKey = Symbol("celld.restore-http");
+// Restore control operations travel as RPC method names, so the names carry a
+// fleet secret from the host: application code cannot name them, and the
+// ordinary entrypoint resolver never sees them. The harness never forwards
+// them to a pure-JS (Cap'n Web) target, so the secret does not leave celld.
+// Resolved on first use, during a request, after the node has configured its
+// fleet transport; never during isolate setup.
+let __restoreControl;
+const __restoreControlNames = () => __restoreControl ??= (() => {
+  const token = __restore_control_token();
+  return { replay: "$celld-restore-replay-" + token,
+           invoke: "$celld-restore-invoke-" + token };
+})();
 const __persistentEnabled = () =>
   globalThis.Cloudflare?.compatibilityFlags?.allow_irrevocable_stub_storage === true;
 const __requirePersistence = () => {
@@ -5701,39 +5730,125 @@ const __withRestore = (descriptor, fn) => {
   try { return fn(); } finally { __als_set(prior); }
 };
 const __restoreParent = () => __als_get()?.get(__restoreContextKey);
+const __isFetcher = value => __stubMeta.get(value)?.entry.fetcher === true ||
+  __persistentMeta.get(value)?.descriptor.channel === "fetcher" ||
+  __rawRpcMeta.has(value) || __doStubMeta.has(value) || __outboundMeta.has(value);
+const __fetchRestoreParent = () => __als_get()?.get(__fetchRestoreContextKey);
+const __fetchRestoreBytes = () => {
+  const descriptor = __fetchRestoreParent();
+  return descriptor === undefined ? undefined : __rpcOut(descriptor, true);
+};
+const __withFetchRestore = (descriptor, fn) => {
+  const prior = __als_get(), frame = new Map(prior);
+  frame.set(__fetchRestoreContextKey, descriptor);__als_set(frame);
+  try {return fn();} finally {__als_set(prior);}
+};
+const __invokeRestoredHttp = (restore, fn) => restore?.length
+  ? __withRestore(__rpcDes(restore), fn) : fn();
+const __stubHttpFetch = (meta, input, init, descriptor = __fetchRestoreParent()) => {
+  if (meta.disposed) return Promise.reject(__stubDisposedError());
+  __checkStubOwner(meta);
+  const entry = meta.entry;
+  if (entry.released) return Promise.reject(__releasedStubError());
+  entry.refs++;
+  const owner = {entry, disposed:false};
+  return (async () => {
+    const req = new Request(input, init);
+    const {body, streamId} = await __subrequestBody(req);
+    const route = __entryRoute(entry);
+    const restore = descriptor === undefined ? [] : [...__rpcOut(descriptor, true)];
+    const result = await __withRemoteOrder(route, order => __capability_fetch(
+      JSON.stringify({route:JSON.parse(route),session:entry.session??null,order:JSON.parse(order),restore}),
+      req.url, req.method, body, JSON.stringify(req.headers.__celldHeaderList), streamId), entry.session);
+    const reply = JSON.parse(result);
+    const data = reply.streamId !== undefined ? new CelldHttpBodyStream(reply.streamId)
+      : reply.body !== undefined ? reply.body : Uint8Array.from(reply.bodyBytes || []);
+    return __wrapServiceResponse(new Response(data, {status:reply.status,headers:reply.headers,
+      __wsTarget:reply.wsTarget}), req.url);
+  })().finally(() => __disposeStub(owner));
+};
+__celld.__dispatchCapabilityFetch = async (token, restore, request, started) => {
+  const entry = __stubEntries.get(Number(token));
+  if (!entry || entry.released) throw __releasedStubError();
+  if (!entry.fetcher) throw new TypeError("This RPC capability has no HTTP channel.");
+  entry.refs++;
+  const owner = {entry, disposed:false};
+  const event = entry.scope ? __beginActorEvent(entry.scope) : null;
+  let handedBody = false, reader;
+  const release = () => {__capabilityCalls.delete(started);return __disposeStub(owner);};
+  let cancel;
+  const cancellation = new Promise((_,reject)=>{cancel=reject;});
+  __capabilityCalls.set(started, reason => {
+    cancel(reason);
+    if (reader) Promise.resolve(__ctxRun(entry.ctx,()=>reader.cancel(reason))).catch(()=>{});
+    release();
+  });
+  try {
+    const response = await Promise.race([cancellation, __ctxRun(entry.ctx, () => {
+      __capability_started(started);
+      const invoke = () => entry.target.fetch(request);
+      return __withFetchRestore(restore.length === 0 ? undefined : __rpcDes(restore), invoke);
+    })]);
+    // Native HTTP owns streaming separately from the response head. Keep the
+    // exporting context until the last pull/cancel, including last-stub disposal.
+    if (response.body !== null && response._bodyBytes === null && response.status !== 101) {
+      reader = response.body.getReader();
+      const body = new ReadableStream({
+        async pull(controller) {
+          try { const chunk = await __ctxRun(entry.ctx, () => reader.read());
+            if (chunk.done) {controller.close();release();} else controller.enqueue(chunk.value);
+          } catch (error) {controller.error(error);release();}
+        },
+        async cancel(reason) { try {await __ctxRun(entry.ctx, () => reader.cancel(reason));}
+          finally {release();} },
+      });
+      handedBody = true;
+      return new Response(body, response);
+    }
+    return response;
+  } finally {
+    if (!handedBody) release();
+    if (event) __endActorEvent(event);
+    __capability_started(started);
+  }
+};
 const __persistentTarget = (target) => {
   if (target === null ||
       (typeof target !== "object" && typeof target !== "function"))
-    throw new TypeError("[restore]() must return an RPC capability.");
+    throw new TypeError("The [restore]() method must return a ServiceStub or RpcStub.");
   if (!(target instanceof __cf.RpcTarget) && typeof target !== "function" &&
       !__rawRpcMeta.has(target) && !__doStubMeta.has(target) &&
       !__outboundMeta.has(target) && !__persistentMeta.has(target))
-    throw new TypeError("[restore]() must return an RPC capability.");
+    throw new TypeError("The [restore]() method must return a ServiceStub or RpcStub.");
   return target;
 };
 const __restoreAt = async (target, descriptor, index) => {
   __requirePersistence();
   if (!descriptor || !Array.isArray(descriptor.steps) ||
-      descriptor.steps.length > 64 || index >= descriptor.steps.length)
+      descriptor.steps.length > 64 || !Number.isInteger(index) || index < 0 ||
+      index >= descriptor.steps.length)
     throw new TypeError("Invalid persistent RPC restore chain.");
   const parent = { root: descriptor.root, steps: descriptor.steps.slice(0, index) };
   const next = await __withRestore(parent, () => {
     const method = target[__restoreSymbol];
-    if (typeof method !== "function") throw new TypeError("Receiver has no [restore]() method.");
+    if (typeof method !== "function") throw new TypeError("The WorkerEntrypoint or DurableObject class does not implement a [restore]() method.");
     return method.call(target, descriptor.steps[index]);
   });
   __persistentTarget(next);
-  if (index + 1 === descriptor.steps.length) return next;
-  return __persistentInvokeTarget(next, __restoreReplay, [descriptor, index + 1]);
+  if (index + 1 === descriptor.steps.length)
+    return __nontransferableFacets.has(next) ? __makeStub(__newEntry(next), false) : next;
+  return __persistentInvokeTarget(next, __restoreControlNames().replay, [descriptor, index + 1]);
 };
 const __persistentInvokeTarget = (target, operation, payload) => {
+  // Native stubs only: the receiving harness intercepts the control name.
   const raw = __rawRpcMeta.get(target);
-  if (raw) return raw.call([operation], payload);
+  if (raw) return raw.call([operation], __admitAt(raw, [operation], payload));
   const stub = __stubMeta.get(target);
-  if (stub) return __stubOp(stub, [operation], payload);
+  if (stub) return __stubOp(stub, [operation], __rpcAdmit(payload));
   const persisted = __persistentMeta.get(target);
-  if (persisted) return __persistentCall(persisted, [operation], payload);
-  if (operation === __restoreReplay) return __restoreAt(target, ...payload);
+  if (persisted) return __persistentCall(persisted, [operation],
+    __persistentAdmit(persisted, [operation], payload));
+  if (operation === __restoreControlNames().replay) return __restoreAt(target, ...payload);
   const [descriptor, path, args] = payload;
   return __withRestore(descriptor, () => __rpcWalk(target, path, args, false));
 };
@@ -5741,50 +5856,99 @@ const __restoreFromRoot = (descriptor) => {
   const root = descriptor.root;
   if (root.kind === "actor")
     return __rpcDesPromise(__rpc_call(root.scope, root.name ?? null,
-      __restoreReplay, __rpcOut([descriptor, 0], true)));
+      __restoreControlNames().replay, __rpcOut([descriptor, 0], true)));
   if (root.kind === "service")
     return __rpcDesPromise(__svc_rpc(root.script, root.name,
-      JSON.stringify([__restoreReplay]), __rpcOut([descriptor, 0], true),
-      root.props === undefined ? new Uint8Array() : __rpcOut(root.props, true)));
+      JSON.stringify([__restoreControlNames().replay]), __rpcOut([descriptor, 0], true),
+      root.props === undefined ? new Uint8Array() : __capturePropsBytes(root.props)));
   throw new TypeError("Invalid persistent RPC root.");
 };
 const __rpcDesPromise = async (value) => __rpcDes(await value);
-const __persistentCall = async (meta, path, args) => {
+// Admit a call before any await. A pending restoration is a promised client:
+// register its independent reference before wrapper disposal can release it.
+const __persistentAcquire = (meta) => {
   if (meta.disposed) throw __stubDisposedError();
-  let live = await (meta.live ??= __restoreFromRoot(meta.descriptor));
-  if (!__stubMeta.has(live)) live = __makeStub(__newEntry(live), typeof live === "function");
-  if (meta.disposed) throw __stubDisposedError();
-  meta.live = live;
-  // Prepare once: capability transfer is a move. A proven pre-dispatch
-  // rejection must resend the same owning envelope, not serialize disposed
-  // argument handles or already-locked streams a second time.
-  const prepared = __rpcOut([meta.descriptor, path, args], true);
+  __checkStubOwner(meta);
+  const handle = target => __stubMeta.has(target) ? target
+    : __makeStub(__newEntry(target), typeof target === "function");
+  const live = meta.live ?? __restoreFromRoot(meta.descriptor);
+  if (live instanceof Promise) {
+    const ready = live.then(target => {
+      const resolved = handle(target);
+      if (meta.live === ready) meta.live = resolved;
+      return resolved;
+    });
+    meta.live = ready;
+    return ready.then(target => target.dup());
+  }
+  meta.live = handle(live);
+  return meta.live.dup();
+};
+// A promised client is exported through an owned forwarding endpoint. It
+// resolves once, preserves failure, and never reconstructs from the descriptor.
+const __persistentWireClient = (meta) => {
+  const acquired = __persistentAcquire(meta);
+  if (!(acquired instanceof Promise)) return acquired;
+  acquired.catch(() => {});
+  const target = {
+    [Symbol.dispose]() { return acquired.then(client => client[Symbol.dispose](), () => {}); },
+    async fetch(input, init) {
+      const client = await acquired;
+      return __stubHttpFetch(__stubMeta.get(client), input, init);
+    },
+  };
+  __rawRpcMeta.set(target, {
+    async get(path) { return __stubOp(__stubMeta.get(await acquired), path, null); },
+    async call(path, admission) { return __stubOp(__stubMeta.get(await acquired), path, admission); },
+  });
+  const entry = __newEntry(target);
+  entry.fetcher = meta.descriptor.channel === "fetcher";
+  return __makeStub(entry, true);
+};
+// The restore-chain envelope is the persistent dispatcher's parameter form.
+const __persistentAdmit = (meta, path, args) =>
+  __rpcAdmit([meta.descriptor, path, args]);
+const __persistentCall = async (meta, path, admission) => {
+  // Both the target and parameters belong to this invocation before it yields.
+  // A promised target delays dispatch, never parameter cloning/duplication.
+  let acquired;
+  try { acquired = __persistentAcquire(meta); }
+  catch (error) { admission.release(); throw error; }
+  let live;
   try {
-    return await __stubOp(__stubMeta.get(live), [__restoreInvoke], [], prepared);
-  } catch (error) {
-    // Retry only a direct dispatch rejection proven to precede execution.
-    // Timeouts, lost replies and user-code errors may follow committed side
-    // effects and are never replayed automatically.
-    if (!__capabilityNotExecuted.has(error) || meta.disposed) throw error;
-    meta.live = __restoreFromRoot(meta.descriptor);
-    let restored = await meta.live;
-    if (meta.disposed) throw __stubDisposedError();
-    if (!__stubMeta.has(restored))
-      restored = __makeStub(__newEntry(restored), typeof restored === "function");
-    meta.live = restored;
-    return __stubOp(__stubMeta.get(restored), [__restoreInvoke], [], prepared);
+    live = await acquired;
+    // A resolved persistent stub never reconnects to another incarnation.
+    return await __stubOp(__stubMeta.get(live), [__restoreControlNames().invoke], admission);
+  } finally {
+    // Idempotent after adoption; otherwise releases arguments when restoration
+    // or dispatch fails, without waiting for the source byte buffer's GC.
+    admission.release();
+    if (live !== undefined) live[Symbol.dispose]();
+    else Promise.resolve(acquired).then(target => target[Symbol.dispose](), () => {});
   }
 };
 const __makePersistentStub = (descriptor, live) => {
-  const meta = { descriptor, live, disposed: false };
+  // Even a token-only client is an IoContext-owned resource. Only decoding a
+  // transferred/stored token establishes a new owner; first use cannot do so.
+  const meta = { descriptor, live, disposed: false, owner: __io_context_id() };
   const session = {
-    get: path => __persistentCall(meta, path, null),
-    call: (path, args) => __persistentCall(meta, path, args),
+    acquire: () => {
+      if (meta.disposed) throw __stubDisposedError();
+      __checkStubOwner(meta);
+    },
+    admit: (path, args) => __persistentAdmit(meta, path, args),
+    get: path => __persistentCall(meta, path, __persistentAdmit(meta, path, null)),
+    call: (path, admission) => __persistentCall(meta, path, admission),
   };
   const stub = new Proxy(function () {}, {
     getPrototypeOf: () => __cf.RpcStub.prototype,
     get: (_base, prop) => {
       if (prop === "then") return undefined;
+      if (prop === "fetch" && descriptor.channel === "fetcher") return async (input, init) => {
+        const live = await __persistentAcquire(meta);
+        try { return await __stubHttpFetch(__stubMeta.get(live), input, init, descriptor); }
+        finally { live[Symbol.dispose](); }
+      };
       if (prop === Symbol.dispose) return () => {
         if (meta.disposed) return;
         meta.disposed = true;
@@ -5793,15 +5957,23 @@ const __makePersistentStub = (descriptor, live) => {
           if (typeof disposer === "function") return disposer.call(target);
         }).catch(() => {});
       };
+      // workerd JsRpcStub::dup copies the live capability with the token
+      // (api/worker-rpc.c++), so a dup acts on the same restored object.
       if (prop === "dup") return () => {
         if (meta.disposed) throw __stubDisposedError();
-        return __makePersistentStub(descriptor, undefined);
+        __checkStubOwner(meta);
+        const dupLive = (target) =>
+          typeof target?.dup === "function" ? target.dup() : undefined;
+        const live = meta.live;
+        const liveDup = live === undefined ? undefined
+          : live instanceof Promise ? live.then(dupLive) : dupLive(live);
+        return __makePersistentStub(descriptor, liveDup);
       };
       if (typeof prop !== "string") return undefined;
-      return __makeNode(session, [prop], null);
+      return __makeNode(session, [prop], meta.owner);
     },
     apply: (_base, _this, args) => __makeNode(
-      __valueSession(__persistentCall(meta, [], args)), [], null),
+      __valueSession(__invokeAdmitted(session, [], args)), [], meta.owner),
   });
   __persistentMeta.set(stub, meta);
   return stub;
@@ -5810,15 +5982,26 @@ const __ctxRestore = async (ctx, params) => {
   __requirePersistence();
   const target = __restoreReceivers.get(ctx);
   if (!target) throw new Error("ctx.restore() requires an RPC receiver.");
-  let parent = __restoreParent();
-  if (parent === undefined) {
-    let root = __restoreOrigins.get(ctx);
-    if (ctx instanceof DurableObjectState && ctx._facetDepth === 0)
-      root = { kind: "actor", scope: ctx._scope, name: ctx.id.name };
-    if (!root || __cell.script.startsWith("__loader:"))
-      throw new Error("A dynamic worker or facet requires a parent restore chain.");
-    parent = { root, steps: [] };
-  }
+  // workerd roots a chain at every static entrypoint and every top-level
+  // Durable Object, whatever chain the call arrived on (server/server.c++:
+  // a root actor "MUST NOT accept a restoredSelfTokenFactory passed in from
+  // the caller"; a static entrypoint always mints its own self-token). Only
+  // Dynamic Workers and facets inherit the restored chain
+  // (io/io-channels.h).
+  const loader = __cell.script.startsWith("__loader:");
+  let root;
+  if (!loader && ctx instanceof DurableObjectState && ctx._facetDepth === 0)
+    root = { kind: "actor", scope: ctx._scope, name: ctx.id.name };
+  else if (!loader && !(ctx instanceof DurableObjectState))
+    root = __restoreOrigins.get(ctx);
+  let parent = root === undefined ? __restoreParent() : { root, steps: [] };
+  if (parent === undefined)
+    throw new Error("ctx.restore() cannot be used in this context because the system does " +
+      "not know how to restore this context itself, in order to be able to invoke its " +
+      "[restore]() method. This may happen if the current worker is a Dynamic Worker or a " +
+      "Durable Object Facet (or both), and the immediate caller did not specify how to " +
+      "restore it. To fix this, ensure that the caller of this Worker uses a stub that was " +
+      "created via its own context.restore().");
   if (parent.steps.length >= 64) throw new Error("Persistent restore chain is too deep.");
   // Snapshot parameters using the durable-only codec: transient capabilities
   // in arguments must fail here, before they can enter a persistent token.
@@ -5827,9 +6010,10 @@ const __ctxRestore = async (ctx, params) => {
     : __storedRevive(__sc_decode(__sc_encode(lifted)));
   const descriptor = { root: parent.root, steps: [...parent.steps, saved] };
   const method = target[__restoreSymbol];
-  if (typeof method !== "function") throw new TypeError("Receiver has no [restore]() method.");
+  if (typeof method !== "function") throw new TypeError("The WorkerEntrypoint or DurableObject class does not implement a [restore]() method.");
   const live = __persistentTarget(await __withRestore(parent,
     () => method.call(target, saved)));
+  if (__isFetcher(live)) descriptor.channel = "fetcher";
   const handle = __stubMeta.has(live) || __persistentMeta.has(live)
     ? live : __makeStub(__newEntry(live), typeof live === "function");
   return __makePersistentStub(descriptor, handle);
@@ -5849,7 +6033,7 @@ const __ctxRestore = async (ctx, params) => {
 // this script and no user value can decode to it, so revival
 // cannot be spoofed by data shaped like a marker.
 const __storedSentinel = {};
-const __storedLift = (value) => {
+const __storedLift = (value, transferOnly = false) => {
   let lifted = false;
   const seen = new Map();
   const lift = (v) => {
@@ -5857,22 +6041,26 @@ const __storedLift = (value) => {
         (typeof v !== "object" && typeof v !== "function")) return v;
     const cached = seen.get(v);
     if (cached !== undefined) return cached;
+    if (transferOnly && (v instanceof ReadableStream || v instanceof WritableStream))
+      throw new DOMException("Streams can only be serialized for RPC.", "DataCloneError");
     const durableClass = __durableClassMeta.get(v);
     if (durableClass) {
-      __requirePersistence();
+      if (!transferOnly) __requirePersistence();
       const reference = __classReference(durableClass);
-      if (JSON.parse(reference).allow_storage !== true)
+      if (!transferOnly && JSON.parse(reference).allow_storage !== true)
         throw new DOMException("The class target did not enable allow_irrevocable_stub_storage.", "DataCloneError");
       lifted = true;
       const marker = { "__celld$class": reference };
       seen.set(v, marker);
-      marker.p = lift(__rpcDes(durableClass.propsSc));
+      if (!transferOnly) __validateStoredProps(durableClass.propsSc);
+      marker.q = durableClass.propsSc;
       return marker;
     }
     const persistent = __persistentMeta.get(v);
     if (persistent) {
-      __requirePersistence();
+      if (!transferOnly) __requirePersistence();
       if (persistent.disposed) throw __stubDisposedError();
+      __checkStubOwner(persistent);
       lifted = true;
       const marker = { "__celld$persistent": null };
       seen.set(v, marker);
@@ -5890,17 +6078,28 @@ const __storedLift = (value) => {
         "Durable Object stubs. This value is a transient RPC " +
         "handle that would not survive a restart.",
         "DataCloneError");
+    if (transferOnly && __serviceBindings.has(v) && !__svcMeta.has(v)) {
+      const route = __outboundMeta.get(v);
+      lifted = true;
+      const marker = { "__celld$svcb": route.script, e: route.entrypoint ?? null,
+        p: route.propsSc ?? null };
+      seen.set(v, marker);
+      return marker;
+    }
     const svc = __svcMeta.get(v);
     if (svc !== undefined) {
       lifted = true;
-      __requirePersistence();
-      if (!svc.persistent) throw new DOMException(
+      if (!transferOnly) __requirePersistence();
+      if (!transferOnly && !svc.persistent) throw new DOMException(
         "The target worker did not enable allow_irrevocable_stub_storage.", "DataCloneError");
       if (svc.script.startsWith("__loader:")) throw new DOMException(
         "Dynamic worker service stubs require a parent restore chain.", "DataCloneError");
-      const marker = { "__celld$svc": svc.name, s: svc.script, a: true };
+      const marker = { "__celld$svc": svc.name, s: svc.script, a: svc.persistent };
       seen.set(v, marker);
-      if (svc.props !== undefined) marker.p = lift(svc.props);
+      if (svc.propsSc !== undefined) {
+        if (!transferOnly) __validateStoredProps(svc.propsSc);
+        marker.q = svc.propsSc;
+      }
       return marker;
     }
     if (v instanceof __cf.RpcPromise ||
@@ -5931,9 +6130,13 @@ const __storedLift = (value) => {
       return out;
     }
     if (Array.isArray(v)) {
-      const out = [];
+      const out = new Array(v.length);
       seen.set(v, out);
-      for (let i = 0; i < v.length; i++) out[i] = lift(v[i]);
+      for (const key of Object.keys(v)) {
+        __rejectRpcMarkerKey(key);
+        Object.defineProperty(out, key, { value: lift(v[key]),
+          writable: true, enumerable: true, configurable: true });
+      }
       return out;
     }
     const proto = Object.getPrototypeOf(v);
@@ -5944,7 +6147,8 @@ const __storedLift = (value) => {
     for (const key of Object.keys(v)) {
       // Check the exact copied key, including proxies whose ownKeys varies.
       __rejectRpcMarkerKey(key);
-      out[key] = lift(v[key]);
+      Object.defineProperty(out, key, { value: lift(v[key]),
+        writable: true, enumerable: true, configurable: true });
     }
     return out;
   };
@@ -5960,13 +6164,21 @@ const __storedBytes = (value, error) => {
   return __tagged(1, __sc_encode(tree));
 };
 const __storedRevive = (value) => {
-  const seen = new Set();
+  const seen = new Map();
   const revive = (v) => {
     if (v === null || typeof v !== "object") return v;
+    if (seen.has(v)) return seen.get(v);
+    seen.set(v, v);
+    const result = reviveValue(v);
+    seen.set(v, result);
+    return result;
+  };
+  const reviveValue = (v) => {
     if (Object.hasOwn(v, "__celld$class")) {
       __requirePersistence();
       return __reviveClassReference(v["__celld$class"],
-        Object.hasOwn(v, "p") ? revive(v.p) : undefined);
+        Object.hasOwn(v, "q") ? v.q : Object.hasOwn(v, "p") ? revive(v.p) : undefined,
+        Object.hasOwn(v, "q"));
     }
     if (Object.hasOwn(v, "__celld$persistent")) {
       __requirePersistence();
@@ -5978,8 +6190,6 @@ const __storedRevive = (value) => {
     if (doClass !== undefined)
       return new DurableObjectNamespace(doClass, undefined).get(
         new DurableObjectId(doClass, v.v, v.n ?? undefined));
-    if (seen.has(v)) return v;
-    seen.add(v);
     if (v instanceof Map) {
       const entries = [...v]; v.clear();
       for (const [key, item] of entries) v.set(revive(key), revive(item));
@@ -5991,12 +6201,16 @@ const __storedRevive = (value) => {
       return v;
     }
     if (Array.isArray(v)) {
-      for (let i = 0; i < v.length; i++) v[i] = revive(v[i]);
+      for (const key of Object.keys(v))
+        Object.defineProperty(v, key, { value: revive(v[key]),
+          writable: true, enumerable: true, configurable: true });
       return v;
     }
     const proto = Object.getPrototypeOf(v);
     if (proto !== Object.prototype && proto !== null) return v;
-    for (const key of Object.keys(v)) v[key] = revive(v[key]);
+    for (const key of Object.keys(v))
+      Object.defineProperty(v, key, { value: revive(v[key]),
+        writable: true, enumerable: true, configurable: true });
     return v;
   };
   return revive(value);
@@ -6536,9 +6750,9 @@ const __rpcTargetMethod = async (scope, method) => {
       "order to enable RPC, make sure your class extends the " +
       "special class `DurableObject`, which can be imported from " +
       "the module \"cloudflare:workers\".");
-  if (method === __restoreReplay)
+  if (method === __restoreControlNames().replay)
     return [inst, function(descriptor, index) { return __restoreAt(this, descriptor, index); }];
-  if (method === __restoreInvoke)
+  if (method === __restoreControlNames().invoke)
     return [inst, function(descriptor, path, args) {
       return __withRestore(descriptor, () => __rpcWalk(this, path, args, true));
     }];
@@ -6628,7 +6842,10 @@ const __constructEntrypoint = (cls, props) => {
 // work that Cloudflare delivers to one receiver.
 const __newEntrypointInstance = (name, props) => {
   const inst = __constructEntrypoint(__entrypointClass(name), props);
-  if (!__cell.script.startsWith("__loader:"))
+  // An entrypoint that does not keep its context (no `this.ctx`) has no
+  // restore origin to record.
+  if (!__cell.script.startsWith("__loader:") && inst.ctx !== null &&
+      typeof inst.ctx === "object")
     __restoreOrigins.set(inst.ctx, { kind: "service", script: __cell.script,
       name, props });
   return inst;
@@ -10752,7 +10969,9 @@ const __cf = __celld.__cf = {
   DurableObject: class DurableObject {
     constructor(ctx, env) {
       this.ctx = ctx; this.env = env;
-      __restoreReceivers.set(ctx, this);
+      // Application code may construct an entrypoint or object itself, with
+      // no host context; only a host context is a restore receiver.
+      if (ctx !== null && typeof ctx === "object") __restoreReceivers.set(ctx, this);
     }
   },
   // The enumerable function-valued brand makes V8's structured clone
@@ -10770,7 +10989,9 @@ const __cf = __celld.__cf = {
   WorkerEntrypoint: class WorkerEntrypoint {
     constructor(ctx, env) {
       this.ctx = ctx; this.env = env;
-      __restoreReceivers.set(ctx, this);
+      // Application code may construct an entrypoint or object itself, with
+      // no host context; only a host context is a restore receiver.
+      if (ctx !== null && typeof ctx === "object") __restoreReceivers.set(ctx, this);
     }
   },
   // Base class for `workflows` classes. The reserved workflow cell

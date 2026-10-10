@@ -1,0 +1,1 @@
+{"id": "R4-02", "description": "Authenticated pre-dispatch failure cannot replace a resolved live persistent capability", "command": ["python3", "run.py"], "runtimes": ["celld", "workerd"], "profiles": ["quick", "full"], "timeout_seconds": 120, "expected_failure": null}

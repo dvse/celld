@@ -1,0 +1,1 @@
+{"id": "R7-04", "description": "Persistent RPC transfers own shared live or promised clients and dispose moved wrappers", "command": ["python3", "run.py"], "runtimes": ["celld", "workerd"], "profiles": ["quick", "full"], "timeout_seconds": 240, "expected_failure": null}

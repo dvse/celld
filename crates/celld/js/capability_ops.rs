@@ -361,6 +361,15 @@ pub(super) fn started(
 /// The secret that names restore control operations. Every node of a fleet
 /// derives the same value from the fleet key, so a persistent restore can
 /// cross processes; an unconfigured engine uses a per-process random value.
+pub(super) fn restore_control_token(
+    scope: &mut v8::PinScope,
+    _args: v8::FunctionCallbackArguments,
+    mut rv: v8::ReturnValue<v8::Value>,
+) {
+    let token = crate::capability::restore_control_token();
+    rv.set(v8::String::new(scope, &token).unwrap().into());
+}
+
 pub(super) fn begin_fetch(
     tc: &mut v8::PinScope,
     props: Vec<u8>,
