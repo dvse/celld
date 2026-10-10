@@ -68,6 +68,14 @@ pub struct IsolateLoad {
     /// to another node. So this measures what the isolate is *committed* to,
     /// and it is what cell placement balances.
     pub cells: usize,
+    /// Live capabilities this stateless heap exported to holders elsewhere.
+    /// Like a cell, an export does not come back on its own: it lasts until
+    /// its holder disposes it or the holder's context ends, which retirement
+    /// cannot cause. workerd keeps the IoContext (and so the Worker) of an
+    /// exported RpcTarget alive for exactly that long
+    /// (api/worker-rpc.c++ ~JsRpcStub: a leaked stub is dropped only when
+    /// its holder's IoContext shuts down).
+    pub exports: usize,
     /// The shell has stopped affiliating new work and is draining this
     /// isolate.
     pub retiring: bool,
@@ -306,6 +314,14 @@ pub fn place_cell(load: &PoolLoad) -> Placement {
 /// new work and lets outstanding requests finish before the isolate goes
 /// away — `Pool::reap`.
 ///
+/// **An isolate holding live exports is never a candidate either**, for the
+/// same reason: a remote holder releases an export when it disposes the stub
+/// or its context ends, never because the heap began retiring. Marking such a
+/// heap retiring kept it forever while a fresh isolate replaced it, and that
+/// retired heap ran no JS again, so even its collectable garbage (loaded
+/// workers, finalizers) was never collected (Tunez Celld 6, 2026-10-10:
+/// planet-2 held 646 retiring heaps and 20.7 GB).
+///
 /// **An isolate hosting a cell is never a candidate.** Retiring rests on the
 /// victim emptying itself, and requests do that because they answer. A cell
 /// does not: it stays until it is evicted or handed to another node, neither
@@ -328,7 +344,7 @@ pub fn place_cell(load: &PoolLoad) -> Placement {
 /// resident cell in it. A cell whose residency dropped mid-event is still
 /// the affiliation's case, not this one.
 pub fn may_free(load: &IsolateLoad) -> bool {
-    load.retiring && load.turns == 0 && load.requests == 0 && load.cells == 0
+    load.retiring && load.turns == 0 && load.requests == 0 && load.cells == 0 && load.exports == 0
 }
 
 pub fn retire(load: &PoolLoad) -> Option<IsolateId> {
@@ -344,7 +360,7 @@ pub fn retire(load: &PoolLoad) -> Option<IsolateId> {
     }
 
     load.live()
-        .filter(|(_, l)| l.cells == 0)
+        .filter(|(_, l)| l.cells == 0 && l.exports == 0)
         .min_by_key(|(id, l)| (l.requests, std::cmp::Reverse(*id)))
         .map(|(id, _)| id)
 }

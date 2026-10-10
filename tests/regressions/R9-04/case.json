@@ -1,0 +1,1 @@
+{"id": "R9-04", "description": "Loader/facet RPC admission precedes asynchronous barriers", "command": ["python3", "http_runner.py"], "runtimes": ["celld", "workerd"], "profiles": ["quick", "full"], "timeout_seconds": 120, "expected_failure": null}

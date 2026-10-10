@@ -1,0 +1,1 @@
+{"id":"R4-06","description":"Repeated wire references preserve identity and one disposal owner","command":["python3","../http_case.py"],"runtimes":["celld","workerd"],"profiles":["quick","full"],"timeout_seconds":120,"expected_failure":null}

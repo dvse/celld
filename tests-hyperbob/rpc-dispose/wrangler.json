@@ -1,0 +1,3 @@
+{"name": "rpc-dispose", "main": "index.js", "compatibility_date": "2026-08-14",
+ "migrations": [{"tag": "v1", "new_sqlite_classes": ["Box"]}],
+ "services": [{"binding": "SVC", "service": "rpc-dispose", "entrypoint": "Svc"}]}

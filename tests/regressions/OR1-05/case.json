@@ -1,0 +1,1 @@
+{"id":"OR1-05","description":"Call admission acquires the one-call client before serializing parameters (a getter disposing the stub mid-serialization cannot cancel the call) and captures parameters when the call expression evaluates","command":["python3","../http_case.py"],"runtimes":["celld","workerd"],"profiles":["quick","full"],"timeout_seconds":120,"expected_failure":null}

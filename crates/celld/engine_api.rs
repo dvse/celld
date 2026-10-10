@@ -248,6 +248,7 @@ pub struct Compat {
     pub workers_api_getters_setters_on_prototype: bool,
     pub allow_irrevocable_stub_storage: bool,
     pub rpc_params_dup_stubs: bool,
+    pub enable_abortsignal_rpc: bool,
     pub delete_all_deletes_alarm: bool,
     /// `js_rpc`: RPC on a Durable Object class that does not extend
     /// `DurableObject` (Workerd worker-rpc.c++ getTargetInfo()).
@@ -668,6 +669,8 @@ pub struct PoolCensus {
     pub requests: usize,
     /// Turns in flight across the pool.
     pub turns: usize,
+    /// Live exported capabilities pinning stateless heaps across the pool.
+    pub exports: usize,
     /// Physical memory V8 has committed to the heaps of the isolates a turn
     /// did not hold at the sample.
     pub heap_bytes: u64,

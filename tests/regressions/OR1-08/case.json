@@ -1,0 +1,1 @@
+{"id":"OR1-08","description":"Source invariants: one call admission for every dispatcher and reusable restore-root props (structural changes 1 and 2)","command":["node","invariants.mjs"],"runtimes":["celld"],"profiles":["quick","full"],"timeout_seconds":60,"expected_failure":null}

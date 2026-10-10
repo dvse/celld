@@ -1,0 +1,1 @@
+{"id": "OR1-01", "description": "Same-process ordered RPC/HTTP calls that end before the callee's OrderSlot resolve their sequence slot (native)", "command": ["cargo", "test", "--locked", "-p", "celld", "--lib", "same_process", "--", "--test-threads=1"], "runtimes": ["celld"], "profiles": ["quick", "full"], "timeout_seconds": 900, "expected_failure": null}

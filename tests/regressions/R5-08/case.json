@@ -1,0 +1,1 @@
+{"id": "R5-08", "description": "Capture disposer in exporter and release bookkeeping on errors", "command": ["node", "run.mjs"], "runtimes": ["celld"], "profiles": ["quick", "full"], "timeout_seconds": 30, "expected_failure": null}

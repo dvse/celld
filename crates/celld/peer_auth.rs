@@ -13,8 +13,8 @@ use std::collections::HashMap;
 use std::sync::Mutex;
 use std::time::{SystemTime, UNIX_EPOCH};
 
-pub const PROTOCOL_VERSION: u16 = 5;
-pub const PROTOCOL_VERSION_TEXT: &str = "5";
+pub const PROTOCOL_VERSION: u16 = 8;
+pub const PROTOCOL_VERSION_TEXT: &str = "8";
 pub const RESPONSE_VERSION_HEADER: &str = "x-cells-peer-version";
 
 const SECRET_KEY: &str = "fleet/peer-auth.json";
@@ -264,6 +264,14 @@ impl PeerAuth {
         mac.update(b"celld-live-capability-route-v1\0");
         mac.update(payload);
         mac.verify_slice(&signature).is_ok()
+    }
+
+    /// The fleet-wide secret that names restore control RPC operations. It
+    /// has its own HMAC domain, so it reveals nothing about other seals.
+    pub(crate) fn restore_control_token(&self) -> String {
+        let mut mac = <Hmac<Sha256> as Mac>::new_from_slice(&self.key).expect("HMAC key");
+        mac.update(b"celld-restore-control-v1\0");
+        encode_hex(&mac.finalize().into_bytes())
     }
 
     pub(crate) fn seal_static_class(&self, payload: &[u8]) -> String {

@@ -599,6 +599,7 @@ pub(super) fn inject_compatibility_flags(scope: &mut v8::PinScope, compat: Compa
         !compat.fetcher_get_put_delete,
     );
     let cloudflare = v8::Object::new(scope);
+    set_flag(scope, "enable_abortsignal_rpc", compat.enable_abortsignal_rpc);
     let key = v8::String::new(scope, "compatibilityFlags").unwrap();
     cloudflare.set(scope, key.into(), flags.into());
     let key = v8::String::new(scope, "Cloudflare").unwrap();

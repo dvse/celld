@@ -38,7 +38,7 @@ use super::*;
 use celld::js::HttpChunkStream;
 
 pub(crate) const TUNNEL_PROTOCOL: &str = "celld-tunnel";
-pub(crate) const TUNNEL_VERSION: &str = "5";
+pub(crate) const TUNNEL_VERSION: &str = "6";
 pub(crate) const VERSION_HEADER: &str = "x-cells-tunnel-version";
 pub(crate) const KIND_HEADER: &str = "x-cells-tunnel-kind";
 pub(crate) const SCOPE_HEADER: &str = "x-cells-scope";
@@ -125,6 +125,11 @@ pub(crate) fn accept(mut request: Request<Incoming>, app: AppHandle) -> HttpRepl
             return peer_response(response(StatusCode::BAD_REQUEST, "unknown tunnel kind"));
         }
     };
+    let source = headers
+        .get("x-cells-peer-source")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("")
+        .to_string();
     let upgrade = hyper::upgrade::on(&mut request);
     tokio::spawn(async move {
         let upgraded = match upgrade.await {
@@ -331,25 +336,40 @@ pub(crate) struct Peer<'a> {
 /// Idle tunnels per (peer, kind). A sender goes back only after its response
 /// body reaches a clean end, so active replies do not consume the idle bound.
 /// A dropped or poisoned connection reports `is_closed` and is purged on scan.
-static TUNNELS: std::sync::OnceLock<std::sync::Mutex<HashMap<String, Vec<TunnelSender>>>> =
-    std::sync::OnceLock::new();
+/// Idle tunnels follow the shared keep-alive policy
+/// (`machine::CLIENT_POOL_IDLE`, `CLIENT_POOL_MAX_IDLE_PER_HOST`): every pool
+/// operation drops tunnels idle longer than that, closing their connections
+/// and ending the owner's tunnel server task.
+type IdleTunnels = HashMap<String, Vec<(std::time::Instant, TunnelSender)>>;
+static TUNNELS: std::sync::OnceLock<std::sync::Mutex<IdleTunnels>> = std::sync::OnceLock::new();
 /// Completed idle tunnels count against this bound. Active calls own their
 /// senders outside the pool, so concurrency cannot evict a reusable tunnel.
-const TUNNEL_POOL_CAP: usize = 64;
+const TUNNEL_POOL_CAP: usize = celld::machine::CLIENT_POOL_MAX_IDLE_PER_HOST;
+
+fn sweep(pool: &mut IdleTunnels) {
+    let now = std::time::Instant::now();
+    pool.retain(|_, senders| {
+        senders.retain(|(parked, sender)| {
+            !sender.is_closed() && now.duration_since(*parked) < celld::machine::CLIENT_POOL_IDLE
+        });
+        !senders.is_empty()
+    });
+}
 
 fn checkout(key: &str) -> Option<TunnelSender> {
     let mut pool = TUNNELS.get_or_init(Default::default).lock().unwrap();
+    sweep(&mut pool);
     let senders = pool.get_mut(key)?;
-    senders.retain(|sender| !sender.is_closed());
-    let index = senders.iter().position(TunnelSender::is_ready)?;
-    Some(senders.swap_remove(index))
+    let index = senders.iter().position(|(_, sender)| sender.is_ready())?;
+    Some(senders.swap_remove(index).1)
 }
 
 fn park(key: &str, sender: TunnelSender) {
     let mut pool = TUNNELS.get_or_init(Default::default).lock().unwrap();
+    sweep(&mut pool);
     let senders = pool.entry(key.to_string()).or_default();
     if senders.len() < TUNNEL_POOL_CAP {
-        senders.push(sender);
+        senders.push((std::time::Instant::now(), sender));
     }
 }
 
@@ -431,7 +451,7 @@ fn inner_request(
 /// fresh tunnel — the same stale keep-alive race every h1 pool has. A
 /// streamed body is not replayable; its pooled failure surfaces as the
 /// attempt failure the caller already handles.
-async fn send_inner(
+pub(super) async fn send_inner(
     peer: &Peer<'_>,
     kind: &'static str,
     build: impl Fn(TunnelBody) -> anyhow::Result<Request<TunnelBody>>,
@@ -439,7 +459,10 @@ async fn send_inner(
 ) -> anyhow::Result<Response<PooledResponseBody>> {
     let key = format!("{}#{kind}", peer.addr);
     let replay = match &body {
-        celld::js::RequestBody::Bytes(bytes) => Some(bytes.clone()),
+        celld::js::RequestBody::Bytes(bytes) if kind != "capability-http" && kind != "rpc" => {
+            Some(bytes.clone())
+        }
+        celld::js::RequestBody::Bytes(_) => None,
         celld::js::RequestBody::Stream(_) => None,
     };
     let body = match body {
@@ -545,10 +568,34 @@ pub(crate) const METHOD_HEADER: &str = "x-cells-rpc-method";
 /// One inner request, one RPC: the method name rides a header, the
 /// arguments ride the body, and the content type says which encoding the
 /// caller used.
-async fn serve_rpc(upgraded: hyper::upgrade::Upgraded, app: AppHandle) {
+async fn serve_rpc(upgraded: hyper::upgrade::Upgraded, app: AppHandle, source: String) {
     let service = service_fn(move |inner: Request<Incoming>| {
         let app = app.clone();
+        let source = source.clone();
         async move {
+            let session = inner
+                .headers()
+                .get(celld::capability_session::HEADER)
+                .and_then(|v| v.to_str().ok())
+                .and_then(|id| celld::capability_session::Session::authenticated(id, &source).ok());
+            let Some(session) = session else {
+                return Ok::<_, Infallible>(peer_response(response(
+                    StatusCode::GONE,
+                    "RPC session disconnected",
+                )));
+            };
+            let transfer = inner
+                .headers()
+                .get(celld::capability_session::CALL_HEADER)
+                .and_then(|v| v.to_str().ok())
+                .unwrap_or("")
+                .to_string();
+            if session.accept_call(&transfer).is_err() {
+                return Ok(peer_response(response(
+                    StatusCode::GONE,
+                    "RPC transfer closed",
+                )));
+            }
             let Some(scope) = inner
                 .headers()
                 .get(SCOPE_HEADER)
@@ -586,7 +633,17 @@ async fn serve_rpc(upgraded: hyper::upgrade::Upgraded, app: AppHandle) {
                     }
                 };
             let args = if structured {
-                celld::js::RpcData::V8(body)
+                celld::js::RpcData::V8(
+                    match celld::capability_packet::receive(body.to_vec(), &session, &transfer) {
+                        Ok(bytes) => bytes,
+                        Err(error) => {
+                            return Ok(peer_response(response(
+                                StatusCode::BAD_REQUEST,
+                                format!("{error:#}"),
+                            )))
+                        }
+                    },
+                )
             } else {
                 match String::from_utf8(body.to_vec()) {
                     Ok(json) => celld::js::RpcData::Json(json),
@@ -598,7 +655,10 @@ async fn serve_rpc(upgraded: hyper::upgrade::Upgraded, app: AppHandle) {
                     }
                 }
             };
-            let reply = dispatch_forwarded_rpc(app, scope, name, method, args).await;
+            let reply = tokio::select! {
+                reply=dispatch_forwarded_rpc(app,scope,name,method,args,Some((session.clone(),transfer.clone())))=>reply,
+                _=session.call_closed(&transfer)=>peer_response(response(StatusCode::GONE,"RPC caller disconnected")),
+            };
             Ok(reply)
         }
     });
@@ -615,11 +675,17 @@ pub(crate) async fn rpc(
     method: &str,
     args: &celld::js::RpcData,
 ) -> anyhow::Result<Response<PooledResponseBody>> {
+    let session =
+        celld::capability_session::connect(peer.http, peer.auth, peer.addr, peer.node).await?;
+    let transfer = session.open().await?;
     let (content_type, payload) = match args {
         celld::js::RpcData::Json(json) => ("application/json", Bytes::from(json.clone())),
-        celld::js::RpcData::V8(bytes) => ("application/octet-stream", bytes.clone()),
+        celld::js::RpcData::V8(bytes) => (
+            "application/octet-stream",
+            celld::capability_packet::bind(bytes, &session, transfer.id())?,
+        ),
     };
-    send_inner(
+    let mut reply = send_inner(
         peer,
         "rpc",
         |body| {
@@ -628,6 +694,8 @@ pub(crate) async fn rpc(
                 .uri("/")
                 .header(SCOPE_HEADER, scope)
                 .header(METHOD_HEADER, method)
+                .header(celld::capability_session::HEADER, &session.id)
+                .header(celld::capability_session::CALL_HEADER, transfer.id())
                 .header(hyper::header::CONTENT_TYPE, content_type);
             if let Some(name) = name {
                 inner = inner.header(NAME_HEADER, name);
@@ -636,7 +704,9 @@ pub(crate) async fn rpc(
         },
         celld::js::RequestBody::Bytes(payload),
     )
-    .await
+    .await?;
+    reply.extensions_mut().insert(transfer);
+    Ok(reply)
 }
 
 /// The owner half of a tunneled WebSocket 101, parked until the caller's own
@@ -680,7 +750,7 @@ pub(crate) fn claim_upgrade(parked: u64) -> anyhow::Result<TunnelUpgradeClaim> {
 }
 
 impl TunnelUpgradeClaim {
-    fn into_upgrade(self) -> hyper::upgrade::OnUpgrade {
+    pub(super) fn into_upgrade(self) -> hyper::upgrade::OnUpgrade {
         self.upgrade
     }
 }

@@ -13,7 +13,7 @@ use crate::ws_registry::OutboundWsReq;
 use anyhow::Result;
 #[cfg(celld_internal_tests)]
 use std::cell::RefCell;
-use std::sync::OnceLock;
+use std::sync::{Arc, OnceLock};
 
 /// A ticket asking the actor whether an outbound effect may leave the process.
 ///
@@ -122,9 +122,9 @@ pub struct SvcRpcReq {
     pub script: String,
     pub entrypoint: String,
     /// Structured-clone bytes for the target entrypoint's `ctx.props`.
-    pub props: Vec<u8>,
+    pub props: bytes::Bytes,
     pub operation: crate::WorkerRpcOperation,
-    pub reply: tokio::sync::oneshot::Sender<Result<Vec<u8>>>,
+    pub reply: tokio::sync::oneshot::Sender<Result<bytes::Bytes>>,
 }
 pub(crate) static SVC_RPC_TX: OnceLock<tokio::sync::mpsc::UnboundedSender<SvcRpcReq>> =
     OnceLock::new();

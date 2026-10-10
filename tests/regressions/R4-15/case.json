@@ -1,0 +1,1 @@
+{"id":"R4-15","description":"Each RpcProperty then/catch/finally starts a fresh GET while root promises remain cached","command":["node","run.mjs"],"runtimes":["celld"],"profiles":["quick","full"],"timeout_seconds":120,"expected_failure":null}

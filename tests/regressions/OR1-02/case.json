@@ -1,0 +1,1 @@
+{"id": "OR1-02", "description": "An export created while a retired stateless heap drains, held forever, returns the heap to service instead of stranding it (native)", "command": ["cargo", "test", "--locked", "-p", "celld", "--lib", "or1_02", "--", "--test-threads=1"], "runtimes": ["celld"], "profiles": ["quick", "full"], "timeout_seconds": 900, "expected_failure": null}

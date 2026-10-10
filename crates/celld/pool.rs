@@ -224,6 +224,11 @@ pub struct Slot {
     queue_producers: Mutex<std::collections::HashMap<String, usize>>,
     turns: AtomicUsize,
     requests: AtomicUsize,
+    /// Live capabilities this stateless heap exported (`capability::export`).
+    /// They keep the heap from being freed, as a workerd session keeps its
+    /// Worker until no capability crosses it, without counting as admitted
+    /// requests.
+    export_pins: AtomicUsize,
     /// The pool's admission bell, cloned into every slot so an
     /// `Affiliation` drop can ring it without holding the pool.
     freed: Arc<tokio::sync::Notify>,
@@ -245,6 +250,12 @@ pub struct Slot {
     // Ordinary shrink stops placement while existing requests drain. Fatal
     // condemnation and generation shutdown also forbid capability continuation.
     capabilities_closed: AtomicBool,
+    /// Serializes the two lifecycle transitions that touch `retiring` and
+    /// `capabilities_closed` together: closing (generation retirement,
+    /// condemnation) and an export returning a drained heap to service.
+    /// Closing is final; with this lock an export can never observe "open",
+    /// lose the race to a close, and then clear `retiring` (Opus review 2, N-4).
+    lifecycle: Mutex<()>,
     #[cfg(celld_internal_tests)]
     turn_observations: Mutex<Vec<String>>,
 }
@@ -266,6 +277,7 @@ impl Slot {
             turns: self.turns.load(Ordering::Relaxed),
             requests: self.requests.load(Ordering::Relaxed),
             cells: self.cells.load(Ordering::Relaxed),
+            exports: self.export_pins.load(Ordering::Relaxed),
             retiring: self.retiring.load(Ordering::Relaxed),
         }
     }
@@ -369,6 +381,41 @@ impl Slot {
         Affiliation(self.clone())
     }
 
+    /// Keep this heap from being freed while an exported capability lives.
+    ///
+    /// A request still draining an ordinarily retired heap may export a
+    /// capability (workerd: an export keeps its IoContext, and the Worker
+    /// keeps serving, until the holder's context ends; api/worker-rpc.c++
+    /// ~JsRpcStub). Such a heap returns to service rather than staying
+    /// retiring and unfreeable. Generation retirement and condemnation close
+    /// capabilities first and are never reversed.
+    /// Returns `None` once capabilities are closed: generation retirement and
+    /// condemnation are final, and a pin would only keep the old heap from
+    /// being freed while every call on the export is refused (N-3).
+    pub(crate) fn pin_export(self: &Arc<Self>) -> Option<ExportPin> {
+        let _lifecycle = self.lifecycle.lock().unwrap();
+        if self.capabilities_closed() {
+            return None;
+        }
+        self.export_pins.fetch_add(1, Ordering::Relaxed);
+        if self.reclaim.is_some() && self.retiring.swap(false, Ordering::Relaxed) {
+            tracing::info!(isolate = %self.heap_id, slot = self.id, "isolate returned to service: a draining request exported a capability");
+        }
+        Some(ExportPin(self.clone()))
+    }
+
+    /// Close capabilities and retire, as one transition. Returns whether the
+    /// slot was already retiring.
+    fn close_capabilities(&self) -> bool {
+        let _lifecycle = self.lifecycle.lock().unwrap();
+        self.capabilities_closed.store(true, Ordering::Release);
+        self.retiring.swap(true, Ordering::Relaxed)
+    }
+
+    fn may_free(&self) -> bool {
+        celld_logic::isolate::may_free(&self.observe())
+    }
+
     /// A slot holding a Worker Loader's Worker.
     pub(crate) fn loaded_worker(worker: js::Worker) -> Arc<Self> {
         Self::outside_pool(worker, true)
@@ -388,6 +435,7 @@ impl Slot {
             queue_producers: Mutex::new(std::collections::HashMap::new()),
             turns: AtomicUsize::new(0),
             requests: AtomicUsize::new(0),
+            export_pins: AtomicUsize::new(0),
             freed: Arc::new(tokio::sync::Notify::new()),
             reclaim: None,
             loaded_worker,
@@ -395,6 +443,7 @@ impl Slot {
             adopted_cells: AtomicUsize::new(0),
             retiring: AtomicBool::new(false),
             capabilities_closed: AtomicBool::new(false),
+            lifecycle: Mutex::new(()),
             #[cfg(celld_internal_tests)]
             turn_observations: Mutex::new(Vec::new()),
         })
@@ -421,6 +470,7 @@ impl Slot {
             queue_producers: Mutex::new(std::collections::HashMap::new()),
             turns: AtomicUsize::new(0),
             requests: AtomicUsize::new(0),
+            export_pins: AtomicUsize::new(0),
             freed: Arc::new(tokio::sync::Notify::new()),
             reclaim: None,
             loaded_worker: false,
@@ -428,6 +478,7 @@ impl Slot {
             adopted_cells: AtomicUsize::new(0),
             retiring: AtomicBool::new(false),
             capabilities_closed: AtomicBool::new(false),
+            lifecycle: Mutex::new(()),
             turn_observations: Mutex::new(Vec::new()),
         })
     }
@@ -496,8 +547,9 @@ impl Slot {
         let Some(reclaim) = &self.reclaim else {
             return false;
         };
-        self.capabilities_closed.store(true, Ordering::Release);
-        if !self.retiring.swap(true, Ordering::Relaxed) {
+        let was_retiring = self.close_capabilities();
+        crate::capability::drop_closed_exports();
+        if !was_retiring {
             tracing::warn!(isolate = %self.heap_id, slot = self.id, reason, "isolate condemned");
         }
         reclaim.notify_one();
@@ -511,7 +563,7 @@ impl Slot {
 
     fn is_reusable(&self) -> bool {
         let load = self.observe();
-        if !celld_logic::isolate::may_free(&load) || load.cells != 0 {
+        if !self.may_free() || load.cells != 0 {
             return false;
         }
         self.worker.try_lock().is_ok_and(|worker| worker.is_none())
@@ -537,6 +589,21 @@ impl Drop for Affiliation {
         // The last request out of a retiring isolate is what lets it free.
         // Freeing here would drop a V8 isolate inside whatever turn dropped
         // this affiliation, so the pool's maintenance task does it.
+        if self.0.is_retiring() {
+            if let Some(reclaim) = &self.0.reclaim {
+                reclaim.notify_one();
+            }
+        }
+    }
+}
+
+/// An exported capability's claim on a stateless heap; see
+/// [`Slot::pin_export`].
+pub(crate) struct ExportPin(Arc<Slot>);
+
+impl Drop for ExportPin {
+    fn drop(&mut self) {
+        self.0.export_pins.fetch_sub(1, Ordering::Relaxed);
         if self.0.is_retiring() {
             if let Some(reclaim) = &self.0.reclaim {
                 reclaim.notify_one();
@@ -693,6 +760,7 @@ impl Pool {
             queue_producers: Mutex::new(std::collections::HashMap::new()),
             turns: AtomicUsize::new(0),
             requests: AtomicUsize::new(0),
+            export_pins: AtomicUsize::new(0),
             freed: self.freed.clone(),
             reclaim: Some(self.reclaim.clone()),
             loaded_worker: false,
@@ -700,6 +768,7 @@ impl Pool {
             adopted_cells: AtomicUsize::new(0),
             retiring: AtomicBool::new(self.retired.load(Ordering::Relaxed)),
             capabilities_closed: AtomicBool::new(self.retired.load(Ordering::Relaxed)),
+            lifecycle: Mutex::new(()),
             #[cfg(celld_internal_tests)]
             turn_observations: Mutex::new(Vec::new()),
         });
@@ -875,11 +944,13 @@ impl Pool {
         let _maintenance = self.maintenance.write().expect("pool poisoned");
         self.retired.store(true, Ordering::Relaxed);
         for slot in self.slots.read().expect("pool poisoned").iter() {
-            slot.capabilities_closed.store(true, Ordering::Release);
-            if !slot.retiring.swap(true, Ordering::Relaxed) {
+            if !slot.close_capabilities() {
                 tracing::info!(isolate = %slot.heap_id, slot = slot.id, "isolate retiring");
             }
         }
+        // A closed heap dispatches no capability again, so its exports and
+        // their pins go before the drained heaps are freed.
+        crate::capability::drop_closed_exports();
         self.free_retired();
     }
 
@@ -911,7 +982,7 @@ impl Pool {
         // rather than blocking: if a turn holds it, it is not drained and
         // this pass has nothing to do.
         for slot in self.slots.read().expect("pool poisoned").iter() {
-            if !celld_logic::isolate::may_free(&slot.observe()) {
+            if !slot.may_free() {
                 continue;
             }
             let Ok(mut worker) = slot.worker.try_lock() else {
@@ -919,7 +990,7 @@ impl Pool {
             };
             // A live-capability admission can affiliate under this same
             // lock after the first snapshot. Never free that admitted heap.
-            if !celld_logic::isolate::may_free(&slot.observe()) {
+            if !slot.may_free() {
                 continue;
             }
             if worker.take().is_some() {
@@ -953,6 +1024,7 @@ impl Pool {
             census.cells += load.cells;
             census.requests += load.requests;
             census.turns += load.turns;
+            census.exports += load.exports;
             // A heap is gone once its worker was taken. A worker a turn
             // holds right now is installed, so a failed `try_lock` counts
             // as a heap and never as freed; its size is unknown this pass.
@@ -999,10 +1071,18 @@ const _: fn() = || {
 };
 
 #[cfg(test)]
+#[path = "../../tests/regressions/OR1-02/native.rs"]
+mod or1_02;
+
+#[cfg(test)]
+#[path = "../../tests/regressions/OR2-02/native.rs"]
+mod or2_02;
+
+#[cfg(test)]
 mod capability_drain_tests {
     use super::*;
 
-    fn pool() -> Pool {
+    pub(super) fn pool() -> Pool {
         js::Engine::init();
         Pool::new(
             PoolLimits {
@@ -1044,17 +1124,35 @@ mod capability_drain_tests {
                 let pool = pool();
                 let slot = pool.grow(None).unwrap();
                 let request = slot.affiliate();
-                let route: crate::capability::Route = serde_json::from_str(
-                    &crate::capability::export(
-                        slot.clone(),
-                        "test-target".into(),
-                        None,
-                        None,
-                        None,
+                let export = |token: &str| -> crate::capability::Route {
+                    serde_json::from_str(
+                        &crate::capability::export(slot.clone(), token.into(), None, None, None)
+                            .unwrap(),
                     )
-                    .unwrap(),
-                )
-                .unwrap();
+                    .unwrap()
+                };
+                // C6-01: a heap that exports a live capability is never chosen
+                // for retirement; once the holder releases it, it may be.
+                // (OR1-02: an export taken while draining returns it to service.)
+                let pinned = export("pinned-target");
+                pool.reap();
+                assert!(!slot.is_retiring(), "an exporting heap stays live");
+                assert_eq!(pool.live(), 1);
+                slot.turn(|_| crate::capability::revoke(&pinned))
+                    .await
+                    .unwrap();
+                pool.reap();
+                assert!(slot.is_retiring());
+                // OR1-02: a request still draining the heap exports. The heap
+                // returns to service instead of staying retiring and pinned.
+                let route = export("test-target");
+                assert!(!slot.is_retiring(), "an export during drain un-retires the heap");
+                assert_eq!(pool.live(), 1);
+                pool.reap();
+                assert!(!slot.is_retiring(), "it is not retired again while exporting");
+                slot.turn(|_| crate::capability::revoke(&route))
+                    .await
+                    .unwrap();
                 pool.reap();
                 assert!(slot.is_retiring());
                 assert_eq!(pool.live(), 0, "draining heap is excluded from placement");
@@ -1062,10 +1160,6 @@ mod capability_drain_tests {
                     .try_affiliate_capability()
                     .await
                     .expect("live request may receive its callback");
-                assert!(slot
-                    .turn(|_| crate::capability::validate(&route))
-                    .await
-                    .is_ok());
                 drop(request);
                 pool.free_drained();
                 assert!(
@@ -1119,6 +1213,75 @@ mod capability_drain_tests {
                     "a late placement in a retired pool stays invalidated"
                 );
                 pool.free_drained();
+            });
+    }
+}
+
+#[cfg(test)]
+mod turn_scheduler_tests {
+    use super::*;
+    use std::future::Future;
+    use std::task::Context;
+    use std::task::Poll;
+
+    fn poll_once<F: Future>(future: std::pin::Pin<&mut F>) -> Poll<F::Output> {
+        future.poll(&mut Context::from_waker(std::task::Waker::noop()))
+    }
+
+    /// A queued turn granted and then dropped before it ran — an aborted
+    /// capability drive, a cleared op — must hand the isolate on, as
+    /// workerd's `~AsyncLockWaiter` does. Before, the grant made its lane
+    /// current with no permit to release it, and the next turn on the
+    /// isolate waited forever (Tunez Celld 4: planet-2 froze with 134
+    /// queued turns and no thread in JavaScript).
+    #[test]
+    fn a_granted_waiter_dropped_before_it_runs_passes_the_turn_on() {
+        tokio::runtime::Builder::new_current_thread()
+            .enable_time()
+            .build()
+            .unwrap()
+            .block_on(async {
+                let scheduler = TurnScheduler::default();
+                let holder = scheduler.acquire(TurnLane::Stateless).await;
+                let mut granted = Box::pin(scheduler.acquire(TurnLane::Cell("cell".into())));
+                assert!(
+                    poll_once(granted.as_mut()).is_pending(),
+                    "queued behind the holder"
+                );
+                // The holder leaves: `release` sends the grant to the queued
+                // waiter, which has not been polled since.
+                drop(holder);
+                drop(granted);
+                let next = tokio::time::timeout(
+                    std::time::Duration::from_secs(1),
+                    scheduler.acquire(TurnLane::Stateless),
+                )
+                .await
+                .expect("a dropped grant strands the isolate");
+                drop(next);
+            });
+    }
+
+    /// The same for a waiter dropped before its grant: `release` skips its
+    /// closed sender and grants the next lane.
+    #[test]
+    fn a_waiter_dropped_before_its_grant_is_skipped() {
+        tokio::runtime::Builder::new_current_thread()
+            .enable_time()
+            .build()
+            .unwrap()
+            .block_on(async {
+                let scheduler = TurnScheduler::default();
+                let holder = scheduler.acquire(TurnLane::Stateless).await;
+                let mut dropped = Box::pin(scheduler.acquire(TurnLane::Cell("a".into())));
+                assert!(poll_once(dropped.as_mut()).is_pending());
+                let mut waiting = Box::pin(scheduler.acquire(TurnLane::Cell("b".into())));
+                assert!(poll_once(waiting.as_mut()).is_pending());
+                drop(dropped);
+                drop(holder);
+                tokio::time::timeout(std::time::Duration::from_secs(1), waiting)
+                    .await
+                    .expect("the next lane is granted");
             });
     }
 }

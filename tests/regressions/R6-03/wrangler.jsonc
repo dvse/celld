@@ -1,0 +1,1 @@
+{"name": "r6-03", "main": "index.js", "compatibility_date": "2026-08-01", "durable_objects": {"bindings": [{"name": "SOURCE", "class_name": "Source"}, {"name": "HOLDER", "class_name": "Holder"}, {"name": "RECEIVER", "class_name": "Receiver"}]}, "migrations": [{"tag": "v1", "new_sqlite_classes": ["Source", "Holder", "Receiver"]}]}

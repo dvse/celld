@@ -1,0 +1,1 @@
+{"id": "R5-02", "description": "Authenticated session ownership survives long calls and releases direct/forwarded exports after holder SIGKILL", "command": ["python3", "fleet.py"], "runtimes": ["celld"], "profiles": ["full"], "timeout_seconds": 300, "expected_failure": null}

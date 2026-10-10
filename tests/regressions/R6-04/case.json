@@ -1,0 +1,1 @@
+{"id": "R6-04", "description": "Authenticated transfer cancellation and delivery settlement", "command": ["python3", "fleet.py"], "runtimes": ["celld"], "profiles": ["full"], "timeout_seconds": 300, "expected_failure": null}

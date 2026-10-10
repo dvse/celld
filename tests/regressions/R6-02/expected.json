@@ -1,0 +1,1 @@
+{"absent": ["empty", "empty", "empty"], "empty": ["empty", "empty", "empty"], "plain": ["x", "x", "x"], "target": [42, 42], "forwarded": "forward", "rejected": [true, true, true]}
