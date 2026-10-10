@@ -2846,6 +2846,7 @@ class DurableObjectState {
     if (this._aborted) return;
     this._aborted = true;
     __storage_cancel_pending_puts(this._scope);
+    __actor_context_end(this._scope);
     const instance = __cell.instances[this._scope];
     if (instance && instance.__celldState === this)
       delete __cell.instances[this._scope];
@@ -2873,6 +2874,7 @@ class DurableObjectState {
       __actor_abort(this._scope, message);
       return;
     }
+    __actor_context_end(this._scope);
     __actorBreak(this._scope,
       reason instanceof Error ? reason : new Error(message));
   }
@@ -3000,10 +3002,13 @@ const __endActorEventsForContext = (context) => {
   }
 };
 const __incomingRequestSignals = new Map();
+const __abortSignalStates = new WeakMap();
 const __abortSignal = (signal, reason) => {
-  if (signal.aborted) return;
-  signal.aborted = true;
-  signal.reason = reason;
+  const state = __abortSignalStates.get(signal);
+  if (!state) throw new TypeError("Illegal invocation");
+  if (state.aborted) return;
+  state.aborted = true;
+  state.reason = reason;
   signal.dispatchEvent(new Event("abort"));
 };
 const __abortIncomingRequest = __celld.__abortIncomingRequest = (requestId) => {
@@ -3901,10 +3906,21 @@ const __ctxNow = () => {
 // fn started inside keeps the frame across its awaits. The prior
 // frame is cloned so user AsyncLocalStorage stores still flow into
 // same-isolate callees, as they did before contexts existed.
+// Context ids are allocated and first entered synchronously in order. Retain
+// only the high-water mark so ended contexts cannot be recreated by re-entry.
+let __ctxNativeThrough = 0;
 const __ctxRun = (id, fn) => {
+  const fresh = id === undefined;
+  id ??= __nextCtxId++;
+  const create = id > __ctxNativeThrough;
+  if (create) __ctxNativeThrough = id;
   const prior = __als_get();
   const frame = new Map(prior);
-  frame.set(__ctxKey, id ?? __nextCtxId++);
+  // A fresh request context starts no restore chain of its own: a chain
+  // reaches a receiver only through the restore interceptions, as workerd
+  // passes a restored self-token factory only with the restored call.
+  if (fresh) { frame.delete(__restoreContextKey); frame.delete(__fetchRestoreContextKey); }
+  frame.set(__ctxKey, id);
   __als_set(frame);
   try {
     return fn();
@@ -3939,6 +3955,13 @@ const __postAbortError = (aborted) => aborted instanceof __ActorAbort
   : aborted;
 // ctx id -> Set of live stub handles (metas) the context holds.
 const __ctxStubs = new Map();
+// A stateless RPC session completes after its call, waitUntil work, and last
+// exported target all finish. Actors retain their separate native lifetime.
+const __rpcCompletions = new Map();
+const __rpcMaybeComplete = (id) => {
+  const completion = __rpcCompletions.get(id);
+  if (completion?.done && completion.exports.size === 0) __ctxEnd(id);
+};
 // ctx id -> Set of reject callbacks for stub ops in flight against
 // that context. A hung callee never settles, so a context abort
 // must reject its pending callers directly.
@@ -3967,10 +3990,12 @@ const __ctxUnregister = (meta) => {
 // Tear down a context: dispose every handle it still holds, so a
 // dup() leaked into it reaches the sender's disposal callback.
 const __ctxEnd = (id) => {
+  __rpcCompletions.delete(id);
   const set = __ctxStubs.get(id);
-  if (set === undefined) return;
   __ctxStubs.delete(id);
-  for (const meta of set) __disposeStub(meta);
+  if (set !== undefined) for (const meta of set) __disposeStub(meta);
+  // A surviving callback cannot recreate the native owner after teardown.
+  __io_context_end(id);
 };
 const __ctxAbort = (id, reason) => {
   if (id === undefined || __abortedCtxs.has(id)) return;

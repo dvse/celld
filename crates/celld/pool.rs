@@ -103,8 +103,20 @@ impl TurnScheduler {
         };
         if let Some(receive) = receive {
             // Cancellation leaves a closed sender in this lane. `release`
-            // skips it, so a dropped waiter cannot strand the active token.
-            let _ = receive.await;
+            // skips it, so a waiter dropped before its grant cannot strand
+            // the active token; `TurnWaiter` covers one dropped after it.
+            let mut waiting = TurnWaiter {
+                scheduler: self,
+                receive: Some(receive),
+            };
+            let _ = waiting
+                .receive
+                .as_mut()
+                .expect("a queued turn waits on its grant")
+                .await;
+            // Granted: the permit below owns the turn from here on, with no
+            // suspension point between the two.
+            waiting.receive = None;
         }
         TurnPermit(self)
     }
@@ -147,6 +159,34 @@ impl TurnScheduler {
 impl Drop for TurnPermit<'_> {
     fn drop(&mut self) {
         self.0.release();
+    }
+}
+
+/// A queued turn that has not yet observed its grant.
+///
+/// `release` makes a lane current when its send succeeds, and that send only
+/// needs the receiver to exist. A waiter dropped after the send but before it
+/// ran — its task aborted, its op cleared, its select branch lost — held the
+/// isolate with nothing left to release it, and every later turn on the
+/// isolate queued forever. Workerd's waiter passes the lock on when it goes:
+/// `~AsyncLockWaiter` fulfills the next waiter if it was at the front
+/// (io/async-lock-scheduler.h:197-224). Closing the receiver first decides the
+/// race: a send that lands before the close is a grant this drop releases, and
+/// one after it fails, so `release` moves on to the next lane itself.
+struct TurnWaiter<'a> {
+    scheduler: &'a TurnScheduler,
+    receive: Option<tokio::sync::oneshot::Receiver<()>>,
+}
+
+impl Drop for TurnWaiter<'_> {
+    fn drop(&mut self) {
+        let Some(mut receive) = self.receive.take() else {
+            return;
+        };
+        receive.close();
+        if receive.try_recv().is_ok() {
+            self.scheduler.release();
+        }
     }
 }
 

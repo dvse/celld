@@ -2125,28 +2125,111 @@ fn inbound_parent(job: &crate::WorkerJob) -> Option<crate::telemetry::ParentCont
         .and_then(|(_, value)| crate::telemetry::parse_traceparent(value))
 }
 
-/// An op in flight, carrying the id of the promise it will resolve.
-type PendingOp = std::pin::Pin<
-    Box<dyn std::future::Future<Output = (u64, Result<asyncrt::OpOut, String>)> + Send>,
->;
+/// A future and its promise id remain separable so cancellation can drop only
+/// the cancelled owner's work, synchronously, without polling foreign work.
+struct PendingOp {
+    id: u64,
+    future: asyncrt::OpFuture,
+}
 
-/// The ops one request is waiting on. Per request, not per isolate: that is
-/// what deleting the pump means, and it is why no attribution table exists.
-type Ops = futures_util::stream::FuturesUnordered<PendingOp>;
+impl std::future::Future for PendingOp {
+    type Output = (u64, Result<asyncrt::OpOut, String>);
 
-fn adopt(ops: &mut Ops, started: Vec<js::Op>) {
-    for (id, future) in started {
-        ops.push(Box::pin(async move { (id, future.await) }));
+    fn poll(
+        mut self: std::pin::Pin<&mut Self>,
+        cx: &mut std::task::Context<'_>,
+    ) -> std::task::Poll<Self::Output> {
+        self.future
+            .as_mut()
+            .poll(cx)
+            .map(|result| (self.id, result))
     }
 }
 
-/// Cancel native futures and remove their JavaScript resolvers together.
+/// `ready` holds results completed while waiting for an isolate turn.
+struct Ops {
+    pending: futures_util::stream::FuturesUnordered<PendingOp>,
+    ready: std::collections::VecDeque<(u64, Result<asyncrt::OpOut, String>)>,
+}
+
+impl Ops {
+    fn new() -> Self {
+        Self {
+            pending: futures_util::stream::FuturesUnordered::new(),
+            ready: std::collections::VecDeque::new(),
+        }
+    }
+
+    fn push(&mut self, op: PendingOp) {
+        self.pending.push(op);
+    }
+
+    fn is_empty(&self) -> bool {
+        self.pending.is_empty() && self.ready.is_empty()
+    }
+
+    fn cancel_unowned(&mut self, entry: &js::InFlight) {
+        if self.pending.iter().any(|op| !entry.owns_native_op(op.id)) {
+            // Moving a pinned box preserves the future's address. Dropping the
+            // removed boxes runs cancellation guards before any further wait.
+            self.pending = std::mem::take(&mut self.pending)
+                .into_iter()
+                .filter(|op| entry.owns_native_op(op.id))
+                .collect();
+        }
+        self.ready.retain(|(id, _)| entry.owns_native_op(*id));
+    }
+
+    async fn next(&mut self) -> Option<(u64, Result<asyncrt::OpOut, String>)> {
+        match self.ready.pop_front() {
+            Some(done) => Some(done),
+            None => self.pending.next().await,
+        }
+    }
+}
+
+/// Take a turn on the isolate while this request's ops keep moving.
 ///
-/// A failed handler can still own a gated reply, but none of its handler ops
-/// can re-enter the isolate while that detached gate waiter finishes.
-fn abort_ops(ops: &mut Ops, entry: &mut js::InFlight) {
-    ops.clear();
-    entry.abandon();
+/// An op can need the isolate itself: opening a facet of the script's own
+/// class takes a turn on the root's isolate (`js::prepare_facet`), and so
+/// does aborting one. Such an op joins the isolate's turn queue on the poll
+/// that reaches it, and the queue grants turns in order. A driver that
+/// stopped polling its ops while it waited for its own turn could therefore
+/// see the grant go to its unpolled op, which runs only when the driver polls
+/// it again, after the very turn the driver is queued for behind it. Every
+/// later turn on the isolate then waited forever; Tunez Celld 4 froze a
+/// Planet this way (planet-2, 134 queued turns, no thread in JavaScript).
+///
+/// Workerd has no such coupling. Its event loop runs each promise
+/// continuation on its own, and each takes the isolate's async lock for its
+/// own turn (`Worker::takeAsyncLock`, io/worker.c++:2881-2897, through the
+/// fair queue in io/async-lock-scheduler.h). Polling the ops here restores
+/// that independence: an op granted a turn runs it inside this poll, and an
+/// op that completes meanwhile is kept, in completion order, for the next
+/// `wake`.
+async fn turn_driving_ops<T>(ops: &mut Ops, turn: impl std::future::Future<Output = T>) -> T {
+    let mut turn = std::pin::pin!(turn);
+    loop {
+        if ops.pending.is_empty() {
+            return turn.await;
+        }
+        let next = asyncrt::select_biased! {
+            "the turn this driver waits for wins a tie with an op that completes meanwhile";
+            out = turn.as_mut() => Ok(out),
+            done = ops.pending.next() => Err(done),
+        };
+        match next {
+            Ok(out) => return out,
+            Err(Some(done)) => ops.ready.push_back(done),
+            Err(None) => {}
+        }
+    }
+}
+
+fn adopt(ops: &mut Ops, started: Vec<js::Op>) {
+    for (id, future) in started {
+        ops.push(PendingOp { id, future });
+    }
 }
 
 /// Drive one stateless request to completion, one turn at a time.
@@ -2262,66 +2345,83 @@ async fn drive_worker(
         drop(started);
         return;
     };
-    if entry.keeps_native_ops() {
-        adopt(&mut ops, started);
-    } else {
-        drop(started);
-        abort_ops(&mut ops, &mut entry);
-    }
+    let started = entry.retain_native_ops(started);
+    ops.cancel_unowned(&entry);
+    adopt(&mut ops, started);
     after_turn(&entry);
 
-    while !entry.finished() {
-        let started = match wake_with_cross_entry_gate(&mut ops, &mut entry, budget).await {
-            Wake::Op(op, result) => {
-                slot.turn(|worker| worker.turn_deliver(&mut entry, op, result))
+    // Retire as a cell event does: close the mailbox, and keep driving any op
+    // that a foreign turn handed this event after the last pass instead of
+    // dropping it with its resolver (see `InFlight::close_mailbox`). Workerd
+    // drains waitUntil tasks, and actor tasks survive request cancellation
+    // (io/io-context.c++:548-556,663-687).
+    loop {
+        while !entry.finished() {
+            let started = match wake_with_cross_entry_gate(&mut ops, &mut entry, budget).await {
+                Wake::Op(op, result) => {
+                    turn_driving_ops(
+                        &mut ops,
+                        slot.turn(|worker| worker.turn_deliver(&mut entry, op, result)),
+                    )
                     .await
-            }
-            Wake::GatedReply(completion) => {
-                entry.finish_gated_reply(completion);
-                Vec::new()
-            }
-            Wake::CancelGatedReply => {
-                entry.cancel_gated_reply();
-                Vec::new()
-            }
-            Wake::CrossEntryGateChanged => {
-                entry.finish_cross_entry_gates();
-                Vec::new()
-            }
-            Wake::Cancelled { shutdown } => {
-                let started = slot
-                    .turn(|worker| {
-                        if shutdown {
-                            worker.turn_cancel_for_shutdown(&mut entry)
-                        } else {
-                            worker.turn_cancel(&mut entry)
-                        }
-                    })
+                }
+                Wake::GatedReply(completion) => {
+                    entry.finish_gated_reply(completion);
+                    Vec::new()
+                }
+                Wake::CancelGatedReply => {
+                    entry.cancel_gated_reply();
+                    Vec::new()
+                }
+                Wake::CrossEntryGateChanged => {
+                    entry.finish_cross_entry_gates();
+                    Vec::new()
+                }
+                Wake::Cancelled { shutdown } => {
+                    let started = turn_driving_ops(
+                        &mut ops,
+                        slot.turn(|worker| {
+                            if shutdown {
+                                worker.turn_cancel_for_shutdown(&mut entry)
+                            } else {
+                                worker.turn_cancel(&mut entry)
+                            }
+                        }),
+                    )
                     .await;
-                entry.cancel_gated_reply();
-                started
-            }
-            Wake::Expired => {
-                entry.time_out(budget);
-                Vec::new()
-            }
-            Wake::Idle => {
-                entry.stuck();
-                Vec::new()
-            }
-            Wake::PendingEventIdle => {
-                slot.turn(|worker| worker.turn_cancel_pending_events(&mut entry))
+                    entry.cancel_gated_reply();
+                    started
+                }
+                Wake::Expired => {
+                    entry.time_out(budget);
+                    Vec::new()
+                }
+                Wake::Idle => {
+                    entry.stuck();
+                    Vec::new()
+                }
+                Wake::PendingEventIdle => {
+                    turn_driving_ops(
+                        &mut ops,
+                        slot.turn(|worker| worker.turn_cancel_pending_events(&mut entry)),
+                    )
                     .await
-            }
-            Wake::Poll => slot.turn(|worker| worker.turn_poll(&mut entry)).await,
-        };
-        if entry.keeps_native_ops() {
+                }
+                Wake::Poll => {
+                    turn_driving_ops(&mut ops, slot.turn(|worker| worker.turn_poll(&mut entry)))
+                        .await
+                }
+            };
+            let started = entry.retain_native_ops(started);
+            ops.cancel_unowned(&entry);
             adopt(&mut ops, started);
-        } else {
-            drop(started);
-            abort_ops(&mut ops, &mut entry);
+            after_turn(&entry);
         }
-        after_turn(&entry);
+        let late = entry.close_mailbox();
+        if late.is_empty() {
+            break;
+        }
+        adopt(&mut ops, late);
     }
 
     on_finish(&entry);
@@ -2387,7 +2487,13 @@ async fn wake(ops: &mut Ops, entry: &mut js::InFlight, budget: Duration) -> Wake
         // An op this event enqueued from inside another event's turn reaches
         // this driver here rather than through `adopt`, because the turn that
         // took it belongs to another entry. See `js::adopt`.
-        adopt(ops, entry.take_handed_ops());
+        let handed = entry.take_handed_ops();
+        let handed = entry.retain_native_ops(handed);
+        ops.cancel_unowned(entry);
+        adopt(ops, handed);
+        if entry.finished() {
+            return Wake::CrossEntryGateChanged;
+        }
         // A WorkerEntrypoint call is its own PendingEvent. When no referenced
         // native operation can move it, reject that call inside JavaScript.
         // An unreferenced signal listener cannot make progress and must not
@@ -3284,10 +3390,13 @@ fn adopt_cell_ops_for_test(
         let probe = observer
             .take()
             .map(|observer| NativeOpDropProbe(Some(observer)));
-        ops.push(Box::pin(async move {
-            let _probe = probe;
-            (id, future.await)
-        }));
+        ops.push(PendingOp {
+            id,
+            future: Box::pin(async move {
+                let _probe = probe;
+                future.await
+            }),
+        });
     }
 }
 
@@ -3439,109 +3548,128 @@ async fn drive_cell_inner(
         drop(started);
         return Ok(None);
     };
-    if entry.keeps_native_ops() {
-        #[cfg(celld_internal_tests)]
-        adopt_cell_ops_for_test(&mut ops, started, &mut test_observers.native_op_dropped);
-        #[cfg(not(celld_internal_tests))]
-        adopt(&mut ops, started);
-    } else {
-        #[cfg(celld_internal_tests)]
-        adopt_cell_ops_for_test(&mut ops, started, &mut test_observers.native_op_dropped);
-        #[cfg(not(celld_internal_tests))]
-        drop(started);
-        abort_ops(&mut ops, &mut entry);
-    }
+    let started = entry.retain_native_ops(started);
+    ops.cancel_unowned(&entry);
+    #[cfg(celld_internal_tests)]
+    adopt_cell_ops_for_test(&mut ops, started, &mut test_observers.native_op_dropped);
+    #[cfg(not(celld_internal_tests))]
+    adopt(&mut ops, started);
     #[cfg(celld_internal_tests)]
     if entry.gated_reply_and_io_context().0.is_some() {
         notify_gated_failure_for_test(&mut entry, &mut test_observers.gated_failure);
     }
 
-    while !entry.finished() {
-        let (started, moves) = match wake_with_cross_entry_gate(&mut ops, &mut entry, budget).await
-        {
-            Wake::Op(op, result) => {
-                slot.turn(|worker| {
-                    let started = worker.turn_deliver(&mut entry, op, result);
-                    (started, worker.take_alarm_moves())
-                })
+    // A finished event closes its mailbox before it retires; an op that
+    // reached it after the last pass keeps the event running (see
+    // `InFlight::close_mailbox`).
+    loop {
+        while !entry.finished() {
+            let (started, moves) = match wake_with_cross_entry_gate(&mut ops, &mut entry, budget)
                 .await
-            }
-            Wake::GatedReply(completion) => {
-                entry.finish_gated_reply(completion);
-                (Vec::new(), Vec::new())
-            }
-            Wake::CancelGatedReply => {
-                entry.cancel_gated_reply();
-                (Vec::new(), Vec::new())
-            }
-            Wake::CrossEntryGateChanged => {
-                entry.finish_cross_entry_gates();
-                (Vec::new(), Vec::new())
-            }
-            Wake::Cancelled { shutdown } => {
-                let cancelled = slot
-                    .turn(|worker| {
-                        let started = if shutdown {
-                            worker.turn_cancel_for_shutdown(&mut entry)
-                        } else {
-                            worker.turn_cancel(&mut entry)
-                        };
-                        (started, worker.take_alarm_moves())
-                    })
+            {
+                Wake::Op(op, result) => {
+                    turn_driving_ops(
+                        &mut ops,
+                        slot.turn(|worker| {
+                            let started = worker.turn_deliver(&mut entry, op, result);
+                            (started, worker.take_alarm_moves())
+                        }),
+                    )
+                    .await
+                }
+                Wake::GatedReply(completion) => {
+                    entry.finish_gated_reply(completion);
+                    (Vec::new(), Vec::new())
+                }
+                Wake::CancelGatedReply => {
+                    entry.cancel_gated_reply();
+                    (Vec::new(), Vec::new())
+                }
+                Wake::CrossEntryGateChanged => {
+                    entry.finish_cross_entry_gates();
+                    (Vec::new(), Vec::new())
+                }
+                Wake::Cancelled { shutdown } => {
+                    let cancelled = turn_driving_ops(
+                        &mut ops,
+                        slot.turn(|worker| {
+                            let started = if shutdown {
+                                worker.turn_cancel_for_shutdown(&mut entry)
+                            } else {
+                                worker.turn_cancel(&mut entry)
+                            };
+                            (started, worker.take_alarm_moves())
+                        }),
+                    )
                     .await;
-                entry.cancel_gated_reply();
-                #[cfg(celld_internal_tests)]
-                notify_gated_failure_for_test(&mut entry, &mut test_observers.gated_failure);
-                cancelled
-            }
-            Wake::Expired => {
-                entry.time_out(budget);
-                slot.turn(|worker| worker.turn_retire_input_gates(&entry))
+                    entry.cancel_gated_reply();
+                    #[cfg(celld_internal_tests)]
+                    notify_gated_failure_for_test(&mut entry, &mut test_observers.gated_failure);
+                    cancelled
+                }
+                Wake::Expired => {
+                    turn_driving_ops(
+                        &mut ops,
+                        slot.turn(|worker| worker.turn_time_out(&mut entry, budget)),
+                    )
                     .await;
-                #[cfg(celld_internal_tests)]
-                notify_gated_failure_for_test(&mut entry, &mut test_observers.gated_failure);
-                (Vec::new(), Vec::new())
-            }
-            Wake::Idle => {
-                entry.stuck();
-                slot.turn(|worker| worker.turn_retire_input_gates(&entry))
+                    #[cfg(celld_internal_tests)]
+                    notify_gated_failure_for_test(&mut entry, &mut test_observers.gated_failure);
+                    (Vec::new(), Vec::new())
+                }
+                Wake::Idle => {
+                    entry.stuck();
+                    turn_driving_ops(
+                        &mut ops,
+                        slot.turn(|worker| worker.turn_retire_input_gates(&entry)),
+                    )
                     .await;
-                #[cfg(celld_internal_tests)]
+                    #[cfg(celld_internal_tests)]
+                    notify_gated_failure_for_test(&mut entry, &mut test_observers.gated_failure);
+                    (Vec::new(), Vec::new())
+                }
+                Wake::PendingEventIdle => {
+                    turn_driving_ops(
+                        &mut ops,
+                        slot.turn(|worker| {
+                            let started = worker.turn_cancel_pending_events(&mut entry);
+                            (started, worker.take_alarm_moves())
+                        }),
+                    )
+                    .await
+                }
+                Wake::Poll => {
+                    turn_driving_ops(
+                        &mut ops,
+                        slot.turn(|worker| {
+                            let started = worker.turn_poll(&mut entry);
+                            (started, worker.take_alarm_moves())
+                        }),
+                    )
+                    .await
+                }
+            };
+            #[cfg(celld_internal_tests)]
+            if entry.gated_reply_and_io_context().0.is_some() {
                 notify_gated_failure_for_test(&mut entry, &mut test_observers.gated_failure);
-                (Vec::new(), Vec::new())
             }
-            Wake::PendingEventIdle => {
-                slot.turn(|worker| {
-                    let started = worker.turn_cancel_pending_events(&mut entry);
-                    (started, worker.take_alarm_moves())
-                })
-                .await
-            }
-            Wake::Poll => {
-                slot.turn(|worker| {
-                    let started = worker.turn_poll(&mut entry);
-                    (started, worker.take_alarm_moves())
-                })
-                .await
-            }
-        };
-        #[cfg(celld_internal_tests)]
-        if entry.gated_reply_and_io_context().0.is_some() {
-            notify_gated_failure_for_test(&mut entry, &mut test_observers.gated_failure);
-        }
-        if entry.keeps_native_ops() {
+            let started = entry.retain_native_ops(started);
+            ops.cancel_unowned(&entry);
             #[cfg(celld_internal_tests)]
             adopt_cell_ops_for_test(&mut ops, started, &mut test_observers.native_op_dropped);
             #[cfg(not(celld_internal_tests))]
             adopt(&mut ops, started);
-        } else {
-            drop(started);
-            abort_ops(&mut ops, &mut entry);
+            // A turn that ran JS may have armed an alarm this very request is
+            // waiting on, so the host hears about it now rather than when the
+            // request ends.
+            report_alarm_moves(&report, moves);
         }
-        // A turn that ran JS may have armed an alarm this very request is
-        // waiting on, so the host hears about it now rather than when the
-        // request ends.
-        report_alarm_moves(&report, moves);
+
+        let late = entry.close_mailbox();
+        if late.is_empty() {
+            break;
+        }
+        adopt(&mut ops, late);
     }
 
     // An alarm that ended without running JS again still owes its outcome —
@@ -3550,12 +3678,14 @@ async fn drive_cell_inner(
     // recording it is storage only the isolate can reach.
     let mut alarm_write = Ok(None);
     if entry.owes_alarm() {
-        let (moves, write) = slot
-            .turn(|worker| {
+        let (moves, write) = turn_driving_ops(
+            &mut ops,
+            slot.turn(|worker| {
                 let write = worker.turn_finish_alarm(&mut entry);
                 (worker.take_alarm_moves(), write)
-            })
-            .await;
+            }),
+        )
+        .await;
         report_alarm_moves(&report, moves);
         alarm_write = write;
     }
@@ -3575,8 +3705,11 @@ async fn drive_cell_inner(
         span.parent_remote = parent.map(|_| false);
         crate::telemetry::record(span);
     }
-    slot.turn(|worker| worker.turn_abandon_input_gates(&entry))
-        .await;
+    turn_driving_ops(
+        &mut ops,
+        slot.turn(|worker| worker.turn_abandon_input_gates(&entry)),
+    )
+    .await;
     entry.abandon();
     alarm_write
 }

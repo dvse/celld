@@ -159,8 +159,12 @@ pub(super) fn op_tcp_connect(
     // The id exists before the connection does, so the request context
     // can own the socket even if the event ends mid-connect.
     let id = next_id();
-    current_context().tcp_sockets.lock().unwrap().push(id);
-    let gate = egress_gate_request(&event_context(scope), celld_logic::Channel::Tcp);
+    require_event_context!(scope)
+        .tcp_sockets
+        .lock()
+        .unwrap()
+        .push(id);
+    let gate = egress_gate_request(&*require_event_context!(scope), celld_logic::Channel::Tcp);
     let async_id = asyncrt::enqueue(async move {
         await_egress_gate(gate).await?;
         let stream = tokio::net::TcpStream::connect((request.hostname.as_str(), request.port))
@@ -223,7 +227,7 @@ pub(super) fn op_tcp_write(
         return loader_throw(scope, "socket write needs bytes");
     };
     let half = registry().lock().unwrap().get(&id).map(|s| s.write.clone());
-    let gate = egress_gate_request(&event_context(scope), celld_logic::Channel::Tcp);
+    let gate = egress_gate_request(&*require_event_context!(scope), celld_logic::Channel::Tcp);
     let async_id = asyncrt::enqueue(async move {
         await_egress_gate(gate).await?;
         let half = half.ok_or("socket is closed")?;
@@ -249,7 +253,7 @@ pub(super) fn op_tcp_shutdown(
 ) {
     let id = args.get(0).integer_value(scope).unwrap_or(0) as u64;
     let half = registry().lock().unwrap().get(&id).map(|s| s.write.clone());
-    let gate = egress_gate_request(&event_context(scope), celld_logic::Channel::Tcp);
+    let gate = egress_gate_request(&*require_event_context!(scope), celld_logic::Channel::Tcp);
     let async_id = asyncrt::enqueue(async move {
         await_egress_gate(gate).await?;
         let half = half.ok_or("socket is closed")?;
@@ -290,8 +294,12 @@ pub(super) fn op_tcp_starttls(
         Err(error) => return loader_throw(scope, &format!("startTls(): {error}")),
     };
     let new_id = next_id();
-    current_context().tcp_sockets.lock().unwrap().push(new_id);
-    let gate = egress_gate_request(&event_context(scope), celld_logic::Channel::Tcp);
+    require_event_context!(scope)
+        .tcp_sockets
+        .lock()
+        .unwrap()
+        .push(new_id);
+    let gate = egress_gate_request(&*require_event_context!(scope), celld_logic::Channel::Tcp);
     let async_id = asyncrt::enqueue(async move {
         await_egress_gate(gate).await?;
         // The plaintext socket remains registered while the gate waits so the

@@ -1048,6 +1048,7 @@ fn finish_cell_adoption(tc: &mut v8::PinScope, cell: &str, owned: bool) -> Resul
         // A facet of the root's own class lives in this isolate, and nothing
         // else releases it: its realm and connection would outlive the root.
         for facet in storage::embedded_facets(cell) {
+            actor_runtime_state(tc).release_actor_context(&facet);
             let source = format!("__celld.__cell.release({facet:?});");
             run_internal_snippet(tc, &source).ok_or_else(|| anyhow!("release failed"))?;
             storage::close(&facet);

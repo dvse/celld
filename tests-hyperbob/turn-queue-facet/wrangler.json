@@ -1,0 +1,3 @@
+{"name": "turn-queue-facet", "main": "index.js", "compatibility_date": "2026-08-14",
+ "durable_objects": {"bindings": [{"name": "ROOT", "class_name": "Root"}]},
+ "migrations": [{"tag": "v1", "new_sqlite_classes": ["Root"]}]}

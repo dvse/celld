@@ -245,6 +245,7 @@ impl std::error::Error for CellOverloaded {}
 /// is every switch off; production derives real values in `main`.
 #[derive(Clone, Copy, Default)]
 pub struct Compat {
+    pub workers_api_getters_setters_on_prototype: bool,
     pub allow_irrevocable_stub_storage: bool,
     pub rpc_params_dup_stubs: bool,
     pub delete_all_deletes_alarm: bool,
