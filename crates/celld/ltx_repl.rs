@@ -3516,6 +3516,36 @@ impl LtxRepl {
         Ok(())
     }
 
+    /// The streams at or below `cell` that hold data in the bucket: `cell`
+    /// itself and each nested facet stream with an epoch prefix under its
+    /// `ltx/`. A stream that has only a retired mark holds no rows.
+    pub(crate) async fn streams_with_data(
+        &self,
+        cell: &str,
+    ) -> anyhow::Result<std::collections::BTreeSet<String>> {
+        use celld_ltx::object_store::path::Path as ObjPath;
+        use futures_util::TryStreamExt as _;
+        let base = ObjPath::from(format!("{}cells/{cell}", self.prefix));
+        let locations: Vec<_> = self
+            .store
+            .list(Some(&base))
+            .map_ok(|meta| meta.location)
+            .try_collect()
+            .await?;
+        let lead = format!("{}cells/", self.prefix);
+        let mut streams = std::collections::BTreeSet::new();
+        for location in locations {
+            let location = location.to_string();
+            let Some(relative) = location.strip_prefix(&lead) else {
+                continue;
+            };
+            if let Some(at) = relative.find("/ltx/e") {
+                streams.insert(relative[..at].to_string());
+            }
+        }
+        Ok(streams)
+    }
+
     /// Drop the undrained tails of a deleted stream and every stream below it.
     /// A tail names rows that the next activation folds into the bucket, so a
     /// kept tail restores deleted rows into a recreated facet of the same

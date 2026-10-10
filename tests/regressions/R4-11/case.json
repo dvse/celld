@@ -1,0 +1,1 @@
+{"id":"R4-11","description":"Raw facet Fetchers cannot cross RPC; ordinary RpcTargets can","command":["python3","../http_case.py"],"runtimes":["celld","workerd"],"profiles":["quick","full"],"timeout_seconds":120,"expected_failure":null}

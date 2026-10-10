@@ -813,6 +813,7 @@ enum EgressGate {
     /// facet output gate holds the effect. Fields: the root cell's gate, the
     /// facet's stream, and the activation epoch.
     Facet(Box<EgressGate>, String, u64),
+    FacetMutations(Box<EgressGate>, crate::facet_snapshot::Proofs),
 }
 
 impl EgressGate {
@@ -829,7 +830,7 @@ impl EgressGate {
         match self {
             EgressGate::NoCell | EgressGate::Unpersisted(_) => None,
             EgressGate::Wrote(cell, ..) | EgressGate::ReadOnly(cell, ..) => Some(cell),
-            EgressGate::Facet(root, ..) => root.cell_scope(),
+            EgressGate::Facet(root, ..) | EgressGate::FacetMutations(root, ..) => root.cell_scope(),
         }
     }
 }
@@ -885,6 +886,17 @@ pub(crate) fn take_egress_gate_samples_for_test(scope: &str, channel: celld_logi
 /// immediately. Every sample here happens in the calling turn; the ticket
 /// carries them to the host loop, which must not reach cell storage itself.
 fn egress_gate_request(context: &IoContext, channel: celld_logic::Channel) -> EgressGate {
+    let gate = egress_gate_request_inner(context, channel);
+    let proofs = current_cell_event(context)
+        .map(|frame| storage::facet_mutation_proofs(&frame.storage))
+        .unwrap_or_default();
+    if proofs.is_empty() {
+        gate
+    } else {
+        EgressGate::FacetMutations(Box::new(gate), proofs)
+    }
+}
+fn egress_gate_request_inner(context: &IoContext, channel: celld_logic::Channel) -> EgressGate {
     let Some(frame) = current_cell_event(context) else {
         return EgressGate::NoCell;
     };
@@ -989,15 +1001,29 @@ async fn prove_facet(stream: String, epoch: u64) -> std::result::Result<(), Gate
 /// once when the cell has no barrier open, so an ordinary read pays one actor
 /// hop and no replica write.
 async fn egress_gate_verdict(gate: EgressGate) -> std::result::Result<(), GateRefusal> {
-    let gate = match gate {
-        EgressGate::Facet(root, stream, epoch) => {
-            prove_facet(stream, epoch).await?;
-            *root
+    let mut gate = gate;
+    loop {
+        gate = match gate {
+            EgressGate::Facet(root, stream, epoch) => {
+                prove_facet(stream, epoch).await?;
+                *root
+            }
+            EgressGate::FacetMutations(inner, proofs) => {
+                crate::facet_snapshot::prove(proofs)
+                    .await
+                    .map_err(GateRefusal::Unpersisted)?;
+                *inner
+            }
+            gate => gate,
+        };
+        if !matches!(gate, EgressGate::Facet(..) | EgressGate::FacetMutations(..)) {
+            break;
         }
-        gate => gate,
-    };
+    }
     let (cell, channel, position, observed, epoch) = match gate {
-        EgressGate::Facet(..) => unreachable!("a facet gate nests no facet gate"),
+        EgressGate::Facet(..) | EgressGate::FacetMutations(..) => {
+            unreachable!("nested gates were unwrapped")
+        }
         EgressGate::NoCell => return Ok(()),
         EgressGate::Unpersisted(error) => return Err(GateRefusal::Unpersisted(error)),
         EgressGate::Wrote(cell, channel, position, epoch) => {
@@ -3539,6 +3565,13 @@ impl InFlight {
         tc: &mut v8::PinScope<'s, '_>,
         value: v8::Local<'s, v8::Value>,
     ) {
+        if let Some(scope) = self.scope.as_deref() {
+            if let Some(gate) =
+                crate::facet_snapshot::proof_gate(storage::facet_mutation_proofs(scope))
+            {
+                let _ = self.context.register_arm_gate(gate);
+            }
+        }
         let Some(reply) = self.reply.take() else {
             return;
         };
@@ -7421,6 +7454,9 @@ ops! { OP_NAMES, install_op_functions,
         "__facet_rpc" => op_facet_rpc,
         "__facet_abort" => op_facet_abort,
         "__facet_delete" => op_facet_delete,
+        "__facet_clone" => op_facet_clone,
+        "__facet_snapshot" => op_facet_snapshot,
+        "__facet_apply" => op_facet_apply,
         "__do_call" => op_do_call,
         "__svc_call" => op_svc_call,
         "__svc_call_cancellable" => op_svc_call_cancellable,
@@ -9381,6 +9417,175 @@ fn op_facet_delete(
             .await
             .map_err(|_| "the facet delete was dropped".to_string())?
             .map_err(|error| format!("delete facet storage: {error:#}"))?;
+        Ok(Vec::new())
+    });
+    rv.set(promise_for(scope, async_id));
+}
+
+// Capture is synchronous with respect to all SQLite operations of this root.
+// Only persistence waits for the destination's asynchronous close barrier.
+fn op_facet_snapshot(
+    scope: &mut v8::PinScope,
+    args: v8::FunctionCallbackArguments,
+    mut rv: v8::ReturnValue<v8::Value>,
+) {
+    let parent_scope = args.get(0).to_rust_string_lossy(scope);
+    let parent = match storage::storage_identity(&parent_scope) {
+        Ok(Some(parent)) => parent,
+        _ => return loader_throw(scope, "facet snapshot requires live actor storage"),
+    };
+    let Some(sender) = FACET_TX.get() else {
+        return loader_throw(scope, "facet snapshot requires a celld node");
+    };
+    let source = if args.get(1).is_null() {
+        let name = args.get(2).to_rust_string_lossy(scope);
+        if let Err(error) = storage::delete_legacy_facet(&parent, &name) {
+            return loader_throw(scope, &format!("delete legacy facet: {error:#}"));
+        }
+        None
+    } else {
+        let mut names = parent.facet_path.clone();
+        names.push(args.get(1).to_rust_string_lossy(scope));
+        Some(names)
+    };
+    let mut destination = parent.facet_path.clone();
+    destination.push(args.get(2).to_rust_string_lossy(scope));
+    let state = crate::facet_snapshot::root(&parent.root_scope, parent.epoch);
+    if state.is_closing() {
+        return loader_throw(scope, "facet root is stopping");
+    }
+    let cut = state.freeze();
+    let (reply, receive) = std::sync::mpsc::sync_channel(1);
+    let request = FacetReq::Capture {
+        root: parent.root_scope.clone(),
+        epoch: parent.epoch,
+        source,
+        destination: destination.clone(),
+        cut,
+        reply,
+    };
+    let captured = match sender.send(request) {
+        Ok(()) => tokio::task::block_in_place(|| receive.recv())
+            .map_err(|_| anyhow!("facet snapshot was abandoned"))
+            .and_then(|result| result),
+        Err(_) => Err(anyhow!("facet snapshot channel closed")),
+    };
+    match captured {
+        Ok(mutation) => {
+            *mutation.origin.lock().unwrap() = Some(parent_scope);
+            rv.set(
+                v8::String::new(scope, &mutation.id.to_string())
+                    .unwrap()
+                    .into(),
+            );
+        }
+        Err(error) => {
+            let mutation = state.add(
+                parent.root_scope.clone(),
+                parent.epoch,
+                crate::engine_api::facet_cell(&parent.root_scope, &destination),
+                destination,
+                Default::default(),
+            );
+            state.finish(&mutation, Err(format!("facet snapshot: {error:#}")));
+            loader_throw(scope, &format!("facet snapshot: {error:#}"));
+        }
+    }
+}
+fn op_facet_apply(
+    scope: &mut v8::PinScope,
+    args: v8::FunctionCallbackArguments,
+    mut rv: v8::ReturnValue<v8::Value>,
+) {
+    let parent_scope = args.get(0).to_rust_string_lossy(scope);
+    let parent = match storage::storage_identity(&parent_scope) {
+        Ok(Some(parent)) => parent,
+        _ => return loader_throw(scope, "facet mutation requires live actor storage"),
+    };
+    let id = args
+        .get(1)
+        .to_rust_string_lossy(scope)
+        .parse::<u64>()
+        .unwrap_or(0);
+    let state = crate::facet_snapshot::root(&parent.root_scope, parent.epoch);
+    let Some(mutation) = state.get(id) else {
+        return loader_throw(scope, "facet mutation is no longer live");
+    };
+    if !mutation.claim() {
+        return loader_throw(scope, "facet mutation was already applied or abandoned");
+    }
+    if !args.get(2).is_undefined() {
+        let reason = args.get(2).to_rust_string_lossy(scope);
+        state.finish(&mutation, Err(reason.clone()));
+        return loader_throw(scope, &reason);
+    }
+    let (reply, receive) = tokio::sync::oneshot::channel();
+    // Dispatch before enqueue: a cancelled caller cannot abandon the root's
+    // already-installed mutation and leave its proof pending forever.
+    if FACET_TX.get().is_none_or(|sender| {
+        sender
+            .send(FacetReq::Apply {
+                mutation: mutation.clone(),
+                reply,
+            })
+            .is_err()
+    }) {
+        state.finish(&mutation, Err("facet mutation channel closed".into()));
+        return loader_throw(scope, "facet mutation channel closed");
+    }
+    let id = asyncrt::enqueue_io_context(async move {
+        receive
+            .await
+            .map_err(|_| "facet mutation was abandoned".to_string())?
+            .map_err(|error| format!("facet mutation: {error:#}"))?;
+        Ok(Vec::<u8>::new())
+    });
+    rv.set(promise_for(scope, id));
+}
+
+/// `__facet_clone(parentScope, source, destination)`: the host half of
+/// `ctx.facets.clone()`. The harness has aborted the destination; the
+/// source may still be running.
+fn op_facet_clone(
+    scope: &mut v8::PinScope,
+    args: v8::FunctionCallbackArguments,
+    mut rv: v8::ReturnValue<v8::Value>,
+) {
+    let parent_scope = args.get(0).to_rust_string_lossy(scope);
+    let source = args.get(1).to_rust_string_lossy(scope);
+    let destination = args.get(2).to_rust_string_lossy(scope);
+    let parent = match storage::storage_identity(&parent_scope) {
+        Ok(Some(parent)) => parent,
+        Ok(None) => {
+            return loader_throw(
+                scope,
+                "facets are available only inside a Durable Object event",
+            );
+        }
+        Err(error) => return loader_throw(scope, &error.to_string()),
+    };
+    let Some(sender) = FACET_TX.get() else {
+        return loader_throw(scope, "ctx.facets.clone() requires a celld node");
+    };
+    let mut source_names = parent.facet_path.clone();
+    source_names.push(source);
+    let mut destination_names = parent.facet_path.clone();
+    destination_names.push(destination);
+    let async_id = asyncrt::enqueue(async move {
+        let (reply, receive) = tokio::sync::oneshot::channel();
+        sender
+            .send(FacetReq::Clone {
+                root: parent.root_scope,
+                epoch: parent.epoch,
+                source: source_names,
+                destination: destination_names,
+                reply,
+            })
+            .map_err(|_| "the facet channel closed".to_string())?;
+        receive
+            .await
+            .map_err(|_| "the facet clone was dropped".to_string())?
+            .map_err(|error| format!("clone facet storage: {error:#}"))?;
         Ok(Vec::new())
     });
     rv.set(promise_for(scope, async_id));

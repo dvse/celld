@@ -70,6 +70,20 @@ impl FacetStreams {
         names: &[String],
     ) -> anyhow::Result<(PathBuf, bool)> {
         let facet = crate::engine_api::facet_cell(root, names);
+        self.open_stream(replication, db_path, root, epoch, facet)
+            .await
+    }
+
+    /// `open` of a facet named by its stream rather than its name path:
+    /// `facet` is `root` followed by one `/facets/<h>` per level.
+    pub(crate) async fn open_stream(
+        &self,
+        replication: Option<&Replication>,
+        db_path: impl Fn(&str, u64) -> PathBuf,
+        root: &str,
+        epoch: u64,
+        facet: String,
+    ) -> anyhow::Result<(PathBuf, bool)> {
         let path = db_path(&facet, epoch);
         let resident = |roots: &HashMap<String, FacetRoot>| {
             roots
