@@ -821,19 +821,35 @@ pub(super) fn register_loader_modules(
     config: &WorkerConfig,
     main: v8::Local<v8::Module>,
 ) {
+    // One stub per builtin serves the whole graph, so it exports every name
+    // any module imports from it: a sibling's `import {RpcTarget} from
+    // "cloudflare:workers"` must link even when the main module imported
+    // only `WorkerEntrypoint` (workerd serves the full builtin module).
+    let mut wanted: std::collections::BTreeMap<&str, std::collections::BTreeSet<String>> =
+        Default::default();
     for (_name, _source, imports) in config.es_modules() {
         for (spec, names) in imports {
-            if modreg(scope).modules.lock().unwrap().contains_key(spec) {
+            wanted
+                .entry(spec.as_str())
+                .or_default()
+                .extend(names.iter().cloned());
+        }
+    }
+    for (spec, mut names) in wanted {
+        let main_names = config.main_imports.get(spec);
+        if let Some(main_names) = main_names {
+            if names.is_subset(main_names) {
                 continue;
             }
-            install_lazy_module(scope, spec);
-            let s = if names.contains("*") {
-                full_surface_source(scope, spec, names).unwrap_or_else(|| stub_source(spec, names))
-            } else {
-                stub_source(spec, names)
-            };
-            register_internal_stub(scope, spec, &s);
+            names.extend(main_names.iter().cloned());
         }
+        install_lazy_module(scope, spec);
+        let s = if names.contains("*") {
+            full_surface_source(scope, spec, &names).unwrap_or_else(|| stub_source(spec, &names))
+        } else {
+            stub_source(spec, &names)
+        };
+        register_internal_stub(scope, spec, &s);
     }
     register_named_module(scope, &config.main_module_name, main, false);
     for (name, source, _imports) in config.es_modules() {
@@ -864,9 +880,21 @@ pub(super) fn resolve_external<'s>(
         scope.throw_exception(exception);
         return None;
     }
-    let resolved = registry
-        .source_name(scope, referrer)
-        .and_then(|referrer| resolve_relative_specifier(&referrer, &spec));
+    let referrer_name = registry.source_name(scope, referrer);
+    // workerd (jsg/modules.c++ resolveModuleCallback) resolves every
+    // specifier without a `node:`/`cloudflare:`/`workerd:` prefix against the
+    // importing module's directory, `ref.specifier.parent().eval(spec)`, so
+    // `@scope/name` imported from `dir/a.js` names `dir/@scope/name` and only
+    // that. A specifier with any other scheme keeps its bare lookup.
+    // A specifier with a leading `/` keeps its bare lookup too.
+    let relative_spec = (!spec.starts_with("./")
+        && !spec.starts_with("../")
+        && !spec.starts_with('/')
+        && !spec.contains(':'))
+    .then(|| format!("./{spec}"));
+    let resolved = referrer_name.as_deref().and_then(|referrer| {
+        resolve_relative_specifier(referrer, relative_spec.as_deref().unwrap_or(&spec))
+    });
     let key = resolved.as_deref().unwrap_or(&spec);
     let m = registry
         .modules

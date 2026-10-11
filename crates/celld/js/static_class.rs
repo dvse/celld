@@ -108,14 +108,26 @@ pub(super) fn load(
             auth.verify_static_class(&serde_json::to_vec(&reference)?, &seal),
             "invalid static class reference signature"
         );
-        let key = (reference.script, reference.version, reference.graph);
-        let config = CONFIGS
-            .get_or_init(Mutex::default)
-            .lock()
-            .unwrap()
-            .get(&key)
+        let configs = CONFIGS.get_or_init(Mutex::default).lock().unwrap();
+        let exact = configs
+            .get(&(reference.script.clone(), reference.version, reference.graph))
             .and_then(Weak::upgrade)
-            .context("static class deployment graph is no longer available on this node")?;
+            .filter(|config| generation_available(config.generation));
+        // A reference stored before a redeploy names a graph this node no
+        // longer serves. As in workerd, where a stored class follows its
+        // script's current code, it resolves to the newest live generation of
+        // the same script; the sealed script and class name still bind it.
+        let config = match exact {
+            Some(config) => config,
+            None => configs
+                .iter()
+                .filter(|((script, _, _), _)| *script == reference.script)
+                .filter_map(|(_, config)| config.upgrade())
+                .filter(|config| generation_available(config.generation))
+                .max_by_key(|config| config.generation)
+                .context("static class source script is not deployed on this node")?,
+        };
+        drop(configs);
         anyhow::ensure!(
             generation_available(config.generation),
             "static class source generation has retired"
