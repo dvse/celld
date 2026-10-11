@@ -1054,8 +1054,41 @@ async fn internal_reload(app: AppHandle) -> HttpReply {
     response(status, body.to_string())
 }
 
+/// A Worker may ask for a WebSocket with only `Upgrade: websocket`, as workerd
+/// accepts. A cross-node call tunnels the request as an HTTP/1.1 upgrade, which
+/// needs the full handshake, so the missing fields are added here.
+fn complete_websocket_handshake(headers: &mut Vec<(String, String)>) {
+    if !requests_websocket_upgrade(headers) {
+        return;
+    }
+    let has = |headers: &Vec<(String, String)>, name: &str| {
+        headers
+            .iter()
+            .any(|(header, _)| header.eq_ignore_ascii_case(name))
+    };
+    if !headers.iter().any(|(header, value)| {
+        header.eq_ignore_ascii_case("connection") && value.to_ascii_lowercase().contains("upgrade")
+    }) {
+        headers.retain(|(header, _)| !header.eq_ignore_ascii_case("connection"));
+        headers.push(("connection".into(), "upgrade".into()));
+    }
+    if !has(headers, "sec-websocket-version") {
+        headers.push(("sec-websocket-version".into(), "13".into()));
+    }
+    if !has(headers, "sec-websocket-key") {
+        use base64::Engine as _;
+        let mut nonce = [0_u8; 16];
+        getrandom::fill(&mut nonce).expect("OS random source unavailable");
+        headers.push((
+            "sec-websocket-key".into(),
+            base64::engine::general_purpose::STANDARD.encode(nonce),
+        ));
+    }
+}
+
 async fn dispatch_do_call(app: AppHandle, call: DoCallReq) {
     let (mut call, mut payload, reply) = split_do_call(call);
+    complete_websocket_handshake(&mut payload.headers);
     let mut websocket_timing =
         requests_websocket_upgrade(&payload.headers).then(|| WebSocketRouteTiming {
             started: Instant::now(),
@@ -1440,6 +1473,37 @@ async fn dispatch_capability(
         celld::js::RpcData::V8(bytes) => Ok(bytes),
         _ => unreachable!("capability replies are structured clone"),
     }
+}
+
+async fn dispatch_capability_fetch(
+    app: AppHandle,
+    call: celld::capability::Fetch,
+) -> anyhow::Result<HttpResponse> {
+    if !celld::capability::local_route(&call.control.route) {
+        return capability_http::fetch(&app, call).await;
+    }
+    celld::capability::preflight(&call.control.route)?;
+    let Some(scope) = call.control.route.owner_scope.clone() else {
+        return celld::capability::invoke_local_fetch(call).await;
+    };
+    let Routed { request, route } = app
+        .request(scope.clone())
+        .await
+        .map_err(|error| anyhow::anyhow!("capability owner unavailable: {error:?}"))?;
+    anyhow::ensure!(
+        matches!(route, Route::Local),
+        "capability actor moved; live channel is broken"
+    );
+    let completed = app
+        .local_request(request, scope, None, "capability-http")
+        .run(celld::capability::invoke_local_fetch(call))
+        .await;
+    let mut response = completed.result.map_err(local_request_error)?;
+    if let Some(stream) = response.stream.take() {
+        completed.activity.set_phase("response_body", true, true);
+        response.stream = Some(local_response_stream(stream, completed.activity, || {}));
+    }
+    Ok(response)
 }
 
 async fn internal_capability(request: Request<Incoming>, app: AppHandle) -> HttpReply {
@@ -2498,6 +2562,8 @@ pub(crate) async fn dispatch_forwarded_rpc(
     }
 }
 
+#[path = "main/capability_http.rs"]
+mod capability_http;
 #[path = "main/capability_session.rs"]
 mod capability_session;
 #[path = "main/peer_tunnel.rs"]
@@ -4427,6 +4493,13 @@ async fn async_main(telemetry_config: Option<celld::telemetry::Config>) -> anyho
         follower: follower.clone(),
     };
 
+    let capability_fetch_app = app.clone();
+    celld::capability::configure_fetch(Arc::new(move |call| {
+        Box::pin(dispatch_capability_fetch(
+            capability_fetch_app.clone(),
+            call,
+        ))
+    }));
     let capability_app = app.clone();
     celld::capability::configure(
         node.clone(),

@@ -3383,7 +3383,7 @@ __celld.__makeLoader = () => {
         const loaded = __loader_fetch(
           id, req.url, req.method, body, headers, streamId, entrypoint,
           propsSnapshot?.encode(false) ?? new Uint8Array(),
-          limitsJson, tails.length !== 0, signal != null);
+          limitsJson, tails.length !== 0, signal != null, __fetchRestoreBytes());
         const dispatch = tails.length === 0 ? loaded : loaded[0];
         const response = signal
           ? __awaitCancellableDoCall(dispatch, signal)
@@ -3394,7 +3394,7 @@ __celld.__makeLoader = () => {
           ? new CelldHttpBodyStream(r.streamId)
           : r.body !== undefined ? r.body : Uint8Array.from(r.bodyBytes || []);
         return __wrapServiceResponse(
-          new Response(responseBody, { status: r.status, headers: r.headers }),
+          new Response(responseBody, { status: r.status, headers: r.headers, __wsTarget:r.wsTarget }),
           req.url);
       },
     };
@@ -3650,6 +3650,10 @@ __celld.__makeLoader = () => {
 
 // Static service-binding props, encoded as ctx.exports props are.
 __celld.__servicePropsSc = (props) => __rpcOut(props, false);
+// Service bindings made from configuration. One passed over RPC revives as a
+// service binding again, so its fetch() keeps HTTP semantics (WebSocket
+// upgrades included), as a Fetcher passed over RPC does in workerd.
+const __serviceBindings = new WeakSet();
 const __makeServiceBinding = __celld.__makeServiceBinding =
   (script, entrypoint = null, propsSc = undefined, check = undefined) => {
   const target = {
@@ -3673,7 +3677,7 @@ const __makeServiceBinding = __celld.__makeServiceBinding =
     // inside its own event so the target's waitUntil does not attach to
     // the caller's. Cross-script targets still need their own isolate.
     if (script === __cell.script && entrypoint !== null &&
-        propsSc === undefined) {
+        propsSc === undefined && !__als_get()?.has(__fetchRestoreContextKey)) {
       // Mirror __dispatchTo: the target sees a fresh incoming signal,
       // aborted with "The client has disconnected" when the caller
       // abandons the call or cancels the response body; the caller's
@@ -3696,7 +3700,7 @@ const __makeServiceBinding = __celld.__makeServiceBinding =
       return __finishServiceFetch(response, req, redirectState);
     }
     if (script === __cell.script && entrypoint === null &&
-        typeof __cell.selfFetch === "function") {
+        typeof __cell.selfFetch === "function" && !__als_get()?.has(__fetchRestoreContextKey)) {
       if (__cell.svcDepth >= 8)
         throw new Error(
           "Service binding recursion limit exceeded (8)");
@@ -3802,6 +3806,7 @@ const __makeServiceBinding = __celld.__makeServiceBinding =
   __rawRpcMeta.set(binding, session);
   if (check !== undefined) __boundStubs.set(binding, check);
   __outboundMeta.set(binding, { script, entrypoint, propsSc });
+  __serviceBindings.add(binding);
   return binding;
 };
 
@@ -3962,7 +3967,7 @@ const __ctxRun = (id, fn) => {
   // A fresh request context starts no restore chain of its own: a chain
   // reaches a receiver only through the restore interceptions, as workerd
   // passes a restored self-token factory only with the restored call.
-  if (fresh) frame.delete(__restoreContextKey);
+  if (fresh) { frame.delete(__restoreContextKey); frame.delete(__fetchRestoreContextKey); }
   frame.set(__ctxKey, id);
   __als_set(frame);
   try {
@@ -4120,7 +4125,7 @@ const __entryRoute = (entry) => entry.route ??=
   __capability_export(String(entry.id), entry.scope ?? null);
 const __entryMarker = (entry, callable) => ({
   "__celld$stub": entry.id, t: entry.origin ?? __stubIsolate,
-  c: callable, r: __entryRoute(entry),
+  c: callable, r: __entryRoute(entry), f: entry.fetcher === true,
 });
 const __newEntry = (target) => {
   // Capture in the exporting IoContext, before allocating any reference or
@@ -4135,7 +4140,7 @@ const __newEntry = (target) => {
   // stub re-enters it rather than queueing behind it.
   const scope = __currentActorScope() || undefined;
   const entry = {
-    id: __nextStubId++, target, disposer, refs: 1, ctx: __ctxNow(), scope,
+    id: __nextStubId++, target, disposer, fetcher: typeof __isFetcher === "function" && __isFetcher(target), refs: 1, ctx: __ctxNow(), scope,
     section: __cellBlocks.get(scope)?.holder ?? null,
   };
   __stubEntries.set(entry.id, entry);
@@ -4691,6 +4696,19 @@ const __stubLift = (value, allowCapabilities = true, originals, duplicate = fals
       seen.set(v, marker);
       return marker;
     }
+    // A ctx.exports loopback revived from another script is also a service
+    // binding; its __svcMeta (origin script, persistence, props) wins below,
+    // so it keeps one typed representation across every hop.
+    if (__serviceBindings.has(v) && !__svcMeta.has(v) && allowCapabilities) {
+      const route = __outboundMeta.get(v);
+      lifted = true;
+      caps = true;
+      __boundStubs.get(v)?.();
+      const marker = { "__celld$svcb": route.script, e: route.entrypoint ?? null,
+        p: route.propsSc ?? null };
+      seen.set(v, marker);
+      return marker;
+    }
     const svc = __svcMeta.get(v);
     if (svc !== undefined) {
       if (!allowCapabilities) return v;
@@ -5010,6 +5028,11 @@ const __stubRevive = (value, session, take) => {
       take?.(v.r);
       return stub;
     }
+    if (Object.hasOwn(v, "__celld$svcb")) {
+      const props = v.p instanceof Uint8Array && v.p.length > 0 ? v.p : undefined;
+      return __makeServiceBinding(v["__celld$svcb"], v.e ?? null, props,
+        __requestBound("OutgoingFactory"));
+    }
     const svcName = Object.hasOwn(v, "__celld$svc") ? v["__celld$svc"] : undefined;
     if (svcName !== undefined) return __reviveDurableService(v, revive);
     const doClass = Object.hasOwn(v, "__celld$do") ? v["__celld$do"] : undefined;
@@ -5095,6 +5118,7 @@ const __foreignStub = (marker, session) => {
   if (typeof marker?.r !== "string")
     throw new DOMException("RPC capability has no host route.", "DataCloneError");
   const entry = __remoteEntry(marker["__celld$stub"], marker.t, marker.r, session);
+  entry.fetcher = marker.f === true;
   return __makeStub(entry, marker.c);
 };
 // Native-only: increment one existing wire reference without invoking a getter,
@@ -5650,6 +5674,7 @@ const __makeStub = (entry, callable) => {
     get: (_b, prop) => {
       if (prop === "then") return undefined;
       if (prop === Symbol.dispose) return () => __disposeStub(meta);
+      if (prop === "fetch" && entry.fetcher) return (input, init) => __stubHttpFetch(meta, input, init);
       if (prop === "dup") return () => {
         if (meta.disposed) throw __stubDisposedError();
         __checkStubOwner(meta);
@@ -5775,6 +5800,7 @@ const __nontransferableFacets = new WeakSet();
 const __restoreReceivers = new WeakMap();
 const __restoreOrigins = new WeakMap();
 const __restoreContextKey = Symbol("celld.restore-chain");
+const __fetchRestoreContextKey = Symbol("celld.restore-http");
 // Restore control operations travel as RPC method names, so the names carry a
 // fleet secret from the host: application code cannot name them, and the
 // ordinary entrypoint resolver never sees them. The harness never forwards
@@ -5801,6 +5827,88 @@ const __withRestore = (descriptor, fn) => {
   try { return fn(); } finally { __als_set(prior); }
 };
 const __restoreParent = () => __als_get()?.get(__restoreContextKey);
+const __isFetcher = value => __stubMeta.get(value)?.entry.fetcher === true ||
+  __persistentMeta.get(value)?.descriptor.channel === "fetcher" ||
+  __rawRpcMeta.has(value) || __doStubMeta.has(value) || __outboundMeta.has(value);
+const __fetchRestoreParent = () => __als_get()?.get(__fetchRestoreContextKey);
+const __fetchRestoreBytes = () => {
+  const descriptor = __fetchRestoreParent();
+  return descriptor === undefined ? undefined : __rpcOut(descriptor, true);
+};
+const __withFetchRestore = (descriptor, fn) => {
+  const prior = __als_get(), frame = new Map(prior);
+  frame.set(__fetchRestoreContextKey, descriptor);__als_set(frame);
+  try {return fn();} finally {__als_set(prior);}
+};
+const __invokeRestoredHttp = (restore, fn) => restore?.length
+  ? __withRestore(__rpcDes(restore), fn) : fn();
+const __stubHttpFetch = (meta, input, init, descriptor = __fetchRestoreParent()) => {
+  if (meta.disposed) return Promise.reject(__stubDisposedError());
+  __checkStubOwner(meta);
+  const entry = meta.entry;
+  if (entry.released) return Promise.reject(__releasedStubError());
+  entry.refs++;
+  const owner = {entry, disposed:false};
+  return (async () => {
+    const req = new Request(input, init);
+    const {body, streamId} = await __subrequestBody(req);
+    const route = __entryRoute(entry);
+    const restore = descriptor === undefined ? [] : [...__rpcOut(descriptor, true)];
+    const result = await __withRemoteOrder(route, order => __capability_fetch(
+      JSON.stringify({route:JSON.parse(route),session:entry.session??null,order:JSON.parse(order),restore}),
+      req.url, req.method, body, JSON.stringify(req.headers.__celldHeaderList), streamId), entry.session);
+    const reply = JSON.parse(result);
+    const data = reply.streamId !== undefined ? new CelldHttpBodyStream(reply.streamId)
+      : reply.body !== undefined ? reply.body : Uint8Array.from(reply.bodyBytes || []);
+    return __wrapServiceResponse(new Response(data, {status:reply.status,headers:reply.headers,
+      __wsTarget:reply.wsTarget}), req.url);
+  })().finally(() => __disposeStub(owner));
+};
+__celld.__dispatchCapabilityFetch = async (token, restore, request, started) => {
+  const entry = __stubEntries.get(Number(token));
+  if (!entry || entry.released) throw __releasedStubError();
+  if (!entry.fetcher) throw new TypeError("This RPC capability has no HTTP channel.");
+  entry.refs++;
+  const owner = {entry, disposed:false};
+  const event = entry.scope ? __beginActorEvent(entry.scope) : null;
+  let handedBody = false, reader;
+  const release = () => {__capabilityCalls.delete(started);return __disposeStub(owner);};
+  let cancel;
+  const cancellation = new Promise((_,reject)=>{cancel=reject;});
+  __capabilityCalls.set(started, reason => {
+    cancel(reason);
+    if (reader) Promise.resolve(__ctxRun(entry.ctx,()=>reader.cancel(reason))).catch(()=>{});
+    release();
+  });
+  try {
+    const response = await Promise.race([cancellation, __ctxRun(entry.ctx, () => {
+      __capability_started(started);
+      const invoke = () => entry.target.fetch(request);
+      return __withFetchRestore(restore.length === 0 ? undefined : __rpcDes(restore), invoke);
+    })]);
+    // Native HTTP owns streaming separately from the response head. Keep the
+    // exporting context until the last pull/cancel, including last-stub disposal.
+    if (response.body !== null && response._bodyBytes === null && response.status !== 101) {
+      reader = response.body.getReader();
+      const body = new ReadableStream({
+        async pull(controller) {
+          try { const chunk = await __ctxRun(entry.ctx, () => reader.read());
+            if (chunk.done) {controller.close();release();} else controller.enqueue(chunk.value);
+          } catch (error) {controller.error(error);release();}
+        },
+        async cancel(reason) { try {await __ctxRun(entry.ctx, () => reader.cancel(reason));}
+          finally {release();} },
+      });
+      handedBody = true;
+      return new Response(body, response);
+    }
+    return response;
+  } finally {
+    if (!handedBody) release();
+    if (event) __endActorEvent(event);
+    __capability_started(started);
+  }
+};
 const __persistentTarget = (target) => {
   if (target === null ||
       (typeof target !== "object" && typeof target !== "function"))
@@ -5881,12 +5989,17 @@ const __persistentWireClient = (meta) => {
   acquired.catch(() => {});
   const target = {
     [Symbol.dispose]() { return acquired.then(client => client[Symbol.dispose](), () => {}); },
+    async fetch(input, init) {
+      const client = await acquired;
+      return __stubHttpFetch(__stubMeta.get(client), input, init);
+    },
   };
   __rawRpcMeta.set(target, {
     async get(path) { return __stubOp(__stubMeta.get(await acquired), path, null); },
     async call(path, admission) { return __stubOp(__stubMeta.get(await acquired), path, admission); },
   });
   const entry = __newEntry(target);
+  entry.fetcher = meta.descriptor.channel === "fetcher";
   return __makeStub(entry, true);
 };
 // The restore-chain envelope is the persistent dispatcher's parameter form.
@@ -5928,6 +6041,11 @@ const __makePersistentStub = (descriptor, live) => {
     getPrototypeOf: () => __cf.RpcStub.prototype,
     get: (_base, prop) => {
       if (prop === "then") return undefined;
+      if (prop === "fetch" && descriptor.channel === "fetcher") return async (input, init) => {
+        const live = await __persistentAcquire(meta);
+        try { return await __stubHttpFetch(__stubMeta.get(live), input, init, descriptor); }
+        finally { live[Symbol.dispose](); }
+      };
       if (prop === Symbol.dispose) return () => {
         if (meta.disposed) return;
         meta.disposed = true;
@@ -5992,6 +6110,7 @@ const __ctxRestore = async (ctx, params) => {
   if (typeof method !== "function") throw new TypeError("The WorkerEntrypoint or DurableObject class does not implement a [restore]() method.");
   const live = __persistentTarget(await __withRestore(parent,
     () => method.call(target, saved)));
+  if (__isFetcher(live)) descriptor.channel = "fetcher";
   const handle = __stubMeta.has(live) || __persistentMeta.has(live)
     ? live : __makeStub(__newEntry(live), typeof live === "function");
   return __makePersistentStub(descriptor, handle);
@@ -6057,6 +6176,15 @@ const __storedLift = (value, transferOnly = false) => {
         "Durable Object stubs. This value is a transient RPC " +
         "handle that would not survive a restart.",
         "DataCloneError");
+    if (transferOnly && __serviceBindings.has(v) && !__svcMeta.has(v)) {
+      const route = __outboundMeta.get(v);
+      lifted = true;
+      __boundStubs.get(v)?.();
+      const marker = { "__celld$svcb": route.script, e: route.entrypoint ?? null,
+        p: route.propsSc ?? null };
+      seen.set(v, marker);
+      return marker;
+    }
     const svc = __svcMeta.get(v);
     if (svc !== undefined) {
       __boundStubs.get(v)?.();
@@ -6662,7 +6790,7 @@ __celld.__makeIncomingRequest = (
   streamId === undefined ? body : new CelldHttpBodyStream(streamId),
   headersJson, undefined, true);
 const __dispatchTo = __celld.__dispatchTo = async (
-  scope, url, method, body, headersJson, requestId = null, bodyStreamId = null,
+  scope, url, method, body, headersJson, requestId = null, bodyStreamId = null, restore = null,
 ) => {
   // A routed body that must not be collected crosses as a host stream id; the
   // handler here reads it in parts. A held body arrives as its bytes.
@@ -6678,7 +6806,7 @@ const __dispatchTo = __celld.__dispatchTo = async (
   try {
     const dispatch = (async () => {
       const inst = await _readyInstance(scope);
-      return await __ctxRun(undefined, () => inst.fetch(
+      return await __ctxRun(undefined, () => __invokeRestoredHttp(restore, () => inst.fetch(
         __makeRequest(
           url,
           method,
@@ -6686,7 +6814,7 @@ const __dispatchTo = __celld.__dispatchTo = async (
           headersJson,
           requestController.signal,
           true,
-        )));
+        ))));
     })();
     // The caller's abandonment reaches the target through
     // __do_call_cancel/__abortIncomingRequest, which aborts the fresh incoming
@@ -6841,15 +6969,16 @@ const __noHandler = (name, method) =>
     : new TypeError(
       `Entrypoint ${JSON.stringify(name)} has no ${method} handler`);
 
-const __dispatchEntrypointMethod = async (name, method, arg, props) => {
+const __dispatchEntrypointMethod = async (name, method, arg, props, restore, encodedProps = false) =>
+  __ctxRun(undefined, async () => {
+  if (encodedProps) props = props?.length ? __rpcDes(props) : undefined;
   const handler = __cell.objectEntrypoints[name];
   if (handler !== undefined) {
     if (typeof handler[method] !== "function")
       throw __noHandler(name, method);
     const ctx = __beginEvent(props);
     try {
-      return await __ctxRun(undefined,
-        () => handler[method](arg, __cell.env, ctx));
+      return await __invokeRestoredHttp(restore, () => handler[method](arg, __cell.env, ctx));
     } finally {
       __endEvent();
     }
@@ -6859,8 +6988,8 @@ const __dispatchEntrypointMethod = async (name, method, arg, props) => {
   const inst = __newEntrypointInstance(name, props);
   if (typeof inst[method] !== "function")
     throw __noHandler(name, method);
-  return await __ctxRun(undefined, () => inst[method](arg));
-};
+  return await __invokeRestoredHttp(restore, () => inst[method](arg));
+});
 // Invoke a handler inside the event frame that the host already opened. A
 // Queue dispatch uses this form because its host driver must receive and keep
 // driving the handler's waitUntil aggregate after the settlement is returned.
@@ -6878,11 +7007,9 @@ const __dispatchEntrypointMethodInCurrentEvent = async (name, method, arg) => {
   return await __ctxRun(undefined, () => inst[method](arg));
 };
 const __dispatchEntrypointFetch = __celld.__dispatchEntrypointFetch =
-  (name, request, propsSc = null) =>
+  (name, request, propsSc = null, restore = null) =>
   __dispatchEntrypointMethod(
-    name, "fetch", request,
-    propsSc === null || propsSc.length === 0
-      ? undefined : __rpcDes(propsSc));
+    name, "fetch", request, propsSc, restore, true);
 __celld.__dispatchEntrypointScheduled = (name, ctrl) =>
   __dispatchEntrypointMethod(name, "scheduled", ctrl);
 // A queue batch owns mutable settlement state only while its handler runs.

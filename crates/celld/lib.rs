@@ -213,6 +213,8 @@ impl Drop for CellActivityGuard {
 #[derive(Clone, Debug, PartialEq)]
 pub struct WorkerFetchEntrypoint {
     pub name: String,
+    /// Private restored-self context, separate from caller-controlled props.
+    pub restore: Option<Vec<u8>>,
     /// The caller's `ctx.props` as V8 structured-clone bytes. An empty vector
     /// represents an omitted or `undefined` props value.
     pub props: Vec<u8>,

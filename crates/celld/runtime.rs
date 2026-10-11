@@ -1579,6 +1579,7 @@ impl RuntimeManager {
         } = admitted;
         let (reply, receive) = tokio::sync::oneshot::channel();
         let job = CellJob::Fetch {
+            restore: None,
             request_id,
             scope: cell,
             name,

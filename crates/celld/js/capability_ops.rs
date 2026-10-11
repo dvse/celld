@@ -373,6 +373,209 @@ pub(super) fn restore_control_token(
     rv.set(v8::String::new(scope, &token).unwrap().into());
 }
 
+pub(super) fn fetch(
+    scope: &mut v8::PinScope,
+    args: v8::FunctionCallbackArguments,
+    mut rv: v8::ReturnValue<v8::Value>,
+) {
+    let context = require_event_context!(scope);
+    if let Err(error) = context.charge_subrequest() {
+        return loader_throw(scope, &error);
+    }
+    let control: crate::capability::FetchControl =
+        match serde_json::from_str(&args.get(0).to_rust_string_lossy(scope)) {
+            Ok(control) => control,
+            Err(error) => return loader_throw(scope, &format!("capability HTTP control: {error}")),
+        };
+    let url = args.get(1).to_rust_string_lossy(scope);
+    let method = args.get(2).to_rust_string_lossy(scope);
+    let headers = match serde_json::from_str(&args.get(4).to_rust_string_lossy(scope)) {
+        Ok(headers) => headers,
+        Err(error) => return loader_throw(scope, &format!("capability HTTP headers: {error}")),
+    };
+    let body = if args.get(5).is_number() {
+        RequestBody::Stream(args.get(5).number_value(scope).unwrap_or(0.0) as u64)
+    } else {
+        RequestBody::Bytes(view_bytes(args.get(3)).unwrap_or_default().into())
+    };
+    let mut body_guard = match body.stream_id() {
+        // A promised Fetcher forwards in its capability's resource context,
+        // while the incoming HTTP argument initially belongs to the native
+        // call driver. Either exact owner can transfer it once; never recover
+        // an arbitrary stream from the process-wide registry.
+        Some(id) => match context
+            .transfer_body_stream(id)
+            .or_else(|| operation_driver_context(scope)?.transfer_body_stream(id))
+        {
+            Some(guard) => guard,
+            None => return loader_throw(scope, "capability request body is not owned"),
+        },
+        None => RequestBodyGuard::of(&body),
+    };
+    let gate = egress_gate_request(&context, celld_logic::Channel::Service);
+    let streams = http_stream_service();
+    let slot = crate::capability::CallerOrderSlot::new(
+        &control.route,
+        control.order.as_ref(),
+        control.session.as_deref(),
+    );
+    let id = asyncrt::enqueue(async move {
+        await_egress_gate(gate)
+            .await
+            .map_err(|error| format!("capability HTTP output gate: {error}"))?;
+        let response = crate::capability::fetch_ordered(
+            crate::capability::Fetch {
+                control,
+                url,
+                method,
+                body,
+                headers,
+            },
+            slot,
+        )
+        .await
+        .map_err(|error| format!("capability HTTP: {error:#}"))?;
+        body_guard.disarm();
+        encode_http_response(response, true, &streams, |worker| {
+            websocket::park_worker_websocket_handoff(worker, &context)
+        })
+    });
+    rv.set(promise_for(scope, id));
+}
+// Keep the HTTP fields borrowed through dispatch; only the body is consumed.
+#[allow(clippy::too_many_arguments)]
+fn invoke_fetch<'s>(
+    tc: &mut v8::PinScope<'s, '_>,
+    route: &crate::capability::Route,
+    restore: Vec<u8>,
+    started: &str,
+    url: &str,
+    method: &str,
+    body: RequestBody,
+    headers: &[(String, String)],
+) -> Result<v8::Local<'s, v8::Value>> {
+    let token = crate::capability::validate(route)?;
+    let dispatch = internal_function(tc, "__dispatchCapabilityFetch")?;
+    let token = v8::String::new(tc, &token).unwrap();
+    let restore = bytes_value(tc, restore);
+    let started = v8::String::new(tc, started).unwrap();
+    let request = make_incoming_request(tc, url, method, body, headers)?;
+    let recv = v8::undefined(tc).into();
+    dispatch
+        .call(tc, recv, &[token.into(), restore, request, started.into()])
+        .ok_or_else(|| anyhow!("capability HTTP dispatch threw"))
+}
+pub(super) fn begin_fetch(
+    tc: &mut v8::PinScope,
+    props: Vec<u8>,
+    url: String,
+    method: String,
+    body: RequestBody,
+    headers: Vec<(String, String)>,
+    reply: tokio::sync::oneshot::Sender<Result<HttpResponse>>,
+) -> Begun {
+    let invocation = match serde_json::from_slice::<crate::capability::FetchInvocation>(&props) {
+        Ok(invocation) => invocation,
+        Err(error) => {
+            let _ = reply.send(Err(error.into()));
+            return Begun::Nothing;
+        }
+    };
+    let route = invocation.control.route;
+    let restore = invocation.control.restore;
+    let started_ticket = invocation.started;
+    if let Err(error) = crate::capability::validate(&route) {
+        let _ = reply.send(Err(error));
+        return Begun::Nothing;
+    }
+    let body_stream_id = body.stream_id();
+    if let Some(scope) = route.storage_scope.clone() {
+        return start_cell_event(
+            tc,
+            &scope,
+            Answer::Fetch(reply),
+            None,
+            body_stream_id,
+            false,
+            |tc| {
+                invoke_fetch(
+                    tc,
+                    &route,
+                    restore,
+                    &started_ticket,
+                    &url,
+                    &method,
+                    body,
+                    &headers,
+                )
+            },
+        );
+    }
+    let runtime_state = actor_runtime_state(tc);
+    let context = IoContext::tracked(&runtime_state);
+    if let Some(stream) = body_stream_id {
+        context.own_body_stream(stream);
+    }
+    let guard = CurrentGuard::enter(context.clone());
+    let previous = install_io_context(tc, &context);
+    context.begin_cpu_turn();
+    let started = (|| {
+        begin_event_context(tc)?;
+        let ret = invoke_fetch(
+            tc,
+            &route,
+            restore,
+            &started_ticket,
+            &url,
+            &method,
+            body,
+            &headers,
+        )?;
+        match ret.try_cast::<v8::Promise>() {
+            Ok(promise) => Ok(promise),
+            Err(_) => resolved_promise(tc, ret),
+        }
+    })();
+    let result = match started {
+        Ok(promise) => {
+            tc.perform_microtask_checkpoint();
+            Begun::Running(Box::new(InFlight {
+                runtime_state,
+                promise: v8::Global::new(tc, promise),
+                context: context.clone(),
+                scope: None,
+                writes_before: None,
+                request_id: None,
+                active_request_id: None,
+                reply: Some(Answer::Fetch(reply)),
+                gated_reply: None,
+                background: None,
+                completed_cell_event: false,
+                ops: HashSet::new(),
+                io_context_ops: HashSet::new(),
+                adopted_ops: HashMap::new(),
+                cancel_own_ops: false,
+                unrefed_ops: HashSet::new(),
+                alarm: None,
+                alarm_timed_out: false,
+                started: Instant::now(),
+                trace: None,
+                failure: None,
+                tail_report: None,
+            }))
+        }
+        Err(error) => {
+            let _ = end_event_context(tc);
+            let _ = context.finish_cpu_turn();
+            let _ = reply.send(Err(error));
+            Begun::Nothing
+        }
+    };
+    restore_io_context(tc, previous);
+    drop(guard);
+    result
+}
+
 pub(super) fn packet(
     scope: &mut v8::PinScope,
     args: v8::FunctionCallbackArguments,

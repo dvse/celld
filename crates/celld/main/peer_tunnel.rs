@@ -54,6 +54,7 @@ const CONTROL_HEADERS: [&str; 4] = [SCOPE_HEADER, NAME_HEADER, REQUEST_ID_HEADER
 enum TunnelKind {
     Do,
     Rpc,
+    CapabilityHttp,
 }
 
 /// The control fields of one tunneled call, carried as inner-request headers
@@ -121,6 +122,7 @@ pub(crate) fn accept(mut request: Request<Incoming>, app: AppHandle) -> HttpRepl
     {
         Some(b"do") => TunnelKind::Do,
         Some(b"rpc") => TunnelKind::Rpc,
+        Some(b"capability-http") => TunnelKind::CapabilityHttp,
         _ => {
             return peer_response(response(StatusCode::BAD_REQUEST, "unknown tunnel kind"));
         }
@@ -139,6 +141,9 @@ pub(crate) fn accept(mut request: Request<Incoming>, app: AppHandle) -> HttpRepl
         match kind {
             TunnelKind::Do => serve_do(upgraded, app).await,
             TunnelKind::Rpc => serve_rpc(upgraded, app, source).await,
+            TunnelKind::CapabilityHttp => {
+                super::capability_http::serve(upgraded, app, source).await
+            }
         }
     });
     let mut reply = response(StatusCode::SWITCHING_PROTOCOLS, "");
@@ -451,7 +456,7 @@ fn inner_request(
 /// fresh tunnel — the same stale keep-alive race every h1 pool has. A
 /// streamed body is not replayable; its pooled failure surfaces as the
 /// attempt failure the caller already handles.
-async fn send_inner(
+pub(super) async fn send_inner(
     peer: &Peer<'_>,
     kind: &'static str,
     build: impl Fn(TunnelBody) -> anyhow::Result<Request<TunnelBody>>,
@@ -459,7 +464,9 @@ async fn send_inner(
 ) -> anyhow::Result<Response<PooledResponseBody>> {
     let key = format!("{}#{kind}", peer.addr);
     let replay = match &body {
-        celld::js::RequestBody::Bytes(bytes) if kind != "rpc" => Some(bytes.clone()),
+        celld::js::RequestBody::Bytes(bytes) if kind != "capability-http" && kind != "rpc" => {
+            Some(bytes.clone())
+        }
         celld::js::RequestBody::Bytes(_) => None,
         celld::js::RequestBody::Stream(_) => None,
     };

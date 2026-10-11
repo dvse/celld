@@ -1,0 +1,1 @@
+{"name": "r9-07", "main": "index.js", "compatibility_date": "2026-08-01", "compatibility_flags": ["allow_irrevocable_stub_storage"], "durable_objects": {"bindings": [{"name": "CALLER", "class_name": "Caller"}, {"name": "SOURCE", "class_name": "Source"}, {"name": "BODY", "class_name": "Body"}]}, "migrations": [{"tag": "v1", "new_sqlite_classes": ["Caller", "Source", "Body"]}]}
