@@ -1405,6 +1405,8 @@ impl RuntimeManager {
     ) -> anyhow::Result<()> {
         // No facet opens once the stop begins; the facet loop below stops
         // the streams this answers again, with any that opened before.
+        let facet_mutations = crate::facet_snapshot::root(cell, epoch);
+        facet_mutations.stopping();
         self.facets.stopping(cell, epoch);
         if let Some(engine) = crate::container::engine_if_ready() {
             // Only an idle eviction keeps the cell on this node, so only it
@@ -1464,6 +1466,9 @@ impl RuntimeManager {
         // and before the facet streams stop, so no write reaches a file that
         // the facet's eviction unlinked.
         crate::js::release_root_facets(cell, epoch, crate::js::RootRelease::Stop).await;
+        // No asynchronous copy/delete may write beyond stream close and the
+        // ownership release which follows it.
+        let _facet_mutations_stopped = facet_mutations.stopped().await;
         let Some(replication) = &self.replication else {
             self.facets.forget(cell, epoch);
             return Ok(());

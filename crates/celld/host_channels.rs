@@ -13,7 +13,7 @@ use crate::ws_registry::OutboundWsReq;
 use anyhow::Result;
 #[cfg(celld_internal_tests)]
 use std::cell::RefCell;
-use std::sync::OnceLock;
+use std::sync::{Arc, OnceLock};
 
 /// A ticket asking the actor whether an outbound effect may leave the process.
 ///
@@ -54,6 +54,28 @@ pub enum FacetReq {
         root: String,
         epoch: u64,
         names: Vec<String>,
+        reply: tokio::sync::oneshot::Sender<Result<()>>,
+    },
+    /// Replace facet `destination` with a durable copy of facet `source`.
+    Clone {
+        root: String,
+        epoch: u64,
+        source: Vec<String>,
+        destination: Vec<String>,
+        reply: tokio::sync::oneshot::Sender<Result<()>>,
+    },
+    /// Capture at the synchronous clone/delete boundary, while the root's
+    /// SQLite cut excludes concurrent native storage operations.
+    Capture {
+        root: String,
+        epoch: u64,
+        source: Option<Vec<String>>,
+        destination: Vec<String>,
+        cut: tokio::sync::OwnedRwLockWriteGuard<()>,
+        reply: std::sync::mpsc::SyncSender<Result<Arc<crate::facet_snapshot::Mutation>>>,
+    },
+    Apply {
+        mutation: Arc<crate::facet_snapshot::Mutation>,
         reply: tokio::sync::oneshot::Sender<Result<()>>,
     },
     /// Prove every committed write of the stream durable.

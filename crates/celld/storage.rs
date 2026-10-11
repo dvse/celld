@@ -89,6 +89,30 @@ struct OpenCell {
     /// read-only answer reports what it observed only above it, and a reader
     /// on a cell no handler has written asks for no proof.
     published_position: Option<u64>,
+    snapshots: Arc<crate::facet_snapshot::Root>,
+}
+
+impl OpenCell {
+    fn snapshot_access(&self) -> Arc<tokio::sync::OwnedRwLockReadGuard<()>> {
+        let root = match &self.backing {
+            StorageBacking::File { root_scope, .. }
+            | StorageBacking::Embedded { root_scope, .. } => root_scope,
+        };
+        self.snapshots.enter(root, self.epoch)
+    }
+}
+pub(crate) fn facet_snapshot_access(
+    scope: &str,
+) -> Option<Arc<tokio::sync::OwnedRwLockReadGuard<()>>> {
+    dbs(|d| d.borrow().get(scope).map(OpenCell::snapshot_access))
+}
+pub(crate) fn facet_mutation_proofs(scope: &str) -> crate::facet_snapshot::Proofs {
+    dbs(|d| {
+        d.borrow()
+            .get(scope)
+            .map(|cell| cell.snapshots.proofs())
+            .unwrap_or_default()
+    })
 }
 
 enum StorageBacking {
@@ -356,6 +380,7 @@ impl Drop for SqlCursor {
         if self.statement.is_null() {
             return;
         }
+        let _snapshot_access = facet_snapshot_access(&self.scope);
         let statement = std::mem::replace(&mut self.statement, std::ptr::null_mut());
         if let Some(query) = self.cache_query.take() {
             recycle_sql_statement(&self.scope, &query, statement);
@@ -810,6 +835,13 @@ fn finish_open(
     sqlite_vec: bool,
     backing: StorageBacking,
 ) -> anyhow::Result<()> {
+    let root_scope = match &backing {
+        StorageBacking::File { root_scope, .. } | StorageBacking::Embedded { root_scope, .. } => {
+            root_scope
+        }
+    };
+    let snapshots = crate::facet_snapshot::root(root_scope, epoch);
+    let _snapshot_access = snapshots.enter(root_scope, epoch);
     // SQLite's default lookaside arena reserves 48 KiB for every connection.
     // A worker keeps one connection for every resident cell, so the arenas
     // consume 48 MiB per 1,024 cells even when the application does no SQL.
@@ -878,6 +910,7 @@ fn finish_open(
                 replicated_wake,
                 backing,
                 published_position: None,
+                snapshots,
             },
         )
     });
@@ -902,6 +935,12 @@ pub(crate) fn embedded_facets(root: &str) -> Vec<String> {
 /// Drop `scope`'s connection (evict) so the replicator can release the
 /// file.
 pub fn close(scope: &str) {
+    dbs(|d| {
+        if let Some(cell) = d.borrow().get(scope) {
+            cell.snapshots.abandon(Some(scope));
+        }
+    });
+    let _snapshot_access = facet_snapshot_access(scope);
     close_sync_list_cursors(scope);
     close_sql_cursors(scope);
     close_sql_statement_cache(scope);
@@ -918,14 +957,20 @@ pub fn close(scope: &str) {
 }
 
 fn with<T>(scope: &str, f: impl FnOnce(&Connection) -> T) -> Option<T> {
-    dbs(|d| d.borrow().get(scope).map(|cell| f(&cell.connection)))
+    dbs(|d| {
+        d.borrow().get(scope).map(|cell| {
+            let _access = cell.snapshot_access();
+            f(&cell.connection)
+        })
+    })
 }
 
 fn with_mut<T>(scope: &str, f: impl FnOnce(&mut Connection) -> T) -> Option<T> {
     dbs(|d| {
-        d.borrow_mut()
-            .get_mut(scope)
-            .map(|cell| f(&mut cell.connection))
+        d.borrow_mut().get_mut(scope).map(|cell| {
+            let _access = cell.snapshot_access();
+            f(&mut cell.connection)
+        })
     })
 }
 
@@ -1096,6 +1141,8 @@ pub(crate) fn open_embedded(
     restored: bool,
     sqlite_vec: bool,
 ) -> anyhow::Result<()> {
+    let state = crate::facet_snapshot::root(&parent.root_scope, parent.epoch);
+    let _snapshot_access = state.enter(&parent.root_scope, parent.epoch);
     anyhow::ensure!(parent.facet_path.len() < 3, "Facet nesting depth limit exceeded. The maximum depth including the root Durable Object is 4.");
     let mut facet_path = parent.facet_path.clone();
     facet_path.push(name.to_string());
@@ -1155,6 +1202,8 @@ pub(crate) fn open_embedded(
 /// Delete the legacy `_cf_FACETS` images of a facet and every facet below it,
 /// so a deleted facet cannot import its old image when it is recreated.
 pub(crate) fn delete_legacy_facet(parent: &StorageIdentity, name: &str) -> anyhow::Result<()> {
+    let state = crate::facet_snapshot::root(&parent.root_scope, parent.epoch);
+    let _snapshot_access = state.enter(&parent.root_scope, parent.epoch);
     let mut facet_path = parent.facet_path.clone();
     facet_path.push(name.to_string());
     let mut root = Connection::open(&parent.root_path)?;
@@ -2119,6 +2168,7 @@ pub fn sql_cursor_next(cursor_id: u64) -> Result<(Option<Vec<SqlValue>>, u64), S
             cursors.remove(&cursor_id);
             return Err(error);
         }
+        let _snapshot_access = facet_snapshot_access(&cursor.scope);
         // SAFETY: the cursor owns its statement on a connection that remains
         // live until the cursor is removed.
         let started_in_transaction =

@@ -1,0 +1,1 @@
+{"id": "R8-04", "description": "R8-04 carried unchanged as R9-04: Loader/facet RPC admission precedes asynchronous barriers", "command": ["python3", "run.py"], "runtimes": ["celld", "workerd"], "profiles": ["quick", "full"], "timeout_seconds": 120, "expected_failure": null}

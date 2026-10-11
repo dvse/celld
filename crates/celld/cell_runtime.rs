@@ -232,6 +232,8 @@ impl CellRuntime {
         epoch: u64,
         names: &[String],
     ) -> anyhow::Result<(PathBuf, bool)> {
+        let state = crate::facet_snapshot::root(root, epoch);
+        let _access = state.changing().await;
         self.facets
             .open(
                 self.replication.as_ref(),
@@ -250,6 +252,8 @@ impl CellRuntime {
         epoch: u64,
         names: &[String],
     ) -> anyhow::Result<()> {
+        let state = crate::facet_snapshot::root(root, epoch);
+        let _access = state.changing().await;
         self.facets
             .delete(
                 self.replication.as_ref(),
@@ -259,6 +263,278 @@ impl CellRuntime {
                 names,
             )
             .await
+    }
+
+    /// Snapshot committed pages for the entire logical source subtree. The
+    /// synchronous caller holds the root's SQLite cut until this returns.
+    pub async fn capture_facet_mutation(
+        &self,
+        root: &str,
+        epoch: u64,
+        source: Option<&[String]>,
+        destination: &[String],
+    ) -> anyhow::Result<Arc<crate::facet_snapshot::Mutation>> {
+        use crate::facet_snapshot::{Database, Image};
+        let state = crate::facet_snapshot::root(root, epoch);
+        let mut image = Image::new();
+        if let Some(source) = source {
+            let source_cell = crate::engine_api::facet_cell(root, source);
+            if !state.covered(&source_cell) {
+                let snapshot_dir = self.data_dir.join("facet-snapshots");
+                std::fs::create_dir_all(&snapshot_dir)?;
+                let directory = Arc::new(tempfile::tempdir_in(snapshot_dir)?);
+                for (index, suffix) in self
+                    .facet_subtree(root, epoch, &source_cell)
+                    .await?
+                    .into_iter()
+                    .enumerate()
+                {
+                    let from = format!("{source_cell}{suffix}");
+                    let (from_path, _) = self
+                        .facets
+                        .open_stream(
+                            self.replication.as_ref(),
+                            |cell, epoch| self.db_path(cell, epoch),
+                            root,
+                            epoch,
+                            from.clone(),
+                        )
+                        .await?;
+                    let from_vfs = match &self.replication {
+                        Some(replication) => replication.ltx().activation_vfs(&from, epoch)?,
+                        None => None,
+                    };
+                    let path = directory.path().join(format!("{index}.sqlite"));
+                    let snapshot = path.clone();
+                    crate::asyncrt::blocking(move || {
+                        copy_database(&from_path, from_vfs.as_deref(), &snapshot, None)
+                    })
+                    .await
+                    .map_err(|error| anyhow!("facet snapshot task: {error}"))??;
+                    image.insert(
+                        suffix,
+                        Database {
+                            path,
+                            directory: directory.clone(),
+                        },
+                    );
+                }
+            }
+            image = state.overlay(&source_cell, image);
+        }
+        anyhow::ensure!(!state.is_closing(), "facet root stopped during snapshot");
+        let to = crate::engine_api::facet_cell(root, destination);
+        Ok(state.add(root.to_string(), epoch, to, destination.to_vec(), image))
+    }
+
+    /// Close/delete has been ordered by the facet manager. Persist only the
+    /// captured image; source continuations are now free to change their DBs.
+    pub async fn apply_facet_mutation(
+        &self,
+        mutation: Arc<crate::facet_snapshot::Mutation>,
+    ) -> anyhow::Result<()> {
+        let state = crate::facet_snapshot::root(&mutation.root, mutation.epoch);
+        let result = async {
+            crate::facet_snapshot::prove(mutation.previous.clone())
+                .await
+                .map_err(anyhow::Error::msg)?;
+            let _access = state.changing().await;
+            anyhow::ensure!(!state.is_closing(), "facet root is stopping");
+            self.facets
+                .delete(
+                    self.replication.as_ref(),
+                    |cell| self.data_dir.join(cell),
+                    &mutation.root,
+                    mutation.epoch,
+                    &mutation.names,
+                )
+                .await?;
+            for (suffix, database) in &mutation.image {
+                let to = format!("{}{suffix}", mutation.destination);
+                let (to_path, _) = self
+                    .facets
+                    .open_stream(
+                        self.replication.as_ref(),
+                        |cell, epoch| self.db_path(cell, epoch),
+                        &mutation.root,
+                        mutation.epoch,
+                        to.clone(),
+                    )
+                    .await?;
+                let to_vfs = match &self.replication {
+                    Some(replication) => replication.ltx().activation_vfs(&to, mutation.epoch)?,
+                    None => None,
+                };
+                let source = database.clone();
+                crate::asyncrt::blocking(move || {
+                    let _directory = &source.directory;
+                    copy_database(&source.path, None, &to_path, to_vfs.as_deref())
+                })
+                .await
+                .map_err(|error| anyhow!("facet copy task: {error}"))??;
+                if let Some(replication) = &self.replication {
+                    replication
+                        .ensure_durable(&to, mutation.epoch, false)
+                        .await?;
+                }
+            }
+            Ok::<_, anyhow::Error>(())
+        }
+        .await;
+        let _access = state.changing().await;
+        state.finish(
+            &mutation,
+            result
+                .as_ref()
+                .map(|_| ())
+                .map_err(|error| format!("facet mutation: {error:#}")),
+        );
+        result
+    }
+
+    /// workerd's `cloneFacet` (server/server.c++ `cloneFacet`,
+    /// `cloneFacetImpl`): delete `destination` and everything below it, then
+    /// copy `source`'s whole subtree onto it, each nested facet keeping its
+    /// name, so the copy of `source/<n>` is `destination/<n>`. A stream with
+    /// no data is not copied, which leaves its destination empty, as workerd
+    /// leaves a destination with no file. The isolate has already aborted
+    /// `destination`; `source` keeps running, and each of its databases is
+    /// read in one read transaction, a consistent snapshot of its committed
+    /// state. The copy is written through SQLite's backup API into the
+    /// destination's own activated stream, so its replication captures it
+    /// like any write. Returns once every copied stream is durable.
+    pub async fn clone_facet(
+        &self,
+        root: &str,
+        epoch: u64,
+        source: &[String],
+        destination: &[String],
+    ) -> anyhow::Result<()> {
+        if source == destination {
+            return Ok(());
+        }
+        let source_cell = crate::engine_api::facet_cell(root, source);
+        let destination_cell = crate::engine_api::facet_cell(root, destination);
+        let streams = self.facet_subtree(root, epoch, &source_cell).await?;
+        self.delete_facet(root, epoch, destination).await?;
+        for suffix in streams {
+            let from = format!("{source_cell}{suffix}");
+            let to = format!("{destination_cell}{suffix}");
+            self.copy_facet_stream(root, epoch, from, to.clone())
+                .await?;
+            if let Some(replication) = &self.replication {
+                replication.ensure_durable(&to, epoch, false).await?;
+            }
+        }
+        Ok(())
+    }
+
+    /// The streams of `cell`'s subtree that hold data, as suffixes of
+    /// `cell` (`""` for `cell` itself): the resident ones and, with
+    /// replication, those in the bucket; without it, those with a local
+    /// database file.
+    async fn facet_subtree(
+        &self,
+        root: &str,
+        epoch: u64,
+        cell: &str,
+    ) -> anyhow::Result<std::collections::BTreeSet<String>> {
+        let below = format!("{cell}/");
+        let mut streams: std::collections::BTreeSet<String> = self
+            .facets
+            .resident(root, epoch)
+            .into_iter()
+            .filter(|stream| stream == cell || stream.starts_with(&below))
+            .collect();
+        match &self.replication {
+            Some(replication) => streams.extend(replication.ltx().streams_with_data(cell).await?),
+            None => {
+                let mut pending = vec![cell.to_string()];
+                while let Some(stream) = pending.pop() {
+                    if crate::asyncrt::fs()
+                        .metadata(&self.db_path(&stream, epoch))
+                        .is_ok()
+                    {
+                        streams.insert(stream.clone());
+                    }
+                    let children = self.data_dir.join(&stream).join("facets");
+                    if let Ok(entries) = crate::asyncrt::fs().read_dir(&children) {
+                        for entry in entries {
+                            if let Some(name) = entry.file_name.to_str() {
+                                pending.push(format!("{stream}/facets/{name}"));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        Ok(streams
+            .into_iter()
+            .map(|stream| stream[cell.len()..].to_string())
+            .collect())
+    }
+
+    /// Copy one facet stream's committed database onto another, activating
+    /// both. The source is read in a single backup step, so the copy is one
+    /// read transaction's snapshot even while the source's own facet writes.
+    async fn copy_facet_stream(
+        &self,
+        root: &str,
+        epoch: u64,
+        from: String,
+        to: String,
+    ) -> anyhow::Result<()> {
+        let open = |stream: String| {
+            self.facets.open_stream(
+                self.replication.as_ref(),
+                |cell, epoch| self.db_path(cell, epoch),
+                root,
+                epoch,
+                stream,
+            )
+        };
+        let (from_path, _) = open(from.clone()).await?;
+        let (to_path, _) = open(to.clone()).await?;
+        let vfs = |stream: &str| -> anyhow::Result<Option<String>> {
+            match &self.replication {
+                Some(replication) => replication.ltx().activation_vfs(stream, epoch),
+                None => Ok(None),
+            }
+        };
+        let (from_vfs, to_vfs) = (vfs(&from)?, vfs(&to)?);
+        crate::asyncrt::blocking(move || -> anyhow::Result<()> {
+            let open = |path: &std::path::Path,
+                        flags: rusqlite::OpenFlags,
+                        vfs: Option<&str>|
+             -> rusqlite::Result<rusqlite::Connection> {
+                match vfs {
+                    Some(vfs) => rusqlite::Connection::open_with_flags_and_vfs(path, flags, vfs),
+                    None => rusqlite::Connection::open_with_flags(path, flags),
+                }
+            };
+            let source = open(
+                &from_path,
+                rusqlite::OpenFlags::SQLITE_OPEN_READ_ONLY,
+                from_vfs.as_deref(),
+            )?;
+            let mut destination =
+                open(&to_path, rusqlite::OpenFlags::default(), to_vfs.as_deref())?;
+            destination.pragma_update(None, "journal_mode", "WAL")?;
+            let backup = rusqlite::backup::Backup::new(&source, &mut destination)?;
+            // `step(-1)` copies every page in one step, under one read
+            // transaction of the source.
+            loop {
+                match backup.step(-1)? {
+                    rusqlite::backup::StepResult::Done => break,
+                    rusqlite::backup::StepResult::More => {}
+                    _ => std::thread::sleep(std::time::Duration::from_millis(5)),
+                }
+            }
+            Ok(())
+        })
+        .await
+        .map_err(|error| anyhow::anyhow!("facet clone task failed: {error}"))??;
+        Ok(())
     }
 
     /// Prove every committed write of a facet's stream durable.
@@ -349,4 +625,30 @@ mod generation_dispatch_tests {
         assert!(error.to_string().contains("generation 1 has retired"));
         assert!(dispatch_generation_position(4, 3, [].into_iter()).is_err());
     }
+}
+
+// Both sides use SQLite backup, including fault-in VFS reads. A captured
+// image is an ordinary closed file and never shares a mutable source WAL.
+fn copy_database(
+    from: &Path,
+    from_vfs: Option<&str>,
+    to: &Path,
+    to_vfs: Option<&str>,
+) -> anyhow::Result<()> {
+    let open = |path: &Path, flags, vfs: Option<&str>| match vfs {
+        Some(vfs) => rusqlite::Connection::open_with_flags_and_vfs(path, flags, vfs),
+        None => rusqlite::Connection::open_with_flags(path, flags),
+    };
+    let source = open(from, rusqlite::OpenFlags::SQLITE_OPEN_READ_ONLY, from_vfs)?;
+    let mut destination = open(to, rusqlite::OpenFlags::default(), to_vfs)?;
+    destination.pragma_update(None, "journal_mode", "WAL")?;
+    let backup = rusqlite::backup::Backup::new(&source, &mut destination)?;
+    loop {
+        match backup.step(-1)? {
+            rusqlite::backup::StepResult::Done => break,
+            rusqlite::backup::StepResult::More => {}
+            _ => std::thread::sleep(std::time::Duration::from_millis(5)),
+        }
+    }
+    Ok(())
 }
