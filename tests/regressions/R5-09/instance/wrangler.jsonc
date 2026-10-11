@@ -1,0 +1,1 @@
+{"name": "r5-09-instance", "main": "index.js", "compatibility_date": "2026-08-01", "compatibility_flags": ["workers_api_getters_setters_on_instance"]}
