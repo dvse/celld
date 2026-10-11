@@ -1,0 +1,1 @@
+{"id": "R6-03", "description": "RPC stream session ownership across three processes", "command": ["python3", "fleet.py"], "runtimes": ["celld"], "profiles": ["full"], "timeout_seconds": 180, "expected_failure": null}

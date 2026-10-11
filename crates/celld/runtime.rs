@@ -1042,9 +1042,9 @@ impl RuntimeManager {
         generation: GenerationId,
         script: &str,
         entrypoint: String,
-        props: Vec<u8>,
+        props: bytes::Bytes,
         operation: crate::WorkerRpcOperation,
-    ) -> anyhow::Result<Vec<u8>> {
+    ) -> anyhow::Result<bytes::Bytes> {
         let generation = self.generation_by_id(generation)?;
         generation
             .service(script)
@@ -2256,6 +2256,29 @@ pub fn drive(
     )
 }
 
+/// Drive one call on a live capability: an `RpcTarget` or stub a session
+/// exported.
+///
+/// Workerd ends such a call only when the session ends: its completion
+/// membrane waits until no capability crosses the session in either
+/// direction, or the context aborts (api/worker-rpc.c++:3442-3449). A call
+/// that awaits something only a later call of the same session settles is
+/// therefore not hung, and nothing bounds the call's wall time; it ends when
+/// its caller drops it (`capability::invoke_local`'s `Running`). So the
+/// handler budget, which is otherwise the verdict on an event that waits on
+/// nothing, does not apply here.
+pub fn drive_capability(
+    slot: Arc<crate::pool::Slot>,
+    job: crate::WorkerJob,
+) -> impl std::future::Future<Output = ()> + Send + 'static {
+    drive_affiliated_with_budget(
+        slot.affiliate(),
+        StatelessWorkerJob::driver_owned(job),
+        None,
+        Duration::MAX,
+    )
+}
+
 fn drive_affiliated(
     affiliation: crate::pool::Affiliation,
     job: StatelessWorkerJob,
@@ -3045,9 +3068,9 @@ impl StatelessRuntime {
     async fn rpc(
         &self,
         entrypoint: String,
-        props: Vec<u8>,
+        props: bytes::Bytes,
         operation: crate::WorkerRpcOperation,
-    ) -> anyhow::Result<Vec<u8>> {
+    ) -> anyhow::Result<bytes::Bytes> {
         self.dispatch(StatelessVerb::Rpc, move |reply| crate::WorkerJob::Rpc {
             entrypoint,
             operation,

@@ -1,0 +1,1 @@
+{"id": "R8-05", "description": "R8-05 carried unchanged as R9-05: Routed AbortSignal propagation across two/three processes", "command": ["python3", "run.py"], "runtimes": ["celld", "workerd"], "profiles": ["quick", "full"], "timeout_seconds": 150, "expected_failure": null}

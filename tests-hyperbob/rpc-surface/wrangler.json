@@ -1,0 +1,3 @@
+{"name": "rpc-surface", "main": "index.js", "compatibility_date": "2026-08-14",
+ "services": [{"binding": "SELF", "service": "rpc-surface"},
+              {"binding": "API", "service": "rpc-surface", "entrypoint": "Api"}]}

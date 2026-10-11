@@ -62,20 +62,39 @@ pub(super) fn call(
     args: v8::FunctionCallbackArguments,
     mut rv: v8::ReturnValue<v8::Value>,
 ) {
-    request(scope, args, &mut rv, false);
+    request(scope, args, &mut rv, false, false);
 }
 pub(super) fn release(
     scope: &mut v8::PinScope,
     args: v8::FunctionCallbackArguments,
     mut rv: v8::ReturnValue<v8::Value>,
 ) {
-    request(scope, args, &mut rv, true);
+    request(scope, args, &mut rv, true, false);
+}
+// Typed AbortSignal subscriptions run while application work is active, but
+// cannot themselves keep a receiving event alive.
+pub(super) fn signal_wait(
+    scope: &mut v8::PinScope,
+    args: v8::FunctionCallbackArguments,
+    mut rv: v8::ReturnValue<v8::Value>,
+) {
+    request(scope, args, &mut rv, false, true);
+}
+pub(super) fn signal_active(
+    scope: &mut v8::PinScope,
+    args: v8::FunctionCallbackArguments,
+    mut rv: v8::ReturnValue<v8::Value>,
+) {
+    let active = parse_request_id(&args.get(0).to_rust_string_lossy(scope))
+        .is_some_and(|id| do_call_cancels().lock().unwrap().contains_key(&id));
+    rv.set(v8::Boolean::new(scope, active).into());
 }
 fn request(
     scope: &mut v8::PinScope,
     args: v8::FunctionCallbackArguments,
     rv: &mut v8::ReturnValue<v8::Value>,
     release: bool,
+    unrefed: bool,
 ) {
     let context = require_event_context!(scope);
     if !release {
@@ -121,29 +140,72 @@ fn request(
         route,
         order,
         path,
-        args: bytes,
+        args: match bytes {
+            Some(bytes) => match crate::capability_packet::owned(bytes) {
+                Ok(bytes) => Some(bytes),
+                Err(error) => return loader_throw(scope, &error.to_string()),
+            },
+            None => None,
+        },
         release,
+        session: if args.get(if release { 2 } else { 4 }).is_string() {
+            Some(
+                args.get(if release { 2 } else { 4 })
+                    .to_rust_string_lossy(scope),
+            )
+        } else {
+            None
+        },
+        transfer: None,
         prepared_wire: None,
     };
     if let Err(error) = crate::capability::prepare_request(&mut request) {
         return loader_throw(scope, &error.to_string());
     }
+    if release {
+        // Reference teardown has no application output and cannot depend on
+        // a dying actor's driver or failed output gate. The authenticated
+        // session owns delivery, just as native packet-discard releases do.
+        asyncrt::spawn(async move {
+            let _ = crate::capability::call(request).await;
+        });
+        return;
+    }
     let gate = egress_gate_request(&context, celld_logic::Channel::Service);
+    // The sequence slot is owned from here: a failed or canceled output gate
+    // resolves it at the callee instead of leaving a gap in the lane.
+    let slot = crate::capability::CallerOrderSlot::new(
+        &request.route,
+        request.order.as_ref(),
+        request.session.as_deref(),
+    );
     let pending = async move {
         await_egress_gate(gate)
             .await
             .map_err(|e| format!("capability output gate failed: {e}"))?;
-        crate::capability::call(request)
+        crate::capability::call_ordered(request, slot)
             .await
             .map_err(crate::capability::op_failure)
     };
-    // Release is teardown, and must outlive an unawaited handler result.
-    let id = if release {
-        asyncrt::enqueue_io_context(pending)
+    if unrefed {
+        let request_id = next_request_id();
+        let (cancel_tx, cancel_rx) = tokio::sync::oneshot::channel();
+        do_call_cancels().lock().unwrap().insert(request_id, cancel_tx);
+        let guard = DoCallCancelGuard::new(request_id);
+        let id = asyncrt::enqueue_unrefed(async move {
+            let _guard = guard;
+            tokio::select! {
+                result = pending => result,
+                _ = cancel_rx => Err("AbortSignal subscription canceled".into()),
+            }
+        });
+        let promise = promise_for(scope, id);
+        attach_cancel_id(scope, promise, request_id);
+        rv.set(promise);
     } else {
-        asyncrt::enqueue(pending)
-    };
-    rv.set(promise_for(scope, id));
+        let id = asyncrt::enqueue(pending);
+        rv.set(promise_for(scope, id));
+    }
 }
 
 fn invoke<'s>(
@@ -165,7 +227,7 @@ fn invoke<'s>(
     let token = v8::String::new(tc, &token).unwrap();
     let (path, args) = match operation {
         crate::WorkerRpcOperation::Get { path } => (path, v8::null(tc).into()),
-        crate::WorkerRpcOperation::Call { path, args } => (path, bytes_value(tc, args)),
+        crate::WorkerRpcOperation::Call { path, args } => (path, rpc_bytes_value(tc, args)),
     };
     let path: Vec<v8::Local<v8::Value>> = path
         .iter()
@@ -182,10 +244,10 @@ fn invoke<'s>(
 
 pub(super) fn begin(
     tc: &mut v8::PinScope,
-    props: Vec<u8>,
+    props: bytes::Bytes,
     operation: crate::WorkerRpcOperation,
     release: bool,
-    reply: tokio::sync::oneshot::Sender<Result<Vec<u8>>>,
+    reply: tokio::sync::oneshot::Sender<Result<bytes::Bytes>>,
 ) -> Begun {
     let invocation = match serde_json::from_slice::<crate::capability::Invocation>(&props) {
         Ok(invocation) => invocation,
@@ -294,4 +356,111 @@ pub(super) fn started(
     _rv: v8::ReturnValue<v8::Value>,
 ) {
     crate::capability::acknowledge_start(&args.get(0).to_rust_string_lossy(scope));
+}
+
+
+pub(super) fn packet(
+    scope: &mut v8::PinScope,
+    args: v8::FunctionCallbackArguments,
+    mut rv: v8::ReturnValue<v8::Value>,
+) {
+    let result = (|| -> Result<_> {
+        let routes: Vec<String> = serde_json::from_str(&args.get(1).to_rust_string_lossy(scope))?;
+        let routes = routes
+            .into_iter()
+            .map(|r| serde_json::from_str(&r))
+            .collect::<std::result::Result<Vec<_>, _>>()?;
+        crate::capability_packet::create(view_bytes(args.get(0)).context("packet bytes")?, routes)
+    })();
+    match result {
+        Ok(buffer) => rv.set(rpc_buffer_value(scope, buffer)),
+        Err(error) => loader_throw(scope, &format!("RPC packet: {error}")),
+    }
+}
+pub(super) fn packet_loader(
+    scope: &mut v8::PinScope,
+    args: v8::FunctionCallbackArguments,
+    mut rv: v8::ReturnValue<v8::Value>,
+) {
+    let result = view_bytes(args.get(0))
+        .context("loader props bytes")
+        .and_then(crate::capability_packet::loader);
+    match result {
+        Ok(buffer) => rv.set(rpc_buffer_value(scope, buffer)),
+        Err(error) => loader_throw(scope, &format!("loader props: {error}")),
+    }
+}
+pub(super) fn packet_inspect(
+    scope: &mut v8::PinScope,
+    args: v8::FunctionCallbackArguments,
+    mut rv: v8::ReturnValue<v8::Value>,
+) {
+    match crate::capability_packet::inspect(&view_bytes(args.get(0)).unwrap_or_default()) {
+        Ok(value) => rv.set(
+            v8::String::new(scope, &serde_json::to_string(&value).unwrap())
+                .unwrap()
+                .into(),
+        ),
+        Err(error) => loader_throw(scope, &format!("RPC packet inspection: {error}")),
+    }
+}
+pub(super) fn packet_take(
+    scope: &mut v8::PinScope,
+    args: v8::FunctionCallbackArguments,
+    _rv: v8::ReturnValue<v8::Value>,
+) {
+    let result = (|| -> Result<()> {
+        let route = serde_json::from_str(&args.get(1).to_rust_string_lossy(scope))?;
+        crate::capability_packet::take(&view_bytes(args.get(0)).unwrap_or_default(), &route)
+    })();
+    if let Err(error) = result {
+        loader_throw(scope, &format!("RPC packet reference: {error}"));
+    }
+}
+pub(super) fn packet_cancel(
+    scope: &mut v8::PinScope,
+    args: v8::FunctionCallbackArguments,
+    _rv: v8::ReturnValue<v8::Value>,
+) {
+    if let Err(error) =
+        crate::capability_packet::cancel(&view_bytes(args.get(0)).unwrap_or_default())
+    {
+        loader_throw(scope, &format!("RPC packet cancellation: {error}"));
+    }
+}
+pub(super) fn packet_adopt(
+    scope: &mut v8::PinScope,
+    args: v8::FunctionCallbackArguments,
+    mut rv: v8::ReturnValue<v8::Value>,
+) {
+    let bytes = view_bytes(args.get(0)).unwrap_or_default();
+    match crate::capability_packet::adopt(&bytes) {
+        Ok(value) => rv.set(
+            v8::String::new(scope, &serde_json::to_string(&value).unwrap())
+                .unwrap()
+                .into(),
+        ),
+        Err(error) => loader_throw(scope, &format!("RPC packet adoption: {error}")),
+    }
+}
+
+pub(super) fn cancel(
+    tc: &mut v8::PinScope,
+    props: bytes::Bytes,
+    reply: tokio::sync::oneshot::Sender<Result<bytes::Bytes>>,
+) -> Begun {
+    let result = (|| -> Result<bytes::Bytes> {
+        let invocation: crate::capability::Invocation = serde_json::from_slice(&props)?;
+        crate::capability::validate(&invocation.route)?;
+        let function = internal_function(tc, "__cancelCapabilityCall")?;
+        let ticket = v8::String::new(tc, &invocation.started).unwrap();
+        let recv = v8::undefined(tc).into();
+        function
+            .call(tc, recv, &[ticket.into()])
+            .context("capability cancellation threw")?;
+        tc.perform_microtask_checkpoint();
+        Ok(bytes::Bytes::new())
+    })();
+    let _ = reply.send(result);
+    Begun::Nothing
 }

@@ -1,0 +1,1 @@
+{"name": "r9-05", "main": "index.js", "compatibility_date": "2026-08-01", "compatibility_flags": ["enable_abortsignal_rpc"], "durable_objects": {"bindings": [{"name": "SENDER", "class_name": "Sender"}, {"name": "RECEIVER", "class_name": "Receiver"}, {"name": "THIRD", "class_name": "Third"}]}, "migrations": [{"tag": "v1", "new_sqlite_classes": ["Sender", "Receiver", "Third"]}]}

@@ -1,0 +1,1 @@
+{"id": "R7-02", "description": "Owned arguments across authentic stale-owner retries", "command": ["python3", "run.py"], "runtimes": ["celld"], "profiles": ["full"], "timeout_seconds": 300, "expected_failure": null}

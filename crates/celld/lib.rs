@@ -40,6 +40,8 @@ mod asyncrt_contract_tests {
 }
 pub mod bucket;
 pub mod capability;
+pub mod capability_packet;
+pub mod capability_session;
 pub mod cell_cli;
 pub mod cell_dispatch;
 mod cell_host;
@@ -228,8 +230,13 @@ pub struct WorkerInvocationLimits {
 /// One operation on a Worker entrypoint. A property read has no arguments,
 /// while a call owns its complete receiver path and structured-clone payload.
 pub enum WorkerRpcOperation {
-    Get { path: Vec<String> },
-    Call { path: Vec<String>, args: Vec<u8> },
+    Get {
+        path: Vec<String>,
+    },
+    Call {
+        path: Vec<String>,
+        args: bytes::Bytes,
+    },
 }
 
 pub enum WorkerJob {
@@ -256,11 +263,11 @@ pub enum WorkerJob {
         /// encoding as `args`. It is empty when the caller sent none, which no
         /// encoded value can be. A Worker Loader entrypoint or a transferred
         /// Service Binding can set it.
-        props: Vec<u8>,
+        props: bytes::Bytes,
         invocation_limits: Option<WorkerInvocationLimits>,
         /// Completed invocation report for a loaded Worker RPC.
         tail_report: Option<tokio::sync::oneshot::Sender<String>>,
-        reply: tokio::sync::oneshot::Sender<anyhow::Result<Vec<u8>>>,
+        reply: tokio::sync::oneshot::Sender<anyhow::Result<bytes::Bytes>>,
     },
     Queue {
         queued_at: std::time::Instant,
@@ -299,6 +306,7 @@ pub fn worker_compat(metadata: &serde_json::Value) -> js::Compat {
     };
     js::Compat {
         allow_irrevocable_stub_storage: has_flag("allow_irrevocable_stub_storage"),
+        enable_abortsignal_rpc: has_flag("enable_abortsignal_rpc"),
         rpc_params_dup_stubs: switch(
             "rpc_params_dup_stubs",
             "rpc_params_transfer_stubs",

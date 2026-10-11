@@ -1,0 +1,1 @@
+{"name": "r6-02", "main": "index.js", "compatibility_date": "2026-08-01", "worker_loaders": [{"binding": "LOADER"}], "compatibility_flags": ["allow_irrevocable_stub_storage"], "durable_objects": {"bindings": [{"name": "PRODUCER", "class_name": "Producer"}]}, "migrations": [{"tag": "v1", "new_sqlite_classes": ["Producer"]}]}

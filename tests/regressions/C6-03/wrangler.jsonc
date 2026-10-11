@@ -1,0 +1,1 @@
+{"name": "lab-edge", "main": "index.js", "compatibility_date": "2026-08-14", "durable_objects": {"bindings": [{"name": "TARGET", "class_name": "Target"}]}, "migrations": [{"tag": "v1", "new_sqlite_classes": ["Target"]}]}

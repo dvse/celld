@@ -1,0 +1,1 @@
+{"id": "R9-06", "description": "Ordinary RpcPromise owns arguments and one-call clients at admission", "command": ["python3", "http_runner.py"], "runtimes": ["celld", "workerd"], "profiles": ["quick", "full"], "timeout_seconds": 120, "expected_failure": null}
