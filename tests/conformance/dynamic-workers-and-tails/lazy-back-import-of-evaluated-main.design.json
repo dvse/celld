@@ -1,0 +1,45 @@
+{
+  "id": "conformance/dynamic-workers-and-tails/lazy-back-import-of-evaluated-main",
+  "layer": "conformance",
+  "behaviour": "dynamic-workers-and-tails",
+  "title": "Lazy back-import of evaluated main",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/module-graph-stress",
+      "legacy_id": "module-graph-stress/M018"
+    }
+  ],
+  "corpus_wave": "module-graph-stress",
+  "corpus_id": "M018",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "M018",
+    "intent": "Lazy back-import of evaluated main",
+    "failure_hypothesis": "A lazy module importing the already evaluated main can deadlock or receive a second main namespace/class.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Prove main is initialized and callable.",
+      "Issue two imports of lazy module which imports main.",
+      "Assert same class inside receiver and main remains callable."
+    ],
+    "stress": "Finite graph back-edge only after main initialization; no startup TLA cycle.",
+    "oracle": "Both return true for class identity; main-live before/after.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M018",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request concurrent dispatch; no held overlap claim",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  }
+}

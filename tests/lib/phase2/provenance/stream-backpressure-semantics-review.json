@@ -1,0 +1,172 @@
+{
+  "reviewed_at_utc": "2026-10-09T07:33:08.072847+00:00",
+  "reviewer": "review_celld_test_additions",
+  "wave": "stream-backpressure-semantics",
+  "verdict": "ACCEPTED_PRIMARY_STATIC",
+  "counts": {
+    "authored": 6,
+    "accepted_primary_static": 6,
+    "accepted_characterization": 0,
+    "case_static_assertion_call_sites": 84,
+    "static_predicted_failure_candidates": 2,
+    "runtime_executions": 0,
+    "runtime_passes": 0
+  },
+  "scope": "Independent full handwritten bodies/fixture and intended public API review, with baseline and accepted-wave semantic comparison. Source/hash/JSON/Python AST and node syntax only; no fixture import, JS/SQL body execution, reference runtime, SUT, build or download.",
+  "contract_reference": "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/",
+  "contract_review": "Checked ready-epoch transitions, initialization admission, close readiness, TransformStream demand/flush ordering, and weighted readable pull decisions against the primary WHATWG snapshot. Correct intended oracles remain unchanged for source-predicted failures.",
+  "duplicate_review": "Baseline S020/B015 serialization, S024/X012 ownership handoff, S206 held pipe close, X015 native delayed consumption, and original tests/streams coarse pressure/prefetch are distinct. Generic bytes/EOF/FIFO/cleanup checks earn no extra case credit. No HWM/chunk/length parameter grid.",
+  "case_verdicts": [
+    {
+      "id": "S301",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "reason": "Weighted readiness promise epochs, including readiness with another write still held; generic FIFO is scaffold.",
+      "runtime_status": "UNRUN",
+      "source_predicted_failure": false
+    },
+    {
+      "id": "S302",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "reason": "Successful asynchronous sink start separately gates callback admission while initial readiness can already fulfill.",
+      "runtime_status": "UNRUN",
+      "source_predicted_failure": false
+    },
+    {
+      "id": "S303",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "reason": "Queued close resolves pressure readiness before either held write or close completion.",
+      "runtime_status": "UNRUN",
+      "source_predicted_failure": false
+    },
+    {
+      "id": "S304",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "reason": "Default TransformStream read demand must gate each transform; source omits this coordination.",
+      "runtime_status": "UNRUN",
+      "source_predicted_failure": true
+    },
+    {
+      "id": "S305",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "reason": "Successful held flush produces one tail before terminal EOF, with demand-compatible prefix setup.",
+      "runtime_status": "UNRUN",
+      "source_predicted_failure": false
+    },
+    {
+      "id": "S306",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "reason": "Readable weighted capacity controls pull admission after actual pull settlement; source instead counts chunks.",
+      "runtime_status": "UNRUN",
+      "source_predicted_failure": true
+    }
+  ],
+  "source_predicted_gaps": [
+    {
+      "id": "S304",
+      "source": "writable_stream.js:601-618,637-651",
+      "inference": "Ordinary transform write immediately enqueues/calls transform without a read-demand gate."
+    },
+    {
+      "id": "S306",
+      "source": "streams.js:98-102,366-395",
+      "inference": "desiredSize uses weighted queue size, but pull admission computes HWM minus queue.length."
+    }
+  ],
+  "review_corrections": [
+    "S305 issues prefix read before awaiting write, so correct HWM0 behavior can progress.",
+    "S306 joins the exact returned first pull result before a task fence and no-refill observation.",
+    "Future resource/teardown envelope now covers dev, esbuild and runtime across separate PGIDs; temporary bundles/logs/store share an owned quota domain. Single-PGID fallback disallowed."
+  ],
+  "execution_contract": {
+    "entrypoints": [
+      "GET /case/S301",
+      "GET /case/S302",
+      "GET /case/S303",
+      "GET /case/S304",
+      "GET /case/S305",
+      "GET /case/S306"
+    ],
+    "real_surface": "Actual deployed direct-celld Worker global ReadableStream/WritableStream/TransformStream/ByteLengthQueuingStrategy, no replacement stream algorithm.",
+    "normal_payload_bytes_max": 22,
+    "owners_max": 2,
+    "tracked_promises_max": 192,
+    "callbacks_max": 16,
+    "gates_max": 16,
+    "task_fences_max": 12,
+    "normal_reads_max": 4,
+    "outer_HTTP_seconds": 5,
+    "response_max_bytes": 65536,
+    "whole_wave_seconds": 180,
+    "preflight_startup_cleanup_caps_seconds": [
+      30,
+      90,
+      20
+    ],
+    "resource_envelope": {
+      "supervisor_enforced": true,
+      "runtime_descendant_domain_memory_max_bytes": 536870912,
+      "runtime_descendant_domain_cpu_cores": 1,
+      "runtime_descendant_domain_pid_max": 128,
+      "v8_heap_limit_mb": 128,
+      "request_response_max_bytes": 65536,
+      "owned_filesystem_max_bytes": 268435456,
+      "required_scope": "Proven-owned whole-descendant execution domain covering dev, bundlers and node even across separate PGIDs; for example an already provisioned cgroup.",
+      "filesystem_scope": "Temporary bundles, logs and stores all remain inside the same owned quota/cleanup domain.",
+      "single_pgid_fallback_allowed": false,
+      "independent_domain_emptiness_verification_required": true,
+      "privileged_provisioning_performed": false,
+      "source_evidence": {
+        "path": "celld-os-project/celld/crates/celld/dev.rs",
+        "line_start": 742,
+        "line_end": 746
+      }
+    },
+    "cleanup": "Open every gate; initiate both readable cancellation and writable abortion before joining; join all original/ready/closed/callback observations including those added during settlement; release owners, observe released getters, require zero pending work/locks/timers. Unsettled/native stalls require bounded external owned-domain reap.",
+    "limits_qualification": "Schedule is a deferred contract, not provisioned enforcement. Whole-domain membership, quota/limits and final emptiness/store removal require independent runtime evidence; no privileged setup or live authorization is inferred."
+  },
+  "OS_relevance": {
+    "label": "Supporting stream primitive with actual historical OS caller evidence",
+    "raw_file": "os-source-inventory/historical-4358072/raw/packages/workshop-backend/src/blueprint-archive.ts",
+    "sha256": "3169045728d1eb6a9de86afa08b1eddf8c14766affda28e8e95f1d01a2a846c1",
+    "lines": [
+      145,
+      162
+    ],
+    "qualification": "Caller constructs TransformStream and pipes prefix then content. It does not prove custom weights or user flush adoption. No full checkout/dependency/actual OS execution claim; no extra pipe case credit."
+  },
+  "static_checks": {
+    "runtime_source_pins_verified": 5,
+    "baseline_evidence_pins_verified": 17,
+    "campaign_evidence_pins_verified": 11,
+    "fixture_artifact_pins_verified": 3,
+    "source_ranges_validated": 26,
+    "case_manifest_schedule_bijection": 6,
+    "SHA256SUMS_entries": 12,
+    "JavaScript_syntax_files": 2,
+    "Python_AST_only_files": 2,
+    "author_validator_executed": false,
+    "no_prior_case_ID_collisions": true
+  },
+  "authored_artifact_sha256": {
+    "README.md": "9e6effc19b98260e0ba6eb694687dc60cde0378c4d7ad0e09f1b9e81093f3866",
+    "SHA256SUMS": "65179a7b045191cbc075054ab9ed0c052047ef92d642958293652688f8733551",
+    "author_manifest.py": "d57ec5b17358cd2502388f75815f8468327e9fa1dbb825cc2a09fdb5e322b750",
+    "cases.js": "5b0602798844955748dc1edf1779e75aa09c9d1f08fb2c7252e5703e033f0964",
+    "fixture.js": "d3719b882f4c3725bd59187adce6cbb2b547da70949ed2b8ee9ec101a3138c6a",
+    "manifest.json": "e7b601830183b60736e3a17f47553c808674a7fcacd422e21694a98057158783",
+    "normative-verification.json": "190daf3b75a2adb68e7d2fe25e9051dfe37467d7b9728162931e98cb5633a0e7",
+    "overlap-audit.json": "3fe05c2f5a9e62539cd2c1465ea47fc5de1ab9bbc91fc1f384ba8610a90c995d",
+    "schedule.json": "e96c422213fdf31c7cce593944557ab1ec339c5426389d512b1f653a6412aa72",
+    "source-pins.json": "fb7f3a8082021306db0199f9947611ea84886d1996bdfd3036496f0400d5b16f",
+    "static-validation.json": "39b8e2c61622709cd52d3d046301e02cb5bd0308b572c453a2d8dd49900a83b5",
+    "validate_static.py": "f58e6959e46fb1610634863f421042b7847875626635fcd8d8c06095e14fe8d6",
+    "wrangler.json": "78f79258adf247aa77225c204efe4819c975cd601c255025900f66917596f54d"
+  },
+  "combined_census_after_acceptance": {
+    "authored": 766,
+    "primary_static": 651,
+    "characterization": 115,
+    "target_primary": 2000,
+    "remaining_primary": 1349
+  }
+}

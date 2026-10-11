@@ -1,0 +1,53 @@
+{
+  "id": "logic/wake-recovery/recover-failed-cold-restore-through-an-owned-hint",
+  "layer": "logic",
+  "behaviour": "wake-recovery",
+  "title": "Recover failed cold restore through an Owned hint",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic",
+      "legacy_id": "corpus/wake-recovery-logic/K013"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+      "sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/wake-recovery-logic/K013"
+  ],
+  "adapter": "native",
+  "corpus_id": "K013",
+  "corpus_wave": "wake-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/wake-recovery/fixtures/decision-cases/tests/wake_recovery.rs",
+  "source_sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86",
+  "test_filter": "k013_failed_restore_leaves_owned_hint_eligible_for_fresh_claim",
+  "contract": {
+    "intent": "Recover failed cold restore through an Owned hint",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Issue first Fleet wake and apply its CAS.",
+      "Fail restore; verify Dormant epoch1 with returned permit.",
+      "Send Owned hint, read self-owned epoch1 and capture new epoch2 CAS.",
+      "Apply CAS and complete restore/start/publication at epoch2."
+    ],
+    "oracle": [
+      "Failure leaves dormant ownership rather than a leaked active permit or invented resident.",
+      "Own scan remains eligible and creates the next writer epoch through normal claim."
+    ],
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k013_failed_restore_leaves_owned_hint_eligible_for_fresh_claim"
+  },
+  "selector": "K013"
+}

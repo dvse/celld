@@ -1,0 +1,54 @@
+{
+  "id": "logic/pressure/count-an-in-flight-pressure-cut-once-across-repeated-samples",
+  "layer": "logic",
+  "behaviour": "pressure",
+  "title": "Count an in-flight pressure cut once across repeated samples",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic",
+      "legacy_id": "corpus/pressure-recovery-logic/P014"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic/tests/pressure_recovery.rs",
+      "sha256": "ccb9c2001ec9d427c142017a426801dde5631b1252fae8b2e10ce0e12cc73e47"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/pressure-recovery-logic/P014"
+  ],
+  "adapter": "native",
+  "corpus_id": "P014",
+  "corpus_wave": "pressure-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/pressure/fixtures/decision-cases/tests/pressure_recovery.rs",
+  "source_sha256": "ccb9c2001ec9d427c142017a426801dde5631b1252fae8b2e10ce0e12cc73e47",
+  "test_filter": "p014_repeated_samples_count_pending_cut_once",
+  "contract": {
+    "intent": "Count an in-flight pressure cut once across repeated samples",
+    "preconditions": [
+      "Fresh State::new(\"fixture\", config()) per case; only production on_event transitions; no direct State-field mutation",
+      "Each resident created by RequestAt -> absent OwnerRead -> Applied epoch1 CAS -> RestoreCompleted -> RuntimeStarted generation1 -> Published; exact operation IDs come from effects",
+      "Every transition invokes State::validate; occupied<=4, activating<=4, evicting<=2; local completions tracked exactly once",
+      "Default require_node_lease=false isolates admission from fleet authority; this does not exercise actual lease authorization",
+      "Pressure samples are synthetic byte-valued facts, not measured RSS, allocator, cgroup or container enforcement",
+      "The immutable source/runtime-manifest pins and exact implementation must pass preflight before any authorized future run"
+    ],
+    "trace": [
+      "sample120/150 nominates only a to reach floor2",
+      "repeat same sample before durability completion",
+      "assert one eviction permit and no new EnsureDurable",
+      "complete a durability/stop and require no new victim",
+      "sample80 clears latch"
+    ],
+    "oracle": "In-flight a counts toward target; no b/c nomination; occupied ends2; a reaches Dormant with zero eviction permits",
+    "cleanup": "Finish every successful local request; settle all emitted stop/release/adoption effects shown by the trace; assert pending demand and activation/eviction/release/adoption counts empty. Drop owned in-memory State on return/unwind. No external resource created",
+    "implementation": "tests/pressure_recovery.rs:p014_repeated_samples_count_pending_cut_once"
+  },
+  "selector": "P014"
+}

@@ -1,0 +1,138 @@
+{
+  "adapter": "http",
+  "behaviour": "durable-objects/storage-kv",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runs": 0,
+    "application_callsite_refs": [
+      {
+        "line_end": 2355,
+        "line_start": 2341,
+        "path": "raw/packages/workshop-backend/src/overseer.ts",
+        "root": "os"
+      },
+      {
+        "line_end": 1362,
+        "line_start": 1350,
+        "path": "raw/packages/workshop-backend/src/storage-schema/overseer-storage.ts",
+        "root": "os"
+      }
+    ],
+    "authored": true,
+    "classification": "functional-regression-candidate",
+    "cleanup": [
+      "Application subscriptions removed in finally where present.",
+      "Trace must settle before cleanup; unsettled trace requires external owned-process teardown only.",
+      "Open and fully exhaust one public sync-KV list to replace any abandoned native list for this scope; never next() after done.",
+      "DeleteAll only this fresh owned DO; assert native KV empty. External supervisor must verify termination of the complete proven-owned dev/bundler/runtime descendant tree across PGIDs, then remove only its owned staging/bundle/log/temp/store files; a single process-group cleanup is insufficient."
+    ],
+    "closest_existing_cases": [
+      "D210",
+      "C205"
+    ],
+    "coverage_class": "actual-pinned-os-module-over-direct-celld-native-storage",
+    "distinctness": "D210 takes raw keys; C205 deletes every member of an index group. This documented helper must read only computed primary-key fields from a caller record while removing actual stored index data, including when non-key fields are stale.",
+    "expected_exception_scope": "Only ordinary valid uniqueness conflicts in C202; no malformed inputs, corruption, authentication, forgery, replay, capability lifetime or injected faults.",
+    "failure_hypothesis": "deleteRecord could derive the wrong computed key or remove indexes using stale caller fields instead of the actual stored old record.",
+    "id": "C206",
+    "implementation": "cases.js:C206",
+    "independently_reviewed": false,
+    "limits": {
+      "cleanup_deadline_ms": 2000,
+      "descendant_supervision": "All proven-owned dev, trusted bundler and runtime descendants across PGIDs; prefer one enforceable cgroup/ownership domain; no single-process-group cleanup assumption",
+      "max_application_remove_callbacks": 3,
+      "max_created_do_roots": 1,
+      "max_external_case_http_requests": 1,
+      "max_frontend_do_fetches": 1,
+      "max_native_list_calls": 64,
+      "max_native_storage_entries": 32,
+      "max_outbound_public_network_requests": 0,
+      "max_owned_domain_processes": 32,
+      "max_owned_writable_bytes": 134217728,
+      "max_record_payload_bytes": 1024,
+      "max_rows_per_fully_consumed_iterator": 64,
+      "max_schema_instances": 3,
+      "max_sync_transaction_depth": 3,
+      "max_total_logical_payload_bytes": 8192,
+      "outer_case_process_deadline_seconds": 15,
+      "outer_http_deadline_seconds": 10,
+      "outer_rss_bytes": 1073741824,
+      "outer_wave_deadline_seconds": 120,
+      "precondition_deadline_ms": 1000,
+      "trace_deadline_ms": 5000,
+      "writable_quota_scope": "All generated bundles, staging config, logs, temporary files and private store; externally supplied read-only binaries/source are not copied into the writable domain"
+    },
+    "literal_assertion_call_sites": 3,
+    "oracle": "Receipts true,false; only memo/2 label final bytes7 survives. Draft posting and memo/1 child absent; document group0/counter1 and final posting remain exactly.",
+    "preconditions": [
+      "Exact reviewed OS source, Apache-2.0 license and guarded direct-celld source/build/bundle pins.",
+      "Fresh disposable SQLite-backed DO with native kv and transactionSync; no user data.",
+      "Externally enforceable resource and ownership domain includes the complete proven-owned dev/bundler/runtime descendant tree across PGIDs and all generated writable artifacts.",
+      "Trusted future bundler must preserve imported production semantics; no mocked storage or runtime fallback."
+    ],
+    "promotion_candidate": true,
+    "runtime_passes": 0,
+    "runtime_status": "NOT_RUN",
+    "schedule": "One exact GET /case/C206; one fresh named DO and one ordinary same-deployment DO.fetch; all operations synchronous in written dependency order inside that active request.",
+    "source_refs": [
+      {
+        "line_end": 135,
+        "line_start": 128,
+        "path": "raw/packages/typed-storage/src/index.ts",
+        "root": "os"
+      },
+      {
+        "line_end": 409,
+        "line_start": 403,
+        "path": "raw/packages/typed-storage/src/index.ts",
+        "root": "os"
+      },
+      {
+        "line_end": 460,
+        "line_start": 442,
+        "path": "raw/packages/typed-storage/src/index.ts",
+        "root": "os"
+      }
+    ],
+    "title": "Delete records through computed keys",
+    "trace": [
+      "Persist two revisions keyed by document/revision with unique label and nonunique document indexes.",
+      "Delete revision1 using a caller record with the same key fields but obsolete label/bytes.",
+      "Repeat deletion and compare complete surviving record and native main/index keyspace."
+    ]
+  },
+  "corpus_id": "C206",
+  "corpus_wave": "os-typed-storage-semantics",
+  "fixture": "tests/conformance/durable-objects/storage-kv/fixtures/os-typed-storage-semantics",
+  "id": "conformance/durable-objects/storage-kv/os-typed-storage-c206",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/os-typed-storage-semantics/C206"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/os-typed-storage-semantics/C206",
+      "manifest_sha256": "70b236edc39a42d460392d283885be675f1626f589f517b458f667be81946fc7",
+      "review_sha256": "14ca6bcc07b6adf1f146693850978c4f968e6cf46bac14a45b4be71bc037729e",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-typed-storage-semantics",
+      "tranche": "004"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/C206",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "C206",
+  "source": "tests/conformance/durable-objects/storage-kv/fixtures/os-typed-storage-semantics/fixture.js",
+  "source_sha256": "b90228c2292eafe5253598b111ccf2272743fc1f6f68485f6d8bd454e52cf50f",
+  "title": "Delete records through computed keys"
+}

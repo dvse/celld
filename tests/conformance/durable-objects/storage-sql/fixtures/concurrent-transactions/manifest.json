@@ -1,0 +1,1059 @@
+[
+  {
+    "id": "T001",
+    "intent": "Same-request queued async transactions preserve invocation order and distinct return values.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Call first transaction and queue KV put.",
+      "Call second transaction before first callback acquires its local hold.",
+      "Record both admissions; hold first callback for one finite timer.",
+      "Release; second reads first commit and replaces value."
+    ],
+    "stress": "Same incoming call; two live transaction promises; one 20ms local hold.",
+    "oracle": "Exact first-start,first-end,second-start order; returns 11,22; final value second.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T001; cases.js#T001; fixture.js; entry.js; private_driver.py",
+    "test_function": "T001",
+    "layer": "real-process-RPC",
+    "classification": "same-request-transaction-interleaving",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T002",
+    "intent": "A rejected async transaction releases its queue slot without resetting the recipient or poisoning its queued successor.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Admit failing first and healthy second before hold.",
+      "First queues a dirty KV value and pauses.",
+      "First throws planned-first; catch only that error.",
+      "Second observes absent failed key and commits its independent marker."
+    ],
+    "stress": "Same-request queued failure/healthy overlap.",
+    "oracle": "Expected rejection; exact first,second entry order; survivor=7 and failed key absent.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T002; cases.js#T002; fixture.js; entry.js; private_driver.py",
+    "test_function": "T002",
+    "layer": "real-process-RPC",
+    "classification": "same-request-transaction-interleaving",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T003",
+    "intent": "Explicit rollback settles its callback return while restoring both KV and SQL before a queued successor enters.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Admit first and successor transaction calls.",
+      "First writes KV and SQL then enters local hold.",
+      "Release and explicitly rollback the transaction view.",
+      "Successor checks both absence conditions and commits a fresh KV value."
+    ],
+    "stress": "Same-request rollback with mixed-storage dirty state and pending successor.",
+    "oracle": "Returns rolled,after; rolled-back KV and SQL absent; successor read proves after=9.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T003; cases.js#T003; fixture.js; entry.js; private_driver.py",
+    "test_function": "T003",
+    "layer": "real-process-RPC",
+    "classification": "same-request-transaction-interleaving",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T004",
+    "intent": "An omitted nested transaction promise is drained before the parent commits and the queued top-level successor enters.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Admit outer and successor.",
+      "Outer starts child without awaiting it; child holds after KV write.",
+      "Outer callback returns while child remains pending.",
+      "Child releases; parent and successor settle."
+    ],
+    "stress": "Three async transaction promises: parent, child, successor.",
+    "oracle": "outer-return,child-end,next order; child and outer keys survive; parent result and successor result exact.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T004; cases.js#T004; fixture.js; entry.js; private_driver.py",
+    "test_function": "T004",
+    "layer": "real-process-RPC",
+    "classification": "same-request-transaction-interleaving",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T005",
+    "intent": "A handled rejection of an omitted child promise rolls back the child without rejecting a successful outer callback.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Outer writes retained key and starts unawaited child.",
+      "Child writes private key and pauses; attach rejection handler.",
+      "Outer returns; queued successor remains outside transaction.",
+      "Child throws; parent drains child and commits only outer write."
+    ],
+    "stress": "Same-request child-failure drain and pending independent successor.",
+    "oracle": "Expected nested-planned rejection; outer resolves; next sees outer=3 and no inner.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T005; cases.js#T005; fixture.js; entry.js; private_driver.py",
+    "test_function": "T005",
+    "layer": "real-process-RPC",
+    "classification": "same-request-transaction-interleaving",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T006",
+    "intent": "Outer failure waits for its already-running child before rolling back both layers and admitting a successor.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Admit outer and successor.",
+      "Outer starts child, child writes and holds.",
+      "Outer throws while child is pending.",
+      "Child returns; outer rollback completes; successor verifies clean state."
+    ],
+    "stress": "Same-request asynchronous outer-error/child-success overlap.",
+    "oracle": "Child result survives as return only; both stored keys absent; successor commits recovered=1.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T006; cases.js#T006; fixture.js; entry.js; private_driver.py",
+    "test_function": "T006",
+    "layer": "real-process-RPC",
+    "classification": "same-request-transaction-interleaving",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T007",
+    "intent": "Explicit outer rollback with a pending child marks its view terminal immediately but waits for child teardown before database rollback.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Outer starts child and child holds.",
+      "Outer calls rollback with child pending.",
+      "New put on rolled-back parent view must reject.",
+      "Child settles and successor verifies descendants were removed."
+    ],
+    "stress": "Pending child, terminal parent API guard, queued successor.",
+    "oracle": "Parent put rejected as rolled back; explicit return preserved; descendant list empty; next=4.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T007; cases.js#T007; fixture.js; entry.js; private_driver.py",
+    "test_function": "T007",
+    "layer": "real-process-RPC",
+    "classification": "same-request-transaction-interleaving",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T008",
+    "intent": "A root storage transactionSync helper nests into the same event async transaction after an await and isolates its caught failure.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Outer writes KV and pauses; successor already queued.",
+      "After release invoke root transactionSync helper that writes KV+SQL then throws.",
+      "Catch helper error and invoke healthy root sync helper.",
+      "Commit outer and inspect from queued successor."
+    ],
+    "stress": "Async parent/root-helper savepoint routing under queued same-request work.",
+    "oracle": "Failed helper KV/SQL absent; helper-good and outer keys survive; successor sees exact list.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T008; cases.js#T008; fixture.js; entry.js; private_driver.py",
+    "test_function": "T008",
+    "layer": "real-process-RPC",
+    "classification": "same-request-transaction-interleaving",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T009",
+    "intent": "Root-handle async reentry after an await composes with an inner sync helper under the correct outer rollback boundary.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Admit outer and successor; hold outer.",
+      "Use root async transaction inside active owner callback.",
+      "Inside helper use root synchronous transaction.",
+      "Throw outer error and let successor verify all layers rolled back."
+    ],
+    "stress": "Async reentrant root plus sync descendant plus pending successor.",
+    "oracle": "Outer error exact; empty KV list after all descendant work; fresh=8 commits.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T009; cases.js#T009; fixture.js; entry.js; private_driver.py",
+    "test_function": "T009",
+    "layer": "real-process-RPC",
+    "classification": "same-request-transaction-interleaving",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T010",
+    "intent": "A put promise admitted through a transaction view cannot flush its discarded value into the queued next transaction.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "First and second transactions admitted.",
+      "First pauses, calls put without await, immediately rolls back.",
+      "Second first asserts the rolled-back key is absent, then writes and reads its own value.",
+      "Await admitted old put only after both transaction results."
+    ],
+    "stress": "Same-request admitted-put and closed-scope ordering; no claim that promise remains pending into successor callback.",
+    "oracle": "Successor initially reads undefined; both returns exact and final late=survives; earlier admitted promise completes harmlessly.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T010; cases.js#T010; fixture.js; entry.js; private_driver.py",
+    "test_function": "T010",
+    "layer": "real-process-RPC",
+    "classification": "same-request-transaction-interleaving",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T011",
+    "intent": "A live prepared-query cursor retains its parameters while a separate request executes the identical busy cached SQL.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Primary reads first row of prepared range 0..3 and holds.",
+      "Peer request executes identical query with range 4..7 to exhaustion.",
+      "Release primary and consume remainder.",
+      "Reuse primary prepared closure with third binding range."
+    ],
+    "stress": "Two distinct incoming calls and live same-SQL statement cache occupancy.",
+    "oracle": "Primary prefix/remainder, peer range, and fresh range exact; no duplicated or cross-bound rows.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T011; cases.js#T011; fixture.js; entry.js; private_driver.py",
+    "test_function": "T011",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-concurrency-stress",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T012",
+    "intent": "A paused raw SQL iterator is independent of a peer object-row cursor using the identical cached query.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Primary starts raw iterator and consumes first tuple.",
+      "Hold primary while peer uses object-row iterator with different binds.",
+      "Release and drain raw tuples.",
+      "Verify cursor and raw iterator share terminal exhaustion."
+    ],
+    "stress": "Cross-request raw/object iterator overlap on one storage connection.",
+    "oracle": "Exact raw tuple remainder, peer result, stable column names, final done=true.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T012; cases.js#T012; fixture.js; entry.js; private_driver.py",
+    "test_function": "T012",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-concurrency-stress",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T013",
+    "intent": "Object iteration and raw iteration share one cursor position without peer cached-query reuse rewinding either view.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Primary consumes one object row and one raw tuple from same cursor.",
+      "Hold and run distinct peer query.",
+      "Resume original object toArray.",
+      "Resume old raw iterator after shared exhaustion."
+    ],
+    "stress": "Cross-request interference while two local iterator views share native statement.",
+    "oracle": "Only rows 2 and 3 remain; raw iterator cannot replay consumed rows.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T013; cases.js#T013; fixture.js; entry.js; private_driver.py",
+    "test_function": "T013",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-concurrency-stress",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T014",
+    "intent": "one() cardinality failure does not strand or incorrectly rewind its still-live SQL cursor during a competing cached query.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Open four-row cursor and call one().",
+      "Catch multiple-results error after exactly two rows consumed.",
+      "Peer executes identical SQL while original remains live.",
+      "Drain original remainder and run singleton recovery query."
+    ],
+    "stress": "Cross-request overlap after local cursor API failure.",
+    "oracle": "Exactly rows 2,3 remain; peer exact; singleton query returns n=7.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T014; cases.js#T014; fixture.js; entry.js; private_driver.py",
+    "test_function": "T014",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-concurrency-stress",
+    "promotion": "characterization-only; never promotion eligible",
+    "characterization": true,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T015",
+    "intent": "An exhausted empty cursor cannot acquire rows from a later reuse of its cached statement.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Prepare and exhaust empty range.",
+      "Keep original cursor while peer executes same query with nonempty range.",
+      "Resume exhausted original.",
+      "Issue new prepared query and verify separate result."
+    ],
+    "stress": "Cross-request cache-reuse boundary with terminal original cursor; not two live native readers.",
+    "oracle": "Old cursor stays done and empty; peer and fresh query return their own exact rows.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T015; cases.js#T015; fixture.js; entry.js; private_driver.py",
+    "test_function": "T015",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-boundary-interleaving",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T016",
+    "intent": "A legal UNIQUE-constraint failure in a peer request cannot finalize or poison another live read statement.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Primary consumes read prefix and holds.",
+      "Peer attempts duplicate unique label and catches constraint error.",
+      "Peer proves failed insert absent.",
+      "Resume primary cursor and run count recovery query."
+    ],
+    "stress": "Cross-request live cursor versus native statement-step failure.",
+    "oracle": "Primary exact remainder; duplicate absent; eight original rows remain.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T016; cases.js#T016; fixture.js; entry.js; private_driver.py",
+    "test_function": "T016",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-concurrency-stress",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T017",
+    "intent": "Rollback of an unrelated peer write transaction preserves an already-active native reader.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Primary consumes one numbers row and holds.",
+      "Peer transactionSync writes effects then throws planned error.",
+      "Peer verifies effects rollback.",
+      "Release reader and consume old cursor to exhaustion."
+    ],
+    "stress": "Cross-request live reader versus independently caught synchronous transaction failure.",
+    "oracle": "All original reader rows delivered once; no effects persisted.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T017; cases.js#T017; fixture.js; entry.js; private_driver.py",
+    "test_function": "T017",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-concurrency-stress",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T018",
+    "intent": "Prepared closures created from committed and rolled-back transaction views reject new execution while root SQL remains usable.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Capture one prepare closure from a committed transaction and one from explicit rollback.",
+      "Hold incoming request with both local closures.",
+      "Peer runs normal root SQL.",
+      "Reject execution through both terminal views then query root storage."
+    ],
+    "stress": "Cross-request terminal-view boundary; closures stay local to one active invocation.",
+    "oracle": "Committed and rolled-back errors independently matched; healthy root returns n=1.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T018; cases.js#T018; fixture.js; entry.js; private_driver.py",
+    "test_function": "T018",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-boundary-interleaving",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T019",
+    "intent": "SQL BLOB values are copied before later binding serialization mutates their shared backing buffer.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Bind a byte-offset slice followed by object whose toJSON mutates backing bytes.",
+      "Open UNION cursor with separate tail BLOB.",
+      "Hold while peer uses ordinary SQL.",
+      "Drain original typed rows."
+    ],
+    "stress": "BLOB acceptance/native-cursor lifetime across independently entered request.",
+    "oracle": "Original slice remains [10,11], tail [1,2], labels exact despite input becoming 99 bytes.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T019; cases.js#T019; fixture.js; entry.js; private_driver.py",
+    "test_function": "T019",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-concurrency-stress",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T020",
+    "intent": "Identical SQL with simultaneously live cursors in two recipients stays storage-scope local.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Primary opens partial cursor and holds.",
+      "Secondary changes only its own labels to secondary-*, opens same cursor and holds concurrently.",
+      "Release secondary and fully settle it first.",
+      "Release primary and verify both receipts against distinct root identities."
+    ],
+    "stress": "Two active requests in distinct Durable Objects; no process/isolate separation claim.",
+    "oracle": "Primary v* and secondary secondary-* ranges exact; recipient identities differ and match their calls; reverse settlement preserved.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T020; cases.js#T020; fixture.js; entry.js; private_driver.py",
+    "test_function": "T020",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-concurrency-stress",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T021",
+    "intent": "Characterize connection-wide rowsWritten accounting when an unrelated request writes during a read-only cursor lifetime.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Primary opens read-only four-row cursor and holds.",
+      "Peer inserts three effect rows and confirms count.",
+      "Release primary and drain SELECT.",
+      "Record final rowsWritten."
+    ],
+    "stress": "Cross-request read cursor/native write overlap; pinned behavior characterization only.",
+    "oracle": "Rows intact and final rowsWritten=3 from frozen connection total_changes delta; never a per-statement accuracy promotion.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T021; cases.js#T021; fixture.js; entry.js; private_driver.py",
+    "test_function": "T021",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-concurrency-stress",
+    "promotion": "characterization-only; never promotion eligible",
+    "characterization": true,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T022",
+    "intent": "A deferred native stepping error is delivered after the last good row, exactly once, despite a peer query in between.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Open indexed four-row query with malformed JSON only at n=2.",
+      "Consume first row; next good row is prefetched.",
+      "Hold while peer query completes.",
+      "Return row n=1, then throw malformed JSON once, then report done and run recovery."
+    ],
+    "stress": "Cross-request live cursor with deferred native step error.",
+    "oracle": "Good prefix 0,1; next throws malformed JSON; following next done; recovery returns n=7.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T022; cases.js#T022; fixture.js; entry.js; private_driver.py",
+    "test_function": "T022",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-concurrency-stress",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T023",
+    "intent": "Bind-count validation failure on identical SQL cannot discard another request live statement when the cache entry is busy.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Primary opens identical two-parameter query and consumes first row.",
+      "Peer invokes SQL with only one parameter.",
+      "Peer catches bind-count rejection and runs healthy query.",
+      "Release primary and drain exact remaining rows."
+    ],
+    "stress": "Cross-request busy-cache prepare/bind failure.",
+    "oracle": "Wrong-binding error exact; peer recovery exact; original cursor remains intact.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T023; cases.js#T023; fixture.js; entry.js; private_driver.py",
+    "test_function": "T023",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-concurrency-stress",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T024",
+    "intent": "Cached prepared metadata is refreshed after a peer request changes the referenced table schema.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Prime prepared SELECT * cursor and fully exhaust it.",
+      "Hold request retaining prepared function.",
+      "Peer adds column with default and verifies table row.",
+      "Reexecute prepared query and inspect fresh columnNames and row."
+    ],
+    "stress": "Cross-request idle prepared-cache/schema invalidation boundary; no active reader DDL assumption.",
+    "oracle": "Column names id,value,added; row includes added=7 and original bound row value.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T024; cases.js#T024; fixture.js; entry.js; private_driver.py",
+    "test_function": "T024",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-boundary-interleaving",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T025",
+    "intent": "A pending root put from a rolled-back synchronous callback cannot contaminate the next async transaction boundary.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Synchronous transaction admits an unawaited root put and throws.",
+      "Start successor transaction, assert shared is undefined before pause or overwrite.",
+      "Await old put completion while new transaction is pending.",
+      "Commit new same-key value and read after both settle."
+    ],
+    "stress": "Single-request pending-put/sync-to-async ordering boundary; not independent request contention.",
+    "oracle": "Expected sync-boundary error; successor initially reads undefined; old promise settles; final shared=new.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T025; cases.js#T025; fixture.js; entry.js; private_driver.py",
+    "test_function": "T025",
+    "layer": "real-process-RPC",
+    "classification": "single-request-ordering-boundary",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T026",
+    "intent": "Failure serializing an ordinary KV batch queues no successful prefix and leaves a held SQL cursor usable.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Primary opens SQL cursor and holds.",
+      "Peer submits Map containing a function between ordinary entries.",
+      "Peer requires TypeError with the pinned could-not-be-cloned message, then writes one healthy key.",
+      "Release reader and inspect exact KV list."
+    ],
+    "stress": "Cross-request native SQL cursor versus KV batch admission failure.",
+    "oracle": "No prefix or suffix keys; healthy=42 only; original SQL rows exact.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T026; cases.js#T026; fixture.js; entry.js; private_driver.py",
+    "test_function": "T026",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-concurrency-stress",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T027",
+    "intent": "A batched transactional KV delete reports real deletion count but restores keys before a queued list on explicit rollback.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Seed a,b,c; admit delete transaction and successor.",
+      "Delete a,b,missing and hold.",
+      "Rollback; successor lists all restored keys then deletes b normally.",
+      "Read final list."
+    ],
+    "stress": "Same-request async transaction queue with destructive operation rollback.",
+    "oracle": "First delete count2; successor list a,b,c; only successor b deletion survives.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T027; cases.js#T027; fixture.js; entry.js; private_driver.py",
+    "test_function": "T027",
+    "layer": "real-process-RPC",
+    "classification": "same-request-transaction-interleaving",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T028",
+    "intent": "Pending batch put, get-many, list and delete preserve their API call order through microtask flushing.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Seed old key and establish safe pretrace hold.",
+      "Release and call put Map, get-many, list, delete without awaits.",
+      "Await each result.",
+      "Inspect final prefix list."
+    ],
+    "stress": "One-request microtask ordering boundary; no cross-request or timer concurrency claim.",
+    "oracle": "Read and list observe complete new batch before delete; delete true; final p:a=new only.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T028; cases.js#T028; fixture.js; entry.js; private_driver.py",
+    "test_function": "T028",
+    "layer": "real-process-RPC",
+    "classification": "single-request-ordering-boundary",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T029",
+    "intent": "Characterize sync KV single-iterator invalidation without incorrectly invalidating an independent live SQL cursor.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Primary consumes one sync KV pair then opens SQL cursor.",
+      "Hold primary while peer starts and exhausts reverse kv.list.",
+      "Resume old iterator and match invalidated-generation error.",
+      "Drain unaffected SQL cursor."
+    ],
+    "stress": "Cross-request KV iterator generation replacement plus live SQL reader; pinned characterization.",
+    "oracle": "Peer reverse pairs exact; old KV iterator invalidates; SQL delivers all four original rows.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T029; cases.js#T029; fixture.js; entry.js; private_driver.py",
+    "test_function": "T029",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-concurrency-stress",
+    "promotion": "characterization-only; never promotion eligible",
+    "characterization": true,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T030",
+    "intent": "Finite native SQL aggregation completes while an independent recipient request remains held and both recover.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Primary waits at precompute hold.",
+      "Secondary enters its own held health request.",
+      "Release primary to run bounded 64x64 recursive CTE aggregation.",
+      "Observe actual compute-complete marker and result before releasing secondary."
+    ],
+    "stress": "Cross-recipient active-request overlap; 4096 native input pairs; no fairness/interruption guarantee.",
+    "oracle": "sum=4064256,count=4096; primary recovery count8; independently held peer later returns42.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T030; cases.js#T030; fixture.js; entry.js; private_driver.py",
+    "test_function": "T030",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-concurrency-stress",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T031",
+    "intent": "A locally resumed preentered request retains its original event identity and queues outside a different owner transaction.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "B enters and waits on safe external hold; A peer enters before any transaction.",
+      "Release B; it establishes local ready and owner-open waits with bounded timers.",
+      "A waits local ready before beginning transaction, writes dirty KV and resolves owner-open locally.",
+      "B invokes root transaction and signals queued locally; A rolls back.",
+      "B callback enters afterward and commits its own key."
+    ],
+    "stress": "Two independently identified incoming requests; purely local promise continuations under transaction gate; host-op delivery is not assumed.",
+    "oracle": "Exact owner-open,preentered-attempt,preentered-queued,owner-rollback,preentered-transaction-enter ordering; distinct request IDs; other-owner absent; B value5; missing schedule BLOCKED.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T031; cases.js#T031; fixture.js; entry.js; private_driver.py",
+    "test_function": "T031",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-concurrency-stress",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "T032",
+    "intent": "SQL prefix failure distinguishes unwrapped autocommit effects from the same failure inside an explicit transaction while an unrelated reader is live.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Primary opens numbers cursor and holds.",
+      "Peer executes successful prefix INSERT followed by failing CHECK outside transaction.",
+      "Peer repeats with different keys inside transactionSync and catches failure.",
+      "Release reader; compare effects ledger."
+    ],
+    "stress": "Cross-request live cursor with multi-statement prefix and final-statement failures.",
+    "oracle": "Only outside-prefix=1 survives; inside prefix rolls back; original reader remains exact.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T032; cases.js#T032; fixture.js; entry.js; private_driver.py",
+    "test_function": "T032",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-concurrency-stress",
+    "promotion": "pinned-celld-functional promotion only after independent semantic review, actual SUT trace and external teardown evidence",
+    "characterization": false,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  }
+]

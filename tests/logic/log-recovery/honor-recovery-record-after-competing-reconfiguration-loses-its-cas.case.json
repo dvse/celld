@@ -1,0 +1,54 @@
+{
+  "id": "logic/log-recovery/honor-recovery-record-after-competing-reconfiguration-loses-its-cas",
+  "layer": "logic",
+  "behaviour": "log-recovery",
+  "title": "Honor recovery record after competing reconfiguration loses its CAS",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic",
+      "legacy_id": "corpus/log-recovery-logic/J004"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic/tests/log_recovery.rs",
+      "sha256": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/log-recovery-logic/J004"
+  ],
+  "adapter": "native",
+  "corpus_id": "J004",
+  "corpus_wave": "log-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/log-recovery/fixtures/decision-cases/tests/log_recovery.rs",
+  "source_sha256": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c",
+  "test_filter": "j004_recovery_wins_prepared_reconfiguration_before_old_credit",
+  "contract": {
+    "intent": "Honor recovery record after competing reconfiguration loses its CAS",
+    "preconditions": [
+      "Each test owns all in-memory values and directly calls public frozen production celld_logic components; no substitute decision implementation",
+      "Storage PUT/delete success, failure, CAS ordering, member confirmations and restore chains are explicit synthetic environmental facts; no disk, bucket, network, actor or VM is exercised",
+      "Every supplied finish_recovery certificate has a stipulated prior durable per-cell/bucket receipt; the pure finish function does not validate that I/O premise",
+      "GC chains are supplied from the stipulated production restore walk, oldest-first and ending at own epoch except the deliberate missing-opener schedules; no restore walk is reimplemented",
+      "GC listed vectors intentionally include base/own/off-chain epochs beyond the current executor scan.below input; these are public-component API robustness premises, not claimed live executor traces",
+      "Hash checks must match delivered runtime manifest lineage before future review/build/run; no compiler or SUT was launched while authoring"
+    ],
+    "trace": [
+      "Prepare replacement b,c through 6 at epoch 2",
+      "Supply recovery CAS win from original record to Recovering epoch 1",
+      "Reread Recovering; require plan_reconfigure=None and old bundle credit=false",
+      "Require maintain_step=Wait",
+      "Supply durable certified tail 6 and finish recovery at epoch 1"
+    ],
+    "oracle": "All new decisions use winning recovery record; stale candidate is not taken as current state; Durable certified tail seals epoch 1 at 6 and opens takeover gate",
+    "cleanup": "Drop only this test-owned records, maps, fragments, health tracker and ledger. No external resources exist; unwind also drops all owned values.",
+    "implementation": "tests/log_recovery.rs:j004_recovery_wins_prepared_reconfiguration_before_old_credit"
+  },
+  "selector": "J004"
+}

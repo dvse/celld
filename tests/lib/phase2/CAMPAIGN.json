@@ -1,0 +1,2863 @@
+{
+  "baseline_characterization": 114,
+  "baseline_primary": 461,
+  "characterization": 115,
+  "designs": [
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/headers-v201.case.json",
+      "id": "V201",
+      "wave": "headers-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/headers-v202.case.json",
+      "id": "V202",
+      "wave": "headers-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/headers-v203.case.json",
+      "id": "V203",
+      "wave": "headers-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/headers-v204.case.json",
+      "id": "V204",
+      "wave": "headers-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/headers-v205.case.json",
+      "id": "V205",
+      "wave": "headers-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/headers-v206.case.json",
+      "id": "V206",
+      "wave": "headers-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/headers-v207.case.json",
+      "id": "V207",
+      "wave": "headers-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/headers-v208.case.json",
+      "id": "V208",
+      "wave": "headers-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/headers-v209.case.json",
+      "id": "V209",
+      "wave": "headers-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/headers-v210.case.json",
+      "id": "V210",
+      "wave": "headers-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/headers-v211.case.json",
+      "id": "V211",
+      "wave": "headers-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/headers-v212.case.json",
+      "id": "V212",
+      "wave": "headers-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/headers-v213.case.json",
+      "id": "V213",
+      "wave": "headers-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/headers-v214.case.json",
+      "id": "V214",
+      "wave": "headers-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/headers-v215.case.json",
+      "id": "V215",
+      "wave": "headers-semantics"
+    },
+    {
+      "classification": "characterization",
+      "header": "tests/conformance/fetch-and-http/headers-v216.design.json",
+      "id": "V216",
+      "wave": "headers-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/headers-v217.case.json",
+      "id": "V217",
+      "wave": "headers-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/headers-v218.case.json",
+      "id": "V218",
+      "wave": "headers-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/url-u201.case.json",
+      "id": "U201",
+      "wave": "url-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/url-u202.case.json",
+      "id": "U202",
+      "wave": "url-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/url-u203.case.json",
+      "id": "U203",
+      "wave": "url-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/url-u204.case.json",
+      "id": "U204",
+      "wave": "url-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/url-u205.case.json",
+      "id": "U205",
+      "wave": "url-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/url-u206.case.json",
+      "id": "U206",
+      "wave": "url-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/url-u207.case.json",
+      "id": "U207",
+      "wave": "url-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/url-u208.case.json",
+      "id": "U208",
+      "wave": "url-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/url-u209.case.json",
+      "id": "U209",
+      "wave": "url-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/url-u210.case.json",
+      "id": "U210",
+      "wave": "url-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/url-u211.case.json",
+      "id": "U211",
+      "wave": "url-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/url-u212.case.json",
+      "id": "U212",
+      "wave": "url-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/url-u213.case.json",
+      "id": "U213",
+      "wave": "url-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/url-u214.case.json",
+      "id": "U214",
+      "wave": "url-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/url-u215.case.json",
+      "id": "U215",
+      "wave": "url-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/url-u216.case.json",
+      "id": "U216",
+      "wave": "url-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/url-u217.case.json",
+      "id": "U217",
+      "wave": "url-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/url-u218.case.json",
+      "id": "U218",
+      "wave": "url-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/url-u219.case.json",
+      "id": "U219",
+      "wave": "url-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/url-u220.case.json",
+      "id": "U220",
+      "wave": "url-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/kv-k201.case.json",
+      "id": "K201",
+      "wave": "kv-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/kv-k202.case.json",
+      "id": "K202",
+      "wave": "kv-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/kv-k203.case.json",
+      "id": "K203",
+      "wave": "kv-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/kv-k204.case.json",
+      "id": "K204",
+      "wave": "kv-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/kv-k205.case.json",
+      "id": "K205",
+      "wave": "kv-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/kv-k206.case.json",
+      "id": "K206",
+      "wave": "kv-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/kv-k207.case.json",
+      "id": "K207",
+      "wave": "kv-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/kv-k208.case.json",
+      "id": "K208",
+      "wave": "kv-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/kv-k209.case.json",
+      "id": "K209",
+      "wave": "kv-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/kv-k210.case.json",
+      "id": "K210",
+      "wave": "kv-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/kv-k211.case.json",
+      "id": "K211",
+      "wave": "kv-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/kv-k212.case.json",
+      "id": "K212",
+      "wave": "kv-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/kv-k213.case.json",
+      "id": "K213",
+      "wave": "kv-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/kv-k214.case.json",
+      "id": "K214",
+      "wave": "kv-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/kv-k215.case.json",
+      "id": "K215",
+      "wave": "kv-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/kv-k216.case.json",
+      "id": "K216",
+      "wave": "kv-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/kv-k217.case.json",
+      "id": "K217",
+      "wave": "kv-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/kv-k218.case.json",
+      "id": "K218",
+      "wave": "kv-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/kv-k219.case.json",
+      "id": "K219",
+      "wave": "kv-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/kv-k220.case.json",
+      "id": "K220",
+      "wave": "kv-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/storage-sql-d201.case.json",
+      "id": "D201",
+      "wave": "storage-sql-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/storage-sql-d202.case.json",
+      "id": "D202",
+      "wave": "storage-sql-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/storage-sql-d203.case.json",
+      "id": "D203",
+      "wave": "storage-sql-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/storage-sql-d204.case.json",
+      "id": "D204",
+      "wave": "storage-sql-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/storage-sql-d205.case.json",
+      "id": "D205",
+      "wave": "storage-sql-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/storage-sql-d206.case.json",
+      "id": "D206",
+      "wave": "storage-sql-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/storage-sql-d207.case.json",
+      "id": "D207",
+      "wave": "storage-sql-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/storage-sql-d208.case.json",
+      "id": "D208",
+      "wave": "storage-sql-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/storage-sql-d209.case.json",
+      "id": "D209",
+      "wave": "storage-sql-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/storage-sql-d210.case.json",
+      "id": "D210",
+      "wave": "storage-sql-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/storage-sql-d211.case.json",
+      "id": "D211",
+      "wave": "storage-sql-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/storage-sql-d212.case.json",
+      "id": "D212",
+      "wave": "storage-sql-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/storage-sql-d213.case.json",
+      "id": "D213",
+      "wave": "storage-sql-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/storage-sql-d214.case.json",
+      "id": "D214",
+      "wave": "storage-sql-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/storage-sql-d215.case.json",
+      "id": "D215",
+      "wave": "storage-sql-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/storage-sql-d216.case.json",
+      "id": "D216",
+      "wave": "storage-sql-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/storage-sql-d217.case.json",
+      "id": "D217",
+      "wave": "storage-sql-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/storage-sql-d218.case.json",
+      "id": "D218",
+      "wave": "storage-sql-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/storage-sql-d219.case.json",
+      "id": "D219",
+      "wave": "storage-sql-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/storage-sql-d220.case.json",
+      "id": "D220",
+      "wave": "storage-sql-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/d1-e201.case.json",
+      "id": "E201",
+      "wave": "d1-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/d1-e202.case.json",
+      "id": "E202",
+      "wave": "d1-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/d1-e203.case.json",
+      "id": "E203",
+      "wave": "d1-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/d1-e204.case.json",
+      "id": "E204",
+      "wave": "d1-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/d1-e205.case.json",
+      "id": "E205",
+      "wave": "d1-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/d1-e206.case.json",
+      "id": "E206",
+      "wave": "d1-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/d1-e207.case.json",
+      "id": "E207",
+      "wave": "d1-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/d1-e208.case.json",
+      "id": "E208",
+      "wave": "d1-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/d1-e209.case.json",
+      "id": "E209",
+      "wave": "d1-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/d1-e210.case.json",
+      "id": "E210",
+      "wave": "d1-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/d1-e211.case.json",
+      "id": "E211",
+      "wave": "d1-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/d1-e212.case.json",
+      "id": "E212",
+      "wave": "d1-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/d1-e213.case.json",
+      "id": "E213",
+      "wave": "d1-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/d1-e214.case.json",
+      "id": "E214",
+      "wave": "d1-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/d1-e215.case.json",
+      "id": "E215",
+      "wave": "d1-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/d1-e216.case.json",
+      "id": "E216",
+      "wave": "d1-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/d1-e217.case.json",
+      "id": "E217",
+      "wave": "d1-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/d1-e218.case.json",
+      "id": "E218",
+      "wave": "d1-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/d1-e219.case.json",
+      "id": "E219",
+      "wave": "d1-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/d1-e220.case.json",
+      "id": "E220",
+      "wave": "d1-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/body-form-y201.case.json",
+      "id": "Y201",
+      "wave": "body-form-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/body-form-y202.case.json",
+      "id": "Y202",
+      "wave": "body-form-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/body-form-y203.case.json",
+      "id": "Y203",
+      "wave": "body-form-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/body-form-y204.case.json",
+      "id": "Y204",
+      "wave": "body-form-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/body-form-y205.case.json",
+      "id": "Y205",
+      "wave": "body-form-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/body-form-y206.case.json",
+      "id": "Y206",
+      "wave": "body-form-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/body-form-y207.case.json",
+      "id": "Y207",
+      "wave": "body-form-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/body-form-y208.case.json",
+      "id": "Y208",
+      "wave": "body-form-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/body-form-y209.case.json",
+      "id": "Y209",
+      "wave": "body-form-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/body-form-y210.case.json",
+      "id": "Y210",
+      "wave": "body-form-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/body-form-y211.case.json",
+      "id": "Y211",
+      "wave": "body-form-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/body-form-y212.case.json",
+      "id": "Y212",
+      "wave": "body-form-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/body-form-y213.case.json",
+      "id": "Y213",
+      "wave": "body-form-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/body-form-y214.case.json",
+      "id": "Y214",
+      "wave": "body-form-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/body-form-y215.case.json",
+      "id": "Y215",
+      "wave": "body-form-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/body-form-y216.case.json",
+      "id": "Y216",
+      "wave": "body-form-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/body-form-y217.case.json",
+      "id": "Y217",
+      "wave": "body-form-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/body-form-y218.case.json",
+      "id": "Y218",
+      "wave": "body-form-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/body-form-y219.case.json",
+      "id": "Y219",
+      "wave": "body-form-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/body-form-y220.case.json",
+      "id": "Y220",
+      "wave": "body-form-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/r2-i201.case.json",
+      "id": "I201",
+      "wave": "r2-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/r2-i202.case.json",
+      "id": "I202",
+      "wave": "r2-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/r2-i203.case.json",
+      "id": "I203",
+      "wave": "r2-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/r2-i204.case.json",
+      "id": "I204",
+      "wave": "r2-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/r2-i205.case.json",
+      "id": "I205",
+      "wave": "r2-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/r2-i206.case.json",
+      "id": "I206",
+      "wave": "r2-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/r2-i207.case.json",
+      "id": "I207",
+      "wave": "r2-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/r2-i208.case.json",
+      "id": "I208",
+      "wave": "r2-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/r2-i209.case.json",
+      "id": "I209",
+      "wave": "r2-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/r2-i210.case.json",
+      "id": "I210",
+      "wave": "r2-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/r2-i211.case.json",
+      "id": "I211",
+      "wave": "r2-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/r2-i212.case.json",
+      "id": "I212",
+      "wave": "r2-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/r2-i213.case.json",
+      "id": "I213",
+      "wave": "r2-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/r2-i214.case.json",
+      "id": "I214",
+      "wave": "r2-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/r2-i215.case.json",
+      "id": "I215",
+      "wave": "r2-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/r2-i216.case.json",
+      "id": "I216",
+      "wave": "r2-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/r2-i217.case.json",
+      "id": "I217",
+      "wave": "r2-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/r2-i218.case.json",
+      "id": "I218",
+      "wave": "r2-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/r2-i219.case.json",
+      "id": "I219",
+      "wave": "r2-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/bindings/r2-i220.case.json",
+      "id": "I220",
+      "wave": "r2-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/facets/facet-root-z201.case.json",
+      "id": "Z201",
+      "wave": "facet-root-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/facets/facet-root-z202.case.json",
+      "id": "Z202",
+      "wave": "facet-root-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/facets/facet-root-z203.case.json",
+      "id": "Z203",
+      "wave": "facet-root-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/facets/facet-root-z204.case.json",
+      "id": "Z204",
+      "wave": "facet-root-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/facets/facet-root-z205.case.json",
+      "id": "Z205",
+      "wave": "facet-root-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/facets/facet-root-z206.case.json",
+      "id": "Z206",
+      "wave": "facet-root-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/facets/facet-root-z207.case.json",
+      "id": "Z207",
+      "wave": "facet-root-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/facets/facet-root-z208.case.json",
+      "id": "Z208",
+      "wave": "facet-root-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/facets/facet-root-z209.case.json",
+      "id": "Z209",
+      "wave": "facet-root-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/facets/facet-root-z210.case.json",
+      "id": "Z210",
+      "wave": "facet-root-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/facets/facet-root-z211.case.json",
+      "id": "Z211",
+      "wave": "facet-root-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/facets/facet-root-z212.case.json",
+      "id": "Z212",
+      "wave": "facet-root-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/facets/facet-root-z213.case.json",
+      "id": "Z213",
+      "wave": "facet-root-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/facets/facet-root-z215.case.json",
+      "id": "Z215",
+      "wave": "facet-root-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/facets/facet-root-z216.case.json",
+      "id": "Z216",
+      "wave": "facet-root-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/facets/facet-root-z217.case.json",
+      "id": "Z217",
+      "wave": "facet-root-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/facets/facet-root-z218.case.json",
+      "id": "Z218",
+      "wave": "facet-root-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/facets/facet-root-z219.case.json",
+      "id": "Z219",
+      "wave": "facet-root-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/pipe-cleanup-s201.case.json",
+      "id": "S201",
+      "wave": "pipe-cleanup-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/pipe-cleanup-s202.case.json",
+      "id": "S202",
+      "wave": "pipe-cleanup-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/pipe-cleanup-s203.case.json",
+      "id": "S203",
+      "wave": "pipe-cleanup-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/pipe-cleanup-s204.case.json",
+      "id": "S204",
+      "wave": "pipe-cleanup-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/pipe-cleanup-s205.case.json",
+      "id": "S205",
+      "wave": "pipe-cleanup-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/pipe-cleanup-s206.case.json",
+      "id": "S206",
+      "wave": "pipe-cleanup-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/pipe-cleanup-s207.case.json",
+      "id": "S207",
+      "wave": "pipe-cleanup-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/pipe-cleanup-s208.case.json",
+      "id": "S208",
+      "wave": "pipe-cleanup-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/pipe-cleanup-s209.case.json",
+      "id": "S209",
+      "wave": "pipe-cleanup-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/atomic-accounting-t201.case.json",
+      "id": "T201",
+      "wave": "atomic-accounting-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/atomic-accounting-t202.case.json",
+      "id": "T202",
+      "wave": "atomic-accounting-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/atomic-accounting-t203.case.json",
+      "id": "T203",
+      "wave": "atomic-accounting-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/atomic-accounting-t204.case.json",
+      "id": "T204",
+      "wave": "atomic-accounting-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/atomic-accounting-t205.case.json",
+      "id": "T205",
+      "wave": "atomic-accounting-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/atomic-accounting-t206.case.json",
+      "id": "T206",
+      "wave": "atomic-accounting-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/atomic-accounting-t207.case.json",
+      "id": "T207",
+      "wave": "atomic-accounting-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/atomic-accounting-t208.case.json",
+      "id": "T208",
+      "wave": "atomic-accounting-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/atomic-accounting-t209.case.json",
+      "id": "T209",
+      "wave": "atomic-accounting-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/atomic-accounting-t210.case.json",
+      "id": "T210",
+      "wave": "atomic-accounting-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/atomic-accounting-t211.case.json",
+      "id": "T211",
+      "wave": "atomic-accounting-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/atomic-accounting-t212.case.json",
+      "id": "T212",
+      "wave": "atomic-accounting-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/atomic-accounting-t213.case.json",
+      "id": "T213",
+      "wave": "atomic-accounting-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/atomic-accounting-t214.case.json",
+      "id": "T214",
+      "wave": "atomic-accounting-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/atomic-accounting-t215.case.json",
+      "id": "T215",
+      "wave": "atomic-accounting-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/lifecycle/identity-admission-a201.case.json",
+      "id": "A201",
+      "wave": "identity-admission-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/lifecycle/identity-admission-a202.case.json",
+      "id": "A202",
+      "wave": "identity-admission-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/lifecycle/identity-admission-a203.case.json",
+      "id": "A203",
+      "wave": "identity-admission-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/lifecycle/identity-admission-a204.case.json",
+      "id": "A204",
+      "wave": "identity-admission-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/lifecycle/identity-admission-a205.case.json",
+      "id": "A205",
+      "wave": "identity-admission-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/stream-backpressure-s301.case.json",
+      "id": "S301",
+      "wave": "stream-backpressure-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/stream-backpressure-s302.case.json",
+      "id": "S302",
+      "wave": "stream-backpressure-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/stream-backpressure-s303.case.json",
+      "id": "S303",
+      "wave": "stream-backpressure-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/stream-backpressure-s304.case.json",
+      "id": "S304",
+      "wave": "stream-backpressure-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/stream-backpressure-s305.case.json",
+      "id": "S305",
+      "wave": "stream-backpressure-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/stream-backpressure-s306.case.json",
+      "id": "S306",
+      "wave": "stream-backpressure-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-kv/os-typed-storage-c201.case.json",
+      "id": "C201",
+      "wave": "os-typed-storage-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-kv/os-typed-storage-c202.case.json",
+      "id": "C202",
+      "wave": "os-typed-storage-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-kv/os-typed-storage-c203.case.json",
+      "id": "C203",
+      "wave": "os-typed-storage-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-kv/os-typed-storage-c204.case.json",
+      "id": "C204",
+      "wave": "os-typed-storage-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-kv/os-typed-storage-c205.case.json",
+      "id": "C205",
+      "wave": "os-typed-storage-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-kv/os-typed-storage-c206.case.json",
+      "id": "C206",
+      "wave": "os-typed-storage-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-kv/os-typed-storage-c207.case.json",
+      "id": "C207",
+      "wave": "os-typed-storage-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/os-action-file-store-f201.case.json",
+      "id": "F201",
+      "wave": "os-action-file-store-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/os-action-file-store-f202.case.json",
+      "id": "F202",
+      "wave": "os-action-file-store-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/os-action-file-store-f203.case.json",
+      "id": "F203",
+      "wave": "os-action-file-store-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/os-action-file-store-f204.case.json",
+      "id": "F204",
+      "wave": "os-action-file-store-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/os-action-file-store-f205.case.json",
+      "id": "F205",
+      "wave": "os-action-file-store-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/durable-objects/storage-sql/os-action-file-store-f206.case.json",
+      "id": "F206",
+      "wave": "os-action-file-store-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/os-git-codec-x201.case.json",
+      "id": "X201",
+      "wave": "os-git-codec-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/os-git-codec-x202.case.json",
+      "id": "X202",
+      "wave": "os-git-codec-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/os-git-codec-x203.case.json",
+      "id": "X203",
+      "wave": "os-git-codec-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/os-git-codec-x204.case.json",
+      "id": "X204",
+      "wave": "os-git-codec-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/os-git-codec-x205.case.json",
+      "id": "X205",
+      "wave": "os-git-codec-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/web-platform/os-git-codec-x206.case.json",
+      "id": "X206",
+      "wave": "os-git-codec-semantics"
+    },
+    {
+      "classification": "primary",
+      "header": "tests/conformance/fetch-and-http/response-clone-chunk-y301.case.json",
+      "id": "Y301",
+      "wave": "response-clone-chunk-semantics"
+    }
+  ],
+  "files": [
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/headers-semantics/README.md"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/headers-semantics/README.md",
+      "sha256": "1ecb90142dade46db36d8191448858d5a15e30ba1fb761bafc680c6da74e7cf7"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/headers-semantics/author_manifest.py"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/headers-semantics/author_manifest.py",
+      "sha256": "193545c6e74db2b24ce2ae3f3d25594399ae7464acec6ffb8ab538ca0b042f01"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/headers-semantics/cases.js"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/headers-semantics/cases.js",
+      "sha256": "1bd1c82a6aee68e2558764043487db6a89105e5f4a402ef72190539fcc9d4a96"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/headers-semantics/fixture.js"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/headers-semantics/fixture.js",
+      "sha256": "db81f86f93ee27f81864134f3323405a4410c1672f92531fbd0d780931fdafbf"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/headers-semantics/manifest.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/headers-semantics/manifest.json",
+      "sha256": "7ab0ac34b1ab6bcd773176ff2225a2c246ca835b9487d18b774833a4fc3afd88"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/headers-semantics/source-pins.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/headers-semantics/source-pins.json",
+      "sha256": "33dabad7154ff8f5f39f9733281f1732e8e6bb9c2ebf786ae0b7443d17c45f32"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/headers-semantics/static-report.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/headers-semantics/static-report.json",
+      "sha256": "5fa775b31c14bdfbbdbf3e4987f8ee4501326b62b39a585c4113055626918e9e"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/headers-semantics/validate.py"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/headers-semantics/validate.py",
+      "sha256": "64df9497d58b94534616b6965bb9704c553212ae3ed21259fb45235c37d12275"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/headers-semantics/wrangler.jsonc"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/headers-semantics/wrangler.jsonc",
+      "sha256": "e7c95aaa6a14933b4195c021ffab9f9555151a8d67181a1bc7890e4cc9145102"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics/README.md"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/url-semantics/README.md",
+      "sha256": "a6a5a6b8ad3ab04f8f1e46f43c3f20b0ceb2218fad5d09df95b1dfeedb0ec603"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics/SHA256SUMS"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/url-semantics/SHA256SUMS",
+      "sha256": "f8088a898011b26c4cdada8c15b4ed1adcd55e551b235e47017bb2db30fdde45"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics/author_manifest.py"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/url-semantics/author_manifest.py",
+      "sha256": "53a1aee514699bb65e446600a0879f27563c95b448b7ab1cda6883e01b6ad191"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics/cases.js"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/url-semantics/cases.js",
+      "sha256": "05079e449a0839cbe790f111ad63e5155a8482d16fcb66c71a7e111ffa4c2276"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics/fixture.js"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/url-semantics/fixture.js",
+      "sha256": "ccbb1cf21c3f719aa06ed64b498fc396f00736cc96d7cbd2aea437f2cc221ca6"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics/manifest.json"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/url-semantics/manifest.json",
+      "sha256": "d61fdb1b4d070ae5aff0ad1456c39d2842c341f9737a20b67c67c251f638ae91"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics/overlap-audit.json"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/url-semantics/overlap-audit.json",
+      "sha256": "3f0d128064bb3f76212378ce724a3a5037aaf781247bbb8c19bcae152640cb3f"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics/schedule.json"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/url-semantics/schedule.json",
+      "sha256": "ed241045ee78c9efef4d8c6440119aa813929f802cf4eafcfedfc776db2f1ee1"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics/source-pins.json"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/url-semantics/source-pins.json",
+      "sha256": "2254e29189caf162853607947a47a2e8097302aa3992508bda758ce1d07da641"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics/static-validation.json"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/url-semantics/static-validation.json",
+      "sha256": "83227c6b6c8b21b7d23e78490e55d1a286d121fadb55530d0afb4ffffbf8de2c"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics/validate_static.py"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/url-semantics/validate_static.py",
+      "sha256": "007bac5bf1a54acfe0388aea1c4c859e2b6018169d7cb8fc3efb0f60298cab5f"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics/wrangler.json"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/url-semantics/wrangler.json",
+      "sha256": "8f5ef34ebe9550ac822ff9dd4589c4cf4a5ee9fd73e14e9d7b00cf1e47c91e61"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/kv-semantics/README.md"
+      ],
+      "path": "tests/conformance/bindings/fixtures/kv-semantics/README.md",
+      "sha256": "9c528d4ad54e4c1eed38b12d9395e70c08c62d04f3c5d2b31cd7fdb220f7c77b"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/kv-semantics/SHA256SUMS"
+      ],
+      "path": "tests/conformance/bindings/fixtures/kv-semantics/SHA256SUMS",
+      "sha256": "788c20bb048d17cb95db74ff570bf2778ef15593297e9b24a6bed58d456f2af5"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/kv-semantics/author_manifest.py"
+      ],
+      "path": "tests/conformance/bindings/fixtures/kv-semantics/author_manifest.py",
+      "sha256": "d5816e1ebbf7e4dc40cb03345d01854b918d4451c0a23e9102ed40ad8f16c66b"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/kv-semantics/manifest.json"
+      ],
+      "path": "tests/conformance/bindings/fixtures/kv-semantics/manifest.json",
+      "sha256": "f4906cd842457c8b9a75c0e069decbdcb702bfb3789ce06e6e1a55e2929069c9"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/kv-semantics/overlap-audit.json"
+      ],
+      "path": "tests/conformance/bindings/fixtures/kv-semantics/overlap-audit.json",
+      "sha256": "126330fc158cc1c1cf5106c7bdd3d2c4f58e33f911b1a700c62be9ff96f020f5"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/kv-semantics/source-pins.json"
+      ],
+      "path": "tests/conformance/bindings/fixtures/kv-semantics/source-pins.json",
+      "sha256": "aa075346b51da38f069e6c32150a4675754f47fa56f477fe08fab96803df4174"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/kv-semantics/static-validation.json"
+      ],
+      "path": "tests/conformance/bindings/fixtures/kv-semantics/static-validation.json",
+      "sha256": "e235cbc8bb5edc4f9f75290d37246018b835c1b57c2e552d4d1a98dc39c3db6f"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/kv-semantics/validate_static.py"
+      ],
+      "path": "tests/conformance/bindings/fixtures/kv-semantics/validate_static.py",
+      "sha256": "b627b98d29f5b60911b3aa248cf0ca47576a381cf35eef24f7cb434cf810b8bd"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/kv-semantics/worker.js"
+      ],
+      "path": "tests/conformance/bindings/fixtures/kv-semantics/worker.js",
+      "sha256": "87ce92492bd300bbf0763c43d37be1edddfffb41fe9cfb06ffbfe7c348b90ee3"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/kv-semantics/wrangler.jsonc"
+      ],
+      "path": "tests/conformance/bindings/fixtures/kv-semantics/wrangler.jsonc",
+      "sha256": "157647cd6cd4e0b2f9654b8cc90fa8f25d76a6446300f1581ff43bd860bafc2e"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/storage-sql-semantics/README.md"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/storage-sql-semantics/README.md",
+      "sha256": "beec6e6bdb4e2a845672173e3ad20e9dd72a1a71a601c3cb88126efccc119060"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/storage-sql-semantics/author_manifest.py"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/storage-sql-semantics/author_manifest.py",
+      "sha256": "f7f0569495f064fd536f5823ad75ca49b0971ca7a18dd64083ea5a8e9efb8b6c"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/storage-sql-semantics/cases.js"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/storage-sql-semantics/cases.js",
+      "sha256": "1dec37fd6a3caae833bbc95620f407a7d866836410275c1b4b7637ae468bb7f9"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/storage-sql-semantics/fixture.js"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/storage-sql-semantics/fixture.js",
+      "sha256": "88a9b8be2e40781bcf1502c79d632723b89fd9a5f1d6a44f5110cea11fe1bbc6"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/storage-sql-semantics/manifest.json"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/storage-sql-semantics/manifest.json",
+      "sha256": "25b49a3bc5158a1b8277be37a06ef424e24da72c8ada091d9bd57d2c68d8bb7c"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/storage-sql-semantics/source-pins.json"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/storage-sql-semantics/source-pins.json",
+      "sha256": "ebdd87343bd3ce54a815516c5a8587bf9c6f96b098b5f8610e128fffe94f017c"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/storage-sql-semantics/static-report.json"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/storage-sql-semantics/static-report.json",
+      "sha256": "7bf3fddbc840bc0cb4c854ab4758b320c7cf7c68183bee24d94a64f4f5031b90"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/storage-sql-semantics/validate_static.py"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/storage-sql-semantics/validate_static.py",
+      "sha256": "8b10dc5b9359f016c3ea40d68847faac8ea9869a57e554424a0f0aea978ac729"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/storage-sql-semantics/wrangler.jsonc"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/storage-sql-semantics/wrangler.jsonc",
+      "sha256": "a7b3deb2ca095f43b401557d48aeb91ab3b9b9762e966868c0be65b2677828c0"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/d1-semantics/README.md"
+      ],
+      "path": "tests/conformance/bindings/fixtures/d1-semantics/README.md",
+      "sha256": "db8673e6920940b8d962cb6d1b9b97f7d27b2fa31df8c9560c29a72f2f690001"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/d1-semantics/SHA256SUMS"
+      ],
+      "path": "tests/conformance/bindings/fixtures/d1-semantics/SHA256SUMS",
+      "sha256": "1f6844b7e939d6cf754bc3295e7c52daeef405281cca95f2e363386c126e8b4e"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/d1-semantics/author_manifest.py"
+      ],
+      "path": "tests/conformance/bindings/fixtures/d1-semantics/author_manifest.py",
+      "sha256": "24d14e9df4344224c46a9ac592f34c42763424d7a525fd9e31c7bcd3891589c1"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/d1-semantics/manifest.json"
+      ],
+      "path": "tests/conformance/bindings/fixtures/d1-semantics/manifest.json",
+      "sha256": "a710fc3341a0ac99cbe9b5dd5847e7fc9c7d355313bac1440415941d7b31780f"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/d1-semantics/overlap-audit.json"
+      ],
+      "path": "tests/conformance/bindings/fixtures/d1-semantics/overlap-audit.json",
+      "sha256": "e21f935cc5adf0e7d4f9a8939a4268481fd3c2e01c07af9d70a28ac89e53b665"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/d1-semantics/source-pins.json"
+      ],
+      "path": "tests/conformance/bindings/fixtures/d1-semantics/source-pins.json",
+      "sha256": "ec63ab80fe73a534e4b1c587ba534b4a9748947d6cea8c608d8eab083e680ee9"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/d1-semantics/static-validation.json"
+      ],
+      "path": "tests/conformance/bindings/fixtures/d1-semantics/static-validation.json",
+      "sha256": "0e3861af8504fe5357f3874e596188c92b5138ab376e5b732c6b891c648d584a"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/d1-semantics/validate_static.py"
+      ],
+      "path": "tests/conformance/bindings/fixtures/d1-semantics/validate_static.py",
+      "sha256": "ec61b8b2931be15ae54fb9c383d94508fe8f685c7b8e439766d29cdd3711418b"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/d1-semantics/worker.js"
+      ],
+      "path": "tests/conformance/bindings/fixtures/d1-semantics/worker.js",
+      "sha256": "4b946d92399b5493a1039165af98b4c2159f08296b211eec6a60ce9680c26525"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/d1-semantics/wrangler.jsonc"
+      ],
+      "path": "tests/conformance/bindings/fixtures/d1-semantics/wrangler.jsonc",
+      "sha256": "77de0e99dffdbf8c3d6193261735295f4d4f60f4c3c6c595ea5939d738a066b8"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/body-form-semantics/README.md"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/body-form-semantics/README.md",
+      "sha256": "aa8f598081b5e9e598c53afe49a56a8be6a323a9195b79e8549840878fb314ef"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/body-form-semantics/SHA256SUMS"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/body-form-semantics/SHA256SUMS",
+      "sha256": "82f2d0f8d852b52e8f053c27673b1674d75941c858b64c4ea40929ed9a4e5d2e"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/body-form-semantics/author_manifest.py"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/body-form-semantics/author_manifest.py",
+      "sha256": "c529857e5d0c8584f133f48c553aa24b7f370324c32a38dff96c8ac480dbe77c"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/body-form-semantics/cases.js"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/body-form-semantics/cases.js",
+      "sha256": "180471bf87e871d625acdc530f33d9829a3c6cd676a19747327f796894d4573d"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/body-form-semantics/fixture.js"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/body-form-semantics/fixture.js",
+      "sha256": "ab850551d9b005bc0636954aeb2151d46ac0c35d15580665aa157230dabe30a5"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/body-form-semantics/manifest.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/body-form-semantics/manifest.json",
+      "sha256": "e31598421948f8c190575ce14a8cccfe7a76930797c30c44985d05552d3c95d1"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/body-form-semantics/overlap-audit.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/body-form-semantics/overlap-audit.json",
+      "sha256": "c5683224ae4738ac56f331be8dbac1d760320cd4284d3193a9c36c37d3918ee5"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/body-form-semantics/schedule.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/body-form-semantics/schedule.json",
+      "sha256": "363f24c8b5caba3cba816c1fb6b72f56bdf56abcb6df71e28cc3945a6bc23352"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/body-form-semantics/source-pins.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/body-form-semantics/source-pins.json",
+      "sha256": "77d539f056c98d55c029a953d53d0e9022bc8da7aa513df9dad0ccabb20227ba"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/body-form-semantics/static-validation.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/body-form-semantics/static-validation.json",
+      "sha256": "7bf862330b490dcbea41d267019a7e9be423e3bc7230f70029e9b134456f92f5"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/body-form-semantics/validate_static.py"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/body-form-semantics/validate_static.py",
+      "sha256": "c1d272392639042042e2984ae7a2fc2445dce5cfc5a88915582fda29baa8e386"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/body-form-semantics/wrangler.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/body-form-semantics/wrangler.json",
+      "sha256": "b7df0404d43d144186263a48409811dc97fc50df5e85d6584f99a3a54c93239d"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/r2-semantics/README.md"
+      ],
+      "path": "tests/conformance/bindings/fixtures/r2-semantics/README.md",
+      "sha256": "5c5f3903261a10e40c464c1f3b9ec28c452422b9e86849d9e42b5793aa0b4efd"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/r2-semantics/author_manifest.py"
+      ],
+      "path": "tests/conformance/bindings/fixtures/r2-semantics/author_manifest.py",
+      "sha256": "34fcc69cca1b977bd6df86abcf18d64d9a729a585009ef6212742f0638712ba7"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/r2-semantics/cases.js"
+      ],
+      "path": "tests/conformance/bindings/fixtures/r2-semantics/cases.js",
+      "sha256": "c42593afe0ea2d40afcddd122e4a4b91dbcf3a1ae6ce8b70ec5ee208efcfcc54"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/r2-semantics/fixture.js"
+      ],
+      "path": "tests/conformance/bindings/fixtures/r2-semantics/fixture.js",
+      "sha256": "15abdbedb54e6303b7751fe87bf34b7b6bfdeaad9f8e523f412157db5d61b793"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/r2-semantics/manifest.json"
+      ],
+      "path": "tests/conformance/bindings/fixtures/r2-semantics/manifest.json",
+      "sha256": "729bd31ba60fb9c6ff47f4689b48d2a21d120ec10e54e5b484647ca6adbd2179"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/r2-semantics/source-pins.json"
+      ],
+      "path": "tests/conformance/bindings/fixtures/r2-semantics/source-pins.json",
+      "sha256": "78e71acb97bf11f7126b3b1f814345e4d14cc697110cb824e3541cdaabfbcb65"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/r2-semantics/static-report.json"
+      ],
+      "path": "tests/conformance/bindings/fixtures/r2-semantics/static-report.json",
+      "sha256": "c3e621e9bf34a46b721b3843ba0009ed05ed6f919dd1e83c4e0330fd965edd70"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/r2-semantics/validate_static.py"
+      ],
+      "path": "tests/conformance/bindings/fixtures/r2-semantics/validate_static.py",
+      "sha256": "b52c95507ee71a8ef30156dd8a32549b1cbfcb4283a3591734dbb1c3e7592d4f"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/r2-semantics/wrangler.jsonc"
+      ],
+      "path": "tests/conformance/bindings/fixtures/r2-semantics/wrangler.jsonc",
+      "sha256": "82833332737daceba63d0fcf10d936597b24354ffa89fd757ce3203cc943e6ec"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/facet-root-semantics/README.md"
+      ],
+      "path": "tests/conformance/durable-objects/facets/fixtures/facet-root-semantics/README.md",
+      "sha256": "18c724ec25d31e21eff422aecd27403261acb5cdbf329215ce81876f30a624cf"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/facet-root-semantics/SHA256SUMS"
+      ],
+      "path": "tests/conformance/durable-objects/facets/fixtures/facet-root-semantics/SHA256SUMS",
+      "sha256": "a4f59149f7ba8ecaa6e2ab7a09f94a5ddc4e2cdc443307f678b376045c105ccc"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/facet-root-semantics/author_manifest.py"
+      ],
+      "path": "tests/conformance/durable-objects/facets/fixtures/facet-root-semantics/author_manifest.py",
+      "sha256": "9b71388cf6c9919ed364a0a3a38d2dce2c83278e74b61c5e92e3d849fe4f2a59"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/facet-root-semantics/cases.js"
+      ],
+      "path": "tests/conformance/durable-objects/facets/fixtures/facet-root-semantics/cases.js",
+      "sha256": "3e0d3a30c5c60b02f026d26d58012c6b3a244df8858e3a2fe40b2f3aa9aea359"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/facet-root-semantics/facets.js"
+      ],
+      "path": "tests/conformance/durable-objects/facets/fixtures/facet-root-semantics/facets.js",
+      "sha256": "0c1e77551454e2f4ec65e266e0b4e9768e6bac296550e2960d1242d52c0c0e75"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/facet-root-semantics/fixture.js"
+      ],
+      "path": "tests/conformance/durable-objects/facets/fixtures/facet-root-semantics/fixture.js",
+      "sha256": "2843913af8aa84153e792b41e9367175b7e80a5dbf4f78eb18b07d91b58cb147"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/facet-root-semantics/manifest.json"
+      ],
+      "path": "tests/conformance/durable-objects/facets/fixtures/facet-root-semantics/manifest.json",
+      "sha256": "a1615598800adf714f1786dbf6db36365b035d4b9e54a4c56c12e5a427ed7e1f"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/facet-root-semantics/overlap-audit.json"
+      ],
+      "path": "tests/conformance/durable-objects/facets/fixtures/facet-root-semantics/overlap-audit.json",
+      "sha256": "905bfdeee5563ef34bb7bd6c6589c99c92ea6b86edcf5f8482da107c078e9e1b"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/facet-root-semantics/schedule.json"
+      ],
+      "path": "tests/conformance/durable-objects/facets/fixtures/facet-root-semantics/schedule.json",
+      "sha256": "5bc678e591cf45bf9574f79876318a7aa468b552a12b7103b5809f5b22f34218"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/facet-root-semantics/source-pins.json"
+      ],
+      "path": "tests/conformance/durable-objects/facets/fixtures/facet-root-semantics/source-pins.json",
+      "sha256": "b25bc6d9a28ffc8535d5d55157ecaad750423e71fa48e7bb81f6f292ba18d326"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/facet-root-semantics/sources.js"
+      ],
+      "path": "tests/conformance/durable-objects/facets/fixtures/facet-root-semantics/sources.js",
+      "sha256": "809b26affa78b950c747d52b6cd4b350c42672f488ac66c7756a8210d38482d6"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/facet-root-semantics/static-validation.json"
+      ],
+      "path": "tests/conformance/durable-objects/facets/fixtures/facet-root-semantics/static-validation.json",
+      "sha256": "88e937d3ae9b526c8a6bd350027d26fdd52d3cc1f0ffa3fc96f2c3fdb49ff8fe"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/facet-root-semantics/validate_static.py"
+      ],
+      "path": "tests/conformance/durable-objects/facets/fixtures/facet-root-semantics/validate_static.py",
+      "sha256": "0cf9d87174ad676f3c54bc31296300b05d8163b5f234a6533c8f2671ad0b7e0d"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/facet-root-semantics/wrangler.json"
+      ],
+      "path": "tests/conformance/durable-objects/facets/fixtures/facet-root-semantics/wrangler.json",
+      "sha256": "4f9dfe9709f2b270fd74401ad901104086c89b1f3659cdfb71e9d3135c887fe9"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/pipe-cleanup-semantics/README.md",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/pipe-cleanup-semantics/README.md"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/pipe-cleanup-semantics/README.md",
+      "sha256": "87499a912b06fd2f7295d24a8e3994f725606efcab55d420921b99fff7919450"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/pipe-cleanup-semantics/SHA256SUMS",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/pipe-cleanup-semantics/SHA256SUMS"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/pipe-cleanup-semantics/SHA256SUMS",
+      "sha256": "9313490ac7f94c5c6ffd30b59f0380258901e3b3f6c42d657e06de52b8a5f56e"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/pipe-cleanup-semantics/author_manifest.py",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/pipe-cleanup-semantics/author_manifest.py"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/pipe-cleanup-semantics/author_manifest.py",
+      "sha256": "400e917fb4712507cb3f6e5057910c6a4d0ea1abb3827ae7824723d69d21ab1f"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/pipe-cleanup-semantics/cases.js",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/pipe-cleanup-semantics/cases.js"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/pipe-cleanup-semantics/cases.js",
+      "sha256": "c854fc02b5d268af0d7ed55c58df23f3f67954ef36ce23d04b7a3cf21e78638e"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/pipe-cleanup-semantics/fixture.js",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/pipe-cleanup-semantics/fixture.js"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/pipe-cleanup-semantics/fixture.js",
+      "sha256": "9903a92f43f96b3b38046171b7575e99b84eac2ef8e626b2377fb621f5a821b5"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/pipe-cleanup-semantics/manifest.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/pipe-cleanup-semantics/manifest.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/pipe-cleanup-semantics/manifest.json",
+      "sha256": "02175a33442a86096c05300b11e15c978b58ea6b69a9bb57acaf53ac51dec730"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/pipe-cleanup-semantics/overlap-audit.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/pipe-cleanup-semantics/overlap-audit.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/pipe-cleanup-semantics/overlap-audit.json",
+      "sha256": "f40c27b7d11e47710ff9172dec25c2264fcf48c00789fc1ebdbb9bb52c6e871f"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/pipe-cleanup-semantics/schedule.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/pipe-cleanup-semantics/schedule.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/pipe-cleanup-semantics/schedule.json",
+      "sha256": "e867ef043b0e7b965b382c6f27197246428ac345d46c1907ae9bef83b33b9d9d"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/pipe-cleanup-semantics/source-pins.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/pipe-cleanup-semantics/source-pins.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/pipe-cleanup-semantics/source-pins.json",
+      "sha256": "35272889f5028c98f570f96ca8001b4e93b2e308c29b99910fe64bfd79bb59b9"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/pipe-cleanup-semantics/static-validation.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/pipe-cleanup-semantics/static-validation.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/pipe-cleanup-semantics/static-validation.json",
+      "sha256": "966a9a8145dc8f1f08b2a3394da2b1fbecd4390a4d6d7fb1136ec476ee71ae47"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/pipe-cleanup-semantics/validate_static.py",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/pipe-cleanup-semantics/validate_static.py"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/pipe-cleanup-semantics/validate_static.py",
+      "sha256": "d9b52ea0b727ad288b462e8f3295fdd597fd1393f8351e45b089b1708a7cfde3"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/pipe-cleanup-semantics/wrangler.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/pipe-cleanup-semantics/wrangler.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/pipe-cleanup-semantics/wrangler.json",
+      "sha256": "999ff4362bbaef67fc5f25cc150bea37064d930323074cfc1362c0d2b303196f"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/atomic-accounting-semantics/README.md"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/atomic-accounting-semantics/README.md",
+      "sha256": "106953071fec2ed7e27706b4c9a997551e86f8d9f1f20ea919dface17e97d88b"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/atomic-accounting-semantics/SHA256SUMS"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/atomic-accounting-semantics/SHA256SUMS",
+      "sha256": "d1d934ec4c42e313d8c934261136bab40326db572ef8b18f6bcb5cf4fe88b5fe"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/atomic-accounting-semantics/author_manifest.py"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/atomic-accounting-semantics/author_manifest.py",
+      "sha256": "2adea51dffb261d59b08625d3cf13e6d4d0385c42b00eb44f6c555dd2c3593b2"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/atomic-accounting-semantics/cases.js"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/atomic-accounting-semantics/cases.js",
+      "sha256": "b989812ac2fb83e206a9068aa18f77ea92833e76bbb620f6bf8cb024cbdf75e3"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/atomic-accounting-semantics/fixture.js"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/atomic-accounting-semantics/fixture.js",
+      "sha256": "686846d5a7b0fac00f11906a8c79c13ca1cb293244ef37fec33f1a6a90871f7e"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/atomic-accounting-semantics/manifest.json"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/atomic-accounting-semantics/manifest.json",
+      "sha256": "74ca24883b66b7505190af93acdb03199887fecbe09f5d377d344cfafb2cad69"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/atomic-accounting-semantics/overlap-audit.json"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/atomic-accounting-semantics/overlap-audit.json",
+      "sha256": "a6e173ae53e61104a962539243d549350dd8a719c8b138ca67ca6e693cdc4d49"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/atomic-accounting-semantics/schedule.json"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/atomic-accounting-semantics/schedule.json",
+      "sha256": "5a597ac4135eb293cd6ed333971d889af2b742a6eb644f9dcf41640d01c49308"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/atomic-accounting-semantics/source-pins.json"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/atomic-accounting-semantics/source-pins.json",
+      "sha256": "76ab3b134c2f5378b01211ede88c56662ea1c28c1fbe881787478a1c658bf019"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/atomic-accounting-semantics/static-validation.json"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/atomic-accounting-semantics/static-validation.json",
+      "sha256": "d5bde329458415d386da9b81f477218a5114f364932bcccb91e5368654149318"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/atomic-accounting-semantics/validate_static.py"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/atomic-accounting-semantics/validate_static.py",
+      "sha256": "6910225838486b1d53af29cc6547a6346463937360433f93a0e27288927710a5"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/atomic-accounting-semantics/wrangler.jsonc"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/atomic-accounting-semantics/wrangler.jsonc",
+      "sha256": "b0326f2bc145112dd5fd04cb7cc8e71a909fe8e157e9707495e92582b3bcb9cd"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/identity-admission-semantics/README.md",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/identity-admission-semantics/README.md"
+      ],
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/identity-admission-semantics/README.md",
+      "sha256": "28d499c20860fcc24c596cd98a3722c03834c7e62b149cb40e9ea1a4dc28ac97"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/identity-admission-semantics/SHA256SUMS",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/identity-admission-semantics/SHA256SUMS"
+      ],
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/identity-admission-semantics/SHA256SUMS",
+      "sha256": "1a3c57a2599c66599a9265561d1b7716752ba4ac033c788340243158d26cb8c5"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/identity-admission-semantics/author_manifest.py",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/identity-admission-semantics/author_manifest.py"
+      ],
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/identity-admission-semantics/author_manifest.py",
+      "sha256": "cb0876ebef169104b822e6d46cd0d14aef6482ec17aff175f2ff49ebe637a8ab"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/identity-admission-semantics/cases.js",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/identity-admission-semantics/cases.js"
+      ],
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/identity-admission-semantics/cases.js",
+      "sha256": "7845a408e306d0e2d2b35b94de5b6857e2874220a1623edb23b7faf7107a6ba4"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/identity-admission-semantics/fixture.js",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/identity-admission-semantics/fixture.js"
+      ],
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/identity-admission-semantics/fixture.js",
+      "sha256": "eeb4d839f7c818b31988e205b843f6584c6cfc066b4723dcb8382d7ca8bf5e33"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/identity-admission-semantics/manifest.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/identity-admission-semantics/manifest.json"
+      ],
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/identity-admission-semantics/manifest.json",
+      "sha256": "e5eae8135cebe5822551cd30d5fad64d7273726f60d70a8899cd014f3500951e"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/identity-admission-semantics/overlap-audit.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/identity-admission-semantics/overlap-audit.json"
+      ],
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/identity-admission-semantics/overlap-audit.json",
+      "sha256": "3449d3f72b169da3637198ec95ac8b75700095227876749d1eae7435b2baf2fa"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/identity-admission-semantics/schedule.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/identity-admission-semantics/schedule.json"
+      ],
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/identity-admission-semantics/schedule.json",
+      "sha256": "1bea9576442c175db39a73d0c041d845fa3536a8fc18a29ccf887ccc5f1a330d"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/identity-admission-semantics/source-pins.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/identity-admission-semantics/source-pins.json"
+      ],
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/identity-admission-semantics/source-pins.json",
+      "sha256": "d6cfa6f0f05c36ec335ee32c3951529f5b7c2561a2ae52ea42071f47b80761b2"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/identity-admission-semantics/static-validation.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/identity-admission-semantics/static-validation.json"
+      ],
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/identity-admission-semantics/static-validation.json",
+      "sha256": "3bdc7e95d775f27e990629411a8203ffcfc9bc516f23b770d0ebf7e1b43bd446"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/identity-admission-semantics/validate_static.py",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/identity-admission-semantics/validate_static.py"
+      ],
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/identity-admission-semantics/validate_static.py",
+      "sha256": "c840c46318c04ee3d6bf6f51d279924a5841dc49de5cdc13b5f41a0693d34e41"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/identity-admission-semantics/wrangler.jsonc",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/identity-admission-semantics/wrangler.jsonc"
+      ],
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/identity-admission-semantics/wrangler.jsonc",
+      "sha256": "de1895f760ca587c0dc4062fbc5fc9a22676190b0268bc889a5c2d0edd2f39d1"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/stream-backpressure-semantics/README.md",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/stream-backpressure-semantics/README.md"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/stream-backpressure-semantics/README.md",
+      "sha256": "9e6effc19b98260e0ba6eb694687dc60cde0378c4d7ad0e09f1b9e81093f3866"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/stream-backpressure-semantics/SHA256SUMS",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/stream-backpressure-semantics/SHA256SUMS"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/stream-backpressure-semantics/SHA256SUMS",
+      "sha256": "65179a7b045191cbc075054ab9ed0c052047ef92d642958293652688f8733551"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/stream-backpressure-semantics/author_manifest.py",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/stream-backpressure-semantics/author_manifest.py"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/stream-backpressure-semantics/author_manifest.py",
+      "sha256": "d57ec5b17358cd2502388f75815f8468327e9fa1dbb825cc2a09fdb5e322b750"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/stream-backpressure-semantics/cases.js",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/stream-backpressure-semantics/cases.js"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/stream-backpressure-semantics/cases.js",
+      "sha256": "5b0602798844955748dc1edf1779e75aa09c9d1f08fb2c7252e5703e033f0964"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/stream-backpressure-semantics/fixture.js",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/stream-backpressure-semantics/fixture.js"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/stream-backpressure-semantics/fixture.js",
+      "sha256": "d3719b882f4c3725bd59187adce6cbb2b547da70949ed2b8ee9ec101a3138c6a"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/stream-backpressure-semantics/manifest.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/stream-backpressure-semantics/manifest.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/stream-backpressure-semantics/manifest.json",
+      "sha256": "e7b601830183b60736e3a17f47553c808674a7fcacd422e21694a98057158783"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/stream-backpressure-semantics/normative-verification.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/stream-backpressure-semantics/normative-verification.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/stream-backpressure-semantics/normative-verification.json",
+      "sha256": "190daf3b75a2adb68e7d2fe25e9051dfe37467d7b9728162931e98cb5633a0e7"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/stream-backpressure-semantics/overlap-audit.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/stream-backpressure-semantics/overlap-audit.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/stream-backpressure-semantics/overlap-audit.json",
+      "sha256": "3fe05c2f5a9e62539cd2c1465ea47fc5de1ab9bbc91fc1f384ba8610a90c995d"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/stream-backpressure-semantics/schedule.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/stream-backpressure-semantics/schedule.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/stream-backpressure-semantics/schedule.json",
+      "sha256": "e96c422213fdf31c7cce593944557ab1ec339c5426389d512b1f653a6412aa72"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/stream-backpressure-semantics/source-pins.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/stream-backpressure-semantics/source-pins.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/stream-backpressure-semantics/source-pins.json",
+      "sha256": "fb7f3a8082021306db0199f9947611ea84886d1996bdfd3036496f0400d5b16f"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/stream-backpressure-semantics/static-validation.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/stream-backpressure-semantics/static-validation.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/stream-backpressure-semantics/static-validation.json",
+      "sha256": "39b8e2c61622709cd52d3d046301e02cb5bd0308b572c453a2d8dd49900a83b5"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/stream-backpressure-semantics/validate_static.py",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/stream-backpressure-semantics/validate_static.py"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/stream-backpressure-semantics/validate_static.py",
+      "sha256": "f58e6959e46fb1610634863f421042b7847875626635fcd8d8c06095e14fe8d6"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/stream-backpressure-semantics/wrangler.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/ready-functional/celld-campaign-next/stream-backpressure-semantics/wrangler.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/stream-backpressure-semantics/wrangler.json",
+      "sha256": "78f79258adf247aa77225c204efe4819c975cd601c255025900f66917596f54d"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-typed-storage-semantics/README.md"
+      ],
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/os-typed-storage-semantics/README.md",
+      "sha256": "e5d7c90388b484dbdf7effbbf81a3c0c0b4205f5ab6af65effe53ce7145042e7"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-typed-storage-semantics/SHA256SUMS"
+      ],
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/os-typed-storage-semantics/SHA256SUMS",
+      "sha256": "ecdf21b026057cc6bb565f81dd4449566eb905f09eebab3a61c02c6cccc39a7b"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-typed-storage-semantics/THIRD-PARTY.md"
+      ],
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/os-typed-storage-semantics/THIRD-PARTY.md",
+      "sha256": "810474b61f539f30f08502f15433b0af8d5ef671165dc8ed7884afd5d681bf21"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-typed-storage-semantics/author_manifest.py"
+      ],
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/os-typed-storage-semantics/author_manifest.py",
+      "sha256": "82f43dbf5e5303bf5b518f4aee31054de5a0a5195b8738762b4fbea6938144eb"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-typed-storage-semantics/cases.js"
+      ],
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/os-typed-storage-semantics/cases.js",
+      "sha256": "2b0a192f9bfdf32f3f0e064513c18b3aac1a915b67186ea073e3427c434adea2"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-typed-storage-semantics/fixture.js"
+      ],
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/os-typed-storage-semantics/fixture.js",
+      "sha256": "b90228c2292eafe5253598b111ccf2272743fc1f6f68485f6d8bd454e52cf50f"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-typed-storage-semantics/manifest.json"
+      ],
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/os-typed-storage-semantics/manifest.json",
+      "sha256": "70b236edc39a42d460392d283885be675f1626f589f517b458f667be81946fc7"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-typed-storage-semantics/overlap-audit.json"
+      ],
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/os-typed-storage-semantics/overlap-audit.json",
+      "sha256": "88955f5fc0d6420c39d14f06d89c1d9ac5e225405af4f1cb503da6e1ee262a7f"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-typed-storage-semantics/provenance.json"
+      ],
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/os-typed-storage-semantics/provenance.json",
+      "sha256": "42fcb90c11005a2bdebb0cff20b50fd4db346e200febb5b9e6abb0693f7a4316"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-typed-storage-semantics/source-pins.json"
+      ],
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/os-typed-storage-semantics/source-pins.json",
+      "sha256": "3e7611b9de6694a6e2fa1e66007badba6c14f2e936e997b236ab68410900e70d"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-typed-storage-semantics/static-report.json"
+      ],
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/os-typed-storage-semantics/static-report.json",
+      "sha256": "9b54eea29a461c44d6808965af54d67304305922dd9f71fb4438e25f18fdf1f8"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-typed-storage-semantics/validate_static.py"
+      ],
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/os-typed-storage-semantics/validate_static.py",
+      "sha256": "352b93a7dc56151fdce44c8e812b8ba98a35a33ee747613f6ec828186c5f5a01"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-typed-storage-semantics/vendor/cloudflare-os/LICENSE"
+      ],
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/os-typed-storage-semantics/vendor/cloudflare-os/LICENSE",
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-typed-storage-semantics/vendor/cloudflare-os/packages/typed-storage/src/index.ts"
+      ],
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/os-typed-storage-semantics/vendor/cloudflare-os/packages/typed-storage/src/index.ts",
+      "sha256": "561111a1a0787d5158ddfa9df5c1910285b156906d874f5f58719a901e004c12"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-typed-storage-semantics/wrangler.jsonc"
+      ],
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/os-typed-storage-semantics/wrangler.jsonc",
+      "sha256": "6602e99531eb43088f9293452987974cdae9fced1f26f7d01ff66d06279e6353"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-action-file-store-semantics/README.md"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/os-action-file-store-semantics/README.md",
+      "sha256": "fb014bd29db7fe520d23a90efa346f73c0688610eb63dd7530f4215edd65d5a9"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-action-file-store-semantics/SHA256SUMS"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/os-action-file-store-semantics/SHA256SUMS",
+      "sha256": "db979d429ad446058f1838780778440ebbd5fc0cdf55ecc5f19749bb30a9aa15"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-action-file-store-semantics/author_manifest.py"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/os-action-file-store-semantics/author_manifest.py",
+      "sha256": "649672b56e17bfcef8de5877133ee1fd85d63e99f6e233adbb18ac2f1013a207"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-action-file-store-semantics/cases.js"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/os-action-file-store-semantics/cases.js",
+      "sha256": "c4f467a71fa5a0acbf939fa223d01a13d2c5155b3936e9d5c2dc813b0e2fc238"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-action-file-store-semantics/fixture.js"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/os-action-file-store-semantics/fixture.js",
+      "sha256": "385a2d1bd59f84ec4144199d35f5a9118e8ccf960455528a438de55419b21bce"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-action-file-store-semantics/manifest.json"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/os-action-file-store-semantics/manifest.json",
+      "sha256": "a508a45f186dbca34d7b5cf31505f8a01848f29a9a610278f230b86dee971ed1"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-action-file-store-semantics/overlap-audit.json"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/os-action-file-store-semantics/overlap-audit.json",
+      "sha256": "d1aa3ad157bcb2b1f37a1cd00895be9d14bdd2142952375484b7e0f6ca66e166"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-action-file-store-semantics/provenance.json"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/os-action-file-store-semantics/provenance.json",
+      "sha256": "e6a7177214f13c9bce84808741539db51530ee97e0289d35a5adb9d12d56d23e"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-action-file-store-semantics/schedule.json"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/os-action-file-store-semantics/schedule.json",
+      "sha256": "18776d825227891479707b40459e91ae9d829a917ed0f956993105893fc02437"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-action-file-store-semantics/source-pins.json"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/os-action-file-store-semantics/source-pins.json",
+      "sha256": "2a923d48282c0ddb9c472f80fa357b63e6c96bfc08a9e85170196e64d689d959"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-action-file-store-semantics/static-report.json"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/os-action-file-store-semantics/static-report.json",
+      "sha256": "4427fb5750b4324d33cc34d0d061e96007aaadbe747e573d35dd3f0753f82e75"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-action-file-store-semantics/validate_static.py"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/os-action-file-store-semantics/validate_static.py",
+      "sha256": "8557e256aecc888ba8c3fb689099a8da143a3d3fc9bb478461afa918e741c8ef"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-action-file-store-semantics/vendor/cloudflare-os/LICENSE"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/os-action-file-store-semantics/vendor/cloudflare-os/LICENSE",
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-action-file-store-semantics/vendor/cloudflare-os/packages/gatekeeper-kit/AGENTS.md"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/os-action-file-store-semantics/vendor/cloudflare-os/packages/gatekeeper-kit/AGENTS.md",
+      "sha256": "3b8299d87f6b2893699648e2fcf5b878b9ede3ee05e5f71268f244ffa06cf2df"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-action-file-store-semantics/vendor/cloudflare-os/packages/gatekeeper-kit/src/action-files.ts"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/os-action-file-store-semantics/vendor/cloudflare-os/packages/gatekeeper-kit/src/action-files.ts",
+      "sha256": "e735cdd41333be3297a6e8d7114553483772b33f310edfb0844296650c855da0"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-action-file-store-semantics/vendor/cloudflare-os/packages/gatekeeper-kit/src/kv.ts"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/os-action-file-store-semantics/vendor/cloudflare-os/packages/gatekeeper-kit/src/kv.ts",
+      "sha256": "2dd68d8822cb4737d8563da0595e250894d0f7f0b2ed2dc4b1505336a1f4ef9d"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-action-file-store-semantics/vendor/cloudflare-os/packages/gatekeeper-kit/src/positive-int.ts"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/os-action-file-store-semantics/vendor/cloudflare-os/packages/gatekeeper-kit/src/positive-int.ts",
+      "sha256": "e9813ec2bd5121a0384dc6bd4af4467ea6aa27f169e11ddc27673a88879bded1"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-action-file-store-semantics/wrangler.jsonc"
+      ],
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/os-action-file-store-semantics/wrangler.jsonc",
+      "sha256": "4517c98fc8f2e0896cf4269fa1e67c7271e57331d3402d0341562b1f4c9e7f60"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-git-codec-semantics/ORACLES.md"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/os-git-codec-semantics/ORACLES.md",
+      "sha256": "63d86cad5fb7d6e3c369fe6ccb520e3340b5f12da65876e7f5e8ad8ea87ce85a"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-git-codec-semantics/README.md"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/os-git-codec-semantics/README.md",
+      "sha256": "6b5f1dc7f0cf4bfeb8ee889596202a192559c16d8c49a8604e4fa043ceb6ff6c"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-git-codec-semantics/SHA256SUMS"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/os-git-codec-semantics/SHA256SUMS",
+      "sha256": "8d7a05013fb4d504fd19b5f7b7326e3069c03049707b7c585fb00c94f6eef92d"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-git-codec-semantics/THIRD-PARTY.md"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/os-git-codec-semantics/THIRD-PARTY.md",
+      "sha256": "8f35f3d70609def492b12d8c0236fff102fdd7f12fa264c3aaf3f473ab7cecf1"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-git-codec-semantics/author_manifest.py"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/os-git-codec-semantics/author_manifest.py",
+      "sha256": "632c3d2b8ebf6e35852961c7944c188e36161ab21c8e5a2bfa868b81fc6c393c"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-git-codec-semantics/author_vectors.py"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/os-git-codec-semantics/author_vectors.py",
+      "sha256": "a86ca4198d27dfe1be0a11fcc562fa2429629d8d05cb61125b0d563b412dcbed"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-git-codec-semantics/cases.js"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/os-git-codec-semantics/cases.js",
+      "sha256": "e2e981c22115d5a2931ece9e0a2bef69f91b1c181aa3d9cba46ba71c1d3e0f61"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-git-codec-semantics/dependency-lock.json"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/os-git-codec-semantics/dependency-lock.json",
+      "sha256": "2a79c5921800b12ad40f5bad0340e48a7caf5af36477f32b9303e93e2b7cdfa2"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-git-codec-semantics/fixture.js"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/os-git-codec-semantics/fixture.js",
+      "sha256": "1e9fe63ddb8a97a259b41a94a3d4c49335648de10577f3c2b4aff0bdb6e9688c"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-git-codec-semantics/golden-inputs.json"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/os-git-codec-semantics/golden-inputs.json",
+      "sha256": "c07a32329be83cc2be80ce562960e24a5e07f6f7547c7f94c398c1e2c705e6d6"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-git-codec-semantics/manifest.json"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/os-git-codec-semantics/manifest.json",
+      "sha256": "30fa9826b963cb0b917bcda33e4167d5eaf4427eb0f4c6d3d5cd81394dba89b0"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-git-codec-semantics/overlap-audit.json"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/os-git-codec-semantics/overlap-audit.json",
+      "sha256": "8ed745baca336d889db2c77c3f5964575b26a5861b8effae55212e4cfc6d1b7b"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-git-codec-semantics/package.json"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/os-git-codec-semantics/package.json",
+      "sha256": "d0b14e41fc327e9d4f582c79b60484c46631caee29e9f2857ead3a316ac3c8a6"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-git-codec-semantics/provenance.json"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/os-git-codec-semantics/provenance.json",
+      "sha256": "1574413c9c546df6be38b3f3354fe7b798a14b5d4f18e9638db2927d245545fb"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-git-codec-semantics/schedule.json"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/os-git-codec-semantics/schedule.json",
+      "sha256": "b3836c01dd82fed69aa1b45c4b67e8bc4ce632093914bec130b2c4ab4300de14"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-git-codec-semantics/source-pins.json"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/os-git-codec-semantics/source-pins.json",
+      "sha256": "611ec575003f0540c2056ca0f30dd9a924d92fa2a0e4280fdebaaa04cb223ff9"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-git-codec-semantics/static-report.json"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/os-git-codec-semantics/static-report.json",
+      "sha256": "ab62cdb2ab23332a1ca6522ac7e54a2a9a84a60ba69d131f120017282b6daa93"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-git-codec-semantics/validate_static.py"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/os-git-codec-semantics/validate_static.py",
+      "sha256": "aeb438ed355e44e7d6d9bab31a74d5daf852e13faaf4982800975323145a91d1"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-git-codec-semantics/vectors.js"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/os-git-codec-semantics/vectors.js",
+      "sha256": "5cc1ef7e4733d99932ecd4edd0d7e31f74ce3922c35b66c95fe081a71f023a51"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-git-codec-semantics/vendor/cloudflare-os/LICENSE"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/os-git-codec-semantics/vendor/cloudflare-os/LICENSE",
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-git-codec-semantics/vendor/cloudflare-os/packages/workshop-backend/src/git-codec.ts"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/os-git-codec-semantics/vendor/cloudflare-os/packages/workshop-backend/src/git-codec.ts",
+      "sha256": "56814f3f0608c88e6e83ba08e43f5af87ed4fabf972554e696c390809e9e1538"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-git-codec-semantics/wrangler.jsonc"
+      ],
+      "path": "tests/conformance/web-platform/fixtures/os-git-codec-semantics/wrangler.jsonc",
+      "sha256": "62ee60c326705c91c9baa88cf14cb312780e7c0f5af0aa4cf7be318cebdaf695"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/response-clone-chunk-semantics/README.md",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/candidate-evidence/celld-campaign-next/response-clone-chunk-semantics/README.md"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/response-clone-chunk-semantics/README.md",
+      "sha256": "97b90c0c21481ddcc290468363ca12e7d70e53320554e8789cfd417364fa7295"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/response-clone-chunk-semantics/SHA256SUMS",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/candidate-evidence/celld-campaign-next/response-clone-chunk-semantics/SHA256SUMS"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/response-clone-chunk-semantics/SHA256SUMS",
+      "sha256": "cb329726cdab61383dc09cd7f764438db1ef922dc8248cec94aed148ef1c82e8"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/response-clone-chunk-semantics/author_manifest.py",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/candidate-evidence/celld-campaign-next/response-clone-chunk-semantics/author_manifest.py"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/response-clone-chunk-semantics/author_manifest.py",
+      "sha256": "128d085f3b72b8cba0e9c9dd7d1779aa032f853592796b9d52774a70068edfde"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/response-clone-chunk-semantics/cases.js",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/candidate-evidence/celld-campaign-next/response-clone-chunk-semantics/cases.js"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/response-clone-chunk-semantics/cases.js",
+      "sha256": "c85acc7520eceaea54f5cc6e7651c21c761e9a213a21d50a695ca5c35817896c"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/response-clone-chunk-semantics/fixture.js",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/candidate-evidence/celld-campaign-next/response-clone-chunk-semantics/fixture.js"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/response-clone-chunk-semantics/fixture.js",
+      "sha256": "744bc0261c9cdcb63ecb972ac3185eaad51d7115ee07100dd88d77ca283fb3a7"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/response-clone-chunk-semantics/manifest.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/candidate-evidence/celld-campaign-next/response-clone-chunk-semantics/manifest.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/response-clone-chunk-semantics/manifest.json",
+      "sha256": "048b55c13a991eeedb8c7cd39d89644ac278c740fb7d24e9eb4ba4d5608e26b9"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/response-clone-chunk-semantics/overlap-audit.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/candidate-evidence/celld-campaign-next/response-clone-chunk-semantics/overlap-audit.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/response-clone-chunk-semantics/overlap-audit.json",
+      "sha256": "435d64b6cd9614b385cc247d99fb6245a8981b263a719cb3285dfb45a36afad2"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/response-clone-chunk-semantics/overlap-inventory.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/candidate-evidence/celld-campaign-next/response-clone-chunk-semantics/overlap-inventory.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/response-clone-chunk-semantics/overlap-inventory.json",
+      "sha256": "74359ab909cdacbd638a5365e7ba108acc79ccebaa108d8f083c24af3d93330a"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/response-clone-chunk-semantics/schedule.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/candidate-evidence/celld-campaign-next/response-clone-chunk-semantics/schedule.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/response-clone-chunk-semantics/schedule.json",
+      "sha256": "7de4d389be984e3b27ac7a0b81146c73e9fcb068687298f518416cfa9dbc3290"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/response-clone-chunk-semantics/source-pins.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/candidate-evidence/celld-campaign-next/response-clone-chunk-semantics/source-pins.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/response-clone-chunk-semantics/source-pins.json",
+      "sha256": "f372973c550aa580bafbbd2dfdb26a5687a14e0bc5d1bb7bfb054341aa6e9669"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/response-clone-chunk-semantics/static-validation.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/candidate-evidence/celld-campaign-next/response-clone-chunk-semantics/static-validation.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/response-clone-chunk-semantics/static-validation.json",
+      "sha256": "96ac16a1f315338d98b7a524576c101f667185e5f23bd26d4073073cc26b84c3"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/response-clone-chunk-semantics/validate_static.py",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/candidate-evidence/celld-campaign-next/response-clone-chunk-semantics/validate_static.py"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/response-clone-chunk-semantics/validate_static.py",
+      "sha256": "1eadb1104a1ce18007de30270ad3cc695f2de68ba36b59ad5f4a621a82bebeba"
+    },
+    {
+      "origins": [
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/response-clone-chunk-semantics/wrangler.json",
+        "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/candidate-evidence/celld-campaign-next/response-clone-chunk-semantics/wrangler.json"
+      ],
+      "path": "tests/conformance/fetch-and-http/fixtures/response-clone-chunk-semantics/wrangler.json",
+      "sha256": "8fc28d0d31a268317b63e4d1c388b5acba200729602a2e61a889171bbda47d43"
+    }
+  ],
+  "inventories": [
+    {
+      "counts": {
+        "combined_authored": 633,
+        "combined_reviewed_characterization": 115,
+        "combined_reviewed_primary_static": 518,
+        "new_authored": 58,
+        "new_reviewed_characterization": 1,
+        "new_reviewed_primary_static": 57,
+        "new_runtime_executions": 0,
+        "new_runtime_passes": 0,
+        "remaining_reviewed_primary": 1482,
+        "target_complete": false,
+        "target_primary": 2000
+      },
+      "sha256": "7fb52559ebcadf5e1c148507316e20a1ed1b9c4e5eff50f9538f2c529224da3b",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/TRANCHE-001.json"
+    },
+    {
+      "counts": {
+        "combined_authored": 713,
+        "combined_reviewed_characterization": 115,
+        "combined_reviewed_primary_static": 598,
+        "new_authored": 80,
+        "new_reviewed_characterization": 0,
+        "new_reviewed_primary_static": 80,
+        "new_runtime_executions": 0,
+        "new_runtime_passes": 0,
+        "remaining_reviewed_primary": 1402,
+        "target_complete": false,
+        "target_primary": 2000
+      },
+      "sha256": "b20318879a6637fe4c6019c606ba029d9159cee96ebefb502fc455e992305cc9",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/TRANCHE-002.json"
+    },
+    {
+      "counts": {
+        "combined_authored": 755,
+        "combined_reviewed_characterization": 115,
+        "combined_reviewed_primary_static": 640,
+        "new_authored": 42,
+        "new_reviewed_characterization": 0,
+        "new_reviewed_primary_static": 42,
+        "new_runtime_executions": 0,
+        "new_runtime_passes": 0,
+        "remaining_reviewed_primary": 1360,
+        "target_complete": false,
+        "target_primary": 2000
+      },
+      "sha256": "766c96a3ab1e8992ac59591b168ea468bac74ae27c8a5c6fe0a8b7885654b7de",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/TRANCHE-003.json"
+    },
+    {
+      "counts": {
+        "combined_authored": 773,
+        "combined_reviewed_characterization": 115,
+        "combined_reviewed_primary_static": 658,
+        "new_authored": 18,
+        "new_reviewed_characterization": 0,
+        "new_reviewed_primary_static": 18,
+        "new_runtime_executions": 0,
+        "new_runtime_passes": 0,
+        "remaining_reviewed_primary": 1342,
+        "target_complete": false,
+        "target_primary": 2000
+      },
+      "sha256": "1baef982b90cdacf7c42aa461999acda83602816bcf019aad8f25a3969bd1077",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/TRANCHE-004.json"
+    },
+    {
+      "counts": {
+        "combined_authored": 779,
+        "combined_reviewed_characterization": 115,
+        "combined_reviewed_primary_static": 664,
+        "new_authored": 6,
+        "new_reviewed_characterization": 0,
+        "new_reviewed_primary_static": 6,
+        "new_runtime_executions": 0,
+        "new_runtime_passes": 0,
+        "remaining_reviewed_primary": 1336,
+        "target_complete": false,
+        "target_primary": 2000
+      },
+      "sha256": "c74e5ead122a6b79e925479d57999645ed3ddbf8944654b3cdc0bf04ddcbc755",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/TRANCHE-005.json"
+    },
+    {
+      "counts": {
+        "combined_authored": 785,
+        "combined_reviewed_characterization": 115,
+        "combined_reviewed_primary_static": 670,
+        "new_authored": 6,
+        "new_reviewed_characterization": 0,
+        "new_reviewed_primary_static": 6,
+        "new_runtime_executions": 0,
+        "new_runtime_passes": 0,
+        "remaining_reviewed_primary": 1330,
+        "target_complete": false,
+        "target_primary": 2000
+      },
+      "sha256": "4833c27875927954dbc27f82e1ff3718039920b9523ecc9f42352369c40fed68",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/TRANCHE-006.json"
+    },
+    {
+      "counts": {
+        "combined_authored": 786,
+        "combined_reviewed_characterization": 115,
+        "combined_reviewed_primary_static": 671,
+        "new_authored": 1,
+        "new_reviewed_characterization": 0,
+        "new_reviewed_primary_static": 1,
+        "new_runtime_executions": 0,
+        "new_runtime_passes": 0,
+        "remaining_reviewed_primary": 1329,
+        "target_complete": false,
+        "target_primary": 2000
+      },
+      "sha256": "2779235c20fb692011b002b93625e7673226f3da6387bcdf2e0a28667423418d",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/TRANCHE-007.json"
+    }
+  ],
+  "primary": 671,
+  "schema": 1,
+  "total_designs": 786
+}

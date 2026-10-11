@@ -1,0 +1,170 @@
+{
+  "reviewed_at_utc": "2026-10-09T06:34:16.647554+00:00",
+  "reviewer": "review_celld_test_additions",
+  "wave": "d1-semantics",
+  "verdict": "ACCEPTED_PRIMARY_STATIC",
+  "counts": {
+    "authored": 20,
+    "accepted_primary_static": 20,
+    "accepted_characterization": 0,
+    "static_assertion_call_sites": 76,
+    "runtime_executions": 0,
+    "runtime_passes": 0
+  },
+  "scope": "Integration and count adjudication of the independent 20-case audit, with direct read of fixture ownership/cleanup, deployed binding configuration, intended D1 documentation and nearest-overlap paths. Hashes below independently rechecked; no test body, SQL or SUT execution.",
+  "independent_audit": {
+    "path": "reviews/d1-semantics-independent-audit.json",
+    "sha256": "3a457f2c411e473fd000f636e69a081962d3ae352f48b02fd65b3c538d61569e",
+    "reviewer": "review_d1_functional_cases",
+    "all_case_bodies_and_source_refs_reviewed": true
+  },
+  "closest_overlap_adjudication": {
+    "cases": [
+      "E209",
+      "D213"
+    ],
+    "decision": "Distinct primary mechanisms accepted.",
+    "basis": "D213 tests native SqlCursor._obj/raw projection. E209 tests independently implemented D1 __d1Shape plus first/raw after JSON binding transport. Their outward duplicate-column rule is shared, but either independent conversion path can regress while the other passes. No extra credit per method or primitive."
+  },
+  "contract_adjudication": "Celld explicitly documents readonly counter resets, primary-only sessions and stable bookmarks, exec statement counts, and database_id/name identity precedence. These are intended source-cut contracts rather than uncommitted accidental behavior; not asserted as universal Cloudflare behavior. Correct scalar/value oracles were not weakened.",
+  "static_hash_checks": {
+    "frozen_wave_files_verified": 10,
+    "comparison_files_verified": 6,
+    "independent_audit_sha256_verified": true
+  },
+  "runtime_prerequisites": "UNRUN. No execution authorization or runtime credit granted. Genuine direct-celld deployment and executable provenance, fresh isolated store, enforced 30-second request/700-second wave and CPU/RSS/disk/output limits, and mandatory owned teardown remain external prerequisites. Missing evidence is BLOCKED, not PASS.",
+  "frozen_artifact_sha256": {
+    "README.md": "db8673e6920940b8d962cb6d1b9b97f7d27b2fa31df8c9560c29a72f2f690001",
+    "SHA256SUMS": "1f6844b7e939d6cf754bc3295e7c52daeef405281cca95f2e363386c126e8b4e",
+    "author_manifest.py": "24d14e9df4344224c46a9ac592f34c42763424d7a525fd9e31c7bcd3891589c1",
+    "manifest.json": "a710fc3341a0ac99cbe9b5dd5847e7fc9c7d355313bac1440415941d7b31780f",
+    "overlap-audit.json": "e21f935cc5adf0e7d4f9a8939a4268481fd3c2e01c07af9d70a28ac89e53b665",
+    "source-pins.json": "ec63ab80fe73a534e4b1c587ba534b4a9748947d6cea8c608d8eab083e680ee9",
+    "static-validation.json": "0e3861af8504fe5357f3874e596188c92b5138ab376e5b732c6b891c648d584a",
+    "validate_static.py": "ec61b8b2931be15ae54fb9c383d94508fe8f685c7b8e439766d29cdd3711418b",
+    "worker.js": "4b946d92399b5493a1039165af98b4c2159f08296b211eec6a60ce9680c26525",
+    "wrangler.jsonc": "77de0e99dffdbf8c3d6193261735295f4d4f60f4c3c6c595ea5939d738a066b8"
+  },
+  "case_verdicts": [
+    {
+      "id": "E201",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Independent immutable bound-statement objects, rebind replacement and reusability; T011 instead tests a live native cursor under concurrent cached-query reuse."
+    },
+    {
+      "id": "E202",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Repeated numbered placeholders bind by parameter index, including reorder and null, rather than occurrence position."
+    },
+    {
+      "id": "E203",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "D1 public boolean normalization and JSON scalar transport with SQL type checks. D212 uses native DO SQL values and cannot detect this separate codec."
+    },
+    {
+      "id": "E204",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Bind-time ArrayBuffer/typed-view copies, typed element-to-byte truncation and JSON byte-array BLOB results. D212/T019 use native byte windows and ArrayBuffer outputs; the conversion rules differ."
+    },
+    {
+      "id": "E205",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "run/all alias parity across single-row RETURNING and SELECT result envelopes; D214 native cursor exhaustion does not cover either client method."
+    },
+    {
+      "id": "E206",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "first row versus selected scalar versus SQL NULL versus absent row on the public D1 result contract; no cursor-reuse claim."
+    },
+    {
+      "id": "E207",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "raw selected-column order and headings-only empty results; live native raw cursor position tests do not exercise D1 columnNames packing."
+    },
+    {
+      "id": "E208",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Ordinary SQL column labels remain own enumerable properties, including __proto__; explicitly intended Object.fromEntries shaping, not malformed input or prototype mutation."
+    },
+    {
+      "id": "E209",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Closest cross-wave overlap: D213 has the same outward duplicate-name contract. Recommend separate credit because SqlCursor._obj/raw and D1 __d1Shape/first/raw are independently implemented paths with distinct native-versus-JSON result boundaries. This is one case, not three methods of credit."
+    },
+    {
+      "id": "E210",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Successful D1 batch creates schema, performs dependent reads/writes and returns position-associated results. It claims neither rollback nor concurrent-observer atomicity."
+    },
+    {
+      "id": "E211",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Per-item D1 batch metadata attribution with varying insert rowids and write counts. Explicit D1Meta snapshot intent and public per-query metadata back the oracle; read resets are celld-documented."
+    },
+    {
+      "id": "E212",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "D1-specific multi-statement tail walker and count/duration envelope, comments and complete final statement without semicolon. D216/D217 ingest exposes a different remainder/count contract."
+    },
+    {
+      "id": "E213",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "D1 exec discards RETURNING row sets while completing multirow insert/update effects before response; D219 uses ingest with read-only row-producing statements."
+    },
+    {
+      "id": "E214",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Cross-dispatch readonly mutation counters reset after a known write, plus deliberately pinned local-primary metadata. The reset is an explicit celld compatibility difference, not accidental implementation behavior."
+    },
+    {
+      "id": "E215",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "changed_db distinguishes schema creation/removal from a valid unmatched update, independently of row count; storage.rs expressly describes the intended schema-cookie correction."
+    },
+    {
+      "id": "E216",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "first retains one valid RETURNING receipt while all mutations complete; D214 drains every native receipt explicitly. The case does not impose RETURNING order."
+    },
+    {
+      "id": "E217",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Independent session query bookmark advancement, initial constraints and resume using the supplied token; stable primary token is celld-documented. No replica or cross-request capability claim."
+    },
+    {
+      "id": "E218",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Separate session.batch bookmark-advancement path plus committed base/session data visibility; E217 only exercises query advancement."
+    },
+    {
+      "id": "E219",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Production config identity aliasing and isolation through three legitimate D1 bindings; differs from native storage-scope isolation and service KV namespaces."
+    },
+    {
+      "id": "E220",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Documented absent-id fallback converges with an explicit equal identity; it tests configuration precedence, beyond E219 explicit-id aliasing."
+    }
+  ]
+}

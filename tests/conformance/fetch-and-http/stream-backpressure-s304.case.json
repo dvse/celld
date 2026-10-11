@@ -1,0 +1,137 @@
+{
+  "adapter": "http",
+  "behaviour": "fetch-and-http",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "assertion_count": 11,
+    "classification": "ordinary-functional-stream-admission",
+    "cleanup": "Open all callback and milestone gates. Initiate readable cancellation and writable abortion on still-live owners before joining, so missing HWM0 demand cannot strand an in-flight write. Join original API/closed/ready promises and dynamically recorded callback results, then release owners and observe post-release promises. Require zero pending work, timers and public locks; separate owned-process teardown remains mandatory.",
+    "distinctness": "Ordinary TransformStream readable backpressure gates transform admission at default readable HWM0 and rearms after consumed output.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/S304",
+      "request_body": null
+    },
+    "finite_normal_trace_limits": {
+      "closes": 1,
+      "gates": 1,
+      "payload_bytes": 20,
+      "reads": 4,
+      "task_fences": 3,
+      "writes": 2
+    },
+    "fixed_runtime_assertions": [
+      "t.deep([starts, started.status], [1, 'fulfilled'], 'actual transformer start result settles before demand experiment');",
+      "t.deep([transforms, firstWrite.status], [0, 'pending'], 'HWM0 blocks first transform and write without a read');",
+      "t.deep(first, { value: 'ALPHA!', done: false }, 'first read admits exact first transform output');",
+      "t.deep([transforms, firstWrite.status], [1, 'fulfilled'], 'one read admits exactly one completed transform');",
+      "t.deep([transforms, secondWrite.status], [1, 'pending'], 'consumed output rearms demand gate before second transform');",
+      "t.deep(second, { value: 'BETA!', done: false }, 'second read admits exact second transform output');",
+      "t.deep(inputs, ['alpha', 'beta'], 'transform callbacks receive exactly the two fixed inputs');",
+      "t.deep(await t.value(t.read(reader, 'demand-eof')), { value: undefined, done: true }, 'demand-gated transform ends after close');",
+      "t.deep(await t.value(t.read(reader, 'demand-stable-eof')), { value: undefined, done: true }, 'demand-gated EOF is stable');",
+      "t.deep([transforms, cancels, reader.closed.status, writer.closed.status], [2, 0, 'fulfilled', 'fulfilled'], 'successful demand trace settles both sides without cancel');",
+      "t.deep([stream.readable.locked, stream.writable.locked], [false, false], 'demand trace releases both public locks');"
+    ],
+    "id": "S304",
+    "implementation": "cases.js:S304",
+    "independently_reviewed": false,
+    "intended_oracle": [
+      "Before each read demand, transform count has not advanced and its write remains pending.",
+      "Each read admits exactly one transform and returns the fixed expected output, then the write fulfills.",
+      "Close fulfills, zero cancel callbacks, stable EOF and both public locks released."
+    ],
+    "intent": "Gate transforms on readable demand",
+    "mechanism": "transform-readable-demand-gating",
+    "os_relevance": "Recovered historical blueprint-archive.ts:145-162 constructs an ordinary TransformStream and sequentially pipes archive prefix then content. The raw file was reread and matches the retained historical hash. This supports stream relevance without claiming those callers use custom weights or user flush callbacks, or that any OS workflow or distributed placement ran.",
+    "overlap_delta": {
+      "S015/S201": "pipeTo transfer/preventClose reuse do not observe TransformStream read-demand coupling.",
+      "SBP2": "Initialization is finished before admission checks; barrier is downstream demand, not start.",
+      "X001/X002": "Native compression/decompression finalization and peer isolation do not test user TransformStream admission.",
+      "X015": "Expressly disclaims native backpressure/queue-capacity enforcement and tests delayed compression-output consumption only."
+    },
+    "preconditions": [
+      "Exact guarded source, fresh reviewed binary and deployed fixture/config identity verified.",
+      "Actual direct-celld Worker with its real global stream constructors and strategies.",
+      "Independent deadline/resource supervisor controls a proven-owned whole-descendant domain covering dev, bundlers and node despite separate PGIDs, plus one quota/cleanup domain for temporary bundles, logs and stores. No single-PGID fallback or substitute/reference execution."
+    ],
+    "primary_candidate": true,
+    "primary_contract_refs": [
+      "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#transform-stream-default-sink-write-algorithm",
+      "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#transform-stream-default-source-pull",
+      "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#transform-stream-set-backpressure",
+      "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#initialize-transform-stream",
+      "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#transform-stream-default-controller-enqueue"
+    ],
+    "runtime_source_refs": [
+      {
+        "line_end": 618,
+        "line_start": 601,
+        "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+        "purpose": "Readable start/cancel but no pull-based write release; default HWM0"
+      },
+      {
+        "line_end": 651,
+        "line_start": 637,
+        "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+        "purpose": "Write invokes transform/enqueue without consulting readable pressure"
+      },
+      {
+        "line_end": 569,
+        "line_start": 563,
+        "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+        "purpose": "Controller forwards enqueue/desiredSize"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "source_predicted_gap": {
+      "classification": "EXPECTED_FAILURE_CANDIDATE",
+      "evidence_kind": "STATIC_SOURCE_INFERENCE_ONLY",
+      "intended_oracle_unchanged": true,
+      "observed_runtime_failure": false,
+      "source_evidence": "LIKELY_GAP_FROM_SOURCE_ONLY: no cross-side backpressure state or source-pull release exists. Eventual direct-celld execution may fail the first pressure assertion; no run or reference-runtime substitution was performed."
+    },
+    "status": "NOT_RUN",
+    "trace": [
+      "Construct one TransformStream that records successful callback entry and emits one literal output per input.",
+      "Explicitly settle its start barrier before testing admission. Queue first write with no read, then at a bounded fence require no transform entry and pending write.",
+      "Issue one reader.read; join fixed output and first write. Queue second write with no pending read and require no second callback entry.",
+      "Issue the next read, join output/write, close writer, read stable EOF, join both closed promises and release owners."
+    ]
+  },
+  "corpus_id": "S304",
+  "corpus_wave": "stream-backpressure-semantics",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/stream-backpressure-semantics",
+  "id": "conformance/fetch-and-http/stream-backpressure-s304",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/stream-backpressure-semantics/S304"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/stream-backpressure-semantics/S304",
+      "manifest_sha256": "e7b601830183b60736e3a17f47553c808674a7fcacd422e21694a98057158783",
+      "review_sha256": "28f32477b60ad987cc5022d9566f46b6d679375e9e8667dc0ccd8d22b0a22551",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/stream-backpressure-semantics",
+      "tranche": "004"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/S304",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "S304",
+  "source": "tests/conformance/fetch-and-http/fixtures/stream-backpressure-semantics/fixture.js",
+  "source_sha256": "d3719b882f4c3725bd59187adce6cbb2b547da70949ed2b8ee9ec101a3138c6a",
+  "title": "Gate transforms on readable demand"
+}

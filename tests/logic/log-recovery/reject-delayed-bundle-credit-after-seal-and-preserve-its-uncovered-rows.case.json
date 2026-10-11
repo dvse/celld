@@ -1,0 +1,54 @@
+{
+  "id": "logic/log-recovery/reject-delayed-bundle-credit-after-seal-and-preserve-its-uncovered-rows",
+  "layer": "logic",
+  "behaviour": "log-recovery",
+  "title": "Reject delayed bundle credit after seal and preserve its uncovered rows",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic",
+      "legacy_id": "corpus/log-recovery-logic/J007"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic/tests/log_recovery.rs",
+      "sha256": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/log-recovery-logic/J007"
+  ],
+  "adapter": "native",
+  "corpus_id": "J007",
+  "corpus_wave": "log-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/log-recovery/fixtures/decision-cases/tests/log_recovery.rs",
+  "source_sha256": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c",
+  "test_filter": "j007_zombie_bundle_put_after_seal_is_uncredited_and_retained_until_covered",
+  "contract": {
+    "intent": "Reject delayed bundle credit after seal and preserve its uncovered rows",
+    "preconditions": [
+      "Each test owns all in-memory values and directly calls public frozen production celld_logic components; no substitute decision implementation",
+      "Storage PUT/delete success, failure, CAS ordering, member confirmations and restore chains are explicit synthetic environmental facts; no disk, bucket, network, actor or VM is exercised",
+      "Every supplied finish_recovery certificate has a stipulated prior durable per-cell/bucket receipt; the pure finish function does not validate that I/O premise",
+      "GC chains are supplied from the stipulated production restore walk, oldest-first and ending at own epoch except the deliberate missing-opener schedules; no restore walk is reimplemented",
+      "GC listed vectors intentionally include base/own/off-chain epochs beyond the current executor scan.below input; these are public-component API robustness premises, not claimed live executor traces",
+      "Hash checks must match delivered runtime manifest lineage before future review/build/run; no compiler or SUT was launched while authoring"
+    ],
+    "trace": [
+      "Check open epoch permits initial credit eligibility",
+      "Start recovery and supply per-cell recovery completion through 4",
+      "Seal record at 4 before old PUT returns",
+      "Require post-PUT credit=false and mixed bundle (4,4),(5,4) retained",
+      "Supply later explicit per-cell coverage 5; require deletable while sealed cut remains 4"
+    ],
+    "oracle": "Sealed record grants no old shipper credit and unproven row prevents object deletion; Only supplied per-cell row 5 coverage permits later deletion without changing sealed cut",
+    "cleanup": "Drop only this test-owned records, maps, fragments, health tracker and ledger. No external resources exist; unwind also drops all owned values.",
+    "implementation": "tests/log_recovery.rs:j007_zombie_bundle_put_after_seal_is_uncredited_and_retained_until_covered"
+  },
+  "selector": "J007"
+}

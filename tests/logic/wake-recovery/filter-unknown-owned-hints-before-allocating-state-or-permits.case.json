@@ -1,0 +1,53 @@
+{
+  "id": "logic/wake-recovery/filter-unknown-owned-hints-before-allocating-state-or-permits",
+  "layer": "logic",
+  "behaviour": "wake-recovery",
+  "title": "Filter unknown Owned hints before allocating state or permits",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic",
+      "legacy_id": "corpus/wake-recovery-logic/K007"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+      "sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/wake-recovery-logic/K007"
+  ],
+  "adapter": "native",
+  "corpus_id": "K007",
+  "corpus_wave": "wake-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/wake-recovery/fixtures/decision-cases/tests/wake_recovery.rs",
+  "source_sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86",
+  "test_filter": "k007_owned_foreign_scan_does_not_allocate_or_consume_activation_slot",
+  "contract": {
+    "intent": "Filter unknown Owned hints before allocating state or permits",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Send Owned hints for foreign-a and foreign-b; assert no effects or cell entries.",
+      "Start one Fleet hint for local and capture its owner-read op.",
+      "Send another unknown Owned hint while slot is occupied; assert no entry/backlog.",
+      "Complete local owner read, CAS, restore, runtime start and publication."
+    ],
+    "oracle": [
+      "Ignored hints allocate no phase and queue no activation.",
+      "The admitted Fleet wake completes residency without client activity."
+    ],
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k007_owned_foreign_scan_does_not_allocate_or_consume_activation_slot"
+  },
+  "selector": "K007"
+}

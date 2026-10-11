@@ -1,0 +1,18 @@
+{
+  "kind": "STATIC_ONLY",
+  "source_and_overlap_pins_verified": 26,
+  "vendored_production_module_byte_exact": true,
+  "module_sha256": "561111a1a0787d5158ddfa9df5c1910285b156906d874f5f58719a901e004c12",
+  "case_functions": 7,
+  "literal_assertion_call_sites": 26,
+  "javascript_syntax_files": 2,
+  "python_source_parses": 2,
+  "downloaded_source_executed": false,
+  "downloaded_source_compiled": false,
+  "dependency_installs": 0,
+  "sut_launches": 0,
+  "runtime_executions": 0,
+  "runtime_passes": 0,
+  "independent_review": "pending",
+  "scope": "Actual pinned OS typed-storage component source; no full-OS, distributed, restart, security, durability or performance claim."
+}

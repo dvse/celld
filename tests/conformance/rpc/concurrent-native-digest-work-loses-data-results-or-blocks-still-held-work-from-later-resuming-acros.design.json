@@ -1,0 +1,92 @@
+{
+  "id": "conformance/rpc/concurrent-native-digest-work-loses-data-results-or-blocks-still-held-work-from-later-resuming-acros",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "Concurrent native digest work loses data/results or blocks still-held work from later resuming across loaded workers.",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/bounded-load",
+      "legacy_id": "bounded-load/B023"
+    }
+  ],
+  "corpus_wave": "bounded-load",
+  "corpus_id": "B023",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "B023",
+    "title": "Finite native digests recover by cohort",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "Concurrent native digest work loses data/results or blocks still-held work from later resuming across loaded workers.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Four loaded workers and native SHA-256 are available; eight inputs are fixed at 131072 bytes and known hash."
+    ],
+    "ordered_trace": [
+      "Hold eight digest requests at their audit barriers and probe owner liveness.",
+      "Release one request per worker and verify four independently precomputed digests.",
+      "Require four unreleased jobs to remain active without digest effects.",
+      "Release the second cohort and check all eight digest effects and loaded worker recovery."
+    ],
+    "stress_dimension": "Eight overlapping requests with pre-compute audit barriers and 1 MiB aggregate native SHA-256 input; simultaneous compute is not measured.",
+    "safety_oracle": [
+      "Each 131072-byte deterministic payload hashes to 76cdfa3abecd13b27aa85019f063e95da9ab8f1f729594293411c0a63e15e198.",
+      "Result identities stay correct; eight digest effects occur once and all entries remain live."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 4,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Eight overlapping requests with pre-compute audit barriers and 1 MiB aggregate native SHA-256 input; simultaneous compute is not measured."
+    },
+    "source_contracts": [
+      {
+        "key": "loader",
+        "path": "os/packages/workshop-backend/src/overseer.ts",
+        "lines": "4329-4360, 8182",
+        "contract": "OS dynamically loads worker code and obtains entrypoints; these tests use separate anonymous owned workers."
+      },
+      {
+        "key": "codec",
+        "path": "os/packages/workshop-backend/src/git-codec.ts",
+        "lines": "17-27, 65-100, 454-530",
+        "contract": "Native node:zlib and crypto/byte-stream object processing motivate finite native work under concurrent RPC."
+      },
+      {
+        "key": "crypto-runtime",
+        "path": "deliverable/patch-check-final/crates/celld/js/crypto.rs",
+        "lines": "1-120",
+        "contract": "Native digest implementation is exercised through loaded worker entrypoints."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B023"
+    },
+    "qualification_gate": "pinned-native-characterization",
+    "identity_assumption": "Loaded worker token uniqueness/stability is a frozen-native characterization, not a universal Worker Loader replacement guarantee.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "Explicit owner overlap/authorization review required for possible overlap with separately restricted stateless-capability lifetime work; request adapter refuses B017-B024.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  }
+}

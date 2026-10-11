@@ -1,0 +1,24 @@
+{
+  "id": "unit/rpc/rpc-params-old-or-missing-date-preserves-transfer-default",
+  "layer": "unit",
+  "behaviour": "rpc",
+  "title": "rpc params old or missing date preserves transfer default",
+  "origins": [
+    {
+      "source": "crates/celld/lib.rs",
+      "legacy_id": "unit/celld/rpc_params_compat_tests::rpc_params_old_or_missing_date_preserves_transfer_default"
+    }
+  ],
+  "legacy_ids": [
+    "unit/celld/rpc_params_compat_tests::rpc_params_old_or_missing_date_preserves_transfer_default"
+  ],
+  "adapter": "cargo",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "crates/celld/lib.rs",
+  "source_sha256": "694ce0723e36e717d6fc7539d328505df284d2fb54208082153b4364757218cd",
+  "test_filter": "rpc_params_compat_tests::rpc_params_old_or_missing_date_preserves_transfer_default"
+}

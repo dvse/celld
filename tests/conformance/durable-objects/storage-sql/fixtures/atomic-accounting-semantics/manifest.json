@@ -1,0 +1,1407 @@
+{
+  "schema": 1,
+  "wave": "atomic-accounting-semantics",
+  "authored": 15,
+  "independently_reviewed": 0,
+  "runtime_executions": 0,
+  "runtime_passes": 0,
+  "os_checkout_available": false,
+  "cases": [
+    {
+      "application_algorithm_qualification": "Application composition is fixture-authored; direct public API/native behavior supplies the SUT boundary.",
+      "id": "T201",
+      "title": "Admit allocation through conditional SQL RETURNING",
+      "intent": "Conditional native UPDATE affects one quota row only when capacity remains; that receipt controls SQL allocation and KV document/index creation.",
+      "failure_hypothesis": "Native zero-row conditional DML could be mistaken for accepted allocation or a queued contender could observe partial cross-surface accounting.",
+      "trace": [
+        "Seed cap10/used0 and empty allocation table.",
+        "Left reserves7 with UPDATE RETURNING, pauses before document/index creation, then completes it.",
+        "Right attempts5 after queued admission and gets an ordinary empty receipt; no exception or injected failure."
+      ],
+      "oracle": "quota used7/cap10; only allocation a/7; KV count1, doc/a size7, index/a true. No b residue.",
+      "implementation": "cases.js:T201",
+      "literal_assertion_call_sites": 5,
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1898,
+          "line_end": 2008,
+          "purpose": "Real root transactions serialize distinct pre-entered request owners; ordinary input gate and transaction tail."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 3235,
+          "line_end": 3312,
+          "purpose": "Public storage transaction controls map to native BEGIN IMMEDIATE, COMMIT and nested SAVEPOINT/RELEASE."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1287,
+          "line_end": 1435,
+          "purpose": "Public native SQL cursor shaping, typed bindings and finite draining."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1902,
+          "line_end": 2153,
+          "purpose": "Queries execute through native SQLite prepare/bind/step, not a JavaScript SQL emulator."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 519,
+          "line_end": 678,
+          "purpose": "Ordinary UPDATE/INSERT and application schema are allowed SQL actions."
+        }
+      ],
+      "normative_references": [
+        "https://www.sqlite.org/lang_returning.html"
+      ],
+      "nearest_existing": [
+        "T001",
+        "T031",
+        "D214"
+      ],
+      "distinctness": "T001/T031 supply reused ordering controls; D214 unconditionally inserts two RETURNING rows. New credit is bounded conditional mutation receipt governing a compound allocation.",
+      "os_relevance": "gatekeeper allocation/accounting",
+      "os_evidence_status": "RETAINED_PROVENANCE_ONLY: synthetic platform composition; no OS checkout/callsite was reread, and this is not an actual OS integration test.",
+      "schedule": "schedule.json:preentered-two-request-fifo",
+      "left_checkpoint": "Left reserves7 with UPDATE RETURNING, pauses before document/index creation, then completes it.",
+      "preconditions": [
+        "Exact pinned direct celld source and reviewed matching executable; no substitute runtime.",
+        "Fresh owned SQLite DO root, one stable activation, no preexisting KV or user SQL.",
+        "Two ordinary same-deployment DO.fetch requests must pre-enter one recipient before its transaction input gate closes.",
+        "All storage and SQL operations execute on real ctx.storage with public APIs and native SQLite."
+      ],
+      "limits": {
+        "max_external_case_requests": 1,
+        "max_internal_do_fetches": 4,
+        "max_active_actor_requests": 2,
+        "max_roots": 1,
+        "max_public_network_requests": 0,
+        "max_application_storage_call_sites_executed": 400,
+        "max_native_cursors": 240,
+        "max_rows_per_cursor": 64,
+        "max_user_kv_keys": 16,
+        "max_user_payload_bytes": 4096,
+        "max_recursive_depth": 8,
+        "max_chunk_loop_input_bytes": 3
+      },
+      "cleanup": [
+        "All actor handlers/transactions and gate timers must settle before audit/cleanup.",
+        "Every native SQL cursor is immediately drained, retained only for bounded final drain.",
+        "DeleteAll only on the correlated fresh owned root; verify KV empty and SQL application tables absent.",
+        "External supervisor must enforce independent deadlines/RSS and reap owned processes/store; receipts cannot self-prove placement or teardown."
+      ],
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "synthetic-ordinary-functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "application_algorithm_qualification": "Application composition is fixture-authored; direct public API/native behavior supplies the SUT boundary.",
+      "id": "T202",
+      "title": "Deduplicate payloads with UPSERT reference accounting",
+      "intent": "Native UPSERT takes a first-insert then conflict-update path while preserving one BLOB and adding a second logical document.",
+      "failure_hypothesis": "UPSERT may replace the existing payload or return stale reference count, making physical versus logical byte charges diverge.",
+      "trace": [
+        "Create empty blob/link tables.",
+        "Left inserts content-123 [1,2,3] ref1, holds, then creates document a.",
+        "Right UPSERT increments refs to2 and creates document b using the same content row."
+      ],
+      "oracle": "one BLOB [1,2,3] refs2; links a,b to content-123; documents2, logical6, physical3.",
+      "implementation": "cases.js:T202",
+      "literal_assertion_call_sites": 5,
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1898,
+          "line_end": 2008,
+          "purpose": "Real root transactions serialize distinct pre-entered request owners; ordinary input gate and transaction tail."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 3235,
+          "line_end": 3312,
+          "purpose": "Public storage transaction controls map to native BEGIN IMMEDIATE, COMMIT and nested SAVEPOINT/RELEASE."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1287,
+          "line_end": 1435,
+          "purpose": "Public native SQL cursor shaping, typed bindings and finite draining."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1902,
+          "line_end": 2153,
+          "purpose": "Queries execute through native SQLite prepare/bind/step, not a JavaScript SQL emulator."
+        }
+      ],
+      "normative_references": [
+        "https://www.sqlite.org/lang_upsert.html"
+      ],
+      "nearest_existing": [
+        "T001",
+        "T019",
+        "D212",
+        "D214"
+      ],
+      "distinctness": "No baseline tests native UPSERT conflict-update plus shared payload reference accounting. BLOB conversion and transaction queue alone earn no credit.",
+      "os_relevance": "gatekeeper shared payload accounting",
+      "os_evidence_status": "RETAINED_PROVENANCE_ONLY: synthetic platform composition; no OS checkout/callsite was reread, and this is not an actual OS integration test.",
+      "schedule": "schedule.json:preentered-two-request-fifo",
+      "left_checkpoint": "Left inserts content-123 [1,2,3] ref1, holds, then creates document a.",
+      "preconditions": [
+        "Exact pinned direct celld source and reviewed matching executable; no substitute runtime.",
+        "Fresh owned SQLite DO root, one stable activation, no preexisting KV or user SQL.",
+        "Two ordinary same-deployment DO.fetch requests must pre-enter one recipient before its transaction input gate closes.",
+        "All storage and SQL operations execute on real ctx.storage with public APIs and native SQLite."
+      ],
+      "limits": {
+        "max_external_case_requests": 1,
+        "max_internal_do_fetches": 4,
+        "max_active_actor_requests": 2,
+        "max_roots": 1,
+        "max_public_network_requests": 0,
+        "max_application_storage_call_sites_executed": 400,
+        "max_native_cursors": 240,
+        "max_rows_per_cursor": 64,
+        "max_user_kv_keys": 16,
+        "max_user_payload_bytes": 4096,
+        "max_recursive_depth": 8,
+        "max_chunk_loop_input_bytes": 3
+      },
+      "cleanup": [
+        "All actor handlers/transactions and gate timers must settle before audit/cleanup.",
+        "Every native SQL cursor is immediately drained, retained only for bounded final drain.",
+        "DeleteAll only on the correlated fresh owned root; verify KV empty and SQL application tables absent.",
+        "External supervisor must enforce independent deadlines/RSS and reap owned processes/store; receipts cannot self-prove placement or teardown."
+      ],
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "synthetic-ordinary-functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "application_algorithm_qualification": "Application composition is fixture-authored; direct public API/native behavior supplies the SUT boundary.",
+      "id": "T203",
+      "title": "Maintain folder totals through SQL triggers",
+      "intent": "Native INSERT/UPDATE/DELETE trigger bodies maintain both sides of a collection move while explicit KV indexes follow the same transaction.",
+      "failure_hypothesis": "The update trigger may leave one folder charged, or later deletion could use stale pre-move totals.",
+      "trace": [
+        "Seed a/x/3 and b/x/4 through insertion trigger.",
+        "Left moves a to y and resizes to5, holds before KV rekey.",
+        "Right observes x1/4,y1/5 then deletes b through deletion trigger."
+      ],
+      "oracle": "folders x count0/bytes0, y count1/bytes5; SQL only a/y/5; KV only y/a=5.",
+      "implementation": "cases.js:T203",
+      "literal_assertion_call_sites": 4,
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1898,
+          "line_end": 2008,
+          "purpose": "Real root transactions serialize distinct pre-entered request owners; ordinary input gate and transaction tail."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 3235,
+          "line_end": 3312,
+          "purpose": "Public storage transaction controls map to native BEGIN IMMEDIATE, COMMIT and nested SAVEPOINT/RELEASE."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1287,
+          "line_end": 1435,
+          "purpose": "Public native SQL cursor shaping, typed bindings and finite draining."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1902,
+          "line_end": 2153,
+          "purpose": "Queries execute through native SQLite prepare/bind/step, not a JavaScript SQL emulator."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 618,
+          "line_end": 632,
+          "purpose": "Ordinary application trigger definitions are allowed by authorizer."
+        }
+      ],
+      "normative_references": [
+        "https://www.sqlite.org/lang_createtrigger.html"
+      ],
+      "nearest_existing": [
+        "T008",
+        "D218"
+      ],
+      "distinctness": "D218 tests ingest parser boundaries and trigger row-count metadata. Here ordinary exec triggers maintain old/new relational aggregates across queued requests; sql.ingest is not used.",
+      "os_relevance": "typed-storage indexed collection counts",
+      "os_evidence_status": "RETAINED_PROVENANCE_ONLY: synthetic platform composition; no OS checkout/callsite was reread, and this is not an actual OS integration test.",
+      "schedule": "schedule.json:preentered-two-request-fifo",
+      "left_checkpoint": "Left moves a to y and resizes to5, holds before KV rekey.",
+      "preconditions": [
+        "Exact pinned direct celld source and reviewed matching executable; no substitute runtime.",
+        "Fresh owned SQLite DO root, one stable activation, no preexisting KV or user SQL.",
+        "Two ordinary same-deployment DO.fetch requests must pre-enter one recipient before its transaction input gate closes.",
+        "All storage and SQL operations execute on real ctx.storage with public APIs and native SQLite."
+      ],
+      "limits": {
+        "max_external_case_requests": 1,
+        "max_internal_do_fetches": 4,
+        "max_active_actor_requests": 2,
+        "max_roots": 1,
+        "max_public_network_requests": 0,
+        "max_application_storage_call_sites_executed": 400,
+        "max_native_cursors": 240,
+        "max_rows_per_cursor": 64,
+        "max_user_kv_keys": 16,
+        "max_user_payload_bytes": 4096,
+        "max_recursive_depth": 8,
+        "max_chunk_loop_input_bytes": 3
+      },
+      "cleanup": [
+        "All actor handlers/transactions and gate timers must settle before audit/cleanup.",
+        "Every native SQL cursor is immediately drained, retained only for bounded final drain.",
+        "DeleteAll only on the correlated fresh owned root; verify KV empty and SQL application tables absent.",
+        "External supervisor must enforce independent deadlines/RSS and reap owned processes/store; receipts cannot self-prove placement or teardown."
+      ],
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "synthetic-ordinary-functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "application_algorithm_qualification": "Application composition is fixture-authored; direct public API/native behavior supplies the SUT boundary.",
+      "id": "T204",
+      "title": "Cascade renamed document ownership into chunks",
+      "intent": "Native foreign keys cascade primary-key rename and later parent deletion into composite-key chunk rows; an unrelated document survives.",
+      "failure_hypothesis": "Chunk ownership may stay at the old document key or become orphaned after the renamed parent is deleted.",
+      "trace": [
+        "Enable foreign_keys outside transactions; seed a3 with two chunks and keep2 with one.",
+        "Left renames a to renamed, holds, then rekeys KV.",
+        "Right verifies renamed child rows and deletes renamed parent."
+      ],
+      "oracle": "only parent keep/2 and chunk keep/0/[8,9]; foreign_key_check empty; KV bytes2,count1,doc/keep2.",
+      "implementation": "cases.js:T204",
+      "literal_assertion_call_sites": 6,
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1898,
+          "line_end": 2008,
+          "purpose": "Real root transactions serialize distinct pre-entered request owners; ordinary input gate and transaction tail."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 3235,
+          "line_end": 3312,
+          "purpose": "Public storage transaction controls map to native BEGIN IMMEDIATE, COMMIT and nested SAVEPOINT/RELEASE."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1287,
+          "line_end": 1435,
+          "purpose": "Public native SQL cursor shaping, typed bindings and finite draining."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1902,
+          "line_end": 2153,
+          "purpose": "Queries execute through native SQLite prepare/bind/step, not a JavaScript SQL emulator."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 519,
+          "line_end": 540,
+          "purpose": "foreign_keys and foreign_key_check are public allowlisted pragmas."
+        }
+      ],
+      "normative_references": [
+        "https://www.sqlite.org/foreignkeys.html"
+      ],
+      "nearest_existing": [
+        "T003",
+        "T027",
+        "D210"
+      ],
+      "distinctness": "Existing deletion tests cover KV counts/rollback, not native ON UPDATE and ON DELETE cascade propagation through relational ownership.",
+      "os_relevance": "gatekeeper file/chunk ownership",
+      "os_evidence_status": "RETAINED_PROVENANCE_ONLY: synthetic platform composition; no OS checkout/callsite was reread, and this is not an actual OS integration test.",
+      "schedule": "schedule.json:preentered-two-request-fifo",
+      "left_checkpoint": "Left renames a to renamed, holds, then rekeys KV.",
+      "preconditions": [
+        "Exact pinned direct celld source and reviewed matching executable; no substitute runtime.",
+        "Fresh owned SQLite DO root, one stable activation, no preexisting KV or user SQL.",
+        "Two ordinary same-deployment DO.fetch requests must pre-enter one recipient before its transaction input gate closes.",
+        "All storage and SQL operations execute on real ctx.storage with public APIs and native SQLite."
+      ],
+      "limits": {
+        "max_external_case_requests": 1,
+        "max_internal_do_fetches": 4,
+        "max_active_actor_requests": 2,
+        "max_roots": 1,
+        "max_public_network_requests": 0,
+        "max_application_storage_call_sites_executed": 400,
+        "max_native_cursors": 240,
+        "max_rows_per_cursor": 64,
+        "max_user_kv_keys": 16,
+        "max_user_payload_bytes": 4096,
+        "max_recursive_depth": 8,
+        "max_chunk_loop_input_bytes": 3
+      },
+      "cleanup": [
+        "All actor handlers/transactions and gate timers must settle before audit/cleanup.",
+        "Every native SQL cursor is immediately drained, retained only for bounded final drain.",
+        "DeleteAll only on the correlated fresh owned root; verify KV empty and SQL application tables absent.",
+        "External supervisor must enforce independent deadlines/RSS and reap owned processes/store; receipts cannot self-prove placement or teardown."
+      ],
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "synthetic-ordinary-functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "application_algorithm_qualification": "Application composition is fixture-authored; direct public API/native behavior supplies the SUT boundary.",
+      "id": "T205",
+      "title": "Commit deferred head references with nested revisions",
+      "intent": "A DEFERRABLE INITIALLY DEFERRED cyclic document/head relationship is temporarily unresolved inside a valid transaction and completed by an awaited successful child savepoint.",
+      "failure_hypothesis": "An implementation may enforce the deferred relationship prematurely at child/outer boundaries or expose the unresolved head to the queued peer.",
+      "trace": [
+        "Create cyclic docs/head and versions/doc foreign keys, seed revision1 in a valid transaction.",
+        "Left changes head to2, holds before version2 exists, then inserts version2 in awaited child transaction.",
+        "Right observes complete head2 before similarly committing head3/version3."
+      ],
+      "oracle": "no foreign-key violations; versions1/2bytes,2/4bytes,3/2bytes; SQL head3 and KV head revision3/bytes2.",
+      "implementation": "cases.js:T205",
+      "literal_assertion_call_sites": 6,
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1898,
+          "line_end": 2008,
+          "purpose": "Real root transactions serialize distinct pre-entered request owners; ordinary input gate and transaction tail."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 3235,
+          "line_end": 3312,
+          "purpose": "Public storage transaction controls map to native BEGIN IMMEDIATE, COMMIT and nested SAVEPOINT/RELEASE."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1287,
+          "line_end": 1435,
+          "purpose": "Public native SQL cursor shaping, typed bindings and finite draining."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1902,
+          "line_end": 2153,
+          "purpose": "Queries execute through native SQLite prepare/bind/step, not a JavaScript SQL emulator."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1898,
+          "line_end": 1909,
+          "purpose": "Awaited transaction-view child uses native nested savepoint."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 519,
+          "line_end": 540,
+          "purpose": "Foreign-key enforcement may be explicitly enabled before transaction entry."
+        }
+      ],
+      "normative_references": [
+        "https://www.sqlite.org/foreignkeys.html#fk_deferred"
+      ],
+      "nearest_existing": [
+        "T004",
+        "T008",
+        "T009"
+      ],
+      "distinctness": "Nested commit ownership is reused, not counted. New mechanism is valid deferred cyclic relational integrity across successful nested savepoints and cross-surface head state. No failing commit is attempted.",
+      "os_relevance": "typed-storage document revision integrity",
+      "os_evidence_status": "RETAINED_PROVENANCE_ONLY: synthetic platform composition; no OS checkout/callsite was reread, and this is not an actual OS integration test.",
+      "schedule": "schedule.json:preentered-two-request-fifo",
+      "left_checkpoint": "Left changes head to2, holds before version2 exists, then inserts version2 in awaited child transaction.",
+      "preconditions": [
+        "Exact pinned direct celld source and reviewed matching executable; no substitute runtime.",
+        "Fresh owned SQLite DO root, one stable activation, no preexisting KV or user SQL.",
+        "Two ordinary same-deployment DO.fetch requests must pre-enter one recipient before its transaction input gate closes.",
+        "All storage and SQL operations execute on real ctx.storage with public APIs and native SQLite."
+      ],
+      "limits": {
+        "max_external_case_requests": 1,
+        "max_internal_do_fetches": 4,
+        "max_active_actor_requests": 2,
+        "max_roots": 1,
+        "max_public_network_requests": 0,
+        "max_application_storage_call_sites_executed": 400,
+        "max_native_cursors": 240,
+        "max_rows_per_cursor": 64,
+        "max_user_kv_keys": 16,
+        "max_user_payload_bytes": 4096,
+        "max_recursive_depth": 8,
+        "max_chunk_loop_input_bytes": 3
+      },
+      "cleanup": [
+        "All actor handlers/transactions and gate timers must settle before audit/cleanup.",
+        "Every native SQL cursor is immediately drained, retained only for bounded final drain.",
+        "DeleteAll only on the correlated fresh owned root; verify KV empty and SQL application tables absent.",
+        "External supervisor must enforce independent deadlines/RSS and reap owned processes/store; receipts cannot self-prove placement or teardown."
+      ],
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "synthetic-ordinary-functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "application_algorithm_qualification": "Application composition is fixture-authored; direct public API/native behavior supplies the SUT boundary.",
+      "id": "T206",
+      "title": "Select active document through a partial unique index",
+      "intent": "A partial UNIQUE index releases an archived slug and an UPSERT conflict target WHERE live=1 selects only the replacement active row.",
+      "failure_hypothesis": "A conflict target could update an archived same-slug row or allocate a third live identity, disconnecting the current KV index.",
+      "trace": [
+        "Seed active id1/report/2 and archived id99/report/7.",
+        "Left archives1 and creates active2/report/4, holds, then points KV slug to2.",
+        "Right attempts id3/report/6 with partial-index UPSERT; the actual result is id2/6."
+      ],
+      "oracle": "archived1/2 and99/7 unchanged; active2/6 only; active count1/bytes6; KV slug/report2.",
+      "implementation": "cases.js:T206",
+      "literal_assertion_call_sites": 4,
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1898,
+          "line_end": 2008,
+          "purpose": "Real root transactions serialize distinct pre-entered request owners; ordinary input gate and transaction tail."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 3235,
+          "line_end": 3312,
+          "purpose": "Public storage transaction controls map to native BEGIN IMMEDIATE, COMMIT and nested SAVEPOINT/RELEASE."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1287,
+          "line_end": 1435,
+          "purpose": "Public native SQL cursor shaping, typed bindings and finite draining."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1902,
+          "line_end": 2153,
+          "purpose": "Queries execute through native SQLite prepare/bind/step, not a JavaScript SQL emulator."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 598,
+          "line_end": 615,
+          "purpose": "Application index definitions are permitted."
+        }
+      ],
+      "normative_references": [
+        "https://www.sqlite.org/partialindex.html",
+        "https://www.sqlite.org/lang_upsert.html"
+      ],
+      "nearest_existing": [
+        "D214",
+        "T024",
+        "T001"
+      ],
+      "distinctness": "Distinct from schema recompilation T024 and unconditional RETURNING D214. Native partial-index conflict selection preserves historical identities; it is not another quota UPDATE.",
+      "os_relevance": "typed-storage live versus archived indexes",
+      "os_evidence_status": "RETAINED_PROVENANCE_ONLY: synthetic platform composition; no OS checkout/callsite was reread, and this is not an actual OS integration test.",
+      "schedule": "schedule.json:preentered-two-request-fifo",
+      "left_checkpoint": "Left archives1 and creates active2/report/4, holds, then points KV slug to2.",
+      "preconditions": [
+        "Exact pinned direct celld source and reviewed matching executable; no substitute runtime.",
+        "Fresh owned SQLite DO root, one stable activation, no preexisting KV or user SQL.",
+        "Two ordinary same-deployment DO.fetch requests must pre-enter one recipient before its transaction input gate closes.",
+        "All storage and SQL operations execute on real ctx.storage with public APIs and native SQLite."
+      ],
+      "limits": {
+        "max_external_case_requests": 1,
+        "max_internal_do_fetches": 4,
+        "max_active_actor_requests": 2,
+        "max_roots": 1,
+        "max_public_network_requests": 0,
+        "max_application_storage_call_sites_executed": 400,
+        "max_native_cursors": 240,
+        "max_rows_per_cursor": 64,
+        "max_user_kv_keys": 16,
+        "max_user_payload_bytes": 4096,
+        "max_recursive_depth": 8,
+        "max_chunk_loop_input_bytes": 3
+      },
+      "cleanup": [
+        "All actor handlers/transactions and gate timers must settle before audit/cleanup.",
+        "Every native SQL cursor is immediately drained, retained only for bounded final drain.",
+        "DeleteAll only on the correlated fresh owned root; verify KV empty and SQL application tables absent.",
+        "External supervisor must enforce independent deadlines/RSS and reap owned processes/store; receipts cannot self-prove placement or teardown."
+      ],
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "synthetic-ordinary-functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "application_algorithm_qualification": "Application composition is fixture-authored; direct public API/native behavior supplies the SUT boundary.",
+      "id": "T207",
+      "title": "Extract bounded KV partitions into SQL accounting",
+      "intent": "A finite prefix list selects a page whose rows move into SQL before bulk deletion and remaining-byte accounting; the next queued extraction must select the next disjoint page.",
+      "failure_hypothesis": "A page could be extracted twice or lose its remaining-byte update across the KV/SQL atomic boundary.",
+      "trace": [
+        "Seed pending/a1,b2,c3,d4,e5 and adjacent-prefix decoy99.",
+        "Left selects a,b, inserts archive rows, holds before deleting selected keys, then writes remaining12.",
+        "Right selects c,d, archives and deletes them, then writes remaining5."
+      ],
+      "oracle": "archive a1,b2,c3,d4 count4/bytes10; only pending/e5, adjacent decoy99 and remaining5 stay in KV.",
+      "implementation": "cases.js:T207",
+      "literal_assertion_call_sites": 7,
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1898,
+          "line_end": 2008,
+          "purpose": "Real root transactions serialize distinct pre-entered request owners; ordinary input gate and transaction tail."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 3235,
+          "line_end": 3312,
+          "purpose": "Public storage transaction controls map to native BEGIN IMMEDIATE, COMMIT and nested SAVEPOINT/RELEASE."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1287,
+          "line_end": 1435,
+          "purpose": "Public native SQL cursor shaping, typed bindings and finite draining."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1902,
+          "line_end": 2153,
+          "purpose": "Queries execute through native SQLite prepare/bind/step, not a JavaScript SQL emulator."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1653,
+          "line_end": 1668,
+          "purpose": "Public list and delete-many paths."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 3606,
+          "line_end": 3731,
+          "purpose": "Distinct existing-key deletion and bounded prefix scan implementation."
+        }
+      ],
+      "normative_references": [
+        "https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/#list"
+      ],
+      "nearest_existing": [
+        "D207",
+        "D210",
+        "T027",
+        "T028"
+      ],
+      "distinctness": "Those cases establish individual list bounds, deletion counts, rollback and microtask ordering. This candidate asserts a disjoint two-request destructive partition transfer with a fixed cross-store conservation oracle; reviewer may withhold credit if judged redundant.",
+      "os_relevance": "typed-storage bounded indexed collection scans",
+      "os_evidence_status": "RETAINED_PROVENANCE_ONLY: synthetic platform composition; no OS checkout/callsite was reread, and this is not an actual OS integration test.",
+      "schedule": "schedule.json:preentered-two-request-fifo",
+      "left_checkpoint": "Left selects a,b, inserts archive rows, holds before deleting selected keys, then writes remaining12.",
+      "preconditions": [
+        "Exact pinned direct celld source and reviewed matching executable; no substitute runtime.",
+        "Fresh owned SQLite DO root, one stable activation, no preexisting KV or user SQL.",
+        "Two ordinary same-deployment DO.fetch requests must pre-enter one recipient before its transaction input gate closes.",
+        "All storage and SQL operations execute on real ctx.storage with public APIs and native SQLite."
+      ],
+      "limits": {
+        "max_external_case_requests": 1,
+        "max_internal_do_fetches": 4,
+        "max_active_actor_requests": 2,
+        "max_roots": 1,
+        "max_public_network_requests": 0,
+        "max_application_storage_call_sites_executed": 400,
+        "max_native_cursors": 240,
+        "max_rows_per_cursor": 64,
+        "max_user_kv_keys": 16,
+        "max_user_payload_bytes": 4096,
+        "max_recursive_depth": 8,
+        "max_chunk_loop_input_bytes": 3
+      },
+      "cleanup": [
+        "All actor handlers/transactions and gate timers must settle before audit/cleanup.",
+        "Every native SQL cursor is immediately drained, retained only for bounded final drain.",
+        "DeleteAll only on the correlated fresh owned root; verify KV empty and SQL application tables absent.",
+        "External supervisor must enforce independent deadlines/RSS and reap owned processes/store; receipts cannot self-prove placement or teardown."
+      ],
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "synthetic-ordinary-functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "application_algorithm_qualification": "Application composition is fixture-authored; direct public API/native behavior supplies the SUT boundary.",
+      "id": "T208",
+      "title": "Rebuild bounded recursive ancestry accounting",
+      "intent": "Native recursive CTEs derive materialized ancestry after a subtree move; a queued insert uses the new graph and all ancestor rollups must agree.",
+      "failure_hypothesis": "Descendant membership can be omitted or counted twice when a stored parent graph and derived index diverge.",
+      "trace": [
+        "Seed four acyclic directories and three documents; derive ancestry.",
+        "Left moves directory1 beneath3 and rebuilds ancestry through a depth-capped recursive CTE, then holds.",
+        "Right checks subtree3=15 and adds d2bytes in directory2 using the new ancestry."
+      ],
+      "oracle": "ancestor0 count4/17bytes; ancestor1 count3/10; ancestor2 count2/5; ancestor3 count4/17; graph 1->3->0,2->1; KV total17,parent/1=3.",
+      "implementation": "cases.js:T208",
+      "literal_assertion_call_sites": 4,
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1898,
+          "line_end": 2008,
+          "purpose": "Real root transactions serialize distinct pre-entered request owners; ordinary input gate and transaction tail."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 3235,
+          "line_end": 3312,
+          "purpose": "Public storage transaction controls map to native BEGIN IMMEDIATE, COMMIT and nested SAVEPOINT/RELEASE."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1287,
+          "line_end": 1435,
+          "purpose": "Public native SQL cursor shaping, typed bindings and finite draining."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1902,
+          "line_end": 2153,
+          "purpose": "Queries execute through native SQLite prepare/bind/step, not a JavaScript SQL emulator."
+        }
+      ],
+      "normative_references": [
+        "https://www.sqlite.org/lang_with.html"
+      ],
+      "nearest_existing": [
+        "T030"
+      ],
+      "distinctness": "T030 runs an unrelated fixed 64x64 arithmetic query. This is a native recursive traversal feeding INSERT with relational membership and aggregate consistency, never a scalability or liveness benchmark.",
+      "os_relevance": "typed-storage hierarchical collection indexes",
+      "os_evidence_status": "RETAINED_PROVENANCE_ONLY: synthetic platform composition; no OS checkout/callsite was reread, and this is not an actual OS integration test.",
+      "schedule": "schedule.json:preentered-two-request-fifo",
+      "left_checkpoint": "Left moves directory1 beneath3 and rebuilds ancestry through a depth-capped recursive CTE, then holds.",
+      "preconditions": [
+        "Exact pinned direct celld source and reviewed matching executable; no substitute runtime.",
+        "Fresh owned SQLite DO root, one stable activation, no preexisting KV or user SQL.",
+        "Two ordinary same-deployment DO.fetch requests must pre-enter one recipient before its transaction input gate closes.",
+        "All storage and SQL operations execute on real ctx.storage with public APIs and native SQLite."
+      ],
+      "limits": {
+        "max_external_case_requests": 1,
+        "max_internal_do_fetches": 4,
+        "max_active_actor_requests": 2,
+        "max_roots": 1,
+        "max_public_network_requests": 0,
+        "max_application_storage_call_sites_executed": 400,
+        "max_native_cursors": 240,
+        "max_rows_per_cursor": 64,
+        "max_user_kv_keys": 16,
+        "max_user_payload_bytes": 4096,
+        "max_recursive_depth": 8,
+        "max_chunk_loop_input_bytes": 3
+      },
+      "cleanup": [
+        "All actor handlers/transactions and gate timers must settle before audit/cleanup.",
+        "Every native SQL cursor is immediately drained, retained only for bounded final drain.",
+        "DeleteAll only on the correlated fresh owned root; verify KV empty and SQL application tables absent.",
+        "External supervisor must enforce independent deadlines/RSS and reap owned processes/store; receipts cannot self-prove placement or teardown."
+      ],
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "synthetic-ordinary-functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "application_algorithm_qualification": "Application composition is fixture-authored; direct public API/native behavior supplies the SUT boundary.",
+      "id": "T209",
+      "title": "Prune revision partitions with window-ranked retention",
+      "intent": "Native row_number partitioning selects obsolete unpinned versions for DELETE RETURNING while preserving each document current pointer and byte total.",
+      "failure_hypothesis": "Pruning can cross document partitions, delete pinned history or mischarge deleted payloads.",
+      "trace": [
+        "Seed a revisions1(pinned),2,3 and independent b1.",
+        "Left inserts a4, prunes a2 by rank, holds, then updates head/byte counters.",
+        "Right inserts a5 and prunes a3 through the same fixed retention rule."
+      ],
+      "oracle": "versions a1/1 pinned,a4/4,a5/5,b1/7; total17; heads a5,b1. Exactly a2 then a3 deleted.",
+      "implementation": "cases.js:T209",
+      "literal_assertion_call_sites": 5,
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1898,
+          "line_end": 2008,
+          "purpose": "Real root transactions serialize distinct pre-entered request owners; ordinary input gate and transaction tail."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 3235,
+          "line_end": 3312,
+          "purpose": "Public storage transaction controls map to native BEGIN IMMEDIATE, COMMIT and nested SAVEPOINT/RELEASE."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1287,
+          "line_end": 1435,
+          "purpose": "Public native SQL cursor shaping, typed bindings and finite draining."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1902,
+          "line_end": 2153,
+          "purpose": "Queries execute through native SQLite prepare/bind/step, not a JavaScript SQL emulator."
+        }
+      ],
+      "normative_references": [
+        "https://www.sqlite.org/windowfunctions.html",
+        "https://www.sqlite.org/lang_returning.html"
+      ],
+      "nearest_existing": [
+        "D214",
+        "T027"
+      ],
+      "distinctness": "New native window-function partitioning plus conditional row deletion, distinct from unconditional INSERT RETURNING and restored KV rollback. Repeated left/right actions form one case, not two credits.",
+      "os_relevance": "typed-storage revision retention and accounting",
+      "os_evidence_status": "RETAINED_PROVENANCE_ONLY: synthetic platform composition; no OS checkout/callsite was reread, and this is not an actual OS integration test.",
+      "schedule": "schedule.json:preentered-two-request-fifo",
+      "left_checkpoint": "Left inserts a4, prunes a2 by rank, holds, then updates head/byte counters.",
+      "preconditions": [
+        "Exact pinned direct celld source and reviewed matching executable; no substitute runtime.",
+        "Fresh owned SQLite DO root, one stable activation, no preexisting KV or user SQL.",
+        "Two ordinary same-deployment DO.fetch requests must pre-enter one recipient before its transaction input gate closes.",
+        "All storage and SQL operations execute on real ctx.storage with public APIs and native SQLite."
+      ],
+      "limits": {
+        "max_external_case_requests": 1,
+        "max_internal_do_fetches": 4,
+        "max_active_actor_requests": 2,
+        "max_roots": 1,
+        "max_public_network_requests": 0,
+        "max_application_storage_call_sites_executed": 400,
+        "max_native_cursors": 240,
+        "max_rows_per_cursor": 64,
+        "max_user_kv_keys": 16,
+        "max_user_payload_bytes": 4096,
+        "max_recursive_depth": 8,
+        "max_chunk_loop_input_bytes": 3
+      },
+      "cleanup": [
+        "All actor handlers/transactions and gate timers must settle before audit/cleanup.",
+        "Every native SQL cursor is immediately drained, retained only for bounded final drain.",
+        "DeleteAll only on the correlated fresh owned root; verify KV empty and SQL application tables absent.",
+        "External supervisor must enforce independent deadlines/RSS and reap owned processes/store; receipts cannot self-prove placement or teardown."
+      ],
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "synthetic-ordinary-functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "application_algorithm_qualification": "readChunks zero-fill and overwrite chunk-splitting are fixture algorithms, not native celld features or separate coverage. Credit rests on real SQL BLOB persistence/replacement/clipping with coherent KV accounting.",
+      "id": "T210",
+      "title": "Merge overlapping writes across chunk boundaries",
+      "intent": "Finite byte-range read/modify/write spans two native BLOB rows; the later request overwrites only its overlap and leaves allocation/size unchanged.",
+      "failure_hypothesis": "Chunk slice merging can discard preserved prefixes/suffixes or charge rewritten bytes as new allocation.",
+      "trace": [
+        "Seed two four-byte chunks with0..7.",
+        "Left writes offset2 [9,8,7] across boundary and holds.",
+        "Right reads the full first result then writes offset3 [6,5] across the same boundary."
+      ],
+      "oracle": "file bytes [0,1,9,6,5,5,6,7]; offsets0,4 lengths4,4; size8,chunks2,stored8.",
+      "implementation": "cases.js:T210",
+      "literal_assertion_call_sites": 4,
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1898,
+          "line_end": 2008,
+          "purpose": "Real root transactions serialize distinct pre-entered request owners; ordinary input gate and transaction tail."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 3235,
+          "line_end": 3312,
+          "purpose": "Public storage transaction controls map to native BEGIN IMMEDIATE, COMMIT and nested SAVEPOINT/RELEASE."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1287,
+          "line_end": 1435,
+          "purpose": "Public native SQL cursor shaping, typed bindings and finite draining."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1902,
+          "line_end": 2153,
+          "purpose": "Queries execute through native SQLite prepare/bind/step, not a JavaScript SQL emulator."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/storage_ops.rs",
+          "line_start": 585,
+          "line_end": 623,
+          "purpose": "Native bind/result conversion preserves bounded BLOB views."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 3805,
+          "line_end": 3860,
+          "purpose": "Native typed byte binding."
+        }
+      ],
+      "normative_references": [
+        "https://www.sqlite.org/datatype3.html"
+      ],
+      "nearest_existing": [
+        "T019",
+        "D201",
+        "D212"
+      ],
+      "distinctness": "Typed bind conversion is a reused prerequisite. New oracle is an exact multi-row overlapping range merge with preserved bytes and zero-growth accounting, not alias/snapshot ownership.",
+      "os_relevance": "gatekeeper chunk mutation",
+      "os_evidence_status": "RETAINED_PROVENANCE_ONLY: synthetic platform composition; no OS checkout/callsite was reread, and this is not an actual OS integration test.",
+      "schedule": "schedule.json:preentered-two-request-fifo",
+      "left_checkpoint": "Left writes offset2 [9,8,7] across boundary and holds.",
+      "preconditions": [
+        "Exact pinned direct celld source and reviewed matching executable; no substitute runtime.",
+        "Fresh owned SQLite DO root, one stable activation, no preexisting KV or user SQL.",
+        "Two ordinary same-deployment DO.fetch requests must pre-enter one recipient before its transaction input gate closes.",
+        "All storage and SQL operations execute on real ctx.storage with public APIs and native SQLite."
+      ],
+      "limits": {
+        "max_external_case_requests": 1,
+        "max_internal_do_fetches": 4,
+        "max_active_actor_requests": 2,
+        "max_roots": 1,
+        "max_public_network_requests": 0,
+        "max_application_storage_call_sites_executed": 400,
+        "max_native_cursors": 240,
+        "max_rows_per_cursor": 64,
+        "max_user_kv_keys": 16,
+        "max_user_payload_bytes": 4096,
+        "max_recursive_depth": 8,
+        "max_chunk_loop_input_bytes": 3
+      },
+      "cleanup": [
+        "All actor handlers/transactions and gate timers must settle before audit/cleanup.",
+        "Every native SQL cursor is immediately drained, retained only for bounded final drain.",
+        "DeleteAll only on the correlated fresh owned root; verify KV empty and SQL application tables absent.",
+        "External supervisor must enforce independent deadlines/RSS and reap owned processes/store; receipts cannot self-prove placement or teardown."
+      ],
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "synthetic-ordinary-functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "application_algorithm_qualification": "readChunks zero-fill and overwrite chunk-splitting are fixture algorithms, not native celld features or separate coverage. Credit rests on real SQL BLOB persistence/replacement/clipping with coherent KV accounting.",
+      "id": "T211",
+      "title": "Detect sparse extent gaps with native boundary windows",
+      "intent": "Native LAG of predecessor end offsets detects the exact hole between disjoint BLOB extents; queued gap-fill removes that gap while changing physical bytes without changing logical EOF.",
+      "failure_hypothesis": "Accounting can charge zero-fill as stored data or lose existing extents when filling the gap.",
+      "trace": [
+        "Seed offset0 bytes[1,2].",
+        "Left inserts offset8 [9,10], updates metadata size10/stored4, and holds.",
+        "Right native LAG boundary query returns gap[2,8], checks stored-byte metadata, then inserts offset2 [3..8]."
+      ],
+      "oracle": "Native gap rows initially [{gap_start:2,gap_end:8}], then empty; extents offsets0/2bytes,2/6bytes,8/2bytes; file [1..10]; size10/chunks3/stored10, with intermediate size10/stored4.",
+      "implementation": "cases.js:T211",
+      "literal_assertion_call_sites": 7,
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1898,
+          "line_end": 2008,
+          "purpose": "Real root transactions serialize distinct pre-entered request owners; ordinary input gate and transaction tail."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 3235,
+          "line_end": 3312,
+          "purpose": "Public storage transaction controls map to native BEGIN IMMEDIATE, COMMIT and nested SAVEPOINT/RELEASE."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1287,
+          "line_end": 1435,
+          "purpose": "Public native SQL cursor shaping, typed bindings and finite draining."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1902,
+          "line_end": 2153,
+          "purpose": "Queries execute through native SQLite prepare/bind/step, not a JavaScript SQL emulator."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/storage_ops.rs",
+          "line_start": 585,
+          "line_end": 623,
+          "purpose": "Exact BLOB byte conversion."
+        }
+      ],
+      "normative_references": [
+        "https://www.sqlite.org/lang_corefunc.html",
+        "https://www.sqlite.org/windowfunctions.html"
+      ],
+      "nearest_existing": [
+        "D212",
+        "T019",
+        "T210"
+      ],
+      "distinctness": "T210 overwrites existing fixed chunks. This native LAG predecessor-boundary query discovers an actual extent gap and proves its removal after fill; fixture zero-fill earns no independent credit. T209 ranks whole revision rows for retention, whereas this case computes interval adjacency from BLOB lengths and offsets.",
+      "os_relevance": "gatekeeper sparse allocation accounting",
+      "os_evidence_status": "RETAINED_PROVENANCE_ONLY: synthetic platform composition; no OS checkout/callsite was reread, and this is not an actual OS integration test.",
+      "schedule": "schedule.json:preentered-two-request-fifo",
+      "left_checkpoint": "Left inserts offset8 [9,10], updates metadata size10/stored4, and holds.",
+      "preconditions": [
+        "Exact pinned direct celld source and reviewed matching executable; no substitute runtime.",
+        "Fresh owned SQLite DO root, one stable activation, no preexisting KV or user SQL.",
+        "Two ordinary same-deployment DO.fetch requests must pre-enter one recipient before its transaction input gate closes.",
+        "All storage and SQL operations execute on real ctx.storage with public APIs and native SQLite."
+      ],
+      "limits": {
+        "max_external_case_requests": 1,
+        "max_internal_do_fetches": 4,
+        "max_active_actor_requests": 2,
+        "max_roots": 1,
+        "max_public_network_requests": 0,
+        "max_application_storage_call_sites_executed": 400,
+        "max_native_cursors": 240,
+        "max_rows_per_cursor": 64,
+        "max_user_kv_keys": 16,
+        "max_user_payload_bytes": 4096,
+        "max_recursive_depth": 8,
+        "max_chunk_loop_input_bytes": 3
+      },
+      "cleanup": [
+        "All actor handlers/transactions and gate timers must settle before audit/cleanup.",
+        "Every native SQL cursor is immediately drained, retained only for bounded final drain.",
+        "DeleteAll only on the correlated fresh owned root; verify KV empty and SQL application tables absent.",
+        "External supervisor must enforce independent deadlines/RSS and reap owned processes/store; receipts cannot self-prove placement or teardown."
+      ],
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "synthetic-ordinary-functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "application_algorithm_qualification": "readChunks zero-fill and overwrite chunk-splitting are fixture algorithms, not native celld features or separate coverage. Credit rests on real SQL BLOB persistence/replacement/clipping with coherent KV accounting.",
+      "id": "T212",
+      "title": "Trim native BLOB ranges before boundary append",
+      "intent": "Native DELETE removes tail extents and substr clips a crossing BLOB; a queued append fills that partial chunk then creates a new one.",
+      "failure_hypothesis": "Truncation may retain discarded suffix bytes, release the wrong charge or cause later append to resurrect the old tail.",
+      "trace": [
+        "Seed ten bytes in chunks of4,4,2.",
+        "Left truncates to6 using DELETE+substr, updates metadata, and holds.",
+        "Right observes exact six-byte prefix and appends [11,12,13]."
+      ],
+      "oracle": "file [1,2,3,4,5,6,11,12,13]; chunks0/4,4/4,8/1; size9,chunks3,stored9. Intermediate size6/stored6.",
+      "implementation": "cases.js:T212",
+      "literal_assertion_call_sites": 5,
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1898,
+          "line_end": 2008,
+          "purpose": "Real root transactions serialize distinct pre-entered request owners; ordinary input gate and transaction tail."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 3235,
+          "line_end": 3312,
+          "purpose": "Public storage transaction controls map to native BEGIN IMMEDIATE, COMMIT and nested SAVEPOINT/RELEASE."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1287,
+          "line_end": 1435,
+          "purpose": "Public native SQL cursor shaping, typed bindings and finite draining."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1902,
+          "line_end": 2153,
+          "purpose": "Queries execute through native SQLite prepare/bind/step, not a JavaScript SQL emulator."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1616,
+          "line_end": 1675,
+          "purpose": "Native result rows preserve BLOBs rather than text coercing them."
+        }
+      ],
+      "normative_references": [
+        "https://www.sqlite.org/lang_corefunc.html#substr"
+      ],
+      "nearest_existing": [
+        "D210",
+        "D212",
+        "T210",
+        "T211"
+      ],
+      "distinctness": "Distinct native deletion plus BLOB truncation path, then partial terminal reuse; neither existing overwrite nor sparse gap-fill removes physical data or clips native BLOBs.",
+      "os_relevance": "gatekeeper file shrink and append accounting",
+      "os_evidence_status": "RETAINED_PROVENANCE_ONLY: synthetic platform composition; no OS checkout/callsite was reread, and this is not an actual OS integration test.",
+      "schedule": "schedule.json:preentered-two-request-fifo",
+      "left_checkpoint": "Left truncates to6 using DELETE+substr, updates metadata, and holds.",
+      "preconditions": [
+        "Exact pinned direct celld source and reviewed matching executable; no substitute runtime.",
+        "Fresh owned SQLite DO root, one stable activation, no preexisting KV or user SQL.",
+        "Two ordinary same-deployment DO.fetch requests must pre-enter one recipient before its transaction input gate closes.",
+        "All storage and SQL operations execute on real ctx.storage with public APIs and native SQLite."
+      ],
+      "limits": {
+        "max_external_case_requests": 1,
+        "max_internal_do_fetches": 4,
+        "max_active_actor_requests": 2,
+        "max_roots": 1,
+        "max_public_network_requests": 0,
+        "max_application_storage_call_sites_executed": 400,
+        "max_native_cursors": 240,
+        "max_rows_per_cursor": 64,
+        "max_user_kv_keys": 16,
+        "max_user_payload_bytes": 4096,
+        "max_recursive_depth": 8,
+        "max_chunk_loop_input_bytes": 3
+      },
+      "cleanup": [
+        "All actor handlers/transactions and gate timers must settle before audit/cleanup.",
+        "Every native SQL cursor is immediately drained, retained only for bounded final drain.",
+        "DeleteAll only on the correlated fresh owned root; verify KV empty and SQL application tables absent.",
+        "External supervisor must enforce independent deadlines/RSS and reap owned processes/store; receipts cannot self-prove placement or teardown."
+      ],
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "synthetic-ordinary-functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "application_algorithm_qualification": "Application composition is fixture-authored; direct public API/native behavior supplies the SUT boundary.",
+      "id": "T213",
+      "title": "Publish complete chunk manifest with conserved charge",
+      "intent": "A native aggregate HAVING predicate validates contiguous fixed chunks before materializing a manifest and transferring reserved bytes into live bytes.",
+      "failure_hypothesis": "Publication can count only byte sum while overlooking a missing/overlapping chunk, or charge both staged and committed data.",
+      "trace": [
+        "Seed two of three valid chunks with reserved6/live0.",
+        "Left inserts the final chunk then holds before marking staged6.",
+        "Right validates sequence, offsets, lengths and aggregate6, creates manifest, transfers charge and removes staging marker."
+      ],
+      "oracle": "manifest f/chunks3/bytes6; quota reserved0/live6; chunks offsets0,2,4 with payload1..6; only KV complete file descriptor remains.",
+      "implementation": "cases.js:T213",
+      "literal_assertion_call_sites": 5,
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1898,
+          "line_end": 2008,
+          "purpose": "Real root transactions serialize distinct pre-entered request owners; ordinary input gate and transaction tail."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 3235,
+          "line_end": 3312,
+          "purpose": "Public storage transaction controls map to native BEGIN IMMEDIATE, COMMIT and nested SAVEPOINT/RELEASE."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1287,
+          "line_end": 1435,
+          "purpose": "Public native SQL cursor shaping, typed bindings and finite draining."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1902,
+          "line_end": 2153,
+          "purpose": "Queries execute through native SQLite prepare/bind/step, not a JavaScript SQL emulator."
+        }
+      ],
+      "normative_references": [
+        "https://www.sqlite.org/lang_select.html"
+      ],
+      "nearest_existing": [
+        "T001",
+        "D206",
+        "T201"
+      ],
+      "distinctness": "No new generic queue credit. Unlike conditional quota UPDATE, this admission is a multi-row relational completeness reduction with manifest creation and a two-bucket charge transfer.",
+      "os_relevance": "gatekeeper allocation/chunk/finalization accounting",
+      "os_evidence_status": "RETAINED_PROVENANCE_ONLY: synthetic platform composition; no OS checkout/callsite was reread, and this is not an actual OS integration test.",
+      "schedule": "schedule.json:preentered-two-request-fifo",
+      "left_checkpoint": "Left inserts the final chunk then holds before marking staged6.",
+      "preconditions": [
+        "Exact pinned direct celld source and reviewed matching executable; no substitute runtime.",
+        "Fresh owned SQLite DO root, one stable activation, no preexisting KV or user SQL.",
+        "Two ordinary same-deployment DO.fetch requests must pre-enter one recipient before its transaction input gate closes.",
+        "All storage and SQL operations execute on real ctx.storage with public APIs and native SQLite."
+      ],
+      "limits": {
+        "max_external_case_requests": 1,
+        "max_internal_do_fetches": 4,
+        "max_active_actor_requests": 2,
+        "max_roots": 1,
+        "max_public_network_requests": 0,
+        "max_application_storage_call_sites_executed": 400,
+        "max_native_cursors": 240,
+        "max_rows_per_cursor": 64,
+        "max_user_kv_keys": 16,
+        "max_user_payload_bytes": 4096,
+        "max_recursive_depth": 8,
+        "max_chunk_loop_input_bytes": 3
+      },
+      "cleanup": [
+        "All actor handlers/transactions and gate timers must settle before audit/cleanup.",
+        "Every native SQL cursor is immediately drained, retained only for bounded final drain.",
+        "DeleteAll only on the correlated fresh owned root; verify KV empty and SQL application tables absent.",
+        "External supervisor must enforce independent deadlines/RSS and reap owned processes/store; receipts cannot self-prove placement or teardown."
+      ],
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "synthetic-ordinary-functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "application_algorithm_qualification": "Application composition is fixture-authored; direct public API/native behavior supplies the SUT boundary.",
+      "id": "T214",
+      "title": "Index generated UTF-8 payload byte lengths",
+      "intent": "Stored generated byte length and virtual character length recompute on text mutation; an index on generated bytes must agree with document accounting.",
+      "failure_hypothesis": "Generated index maintenance or text/BLOB conversion could confuse UTF-8 bytes with codepoints or JS UTF-16 units.",
+      "trace": [
+        "Seed A and zz with total3 bytes.",
+        "Left replaces A with é🦉, obtains n6/chars2, holds, then sets total8.",
+        "Right reads generated-byte index then replaces zz with λ, preserving two-byte charge."
+      ],
+      "oracle": "a bodyé🦉 n6/chars2; b bodyλ n2/chars1; indexed n>=6 selects onlya; sum n8 and KV bytes8.",
+      "implementation": "cases.js:T214",
+      "literal_assertion_call_sites": 6,
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1898,
+          "line_end": 2008,
+          "purpose": "Real root transactions serialize distinct pre-entered request owners; ordinary input gate and transaction tail."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 3235,
+          "line_end": 3312,
+          "purpose": "Public storage transaction controls map to native BEGIN IMMEDIATE, COMMIT and nested SAVEPOINT/RELEASE."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1287,
+          "line_end": 1435,
+          "purpose": "Public native SQL cursor shaping, typed bindings and finite draining."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1902,
+          "line_end": 2153,
+          "purpose": "Queries execute through native SQLite prepare/bind/step, not a JavaScript SQL emulator."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 598,
+          "line_end": 615,
+          "purpose": "Application index creation allowed."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1616,
+          "line_end": 1675,
+          "purpose": "SQLite native text and integer results."
+        }
+      ],
+      "normative_references": [
+        "https://www.sqlite.org/gencol.html",
+        "https://www.sqlite.org/lang_corefunc.html"
+      ],
+      "nearest_existing": [
+        "D212",
+        "T024"
+      ],
+      "distinctness": "Basic text conversion and schema recompilation are reused. New mechanism is stored/virtual generated recomputation and native generated-column index maintenance during ordinary rewrites.",
+      "os_relevance": "typed-storage indexed payload byte accounting",
+      "os_evidence_status": "RETAINED_PROVENANCE_ONLY: synthetic platform composition; no OS checkout/callsite was reread, and this is not an actual OS integration test.",
+      "schedule": "schedule.json:preentered-two-request-fifo",
+      "left_checkpoint": "Left replaces A with é🦉, obtains n6/chars2, holds, then sets total8.",
+      "preconditions": [
+        "Exact pinned direct celld source and reviewed matching executable; no substitute runtime.",
+        "Fresh owned SQLite DO root, one stable activation, no preexisting KV or user SQL.",
+        "Two ordinary same-deployment DO.fetch requests must pre-enter one recipient before its transaction input gate closes.",
+        "All storage and SQL operations execute on real ctx.storage with public APIs and native SQLite."
+      ],
+      "limits": {
+        "max_external_case_requests": 1,
+        "max_internal_do_fetches": 4,
+        "max_active_actor_requests": 2,
+        "max_roots": 1,
+        "max_public_network_requests": 0,
+        "max_application_storage_call_sites_executed": 400,
+        "max_native_cursors": 240,
+        "max_rows_per_cursor": 64,
+        "max_user_kv_keys": 16,
+        "max_user_payload_bytes": 4096,
+        "max_recursive_depth": 8,
+        "max_chunk_loop_input_bytes": 3
+      },
+      "cleanup": [
+        "All actor handlers/transactions and gate timers must settle before audit/cleanup.",
+        "Every native SQL cursor is immediately drained, retained only for bounded final drain.",
+        "DeleteAll only on the correlated fresh owned root; verify KV empty and SQL application tables absent.",
+        "External supervisor must enforce independent deadlines/RSS and reap owned processes/store; receipts cannot self-prove placement or teardown."
+      ],
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "synthetic-ordinary-functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "application_algorithm_qualification": "Application composition is fixture-authored; direct public API/native behavior supplies the SUT boundary.",
+      "id": "T215",
+      "title": "Reconcile FTS postings with document byte totals",
+      "intent": "Native FTS5 virtual-table UPDATE removes old token postings and DELETE removes another document while KV documents and counts track the same transactions.",
+      "failure_hypothesis": "Search postings can outlive document edits/deletion or virtual-table row content can diverge from document/count/byte state.",
+      "trace": [
+        "Seed a red blue and b red orange with total18.",
+        "Left updates a to green blue, holds, then writes KV and total20.",
+        "Right searches red and sees onlyb, deletes b, and writes count1/bytes10."
+      ],
+      "oracle": "MATCH red empty; MATCH green AND blue yields only a/green blue; FTS count1/bytes10; KV only doc/a plus matching totals.",
+      "implementation": "cases.js:T215",
+      "literal_assertion_call_sites": 5,
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1898,
+          "line_end": 2008,
+          "purpose": "Real root transactions serialize distinct pre-entered request owners; ordinary input gate and transaction tail."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 3235,
+          "line_end": 3312,
+          "purpose": "Public storage transaction controls map to native BEGIN IMMEDIATE, COMMIT and nested SAVEPOINT/RELEASE."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1287,
+          "line_end": 1435,
+          "purpose": "Public native SQL cursor shaping, typed bindings and finite draining."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1902,
+          "line_end": 2153,
+          "purpose": "Queries execute through native SQLite prepare/bind/step, not a JavaScript SQL emulator."
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 578,
+          "line_end": 588,
+          "purpose": "FTS5 virtual table module is explicitly allowlisted; ordinary extension loading is not used."
+        }
+      ],
+      "normative_references": [
+        "https://www.sqlite.org/fts5.html"
+      ],
+      "nearest_existing": [
+        "D218",
+        "T024"
+      ],
+      "distinctness": "No FTS5 posting mutation case exists in T001–T032 or D201–D220. Ordinary virtual-table index maintenance is a separate native path from SQL triggers or cached schema statements.",
+      "os_relevance": "synthetic OS document search/index consistency",
+      "os_evidence_status": "RETAINED_PROVENANCE_ONLY: synthetic platform composition; no OS checkout/callsite was reread, and this is not an actual OS integration test.",
+      "schedule": "schedule.json:preentered-two-request-fifo",
+      "left_checkpoint": "Left updates a to green blue, holds, then writes KV and total20.",
+      "preconditions": [
+        "Exact pinned direct celld source and reviewed matching executable; no substitute runtime.",
+        "Fresh owned SQLite DO root, one stable activation, no preexisting KV or user SQL.",
+        "Two ordinary same-deployment DO.fetch requests must pre-enter one recipient before its transaction input gate closes.",
+        "All storage and SQL operations execute on real ctx.storage with public APIs and native SQLite."
+      ],
+      "limits": {
+        "max_external_case_requests": 1,
+        "max_internal_do_fetches": 4,
+        "max_active_actor_requests": 2,
+        "max_roots": 1,
+        "max_public_network_requests": 0,
+        "max_application_storage_call_sites_executed": 400,
+        "max_native_cursors": 240,
+        "max_rows_per_cursor": 64,
+        "max_user_kv_keys": 16,
+        "max_user_payload_bytes": 4096,
+        "max_recursive_depth": 8,
+        "max_chunk_loop_input_bytes": 3
+      },
+      "cleanup": [
+        "All actor handlers/transactions and gate timers must settle before audit/cleanup.",
+        "Every native SQL cursor is immediately drained, retained only for bounded final drain.",
+        "DeleteAll only on the correlated fresh owned root; verify KV empty and SQL application tables absent.",
+        "External supervisor must enforce independent deadlines/RSS and reap owned processes/store; receipts cannot self-prove placement or teardown."
+      ],
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "synthetic-ordinary-functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    }
+  ]
+}

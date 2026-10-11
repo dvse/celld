@@ -1,0 +1,24 @@
+{
+  "id": "unit/rpc/capability-seal-does-not-authorize-http-requests",
+  "layer": "unit",
+  "behaviour": "rpc",
+  "title": "capability seal does not authorize http requests",
+  "origins": [
+    {
+      "source": "crates/celld/peer_auth.rs",
+      "legacy_id": "unit/celld/peer_auth::capability_route_tests::capability_seal_does_not_authorize_http_requests"
+    }
+  ],
+  "legacy_ids": [
+    "unit/celld/peer_auth::capability_route_tests::capability_seal_does_not_authorize_http_requests"
+  ],
+  "adapter": "cargo",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "crates/celld/peer_auth.rs",
+  "source_sha256": "f1b0c24fc666b622035f7a02a10366c4521c376c98884033e8ecc1992fb53268",
+  "test_filter": "peer_auth::capability_route_tests::capability_seal_does_not_authorize_http_requests"
+}

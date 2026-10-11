@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "name": "pressure-recovery-source-only-v1",
+  "layer": "native-component",
+  "node": "fixture",
+  "initial_event_clock_ms": 100,
+  "case_clock_overrides": {
+    "P022": "heap fixture RequestAt timestamps98,99,100 establish strict recency; other cases use100 unless the explicit trace says otherwise"
+  },
+  "config": {
+    "max_resident": 4,
+    "max_activations": 4,
+    "max_evictions": 2,
+    "max_releases": 2,
+    "max_outbound_websockets": 2,
+    "ownership_on_evict": "Sticky",
+    "require_node_lease": false,
+    "peer_protocol": 1,
+    "operation_deadline_ms": 50,
+    "owner_log_recovery_backoff_ms": 10,
+    "owner_log_recovery_attempts": 2,
+    "alarm_resident_ms": 0,
+    "idle_evict_ms": null,
+    "pressure": {
+      "high_bytes": 100,
+      "rss_hard_bytes": 200
+    }
+  },
+  "clock": "Explicit synthetic event times; unadvanced timers are intentionally not run by a background clock",
+  "build": {
+    "offline": true,
+    "jobs": 1,
+    "linker_threads": 1,
+    "rlimit_as_bytes": 1073741824,
+    "rlimit_cpu_seconds": 60,
+    "wall_seconds": 90,
+    "incremental": false,
+    "debug": 0,
+    "rustflags": "-C link-arg=-Wl,--threads=1"
+  },
+  "test": {
+    "threads": 1,
+    "rlimit_as_bytes": 1073741824,
+    "rlimit_cpu_seconds": 10,
+    "wall_seconds": 10,
+    "network": "none"
+  },
+  "counts": {
+    "authored": 26,
+    "reviewed": 0,
+    "executable_source": 26,
+    "compiled": 0,
+    "run": 0,
+    "passed": 0,
+    "promotion_candidates": 22,
+    "nonpromoting_characterization": 4
+  },
+  "note": "Rustfmt syntax support is not compilation, native execution or an accepted stress pass"
+}

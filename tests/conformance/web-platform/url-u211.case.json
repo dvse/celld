@@ -1,0 +1,136 @@
+{
+  "adapter": "http",
+  "behaviour": "web-platform",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "application_relevance": "Workers rewrite one filter while preserving other query ordering and a fragment.",
+    "assertion_count": 4,
+    "authored": true,
+    "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+    "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+    "desired_behavior": "The first a position becomes new value, later a entries vanish, b/c order stays, and absent d appends.",
+    "distinctness": "Set replacement contract rather than selective removal or sort ordering.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/U211",
+      "request_body": null
+    },
+    "fixed_runtime_assertions": [
+      "t.deep([...params], [['a', 'new value'], ['b', 'middle'], ['c', 'tail']], 'set replaces first match and removes later duplicates');",
+      "t.equal(params.size, 3, 'duplicate coalescing updates size');",
+      "t.equal(url.href, 'https://query.example.test/?a=new+value&b=middle&c=tail#keep', 'set synchronizes URL without moving first key');",
+      "t.deep([...params], [['a', 'new value'], ['b', 'middle'], ['c', 'tail'], ['d', 'added']], 'set of absent name appends once');"
+    ],
+    "hypothesis": "Set may keep later duplicates, move the first key to the end, or fail to synchronize the bound URL.",
+    "id": "U211",
+    "implementation": {
+      "end_line": 125,
+      "file": "cases.js",
+      "start_line": 116,
+      "symbol": "U211"
+    },
+    "independently_reviewed": false,
+    "layer": "direct-celld-worker-fetch-global-web-api",
+    "limits": {
+      "case_assertion_max_count": 16,
+      "case_input_max_code_units": 1024,
+      "case_tuple_max_count": 16,
+      "concurrent_requests": 1,
+      "network_calls_from_fixture": 0,
+      "repetitions": 1,
+      "request_body_bytes": 0,
+      "request_outer_deadline_seconds": 5,
+      "requests_per_case": 1,
+      "response_max_bytes": 65536,
+      "storage_writes_from_fixture": 0,
+      "timers_from_fixture": 0
+    },
+    "mechanism": "Ordered-multimap set replacement and live URL synchronization",
+    "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+    "preconditions": [
+      "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+      "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+      "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+    ],
+    "prediction_is_runtime_evidence": false,
+    "primary_contract_refs": [
+      "https://url.spec.whatwg.org/#urlsearchparams"
+    ],
+    "review_status": "UNREVIEWED",
+    "runtime_pass_claimed": false,
+    "runtime_source_refs": [
+      {
+        "line_end": 144,
+        "line_start": 142,
+        "path": "celld-os-project/celld/crates/celld/js/url_search_params.js"
+      },
+      {
+        "line_end": 193,
+        "line_start": 175,
+        "path": "celld-os-project/celld/crates/celld/js/url_search_params.js"
+      },
+      {
+        "line_end": 263,
+        "line_start": 250,
+        "path": "celld-os-project/celld/crates/celld/js/url.js"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "schedule": {
+      "depends_on": [],
+      "kind": "one synchronous finite trace",
+      "overlap": "none",
+      "path": "/case/U211",
+      "request_ordinal": 11,
+      "runtime_operations": [
+        "Construct bound params with three a entries interleaved with b and c.",
+        "Set a once and assert exact tuples, size, and href.",
+        "Set previously absent d and assert it is appended after existing entries."
+      ]
+    },
+    "source_observation": "Pinned set filters duplicates and synchronizes once. This exercises its order-sensitive public effect.",
+    "static_prediction": "NO_FAILURE_PREDICTION",
+    "status": "NOT_RUN",
+    "title": "Coalesce duplicate params in place when setting a value",
+    "trace": [
+      "Construct bound params with three a entries interleaved with b and c.",
+      "Set a once and assert exact tuples, size, and href.",
+      "Set previously absent d and assert it is appended after existing entries."
+    ]
+  },
+  "corpus_id": "U211",
+  "corpus_wave": "url-semantics",
+  "fixture": "tests/conformance/web-platform/fixtures/url-semantics",
+  "id": "conformance/web-platform/url-u211",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/url-semantics/U211"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/url-semantics/U211",
+      "manifest_sha256": "d61fdb1b4d070ae5aff0ad1456c39d2842c341f9737a20b67c67c251f638ae91",
+      "review_sha256": "13b98102e846487ca6304032863d1edb29b691c8649ebdea0ad53161ac6da486",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics",
+      "tranche": "001"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/U211",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "U211",
+  "source": "tests/conformance/web-platform/fixtures/url-semantics/fixture.js",
+  "source_sha256": "ccbb1cf21c3f719aa06ed64b498fc396f00736cc96d7cbd2aea437f2cc221ca6",
+  "title": "Coalesce duplicate params in place when setting a value"
+}

@@ -1,0 +1,106 @@
+{
+ "note": "Expected stdout of each tests-hyperbob runner (celld only), as a full-match regular expression; 64-hex ids vary per run. stateless-continuation follows workerd: a continuation of a finished request does not complete (pending).",
+ "port": 9850,
+ "cases": {
+  "actor-io": {
+   "runner": "run.sh",
+   "expect": "answer:slow\\-done"
+  },
+  "bindings": {
+   "runner": "run.sh",
+   "expect": "\\{\"id\":\"[0-9a-f]{64}\",\"viaBinding\":\"written\\-through\\-binding\",\"viaOwner\":\"written\\-through\\-binding\",\"props\":\\{\"n\":\\[1,2\\],\"tenant\":\"t1\"\\},\"plainProps\":\\{\\},\"jsonVar\":\\[3,\\{\"a\":\"b\"\\}\\],\"jsonVarType\":\"array\",\"stringVar\":\"plain\"\\}"
+  },
+  "callback-continuation": {
+   "runner": "run.py",
+   "expect": "\\{\"results\":\\ \\{\"subscribe\":\\ \"notified\",\\ \"release\":\\ \"released\",\\ \"result\":\\ \"echo:hello\"\\},\\ \"residents\":\\ \\{\"a\":\\ \\[\"Session:[0-9a-f]{64}\"\\],\\ \"b\":\\ \\[\"Overseer:[0-9a-f]{64}\"\\]\\}\\}"
+  },
+  "context-ownership": {
+   "runner": "run.sh",
+   "expect": "actor:\\ origin\\-ok\\\nstateless:\\ dead\\-rejected\\\nended\\ callee\\ in\\ live\\ turn:\\ dead\\-rejected"
+  },
+  "cross-cell-continuation": {
+   "runner": "run.sh",
+   "expect": "worked"
+  },
+  "do-environment": {
+   "runner": "run.sh",
+   "expect": "sets\\ `environment`"
+  },
+  "do-property": {
+   "runner": "run.sh",
+   "expect": "\\{\"getter\":42,\"pathCall\":\"inner\\ 3\",\"plainPath\":\"deep\",\"method\":\"method\\ x\",\"ownState\":\"err:The\\ RPC\\ receiver\\ does\\ not\\ implement\\ the\\ method\\ \\\\\"secret\\\\\"\\.\"\\}"
+  },
+  "dup-lifetime": {
+   "runner": "run.py",
+   "expect": "\\{\"results\":\\ \\{\"fetch\":\\ \\[\"kept\",\\ \"resolved:later\"\\],\\ \"rpc\":\\ \\[\"kept\",\\ \"resolved:later\"\\],\\ \"wrapped\":\\ \\[\"kept\",\\ \"wrapped:resolved:later\"\\],\\ \"lazy\\-env\":\\ \\[\"kept\",\\ \"lazy:resolved:later\"\\],\\ \"lazy\\-exports\":\\ \\[\"kept\",\\ \"lazy:resolved:later\"\\],\\ \"socket\":\\ \"lazy:resolved:hi\"\\},\\ \"residents\":\\ \\{\"a\":\\ \\[\"Gate:[0-9a-f]{64}\"\\],\\ \"b\":\\ \\[\"Planet:[0-9a-f]{64}\",\\ \"Planet:[0-9a-f]{64}\",\\ \"Planet:[0-9a-f]{64}\",\\ \"Planet:[0-9a-f]{64}\",\\ \"Planet:[0-9a-f]{64}\",\\ \"Planet:[0-9a-f]{64}\"\\]\\}\\}"
+  },
+  "event-limits": {
+   "runner": "run.sh",
+   "expect": "\\{\"statelessIo\":\"io\\-done\",\"doIo\":\"io\\-done\",\"doAwaitWhileObjectBusy\":\"released\",\"sessionWait\":\"released\",\"statelessNothingStatus\":500,\"waitUntilInContinuation\":\"accepted\"\\}"
+  },
+  "facet-clone": {
+   "runner": "run.sh",
+   "expect": "/prepare\\ \\{\"sourceDuring\":\\[\\{\"k\":\"late\",\"v\":\"after\\-clone\\-call\"\\},\\{\"k\":\"one\",\"v\":\"a1\"\\}\\],\"destinationAborted\":\"Facet\\ was\\ cloned\\-over\\.\",\"sourceAfter\":\\[\\{\"k\":\"late\",\"v\":\"after\\-clone\\-call\"\\},\\{\"k\":\"one\",\"v\":\"a1\"\\},\\{\"k\":\"two\",\"v\":\"a2\\-after\\-clone\"\\}\\],\"selfAborted\":\"Facet\\ was\\ cloned\\-over\\.\",\"selfAfter\":\\[\\{\"k\":\"late\",\"v\":\"after\\-clone\\-call\"\\},\\{\"k\":\"one\",\"v\":\"a1\"\\},\\{\"k\":\"two\",\"v\":\"a2\\-after\\-clone\"\\}\\],\"a\":\\[\\{\"k\":\"late\",\"v\":\"after\\-clone\\-call\"\\},\\{\"k\":\"one\",\"v\":\"a1\"\\},\\{\"k\":\"two\",\"v\":\"a2\\-after\\-clone\"\\}\\],\"aChild\":\\[\\{\"k\":\"nested\",\"v\":\"c1\"\\}\\],\"b\":\\[\\{\"k\":\"one\",\"v\":\"a1\"\\},\\{\"k\":\"three\",\"v\":\"b3\"\\}\\],\"bChildCopied\":\\[\\{\"k\":\"nested\",\"v\":\"c1\"\\}\\],\"bChildReplaced\":\\[\\]\\}\\\n/report\\ \\{\"a\":\\[\\{\"k\":\"late\",\"v\":\"after\\-clone\\-call\"\\},\\{\"k\":\"one\",\"v\":\"a1\"\\},\\{\"k\":\"two\",\"v\":\"a2\\-after\\-clone\"\\}\\],\"aChild\":\\[\\{\"k\":\"nested\",\"v\":\"c1\"\\}\\],\"b\":\\[\\{\"k\":\"one\",\"v\":\"a1\"\\},\\{\"k\":\"three\",\"v\":\"b3\"\\}\\],\"bChildCopied\":\\[\\{\"k\":\"nested\",\"v\":\"c1\"\\}\\],\"bChildReplaced\":\\[\\]\\}"
+  },
+  "island-lockdown": {
+   "runner": "run.sh",
+   "expect": "\\{\"exports\":\\[\"HostAbortController\",\"HostAbortSignal\",\"HostAddEventListener\",\"HostClearTimeout\",\"HostCrypto\",\"HostDurableObject\",\"HostRemoveEventListener\",\"HostRestore\",\"HostRpcTarget\",\"HostSetTimeout\",\"HostStructuredClone\",\"HostTextEncoder\"\\],\"abort\":true,\"timeout\":\"fired\",\"clone\":2,\"uuid\":\"string\",\"encode\":2,\"response\":\"ok\",\"errorName\":\"E\",\"frozenArray\":true\\}"
+  },
+  "mailbox-ownership": {
+   "runner": "run.sh",
+   "expect": "worked"
+  },
+  "persistent-dup": {
+   "runner": "run.sh",
+   "expect": "\\[\"counter:a:1\",\"counter:a:2\",\"counter:a:3\"\\]"
+  },
+  "placement": {
+   "runner": "run.py",
+   "expect": "\\{\"ok\":\\ true,\\ \"placed\":\\ \\{\"Free\":\\ \\{\"a\":\\ 5\\},\\ \"Pinned\":\\ \\{\"b\":\\ 12,\\ \"c\":\\ 8\\}\\}\\}"
+  },
+  "restore-disposer": {
+   "runner": "run.sh",
+   "expect": "\\{\"__celld\\$restore\\$replay\":\"rejected:\\ The\\ RPC\\ receiver\\ does\\ not\\ implement\\ the\\ method\\ \\\\\"__celld\\$restore\\$replay\\\\\"\\.\",\"__celld\\$restore\\$invoke\":\"rejected:\\ The\\ RPC\\ receiver\\ does\\ not\\ implement\\ the\\ method\\ \\\\\"__celld\\$restore\\$invoke\\\\\"\\.\",\"afterForgery\":\\{\"restores\":0,\"disposed\":0\\},\"legit\":\\[1,2\\],\"value\":7,\"afterDispose\":\\{\"restores\":1,\"disposed\":1\\},\"localHits\":0\\}"
+  },
+  "rpc-dispose": {
+   "runner": "run.sh",
+   "expect": "\\{\"doPromise\":1,\"doResult\":1,\"svcPromise\":2,\"svcResult\":2,\"doPipeline\":\"hello\\ x\",\"doProxyPipeline\":\"hello\\ y\"\\}"
+  },
+  "rpc-errors": {
+   "runner": "run.sh",
+   "expect": "\\{\"hidden\":\\{\"name\":\"Error\",\"message\":\"hidden\",\"code\":\"E_HIDDEN\",\"visible\":1,\"isDom\":false,\"remote\":true\\},\"caused\":\\{\"name\":\"Error\",\"message\":\"outer\",\"cause\":\"inner\",\"isDom\":false,\"remote\":true\\},\"aggregate\":\\{\"name\":\"AggregateError\",\"message\":\"many\",\"errors\":\\[\"a\",\"b\"\\],\"isDom\":false,\"remote\":true\\},\"dom\":\\{\"name\":\"DataCloneError\",\"message\":\"bad\\ clone\",\"code\":25,\"isDom\":true,\"remote\":true\\},\"partial\":\\{\"name\":\"Error\",\"message\":\"partial\",\"isDom\":false,\"ok\":2,\"remote\":true\\}\\}"
+  },
+  "rpc-surface": {
+   "runner": "run.sh",
+   "expect": "\\{\"objectOwn\":\"ok:\\\\\"hello\\ x\\\\\"\",\"objectInherited\":\"err:The\\ RPC\\ receiver\\ does\\ not\\ implement\\ the\\ method\\ \\\\\"toString\\\\\"\\.\",\"objectReserved\":\"err:'alarm'\\ is\\ a\\ reserved\\ method\\ and\\ cannot\\ be\\ called\\ over\\ RPC\\.\",\"transientDup\":\"ok:undefined\",\"transientConstructor\":\"err:'constructor'\\ is\\ a\\ reserved\\ method\\ and\\ cannot\\ be\\ called\\ over\\ RPC\\.\",\"arrayPath\":\"err:The\\ RPC\\ receiver\\ does\\ not\\ implement\\ the\\ method\\ \\\\\"list\\\\\"\\.\",\"depth\":\"err:RPC\\ pipelined\\ property\\ path\\ is\\ too\\ deep\\ \\(max\\ 64\\)\\.\",\"afterDispose\":\"err:RPC\\ promise\\ used\\ after\\ being\\ disposed\\.\",\"disposals\":1\\}\\\n\\{\"disposals\":1\\}"
+  },
+  "stateless-continuation": {
+   "runner": "run.sh",
+   "expect": "pending"
+  },
+  "turn-queue-facet": {
+   "runner": "run.sh",
+   "expect": "\\{\"round\":1,\"race\":\"pong\",\"hold\":\"held\",\"probe\":\"alive\"\\}\\\n\\{\"round\":2,\"race\":\"pong\",\"hold\":\"held\",\"probe\":\"alive\"\\}\\\n\\{\"round\":3,\"race\":\"pong\",\"hold\":\"held\",\"probe\":\"alive\"\\}\\\n\\{\"round\":4,\"race\":\"pong\",\"hold\":\"held\",\"probe\":\"alive\"\\}\\\n\\{\"round\":5,\"race\":\"pong\",\"hold\":\"held\",\"probe\":\"alive\"\\}"
+  },
+  "webidl-accessors": {
+   "runner": "run.sh",
+   "expect": "\\{\"signalGetter\":\"function\",\"abortedGetter\":\"function\",\"before\":false,\"after\":true,\"reason\":\"stop\",\"ownKeys\":\\[\\]\\}"
+  },
+  "ws-relay": {
+   "runner": "run.py",
+   "expect": "\\{\"results\":\\ \\{\"direct\":\\ \"echo:hi\",\\ \"front\":\\ \"echo:hi\",\\ \"returned\":\\ \"echo:hi\"\\},\\ \"residents\":\\ \\{\"a\":\\ \\[\\],\\ \"b\":\\ \\[\"Room:[0-9a-f]{64}\",\\ \"Room:[0-9a-f]{64}\",\\ \"Room:[0-9a-f]{64}\"\\]\\}\\}"
+  },
+  "ws-session-loop": {
+   "runner": "run.sh",
+   "expect": "\\{\"ok\":true,\"answers\":\\[\\{\"mode\":\"kv\",\"value\":\"v1\"\\},\\{\"mode\":\"svc\",\"value\":\"hi\"\\},\\{\"mode\":\"kv\",\"value\":\"v1\"\\},\\{\"mode\":\"sql\",\"value\":1\\}\\]\\}"
+  },
+  "core-fidelity": {
+   "runnable": false,
+   "reason": "its runner prints no check results on any tree; not asserted"
+  },
+  "self-forward": {
+   "runnable": false,
+   "reason": "fixture has no runner"
+  }
+ }
+}

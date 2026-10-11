@@ -1,0 +1,54 @@
+{
+  "id": "logic/log-recovery/require-per-cell-tail-and-empty-capture-gap-for-graceful-close",
+  "layer": "logic",
+  "behaviour": "log-recovery",
+  "title": "Require per-cell tail and empty capture gap for graceful close",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic",
+      "legacy_id": "corpus/log-recovery-logic/J008"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic/tests/log_recovery.rs",
+      "sha256": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/log-recovery-logic/J008"
+  ],
+  "adapter": "native",
+  "corpus_id": "J008",
+  "corpus_wave": "log-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/log-recovery/fixtures/decision-cases/tests/log_recovery.rs",
+  "source_sha256": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c",
+  "test_filter": "j008_bundle_coverage_cannot_stand_in_for_per_cell_graceful_close",
+  "contract": {
+    "intent": "Require per-cell tail and empty capture gap for graceful close",
+    "preconditions": [
+      "Each test owns all in-memory values and directly calls public frozen production celld_logic components; no substitute decision implementation",
+      "Storage PUT/delete success, failure, CAS ordering, member confirmations and restore chains are explicit synthetic environmental facts; no disk, bucket, network, actor or VM is exercised",
+      "Every supplied finish_recovery certificate has a stipulated prior durable per-cell/bucket receipt; the pure finish function does not validate that I/O premise",
+      "GC chains are supplied from the stipulated production restore walk, oldest-first and ending at own epoch except the deliberate missing-opener schedules; no restore walk is reimplemented",
+      "GC listed vectors intentionally include base/own/off-chain epochs beyond the current executor scan.below input; these are public-component API robustness premises, not claimed live executor traces",
+      "Hash checks must match delivered runtime manifest lineage before future review/build/run; no compiler or SUT was launched while authoring"
+    ],
+    "trace": [
+      "Confirm bundle credit eligibility on current open record",
+      "Require mixed rows 4,5 not deletable against watermark 3",
+      "Reject graceful seal with no in-flight batch but per_cell_complete=false",
+      "Supply per-cell completeness while another capture remains in flight; still reject",
+      "Supply no batch in flight; require graceful seal allowed and covered bundle deletable"
+    ],
+    "oracle": "Neither bundle credit alone nor per-cell completeness with capture in flight authorizes seal; Exact conjunction of open matching epoch, no batch and per-cell completeness permits close",
+    "cleanup": "Drop only this test-owned records, maps, fragments, health tracker and ledger. No external resources exist; unwind also drops all owned values.",
+    "implementation": "tests/log_recovery.rs:j008_bundle_coverage_cannot_stand_in_for_per_cell_graceful_close"
+  },
+  "selector": "J008"
+}

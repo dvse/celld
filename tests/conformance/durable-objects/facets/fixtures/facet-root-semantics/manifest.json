@@ -1,0 +1,1724 @@
+{
+  "schema": 1,
+  "wave": "facet-root-semantics",
+  "authored_case_count": 18,
+  "original_drafts": 19,
+  "retired_noncounted_ids": [
+    "Z214"
+  ],
+  "runtime_status": "UNRUN",
+  "runtime_executions": 0,
+  "runtime_passes": 0,
+  "independently_reviewed": 0,
+  "actual_os_checkout_available": false,
+  "scope": "Direct celld public facet/root components; not full Cloudflare OS acceptance, not distributed placement, not runtime proof.",
+  "cases": [
+    {
+      "id": "Z201",
+      "title": "Inherit named IDs through nested facets",
+      "mechanism": "named-identity-inheritance",
+      "failure_hypothesis": "Facet startup might serialize inherited IDs as plain strings or discard names.",
+      "trace": [
+        "Create a loopback facet without an ID.",
+        "Read direct and nested descendant identity."
+      ],
+      "oracle": "Both descendants retain the exact root DurableObjectId kind, value and name.",
+      "fixed_runtime_assertions": [
+        "t.deep(direct, { kind: 'DurableObjectId', value: String(s.ctx.id), name: s.ctx.id.name }, 'facet inherits named root identity');",
+        "t.deep(nested, direct, 'omitted nested ID inherits immediate parent identity with name');"
+      ],
+      "assertion_count": 2,
+      "distinctness": "L024 only compares explicitly supplied equal strings; no named-ID inheritance chain is asserted.",
+      "os_relevance": {
+        "label": "OS root/facet identity continuity",
+        "evidence_status": "Mechanism relevance inferred from preserved acceptance/fixtures; actual OS application source absent and unverified.",
+        "evidence": [
+          "celld-os-project/tests/ACCEPTANCE.md",
+          "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+        ]
+      },
+      "primary_contract_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "kind": "preserved celld public contract"
+        }
+      ],
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 2243,
+          "line_end": 2257
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 2671,
+          "line_end": 2680
+        }
+      ],
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/Z201",
+        "request_body": null
+      },
+      "implementation": "cases.js:Z201",
+      "schedule": "One external GET creates one fresh root; execute the written awaited dependency order entirely within its one fetch; no cross-request capability retention or timing polls.",
+      "preconditions": [
+        "Exact reviewed direct celld source and independent build/executable identity; no workerd/Node/mock substitution.",
+        "Fresh disposable private deployment, fresh randomly named root, real migrated SQLite Root, public facets and Worker Loader.",
+        "No actual OS checkout exists here. Component result cannot satisfy full-OS acceptance or establish process/placement/durability by itself."
+      ],
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_root_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_top_level_facet_names": 3,
+        "max_simultaneous_descendant_facets": 5,
+        "max_total_facet_activations_including_cleanup": 12,
+        "max_loaded_workers": 1,
+        "max_internal_facet_method_or_fetch_calls_including_cleanup": 40,
+        "max_public_network_requests": 0,
+        "max_application_keys_per_database": 5,
+        "max_user_tables_per_database": 1,
+        "max_sql_rows_per_cursor": 16,
+        "max_application_data_payload_bytes_excluding_loaded_source": 4096,
+        "max_loaded_module_source_bytes": 16384,
+        "max_external_response_capture_bytes": 65536,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 6000,
+        "cleanup_deadline_ms": 3000,
+        "external_http_deadline_seconds": 12,
+        "external_case_process_deadline_seconds": 20
+      },
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ],
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_passes": 0,
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "PENDING_INDEPENDENT_REVIEW",
+      "classification": "ordinary-functional-regression-candidate"
+    },
+    {
+      "id": "Z202",
+      "title": "Preserve explicit identity kinds and overrides",
+      "mechanism": "explicit-identity-kind-and-parent-inheritance",
+      "failure_hypothesis": "An explicit display ID might be reinterpreted as a namespace ID or descendants might inherit the root instead of their immediate parent.",
+      "trace": [
+        "Supply one named namespace ID and one literal string.",
+        "Read both kinds, inherit the string below its parent, and explicitly override another child."
+      ],
+      "oracle": "Named IDs keep their name, literal IDs remain strings, omitted child ID follows immediate parent, explicit child override wins.",
+      "fixed_runtime_assertions": [
+        "t.deep(await a.identity(), { kind: 'DurableObjectId', value: String(named), name: 'display-only' }, 'explicit namespace ID retains named ID kind');",
+        "t.deep(await b.identity(), { kind: 'string', value: 'literal-display', name: null }, 'explicit string remains a string');",
+        "t.deep(await b.descendantIdentity('leaf'), { kind: 'string', value: 'literal-display', name: null }, 'nested omitted ID inherits overridden string rather than root ID');",
+        "t.deep(await a.descendantIdentity('leaf', 'child-display'), { kind: 'string', value: 'child-display', name: null }, 'child override replaces immediate parent display identity');"
+      ],
+      "assertion_count": 4,
+      "distinctness": "L024 uses two identical visible strings to test storage partition; it does not test named ID transport or inherited versus overridden ID kinds.",
+      "os_relevance": {
+        "label": "OS supervisor identity and generated child context",
+        "evidence_status": "Mechanism relevance inferred from preserved acceptance/fixtures; actual OS application source absent and unverified.",
+        "evidence": [
+          "celld-os-project/tests/ACCEPTANCE.md",
+          "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+        ]
+      },
+      "primary_contract_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "kind": "preserved celld public contract"
+        }
+      ],
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 2243,
+          "line_end": 2257
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/bootstrap.rs",
+          "line_start": 975,
+          "line_end": 982
+        }
+      ],
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/Z202",
+        "request_body": null
+      },
+      "implementation": "cases.js:Z202",
+      "schedule": "One external GET creates one fresh root; execute the written awaited dependency order entirely within its one fetch; no cross-request capability retention or timing polls.",
+      "preconditions": [
+        "Exact reviewed direct celld source and independent build/executable identity; no workerd/Node/mock substitution.",
+        "Fresh disposable private deployment, fresh randomly named root, real migrated SQLite Root, public facets and Worker Loader.",
+        "No actual OS checkout exists here. Component result cannot satisfy full-OS acceptance or establish process/placement/durability by itself."
+      ],
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_root_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_top_level_facet_names": 3,
+        "max_simultaneous_descendant_facets": 5,
+        "max_total_facet_activations_including_cleanup": 12,
+        "max_loaded_workers": 1,
+        "max_internal_facet_method_or_fetch_calls_including_cleanup": 40,
+        "max_public_network_requests": 0,
+        "max_application_keys_per_database": 5,
+        "max_user_tables_per_database": 1,
+        "max_sql_rows_per_cursor": 16,
+        "max_application_data_payload_bytes_excluding_loaded_source": 4096,
+        "max_loaded_module_source_bytes": 16384,
+        "max_external_response_capture_bytes": 65536,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 6000,
+        "cleanup_deadline_ms": 3000,
+        "external_http_deadline_seconds": 12,
+        "external_case_process_deadline_seconds": 20
+      },
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ],
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_passes": 0,
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "PENDING_INDEPENDENT_REVIEW",
+      "classification": "ordinary-functional-regression-candidate"
+    },
+    {
+      "id": "Z203",
+      "title": "Share one facet receiver across fetch and RPC",
+      "mechanism": "facet-fetch-rpc-receiver-continuity",
+      "failure_hypothesis": "Separate dispatch surfaces might instantiate separate facet receivers or bind different storage scopes.",
+      "trace": [
+        "Fetch once, call one ordinary method, then fetch again.",
+        "Compare heap counters, durable counters and constructor birth token."
+      ],
+      "oracle": "Counters are exactly 1,2,3 and all three calls share one constructor token.",
+      "fixed_runtime_assertions": [
+        "t.deep([first.heap, second.heap, third.heap], [1, 2, 3], 'fetch and RPC share one facet instance heap');",
+        "t.deep([first.count, second.count, third.count], [1, 2, 3], 'both dispatch surfaces share facet storage');",
+        "t.same(first.birth, second.birth, 'RPC uses the fetch-constructed instance');",
+        "t.same(second.birth, third.birth, 'later fetch retains the same receiver');"
+      ],
+      "assertion_count": 4,
+      "distinctness": "L012 selects a stateless object default and a distinct named class; L017 requires stateless receiver freshness. Neither asserts a single facet instance across fetch/RPC turns.",
+      "os_relevance": {
+        "label": "OS local app method and HTTP continuity",
+        "evidence_status": "Mechanism relevance inferred from preserved acceptance/fixtures; actual OS application source absent and unverified.",
+        "evidence": [
+          "celld-os-project/tests/ACCEPTANCE.md",
+          "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+        ]
+      },
+      "primary_contract_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "kind": "preserved celld public contract"
+        }
+      ],
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 2272,
+          "line_end": 2309
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js.rs",
+          "line_start": 8504,
+          "line_end": 8535
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js.rs",
+          "line_start": 8614,
+          "line_end": 8647
+        }
+      ],
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/Z203",
+        "request_body": null
+      },
+      "implementation": "cases.js:Z203",
+      "schedule": "One external GET creates one fresh root; execute the written awaited dependency order entirely within its one fetch; no cross-request capability retention or timing polls.",
+      "preconditions": [
+        "Exact reviewed direct celld source and independent build/executable identity; no workerd/Node/mock substitution.",
+        "Fresh disposable private deployment, fresh randomly named root, real migrated SQLite Root, public facets and Worker Loader.",
+        "No actual OS checkout exists here. Component result cannot satisfy full-OS acceptance or establish process/placement/durability by itself."
+      ],
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_root_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_top_level_facet_names": 3,
+        "max_simultaneous_descendant_facets": 5,
+        "max_total_facet_activations_including_cleanup": 12,
+        "max_loaded_workers": 1,
+        "max_internal_facet_method_or_fetch_calls_including_cleanup": 40,
+        "max_public_network_requests": 0,
+        "max_application_keys_per_database": 5,
+        "max_user_tables_per_database": 1,
+        "max_sql_rows_per_cursor": 16,
+        "max_application_data_payload_bytes_excluding_loaded_source": 4096,
+        "max_loaded_module_source_bytes": 16384,
+        "max_external_response_capture_bytes": 65536,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 6000,
+        "cleanup_deadline_ms": 3000,
+        "external_http_deadline_seconds": 12,
+        "external_case_process_deadline_seconds": 20
+      },
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ],
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_passes": 0,
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "PENDING_INDEPENDENT_REVIEW",
+      "classification": "ordinary-functional-regression-candidate"
+    },
+    {
+      "id": "Z204",
+      "title": "Dispatch a plain loaded facet class",
+      "mechanism": "plain-loaded-facet-construction",
+      "failure_hypothesis": "A loaded non-DurableObject subclass may lose state/props/env injection or be reconstructed on RPC dispatch.",
+      "trace": [
+        "Load the actual source with js_rpc.",
+        "Start Plain through getDurableObjectClass, fetch, then invoke increment."
+      ],
+      "oracle": "Constructor receives saved label and loaded env; fetch returns calls/stored=1 and RPC returns calls/stored=2.",
+      "fixed_runtime_assertions": [
+        "t.deep(a, { calls: 1, stored: 1, label: 'plain-startup', origin: 'loaded-origin' }, 'plain constructor receives facet state, props and loader environment');",
+        "t.deep(b, { calls: 2, stored: 2, label: 'plain-startup', origin: 'loaded-origin' }, 'js_rpc dispatch reuses plain facet constructor and storage');"
+      ],
+      "assertion_count": 2,
+      "distinctness": "L012 tests object WorkerEntrypoint dispatch, not a plain constructor(state,env) used as a durable facet. Foreign-class fixture uses a DurableObject subclass only.",
+      "os_relevance": {
+        "label": "OS generated app class compatibility",
+        "evidence_status": "Mechanism relevance inferred from preserved acceptance/fixtures; actual OS application source absent and unverified.",
+        "evidence": [
+          "celld-os-project/tests/ACCEPTANCE.md",
+          "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+        ]
+      },
+      "primary_contract_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "kind": "preserved celld public contract"
+        }
+      ],
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "line_start": 55,
+          "line_end": 57
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/bootstrap.rs",
+          "line_start": 752,
+          "line_end": 831
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 2272,
+          "line_end": 2309
+        }
+      ],
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/Z204",
+        "request_body": null
+      },
+      "implementation": "cases.js:Z204",
+      "schedule": "One external GET creates one fresh root; execute the written awaited dependency order entirely within its one fetch; no cross-request capability retention or timing polls.",
+      "preconditions": [
+        "Exact reviewed direct celld source and independent build/executable identity; no workerd/Node/mock substitution.",
+        "Fresh disposable private deployment, fresh randomly named root, real migrated SQLite Root, public facets and Worker Loader.",
+        "No actual OS checkout exists here. Component result cannot satisfy full-OS acceptance or establish process/placement/durability by itself."
+      ],
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_root_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_top_level_facet_names": 3,
+        "max_simultaneous_descendant_facets": 5,
+        "max_total_facet_activations_including_cleanup": 12,
+        "max_loaded_workers": 1,
+        "max_internal_facet_method_or_fetch_calls_including_cleanup": 40,
+        "max_public_network_requests": 0,
+        "max_application_keys_per_database": 5,
+        "max_user_tables_per_database": 1,
+        "max_sql_rows_per_cursor": 16,
+        "max_application_data_payload_bytes_excluding_loaded_source": 4096,
+        "max_loaded_module_source_bytes": 16384,
+        "max_external_response_capture_bytes": 65536,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 6000,
+        "cleanup_deadline_ms": 3000,
+        "external_http_deadline_seconds": 12,
+        "external_case_process_deadline_seconds": 20
+      },
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ],
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_passes": 0,
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "PENDING_INDEPENDENT_REVIEW",
+      "classification": "ordinary-functional-regression-candidate"
+    },
+    {
+      "id": "Z205",
+      "title": "Execute the supported four-level hierarchy",
+      "mechanism": "positive-maximum-facet-depth",
+      "failure_hypothesis": "Allowed deepest child might be rejected or flattened into an ancestor database.",
+      "trace": [
+        "Set root level=100.",
+        "Write one branch containing exactly three facets with levels 10,20,30.",
+        "Read the entire branch and root."
+      ],
+      "oracle": "Four total levels succeed; branch reads 10,20,30 and root remains100.",
+      "fixed_runtime_assertions": [
+        "t.deep(await facet.chain(['two', 'three'], [10, 20, 30]), [10, 20, 30], 'three descendant levels execute below root at supported depth four');",
+        "t.deep(await facet.chainRead(['two', 'three']), [10, 20, 30], 'all permitted hierarchy levels retain independent values');",
+        "t.same(s.ctx.storage.kv.get('level'), 100, 'deep hierarchy does not overwrite root level');"
+      ],
+      "assertion_count": 3,
+      "distinctness": "L001-L040 have no positive maximum-depth hierarchy. This is the supported depth, never an unsupported-depth negative.",
+      "os_relevance": {
+        "label": "OS nested app composition within supported hierarchy",
+        "evidence_status": "Mechanism relevance inferred from preserved acceptance/fixtures; actual OS application source absent and unverified.",
+        "evidence": [
+          "celld-os-project/tests/ACCEPTANCE.md",
+          "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+        ]
+      },
+      "primary_contract_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "kind": "preserved celld public contract"
+        }
+      ],
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "line_start": 71,
+          "line_end": 72
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 2228,
+          "line_end": 2233
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1090,
+          "line_end": 1103
+        }
+      ],
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/Z205",
+        "request_body": null
+      },
+      "implementation": "cases.js:Z205",
+      "schedule": "One external GET creates one fresh root; execute the written awaited dependency order entirely within its one fetch; no cross-request capability retention or timing polls.",
+      "preconditions": [
+        "Exact reviewed direct celld source and independent build/executable identity; no workerd/Node/mock substitution.",
+        "Fresh disposable private deployment, fresh randomly named root, real migrated SQLite Root, public facets and Worker Loader.",
+        "No actual OS checkout exists here. Component result cannot satisfy full-OS acceptance or establish process/placement/durability by itself."
+      ],
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_root_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_top_level_facet_names": 3,
+        "max_simultaneous_descendant_facets": 5,
+        "max_total_facet_activations_including_cleanup": 12,
+        "max_loaded_workers": 1,
+        "max_internal_facet_method_or_fetch_calls_including_cleanup": 40,
+        "max_public_network_requests": 0,
+        "max_application_keys_per_database": 5,
+        "max_user_tables_per_database": 1,
+        "max_sql_rows_per_cursor": 16,
+        "max_application_data_payload_bytes_excluding_loaded_source": 4096,
+        "max_loaded_module_source_bytes": 16384,
+        "max_external_response_capture_bytes": 65536,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 6000,
+        "cleanup_deadline_ms": 3000,
+        "external_http_deadline_seconds": 12,
+        "external_case_process_deadline_seconds": 20
+      },
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ],
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_passes": 0,
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "PENDING_INDEPENDENT_REVIEW",
+      "classification": "ordinary-functional-regression-candidate"
+    },
+    {
+      "id": "Z206",
+      "title": "Partition repeated child names by parent path",
+      "mechanism": "nested-parent-path-storage",
+      "failure_hypothesis": "The registry may key descendants by their leaf name or visible ID rather than the full root-relative path.",
+      "trace": [
+        "Create left/settings and right/settings.",
+        "Write and read different values under the same key.",
+        "Compare inherited display identities."
+      ],
+      "oracle": "Equal visible IDs and identical leaf names coexist with distinct left/right values.",
+      "fixed_runtime_assertions": [
+        "t.same(await left.childRead('settings', 'value'), 'left-settings', 'left parent path selects left settings');",
+        "t.same(await right.childRead('settings', 'value'), 'right-settings', 'right parent path selects right settings');",
+        "t.deep(await left.descendantIdentity('settings'), await right.descendantIdentity('settings'), 'equal inherited display IDs do not collapse nested storage paths');"
+      ],
+      "assertion_count": 3,
+      "distinctness": "L024 distinguishes top-level names; this asserts descendant paths beneath two live parent managers, a separate addressing boundary. L037 tests callback restore provenance rather than nested facet storage.",
+      "os_relevance": {
+        "label": "OS per-workspace nested settings scopes",
+        "evidence_status": "Mechanism relevance inferred from preserved acceptance/fixtures; actual OS application source absent and unverified.",
+        "evidence": [
+          "celld-os-project/tests/ACCEPTANCE.md",
+          "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+        ]
+      },
+      "primary_contract_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "kind": "preserved celld public contract"
+        }
+      ],
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/engine_api.rs",
+          "line_start": 842,
+          "line_end": 863
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1090,
+          "line_end": 1149
+        }
+      ],
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/Z206",
+        "request_body": null
+      },
+      "implementation": "cases.js:Z206",
+      "schedule": "One external GET creates one fresh root; execute the written awaited dependency order entirely within its one fetch; no cross-request capability retention or timing polls.",
+      "preconditions": [
+        "Exact reviewed direct celld source and independent build/executable identity; no workerd/Node/mock substitution.",
+        "Fresh disposable private deployment, fresh randomly named root, real migrated SQLite Root, public facets and Worker Loader.",
+        "No actual OS checkout exists here. Component result cannot satisfy full-OS acceptance or establish process/placement/durability by itself."
+      ],
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_root_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_top_level_facet_names": 3,
+        "max_simultaneous_descendant_facets": 5,
+        "max_total_facet_activations_including_cleanup": 12,
+        "max_loaded_workers": 1,
+        "max_internal_facet_method_or_fetch_calls_including_cleanup": 40,
+        "max_public_network_requests": 0,
+        "max_application_keys_per_database": 5,
+        "max_user_tables_per_database": 1,
+        "max_sql_rows_per_cursor": 16,
+        "max_application_data_payload_bytes_excluding_loaded_source": 4096,
+        "max_loaded_module_source_bytes": 16384,
+        "max_external_response_capture_bytes": 65536,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 6000,
+        "cleanup_deadline_ms": 3000,
+        "external_http_deadline_seconds": 12,
+        "external_case_process_deadline_seconds": 20
+      },
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ],
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_passes": 0,
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "PENDING_INDEPENDENT_REVIEW",
+      "classification": "ordinary-functional-regression-candidate"
+    },
+    {
+      "id": "Z207",
+      "title": "Distinguish literal names from hierarchy paths",
+      "mechanism": "facet-name-component-encoding",
+      "failure_hypothesis": "Legal separators in a single name might be treated as hierarchy separators.",
+      "trace": [
+        "Create literal workspace/tools.",
+        "Create nested workspace then tools.",
+        "Write and read distinct values."
+      ],
+      "oracle": "Literal one-component name retains literal-name; nested two-component path retains nested-path.",
+      "fixed_runtime_assertions": [
+        "t.same(await literal.read('value'), 'literal-name', 'slash-containing legal facet name is one component');",
+        "t.same(await branch.childRead('tools', 'value'), 'nested-path', 'two-component nested path remains independent');"
+      ],
+      "assertion_count": 2,
+      "distinctness": "No L case covers facet path-component encoding; unlike malformed input, both names are ordinary supported strings.",
+      "os_relevance": {
+        "label": "OS app names with path-like labels",
+        "evidence_status": "Mechanism relevance inferred from preserved acceptance/fixtures; actual OS application source absent and unverified.",
+        "evidence": [
+          "celld-os-project/tests/ACCEPTANCE.md",
+          "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+        ]
+      },
+      "primary_contract_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "kind": "preserved celld public contract"
+        }
+      ],
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/engine_api.rs",
+          "line_start": 842,
+          "line_end": 863
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 2220,
+          "line_end": 2226
+        }
+      ],
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/Z207",
+        "request_body": null
+      },
+      "implementation": "cases.js:Z207",
+      "schedule": "One external GET creates one fresh root; execute the written awaited dependency order entirely within its one fetch; no cross-request capability retention or timing polls.",
+      "preconditions": [
+        "Exact reviewed direct celld source and independent build/executable identity; no workerd/Node/mock substitution.",
+        "Fresh disposable private deployment, fresh randomly named root, real migrated SQLite Root, public facets and Worker Loader.",
+        "No actual OS checkout exists here. Component result cannot satisfy full-OS acceptance or establish process/placement/durability by itself."
+      ],
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_root_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_top_level_facet_names": 3,
+        "max_simultaneous_descendant_facets": 5,
+        "max_total_facet_activations_including_cleanup": 12,
+        "max_loaded_workers": 1,
+        "max_internal_facet_method_or_fetch_calls_including_cleanup": 40,
+        "max_public_network_requests": 0,
+        "max_application_keys_per_database": 5,
+        "max_user_tables_per_database": 1,
+        "max_sql_rows_per_cursor": 16,
+        "max_application_data_payload_bytes_excluding_loaded_source": 4096,
+        "max_loaded_module_source_bytes": 16384,
+        "max_external_response_capture_bytes": 65536,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 6000,
+        "cleanup_deadline_ms": 3000,
+        "external_http_deadline_seconds": 12,
+        "external_case_process_deadline_seconds": 20
+      },
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ],
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_passes": 0,
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "PENDING_INDEPENDENT_REVIEW",
+      "classification": "ordinary-functional-regression-candidate"
+    },
+    {
+      "id": "Z208",
+      "title": "Keep independent SQLite schema catalogs",
+      "mechanism": "root-child-grandchild-schema-scopes",
+      "failure_hypothesis": "Facets may accidentally share a SQLite connection/catalog when root and facet use the same SQL table name.",
+      "trace": [
+        "Create root shared(number INTEGER).",
+        "Create facet shared(label TEXT).",
+        "Create descendant shared(payload BLOB), then re-read parent and root."
+      ],
+      "oracle": "Three incompatible schemas and exact rows coexist unchanged.",
+      "fixed_runtime_assertions": [
+        "t.deep(await facet.schema('text'), { columns: ['label'], rows: [{ label: 'facet-row' }] }, 'facet can own incompatible same-named table schema');",
+        "t.deep(await facet.childSchema('leaf', 'blob'), { columns: ['payload'], rows: [{ payload: [1, 2] }] }, 'nested facet has third independent schema catalog');",
+        "t.deep(s.ctx.storage.sql.exec('SELECT * FROM shared').toArray(), [{ number: 7 }], 'root schema and row remain unchanged');",
+        "t.deep(await facet.schemaState(), { columns: ['label'], rows: [{ label: 'facet-row' }] }, 'grandchild DDL did not alter parent schema');"
+      ],
+      "assertion_count": 4,
+      "distinctness": "L022 checks a single facet KV count does not appear on root; generic SQL cases do not create incompatible catalogs in a root/facet/grandchild relationship.",
+      "os_relevance": {
+        "label": "OS per-app SQLite schemas",
+        "evidence_status": "Mechanism relevance inferred from preserved acceptance/fixtures; actual OS application source absent and unverified.",
+        "evidence": [
+          "celld-os-project/tests/ACCEPTANCE.md",
+          "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+        ]
+      },
+      "primary_contract_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "kind": "preserved celld public contract"
+        }
+      ],
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "line_start": 3,
+          "line_end": 7
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1087,
+          "line_end": 1149
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/bootstrap.rs",
+          "line_start": 943,
+          "line_end": 970
+        }
+      ],
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/Z208",
+        "request_body": null
+      },
+      "implementation": "cases.js:Z208",
+      "schedule": "One external GET creates one fresh root; execute the written awaited dependency order entirely within its one fetch; no cross-request capability retention or timing polls.",
+      "preconditions": [
+        "Exact reviewed direct celld source and independent build/executable identity; no workerd/Node/mock substitution.",
+        "Fresh disposable private deployment, fresh randomly named root, real migrated SQLite Root, public facets and Worker Loader.",
+        "No actual OS checkout exists here. Component result cannot satisfy full-OS acceptance or establish process/placement/durability by itself."
+      ],
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_root_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_top_level_facet_names": 3,
+        "max_simultaneous_descendant_facets": 5,
+        "max_total_facet_activations_including_cleanup": 12,
+        "max_loaded_workers": 1,
+        "max_internal_facet_method_or_fetch_calls_including_cleanup": 40,
+        "max_public_network_requests": 0,
+        "max_application_keys_per_database": 5,
+        "max_user_tables_per_database": 1,
+        "max_sql_rows_per_cursor": 16,
+        "max_application_data_payload_bytes_excluding_loaded_source": 4096,
+        "max_loaded_module_source_bytes": 16384,
+        "max_external_response_capture_bytes": 65536,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 6000,
+        "cleanup_deadline_ms": 3000,
+        "external_http_deadline_seconds": 12,
+        "external_case_process_deadline_seconds": 20
+      },
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ],
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_passes": 0,
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "PENDING_INDEPENDENT_REVIEW",
+      "classification": "ordinary-functional-regression-candidate"
+    },
+    {
+      "id": "Z209",
+      "title": "Retain mutable props on a facet receiver",
+      "mechanism": "facet-props-instance-lifetime",
+      "failure_hypothesis": "Facet ctx.props may be refreshed on each method call or mutations may corrupt the reusable class template.",
+      "trace": [
+        "Specialize one class handle.",
+        "Mutate first facet props on two complete turns.",
+        "Start a second facet from the same handle and read its props."
+      ],
+      "oracle": "First instance visits1 then2; second starts visits0 with unchanged initial label.",
+      "fixed_runtime_assertions": [
+        "t.deep(await a.mutateProps(), { label: 'persistent-props', visits: 1, initialLabel: 'persistent-props' }, 'first facet turn mutates startup props');",
+        "t.deep(await a.mutateProps(), { label: 'persistent-props', visits: 2, initialLabel: 'persistent-props' }, 'facet props belong to persistent receiver across turns');",
+        "t.deep(await b.propsState(), { label: 'persistent-props', visits: 0, initialLabel: 'persistent-props' }, 'second facet gets pristine class-template props');"
+      ],
+      "assertion_count": 3,
+      "distinctness": "L036 tests separate binding-time snapshots; L015 tests stateless entrypoint snapshots. This asserts mutable props lifetime inside a durable receiver versus the reusable startup template.",
+      "os_relevance": {
+        "label": "OS per-app runtime configuration state",
+        "evidence_status": "Mechanism relevance inferred from preserved acceptance/fixtures; actual OS application source absent and unverified.",
+        "evidence": [
+          "celld-os-project/tests/ACCEPTANCE.md",
+          "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+        ]
+      },
+      "primary_contract_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "kind": "preserved celld public contract"
+        }
+      ],
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 2188,
+          "line_end": 2215
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/bootstrap.rs",
+          "line_start": 983,
+          "line_end": 997
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 2671,
+          "line_end": 2680
+        }
+      ],
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/Z209",
+        "request_body": null
+      },
+      "implementation": "cases.js:Z209",
+      "schedule": "One external GET creates one fresh root; execute the written awaited dependency order entirely within its one fetch; no cross-request capability retention or timing polls.",
+      "preconditions": [
+        "Exact reviewed direct celld source and independent build/executable identity; no workerd/Node/mock substitution.",
+        "Fresh disposable private deployment, fresh randomly named root, real migrated SQLite Root, public facets and Worker Loader.",
+        "No actual OS checkout exists here. Component result cannot satisfy full-OS acceptance or establish process/placement/durability by itself."
+      ],
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_root_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_top_level_facet_names": 3,
+        "max_simultaneous_descendant_facets": 5,
+        "max_total_facet_activations_including_cleanup": 12,
+        "max_loaded_workers": 1,
+        "max_internal_facet_method_or_fetch_calls_including_cleanup": 40,
+        "max_public_network_requests": 0,
+        "max_application_keys_per_database": 5,
+        "max_user_tables_per_database": 1,
+        "max_sql_rows_per_cursor": 16,
+        "max_application_data_payload_bytes_excluding_loaded_source": 4096,
+        "max_loaded_module_source_bytes": 16384,
+        "max_external_response_capture_bytes": 65536,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 6000,
+        "cleanup_deadline_ms": 3000,
+        "external_http_deadline_seconds": 12,
+        "external_case_process_deadline_seconds": 20
+      },
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ],
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_passes": 0,
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "PENDING_INDEPENDENT_REVIEW",
+      "classification": "ordinary-functional-regression-candidate"
+    },
+    {
+      "id": "Z210",
+      "title": "Decode typed startup props before construction",
+      "mechanism": "native-facet-startup-structured-clone",
+      "failure_hypothesis": "Facet startup may flatten rich values through JSON or lose aliases before the constructor runs.",
+      "trace": [
+        "Prepare Date, BigInt, typed array, Map, Set, shared child and self-cycle.",
+        "Bind a loaded facet class.",
+        "Read only the summary captured by its constructor."
+      ],
+      "oracle": "Constructor sees all original types/values, shared Map/Set identity, and self-cycle.",
+      "fixed_runtime_assertions": [
+        "t.deep(await facet.typedAtConstruction(), { date: '2026-01-02T03:04:05.000Z', dateBrand: true, bigint: '9007199254740993', bytes: [17, 513], bytesBrand: true, mapBrand: true, setBrand: true, alias: true, cycle: true, score: 9 }, 'native facet startup decoding preserves typed graph before constructor');"
+      ],
+      "assertion_count": 1,
+      "distinctness": "L036 uses scalar props; RPC C001 and storage D201/D202 test different codec boundaries. This specifically asserts native embedded startup decode before class construction, a documented bootstrap risk.",
+      "os_relevance": {
+        "label": "OS generated application constructor inputs",
+        "evidence_status": "Mechanism relevance inferred from preserved acceptance/fixtures; actual OS application source absent and unverified.",
+        "evidence": [
+          "celld-os-project/tests/ACCEPTANCE.md",
+          "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+        ]
+      },
+      "primary_contract_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "kind": "preserved celld public contract"
+        }
+      ],
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/bootstrap.rs",
+          "line_start": 971,
+          "line_end": 997
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 2671,
+          "line_end": 2680
+        }
+      ],
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/Z210",
+        "request_body": null
+      },
+      "implementation": "cases.js:Z210",
+      "schedule": "One external GET creates one fresh root; execute the written awaited dependency order entirely within its one fetch; no cross-request capability retention or timing polls.",
+      "preconditions": [
+        "Exact reviewed direct celld source and independent build/executable identity; no workerd/Node/mock substitution.",
+        "Fresh disposable private deployment, fresh randomly named root, real migrated SQLite Root, public facets and Worker Loader.",
+        "No actual OS checkout exists here. Component result cannot satisfy full-OS acceptance or establish process/placement/durability by itself."
+      ],
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_root_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_top_level_facet_names": 3,
+        "max_simultaneous_descendant_facets": 5,
+        "max_total_facet_activations_including_cleanup": 12,
+        "max_loaded_workers": 1,
+        "max_internal_facet_method_or_fetch_calls_including_cleanup": 40,
+        "max_public_network_requests": 0,
+        "max_application_keys_per_database": 5,
+        "max_user_tables_per_database": 1,
+        "max_sql_rows_per_cursor": 16,
+        "max_application_data_payload_bytes_excluding_loaded_source": 4096,
+        "max_loaded_module_source_bytes": 16384,
+        "max_external_response_capture_bytes": 65536,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 6000,
+        "cleanup_deadline_ms": 3000,
+        "external_http_deadline_seconds": 12,
+        "external_case_process_deadline_seconds": 20
+      },
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ],
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_passes": 0,
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "PENDING_INDEPENDENT_REVIEW",
+      "classification": "ordinary-functional-regression-candidate"
+    },
+    {
+      "id": "Z211",
+      "title": "Await persisted asynchronous startup options",
+      "mechanism": "async-facet-options-to-constructor-sequencing",
+      "failure_hypothesis": "The facet startup path may instantiate before a Promise-valued startup callback resolves class options.",
+      "trace": [
+        "Persist supervisor config and create a lazy facet with an async storage-reading startup callback.",
+        "Update config before first invocation.",
+        "Invoke propsState and then edit supervisor config once more."
+      ],
+      "oracle": "Constructor receives resolved saved-v2 label; startup runs once and active instance remains saved-v2.",
+      "fixed_runtime_assertions": [
+        "t.same(startups, 0, 'get alone does not resolve persisted startup configuration');",
+        "t.deep(await facet.propsState(), { label: 'saved-v2', visits: 0, initialLabel: 'saved-v2' }, 'async startup reads committed supervisor config before constructor');",
+        "t.deep(await facet.propsState(), { label: 'saved-v2', visits: 0, initialLabel: 'saved-v2' }, 'later supervisor edits do not silently reconfigure running facet');",
+        "t.same(startups, 1, 'one completed asynchronous configuration read');"
+      ],
+      "assertion_count": 4,
+      "distinctness": "L025 and L027 use synchronous startup callbacks (or cancel before start). L002 waits for Worker Loader source, a separate path. Primary novelty is successful awaited facet startup options; laziness/caching are ancillary controls, not extra case credit.",
+      "os_relevance": {
+        "label": "OS supervisor-persisted app startup configuration",
+        "evidence_status": "Mechanism relevance inferred from preserved acceptance/fixtures; actual OS application source absent and unverified.",
+        "evidence": [
+          "celld-os-project/tests/ACCEPTANCE.md",
+          "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+        ]
+      },
+      "primary_contract_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "kind": "preserved celld public contract"
+        }
+      ],
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 2244,
+          "line_end": 2265
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/bootstrap.rs",
+          "line_start": 983,
+          "line_end": 997
+        }
+      ],
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/Z211",
+        "request_body": null
+      },
+      "implementation": "cases.js:Z211",
+      "schedule": "One external GET creates one fresh root; execute the written awaited dependency order entirely within its one fetch; no cross-request capability retention or timing polls.",
+      "preconditions": [
+        "Exact reviewed direct celld source and independent build/executable identity; no workerd/Node/mock substitution.",
+        "Fresh disposable private deployment, fresh randomly named root, real migrated SQLite Root, public facets and Worker Loader.",
+        "No actual OS checkout exists here. Component result cannot satisfy full-OS acceptance or establish process/placement/durability by itself."
+      ],
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_root_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_top_level_facet_names": 3,
+        "max_simultaneous_descendant_facets": 5,
+        "max_total_facet_activations_including_cleanup": 12,
+        "max_loaded_workers": 1,
+        "max_internal_facet_method_or_fetch_calls_including_cleanup": 40,
+        "max_public_network_requests": 0,
+        "max_application_keys_per_database": 5,
+        "max_user_tables_per_database": 1,
+        "max_sql_rows_per_cursor": 16,
+        "max_application_data_payload_bytes_excluding_loaded_source": 4096,
+        "max_loaded_module_source_bytes": 16384,
+        "max_external_response_capture_bytes": 65536,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 6000,
+        "cleanup_deadline_ms": 3000,
+        "external_http_deadline_seconds": 12,
+        "external_case_process_deadline_seconds": 20
+      },
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ],
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_passes": 0,
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "PENDING_INDEPENDENT_REVIEW",
+      "classification": "ordinary-functional-regression-candidate"
+    },
+    {
+      "id": "Z212",
+      "title": "Delegate HTTP through a nested facet",
+      "mechanism": "nested-facet-fetch-delegation",
+      "failure_hypothesis": "A descendant fetch may be dispatched in the parent scope or lose request/response state while crossing a second facet edge.",
+      "trace": [
+        "Parent facet forwards one bounded POST to child facet.",
+        "Child saves payload and returns a202 JSON response.",
+        "Parent adds one header; root inspects response and both storage scopes."
+      ],
+      "oracle": "Exact method, tag, header and body; status202 and both response headers; payload stored only in leaf.",
+      "fixed_runtime_assertions": [
+        "t.same(response.status, 202, 'nested facet response status crosses both dispatch edges');",
+        "t.same(response.headers.get('x-parent-scope'), 'supervisor-child', 'parent receives and annotates child response');",
+        "t.same(response.headers.get('x-child-scope'), 'leaf', 'child response header retained');",
+        "t.deep(await response.json(), { method: 'POST', tag: 'job-7', route: 'root-to-child', body: 'work-item' }, 'nested fetch forwards ordinary request method, URL, header and body');",
+        "t.same(await parent.childRead('leaf', 'echo'), 'work-item', 'nested fetch reaches expected descendant database');",
+        "t.same(await parent.read('echo'), null, 'parent never receives child request write');"
+      ],
+      "assertion_count": 6,
+      "distinctness": "Existing HTTP/body cases use their own transport boundaries; no loader case asserts nested facet fetch routing and descendant-only effect placement.",
+      "os_relevance": {
+        "label": "OS supervisor to nested app HTTP routing",
+        "evidence_status": "Mechanism relevance inferred from preserved acceptance/fixtures; actual OS application source absent and unverified.",
+        "evidence": [
+          "celld-os-project/tests/ACCEPTANCE.md",
+          "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+        ]
+      },
+      "primary_contract_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "kind": "preserved celld public contract"
+        }
+      ],
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 2283,
+          "line_end": 2309
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js.rs",
+          "line_start": 8568,
+          "line_end": 8647
+        }
+      ],
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/Z212",
+        "request_body": null
+      },
+      "implementation": "cases.js:Z212",
+      "schedule": "One external GET creates one fresh root; execute the written awaited dependency order entirely within its one fetch; no cross-request capability retention or timing polls.",
+      "preconditions": [
+        "Exact reviewed direct celld source and independent build/executable identity; no workerd/Node/mock substitution.",
+        "Fresh disposable private deployment, fresh randomly named root, real migrated SQLite Root, public facets and Worker Loader.",
+        "No actual OS checkout exists here. Component result cannot satisfy full-OS acceptance or establish process/placement/durability by itself."
+      ],
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_root_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_top_level_facet_names": 3,
+        "max_simultaneous_descendant_facets": 5,
+        "max_total_facet_activations_including_cleanup": 12,
+        "max_loaded_workers": 1,
+        "max_internal_facet_method_or_fetch_calls_including_cleanup": 40,
+        "max_public_network_requests": 0,
+        "max_application_keys_per_database": 5,
+        "max_user_tables_per_database": 1,
+        "max_sql_rows_per_cursor": 16,
+        "max_application_data_payload_bytes_excluding_loaded_source": 4096,
+        "max_loaded_module_source_bytes": 16384,
+        "max_external_response_capture_bytes": 65536,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 6000,
+        "cleanup_deadline_ms": 3000,
+        "external_http_deadline_seconds": 12,
+        "external_case_process_deadline_seconds": 20
+      },
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ],
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_passes": 0,
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "PENDING_INDEPENDENT_REVIEW",
+      "classification": "ordinary-functional-regression-candidate"
+    },
+    {
+      "id": "Z213",
+      "title": "Keep facet commit across root rollback",
+      "mechanism": "root-and-facet-independent-transaction-commit",
+      "failure_hypothesis": "Root transaction rollback could accidentally include an awaited facet database write.",
+      "trace": [
+        "Start ordinary root storage.transaction.",
+        "Write tentative root row and await completed facet put.",
+        "Call tx.rollback and read both scopes."
+      ],
+      "oracle": "Root row absent, completed facet row exactly committed-facet.",
+      "fixed_runtime_assertions": [
+        "t.same(await s.ctx.storage.get('root-row') ?? null, null, 'explicit application rollback removes root write');",
+        "t.same(await facet.read('facet-row'), 'committed-facet', 'awaited facet write commits independently of root transaction');"
+      ],
+      "assertion_count": 2,
+      "distinctness": "Existing SQL transaction tests involve one database; L cases do not assert root/facet atomicity boundary. The docs explicitly state this behavior.",
+      "os_relevance": {
+        "label": "OS application transaction boundaries across apps",
+        "evidence_status": "Mechanism relevance inferred from preserved acceptance/fixtures; actual OS application source absent and unverified.",
+        "evidence": [
+          "celld-os-project/tests/ACCEPTANCE.md",
+          "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+        ]
+      },
+      "primary_contract_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "kind": "preserved celld public contract"
+        }
+      ],
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "line_start": 39,
+          "line_end": 44
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1832,
+          "line_end": 1868
+        }
+      ],
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/Z213",
+        "request_body": null
+      },
+      "implementation": "cases.js:Z213",
+      "schedule": "One external GET creates one fresh root; execute the written awaited dependency order entirely within its one fetch; no cross-request capability retention or timing polls.",
+      "preconditions": [
+        "Exact reviewed direct celld source and independent build/executable identity; no workerd/Node/mock substitution.",
+        "Fresh disposable private deployment, fresh randomly named root, real migrated SQLite Root, public facets and Worker Loader.",
+        "No actual OS checkout exists here. Component result cannot satisfy full-OS acceptance or establish process/placement/durability by itself."
+      ],
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_root_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_top_level_facet_names": 3,
+        "max_simultaneous_descendant_facets": 5,
+        "max_total_facet_activations_including_cleanup": 12,
+        "max_loaded_workers": 1,
+        "max_internal_facet_method_or_fetch_calls_including_cleanup": 40,
+        "max_public_network_requests": 0,
+        "max_application_keys_per_database": 5,
+        "max_user_tables_per_database": 1,
+        "max_sql_rows_per_cursor": 16,
+        "max_application_data_payload_bytes_excluding_loaded_source": 4096,
+        "max_loaded_module_source_bytes": 16384,
+        "max_external_response_capture_bytes": 65536,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 6000,
+        "cleanup_deadline_ms": 3000,
+        "external_http_deadline_seconds": 12,
+        "external_case_process_deadline_seconds": 20
+      },
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ],
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_passes": 0,
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "PENDING_INDEPENDENT_REVIEW",
+      "classification": "ordinary-functional-regression-candidate"
+    },
+    {
+      "id": "Z215",
+      "title": "Commit a parent decision after child rollback",
+      "mechanism": "child-rollback-parent-commit",
+      "failure_hypothesis": "A child-local rollback could invalidate its parent transaction despite returning an ordinary handled decision.",
+      "trace": [
+        "Open facet parent transaction and write parent row.",
+        "Child rolls back its own tentative row and returns declined.",
+        "Parent records decision and commits; read all rows."
+      ],
+      "oracle": "Parent row and declined decision committed; child row absent.",
+      "fixed_runtime_assertions": [
+        "t.deep(await parent.commitWithDeclinedChild(), { outcome: 'declined', child: null }, 'child returns ordinary application decision after own rollback');",
+        "t.same(await parent.read('parent'), 'committed-parent', 'handled child rollback does not roll back parent transaction');",
+        "t.same(await parent.read('decision'), 'declined', 'parent commits workflow decision beside its state');",
+        "t.same(await parent.childRead('leaf', 'child'), null, 'declined child write remains absent');"
+      ],
+      "assertion_count": 4,
+      "distinctness": "Z213 rolls back the root after a child commit. This asserts the opposite independent outcome with an application decision returned normally and persisted by the parent. Single-DB transaction cases cannot establish it.",
+      "os_relevance": {
+        "label": "OS app orchestration with independent child decisions",
+        "evidence_status": "Mechanism relevance inferred from preserved acceptance/fixtures; actual OS application source absent and unverified.",
+        "evidence": [
+          "celld-os-project/tests/ACCEPTANCE.md",
+          "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+        ]
+      },
+      "primary_contract_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "kind": "preserved celld public contract"
+        }
+      ],
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "line_start": 39,
+          "line_end": 44
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1832,
+          "line_end": 1868
+        }
+      ],
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/Z215",
+        "request_body": null
+      },
+      "implementation": "cases.js:Z215",
+      "schedule": "One external GET creates one fresh root; execute the written awaited dependency order entirely within its one fetch; no cross-request capability retention or timing polls.",
+      "preconditions": [
+        "Exact reviewed direct celld source and independent build/executable identity; no workerd/Node/mock substitution.",
+        "Fresh disposable private deployment, fresh randomly named root, real migrated SQLite Root, public facets and Worker Loader.",
+        "No actual OS checkout exists here. Component result cannot satisfy full-OS acceptance or establish process/placement/durability by itself."
+      ],
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_root_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_top_level_facet_names": 3,
+        "max_simultaneous_descendant_facets": 5,
+        "max_total_facet_activations_including_cleanup": 12,
+        "max_loaded_workers": 1,
+        "max_internal_facet_method_or_fetch_calls_including_cleanup": 40,
+        "max_public_network_requests": 0,
+        "max_application_keys_per_database": 5,
+        "max_user_tables_per_database": 1,
+        "max_sql_rows_per_cursor": 16,
+        "max_application_data_payload_bytes_excluding_loaded_source": 4096,
+        "max_loaded_module_source_bytes": 16384,
+        "max_external_response_capture_bytes": 65536,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 6000,
+        "cleanup_deadline_ms": 3000,
+        "external_http_deadline_seconds": 12,
+        "external_case_process_deadline_seconds": 20
+      },
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ],
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_passes": 0,
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "PENDING_INDEPENDENT_REVIEW",
+      "classification": "ordinary-functional-regression-candidate"
+    },
+    {
+      "id": "Z216",
+      "title": "Clear only one facet storage scope",
+      "mechanism": "facet-deleteAll-is-not-subtree-delete",
+      "failure_hypothesis": "storage.deleteAll may mistakenly remove descendant databases or ancestor state.",
+      "trace": [
+        "Write root marker, parent facet row and child facet row.",
+        "Call parent storage.deleteAll.",
+        "Read empty parent list and preserved root/child rows."
+      ],
+      "oracle": "Parent database empty; child-keep and root-keep remain.",
+      "fixed_runtime_assertions": [
+        "t.deep(await parent.clearOwn(), { own: [] }, 'storage.deleteAll clears only current facet database');",
+        "t.same(await parent.childRead('leaf', 'value'), 'child-keep', 'storage.deleteAll does not recursively delete child facet');",
+        "t.same(s.ctx.storage.kv.get('root'), 'root-keep', 'facet storage.clear does not clear root database');"
+      ],
+      "assertion_count": 3,
+      "distinctness": "D211 covers one-DO deleteAll; this distinguishes facet-local storage clearing from recursive facets.delete. L cleanup aborts facets instead.",
+      "os_relevance": {
+        "label": "OS resetting app data without destroying child apps",
+        "evidence_status": "Mechanism relevance inferred from preserved acceptance/fixtures; actual OS application source absent and unverified.",
+        "evidence": [
+          "celld-os-project/tests/ACCEPTANCE.md",
+          "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+        ]
+      },
+      "primary_contract_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "kind": "preserved celld public contract"
+        }
+      ],
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1670,
+          "line_end": 1675
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 4150,
+          "line_end": 4195
+        },
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "line_start": 75,
+          "line_end": 76
+        }
+      ],
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/Z216",
+        "request_body": null
+      },
+      "implementation": "cases.js:Z216",
+      "schedule": "One external GET creates one fresh root; execute the written awaited dependency order entirely within its one fetch; no cross-request capability retention or timing polls.",
+      "preconditions": [
+        "Exact reviewed direct celld source and independent build/executable identity; no workerd/Node/mock substitution.",
+        "Fresh disposable private deployment, fresh randomly named root, real migrated SQLite Root, public facets and Worker Loader.",
+        "No actual OS checkout exists here. Component result cannot satisfy full-OS acceptance or establish process/placement/durability by itself."
+      ],
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_root_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_top_level_facet_names": 3,
+        "max_simultaneous_descendant_facets": 5,
+        "max_total_facet_activations_including_cleanup": 12,
+        "max_loaded_workers": 1,
+        "max_internal_facet_method_or_fetch_calls_including_cleanup": 40,
+        "max_public_network_requests": 0,
+        "max_application_keys_per_database": 5,
+        "max_user_tables_per_database": 1,
+        "max_sql_rows_per_cursor": 16,
+        "max_application_data_payload_bytes_excluding_loaded_source": 4096,
+        "max_loaded_module_source_bytes": 16384,
+        "max_external_response_capture_bytes": 65536,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 6000,
+        "cleanup_deadline_ms": 3000,
+        "external_http_deadline_seconds": 12,
+        "external_case_process_deadline_seconds": 20
+      },
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ],
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_passes": 0,
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "PENDING_INDEPENDENT_REVIEW",
+      "classification": "ordinary-functional-regression-candidate"
+    },
+    {
+      "id": "Z217",
+      "title": "Delete one nested facet selectively",
+      "mechanism": "leaf-delete-barrier-and-neighbor-preservation",
+      "failure_hypothesis": "Deleting one nested leaf may remove its parent/sibling or a same-name startup may reopen old data.",
+      "trace": [
+        "Write parent and two child rows.",
+        "Publicly delete one child, then immediately read via fresh same-name stub.",
+        "Read untouched parent/sibling and write recreated leaf."
+      ],
+      "oracle": "Fresh deleted leaf empty and writable; parent/sibling values unchanged.",
+      "fixed_runtime_assertions": [
+        "t.same(await parent.deleteChildAndRead('remove'), null, 'same-name recreation waits for completed leaf deletion');",
+        "t.same(await parent.childRead('keep', 'value'), 'sibling-keep', 'deleting child preserves sibling database');",
+        "t.same(await parent.read('own'), 'parent-keep', 'deleting child preserves parent database');",
+        "t.same(await parent.childPut('remove', 'value', 'new-value'), 'new-value', 'recreated leaf is writable');"
+      ],
+      "assertion_count": 4,
+      "distinctness": "L026/L027 abort and preserve data; no baseline tests successful public delete with adjacent descendants. No old stub is invoked and no active call is interrupted.",
+      "os_relevance": {
+        "label": "OS selective child-app removal",
+        "evidence_status": "Mechanism relevance inferred from preserved acceptance/fixtures; actual OS application source absent and unverified.",
+        "evidence": [
+          "celld-os-project/tests/ACCEPTANCE.md",
+          "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+        ]
+      },
+      "primary_contract_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "kind": "preserved celld public contract"
+        }
+      ],
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 2339,
+          "line_end": 2351
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js.rs",
+          "line_start": 8749,
+          "line_end": 8799
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/engine_api.rs",
+          "line_start": 842,
+          "line_end": 863
+        }
+      ],
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/Z217",
+        "request_body": null
+      },
+      "implementation": "cases.js:Z217",
+      "schedule": "One external GET creates one fresh root; execute the written awaited dependency order entirely within its one fetch; no cross-request capability retention or timing polls.",
+      "preconditions": [
+        "Exact reviewed direct celld source and independent build/executable identity; no workerd/Node/mock substitution.",
+        "Fresh disposable private deployment, fresh randomly named root, real migrated SQLite Root, public facets and Worker Loader.",
+        "No actual OS checkout exists here. Component result cannot satisfy full-OS acceptance or establish process/placement/durability by itself."
+      ],
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_root_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_top_level_facet_names": 3,
+        "max_simultaneous_descendant_facets": 5,
+        "max_total_facet_activations_including_cleanup": 12,
+        "max_loaded_workers": 1,
+        "max_internal_facet_method_or_fetch_calls_including_cleanup": 40,
+        "max_public_network_requests": 0,
+        "max_application_keys_per_database": 5,
+        "max_user_tables_per_database": 1,
+        "max_sql_rows_per_cursor": 16,
+        "max_application_data_payload_bytes_excluding_loaded_source": 4096,
+        "max_loaded_module_source_bytes": 16384,
+        "max_external_response_capture_bytes": 65536,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 6000,
+        "cleanup_deadline_ms": 3000,
+        "external_http_deadline_seconds": 12,
+        "external_case_process_deadline_seconds": 20
+      },
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ],
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_passes": 0,
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "PENDING_INDEPENDENT_REVIEW",
+      "classification": "ordinary-functional-regression-candidate"
+    },
+    {
+      "id": "Z218",
+      "title": "Delete and recreate a facet subtree",
+      "mechanism": "recursive-facet-database-deletion",
+      "failure_hypothesis": "Removing a parent facet may leave descendant databases available to same-path recreation or affect adjacent rootscopes.",
+      "trace": [
+        "Write a three-facet subtree and sibling/root markers.",
+        "Publicly delete top-level parent with all calls settled.",
+        "Read recreated full subtree, verify neighbors, then write new levels."
+      ],
+      "oracle": "All recreated subtree values absent; sibling/root preserved; fresh values4,5,6 accepted.",
+      "fixed_runtime_assertions": [
+        "t.deep(await fresh.chainRead(['branch', 'leaf']), [null, null, null], 'public facet delete removes complete descendant database subtree');",
+        "t.same(await sibling.read('value'), 'sibling-keep', 'subtree deletion preserves adjacent root child');",
+        "t.same(s.ctx.storage.kv.get('root'), 'root-keep', 'subtree deletion preserves root database');",
+        "t.deep(await fresh.chain(['branch', 'leaf'], [4, 5, 6]), [4, 5, 6], 'recreated subtree starts clean and supports normal writes');"
+      ],
+      "assertion_count": 4,
+      "distinctness": "Z217 removes one leaf; this separately requires recursive database removal at all supported descendant levels. L abort/restore cases preserve databases and do not exercise delete.",
+      "os_relevance": {
+        "label": "OS uninstalling nested app state",
+        "evidence_status": "Mechanism relevance inferred from preserved acceptance/fixtures; actual OS application source absent and unverified.",
+        "evidence": [
+          "celld-os-project/tests/ACCEPTANCE.md",
+          "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+        ]
+      },
+      "primary_contract_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "kind": "preserved celld public contract"
+        }
+      ],
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "line_start": 75,
+          "line_end": 76
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js.rs",
+          "line_start": 8749,
+          "line_end": 8799
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/facet_streams.rs",
+          "line_start": 151,
+          "line_end": 199
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1155,
+          "line_end": 1178
+        }
+      ],
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/Z218",
+        "request_body": null
+      },
+      "implementation": "cases.js:Z218",
+      "schedule": "One external GET creates one fresh root; execute the written awaited dependency order entirely within its one fetch; no cross-request capability retention or timing polls.",
+      "preconditions": [
+        "Exact reviewed direct celld source and independent build/executable identity; no workerd/Node/mock substitution.",
+        "Fresh disposable private deployment, fresh randomly named root, real migrated SQLite Root, public facets and Worker Loader.",
+        "No actual OS checkout exists here. Component result cannot satisfy full-OS acceptance or establish process/placement/durability by itself."
+      ],
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_root_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_top_level_facet_names": 3,
+        "max_simultaneous_descendant_facets": 5,
+        "max_total_facet_activations_including_cleanup": 12,
+        "max_loaded_workers": 1,
+        "max_internal_facet_method_or_fetch_calls_including_cleanup": 40,
+        "max_public_network_requests": 0,
+        "max_application_keys_per_database": 5,
+        "max_user_tables_per_database": 1,
+        "max_sql_rows_per_cursor": 16,
+        "max_application_data_payload_bytes_excluding_loaded_source": 4096,
+        "max_loaded_module_source_bytes": 16384,
+        "max_external_response_capture_bytes": 65536,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 6000,
+        "cleanup_deadline_ms": 3000,
+        "external_http_deadline_seconds": 12,
+        "external_case_process_deadline_seconds": 20
+      },
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ],
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_passes": 0,
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "PENDING_INDEPENDENT_REVIEW",
+      "classification": "ordinary-functional-regression-candidate"
+    },
+    {
+      "id": "Z219",
+      "title": "Resolve nested classes in their module",
+      "mechanism": "loaded-facet-module-local-export-resolution",
+      "failure_hypothesis": "A loaded facet ctx.exports might bind a same-named root export/environment or loopback facets might use the wrong isolate.",
+      "trace": [
+        "Start local and loaded Facet from identical source with distinct environments.",
+        "Compare module tokens against root.",
+        "Each facet starts its own ctx.exports.Leaf and reads origin."
+      ],
+      "oracle": "Local facet token equals root token; loaded differs; nested origins remain root-origin:leaf versus loaded-origin:leaf.",
+      "fixed_runtime_assertions": [
+        "t.same(a.token, s.localToken, 'unmigrated loopback facet executes in root module isolate');",
+        "t.ok(b.token !== s.localToken, 'loaded facet executes in loaded module isolate');",
+        "t.deep(await loaded.nestedModule(), { parent: 'loaded-origin', child: 'loaded-origin:leaf' }, 'loaded facet ctx.exports resolves nested class and environment in loaded module');",
+        "t.deep(await local.nestedModule(), { parent: 'root-origin', child: 'root-origin:leaf' }, 'same exported child name retains local module environment');"
+      ],
+      "assertion_count": 4,
+      "distinctness": "L022 compares direct loaded class selection to parent Root; foreign-class checks imported provider ownership. This asserts nested ctx.exports resolution inside the active loaded facet and contrasts actual local/loaded module boundaries.",
+      "os_relevance": {
+        "label": "OS generated app nested code and environment provenance",
+        "evidence_status": "Mechanism relevance inferred from preserved acceptance/fixtures; actual OS application source absent and unverified.",
+        "evidence": [
+          "celld-os-project/tests/ACCEPTANCE.md",
+          "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+        ]
+      },
+      "primary_contract_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "kind": "preserved celld public contract"
+        }
+      ],
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 5517,
+          "line_end": 5544
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/bootstrap.rs",
+          "line_start": 943,
+          "line_end": 997
+        },
+        {
+          "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+          "line_start": 48,
+          "line_end": 53
+        }
+      ],
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/Z219",
+        "request_body": null
+      },
+      "implementation": "cases.js:Z219",
+      "schedule": "One external GET creates one fresh root; execute the written awaited dependency order entirely within its one fetch; no cross-request capability retention or timing polls.",
+      "preconditions": [
+        "Exact reviewed direct celld source and independent build/executable identity; no workerd/Node/mock substitution.",
+        "Fresh disposable private deployment, fresh randomly named root, real migrated SQLite Root, public facets and Worker Loader.",
+        "No actual OS checkout exists here. Component result cannot satisfy full-OS acceptance or establish process/placement/durability by itself."
+      ],
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_root_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_top_level_facet_names": 3,
+        "max_simultaneous_descendant_facets": 5,
+        "max_total_facet_activations_including_cleanup": 12,
+        "max_loaded_workers": 1,
+        "max_internal_facet_method_or_fetch_calls_including_cleanup": 40,
+        "max_public_network_requests": 0,
+        "max_application_keys_per_database": 5,
+        "max_user_tables_per_database": 1,
+        "max_sql_rows_per_cursor": 16,
+        "max_application_data_payload_bytes_excluding_loaded_source": 4096,
+        "max_loaded_module_source_bytes": 16384,
+        "max_external_response_capture_bytes": 65536,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 6000,
+        "cleanup_deadline_ms": 3000,
+        "external_http_deadline_seconds": 12,
+        "external_case_process_deadline_seconds": 20
+      },
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ],
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_passes": 0,
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "PENDING_INDEPENDENT_REVIEW",
+      "classification": "ordinary-functional-regression-candidate"
+    }
+  ]
+}

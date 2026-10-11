@@ -1,0 +1,51 @@
+{
+  "adapter": "topology",
+  "behaviour": "fetch-and-http",
+  "contract": {
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "distinctness": "Streaming accumulator lifetime, not B023 one-shot digest fanout; no incremental native hashing claim.",
+    "implementation": "operations.js:X018",
+    "intent": "Finish distinct DigestStream payloads in reverse request order",
+    "oracle": "Primary SHA1 matches the pack vector, secondary SHA1 matches the distinct archive vector, and their exact byte counts differ: 2060 and 5660.",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "DigestStream buffers byte chunks and invokes native SHA1 at close"
+    ],
+    "trace": [
+      "Write only the twelve-byte pack header into the primary DigestStream.",
+      "Hold its chunk list while a secondary request writes and closes a distinct archive digest.",
+      "Append the primary body, close and inspect SHA1 and bytesWritten."
+    ]
+  },
+  "corpus_id": "X018",
+  "corpus_wave": "native-transform-stress",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/transform-streams",
+  "id": "conformance/fetch-and-http/finish-distinct-digest-stream-payloads-in-reverse-request-order",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/native-transform-stress/X018"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/native-transform-stress/X018",
+      "source": "guarded-source-archive/celld-os-stress/waves/native-transform-stress"
+    },
+    {
+      "sha256": "1c4be2004e476ee286465674ad37b81dd9ea8cc33e0dda6ef66b66b5830346de",
+      "source": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "X018",
+  "source": "tests/conformance/fetch-and-http/fixtures/transform-streams/entry.js",
+  "source_sha256": "1c4be2004e476ee286465674ad37b81dd9ea8cc33e0dda6ef66b66b5830346de",
+  "title": "Finish distinct DigestStream payloads in reverse request order"
+}

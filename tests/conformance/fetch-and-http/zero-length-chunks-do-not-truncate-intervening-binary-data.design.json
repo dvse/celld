@@ -1,0 +1,31 @@
+{
+  "id": "conformance/fetch-and-http/zero-length-chunks-do-not-truncate-intervening-binary-data",
+  "layer": "conformance",
+  "behaviour": "fetch-and-http",
+  "title": "Zero-length chunks do not truncate intervening binary data",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/fixture",
+      "legacy_id": "base/S004"
+    }
+  ],
+  "corpus_wave": "base",
+  "corpus_id": "S004",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "S004",
+    "intent": "Zero-length chunks do not truncate intervening binary data",
+    "preconditions": "Empty chunks before, between and after two nonempty chunks",
+    "trace": [
+      "drain remote stream",
+      "compare concatenated bytes",
+      "inspect close"
+    ],
+    "stress": "empty/nonempty transitions",
+    "oracle": "bytes exactly 4,5,6 and one close; unlocked",
+    "cleanup": "drain; release reader; forget source",
+    "gate": "characterization",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  }
+}

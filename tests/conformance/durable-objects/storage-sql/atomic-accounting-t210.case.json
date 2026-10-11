@@ -1,0 +1,138 @@
+{
+  "adapter": "http",
+  "behaviour": "durable-objects/storage-sql",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runs": 0,
+    "application_algorithm_qualification": "readChunks zero-fill and overwrite chunk-splitting are fixture algorithms, not native celld features or separate coverage. Credit rests on real SQL BLOB persistence/replacement/clipping with coherent KV accounting.",
+    "authored": true,
+    "classification": "synthetic-ordinary-functional-regression-candidate",
+    "cleanup": [
+      "All actor handlers/transactions and gate timers must settle before audit/cleanup.",
+      "Every native SQL cursor is immediately drained, retained only for bounded final drain.",
+      "DeleteAll only on the correlated fresh owned root; verify KV empty and SQL application tables absent.",
+      "External supervisor must enforce independent deadlines/RSS and reap owned processes/store; receipts cannot self-prove placement or teardown."
+    ],
+    "distinctness": "Typed bind conversion is a reused prerequisite. New oracle is an exact multi-row overlapping range merge with preserved bytes and zero-growth accounting, not alias/snapshot ownership.",
+    "failure_hypothesis": "Chunk slice merging can discard preserved prefixes/suffixes or charge rewritten bytes as new allocation.",
+    "id": "T210",
+    "implementation": "cases.js:T210",
+    "independently_reviewed": false,
+    "intent": "Finite byte-range read/modify/write spans two native BLOB rows; the later request overwrites only its overlap and leaves allocation/size unchanged.",
+    "left_checkpoint": "Left writes offset2 [9,8,7] across boundary and holds.",
+    "limits": {
+      "max_active_actor_requests": 2,
+      "max_application_storage_call_sites_executed": 400,
+      "max_chunk_loop_input_bytes": 3,
+      "max_external_case_requests": 1,
+      "max_internal_do_fetches": 4,
+      "max_native_cursors": 240,
+      "max_public_network_requests": 0,
+      "max_recursive_depth": 8,
+      "max_roots": 1,
+      "max_rows_per_cursor": 64,
+      "max_user_kv_keys": 16,
+      "max_user_payload_bytes": 4096
+    },
+    "literal_assertion_call_sites": 4,
+    "nearest_existing": [
+      "T019",
+      "D201",
+      "D212"
+    ],
+    "normative_references": [
+      "https://www.sqlite.org/datatype3.html"
+    ],
+    "oracle": "file bytes [0,1,9,6,5,5,6,7]; offsets0,4 lengths4,4; size8,chunks2,stored8.",
+    "os_evidence_status": "RETAINED_PROVENANCE_ONLY: synthetic platform composition; no OS checkout/callsite was reread, and this is not an actual OS integration test.",
+    "os_relevance": "gatekeeper chunk mutation",
+    "preconditions": [
+      "Exact pinned direct celld source and reviewed matching executable; no substitute runtime.",
+      "Fresh owned SQLite DO root, one stable activation, no preexisting KV or user SQL.",
+      "Two ordinary same-deployment DO.fetch requests must pre-enter one recipient before its transaction input gate closes.",
+      "All storage and SQL operations execute on real ctx.storage with public APIs and native SQLite."
+    ],
+    "promotion_candidate": true,
+    "runtime_passes": 0,
+    "runtime_status": "NOT_RUN",
+    "schedule": "schedule.json:preentered-two-request-fifo",
+    "source_refs": [
+      {
+        "line_end": 2008,
+        "line_start": 1898,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js",
+        "purpose": "Real root transactions serialize distinct pre-entered request owners; ordinary input gate and transaction tail."
+      },
+      {
+        "line_end": 3312,
+        "line_start": 3235,
+        "path": "celld-os-project/celld/crates/celld/storage.rs",
+        "purpose": "Public storage transaction controls map to native BEGIN IMMEDIATE, COMMIT and nested SAVEPOINT/RELEASE."
+      },
+      {
+        "line_end": 1435,
+        "line_start": 1287,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js",
+        "purpose": "Public native SQL cursor shaping, typed bindings and finite draining."
+      },
+      {
+        "line_end": 2153,
+        "line_start": 1902,
+        "path": "celld-os-project/celld/crates/celld/storage.rs",
+        "purpose": "Queries execute through native SQLite prepare/bind/step, not a JavaScript SQL emulator."
+      },
+      {
+        "line_end": 623,
+        "line_start": 585,
+        "path": "celld-os-project/celld/crates/celld/js/storage_ops.rs",
+        "purpose": "Native bind/result conversion preserves bounded BLOB views."
+      },
+      {
+        "line_end": 3860,
+        "line_start": 3805,
+        "path": "celld-os-project/celld/crates/celld/storage.rs",
+        "purpose": "Native typed byte binding."
+      }
+    ],
+    "title": "Merge overlapping writes across chunk boundaries",
+    "trace": [
+      "Seed two four-byte chunks with0..7.",
+      "Left writes offset2 [9,8,7] across boundary and holds.",
+      "Right reads the full first result then writes offset3 [6,5] across the same boundary."
+    ]
+  },
+  "corpus_id": "T210",
+  "corpus_wave": "atomic-accounting-semantics",
+  "fixture": "tests/conformance/durable-objects/storage-sql/fixtures/atomic-accounting-semantics",
+  "id": "conformance/durable-objects/storage-sql/atomic-accounting-t210",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/atomic-accounting-semantics/T210"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/atomic-accounting-semantics/T210",
+      "manifest_sha256": "74ca24883b66b7505190af93acdb03199887fecbe09f5d377d344cfafb2cad69",
+      "review_sha256": "ba79e6a940a0c497277bf34361f3b1ad34a6b1a4c9a638701793cacc4ebd10c8",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/atomic-accounting-semantics",
+      "tranche": "003"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/T210",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "T210",
+  "source": "tests/conformance/durable-objects/storage-sql/fixtures/atomic-accounting-semantics/fixture.js",
+  "source_sha256": "686846d5a7b0fac00f11906a8c79c13ca1cb293244ef37fec33f1a6a90871f7e",
+  "title": "Merge overlapping writes across chunk boundaries"
+}

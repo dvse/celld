@@ -1,0 +1,792 @@
+{
+  "schema": 1,
+  "wave": "os-action-file-store-semantics",
+  "authored": 6,
+  "independently_reviewed": 0,
+  "accepted_primary_static": 0,
+  "runtime_executions": 0,
+  "runtime_passes": 0,
+  "reserved_unused_ids": [
+    "F207",
+    "F208",
+    "F209",
+    "F210",
+    "F211",
+    "F212"
+  ],
+  "cases": [
+    {
+      "id": "F201",
+      "title": "Snapshot capture input before awaiting digest",
+      "failure_hypothesis": "The production digest and chunk copies might observe different versions of a caller-mutated offset view.",
+      "trace": [
+        "Capture the five-byte view of an eight-byte backing buffer.",
+        "Mutate the backing synchronously before awaiting capture.",
+        "Check returned digest, stored chunk, public read, exact keys and charge against original literal bytes."
+      ],
+      "oracle": "Original view [10,20,30,40,50], caller now all99; SHA6ef53a64\u2026; one chunk; counter5 and exactly four native keys.",
+      "implementation": "cases.js:F201",
+      "body_line_start": 39,
+      "body_line_end": 54,
+      "source_refs": [
+        {
+          "root": "wave",
+          "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/action-files.ts",
+          "line_start": 83,
+          "line_end": 123
+        },
+        {
+          "root": "wave",
+          "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/action-files.ts",
+          "line_start": 131,
+          "line_end": 160
+        },
+        {
+          "root": "wave",
+          "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/action-files.ts",
+          "line_start": 249,
+          "line_end": 251
+        }
+      ],
+      "application_callsite_refs": [
+        {
+          "root": "os",
+          "path": "raw/packages/gatekeeper-google/src/gmail-state.ts",
+          "line_start": 19,
+          "line_end": 33
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/gatekeeper-google/src/gmail.ts",
+          "line_start": 278,
+          "line_end": 293
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/gatekeeper-google/src/gmail.ts",
+          "line_start": 752,
+          "line_end": 766
+        }
+      ],
+      "closest_existing_cases": [
+        "D201",
+        "D205",
+        "T019",
+        "X023",
+        "I202"
+      ],
+      "distinctness": "D201/D205 snapshot serialized values; T019 snapshots a SQL BLOB during coercion; X023 copies an imported HMAC key; I202 converts R2 input. None exercises the actual ActionFileStore synchronous dual digest/chunk snapshot before its first await and the stored integrity-checked publication.",
+      "literal_assertion_call_sites": 2,
+      "shared_assertion_helpers": [
+        "retained",
+        "smallBytes",
+        "absent"
+      ],
+      "preconditions": [
+        "Exact unmodified module, closed helper import graph, Apache license and guarded direct-celld source/build/bundle identities.",
+        "Fresh disposable migrated SQLite-backed DO with genuine storage.kv, transactionSync and WebCrypto; only synthetic data.",
+        "External supervisor witnesses complete process ownership, loopback ingress, bounded resource domain and whole-descendant teardown across PGIDs.",
+        "Trusted future bundler with TypeScript erasure only; missing build/runtime prerequisites are BLOCKED, not substituted."
+      ],
+      "schedule": "One exact GET /case/F201; one fresh migrated DO and one ordinary same-deployment DO.fetch; all operations remain in that live request in written order.",
+      "operation_counts": {
+        "capture_attempts": 1,
+        "reads": 1,
+        "explicit_deletes": 0,
+        "prune_calls": 0,
+        "maximum_retained_native_entries": 4,
+        "maximum_retained_payload_bytes": 5
+      },
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_native_storage_entries": 16,
+        "actual_max_native_entries": 10,
+        "max_total_retained_payload_bytes": 2097169,
+        "visible_js_byte_buffer_estimate_bytes": 16777216,
+        "byte_buffer_estimate_scope": "Conservative visible-JS payload-view estimate only, not a total memory cap. Native serialization, WebCrypto transient copies, runtime heaps and allocator retention remain covered by the independently enforced aggregate RSS ceiling.",
+        "max_rows_per_fully_consumed_iterator": 64,
+        "max_native_list_calls": 64,
+        "max_native_kv_point_operations": 256,
+        "max_native_transactions": 16,
+        "max_public_module_calls": 12,
+        "max_webcrypto_digest_calls": 8,
+        "max_streams": 0,
+        "max_clock_waits": 32,
+        "clock_wait_interval_ms": 5,
+        "max_external_receipt_bytes": 32768,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15,
+        "outer_wave_deadline_seconds": 120,
+        "outer_rss_bytes": 1073741824,
+        "max_owned_domain_processes": 32,
+        "max_owned_writable_bytes": 134217728,
+        "descendant_supervision": "Entire proven-owned dev, trusted-bundler and runtime descendant tree across PGIDs; prefer one enforceable cgroup and ownership domain. A single PGID or parent PID is insufficient.",
+        "writable_quota_scope": "All generated bundles, staging config, logs, temporary files and private store. Do not copy externally supplied read-only source/binaries into the writable domain."
+      },
+      "cleanup": [
+        "Await every capture/read and its digest before marking original trace settled; no streams exist.",
+        "If original trace remains unsettled, do not race in-object teardown; external supervisor reaps the entire owned domain.",
+        "After settlement open and completely drain one public native sync-KV iterator to replace any abandoned cursor; never call next after done.",
+        "DeleteAll only this fresh owned DO and verify KV empty; cleanup failures are typed blockers.",
+        "Independently terminate and verify every proven-owned dev/bundler/runtime descendant across PGIDs and remove only owned staging/bundles/logs/temp/private store, regardless of fixture outcome."
+      ],
+      "expected_exception_scope": "Only F206 ordinary valid aggregate-limit refusal. F205 missing genuine time separation is BLOCKED_WITNESS.",
+      "coverage_class": "actual-pinned-os-module-over-direct-celld-native-storage-and-webcrypto",
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "F202",
+      "title": "Publish and reassemble real chunk boundaries",
+      "failure_hypothesis": "Production 1 MiB split, key numbering, native typed-value persistence or reassembly could lose, reorder or mischarge boundary bytes.",
+      "trace": [
+        "Capture exactly2097169 synthetic bytes with three literal regions.",
+        "Check actual native chunks0000/0001/0002 with lengths1048576/1048576/17 and every byte.",
+        "Read via the real module, compare every reconstructed byte, exact digest, metadata, complete keys and aggregate charge."
+      ],
+      "oracle": "Regions17\u00d71048576 then34\u00d71048576 then bytes0..16; SHA669a63cb\u2026; chunks3; bytes2097169; exactly six native entries.",
+      "implementation": "cases.js:F202",
+      "body_line_start": 55,
+      "body_line_end": 82,
+      "source_refs": [
+        {
+          "root": "wave",
+          "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/action-files.ts",
+          "line_start": 88,
+          "line_end": 123
+        },
+        {
+          "root": "wave",
+          "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/action-files.ts",
+          "line_start": 126,
+          "line_end": 160
+        },
+        {
+          "root": "wave",
+          "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/action-files.ts",
+          "line_start": 188,
+          "line_end": 202
+        }
+      ],
+      "application_callsite_refs": [
+        {
+          "root": "os",
+          "path": "raw/packages/gatekeeper-google/src/gmail-state.ts",
+          "line_start": 19,
+          "line_end": 33
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/gatekeeper-google/src/gmail.ts",
+          "line_start": 278,
+          "line_end": 293
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/gatekeeper-google/src/gmail.ts",
+          "line_start": 752,
+          "line_end": 766
+        }
+      ],
+      "closest_existing_cases": [
+        "T210",
+        "T213",
+        "D202",
+        "I203"
+      ],
+      "distinctness": "T210 uses authored four-byte SQL chunks and overwrite logic; T213 uses authored two-byte SQL completeness/charge transfer. D202 is structured-clone brand conversion; I203 is R2 streaming concatenation. This case uses actual OS chunk production and digest-validating reassembly across its real 1 MiB boundaries. It claims complete post-resolution publication, not concurrent isolation.",
+      "literal_assertion_call_sites": 7,
+      "shared_assertion_helpers": [
+        "retained",
+        "smallBytes",
+        "absent"
+      ],
+      "preconditions": [
+        "Exact unmodified module, closed helper import graph, Apache license and guarded direct-celld source/build/bundle identities.",
+        "Fresh disposable migrated SQLite-backed DO with genuine storage.kv, transactionSync and WebCrypto; only synthetic data.",
+        "External supervisor witnesses complete process ownership, loopback ingress, bounded resource domain and whole-descendant teardown across PGIDs.",
+        "Trusted future bundler with TypeScript erasure only; missing build/runtime prerequisites are BLOCKED, not substituted."
+      ],
+      "schedule": "One exact GET /case/F202; one fresh migrated DO and one ordinary same-deployment DO.fetch; all operations remain in that live request in written order.",
+      "operation_counts": {
+        "capture_attempts": 1,
+        "reads": 1,
+        "explicit_deletes": 0,
+        "prune_calls": 0,
+        "maximum_retained_native_entries": 6,
+        "maximum_retained_payload_bytes": 2097169
+      },
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_native_storage_entries": 16,
+        "actual_max_native_entries": 10,
+        "max_total_retained_payload_bytes": 2097169,
+        "visible_js_byte_buffer_estimate_bytes": 16777216,
+        "byte_buffer_estimate_scope": "Conservative visible-JS payload-view estimate only, not a total memory cap. Native serialization, WebCrypto transient copies, runtime heaps and allocator retention remain covered by the independently enforced aggregate RSS ceiling.",
+        "max_rows_per_fully_consumed_iterator": 64,
+        "max_native_list_calls": 64,
+        "max_native_kv_point_operations": 256,
+        "max_native_transactions": 16,
+        "max_public_module_calls": 12,
+        "max_webcrypto_digest_calls": 8,
+        "max_streams": 0,
+        "max_clock_waits": 32,
+        "clock_wait_interval_ms": 5,
+        "max_external_receipt_bytes": 32768,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15,
+        "outer_wave_deadline_seconds": 120,
+        "outer_rss_bytes": 1073741824,
+        "max_owned_domain_processes": 32,
+        "max_owned_writable_bytes": 134217728,
+        "descendant_supervision": "Entire proven-owned dev, trusted-bundler and runtime descendant tree across PGIDs; prefer one enforceable cgroup and ownership domain. A single PGID or parent PID is insufficient.",
+        "writable_quota_scope": "All generated bundles, staging config, logs, temporary files and private store. Do not copy externally supplied read-only source/binaries into the writable domain."
+      },
+      "cleanup": [
+        "Await every capture/read and its digest before marking original trace settled; no streams exist.",
+        "If original trace remains unsettled, do not race in-object teardown; external supervisor reaps the entire owned domain.",
+        "After settlement open and completely drain one public native sync-KV iterator to replace any abandoned cursor; never call next after done.",
+        "DeleteAll only this fresh owned DO and verify KV empty; cleanup failures are typed blockers.",
+        "Independently terminate and verify every proven-owned dev/bundler/runtime descendant across PGIDs and remove only owned staging/bundles/logs/temp/private store, regardless of fixture outcome."
+      ],
+      "expected_exception_scope": "Only F206 ordinary valid aggregate-limit refusal. F205 missing genuine time separation is BLOCKED_WITNESS.",
+      "coverage_class": "actual-pinned-os-module-over-direct-celld-native-storage-and-webcrypto",
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "F203",
+      "title": "Retain empty allocation without chunks",
+      "failure_hypothesis": "A zero-iteration capture or read could omit the genuine allocation/manifest, fabricate a placeholder chunk, or fail to remove the zero-charge allocation.",
+      "trace": [
+        "Capture an empty genuine Uint8Array with positive configured limits.",
+        "Check manifest and allocation, zero native chunks, empty digest/read and literal counter0.",
+        "Delete through the real module and require only the zero counter remains."
+      ],
+      "oracle": "SHAe3b0c442\u2026; size0; chunks0; three initial keys then only alloc/totalBytes=0.",
+      "implementation": "cases.js:F203",
+      "body_line_start": 83,
+      "body_line_end": 94,
+      "source_refs": [
+        {
+          "root": "wave",
+          "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/action-files.ts",
+          "line_start": 88,
+          "line_end": 123
+        },
+        {
+          "root": "wave",
+          "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/action-files.ts",
+          "line_start": 131,
+          "line_end": 160
+        },
+        {
+          "root": "wave",
+          "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/action-files.ts",
+          "line_start": 204,
+          "line_end": 219
+        }
+      ],
+      "application_callsite_refs": [
+        {
+          "root": "os",
+          "path": "raw/packages/gatekeeper-google/src/gmail-state.ts",
+          "line_start": 19,
+          "line_end": 33
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/gatekeeper-google/src/gmail.ts",
+          "line_start": 278,
+          "line_end": 293
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/gatekeeper-google/src/gmail.ts",
+          "line_start": 752,
+          "line_end": 766
+        }
+      ],
+      "closest_existing_cases": [
+        "D210",
+        "D211",
+        "T213"
+      ],
+      "distinctness": "D210/D211 concern primitive deletion receipts and deleteAll reset; T213 presupposes nonempty synthetic SQL chunks. The actual module zero-iteration branch must retain and later remove its allocation even though no payload or positive aggregate charge exists. No size-grid variants are counted.",
+      "literal_assertion_call_sites": 3,
+      "shared_assertion_helpers": [
+        "retained",
+        "smallBytes",
+        "absent"
+      ],
+      "preconditions": [
+        "Exact unmodified module, closed helper import graph, Apache license and guarded direct-celld source/build/bundle identities.",
+        "Fresh disposable migrated SQLite-backed DO with genuine storage.kv, transactionSync and WebCrypto; only synthetic data.",
+        "External supervisor witnesses complete process ownership, loopback ingress, bounded resource domain and whole-descendant teardown across PGIDs.",
+        "Trusted future bundler with TypeScript erasure only; missing build/runtime prerequisites are BLOCKED, not substituted."
+      ],
+      "schedule": "One exact GET /case/F203; one fresh migrated DO and one ordinary same-deployment DO.fetch; all operations remain in that live request in written order.",
+      "operation_counts": {
+        "capture_attempts": 1,
+        "reads": 1,
+        "explicit_deletes": 1,
+        "prune_calls": 0,
+        "maximum_retained_native_entries": 3,
+        "maximum_retained_payload_bytes": 0
+      },
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_native_storage_entries": 16,
+        "actual_max_native_entries": 10,
+        "max_total_retained_payload_bytes": 2097169,
+        "visible_js_byte_buffer_estimate_bytes": 16777216,
+        "byte_buffer_estimate_scope": "Conservative visible-JS payload-view estimate only, not a total memory cap. Native serialization, WebCrypto transient copies, runtime heaps and allocator retention remain covered by the independently enforced aggregate RSS ceiling.",
+        "max_rows_per_fully_consumed_iterator": 64,
+        "max_native_list_calls": 64,
+        "max_native_kv_point_operations": 256,
+        "max_native_transactions": 16,
+        "max_public_module_calls": 12,
+        "max_webcrypto_digest_calls": 8,
+        "max_streams": 0,
+        "max_clock_waits": 32,
+        "clock_wait_interval_ms": 5,
+        "max_external_receipt_bytes": 32768,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15,
+        "outer_wave_deadline_seconds": 120,
+        "outer_rss_bytes": 1073741824,
+        "max_owned_domain_processes": 32,
+        "max_owned_writable_bytes": 134217728,
+        "descendant_supervision": "Entire proven-owned dev, trusted-bundler and runtime descendant tree across PGIDs; prefer one enforceable cgroup and ownership domain. A single PGID or parent PID is insufficient.",
+        "writable_quota_scope": "All generated bundles, staging config, logs, temporary files and private store. Do not copy externally supplied read-only source/binaries into the writable domain."
+      },
+      "cleanup": [
+        "Await every capture/read and its digest before marking original trace settled; no streams exist.",
+        "If original trace remains unsettled, do not race in-object teardown; external supervisor reaps the entire owned domain.",
+        "After settlement open and completely drain one public native sync-KV iterator to replace any abandoned cursor; never call next after done.",
+        "DeleteAll only this fresh owned DO and verify KV empty; cleanup failures are typed blockers.",
+        "Independently terminate and verify every proven-owned dev/bundler/runtime descendant across PGIDs and remove only owned staging/bundles/logs/temp/private store, regardless of fixture outcome."
+      ],
+      "expected_exception_scope": "Only F206 ordinary valid aggregate-limit refusal. F205 missing genuine time separation is BLOCKED_WITNESS.",
+      "coverage_class": "actual-pinned-os-module-over-direct-celld-native-storage-and-webcrypto",
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "F204",
+      "title": "Release genuine allocation only once",
+      "failure_hypothesis": "The repeated-valid-delete path might subtract a size without a remaining allocation or damage another capture sharing the store.",
+      "trace": [
+        "Capture genuine four-byte and three-byte files at cap7.",
+        "Delete the four-byte file and verify complete removal with total3.",
+        "Delete its same genuine reference again; verify unchanged peer metadata, exact readable peer bytes and complete remaining keys."
+      ],
+      "oracle": "Totals7\u21923\u21923; removed allocation/chunks/manifest absent; peer[8,9,10] and original allocation/manifest remain; four remaining keys.",
+      "implementation": "cases.js:F204",
+      "body_line_start": 95,
+      "body_line_end": 113,
+      "source_refs": [
+        {
+          "root": "wave",
+          "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/action-files.ts",
+          "line_start": 163,
+          "line_end": 169
+        },
+        {
+          "root": "wave",
+          "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/action-files.ts",
+          "line_start": 204,
+          "line_end": 219
+        }
+      ],
+      "application_callsite_refs": [
+        {
+          "root": "os",
+          "path": "raw/packages/gatekeeper-google/src/gmail-state.ts",
+          "line_start": 19,
+          "line_end": 33
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/gatekeeper-google/src/gmail.ts",
+          "line_start": 278,
+          "line_end": 293
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/gatekeeper-google/src/gmail.ts",
+          "line_start": 752,
+          "line_end": 766
+        }
+      ],
+      "closest_existing_cases": [
+        "D210",
+        "T202",
+        "T204",
+        "C206",
+        "I215"
+      ],
+      "distinctness": "Primitive absent-delete idempotence D210/I215 and typed-record key deletion C206 do not establish actual allocation-based once-only aggregate release. T202 retains deduplicated reference counts and T204 uses SQL FK cascade. Capacity reuse was removed here to avoid duplicating F206.",
+      "literal_assertion_call_sites": 6,
+      "shared_assertion_helpers": [
+        "retained",
+        "smallBytes",
+        "absent"
+      ],
+      "preconditions": [
+        "Exact unmodified module, closed helper import graph, Apache license and guarded direct-celld source/build/bundle identities.",
+        "Fresh disposable migrated SQLite-backed DO with genuine storage.kv, transactionSync and WebCrypto; only synthetic data.",
+        "External supervisor witnesses complete process ownership, loopback ingress, bounded resource domain and whole-descendant teardown across PGIDs.",
+        "Trusted future bundler with TypeScript erasure only; missing build/runtime prerequisites are BLOCKED, not substituted."
+      ],
+      "schedule": "One exact GET /case/F204; one fresh migrated DO and one ordinary same-deployment DO.fetch; all operations remain in that live request in written order.",
+      "operation_counts": {
+        "capture_attempts": 2,
+        "reads": 1,
+        "explicit_deletes": 2,
+        "prune_calls": 0,
+        "maximum_retained_native_entries": 7,
+        "maximum_retained_payload_bytes": 7
+      },
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_native_storage_entries": 16,
+        "actual_max_native_entries": 10,
+        "max_total_retained_payload_bytes": 2097169,
+        "visible_js_byte_buffer_estimate_bytes": 16777216,
+        "byte_buffer_estimate_scope": "Conservative visible-JS payload-view estimate only, not a total memory cap. Native serialization, WebCrypto transient copies, runtime heaps and allocator retention remain covered by the independently enforced aggregate RSS ceiling.",
+        "max_rows_per_fully_consumed_iterator": 64,
+        "max_native_list_calls": 64,
+        "max_native_kv_point_operations": 256,
+        "max_native_transactions": 16,
+        "max_public_module_calls": 12,
+        "max_webcrypto_digest_calls": 8,
+        "max_streams": 0,
+        "max_clock_waits": 32,
+        "clock_wait_interval_ms": 5,
+        "max_external_receipt_bytes": 32768,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15,
+        "outer_wave_deadline_seconds": 120,
+        "outer_rss_bytes": 1073741824,
+        "max_owned_domain_processes": 32,
+        "max_owned_writable_bytes": 134217728,
+        "descendant_supervision": "Entire proven-owned dev, trusted-bundler and runtime descendant tree across PGIDs; prefer one enforceable cgroup and ownership domain. A single PGID or parent PID is insufficient.",
+        "writable_quota_scope": "All generated bundles, staging config, logs, temporary files and private store. Do not copy externally supplied read-only source/binaries into the writable domain."
+      },
+      "cleanup": [
+        "Await every capture/read and its digest before marking original trace settled; no streams exist.",
+        "If original trace remains unsettled, do not race in-object teardown; external supervisor reaps the entire owned domain.",
+        "After settlement open and completely drain one public native sync-KV iterator to replace any abandoned cursor; never call next after done.",
+        "DeleteAll only this fresh owned DO and verify KV empty; cleanup failures are typed blockers.",
+        "Independently terminate and verify every proven-owned dev/bundler/runtime descendant across PGIDs and remove only owned staging/bundles/logs/temp/private store, regardless of fixture outcome."
+      ],
+      "expected_exception_scope": "Only F206 ordinary valid aggregate-limit refusal. F205 missing genuine time separation is BLOCKED_WITNESS.",
+      "coverage_class": "actual-pinned-os-module-over-direct-celld-native-storage-and-webcrypto",
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "F205",
+      "title": "Prune only eligible unreferenced captures",
+      "failure_hypothesis": "Production allocation scanning or later per-file deletion might ignore one eligibility predicate, miss the inclusive boundary, invalidate its outer cursor or reclaim protected bytes.",
+      "trace": [
+        "Capture old protected2-byte and old orphan3-byte files; obtain genuine bracketed allocation times.",
+        "Use at most32 waits of5ms to cross the orphan time, capture young4-byte file, and require actual young.createdAt > cutoff before pruning.",
+        "Prune with old reference protected at exact orphan timestamp; require only the three-byte orphan removed.",
+        "Release the old reference at same cutoff, then advance cutoff to young timestamp; verify exact survivor bytes, keys and totals after each step."
+      ],
+      "oracle": "Genuine protectedAt<=cutoff<youngAt; orphan.createdAt=cutoff. Totals9\u21926\u21924\u21920; first survivors protected[11,12],young[31,32,33,34]; second only young; final only zero counter.",
+      "implementation": "cases.js:F205",
+      "body_line_start": 114,
+      "body_line_end": 146,
+      "source_refs": [
+        {
+          "root": "wave",
+          "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/action-files.ts",
+          "line_start": 171,
+          "line_end": 185
+        },
+        {
+          "root": "wave",
+          "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/action-files.ts",
+          "line_start": 204,
+          "line_end": 219
+        },
+        {
+          "root": "wave",
+          "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/action-files.ts",
+          "line_start": 241,
+          "line_end": 246
+        }
+      ],
+      "application_callsite_refs": [
+        {
+          "root": "os",
+          "path": "raw/packages/gatekeeper-google/src/gmail-state.ts",
+          "line_start": 19,
+          "line_end": 33
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/gatekeeper-google/src/gmail.ts",
+          "line_start": 278,
+          "line_end": 293
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/gatekeeper-google/src/gmail.ts",
+          "line_start": 752,
+          "line_end": 766
+        }
+      ],
+      "closest_existing_cases": [
+        "T207",
+        "T209",
+        "C201",
+        "C205",
+        "I211",
+        "I215"
+      ],
+      "distinctness": "T207 transfers KV partitions into SQL and T209 ranks SQL revisions; I211/I215 list/delete R2 objects; C201/C205 buffer typed index groups. Here the actual ActionFileStore first buffers allocation handles then opens deletion lists, enforcing conjunctive live-reference and inclusive-age eligibility with genuine runtime timestamps. Missing witness is BLOCKED, not altered timestamps.",
+      "literal_assertion_call_sites": 7,
+      "shared_assertion_helpers": [
+        "retained",
+        "smallBytes",
+        "absent"
+      ],
+      "preconditions": [
+        "Exact unmodified module, closed helper import graph, Apache license and guarded direct-celld source/build/bundle identities.",
+        "Fresh disposable migrated SQLite-backed DO with genuine storage.kv, transactionSync and WebCrypto; only synthetic data.",
+        "External supervisor witnesses complete process ownership, loopback ingress, bounded resource domain and whole-descendant teardown across PGIDs.",
+        "Trusted future bundler with TypeScript erasure only; missing build/runtime prerequisites are BLOCKED, not substituted."
+      ],
+      "schedule": "One exact GET /case/F205; one fresh migrated DO and one ordinary same-deployment DO.fetch; all operations remain in that live request in written order.",
+      "operation_counts": {
+        "capture_attempts": 3,
+        "reads": 3,
+        "explicit_deletes": 0,
+        "prune_calls": 3,
+        "maximum_retained_native_entries": 10,
+        "maximum_retained_payload_bytes": 9
+      },
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_native_storage_entries": 16,
+        "actual_max_native_entries": 10,
+        "max_total_retained_payload_bytes": 2097169,
+        "visible_js_byte_buffer_estimate_bytes": 16777216,
+        "byte_buffer_estimate_scope": "Conservative visible-JS payload-view estimate only, not a total memory cap. Native serialization, WebCrypto transient copies, runtime heaps and allocator retention remain covered by the independently enforced aggregate RSS ceiling.",
+        "max_rows_per_fully_consumed_iterator": 64,
+        "max_native_list_calls": 64,
+        "max_native_kv_point_operations": 256,
+        "max_native_transactions": 16,
+        "max_public_module_calls": 12,
+        "max_webcrypto_digest_calls": 8,
+        "max_streams": 0,
+        "max_clock_waits": 32,
+        "clock_wait_interval_ms": 5,
+        "max_external_receipt_bytes": 32768,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15,
+        "outer_wave_deadline_seconds": 120,
+        "outer_rss_bytes": 1073741824,
+        "max_owned_domain_processes": 32,
+        "max_owned_writable_bytes": 134217728,
+        "descendant_supervision": "Entire proven-owned dev, trusted-bundler and runtime descendant tree across PGIDs; prefer one enforceable cgroup and ownership domain. A single PGID or parent PID is insufficient.",
+        "writable_quota_scope": "All generated bundles, staging config, logs, temporary files and private store. Do not copy externally supplied read-only source/binaries into the writable domain."
+      },
+      "cleanup": [
+        "Await every capture/read and its digest before marking original trace settled; no streams exist.",
+        "If original trace remains unsettled, do not race in-object teardown; external supervisor reaps the entire owned domain.",
+        "After settlement open and completely drain one public native sync-KV iterator to replace any abandoned cursor; never call next after done.",
+        "DeleteAll only this fresh owned DO and verify KV empty; cleanup failures are typed blockers.",
+        "Independently terminate and verify every proven-owned dev/bundler/runtime descendant across PGIDs and remove only owned staging/bundles/logs/temp/private store, regardless of fixture outcome."
+      ],
+      "expected_exception_scope": "Only F206 ordinary valid aggregate-limit refusal. F205 missing genuine time separation is BLOCKED_WITNESS.",
+      "coverage_class": "actual-pinned-os-module-over-direct-celld-native-storage-and-webcrypto",
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "F206",
+      "title": "Preserve captures through aggregate refusal",
+      "failure_hypothesis": "An ordinary aggregate refusal could publish orphan rows or perturb earlier captures/accounting, or prevent a later valid exact-capacity capture.",
+      "trace": [
+        "Capture four and three bytes under per-file8 and aggregate8 limits.",
+        "Attempt a valid five-byte third capture and require the exact aggregate-limit Error.",
+        "Compare complete preexisting native key/value snapshot, independently established metadata/keys, and both original literal public reads.",
+        "Delete the first capture and repeat the valid five-byte payload; require exact surviving three-plus-five bytes and complete keys at counter8."
+      ],
+      "oracle": "Before refusal total7; normal five-byte refusal leaves all seven native keys/values unchanged. After deleting four bytes and admitting five, exact total8 with two genuine complete captures.",
+      "implementation": "cases.js:F206",
+      "body_line_start": 147,
+      "body_line_end": 175,
+      "source_refs": [
+        {
+          "root": "wave",
+          "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/action-files.ts",
+          "line_start": 88,
+          "line_end": 123
+        },
+        {
+          "root": "wave",
+          "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/action-files.ts",
+          "line_start": 204,
+          "line_end": 219
+        }
+      ],
+      "application_callsite_refs": [
+        {
+          "root": "os",
+          "path": "raw/packages/gatekeeper-google/src/gmail-state.ts",
+          "line_start": 19,
+          "line_end": 33
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/gatekeeper-google/src/gmail.ts",
+          "line_start": 278,
+          "line_end": 293
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/gatekeeper-google/src/gmail.ts",
+          "line_start": 752,
+          "line_end": 766
+        }
+      ],
+      "closest_existing_cases": [
+        "T201",
+        "T213",
+        "C202",
+        "I208"
+      ],
+      "distinctness": "T201 refuses a conditional SQL reservation, T213 reduces synthetic chunk completeness, C202 rolls back typed-index uniqueness changes, and I208 refuses an R2 revision condition. Actual ActionFileStore must refuse a valid payload after hashing but before publishing allocation/chunks and remain usable. No malformed limit or corruption path is tested.",
+      "literal_assertion_call_sites": 9,
+      "shared_assertion_helpers": [
+        "retained",
+        "smallBytes",
+        "absent"
+      ],
+      "preconditions": [
+        "Exact unmodified module, closed helper import graph, Apache license and guarded direct-celld source/build/bundle identities.",
+        "Fresh disposable migrated SQLite-backed DO with genuine storage.kv, transactionSync and WebCrypto; only synthetic data.",
+        "External supervisor witnesses complete process ownership, loopback ingress, bounded resource domain and whole-descendant teardown across PGIDs.",
+        "Trusted future bundler with TypeScript erasure only; missing build/runtime prerequisites are BLOCKED, not substituted."
+      ],
+      "schedule": "One exact GET /case/F206; one fresh migrated DO and one ordinary same-deployment DO.fetch; all operations remain in that live request in written order.",
+      "operation_counts": {
+        "capture_attempts": 4,
+        "reads": 4,
+        "explicit_deletes": 1,
+        "prune_calls": 0,
+        "maximum_retained_native_entries": 7,
+        "maximum_retained_payload_bytes": 8
+      },
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_native_storage_entries": 16,
+        "actual_max_native_entries": 10,
+        "max_total_retained_payload_bytes": 2097169,
+        "visible_js_byte_buffer_estimate_bytes": 16777216,
+        "byte_buffer_estimate_scope": "Conservative visible-JS payload-view estimate only, not a total memory cap. Native serialization, WebCrypto transient copies, runtime heaps and allocator retention remain covered by the independently enforced aggregate RSS ceiling.",
+        "max_rows_per_fully_consumed_iterator": 64,
+        "max_native_list_calls": 64,
+        "max_native_kv_point_operations": 256,
+        "max_native_transactions": 16,
+        "max_public_module_calls": 12,
+        "max_webcrypto_digest_calls": 8,
+        "max_streams": 0,
+        "max_clock_waits": 32,
+        "clock_wait_interval_ms": 5,
+        "max_external_receipt_bytes": 32768,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15,
+        "outer_wave_deadline_seconds": 120,
+        "outer_rss_bytes": 1073741824,
+        "max_owned_domain_processes": 32,
+        "max_owned_writable_bytes": 134217728,
+        "descendant_supervision": "Entire proven-owned dev, trusted-bundler and runtime descendant tree across PGIDs; prefer one enforceable cgroup and ownership domain. A single PGID or parent PID is insufficient.",
+        "writable_quota_scope": "All generated bundles, staging config, logs, temporary files and private store. Do not copy externally supplied read-only source/binaries into the writable domain."
+      },
+      "cleanup": [
+        "Await every capture/read and its digest before marking original trace settled; no streams exist.",
+        "If original trace remains unsettled, do not race in-object teardown; external supervisor reaps the entire owned domain.",
+        "After settlement open and completely drain one public native sync-KV iterator to replace any abandoned cursor; never call next after done.",
+        "DeleteAll only this fresh owned DO and verify KV empty; cleanup failures are typed blockers.",
+        "Independently terminate and verify every proven-owned dev/bundler/runtime descendant across PGIDs and remove only owned staging/bundles/logs/temp/private store, regardless of fixture outcome."
+      ],
+      "expected_exception_scope": "Only F206 ordinary valid aggregate-limit refusal. F205 missing genuine time separation is BLOCKED_WITNESS.",
+      "coverage_class": "actual-pinned-os-module-over-direct-celld-native-storage-and-webcrypto",
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    }
+  ]
+}

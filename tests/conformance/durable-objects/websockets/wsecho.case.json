@@ -1,0 +1,28 @@
+{
+  "adapter": "example",
+  "behaviour": "durable-objects/websockets",
+  "fixture": "tests/conformance/durable-objects/websockets/fixtures/echo-server",
+  "id": "conformance/durable-objects/websockets/wsecho",
+  "layer": "conformance",
+  "legacy_ids": [
+    "examples/wsecho"
+  ],
+  "origins": [
+    {
+      "legacy_id": "examples/wsecho",
+      "source": "celld@9c0fca5/examples/wsecho"
+    },
+    {
+      "sha256": "90fb530a2d11a5caea0a473d14db0a8a80787ca91d379a32c758d38505835dad",
+      "source": "celld@9c0fca5/examples/wsecho/wrangler.jsonc"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/conformance/durable-objects/websockets/fixtures/echo-server/wrangler.jsonc",
+  "source_sha256": "90fb530a2d11a5caea0a473d14db0a8a80787ca91d379a32c758d38505835dad",
+  "title": "wsecho"
+}

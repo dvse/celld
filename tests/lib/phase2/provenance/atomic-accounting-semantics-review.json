@@ -1,0 +1,191 @@
+{
+  "reviewed_at_utc": "2026-10-09T07:04:02.659846+00:00",
+  "reviewer": "review_celld_test_additions",
+  "wave": "atomic-accounting-semantics",
+  "verdict": "ACCEPTED_PRIMARY_STATIC",
+  "counts": {
+    "authored": 15,
+    "accepted_primary_static": 15,
+    "accepted_characterization": 0,
+    "case_static_assertion_call_sites": 78,
+    "shared_fixture_assertion_call_sites": 14,
+    "runtime_executions": 0,
+    "runtime_passes": 0
+  },
+  "scope": "Independent full case/fixture, intended SQLite/public storage contract and source review; baseline 575 plus accepted campaign 165 designs compared. Read/hash/JSON/Python AST and node syntax only; no SQL, JavaScript case, reference model or SUT execution.",
+  "duplicate_review": "No duplicate accepted. Baseline T031 pre-entered transaction ordering is reused scaffolding with zero new credit. T001-T032/D201-D220/E201-E220 provide nearest controls, but not these conditional/conflict/trigger/FK/window/recursive/generated/FTS native compositions. Domain renamings, counter-only variants and generic rollback variants were omitted. T211 was strengthened to a native interval query rather than relying on a fixture sparse-read algorithm.",
+  "oracle_review": "Fixed arithmetic, exact BLOB arrays, relational rows and accounting values independently checked. All asserted RETURNING result sets contain at most one row. No deliberately failing SQL, invalid constraint commit, forced runtime fault or malformed input. Fixture readChunks/overwrite algorithms are not claimed as celld native functions.",
+  "review_corrections": [
+    {
+      "case": "T205",
+      "finding": "Deferred constraint case could be vacuous if foreign-key enforcement were disabled.",
+      "resolution": "Author added a literal PRAGMA foreign_keys=1 assertion before cyclic schema use."
+    },
+    {
+      "case": "T211",
+      "finding": "Original sparse-hole observation mainly tested fixture reconstruction over ordinary inserted rows.",
+      "resolution": "Author added native LAG interval-adjacency queries with literal gap [2,8] before fill and no gaps afterward; this is the credited distinct mechanism."
+    },
+    {
+      "case": "ALL",
+      "finding": "Shared fixture assertion count omitted two literal host.eq checkpoint assertions.",
+      "resolution": "Metadata now records 14 shared sites separately from 78 case sites; generic forwarding call excluded."
+    }
+  ],
+  "primary_contract_references": [
+    "https://www.sqlite.org/foreignkeys.html",
+    "https://www.sqlite.org/lang_upsert.html",
+    "https://www.sqlite.org/windowfunctions.html",
+    "https://www.sqlite.org/lang_with.html",
+    "https://www.sqlite.org/lang_corefunc.html",
+    "https://www.sqlite.org/gencol.html",
+    "https://www.sqlite.org/fts5.html"
+  ],
+  "static_checks": {
+    "source_pins_verified": 9,
+    "source_ranges_validated": 75,
+    "case_manifest_bijection": 15,
+    "case_assertion_sites": 78,
+    "shared_fixture_assertion_sites": 14,
+    "JavaScript_syntax_files": 2,
+    "python_AST_JSON_only": true,
+    "SHA256SUMS_entries": 11,
+    "retained_OS_hashes_match_historical_records": true,
+    "author_validator_executed": false
+  },
+  "execution_contract": {
+    "fixture": "One fresh migrated SQLite-backed AccountingCase, four real DO.fetch calls: setup, two pre-entered operation handlers, and final audit. Native SQL cursors are forwarded/drained, not emulated.",
+    "schedule": "Both handlers pre-enter; left transaction holds at case-specific checkpoint until right has called storage.transaction and recorded queued. Relative events require left body completion before right callback entry.",
+    "main_concurrent_handlers": 2,
+    "max_public_storage_calls": 400,
+    "max_cursors": 240,
+    "max_rows_per_cursor": 64,
+    "max_KV_keys": 16,
+    "max_logical_payload_bytes": 4096,
+    "max_recursive_depth": 8,
+    "gate_deadline_ms": 1500,
+    "setup_cohort_finish_ms": [
+      2000,
+      6000,
+      3000
+    ],
+    "outer_HTTP_seconds": 12,
+    "owned_process_case_seconds": 15,
+    "wave_seconds": 240,
+    "max_RSS_bytes": 1073741824,
+    "cleanup": "Require zero active handlers, callbacks, pending transaction promises and gate timers before final cursor drain and owned deleteAll; verify empty KV and application schema. Unsettled work requires external reap without racing data cleanup.",
+    "runtime_status": "UNRUN",
+    "external_provenance_limits_teardown_required": true
+  },
+  "OS_relevance": {
+    "priority": "core-platform-composition",
+    "evidence_status": "Retained historical typed-storage/action-files paths and hashes only. Original OS checkout absent; these are synthetic application compositions, not actual OS algorithm or end-to-end tests.",
+    "separate_count": false
+  },
+  "case_verdicts": [
+    {
+      "id": "T201",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Conditional native UPDATE RETURNING controls cross-surface quota/document/index admission, including a normal zero-row outcome."
+    },
+    {
+      "id": "T202",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Native UPSERT first-insert/conflict-update preserves one payload while increasing logical references."
+    },
+    {
+      "id": "T203",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Insert/update/delete triggers reconcile both sides of a move alongside KV index changes."
+    },
+    {
+      "id": "T204",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Foreign-key rename/deletion cascades maintain composite child rows and unrelated ownership."
+    },
+    {
+      "id": "T205",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Enabled deferred cyclic constraints resolve through successful nested transactions before peer entry."
+    },
+    {
+      "id": "T206",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Partial UNIQUE conflict target selects the active row among archived equal-slug rows."
+    },
+    {
+      "id": "T207",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Destructive bounded KV partitions transfer disjoint entries to SQL with a full-state conservation oracle."
+    },
+    {
+      "id": "T208",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Depth-bounded recursive CTE materializes ancestry after a graph move and before peer insertion."
+    },
+    {
+      "id": "T209",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Native window ranking and conditional DELETE RETURNING preserve pinned/current revision state."
+    },
+    {
+      "id": "T210",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Native multi-row BLOB replacement under overlapping application writes preserves untargeted bytes and allocation accounting."
+    },
+    {
+      "id": "T211",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Native LAG predecessor-boundary query detects exact sparse gap and its disappearance after extent insertion; helper zero fill alone gets no credit."
+    },
+    {
+      "id": "T212",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Native DELETE/substr clips BLOB extents before partial-terminal append, preventing discarded-byte revival."
+    },
+    {
+      "id": "T213",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Native multi-row HAVING completeness reduction governs manifest publication and reserved/live charge transfer."
+    },
+    {
+      "id": "T214",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Stored/virtual generated columns and generated-byte index recompute Unicode lengths on mutation."
+    },
+    {
+      "id": "T215",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Native FTS5 postings track updates/deletion alongside KV documents and counts."
+    }
+  ],
+  "reviewed_artifact_sha256": {
+    "README.md": "106953071fec2ed7e27706b4c9a997551e86f8d9f1f20ea919dface17e97d88b",
+    "SHA256SUMS": "d1d934ec4c42e313d8c934261136bab40326db572ef8b18f6bcb5cf4fe88b5fe",
+    "author_manifest.py": "2adea51dffb261d59b08625d3cf13e6d4d0385c42b00eb44f6c555dd2c3593b2",
+    "cases.js": "b989812ac2fb83e206a9068aa18f77ea92833e76bbb620f6bf8cb024cbdf75e3",
+    "fixture.js": "686846d5a7b0fac00f11906a8c79c13ca1cb293244ef37fec33f1a6a90871f7e",
+    "manifest.json": "74ca24883b66b7505190af93acdb03199887fecbe09f5d377d344cfafb2cad69",
+    "overlap-audit.json": "a6e173ae53e61104a962539243d549350dd8a719c8b138ca67ca6e693cdc4d49",
+    "schedule.json": "5a597ac4135eb293cd6ed333971d889af2b742a6eb644f9dcf41640d01c49308",
+    "source-pins.json": "76ab3b134c2f5378b01211ede88c56662ea1c28c1fbe881787478a1c658bf019",
+    "static-validation.json": "d5bde329458415d386da9b81f477218a5114f364932bcccb91e5368654149318",
+    "validate_static.py": "6910225838486b1d53af29cc6547a6346463937360433f93a0e27288927710a5",
+    "wrangler.jsonc": "b0326f2bc145112dd5fd04cb7cc8e71a909fe8e157e9707495e92582b3bcb9cd"
+  }
+}

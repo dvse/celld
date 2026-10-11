@@ -1,0 +1,47 @@
+{
+  "id": "conformance/dynamic-workers-and-tails/coalesce-simultaneous-references-to-an-unresolved-named-load",
+  "layer": "conformance",
+  "behaviour": "dynamic-workers-and-tails",
+  "title": "Coalesce simultaneous references to an unresolved named load",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/loader-props",
+      "legacy_id": "loader-props/L002"
+    }
+  ],
+  "corpus_wave": "loader-props",
+  "corpus_id": "L002",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "L002",
+    "intent": "Coalesce simultaneous references to an unresolved named load",
+    "failure_hypothesis": "Two retained get calls race into separate startup executions",
+    "preconditions": [
+      "One manually released code callback and two handles for one identical key",
+      "Disposable private fixture with fresh supervisor name, live LOADER, facets, restore flag, and positive Loader control",
+      "External reviewed adapter has exclusive run slot and enforces wall/memory/PID/load limits"
+    ],
+    "trace": [
+      "Create two named handles before releasing code",
+      "Start both verify calls",
+      "Await explicit factory-start witness and observe counters while held",
+      "Release in finally and compare module tokens"
+    ],
+    "stress": "1 loaded identity; 2 handles; 1 finite gate",
+    "oracle": "First factory=1, second=0 and module tokens equal",
+    "cleanup": "Case-specific finally disposes restored handles and drains finite cancellation hold where used; common cleanup releases code gates, aborts every owned facet, disposes entrypoints and worker handles, removes only tracked fixture KV rows. Parent tears down disposable fleet/storage.",
+    "implementation": "cases.js:loaderCases.L002",
+    "contract_group": "cache",
+    "qualification": "characterization",
+    "promotion": "NOT_PROMOTED: independent source/oracle review and recorded frozen-runtime run required",
+    "layer": "real-process-RPC",
+    "profile": "loader-props-2026-09-04",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  }
+}

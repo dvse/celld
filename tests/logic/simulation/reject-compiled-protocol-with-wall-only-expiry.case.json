@@ -1,0 +1,26 @@
+{
+  "id": "logic/simulation/reject-compiled-protocol-with-wall-only-expiry",
+  "layer": "logic",
+  "behaviour": "simulation",
+  "title": "Reject compiled protocol with wall only expiry",
+  "origins": [
+    {
+      "source": "tests/logic/simulation/simulation.rs",
+      "legacy_id": "logic/simulation/broken-wall-only-expiry"
+    }
+  ],
+  "legacy_ids": [
+    "logic/simulation/broken-wall-only-expiry"
+  ],
+  "adapter": "native",
+  "mutation": "wall-only-expiry",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/logic/simulation/simulation.rs",
+  "source_sha256": "a73ce91dfe4c048f1ac15876373636437bb6448ed3fc5ae0c46712c34197664d",
+  "test_filter": "sim_seeded_lease_store_clock_crash"
+}

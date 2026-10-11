@@ -1,0 +1,60 @@
+{
+  "id": "logic/wake-recovery/characterize-background-probe-retry-as-dependent-on-a-later-scan",
+  "layer": "logic",
+  "behaviour": "wake-recovery",
+  "title": "Characterize background probe retry as dependent on a later scan",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic",
+      "legacy_id": "wake-recovery-logic/K011"
+    }
+  ],
+  "corpus_wave": "wake-recovery-logic",
+  "corpus_id": "K011",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "K011",
+    "title": "Characterize background probe retry as dependent on a later scan",
+    "intent": "Characterize background probe retry as dependent on a later scan",
+    "failure_hypothesis": "Consumers assume failed wake ownership reads retry autonomously without another scanner tick",
+    "initial_state": "Fresh State cap1/slot1; alpha has background Fleet wake and no caller.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Issue first Fleet owner read.",
+      "Complete it with definite failure.",
+      "Assert Inactive with no immediate retry, permit or backlog.",
+      "Supply a later explicit Fleet tick and complete read/CAS/restore/start/publication."
+    ],
+    "stress": "A transient background read failure with an intentionally quiet interval before the next tick.",
+    "safety_oracle": "Failed probe does not spin or retain an activation permit.",
+    "liveness_oracle": "Recovery is conditional on the supplied later scan tick; no autonomous retry promise.",
+    "oracle": [
+      "Failed probe does not spin or retain an activation permit.",
+      "Recovery is conditional on the supplied later scan tick; no autonomous retry promise."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K011 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k011_failed_background_probe_needs_a_later_scan_tick_to_retry",
+    "test_function": "k011_failed_background_probe_needs_a_later_scan_tick_to_retry",
+    "source_contract": [
+      "lib.rs:owner_read",
+      "lib.rs:wake_hint_authorized"
+    ],
+    "layer": "native-component",
+    "sublayer": "production-state-model-trace",
+    "classification": "characterization",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  }
+}

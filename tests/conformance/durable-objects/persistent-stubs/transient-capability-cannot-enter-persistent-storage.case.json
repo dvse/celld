@@ -1,0 +1,48 @@
+{
+  "adapter": "topology",
+  "behaviour": "durable-objects/persistent-stubs",
+  "contract": {
+    "cleanup": "delete probe key; dispose target",
+    "intent": "Transient capability cannot enter persistent storage",
+    "oracle": "specific transient-RPC persistence rejection after entered put; no row; control operations still work; dirty probe precondition classification pending outside pilot",
+    "preconditions": "Live remote RpcTarget; disposable empty probe storage key",
+    "trace": [
+      "require probe key absent",
+      "roundtrip ordinary storage control",
+      "mint transient target and capture put-entry count",
+      "attempt storage.put",
+      "verify DataCloneError containing transient RPC and one put entry",
+      "assert probe absent",
+      "verify target and storage remain usable"
+    ]
+  },
+  "corpus_id": "R027",
+  "corpus_wave": "base",
+  "fixture": "tests/conformance/rpc/fixtures/object-capabilities/fixture",
+  "id": "conformance/durable-objects/persistent-stubs/transient-capability-cannot-enter-persistent-storage",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/base/R027"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/base/R027",
+      "source": "guarded-source-archive/celld-os-stress/fixture"
+    },
+    {
+      "sha256": "9072e9b02913a4e0b73721eaecc7f4fa62529638e358d186c0c38c6c9674e425",
+      "source": "guarded-source-archive/celld-os-stress/revisions/r027-v2/rpc.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "R027",
+  "source": "tests/conformance/durable-objects/persistent-stubs/fixtures/transient-storage-rejection/rpc.js",
+  "source_sha256": "9072e9b02913a4e0b73721eaecc7f4fa62529638e358d186c0c38c6c9674e425",
+  "title": "Transient capability cannot enter persistent storage"
+}

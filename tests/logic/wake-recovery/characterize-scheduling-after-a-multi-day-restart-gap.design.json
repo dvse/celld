@@ -1,0 +1,60 @@
+{
+  "id": "logic/wake-recovery/characterize-scheduling-after-a-multi-day-restart-gap",
+  "layer": "logic",
+  "behaviour": "wake-recovery",
+  "title": "Characterize scheduling after a multi-day restart gap",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic",
+      "legacy_id": "wake-recovery-logic/K017"
+    }
+  ],
+  "corpus_wave": "wake-recovery-logic",
+  "corpus_id": "K017",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "K017",
+    "title": "Characterize scheduling after a multi-day restart gap",
+    "intent": "Characterize scheduling after a multi-day restart gap",
+    "failure_hypothesis": "An adapter mistakes next-after-now for catch-up delivery of every missed cron occurrence",
+    "initial_state": "Daily midnight schedule originally armed0; process resumes172800123 after two complete days.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Plan original arm0.",
+      "Plan completion of old occurrence0 at the recovery time.",
+      "Check next_across chooses259200000, after current time.",
+      "Plan that resumed occurrence to next345600000."
+    ],
+    "stress": "A two-day downtime gap between fired identity and current scheduling time.",
+    "safety_oracle": "Plan retains matching identity0 but does not manufacture missed daily occurrences.",
+    "liveness_oracle": "Future schedule resumes strictly after the supplied recovery clock; catch-up policy is not proven.",
+    "oracle": [
+      "Plan retains matching identity0 but does not manufacture missed daily occurrences.",
+      "Future schedule resumes strictly after the supplied recovery clock; catch-up policy is not proven."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K017 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k017_restart_gap_schedules_future_without_inventing_missed_occurrences",
+    "test_function": "k017_restart_gap_schedules_future_without_inventing_missed_occurrences",
+    "source_contract": [
+      "cron.rs:next_across",
+      "cron.rs:plan"
+    ],
+    "layer": "native-component",
+    "sublayer": "public-component-model-trace",
+    "classification": "characterization",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  }
+}

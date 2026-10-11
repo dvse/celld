@@ -1,0 +1,53 @@
+{
+  "id": "logic/wake-recovery/use-fixed-queue-failure-delay-and-stop-at-the-delivery-budget",
+  "layer": "logic",
+  "behaviour": "wake-recovery",
+  "title": "Use fixed Queue failure delay and stop at the delivery budget",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic",
+      "legacy_id": "corpus/wake-recovery-logic/K023"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+      "sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/wake-recovery-logic/K023"
+  ],
+  "adapter": "native",
+  "corpus_id": "K023",
+  "corpus_wave": "wake-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/wake-recovery/fixtures/decision-cases/tests/wake_recovery.rs",
+  "source_sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86",
+  "test_filter": "k023_queue_missing_settlement_uses_fixed_backoff_and_finite_failure_budget",
+  "contract": {
+    "intent": "Use fixed Queue failure delay and stop at the delivery budget",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Expire first attempt at100 to3100.",
+      "Expire second at3200 to6200 and compare same fixed delay.",
+      "Check explicit zero settlement delay overrides configured3.",
+      "Expire third at6300 to9300; fourth at9400 is exhausted; empty remaining facts produce no alarm."
+    ],
+    "oracle": [
+      "Delay is fixed instead of exponential; fourth failed delivery is Exhausted.",
+      "Finite failures terminate once the explicitly modeled remaining row set is empty."
+    ],
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k023_queue_missing_settlement_uses_fixed_backoff_and_finite_failure_budget"
+  },
+  "selector": "K023"
+}

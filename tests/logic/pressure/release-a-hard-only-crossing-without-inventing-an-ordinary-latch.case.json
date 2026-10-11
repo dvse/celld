@@ -1,0 +1,54 @@
+{
+  "id": "logic/pressure/release-a-hard-only-crossing-without-inventing-an-ordinary-latch",
+  "layer": "logic",
+  "behaviour": "pressure",
+  "title": "Release a hard-only crossing without inventing an ordinary latch",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic",
+      "legacy_id": "corpus/pressure-recovery-logic/P002"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic/tests/pressure_recovery.rs",
+      "sha256": "ccb9c2001ec9d427c142017a426801dde5631b1252fae8b2e10ce0e12cc73e47"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/pressure-recovery-logic/P002"
+  ],
+  "adapter": "native",
+  "corpus_id": "P002",
+  "corpus_wave": "pressure-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/pressure/fixtures/decision-cases/tests/pressure_recovery.rs",
+  "source_sha256": "ccb9c2001ec9d427c142017a426801dde5631b1252fae8b2e10ce0e12cc73e47",
+  "test_filter": "p002_hard_only_crossing_does_not_arm_ordinary_latch",
+  "contract": {
+    "intent": "Release a hard-only crossing without inventing an ordinary latch",
+    "preconditions": [
+      "Fresh State::new(\"fixture\", config()) per case; only production on_event transitions; no direct State-field mutation",
+      "Each resident created by RequestAt -> absent OwnerRead -> Applied epoch1 CAS -> RestoreCompleted -> RuntimeStarted generation1 -> Published; exact operation IDs come from effects",
+      "Every transition invokes State::validate; occupied<=4, activating<=4, evicting<=2; local completions tracked exactly once",
+      "Default require_node_lease=false isolates admission from fleet authority; this does not exercise actual lease authorization",
+      "Pressure samples are synthetic byte-valued facts, not measured RSS, allocator, cgroup or container enforcement",
+      "The immutable source/runtime-manifest pins and exact implementation must pass preflight before any authorized future run"
+    ],
+    "trace": [
+      "sample90/200 arms hard only",
+      "queue a/request1",
+      "sample90/161 holds admission",
+      "sample90/160 emits a CAS although headroom remains false",
+      "complete a; sample80/160 supplies headroom; finish1"
+    ],
+    "oracle": "No CAS at hard161; hard160 releases despite ordinary90; headroom remains false until80; Captured a CAS completes Local at hard160",
+    "cleanup": "Finish every successful local request; settle all emitted stop/release/adoption effects shown by the trace; assert pending demand and activation/eviction/release/adoption counts empty. Drop owned in-memory State on return/unwind. No external resource created",
+    "implementation": "tests/pressure_recovery.rs:p002_hard_only_crossing_does_not_arm_ordinary_latch"
+  },
+  "selector": "P002"
+}

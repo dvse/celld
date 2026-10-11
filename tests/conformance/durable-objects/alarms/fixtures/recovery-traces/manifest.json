@@ -1,0 +1,1476 @@
+[
+  {
+    "id": "A001",
+    "title": "Reserved RPC name still receives real alarm events",
+    "classification": "microconformance",
+    "intent": "A visibility fix could reject the scheduler as well as an ordinary class method call, or reject RPC only after running the handler.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "Fresh root; a six-second arm still lies ahead when the public stub probe is sent. Candidate must hide alarm; original is an expected-defect comparison, never a success baseline for this oracle."
+    ],
+    "trace": [
+      "Arm native-after-probe using storage.setAlarm and obtain its acknowledged deadline.",
+      "Before that deadline, invoke only ordinary root.alarm({probe:true}) through the public DO stub and save its complete bounded result.",
+      "Wait for a persisted native event carrying scheduledTime/retryCount, then wait until scheduler bookkeeping clears the alarm.",
+      "Assert the RPC was rejected and the rpc-alarm-body marker is absent."
+    ],
+    "stress": "One native event competes with one reserved-name RPC probe; no direct fireAlarm helper, raw transport, or load multiplier.",
+    "stress_dimension": "One native event competes with one reserved-name RPC probe; no direct fireAlarm helper, raw transport, or load multiplier.",
+    "oracle": [
+      "Native event has the acknowledged scheduled time and retry zero.",
+      "Exactly one success entry and one logical effect; no marker from the RPC-only body; final schedule is null."
+    ],
+    "oracles": [
+      "Native event has the acknowledged scheduled time and retry zero.",
+      "Exactly one success entry and one logical effect; no marker from the RPC-only body; final schedule is null."
+    ],
+    "cleanup": [
+      "Delete any remaining schedule and tear down both transferred guests; a baseline RPC exposure is a recorded FAIL after genuine native dispatch.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A001",
+    "test_function": "A001",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING",
+    "rpc_denial_oracle": "Exact remote TypeError: 'alarm' is a reserved method and cannot be called over RPC.; generic errors cannot satisfy denial."
+  },
+  {
+    "id": "A002",
+    "title": "Postponed alarm discards the old wake",
+    "classification": "microconformance",
+    "intent": "An earlier watcher wake could survive overwriting the one stored alarm with a later generation.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "Original six-second alarm has not fired. The observed old-deadline plus three seconds must still precede the replacement fourteen-second deadline."
+    ],
+    "trace": [
+      "Arm superseded, then overwrite with later.",
+      "Cross the original due time using the guest clock and observe no entry while the replacement remains armed.",
+      "Wait for later and its completed bookkeeping."
+    ],
+    "stress": "Two acknowledged generations with an explicit old-wake exclusion window.",
+    "stress_dimension": "Two acknowledged generations with an explicit old-wake exclusion window.",
+    "oracle": [
+      "No handler entry at the superseded deadline.",
+      "Only later retry-zero succeeds and produces one effect."
+    ],
+    "oracles": [
+      "No handler entry at the superseded deadline.",
+      "Only later retry-zero succeeds and produces one effect."
+    ],
+    "cleanup": [
+      "Cancel the replacement if unfinished; consume the disposable fleet so neither generation leaks.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A002",
+    "test_function": "A002",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  },
+  {
+    "id": "A003",
+    "title": "Advanced alarm does not refire at the old future wake",
+    "classification": "microconformance",
+    "intent": "Advancing the timestamp could deliver the new event but leave an old future wake capable of running it again.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "Twelve-second old deadline remains ahead when the earlier 1.8-second replacement is committed."
+    ],
+    "trace": [
+      "Arm late-old and replace with early-new.",
+      "Observe early-new at its own deadline.",
+      "Continue through the old future deadline plus three seconds."
+    ],
+    "stress": "Earlier replacement followed by the formerly armed future boundary, rather than just successful delivery.",
+    "stress_dimension": "Earlier replacement followed by the formerly armed future boundary, rather than just successful delivery.",
+    "oracle": [
+      "Exact single early-new event/effect, retry zero.",
+      "No armed alarm or second handler at the obsolete future deadline."
+    ],
+    "oracles": [
+      "Exact single early-new event/effect, retry zero.",
+      "No armed alarm or second handler at the obsolete future deadline."
+    ],
+    "cleanup": [
+      "Clear any stale alarm before bounded owned-fleet teardown.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A003",
+    "test_function": "A003",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  },
+  {
+    "id": "A004",
+    "title": "Canceled schedule can be armed again",
+    "classification": "microconformance",
+    "intent": "Deleting a pending alarm may leave a wake that fires, or poison later normal scheduling for the same object.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "The five-second original deadline has not elapsed at delete."
+    ],
+    "trace": [
+      "Arm deleted, call deleteAlarm, and verify getAlarm returns null.",
+      "Observe through its old deadline with no native entry.",
+      "Arm fresh-after-delete and let the real scheduler deliver it."
+    ],
+    "stress": "Delete transition, canceled-wake observation, and subsequent fresh generation on one root.",
+    "stress_dimension": "Delete transition, canceled-wake observation, and subsequent fresh generation on one root.",
+    "oracle": [
+      "No entry/effect from deleted.",
+      "Exactly one fresh-after-delete success and null final alarm."
+    ],
+    "oracles": [
+      "No entry/effect from deleted.",
+      "Exactly one fresh-after-delete success and null final alarm."
+    ],
+    "cleanup": [
+      "Cancel any fresh schedule and close both owned guests.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A004",
+    "test_function": "A004",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  },
+  {
+    "id": "A005",
+    "title": "Committed transaction publishes alarm and SQL together",
+    "classification": "microconformance",
+    "intent": "A transactional alarm could fail to reach the scheduler or be committed without its companion SQL marker.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "Fresh SQL-backed root; supported asynchronous storage.transaction API and a future 2.2-second alarm."
+    ],
+    "trace": [
+      "Inside one real transaction write committed=7 and set transaction-armed.",
+      "Obtain committed transaction state and its alarm deadline.",
+      "Observe actual event delivery and finished bookkeeping."
+    ],
+    "stress": "One atomic SQL/alarm commit crossing storage-to-watcher publication.",
+    "stress_dimension": "One atomic SQL/alarm commit crossing storage-to-watcher publication.",
+    "oracle": [
+      "Marker committed=7 accompanies the acknowledged armed state.",
+      "Exactly transaction-armed retry-zero at the committed deadline and one effect."
+    ],
+    "oracles": [
+      "Marker committed=7 accompanies the acknowledged armed state.",
+      "Exactly transaction-armed retry-zero at the committed deadline and one effect."
+    ],
+    "cleanup": [
+      "Cancel any residual alarm and tear down the private fleet; no transaction mocks are used.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A005",
+    "test_function": "A005",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  },
+  {
+    "id": "A006",
+    "title": "Thrown transaction never publishes an uncommitted alarm",
+    "classification": "microconformance",
+    "intent": "A rolled-back setAlarm could leave a watcher move despite the SQLite rollback.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "Fresh root and one absolute future deadline 6.5 seconds ahead."
+    ],
+    "trace": [
+      "In one transaction write rolled-back=9, set never-committed, and throw the planned outer rollback.",
+      "Verify the returned rollback result and null stored alarm.",
+      "Observe the guest clock beyond the attempted deadline plus three seconds."
+    ],
+    "stress": "Abort after both SQL and alarm mutation, followed by a bounded negative delivery window.",
+    "stress_dimension": "Abort after both SQL and alarm mutation, followed by a bounded negative delivery window.",
+    "oracle": [
+      "No entries, effects, markers, or saved plan.",
+      "The explicit thrown rollback was actually reached."
+    ],
+    "oracles": [
+      "No entries, effects, markers, or saved plan.",
+      "The explicit thrown rollback was actually reached."
+    ],
+    "cleanup": [
+      "Delete any leaked schedule and close the transferred guests even if the rollback oracle fails.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A006",
+    "test_function": "A006",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  },
+  {
+    "id": "A007",
+    "title": "Rolled-back overwrite preserves the original alarm",
+    "classification": "microconformance",
+    "intent": "Rolling back a replacement could restore SQL but lose the original wake, or publish the attempted earlier wake.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "Original ten-second schedule is pending. The attempted earlier deadline plus observation slack must precede the original."
+    ],
+    "trace": [
+      "Arm survivor.",
+      "Transactionally overwrite with rolled-replacement at a nearer deadline and throw.",
+      "Cross the attempted deadline while the original is still future.",
+      "Observe survivor at the preserved schedule."
+    ],
+    "stress": "Existing generation plus failed earlier replacement, with both publication and restoration checked.",
+    "stress_dimension": "Existing generation plus failed earlier replacement, with both publication and restoration checked.",
+    "oracle": [
+      "The immediate alarm equals the original acknowledged deadline.",
+      "No early entry; exactly survivor succeeds with no rolled replacement effect."
+    ],
+    "oracles": [
+      "The immediate alarm equals the original acknowledged deadline.",
+      "No early entry; exactly survivor succeeds with no rolled replacement effect."
+    ],
+    "cleanup": [
+      "Cancel remaining state and tear down the disposable fleet.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A007",
+    "test_function": "A007",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  },
+  {
+    "id": "A008",
+    "title": "Explicit rollback reverses alarm deletion",
+    "classification": "microconformance",
+    "intent": "transaction.rollback() could differ from exception rollback and leave a pending alarm deleted.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "An undeleted alarm is still future when the transaction starts."
+    ],
+    "trace": [
+      "Arm undeleted.",
+      "Delete it and write discarded-delete inside a transaction, then explicitly call transaction.rollback().",
+      "Observe the original native event and its original scheduled time."
+    ],
+    "stress": "Explicit transaction terminal state after deletion, not the thrown-rollback path.",
+    "stress_dimension": "Explicit transaction terminal state after deletion, not the thrown-rollback path.",
+    "oracle": [
+      "rolledBack is true and the immediate alarm equals its original deadline.",
+      "The marker is absent and exactly undeleted succeeds once."
+    ],
+    "oracles": [
+      "rolledBack is true and the immediate alarm equals its original deadline.",
+      "The marker is absent and exactly undeleted succeeds once."
+    ],
+    "cleanup": [
+      "Cancel any pending generation and close both guests.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A008",
+    "test_function": "A008",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  },
+  {
+    "id": "A009",
+    "title": "Committed transactional delete suppresses native delivery",
+    "classification": "microconformance",
+    "intent": "A delete committed within an explicit transaction might not remove the wake mirror even though normal delete works.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "The initial five-second schedule is pending and the transaction commits before it is due."
+    ],
+    "trace": [
+      "Arm canceled-atomically.",
+      "Commit deleteAlarm and deletion-committed=3 in one transaction.",
+      "Observe beyond the original due time plus three seconds."
+    ],
+    "stress": "Transaction-boundary publication of absence with an independent committed SQL witness.",
+    "stress_dimension": "Transaction-boundary publication of absence with an independent committed SQL witness.",
+    "oracle": [
+      "Null immediate schedule and retained deletion-committed=3.",
+      "No handler entries or effects after the canceled deadline."
+    ],
+    "oracles": [
+      "Null immediate schedule and retained deletion-committed=3.",
+      "No handler entries or effects after the canceled deadline."
+    ],
+    "cleanup": [
+      "Delete any leaked alarm and close the transferred fleet.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A009",
+    "test_function": "A009",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  },
+  {
+    "id": "A010",
+    "title": "Only the final move in a transaction is published",
+    "classification": "microconformance",
+    "intent": "The watcher might consume an intermediate setAlarm even though set-delete-set commits one final state.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "A three-second transient deadline and an eleven-second final deadline leave a measurable exclusion window."
+    ],
+    "trace": [
+      "Within one transaction set transient, delete it, then set final.",
+      "Check the committed deadline equals final.",
+      "Cross transient plus three seconds before final is due.",
+      "Wait for final through the genuine event path."
+    ],
+    "stress": "Three different alarm mutations inside one bounded transaction.",
+    "stress_dimension": "Three different alarm mutations inside one bounded transaction.",
+    "oracle": [
+      "No intermediate entry and exactly one final success at the final absolute timestamp.",
+      "One final effect and null completed schedule."
+    ],
+    "oracles": [
+      "No intermediate entry and exactly one final success at the final absolute timestamp.",
+      "One final effect and null completed schedule."
+    ],
+    "cleanup": [
+      "Cancel any final or stale alarm and close the owned guests.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A010",
+    "test_function": "A010",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  },
+  {
+    "id": "A011",
+    "title": "Child rollback restores the parent transaction alarm",
+    "classification": "microconformance",
+    "intent": "A nested savepoint rollback could publish the inner alarm or undo the outer alarm.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "Nested asynchronous transactions are supported; child due+3 seconds precedes parent due."
+    ],
+    "trace": [
+      "Set parent inside the outer transaction.",
+      "In a nested transaction overwrite with child-rolled, write a child marker, then throw and catch the child failure.",
+      "Write parent=2 and commit the outer transaction.",
+      "Exclude the earlier child wake, then observe parent."
+    ],
+    "stress": "Inner savepoint failure while a containing alarm transaction continues to commit.",
+    "stress_dimension": "Inner savepoint failure while a containing alarm transaction continues to commit.",
+    "oracle": [
+      "Parent timestamp survives, child marker does not.",
+      "Only parent event/effect occurs with parent=2."
+    ],
+    "oracles": [
+      "Parent timestamp survives, child marker does not.",
+      "Only parent event/effect occurs with parent=2."
+    ],
+    "cleanup": [
+      "Cancel remaining wake state and tear down the fleet.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A011",
+    "test_function": "A011",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  },
+  {
+    "id": "A012",
+    "title": "Outer rollback discards a committed child alarm",
+    "classification": "microconformance",
+    "intent": "Releasing a child savepoint could prematurely publish its alarm before the outer transaction commits.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "Fresh root and future six-second child alarm."
+    ],
+    "trace": [
+      "Commit a nested child transaction containing an alarm and child marker.",
+      "Throw from the outer transaction.",
+      "Verify null schedule and observe past the attempted child deadline."
+    ],
+    "stress": "Child success followed by parent failure, opposite to A011.",
+    "stress_dimension": "Child success followed by parent failure, opposite to A011.",
+    "oracle": [
+      "No saved plan, marker, native entry, or effect survives.",
+      "Outer rollback is acknowledged as reached."
+    ],
+    "oracles": [
+      "No saved plan, marker, native entry, or effect survives.",
+      "Outer rollback is acknowledged as reached."
+    ],
+    "cleanup": [
+      "Cancel any leaked schedule and close both owned guests.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A012",
+    "test_function": "A012",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  },
+  {
+    "id": "A013",
+    "title": "Running alarm hides itself but exposes an explicit rearm",
+    "classification": "microconformance",
+    "intent": "getAlarm could expose the in-flight generation or hide a newer alarm explicitly set by that handler.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "Native metadata available; inspect-rearm handler is configured with one normal successor four seconds later."
+    ],
+    "trace": [
+      "Arm parent-event.",
+      "Inside the handler capture getAlarm before and after setting child-event.",
+      "Observe child-event and finish both scheduler generations."
+    ],
+    "stress": "Event-local visibility boundary between firing and replacement generations.",
+    "stress_dimension": "Event-local visibility boundary between firing and replacement generations.",
+    "oracle": [
+      "First initial_alarm is null; first after_alarm is the real child scheduled time.",
+      "Child retry zero also sees null initially; exact parent and child effects."
+    ],
+    "oracles": [
+      "First initial_alarm is null; first after_alarm is the real child scheduled time.",
+      "Child retry zero also sees null initially; exact parent and child effects."
+    ],
+    "cleanup": [
+      "Cancel the successor if needed and tear down the fleet.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A013",
+    "test_function": "A013",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  },
+  {
+    "id": "A014",
+    "title": "Failed event preserves committed evidence and retries",
+    "classification": "bounded-failure-stress",
+    "intent": "An escaped handler exception could suppress retry or incorrectly roll back previously synchronized application state.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "The fixture fails only retry zero, after persisting its real event-entry and failure record."
+    ],
+    "trace": [
+      "Arm retry-persistence in throw-once mode.",
+      "Observe the durable failed first attempt.",
+      "Wait for native retryCount=1 to succeed, then observe another 2.5 seconds after settlement."
+    ],
+    "stress": "One injected asynchronous handler rejection and one real automatic retry.",
+    "stress_dimension": "One injected asynchronous handler rejection and one real automatic retry.",
+    "oracle": [
+      "Failed and successful entries both survive; retry time advances and both executing generations were hidden by getAlarm.",
+      "Exactly one logical effect and no additional delivery in the observation window."
+    ],
+    "oracles": [
+      "Failed and successful entries both survive; retry time advances and both executing generations were hidden by getAlarm.",
+      "Exactly one logical effect and no additional delivery in the observation window."
+    ],
+    "cleanup": [
+      "Delete any automatic backoff schedule and close the private fleet.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A014",
+    "test_function": "A014",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  },
+  {
+    "id": "A015",
+    "title": "Retry follows a rolled-back handler effect",
+    "classification": "bounded-failure-stress",
+    "intent": "A failed SQL transaction in the handler could leak its effect or prevent a subsequent retry from committing the intended effect.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "First attempt inserts effect value999 inside transactionSync, throws, and rolls it back before failing the handler."
+    ],
+    "trace": [
+      "Arm rolled-effect.",
+      "Allow the first transactional effect attempt to roll back and the handler to fail.",
+      "Observe native retry one succeed and complete bookkeeping."
+    ],
+    "stress": "Transaction rollback nested inside a failed event, then a successful real retry.",
+    "stress_dimension": "Transaction rollback nested inside a failed event, then a successful real retry.",
+    "oracle": [
+      "Exactly failed retry0 then successful retry1.",
+      "Effect value is exactly1; a leaked999 would remain observable because the retry uses INSERT OR IGNORE."
+    ],
+    "oracles": [
+      "Exactly failed retry0 then successful retry1.",
+      "Effect value is exactly1; a leaked999 would remain observable because the retry uses INSERT OR IGNORE."
+    ],
+    "cleanup": [
+      "Clear retry state and tear down both transferred guests.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A015",
+    "test_function": "A015",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  },
+  {
+    "id": "A016",
+    "title": "Explicit handler rearm wins over failure backoff",
+    "classification": "bounded-failure-stress",
+    "intent": "Failure cleanup could overwrite a new generation deliberately armed by the failing handler.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "First handler arms new-generation seven seconds ahead, persists that state, and then throws."
+    ],
+    "trace": [
+      "Arm failed-old in rearm-throw mode.",
+      "Record its failed receipt including after_alarm.",
+      "Observe new-generation at that exact deadline and native retry zero."
+    ],
+    "stress": "Generation replacement within the failing event before automatic retry handling.",
+    "stress_dimension": "Generation replacement within the failing event before automatic retry handling.",
+    "oracle": [
+      "Only failed-old retry0 fails and new-generation retry0 succeeds.",
+      "No old automatic retry, no inherited retry counter, and one new effect."
+    ],
+    "oracles": [
+      "Only failed-old retry0 fails and new-generation retry0 succeeds.",
+      "No old automatic retry, no inherited retry counter, and one new effect."
+    ],
+    "cleanup": [
+      "Cancel any remaining replacement/backoff and close the fleet.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A016",
+    "test_function": "A016",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING",
+    "ordering_window": "After old handler terminal and before replacement due, record snapshot proving no active handler/no replacement entry; if window missed BLOCKED. Within valid window require alarm equals replacement due, otherwise FAIL."
+  },
+  {
+    "id": "A017",
+    "title": "Explicit handler deletion wins over failure backoff",
+    "classification": "bounded-failure-stress",
+    "intent": "A handler that deliberately deletes its alarm and then fails could accidentally resurrect it through automatic retry.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "The real handler deletes its schedule before the planned escaped failure."
+    ],
+    "trace": [
+      "Arm delete-before-fail.",
+      "Observe its persisted failure and null after_alarm.",
+      "Continue until the guest clock crosses entry time plus6.5 seconds, covering the first2-second backoff."
+    ],
+    "stress": "Deletion followed by failure settlement and bounded no-retry observation.",
+    "stress_dimension": "Deletion followed by failure settlement and bounded no-retry observation.",
+    "oracle": [
+      "Exactly one failed entry, no effects, no active handler, and null schedule.",
+      "No retry appears during the documented finite window."
+    ],
+    "oracles": [
+      "Exactly one failed entry, no effects, no active handler, and null schedule.",
+      "No retry appears during the documented finite window."
+    ],
+    "cleanup": [
+      "Remove any wrongly resurrected schedule and close both guests.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A017",
+    "test_function": "A017",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  },
+  {
+    "id": "A018",
+    "title": "Foreground replacement survives old successful completion",
+    "classification": "concurrent-stress",
+    "intent": "Successful completion of an already-entered old handler could consume a newer alarm set by another ordinary RPC.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "Old native event is observed active at its45-second gate before foreground replacement."
+    ],
+    "trace": [
+      "Arm entered-old and hold it after native entry.",
+      "While it is still active, arm foreground-new seven seconds ahead.",
+      "Release the old handler, observe both successes, and wait for schedule settlement."
+    ],
+    "stress": "One entered event overlaps one schedule-changing ordinary RPC; both generations have distinct labels.",
+    "stress_dimension": "One entered event overlaps one schedule-changing ordinary RPC; both generations have distinct labels.",
+    "oracle": [
+      "The new event retains the exact foreground timestamp.",
+      "Exactly old then new entry records and both logical effects; final alarm null."
+    ],
+    "oracles": [
+      "The new event retains the exact foreground timestamp.",
+      "Exactly old then new entry records and both logical effects; final alarm null."
+    ],
+    "cleanup": [
+      "Release fixture gates, delete outstanding alarms, and tear down the transferred fleet.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A018",
+    "test_function": "A018",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING",
+    "ordering_window": "After old handler terminal and before replacement due, record snapshot proving no active handler/no replacement entry; if window missed BLOCKED. Within valid window require alarm equals replacement due, otherwise FAIL."
+  },
+  {
+    "id": "A019",
+    "title": "Same-timestamp replacement has a distinct generation",
+    "classification": "concurrent-characterization",
+    "intent": "Comparing timestamps rather than generation identity may conflate a new alarm with the already-entered one.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "Old event is active at a gate. The runtime must admit a second same-time alarm and complete it while the first is held; absence of this overlap is BLOCKED, not an assumed API promise."
+    ],
+    "trace": [
+      "Arm aba-old and hold its native handler.",
+      "Ordinarily set aba-new to the exact already-fired timestamp.",
+      "Observe aba-new success while aba-old is still active.",
+      "Release aba-old and inspect the final event history."
+    ],
+    "stress": "Two bounded native invocations overlap on one root with identical scheduledTime but different alarm generations.",
+    "stress_dimension": "Two bounded native invocations overlap on one root with identical scheduledTime but different alarm generations.",
+    "oracle": [
+      "Both entries keep the same scheduled time and independent retry zero.",
+      "Each logical effect exists once and final alarm is null; no promotion claim is made for undocumented re-entrant scheduling."
+    ],
+    "oracles": [
+      "Both entries keep the same scheduled time and independent retry zero.",
+      "Each logical effect exists once and final alarm is null; no promotion claim is made for undocumented re-entrant scheduling."
+    ],
+    "cleanup": [
+      "Release the old gate and delete remaining alarms; if the overlap cannot be established, teardown still occurs and the case is BLOCKED.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A019",
+    "test_function": "A019",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": false,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  },
+  {
+    "id": "A020",
+    "title": "Deleting an alarm does not abort its entered handler",
+    "classification": "concurrent-stress",
+    "intent": "Deleting the schedule during a running handler could incorrectly cancel the event or let its later success recreate the deleted wake.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "already-running is observed inside the native handler gate."
+    ],
+    "trace": [
+      "Hold the entered event.",
+      "Delete the schedule through ordinary cancel RPC.",
+      "Verify the same native invocation remains active.",
+      "Release it and observe its one successful effect."
+    ],
+    "stress": "Schedule deletion overlaps an already-executing event, distinct from deleting before delivery.",
+    "stress_dimension": "Schedule deletion overlaps an already-executing event, distinct from deleting before delivery.",
+    "oracle": [
+      "Cancellation returns null while the recorded invocation remains active.",
+      "Exactly one already-running effect and no restored alarm after completion."
+    ],
+    "oracles": [
+      "Cancellation returns null while the recorded invocation remains active.",
+      "Exactly one already-running effect and no restored alarm after completion."
+    ],
+    "cleanup": [
+      "Resolve the gate, cancel any residual alarm, and close both guests.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A020",
+    "test_function": "A020",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  },
+  {
+    "id": "A021",
+    "title": "Foreground replacement survives old failed completion",
+    "classification": "concurrent-stress",
+    "intent": "Automatic failure backoff of an old invocation could mutate a replacement committed by another concurrent RPC.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "Old hold-throw event is confirmed active before replacement and fails only when its gate is released."
+    ],
+    "trace": [
+      "Enter failed-entered and hold it.",
+      "Arm surviving-replacement from the foreground while the old event is active.",
+      "Release the old event into failure.",
+      "Observe the replacement success at its original timestamp."
+    ],
+    "stress": "An entered event, independent foreground mutation, then failure settlement race.",
+    "stress_dimension": "An entered event, independent foreground mutation, then failure settlement race.",
+    "oracle": [
+      "Old event fails at retry0; replacement succeeds at retry0 with unchanged timestamp.",
+      "Only replacement has a logical effect and no old retry occurs."
+    ],
+    "oracles": [
+      "Old event fails at retry0; replacement succeeds at retry0 with unchanged timestamp.",
+      "Only replacement has a logical effect and no old retry occurs."
+    ],
+    "cleanup": [
+      "Release gates, clear any automatic retry, and tear down the fleet.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A021",
+    "test_function": "A021",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING",
+    "ordering_window": "After old handler terminal and before replacement due, record snapshot proving no active handler/no replacement entry; if window missed BLOCKED. Within valid window require alarm equals replacement due, otherwise FAIL."
+  },
+  {
+    "id": "A022",
+    "title": "Automatic failures stop at the frozen retry ceiling",
+    "classification": "bounded-failure-stress",
+    "intent": "Retry bookkeeping could skip counts, retry indefinitely, or abandon before the source-defined six retries are exhausted.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "Always-throw mode has no explicit rearm/delete and a finite16-entry fixture cap. Original and candidate share the pinned celld retry policy."
+    ],
+    "trace": [
+      "Arm always-fails and observe first failure.",
+      "Allow the real2/4/8/16/32/64-second retry progression within a170-second observation bound.",
+      "Wait for seven failed entries, no active handler, and null alarm.",
+      "Continue another five seconds."
+    ],
+    "stress": "Seven real failed event dispatches across the exponential backoff schedule; no accelerated scheduler or clock model.",
+    "stress_dimension": "Seven real failed event dispatches across the exponential backoff schedule; no accelerated scheduler or clock model.",
+    "oracle": [
+      "Exact retry sequence0 through6, with isRetry false only at0 and strictly advancing timestamps.",
+      "No effect, no eighth event in the observation window, and abandoned alarm is null."
+    ],
+    "oracles": [
+      "Exact retry sequence0 through6, with isRetry false only at0 and strictly advancing timestamps.",
+      "No effect, no eighth event in the observation window, and abandoned alarm is null."
+    ],
+    "cleanup": [
+      "Delete any remaining retry schedule and close the owned fleet; the outer360-second deadline remains independent.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A022",
+    "test_function": "A022",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  },
+  {
+    "id": "A023",
+    "title": "Rolled-back handler rearm preserves automatic retry",
+    "classification": "bounded-failure-stress",
+    "intent": "A generation created by setAlarm inside a failed transaction could survive in memory and suppress the old alarm retry.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "First handler sets a60-second future alarm in a transaction and rolls it back before the planned handler failure."
+    ],
+    "trace": [
+      "Arm original-retry.",
+      "Observe first failure with null after_alarm following the rollback.",
+      "Wait for real retry1 rather than the uncommitted60-second schedule.",
+      "Observe success and final settlement."
+    ],
+    "stress": "Rollback of generation mutation inside failure settlement, followed by native backoff.",
+    "stress_dimension": "Rollback of generation mutation inside failure settlement, followed by native backoff.",
+    "oracle": [
+      "Retry1 enters within30 seconds and produces the sole effect.",
+      "Only retry0 failed and retry1 succeeded; no future rearm remains stored."
+    ],
+    "oracles": [
+      "Retry1 enters within30 seconds and produces the sole effect.",
+      "Only retry0 failed and retry1 succeeded; no future rearm remains stored."
+    ],
+    "cleanup": [
+      "Delete any leaked future schedule and tear down the two guests.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A023",
+    "test_function": "A023",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  },
+  {
+    "id": "A024",
+    "title": "Held alarm does not block an independent root",
+    "classification": "concurrent-stress",
+    "intent": "A suspended event could stall unrelated durable objects or mix their state under a bounded simultaneous foreground cohort.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "Two fresh roots initially owned on different guest nodes; held-root native event is active behind a45-second gate."
+    ],
+    "trace": [
+      "Hold held-event on root1.",
+      "Dispatch three ordinary foreground writes concurrently on root2 and collect their native receiver receipts.",
+      "While the root1 event is still active, verify all root2 markers.",
+      "Release root1 and compare both roots independently."
+    ],
+    "stress": "One held native handler and three simultaneous foreground HTTP jobs on a sibling root; no global throughput claim.",
+    "stress_dimension": "One held native handler and three simultaneous foreground HTTP jobs on a sibling root; no global throughput claim.",
+    "oracle": [
+      "Root2 independently completes markers one=2,two=3,three=5 with no alarm/effect.",
+      "Root1 has exactly held-event and no sibling markers."
+    ],
+    "oracles": [
+      "Root2 independently completes markers one=2,two=3,three=5 with no alarm/effect.",
+      "Root1 has exactly held-event and no sibling markers."
+    ],
+    "cleanup": [
+      "Release the held gate, clear schedules on both roots, and close both transferred guests.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A024",
+    "test_function": "A024",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  },
+  {
+    "id": "A025",
+    "title": "Cold recovery restores only the overwritten generation",
+    "classification": "recovery-stress",
+    "intent": "A stale persisted wake entry could resurrect the first timestamp after process death even though the newer alarm was acknowledged.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "Bucket durability; store guest survives;90-second old deadline and112-second replacement both remain future around the verified cold restart."
+    ],
+    "trace": [
+      "Arm stale-before-crash then overwrite with restored-replacement.",
+      "Verify pre-due state and terminate the exact owned runtimes with pidfd.",
+      "Restart with fresh local caches, verify new isolate/owner epoch, and recheck the old deadline window.",
+      "Exclude the old native wake after its deadline, then observe the replacement."
+    ],
+    "stress": "Acknowledged generation overwrite crosses real two-runtime death, lease expiry, and cold restore from surviving private bucket.",
+    "stress_dimension": "Acknowledged generation overwrite crosses real two-runtime death, lease expiry, and cold restore from surviving private bucket.",
+    "oracle": [
+      "No stale event after recovery; replacement timestamp remains exact.",
+      "Only restored-replacement retry0 succeeds once."
+    ],
+    "oracles": [
+      "No stale event after recovery; replacement timestamp remains exact.",
+      "Only restored-replacement retry0 succeeds once."
+    ],
+    "cleanup": [
+      "Keep store guest alive until recovery assertions finish, then cancel schedules and consume both owned guests.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A025",
+    "test_function": "A025",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  },
+  {
+    "id": "A026",
+    "title": "Cold recovery preserves a rolled-back deletion",
+    "classification": "recovery-stress",
+    "intent": "Rollback might restore the in-memory alarm but fail to persist its wake record correctly for cold restoration.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "Original90-second alarm stays future before and after cold restart; transaction deletion is definitely rolled back."
+    ],
+    "trace": [
+      "Arm rollback-survivor.",
+      "Transactionally delete and write a marker, then throw.",
+      "Verify original alarm, kill owned runtimes, and restart into fresh local caches.",
+      "Verify restored alarm and absence of the rolled-back marker before native delivery."
+    ],
+    "stress": "Explicit transaction failure followed by process death before scheduled dispatch.",
+    "stress_dimension": "Explicit transaction failure followed by process death before scheduled dispatch.",
+    "oracle": [
+      "Exact original timestamp survives cold recovery without the deletion marker.",
+      "Only rollback-survivor succeeds and produces one effect."
+    ],
+    "oracles": [
+      "Exact original timestamp survives cold recovery without the deletion marker.",
+      "Only rollback-survivor succeeds and produces one effect."
+    ],
+    "cleanup": [
+      "Preserve the store through restore, then remove pending schedules and teardown both guests.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A026",
+    "test_function": "A026",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  },
+  {
+    "id": "A027",
+    "title": "Cold recovery keeps a failing handler replacement generation",
+    "classification": "recovery-stress",
+    "intent": "A failed-handler retry record could override a newer alarm after restart, even when live completion respects the new generation.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "The first failure has settled; its acknowledged replacement is90 seconds ahead with at least10 seconds remaining before restart. Store guest survives."
+    ],
+    "trace": [
+      "First native handler arms cold-new-generation then fails.",
+      "Capture its durable failure and the explicit future timestamp.",
+      "Kill both exact owned runtimes and restore from the same bucket with fresh caches.",
+      "Check failed history plus unchanged future alarm before the replacement deadline, then observe native dispatch."
+    ],
+    "stress": "Failure settlement, explicit event-originated generation replacement, then cold lifecycle recovery.",
+    "stress_dimension": "Failure settlement, explicit event-originated generation replacement, then cold lifecycle recovery.",
+    "oracle": [
+      "Old failed entry survives with no old retry.",
+      "New generation retains the exact timestamp and retry0 after restore, producing the only effect."
+    ],
+    "oracles": [
+      "Old failed entry survives with no old retry.",
+      "New generation retains the exact timestamp and retry0 after restore, producing the only effect."
+    ],
+    "cleanup": [
+      "Keep the bucket store alive through assertions; clear replacement/backoff state and teardown both guests.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A027",
+    "test_function": "A027",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  },
+  {
+    "id": "A028",
+    "title": "Consumed alarm is not resurrected by cold recovery",
+    "classification": "recovery-stress",
+    "intent": "Successful event effects could be durable while the consumed alarm deletion is missing, causing a second dispatch after cold startup.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "Initial event is successful, getAlarm is null, and no invocation is active before runtime death."
+    ],
+    "trace": [
+      "Complete completed-before-cold and observe settled scheduler state.",
+      "Kill the two owned runtimes and restart from fresh local caches.",
+      "Verify the object has a different isolate.",
+      "Observe another6.5 seconds on the restored guest clock."
+    ],
+    "stress": "Success bookkeeping crosses real process death and restoration; this is not generic pending-alarm recovery.",
+    "stress_dimension": "Success bookkeeping crosses real process death and restoration; this is not generic pending-alarm recovery.",
+    "oracle": [
+      "One original successful entry and one effect persist exactly.",
+      "No active or armed alarm and no resurrected delivery in the post-restore window."
+    ],
+    "oracles": [
+      "One original successful entry and one effect persist exactly.",
+      "No active or armed alarm and no resurrected delivery in the post-restore window."
+    ],
+    "cleanup": [
+      "Delete any resurrected schedule and consume both guests after preserving the store through restore.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A028",
+    "test_function": "A028",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": true,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  }
+]

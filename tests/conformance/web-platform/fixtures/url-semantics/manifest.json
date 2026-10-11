@@ -1,0 +1,2005 @@
+{
+  "schema_version": 1,
+  "profile": "direct-celld-url-semantics-v1",
+  "source_snapshot": "celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "authored_case_count": 20,
+  "reviewed_case_count": 0,
+  "runtime_executions": 0,
+  "runtime_status": "UNRUN",
+  "qualification": "Handwritten executable source and declarative fixed oracles only. Syntax validation is not execution, external review, or SUT evidence.",
+  "oracle_policy": "Literal expected values are authored from ordinary API contracts and independent of pinned implementation output. Fixed runtime assertions below are copied verbatim from handwritten source, not derived by running any URL implementation. Source-discrepancy observations describe the implementation separately from desired behavior.",
+  "contract_references": [
+    {
+      "url": "https://url.spec.whatwg.org/#url-class",
+      "purpose": "URL setters, parsing, serialization, and query object identity; consulted 2026-10-09"
+    },
+    {
+      "url": "https://url.spec.whatwg.org/#urlsearchparams",
+      "purpose": "Ordered parameter methods and form encoding; consulted 2026-10-09"
+    },
+    {
+      "url": "https://webidl.spec.whatwg.org/#es-iterator-next",
+      "purpose": "Pair iterator creates a new array for the returned pair; consulted 2026-10-09"
+    },
+    {
+      "url": "https://urlpattern.spec.whatwg.org/",
+      "purpose": "URLPattern overloads, matching, captures and options; consulted 2026-10-09"
+    }
+  ],
+  "exclusions": [
+    "No malformed-input or authentication probes",
+    "No forged routes, replay, fault injection, or retained stateless capabilities",
+    "No G/N/P/J122 guarded paths or native coordination tests",
+    "No hidden runtime implementation imports or source changes",
+    "No Node or reference-runtime execution is counted as SUT evidence"
+  ],
+  "cases": [
+    {
+      "id": "U201",
+      "title": "Resolve relative asset URLs without mutating the base",
+      "mechanism": "Constructor host-op base resolution and hierarchical path normalization",
+      "hypothesis": "The URL host seam may resolve a relative reference against the full base path or accidentally retain the old query and fragment.",
+      "application_relevance": "Workers commonly derive resource and redirect targets from a request or configured base URL.",
+      "trace": [
+        "Construct one URL base with nondefault port, path, query, and fragment.",
+        "Construct one child with parent-directory and current-directory segments plus its own query and fragment.",
+        "Assert the exact child href and components, then the unchanged base href."
+      ],
+      "desired_behavior": "Child is https://route.example.test:8443/docs/assets/icon.svg?theme=dark#outline; base is unchanged.",
+      "source_observation": "Constructor delegates to the Rust url crate with a parsed base. This is coverage of the host seam, not a predicted failure.",
+      "distinctness": "Base-relative constructor resolution; no setter, query-list mutation, or URLPattern operation is the mechanism under test.",
+      "layer": "direct-celld-worker-fetch-global-web-api",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/U201",
+        "request_body": null
+      },
+      "implementation": {
+        "file": "cases.js",
+        "symbol": "U201",
+        "start_line": 4,
+        "end_line": 13
+      },
+      "fixed_runtime_assertions": [
+        "t.equal(child.href, 'https://route.example.test:8443/docs/assets/icon.svg?theme=dark#outline', 'relative path resolved against base directory');",
+        "t.equal(child.origin, 'https://route.example.test:8443', 'base authority inherited');",
+        "t.equal(child.pathname, '/docs/assets/icon.svg', 'relative dot segments removed');",
+        "t.equal(child.search, '?theme=dark', 'new query replaces base query');",
+        "t.equal(child.hash, '#outline', 'new fragment replaces base fragment');",
+        "t.equal(base.href, 'https://route.example.test:8443/docs/v1/index.html?old=yes#intro', 'base object unchanged');"
+      ],
+      "assertion_count": 6,
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url.js",
+          "line_start": 77,
+          "line_end": 100
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js.rs",
+          "line_start": 10594,
+          "line_end": 10665
+        }
+      ],
+      "preconditions": [
+        "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+        "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+        "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+      ],
+      "schedule": {
+        "kind": "one synchronous finite trace",
+        "request_ordinal": 1,
+        "path": "/case/U201",
+        "depends_on": [],
+        "overlap": "none",
+        "runtime_operations": [
+          "Construct one URL base with nondefault port, path, query, and fragment.",
+          "Construct one child with parent-directory and current-directory segments plus its own query and fragment.",
+          "Assert the exact child href and components, then the unchanged base href."
+        ]
+      },
+      "limits": {
+        "requests_per_case": 1,
+        "repetitions": 1,
+        "request_body_bytes": 0,
+        "concurrent_requests": 1,
+        "request_outer_deadline_seconds": 5,
+        "response_max_bytes": 65536,
+        "case_input_max_code_units": 1024,
+        "case_tuple_max_count": 16,
+        "case_assertion_max_count": 16,
+        "network_calls_from_fixture": 0,
+        "storage_writes_from_fixture": 0,
+        "timers_from_fixture": 0
+      },
+      "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+      "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "UNREVIEWED",
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_pass_claimed": false,
+      "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "prediction_is_runtime_evidence": false,
+      "primary_contract_refs": [
+        "https://url.spec.whatwg.org/#url-class"
+      ]
+    },
+    {
+      "id": "U202",
+      "title": "Encode pathname setter data without changing query or fragment",
+      "mechanism": "Path setter percent-encoding and component separation",
+      "hypothesis": "The pathname setter may copy Unicode and reserved path data directly into href, changing the meaning after reparsing.",
+      "application_relevance": "Workers compose file paths while preserving independent download-query and fragment state.",
+      "trace": [
+        "Construct one HTTPS URL with an existing query and fragment.",
+        "Assign /café/report?draft#notes as pathname data.",
+        "Assert encoded pathname, unchanged query and fragment, exact href, and fixed pathname after reparse."
+      ],
+      "desired_behavior": "Path becomes /caf%C3%A9/report%3Fdraft%23notes, with ?download=yes#keep remaining independent.",
+      "source_observation": "Pinned pathname setter only removes ASCII line separators, optionally prepends slash, and copies the value. No percent-encoding step is visible. Source discrepancy hypothesis only.",
+      "distinctness": "Path-data encoding is independent of host canonicalization, numeric port conversion, and empty-delimiter preservation.",
+      "layer": "direct-celld-worker-fetch-global-web-api",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/U202",
+        "request_body": null
+      },
+      "implementation": {
+        "file": "cases.js",
+        "symbol": "U202",
+        "start_line": 15,
+        "end_line": 23
+      },
+      "fixed_runtime_assertions": [
+        "t.equal(url.pathname, '/caf%C3%A9/report%3Fdraft%23notes', 'path setter encodes path data');",
+        "t.equal(url.search, '?download=yes', 'path question mark does not start a query');",
+        "t.equal(url.hash, '#keep', 'path hash does not start a fragment');",
+        "t.equal(url.href, 'https://files.example.test/caf%C3%A9/report%3Fdraft%23notes?download=yes#keep', 'serialized setter result');",
+        "t.equal(new URL(url.href).pathname, '/caf%C3%A9/report%3Fdraft%23notes', 'setter serialization survives reparsing');"
+      ],
+      "assertion_count": 5,
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url.js",
+          "line_start": 166,
+          "line_end": 185
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url.js",
+          "line_start": 235,
+          "line_end": 248
+        }
+      ],
+      "preconditions": [
+        "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+        "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+        "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+      ],
+      "schedule": {
+        "kind": "one synchronous finite trace",
+        "request_ordinal": 2,
+        "path": "/case/U202",
+        "depends_on": [],
+        "overlap": "none",
+        "runtime_operations": [
+          "Construct one HTTPS URL with an existing query and fragment.",
+          "Assign /café/report?draft#notes as pathname data.",
+          "Assert encoded pathname, unchanged query and fragment, exact href, and fixed pathname after reparse."
+        ]
+      },
+      "limits": {
+        "requests_per_case": 1,
+        "repetitions": 1,
+        "request_body_bytes": 0,
+        "concurrent_requests": 1,
+        "request_outer_deadline_seconds": 5,
+        "response_max_bytes": 65536,
+        "case_input_max_code_units": 1024,
+        "case_tuple_max_count": 16,
+        "case_assertion_max_count": 16,
+        "network_calls_from_fixture": 0,
+        "storage_writes_from_fixture": 0,
+        "timers_from_fixture": 0
+      },
+      "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+      "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "UNREVIEWED",
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_pass_claimed": false,
+      "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+      "static_prediction": "EXPECTED_FAILURE_CANDIDATE",
+      "prediction_is_runtime_evidence": false,
+      "primary_contract_refs": [
+        "https://url.spec.whatwg.org/#dom-url-pathname"
+      ]
+    },
+    {
+      "id": "U203",
+      "title": "Canonicalize internationalized hostname assignments",
+      "mechanism": "Hostname setter IDNA and ASCII case normalization",
+      "hypothesis": "Hostname assignment may bypass the native host parser and serialize the input spelling rather than an ASCII domain.",
+      "application_relevance": "A Worker changing a configured catalog hostname needs consistent host and origin values while keeping its explicit port.",
+      "trace": [
+        "Construct one HTTPS catalog URL with port 8443.",
+        "Assign the valid internationalized hostname BÜCHER.example.",
+        "Assert hostname, host, origin, and full href against fixed punycode literals."
+      ],
+      "desired_behavior": "All authority views use xn--bcher-kva.example and retain port 8443; path, query, and fragment are unchanged.",
+      "source_observation": "Pinned setter stores String(v) without IDNA or lowercasing. Source discrepancy hypothesis only.",
+      "distinctness": "Domain canonicalization; it does not test the IPv6 authority split exercised by U204.",
+      "layer": "direct-celld-worker-fetch-global-web-api",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/U203",
+        "request_body": null
+      },
+      "implementation": {
+        "file": "cases.js",
+        "symbol": "U203",
+        "start_line": 25,
+        "end_line": 32
+      },
+      "fixed_runtime_assertions": [
+        "t.equal(url.hostname, 'xn--bcher-kva.example', 'hostname setter performs IDNA and case normalization');",
+        "t.equal(url.host, 'xn--bcher-kva.example:8443', 'hostname setter preserves explicit port');",
+        "t.equal(url.origin, 'https://xn--bcher-kva.example:8443', 'origin uses canonical hostname');",
+        "t.equal(url.href, 'https://xn--bcher-kva.example:8443/catalog?q=tea#top', 'other components survive hostname replacement');"
+      ],
+      "assertion_count": 4,
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url.js",
+          "line_start": 147,
+          "line_end": 151
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url.js",
+          "line_start": 197,
+          "line_end": 228
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url.js",
+          "line_start": 235,
+          "line_end": 248
+        }
+      ],
+      "preconditions": [
+        "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+        "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+        "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+      ],
+      "schedule": {
+        "kind": "one synchronous finite trace",
+        "request_ordinal": 3,
+        "path": "/case/U203",
+        "depends_on": [],
+        "overlap": "none",
+        "runtime_operations": [
+          "Construct one HTTPS catalog URL with port 8443.",
+          "Assign the valid internationalized hostname BÜCHER.example.",
+          "Assert hostname, host, origin, and full href against fixed punycode literals."
+        ]
+      },
+      "limits": {
+        "requests_per_case": 1,
+        "repetitions": 1,
+        "request_body_bytes": 0,
+        "concurrent_requests": 1,
+        "request_outer_deadline_seconds": 5,
+        "response_max_bytes": 65536,
+        "case_input_max_code_units": 1024,
+        "case_tuple_max_count": 16,
+        "case_assertion_max_count": 16,
+        "network_calls_from_fixture": 0,
+        "storage_writes_from_fixture": 0,
+        "timers_from_fixture": 0
+      },
+      "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+      "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "UNREVIEWED",
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_pass_claimed": false,
+      "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+      "static_prediction": "EXPECTED_FAILURE_CANDIDATE",
+      "prediction_is_runtime_evidence": false,
+      "primary_contract_refs": [
+        "https://url.spec.whatwg.org/#dom-url-hostname"
+      ]
+    },
+    {
+      "id": "U204",
+      "title": "Parse bracketed IPv6 host replacements and their ports",
+      "mechanism": "Host setter IPv6 bracket awareness and scheme-default port handling",
+      "hypothesis": "Splitting host at the first colon may corrupt a valid IPv6 literal and its port.",
+      "application_relevance": "Ordinary Worker endpoint configuration may use documentation-range IPv6 literals without making a network request.",
+      "trace": [
+        "Construct an HTTPS URL with existing port, path, query, and fragment.",
+        "Replace host with [2001:db8::7]:8443 and assert hostname, port, host, and href.",
+        "Replace with [2001:db8::8]:443 and assert default-port elision and origin."
+      ],
+      "desired_behavior": "IPv6 brackets are preserved as part of hostname; only the colon after the closing bracket separates port.",
+      "source_observation": "Pinned host setter uses indexOf(':'), without bracket handling. Source discrepancy hypothesis only.",
+      "distinctness": "Authority tokenization rather than domain IDNA or direct numeric port conversion.",
+      "layer": "direct-celld-worker-fetch-global-web-api",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/U204",
+        "request_body": null
+      },
+      "implementation": {
+        "file": "cases.js",
+        "symbol": "U204",
+        "start_line": 34,
+        "end_line": 44
+      },
+      "fixed_runtime_assertions": [
+        "t.equal(url.hostname, '[2001:db8::7]', 'bracketed IPv6 is one hostname');",
+        "t.equal(url.port, '8443', 'port split occurs after IPv6 closing bracket');",
+        "t.equal(url.host, '[2001:db8::7]:8443', 'IPv6 host serialization');",
+        "t.equal(url.href, 'https://[2001:db8::7]:8443/path?q=1#part', 'IPv6 setter keeps path and query');",
+        "t.equal(url.port, '', 'default IPv6 port is elided');",
+        "t.equal(url.origin, 'https://[2001:db8::8]', 'IPv6 origin after default-port elision');"
+      ],
+      "assertion_count": 6,
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url.js",
+          "line_start": 126,
+          "line_end": 145
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url.js",
+          "line_start": 197,
+          "line_end": 228
+        }
+      ],
+      "preconditions": [
+        "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+        "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+        "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+      ],
+      "schedule": {
+        "kind": "one synchronous finite trace",
+        "request_ordinal": 4,
+        "path": "/case/U204",
+        "depends_on": [],
+        "overlap": "none",
+        "runtime_operations": [
+          "Construct an HTTPS URL with existing port, path, query, and fragment.",
+          "Replace host with [2001:db8::7]:8443 and assert hostname, port, host, and href.",
+          "Replace with [2001:db8::8]:443 and assert default-port elision and origin."
+        ]
+      },
+      "limits": {
+        "requests_per_case": 1,
+        "repetitions": 1,
+        "request_body_bytes": 0,
+        "concurrent_requests": 1,
+        "request_outer_deadline_seconds": 5,
+        "response_max_bytes": 65536,
+        "case_input_max_code_units": 1024,
+        "case_tuple_max_count": 16,
+        "case_assertion_max_count": 16,
+        "network_calls_from_fixture": 0,
+        "storage_writes_from_fixture": 0,
+        "timers_from_fixture": 0
+      },
+      "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+      "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "UNREVIEWED",
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_pass_claimed": false,
+      "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+      "static_prediction": "EXPECTED_FAILURE_CANDIDATE",
+      "prediction_is_runtime_evidence": false,
+      "primary_contract_refs": [
+        "https://url.spec.whatwg.org/#dom-url-host"
+      ]
+    },
+    {
+      "id": "U205",
+      "title": "Normalize numeric port strings before default-port comparison",
+      "mechanism": "Port setter numeric representation and default elision",
+      "hypothesis": "Comparing raw digit strings to scheme defaults may retain leading zeroes and miss numeric default ports.",
+      "application_relevance": "Workers ingest ordinary padded port configuration and use origin or host as stable cache and routing keys.",
+      "trace": [
+        "Construct an HTTPS URL with an explicit nondefault port.",
+        "Set port to 00443 and assert empty port and no port in href.",
+        "Set port to 008443 and assert canonical 8443 plus origin.",
+        "Clear port and assert host without a port."
+      ],
+      "desired_behavior": "00443 is the default 443 and disappears; 008443 serializes as 8443; empty assignment clears the port.",
+      "source_observation": "Pinned setter accepts digit-only input but compares and stores the original string. Source discrepancy hypothesis only.",
+      "distinctness": "Numeric conversion happens in the direct port setter, not the IPv6 host grammar in U204.",
+      "layer": "direct-celld-worker-fetch-global-web-api",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/U205",
+        "request_body": null
+      },
+      "implementation": {
+        "file": "cases.js",
+        "symbol": "U205",
+        "start_line": 46,
+        "end_line": 56
+      },
+      "fixed_runtime_assertions": [
+        "t.equal(url.port, '', 'numeric default port is elided after conversion');",
+        "t.equal(url.href, 'https://ports.example.test/a', 'default port absent from href');",
+        "t.equal(url.port, '8443', 'nondefault port stored as canonical decimal');",
+        "t.equal(url.origin, 'https://ports.example.test:8443', 'origin uses canonical nondefault port');",
+        "t.equal(url.host, 'ports.example.test', 'empty port clears explicit port');"
+      ],
+      "assertion_count": 5,
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url.js",
+          "line_start": 34,
+          "line_end": 43
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url.js",
+          "line_start": 153,
+          "line_end": 164
+        }
+      ],
+      "preconditions": [
+        "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+        "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+        "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+      ],
+      "schedule": {
+        "kind": "one synchronous finite trace",
+        "request_ordinal": 5,
+        "path": "/case/U205",
+        "depends_on": [],
+        "overlap": "none",
+        "runtime_operations": [
+          "Construct an HTTPS URL with an explicit nondefault port.",
+          "Set port to 00443 and assert empty port and no port in href.",
+          "Set port to 008443 and assert canonical 8443 plus origin.",
+          "Clear port and assert host without a port."
+        ]
+      },
+      "limits": {
+        "requests_per_case": 1,
+        "repetitions": 1,
+        "request_body_bytes": 0,
+        "concurrent_requests": 1,
+        "request_outer_deadline_seconds": 5,
+        "response_max_bytes": 65536,
+        "case_input_max_code_units": 1024,
+        "case_tuple_max_count": 16,
+        "case_assertion_max_count": 16,
+        "network_calls_from_fixture": 0,
+        "storage_writes_from_fixture": 0,
+        "timers_from_fixture": 0
+      },
+      "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+      "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "UNREVIEWED",
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_pass_claimed": false,
+      "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+      "static_prediction": "EXPECTED_FAILURE_CANDIDATE",
+      "prediction_is_runtime_evidence": false,
+      "primary_contract_refs": [
+        "https://url.spec.whatwg.org/#dom-url-port"
+      ]
+    },
+    {
+      "id": "U206",
+      "title": "Keep a live query view across href replacement",
+      "mechanism": "URL href replacement and same-object query-list rebinding",
+      "hypothesis": "Replacing href may detach a previously obtained searchParams object or leave an existing iterator reading the old list.",
+      "application_relevance": "A Worker can retain a local query view while replacing a redirect URL within one synchronous request.",
+      "trace": [
+        "Construct URL and save its query view and entries iterator.",
+        "Consume exactly one old tuple.",
+        "Replace href with a different authority and two-entry query.",
+        "Assert query object identity, replacement tuples, and the next existing-iterator tuple.",
+        "Append through the old view, assert new href and iterator tail, then exhaustion."
+      ],
+      "desired_behavior": "The original view remains the same object bound to the new URL, and the iterator retains its index over the updated list.",
+      "source_observation": "Pinned _apply refreshes the existing query list. This case checks cross-object identity and iterator wiring; no observed runtime verdict.",
+      "distinctness": "Whole-URL replacement rebinding; U214 instead mutates an independent params list through its own API.",
+      "layer": "direct-celld-worker-fetch-global-web-api",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/U206",
+        "request_body": null
+      },
+      "implementation": {
+        "file": "cases.js",
+        "symbol": "U206",
+        "start_line": 58,
+        "end_line": 71
+      },
+      "fixed_runtime_assertions": [
+        "t.deep(cursor.next(), { value: ['old', '1'], done: false }, 'consume one item before href replacement');",
+        "t.equal(url.searchParams === live, true, 'href replacement preserves query object identity');",
+        "t.deep([...live], [['first', 'a'], ['second', 'b']], 'existing view sees replacement query');",
+        "t.deep(cursor.next(), { value: ['second', 'b'], done: false }, 'existing iterator keeps index in replaced list');",
+        "t.equal(url.href, 'https://after.example.test:8443/new?first=a&second=b&last=c#next', 'existing query object stays bound to replacement URL');",
+        "t.deep(cursor.next(), { value: ['last', 'c'], done: false }, 'preexisting iterator sees later append');",
+        "t.equal(cursor.next().done, true, 'finite iterator reaches completion');"
+      ],
+      "assertion_count": 7,
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url.js",
+          "line_start": 86,
+          "line_end": 100
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url.js",
+          "line_start": 230,
+          "line_end": 263
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_search_params.js",
+          "line_start": 146,
+          "line_end": 150
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_search_params.js",
+          "line_start": 227,
+          "line_end": 239
+        }
+      ],
+      "preconditions": [
+        "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+        "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+        "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+      ],
+      "schedule": {
+        "kind": "one synchronous finite trace",
+        "request_ordinal": 6,
+        "path": "/case/U206",
+        "depends_on": [],
+        "overlap": "none",
+        "runtime_operations": [
+          "Construct URL and save its query view and entries iterator.",
+          "Consume exactly one old tuple.",
+          "Replace href with a different authority and two-entry query.",
+          "Assert query object identity, replacement tuples, and the next existing-iterator tuple.",
+          "Append through the old view, assert new href and iterator tail, then exhaustion."
+        ]
+      },
+      "limits": {
+        "requests_per_case": 1,
+        "repetitions": 1,
+        "request_body_bytes": 0,
+        "concurrent_requests": 1,
+        "request_outer_deadline_seconds": 5,
+        "response_max_bytes": 65536,
+        "case_input_max_code_units": 1024,
+        "case_tuple_max_count": 16,
+        "case_assertion_max_count": 16,
+        "network_calls_from_fixture": 0,
+        "storage_writes_from_fixture": 0,
+        "timers_from_fixture": 0
+      },
+      "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+      "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "UNREVIEWED",
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_pass_claimed": false,
+      "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "prediction_is_runtime_evidence": false,
+      "primary_contract_refs": [
+        "https://url.spec.whatwg.org/#url-class"
+      ]
+    },
+    {
+      "id": "U207",
+      "title": "Preserve empty-present query and fragment delimiters",
+      "mechanism": "URL serialization distinction between absent and empty query/fragment",
+      "hypothesis": "Collapsing empty and absent fields into the same stored string may lose delimiters on an unrelated setter.",
+      "application_relevance": "Workers that rewrite a path must not silently change a URL serialized with explicit empty query or fragment markers.",
+      "trace": [
+        "Construct a URL ending in ?# and assert empty getters but exact serialized delimiters.",
+        "Set only pathname and assert both delimiters remain.",
+        "Clear query, then fragment, and assert each serialized state.",
+        "Assign search = ? and assert empty-present query serialization."
+      ],
+      "desired_behavior": "The href sequence is /path?#, /next?#, /next#, /next, /next? while empty query and fragment getters remain empty strings.",
+      "source_observation": "Host seam unwrap_or and JS truthiness flatten absent/empty fields, while initial href is retained separately. Source discrepancy hypothesis only.",
+      "distinctness": "Presence-state representation is independent of percent-encoding and live query object identity.",
+      "layer": "direct-celld-worker-fetch-global-web-api",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/U207",
+        "request_body": null
+      },
+      "implementation": {
+        "file": "cases.js",
+        "symbol": "U207",
+        "start_line": 73,
+        "end_line": 87
+      },
+      "fixed_runtime_assertions": [
+        "t.equal(url.search, '', 'empty-present query has empty getter');",
+        "t.equal(url.hash, '', 'empty-present fragment has empty getter');",
+        "t.equal(url.href, 'https://markers.example.test/path?#', 'constructor retains both empty delimiters');",
+        "t.equal(url.href, 'https://markers.example.test/next?#', 'unrelated setter retains empty query and fragment presence');",
+        "t.equal(url.href, 'https://markers.example.test/next#', 'clearing query leaves empty-present fragment');",
+        "t.equal(url.href, 'https://markers.example.test/next', 'clearing fragment removes its delimiter');",
+        "t.equal(url.href, 'https://markers.example.test/next?', 'question mark creates empty-present query');",
+        "t.equal(url.search, '', 'empty-present query getter remains empty');"
+      ],
+      "assertion_count": 8,
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url.js",
+          "line_start": 86,
+          "line_end": 100
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url.js",
+          "line_start": 166,
+          "line_end": 195
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url.js",
+          "line_start": 235,
+          "line_end": 248
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js.rs",
+          "line_start": 10631,
+          "line_end": 10643
+        }
+      ],
+      "preconditions": [
+        "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+        "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+        "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+      ],
+      "schedule": {
+        "kind": "one synchronous finite trace",
+        "request_ordinal": 7,
+        "path": "/case/U207",
+        "depends_on": [],
+        "overlap": "none",
+        "runtime_operations": [
+          "Construct a URL ending in ?# and assert empty getters but exact serialized delimiters.",
+          "Set only pathname and assert both delimiters remain.",
+          "Clear query, then fragment, and assert each serialized state.",
+          "Assign search = ? and assert empty-present query serialization."
+        ]
+      },
+      "limits": {
+        "requests_per_case": 1,
+        "repetitions": 1,
+        "request_body_bytes": 0,
+        "concurrent_requests": 1,
+        "request_outer_deadline_seconds": 5,
+        "response_max_bytes": 65536,
+        "case_input_max_code_units": 1024,
+        "case_tuple_max_count": 16,
+        "case_assertion_max_count": 16,
+        "network_calls_from_fixture": 0,
+        "storage_writes_from_fixture": 0,
+        "timers_from_fixture": 0
+      },
+      "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+      "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "UNREVIEWED",
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_pass_claimed": false,
+      "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+      "static_prediction": "EXPECTED_FAILURE_CANDIDATE",
+      "prediction_is_runtime_evidence": false,
+      "primary_contract_refs": [
+        "https://url.spec.whatwg.org/#dom-url-search"
+      ]
+    },
+    {
+      "id": "U208",
+      "title": "Mutate blob URL query and fragment without adding authority slashes",
+      "mechanism": "Opaque-path URL serialization with inherited blob origin",
+      "hypothesis": "The common href rebuild path may insert // after every scheme, corrupting an ordinary blob URL string.",
+      "application_relevance": "Worker code can inspect and decorate blob URL strings; this case neither creates nor dereferences a Blob object URL.",
+      "trace": [
+        "Construct one ordinary blob URL string with an embedded HTTPS origin and fixed UUID.",
+        "Assert inherited origin.",
+        "Set hash and assert exact opaque-path href.",
+        "Append a bound query pair and assert href, original pathname, and unchanged origin."
+      ],
+      "desired_behavior": "The href continues to begin blob:https://, with ?mode=small#preview appended outside the embedded path.",
+      "source_observation": "Pinned origin code handles blob specially, but href reconstruction starts protocol + // for all schemes. Source discrepancy hypothesis only.",
+      "distinctness": "Opaque serialization versus the hierarchical HTTPS paths in U201-U207; no object URL lifecycle or retained capability.",
+      "layer": "direct-celld-worker-fetch-global-web-api",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/U208",
+        "request_body": null
+      },
+      "implementation": {
+        "file": "cases.js",
+        "symbol": "U208",
+        "start_line": 89,
+        "end_line": 98
+      },
+      "fixed_runtime_assertions": [
+        "t.equal(url.origin, 'https://media.example.test', 'blob inherits embedded HTTPS origin');",
+        "t.equal(url.href, 'blob:https://media.example.test:443/11111111-2222-4333-8444-555555555555#preview', 'fragment update preserves opaque-path serialization');",
+        "t.equal(url.href, 'blob:https://media.example.test:443/11111111-2222-4333-8444-555555555555?mode=small#preview', 'bound query update does not insert authority slashes');",
+        "t.equal(url.pathname, 'https://media.example.test:443/11111111-2222-4333-8444-555555555555', 'embedded path is unchanged');",
+        "t.equal(url.origin, 'https://media.example.test', 'fragment and query do not change blob origin');"
+      ],
+      "assertion_count": 5,
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url.js",
+          "line_start": 188,
+          "line_end": 228
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url.js",
+          "line_start": 235,
+          "line_end": 263
+        }
+      ],
+      "preconditions": [
+        "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+        "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+        "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+      ],
+      "schedule": {
+        "kind": "one synchronous finite trace",
+        "request_ordinal": 8,
+        "path": "/case/U208",
+        "depends_on": [],
+        "overlap": "none",
+        "runtime_operations": [
+          "Construct one ordinary blob URL string with an embedded HTTPS origin and fixed UUID.",
+          "Assert inherited origin.",
+          "Set hash and assert exact opaque-path href.",
+          "Append a bound query pair and assert href, original pathname, and unchanged origin."
+        ]
+      },
+      "limits": {
+        "requests_per_case": 1,
+        "repetitions": 1,
+        "request_body_bytes": 0,
+        "concurrent_requests": 1,
+        "request_outer_deadline_seconds": 5,
+        "response_max_bytes": 65536,
+        "case_input_max_code_units": 1024,
+        "case_tuple_max_count": 16,
+        "case_assertion_max_count": 16,
+        "network_calls_from_fixture": 0,
+        "storage_writes_from_fixture": 0,
+        "timers_from_fixture": 0
+      },
+      "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+      "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "UNREVIEWED",
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_pass_claimed": false,
+      "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+      "static_prediction": "EXPECTED_FAILURE_CANDIDATE",
+      "prediction_is_runtime_evidence": false,
+      "primary_contract_refs": [
+        "https://url.spec.whatwg.org/#concept-url-serializer"
+      ]
+    },
+    {
+      "id": "U209",
+      "title": "Decode form queries with plus, duplicate keys, and first-equals splitting",
+      "mechanism": "application/x-www-form-urlencoded parsing into ordered tuples",
+      "hypothesis": "The form decoder may confuse plus with encoded plus, split a value at every equals, or manufacture tuples for empty separators.",
+      "application_relevance": "Workers read ordinary filter queries with repeated values, flags, and internationalized text.",
+      "trace": [
+        "Construct params from one fixed query string containing six meaningful tuples.",
+        "Assert the entire ordered tuple list.",
+        "Assert duplicate q values, bare flag value, absent-name null, and exact size."
+      ],
+      "desired_behavior": "q values are blue sky and blue+sky; eq is a=b; flag is empty; snow is 雪; size is six.",
+      "source_observation": "Pinned parser has explicit plus conversion and first-equals split. Coverage of valid parsing only; no malformed encoding probes.",
+      "distinctness": "String decoding, not the opposite serialization path tested by U210.",
+      "layer": "direct-celld-worker-fetch-global-web-api",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/U209",
+        "request_body": null
+      },
+      "implementation": {
+        "file": "cases.js",
+        "symbol": "U209",
+        "start_line": 100,
+        "end_line": 107
+      },
+      "fixed_runtime_assertions": [
+        "t.deep([...params], [['q', 'blue sky'], ['q', 'blue+sky'], ['flag', ''], ['eq', 'a=b'], ['', 'empty'], ['snow', '雪']], 'form parser preserves pair order and splits at first equals');",
+        "t.deep(params.getAll('q'), ['blue sky', 'blue+sky'], 'literal plus and encoded plus differ');",
+        "t.equal(params.get('flag'), '', 'bare key has empty value');",
+        "t.equal(params.get('missing'), null, 'missing key differs from empty value');",
+        "t.equal(params.size, 6, 'empty separators do not become entries');"
+      ],
+      "assertion_count": 5,
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_search_params.js",
+          "line_start": 3,
+          "line_end": 36
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_search_params.js",
+          "line_start": 75,
+          "line_end": 103
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_search_params.js",
+          "line_start": 152,
+          "line_end": 163
+        }
+      ],
+      "preconditions": [
+        "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+        "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+        "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+      ],
+      "schedule": {
+        "kind": "one synchronous finite trace",
+        "request_ordinal": 9,
+        "path": "/case/U209",
+        "depends_on": [],
+        "overlap": "none",
+        "runtime_operations": [
+          "Construct params from one fixed query string containing six meaningful tuples.",
+          "Assert the entire ordered tuple list.",
+          "Assert duplicate q values, bare flag value, absent-name null, and exact size."
+        ]
+      },
+      "limits": {
+        "requests_per_case": 1,
+        "repetitions": 1,
+        "request_body_bytes": 0,
+        "concurrent_requests": 1,
+        "request_outer_deadline_seconds": 5,
+        "response_max_bytes": 65536,
+        "case_input_max_code_units": 1024,
+        "case_tuple_max_count": 16,
+        "case_assertion_max_count": 16,
+        "network_calls_from_fixture": 0,
+        "storage_writes_from_fixture": 0,
+        "timers_from_fixture": 0
+      },
+      "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+      "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "UNREVIEWED",
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_pass_claimed": false,
+      "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "prediction_is_runtime_evidence": false,
+      "primary_contract_refs": [
+        "https://url.spec.whatwg.org/#urlsearchparams"
+      ]
+    },
+    {
+      "id": "U210",
+      "title": "Serialize form punctuation and Unicode with the form encode set",
+      "mechanism": "application/x-www-form-urlencoded tuple serialization",
+      "hypothesis": "A generic URI encoder may leave form-reserved punctuation unescaped or confuse literal plus with space.",
+      "application_relevance": "Workers construct ordinary query strings and URL-encoded form values from tuples.",
+      "trace": [
+        "Construct params from three fixed key/value pairs.",
+        "Assert the complete serialized form string.",
+        "Parse that string and assert the original tuples, then assert stored word was not mutated."
+      ],
+      "desired_behavior": "Punctuation !'()~ is escaped, *-._ remains, spaces become +, literal + becomes %2B, and Unicode uses fixed UTF-8 percent bytes.",
+      "source_observation": "Pinned serializer supplements encodeURIComponent for form-only punctuation. No observed runtime verdict.",
+      "distinctness": "Independent exact serialization oracle; round trip is secondary and cannot mask a mutually wrong encoder/decoder.",
+      "layer": "direct-celld-worker-fetch-global-web-api",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/U210",
+        "request_body": null
+      },
+      "implementation": {
+        "file": "cases.js",
+        "symbol": "U210",
+        "start_line": 109,
+        "end_line": 114
+      },
+      "fixed_runtime_assertions": [
+        "t.equal(params.toString(), 'symbols=%21*%27%28%29%7E-._&word=caf%C3%A9+%2B+tea&snow=%E9%9B%AA', 'form serializer uses its own encode set and space rule');",
+        "t.deep([...new URLSearchParams(params.toString())], [['symbols', \"!*'()~-._\"], ['word', 'café + tea'], ['snow', '雪']], 'ordinary Unicode and punctuation round trip');",
+        "t.equal(params.get('word'), 'café + tea', 'serialization does not mutate stored value');"
+      ],
+      "assertion_count": 3,
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_search_params.js",
+          "line_start": 66,
+          "line_end": 73
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_search_params.js",
+          "line_start": 111,
+          "line_end": 124
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_search_params.js",
+          "line_start": 220,
+          "line_end": 225
+        }
+      ],
+      "preconditions": [
+        "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+        "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+        "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+      ],
+      "schedule": {
+        "kind": "one synchronous finite trace",
+        "request_ordinal": 10,
+        "path": "/case/U210",
+        "depends_on": [],
+        "overlap": "none",
+        "runtime_operations": [
+          "Construct params from three fixed key/value pairs.",
+          "Assert the complete serialized form string.",
+          "Parse that string and assert the original tuples, then assert stored word was not mutated."
+        ]
+      },
+      "limits": {
+        "requests_per_case": 1,
+        "repetitions": 1,
+        "request_body_bytes": 0,
+        "concurrent_requests": 1,
+        "request_outer_deadline_seconds": 5,
+        "response_max_bytes": 65536,
+        "case_input_max_code_units": 1024,
+        "case_tuple_max_count": 16,
+        "case_assertion_max_count": 16,
+        "network_calls_from_fixture": 0,
+        "storage_writes_from_fixture": 0,
+        "timers_from_fixture": 0
+      },
+      "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+      "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "UNREVIEWED",
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_pass_claimed": false,
+      "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "prediction_is_runtime_evidence": false,
+      "primary_contract_refs": [
+        "https://url.spec.whatwg.org/#urlsearchparams"
+      ]
+    },
+    {
+      "id": "U211",
+      "title": "Coalesce duplicate params in place when setting a value",
+      "mechanism": "Ordered-multimap set replacement and live URL synchronization",
+      "hypothesis": "Set may keep later duplicates, move the first key to the end, or fail to synchronize the bound URL.",
+      "application_relevance": "Workers rewrite one filter while preserving other query ordering and a fragment.",
+      "trace": [
+        "Construct bound params with three a entries interleaved with b and c.",
+        "Set a once and assert exact tuples, size, and href.",
+        "Set previously absent d and assert it is appended after existing entries."
+      ],
+      "desired_behavior": "The first a position becomes new value, later a entries vanish, b/c order stays, and absent d appends.",
+      "source_observation": "Pinned set filters duplicates and synchronizes once. This exercises its order-sensitive public effect.",
+      "distinctness": "Set replacement contract rather than selective removal or sort ordering.",
+      "layer": "direct-celld-worker-fetch-global-web-api",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/U211",
+        "request_body": null
+      },
+      "implementation": {
+        "file": "cases.js",
+        "symbol": "U211",
+        "start_line": 116,
+        "end_line": 125
+      },
+      "fixed_runtime_assertions": [
+        "t.deep([...params], [['a', 'new value'], ['b', 'middle'], ['c', 'tail']], 'set replaces first match and removes later duplicates');",
+        "t.equal(params.size, 3, 'duplicate coalescing updates size');",
+        "t.equal(url.href, 'https://query.example.test/?a=new+value&b=middle&c=tail#keep', 'set synchronizes URL without moving first key');",
+        "t.deep([...params], [['a', 'new value'], ['b', 'middle'], ['c', 'tail'], ['d', 'added']], 'set of absent name appends once');"
+      ],
+      "assertion_count": 4,
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_search_params.js",
+          "line_start": 142,
+          "line_end": 144
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_search_params.js",
+          "line_start": 175,
+          "line_end": 193
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url.js",
+          "line_start": 250,
+          "line_end": 263
+        }
+      ],
+      "preconditions": [
+        "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+        "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+        "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+      ],
+      "schedule": {
+        "kind": "one synchronous finite trace",
+        "request_ordinal": 11,
+        "path": "/case/U211",
+        "depends_on": [],
+        "overlap": "none",
+        "runtime_operations": [
+          "Construct bound params with three a entries interleaved with b and c.",
+          "Set a once and assert exact tuples, size, and href.",
+          "Set previously absent d and assert it is appended after existing entries."
+        ]
+      },
+      "limits": {
+        "requests_per_case": 1,
+        "repetitions": 1,
+        "request_body_bytes": 0,
+        "concurrent_requests": 1,
+        "request_outer_deadline_seconds": 5,
+        "response_max_bytes": 65536,
+        "case_input_max_code_units": 1024,
+        "case_tuple_max_count": 16,
+        "case_assertion_max_count": 16,
+        "network_calls_from_fixture": 0,
+        "storage_writes_from_fixture": 0,
+        "timers_from_fixture": 0
+      },
+      "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+      "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "UNREVIEWED",
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_pass_claimed": false,
+      "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "prediction_is_runtime_evidence": false,
+      "primary_contract_refs": [
+        "https://url.spec.whatwg.org/#urlsearchparams"
+      ]
+    },
+    {
+      "id": "U212",
+      "title": "Apply value-selective has and delete across repeated tuples",
+      "mechanism": "Optional value overloads for multimap membership and removal",
+      "hypothesis": "The optional value argument may be ignored or empty-string filtering may accidentally act as name-only deletion.",
+      "application_relevance": "Workers remove selected tags while preserving other values and unrelated query fields.",
+      "trace": [
+        "Construct repeated red, blue, and empty tag values with unrelated x.",
+        "Assert empty-value membership, delete red, then assert exact survivors and membership.",
+        "Delete only empty tag values and verify.",
+        "Delete remaining tag values by name and assert only x remains."
+      ],
+      "desired_behavior": "Value filtering removes all matching tuples and leaves other values; omitted value removes all tuples for the name.",
+      "source_observation": "Pinned has/delete distinguish undefined from an empty value. Test inputs use only provided strings or omission.",
+      "distinctness": "Overload selection and selective removal, not U211 duplicate coalescing.",
+      "layer": "direct-celld-worker-fetch-global-web-api",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/U212",
+        "request_body": null
+      },
+      "implementation": {
+        "file": "cases.js",
+        "symbol": "U212",
+        "start_line": 127,
+        "end_line": 139
+      },
+      "fixed_runtime_assertions": [
+        "t.equal(params.has('tag', ''), true, 'empty-value membership is selective');",
+        "t.deep([...params], [['tag', 'blue'], ['x', '1'], ['tag', ''], ['tag', 'blue']], 'value-filtered delete removes every matching tuple only');",
+        "t.equal(params.has('tag', 'red'), false, 'removed value is absent');",
+        "t.equal(params.has('tag', 'blue'), true, 'other duplicate values remain');",
+        "t.equal(params.has('tag', ''), false, 'empty filter removes empty values only');",
+        "t.deep([...params], [['x', '1']], 'name-only delete removes remaining values');",
+        "t.equal(params.size, 1, 'selective deletes leave unrelated tuple');"
+      ],
+      "assertion_count": 7,
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_search_params.js",
+          "line_start": 165,
+          "line_end": 173
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_search_params.js",
+          "line_start": 201,
+          "line_end": 212
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_search_params.js",
+          "line_start": 249,
+          "line_end": 250
+        }
+      ],
+      "preconditions": [
+        "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+        "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+        "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+      ],
+      "schedule": {
+        "kind": "one synchronous finite trace",
+        "request_ordinal": 12,
+        "path": "/case/U212",
+        "depends_on": [],
+        "overlap": "none",
+        "runtime_operations": [
+          "Construct repeated red, blue, and empty tag values with unrelated x.",
+          "Assert empty-value membership, delete red, then assert exact survivors and membership.",
+          "Delete only empty tag values and verify.",
+          "Delete remaining tag values by name and assert only x remains."
+        ]
+      },
+      "limits": {
+        "requests_per_case": 1,
+        "repetitions": 1,
+        "request_body_bytes": 0,
+        "concurrent_requests": 1,
+        "request_outer_deadline_seconds": 5,
+        "response_max_bytes": 65536,
+        "case_input_max_code_units": 1024,
+        "case_tuple_max_count": 16,
+        "case_assertion_max_count": 16,
+        "network_calls_from_fixture": 0,
+        "storage_writes_from_fixture": 0,
+        "timers_from_fixture": 0
+      },
+      "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+      "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "UNREVIEWED",
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_pass_claimed": false,
+      "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "prediction_is_runtime_evidence": false,
+      "primary_contract_refs": [
+        "https://url.spec.whatwg.org/#urlsearchparams"
+      ]
+    },
+    {
+      "id": "U213",
+      "title": "Sort query keys stably by UTF-16 and synchronize canonical form encoding",
+      "mechanism": "Stable code-unit sort plus bound URL query reserialization",
+      "hypothesis": "Sorting may use Unicode code-point order, reorder equal keys, or omit the bound URL update.",
+      "application_relevance": "Workers sort cache-key queries containing repeated values and Unicode keys.",
+      "trace": [
+        "Construct a bound URL query with duplicate a, astral and BMP keys, encoded spaces, and a tilde.",
+        "Sort once and assert full key order, duplicate order, exact search, and retained fragment.",
+        "Sort again and assert the same fixed search string."
+      ],
+      "desired_behavior": "Keys sort a,a,space,tilde,z,😀,U+E000; duplicates remain first/second; bound query uses + and %7E.",
+      "source_observation": "Pinned comparator uses JS string ordering and stable Array.sort. This checks the complete observable result with fixed literals.",
+      "distinctness": "Ordering algorithm and reserialization side effect rather than scalar insertion/removal.",
+      "layer": "direct-celld-worker-fetch-global-web-api",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/U213",
+        "request_body": null
+      },
+      "implementation": {
+        "file": "cases.js",
+        "symbol": "U213",
+        "start_line": 141,
+        "end_line": 151
+      },
+      "fixed_runtime_assertions": [
+        "t.deep([...params.keys()], ['a', 'a', 'space', 'tilde', 'z', '😀', '\\uE000'], 'sort compares UTF-16 code units rather than code points');",
+        "t.deep(params.getAll('a'), ['first', 'second'], 'equal names retain insertion order');",
+        "t.equal(url.search, '?a=first&a=second&space=hello+world&tilde=%7E&z=tail&%F0%9F%98%80=astral&%EE%80%80=bmp', 'sort normalizes bound query with form serialization');",
+        "t.equal(url.hash, '#keep', 'sort preserves fragment');",
+        "t.equal(url.search, '?a=first&a=second&space=hello+world&tilde=%7E&z=tail&%F0%9F%98%80=astral&%EE%80%80=bmp', 'second sort is idempotent');"
+      ],
+      "assertion_count": 5,
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_search_params.js",
+          "line_start": 214,
+          "line_end": 225
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url.js",
+          "line_start": 250,
+          "line_end": 263
+        }
+      ],
+      "preconditions": [
+        "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+        "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+        "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+      ],
+      "schedule": {
+        "kind": "one synchronous finite trace",
+        "request_ordinal": 13,
+        "path": "/case/U213",
+        "depends_on": [],
+        "overlap": "none",
+        "runtime_operations": [
+          "Construct a bound URL query with duplicate a, astral and BMP keys, encoded spaces, and a tilde.",
+          "Sort once and assert full key order, duplicate order, exact search, and retained fragment.",
+          "Sort again and assert the same fixed search string."
+        ]
+      },
+      "limits": {
+        "requests_per_case": 1,
+        "repetitions": 1,
+        "request_body_bytes": 0,
+        "concurrent_requests": 1,
+        "request_outer_deadline_seconds": 5,
+        "response_max_bytes": 65536,
+        "case_input_max_code_units": 1024,
+        "case_tuple_max_count": 16,
+        "case_assertion_max_count": 16,
+        "network_calls_from_fixture": 0,
+        "storage_writes_from_fixture": 0,
+        "timers_from_fixture": 0
+      },
+      "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+      "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "UNREVIEWED",
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_pass_claimed": false,
+      "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "prediction_is_runtime_evidence": false,
+      "primary_contract_refs": [
+        "https://url.spec.whatwg.org/#urlsearchparams"
+      ]
+    },
+    {
+      "id": "U214",
+      "title": "Keep a live params iterator current across a temporary list end",
+      "mechanism": "Web IDL pair-iterator liveness and list-length rechecking",
+      "hypothesis": "An iterator may snapshot the initial list, retain a deleted tuple, miss an updated value, or latch completion instead of rechecking the list.",
+      "application_relevance": "Workers may adjust query fields while performing one bounded traversal.",
+      "trace": [
+        "Create params a,b,c and consume one tuple.",
+        "Delete unseen b and append d; assert next tuple c.",
+        "Update unseen d and assert updated tuple.",
+        "Observe done, append e, assert the same iterator yields e and then reports done again; verify fresh iterator final keys."
+      ],
+      "desired_behavior": "Existing iterator yields a,c,updated d, reports done, then yields e after append and reports done again. Web IDL pair iterators do not latch a completed state.",
+      "source_observation": "Pinned generator uses dynamic length during traversal but latches completion when its body ends; Web IDL pair next instead rechecks the target list on every call. Source discrepancy hypothesis only.",
+      "distinctness": "Iterator state across direct list mutation; U206 instead replaces an owning URL record.",
+      "layer": "direct-celld-worker-fetch-global-web-api",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/U214",
+        "request_body": null
+      },
+      "implementation": {
+        "file": "cases.js",
+        "symbol": "U214",
+        "start_line": 153,
+        "end_line": 167
+      },
+      "fixed_runtime_assertions": [
+        "t.deep(cursor.next(), { value: ['a', '1'], done: false }, 'first iterator yield');",
+        "t.deep(cursor.next(), { value: ['c', '3'], done: false }, 'iterator reads current list after removal of unseen entry');",
+        "t.deep(cursor.next(), { value: ['d', 'updated'], done: false }, 'iterator sees value changed before yield');",
+        "t.equal(cursor.next().done, true, 'iterator completes at current end');",
+        "t.deep(cursor.next(), { value: ['e', '5'], done: false }, 'pair iterator rechecks the list after previously reporting done');",
+        "t.equal(cursor.next().done, true, 'iterator reports done again at the new end');",
+        "t.deep([...params.keys()], ['a', 'c', 'd', 'e'], 'fresh iterator sees final list');"
+      ],
+      "assertion_count": 7,
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_search_params.js",
+          "line_start": 175,
+          "line_end": 212
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_search_params.js",
+          "line_start": 227,
+          "line_end": 239
+        }
+      ],
+      "preconditions": [
+        "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+        "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+        "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+      ],
+      "schedule": {
+        "kind": "one synchronous finite trace",
+        "request_ordinal": 14,
+        "path": "/case/U214",
+        "depends_on": [],
+        "overlap": "none",
+        "runtime_operations": [
+          "Create params a,b,c and consume one tuple.",
+          "Delete unseen b and append d; assert next tuple c.",
+          "Update unseen d and assert updated tuple.",
+          "Observe done, append e, assert the same iterator yields e and then reports done again; verify fresh iterator final keys."
+        ]
+      },
+      "limits": {
+        "requests_per_case": 1,
+        "repetitions": 1,
+        "request_body_bytes": 0,
+        "concurrent_requests": 1,
+        "request_outer_deadline_seconds": 5,
+        "response_max_bytes": 65536,
+        "case_input_max_code_units": 1024,
+        "case_tuple_max_count": 16,
+        "case_assertion_max_count": 16,
+        "network_calls_from_fixture": 0,
+        "storage_writes_from_fixture": 0,
+        "timers_from_fixture": 0
+      },
+      "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+      "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "UNREVIEWED",
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_pass_claimed": false,
+      "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+      "static_prediction": "EXPECTED_FAILURE_CANDIDATE",
+      "prediction_is_runtime_evidence": false,
+      "primary_contract_refs": [
+        "https://url.spec.whatwg.org/#urlsearchparams",
+        "https://webidl.spec.whatwg.org/#es-iterable-iterator-prototype-object"
+      ]
+    },
+    {
+      "id": "U215",
+      "title": "Return detached arrays from params entries",
+      "mechanism": "Web IDL pair-iterator result ownership",
+      "hypothesis": "Yielding the internal tuple array may let an ordinary consumer edit bypass params methods and later leak into URL serialization.",
+      "application_relevance": "Workers commonly edit a destructured or collected entries array before constructing a different query.",
+      "trace": [
+        "Construct a bound query and read one entries tuple.",
+        "Edit the returned array locally.",
+        "Assert original params name/value and a fresh full iteration are unchanged.",
+        "Append through the public API and assert href contains no consumer edits; assert the local array kept those edits."
+      ],
+      "desired_behavior": "The returned pair is a new array; editing it has no effect on params or its owning URL.",
+      "source_observation": "Pinned entries yields this.#params[i] directly. Source discrepancy hypothesis only.",
+      "distinctness": "Result aliasing and ownership, not iterator traversal liveness. No prototype mutation or invalid pair input.",
+      "layer": "direct-celld-worker-fetch-global-web-api",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/U215",
+        "request_body": null
+      },
+      "implementation": {
+        "file": "cases.js",
+        "symbol": "U215",
+        "start_line": 169,
+        "end_line": 181
+      },
+      "fixed_runtime_assertions": [
+        "t.equal(params.get('a'), '1', 'mutating yielded pair does not mutate internal name');",
+        "t.equal(params.get('local'), null, 'yielded array is a detached value');",
+        "t.deep([...params], [['a', '1'], ['b', '2']], 'fresh iteration is unaffected by yielded array edits');",
+        "t.equal(url.href, 'https://pairs.example.test/?a=1&b=2&c=3', 'later synchronization cannot leak yielded array edits');",
+        "t.deep(pair, ['local', 'changed'], 'consumer owns the returned array');"
+      ],
+      "assertion_count": 5,
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_search_params.js",
+          "line_start": 227,
+          "line_end": 239
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_search_params.js",
+          "line_start": 195,
+          "line_end": 199
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url.js",
+          "line_start": 250,
+          "line_end": 254
+        }
+      ],
+      "preconditions": [
+        "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+        "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+        "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+      ],
+      "schedule": {
+        "kind": "one synchronous finite trace",
+        "request_ordinal": 15,
+        "path": "/case/U215",
+        "depends_on": [],
+        "overlap": "none",
+        "runtime_operations": [
+          "Construct a bound query and read one entries tuple.",
+          "Edit the returned array locally.",
+          "Assert original params name/value and a fresh full iteration are unchanged.",
+          "Append through the public API and assert href contains no consumer edits; assert the local array kept those edits."
+        ]
+      },
+      "limits": {
+        "requests_per_case": 1,
+        "repetitions": 1,
+        "request_body_bytes": 0,
+        "concurrent_requests": 1,
+        "request_outer_deadline_seconds": 5,
+        "response_max_bytes": 65536,
+        "case_input_max_code_units": 1024,
+        "case_tuple_max_count": 16,
+        "case_assertion_max_count": 16,
+        "network_calls_from_fixture": 0,
+        "storage_writes_from_fixture": 0,
+        "timers_from_fixture": 0
+      },
+      "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+      "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "UNREVIEWED",
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_pass_claimed": false,
+      "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+      "static_prediction": "EXPECTED_FAILURE_CANDIDATE",
+      "prediction_is_runtime_evidence": false,
+      "primary_contract_refs": [
+        "https://url.spec.whatwg.org/#urlsearchparams",
+        "https://webidl.spec.whatwg.org/#es-iterable-iterator-prototype-object"
+      ]
+    },
+    {
+      "id": "U216",
+      "title": "Prefer iterable constructor input and copy its values eagerly",
+      "mechanism": "Constructor iterable-versus-record selection and detached snapshots",
+      "hypothesis": "Construction may enumerate record keys despite an iterator or retain the input pair arrays and source params by reference.",
+      "application_relevance": "Workers adapt iterable key/value sources and clone a query before changing it.",
+      "trace": [
+        "Construct params from a two-pair custom iterable that also has an enumerable record key.",
+        "Edit and extend the source arrays after construction.",
+        "Assert one iterator visit, exact copied pairs, and no record-key entry.",
+        "Copy the params, then mutate the original and assert the copy is unchanged."
+      ],
+      "desired_behavior": "Iterable input wins, is consumed once, and both array-pair and params-copy construction take detached snapshots.",
+      "source_observation": "Pinned constructor checks iterator before record conversion and creates new pairs. Valid two-element iterables only.",
+      "distinctness": "Constructor overload and input lifetime versus the output-pair lifetime in U215.",
+      "layer": "direct-celld-worker-fetch-global-web-api",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/U216",
+        "request_body": null
+      },
+      "implementation": {
+        "file": "cases.js",
+        "symbol": "U216",
+        "start_line": 183,
+        "end_line": 203
+      },
+      "fixed_runtime_assertions": [
+        "t.equal(visits, 1, 'constructor consumes iterable exactly once');",
+        "t.deep([...params], [['tag', 'red'], ['tag', 'blue']], 'iterable takes precedence over record and is copied');",
+        "t.equal(params.has('ignoredRecordKey'), false, 'enumerable record property is not mixed with iterable entries');",
+        "t.deep([...copy], [['tag', 'red'], ['tag', 'blue']], 'copy construction is a detached snapshot');"
+      ],
+      "assertion_count": 4,
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_search_params.js",
+          "line_start": 97,
+          "line_end": 140
+        }
+      ],
+      "preconditions": [
+        "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+        "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+        "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+      ],
+      "schedule": {
+        "kind": "one synchronous finite trace",
+        "request_ordinal": 16,
+        "path": "/case/U216",
+        "depends_on": [],
+        "overlap": "none",
+        "runtime_operations": [
+          "Construct params from a two-pair custom iterable that also has an enumerable record key.",
+          "Edit and extend the source arrays after construction.",
+          "Assert one iterator visit, exact copied pairs, and no record-key entry.",
+          "Copy the params, then mutate the original and assert the copy is unchanged."
+        ]
+      },
+      "limits": {
+        "requests_per_case": 1,
+        "repetitions": 1,
+        "request_body_bytes": 0,
+        "concurrent_requests": 1,
+        "request_outer_deadline_seconds": 5,
+        "response_max_bytes": 65536,
+        "case_input_max_code_units": 1024,
+        "case_tuple_max_count": 16,
+        "case_assertion_max_count": 16,
+        "network_calls_from_fixture": 0,
+        "storage_writes_from_fixture": 0,
+        "timers_from_fixture": 0
+      },
+      "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+      "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "UNREVIEWED",
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_pass_claimed": false,
+      "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "prediction_is_runtime_evidence": false,
+      "primary_contract_refs": [
+        "https://url.spec.whatwg.org/#urlsearchparams"
+      ]
+    },
+    {
+      "id": "U217",
+      "title": "Resolve URLPattern base inputs and preserve result input arguments",
+      "mechanism": "URLPattern string/base overload and canonicalized match-input host seam",
+      "hypothesis": "Pattern or input base resolution may disagree, or the result may confuse raw input arguments with canonicalized component inputs.",
+      "application_relevance": "Workers build routers relative to a service base and need both captured route values and traceable original inputs.",
+      "trace": [
+        "Construct a relative items/:id pattern against one base.",
+        "Match one relative input with an uppercase-host, explicit-default-port base.",
+        "Assert pattern path, nonnull result, raw inputs array, canonical host/port/path, and id capture.",
+        "Assert a valid URL under another path is a nonmatch."
+      ],
+      "desired_behavior": "Relative route is /catalog/items/:id; input canonicalizes to shop.example.test and empty port, captures 42, and retains both raw arguments.",
+      "source_observation": "Native ops canonicalize while JS constructs inputs separately. This verifies the seam rather than duplicating plain URL constructor behavior.",
+      "distinctness": "Pattern constructor and exec base overload, input provenance, and canonical component mapping.",
+      "layer": "direct-celld-worker-fetch-global-web-api",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/U217",
+        "request_body": null
+      },
+      "implementation": {
+        "file": "cases.js",
+        "symbol": "U217",
+        "start_line": 205,
+        "end_line": 216
+      },
+      "fixed_runtime_assertions": [
+        "t.equal(pattern.pathname, '/catalog/items/:id', 'relative pattern resolves against base directory');",
+        "t.equal(result !== null, true, 'relative input matches after canonicalization');",
+        "t.deep(result.inputs, ['items/42', 'https://SHOP.example.test:443/catalog/'], 'result retains input and explicit base arguments');",
+        "t.equal(result.hostname.input, 'shop.example.test', 'input hostname canonicalized');",
+        "t.equal(result.port.input, '', 'default port canonicalized away');",
+        "t.equal(result.pathname.input, '/catalog/items/42', 'relative input path resolved');",
+        "t.equal(result.pathname.groups.id, '42', 'named capture from resolved input');",
+        "t.equal(pattern.test('https://shop.example.test/other/items/42'), false, 'valid URL outside base path is a nonmatch');"
+      ],
+      "assertion_count": 8,
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_pattern.js",
+          "line_start": 19,
+          "line_end": 33
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_pattern.js",
+          "line_start": 37,
+          "line_end": 59
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_pattern.js",
+          "line_start": 79,
+          "line_end": 97
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js.rs",
+          "line_start": 10675,
+          "line_end": 10765
+        }
+      ],
+      "preconditions": [
+        "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+        "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+        "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+      ],
+      "schedule": {
+        "kind": "one synchronous finite trace",
+        "request_ordinal": 17,
+        "path": "/case/U217",
+        "depends_on": [],
+        "overlap": "none",
+        "runtime_operations": [
+          "Construct a relative items/:id pattern against one base.",
+          "Match one relative input with an uppercase-host, explicit-default-port base.",
+          "Assert pattern path, nonnull result, raw inputs array, canonical host/port/path, and id capture.",
+          "Assert a valid URL under another path is a nonmatch."
+        ]
+      },
+      "limits": {
+        "requests_per_case": 1,
+        "repetitions": 1,
+        "request_body_bytes": 0,
+        "concurrent_requests": 1,
+        "request_outer_deadline_seconds": 5,
+        "response_max_bytes": 65536,
+        "case_input_max_code_units": 1024,
+        "case_tuple_max_count": 16,
+        "case_assertion_max_count": 16,
+        "network_calls_from_fixture": 0,
+        "storage_writes_from_fixture": 0,
+        "timers_from_fixture": 0
+      },
+      "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+      "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "UNREVIEWED",
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_pass_claimed": false,
+      "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "prediction_is_runtime_evidence": false,
+      "primary_contract_refs": [
+        "https://urlpattern.spec.whatwg.org/"
+      ]
+    },
+    {
+      "id": "U218",
+      "title": "Represent optional URLPattern captures and isolate exec result objects",
+      "mechanism": "Optional pathname group materialization and result freshness",
+      "hypothesis": "An unmatched group may be omitted or represented as empty string, or mutation of one result may affect later matches.",
+      "application_relevance": "Workers route collection and item URLs through one pattern and inspect optional named fields.",
+      "trace": [
+        "Construct /books/:id? and exec both collection and item URLs.",
+        "Assert both match; optional group exists with undefined value when absent and 42 when present.",
+        "Edit the present result and exec again to assert fresh groups.",
+        "Reject a valid URL with an extra segment and assert no custom regexp groups."
+      ],
+      "desired_behavior": "Absent optional id is an own property with undefined value; result edits do not affect a later exec.",
+      "source_observation": "JS maps regex captures into a freshly allocated groups object. Optional-group undefined is explicitly asserted before JSON serialization.",
+      "distinctness": "Optional capture shape and per-call result ownership, rather than base resolution or regexp restriction.",
+      "layer": "direct-celld-worker-fetch-global-web-api",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/U218",
+        "request_body": null
+      },
+      "implementation": {
+        "file": "cases.js",
+        "symbol": "U218",
+        "start_line": 218,
+        "end_line": 231
+      },
+      "fixed_runtime_assertions": [
+        "t.equal(missing !== null && present !== null, true, 'optional segment matches with and without capture');",
+        "t.equal(Object.prototype.hasOwnProperty.call(missing.pathname.groups, 'id'), true, 'unmatched optional group is present as a property');",
+        "t.equal(missing.pathname.groups.id, undefined, 'unmatched optional group value is undefined');",
+        "t.equal(present.pathname.groups.id, '42', 'present optional group captures segment');",
+        "t.equal(again.pathname.groups.id, '42', 'exec result groups are fresh on each call');",
+        "t.equal(pattern.test('https://library.example.test/books/42/extra'), false, 'optional segment does not consume extra path components');",
+        "t.equal(pattern.hasRegExpGroups, false, 'ordinary named optional group is not custom regexp');"
+      ],
+      "assertion_count": 7,
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_pattern.js",
+          "line_start": 69,
+          "line_end": 97
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js.rs",
+          "line_start": 10703,
+          "line_end": 10719
+        }
+      ],
+      "preconditions": [
+        "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+        "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+        "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+      ],
+      "schedule": {
+        "kind": "one synchronous finite trace",
+        "request_ordinal": 18,
+        "path": "/case/U218",
+        "depends_on": [],
+        "overlap": "none",
+        "runtime_operations": [
+          "Construct /books/:id? and exec both collection and item URLs.",
+          "Assert both match; optional group exists with undefined value when absent and 42 when present.",
+          "Edit the present result and exec again to assert fresh groups.",
+          "Reject a valid URL with an extra segment and assert no custom regexp groups."
+        ]
+      },
+      "limits": {
+        "requests_per_case": 1,
+        "repetitions": 1,
+        "request_body_bytes": 0,
+        "concurrent_requests": 1,
+        "request_outer_deadline_seconds": 5,
+        "response_max_bytes": 65536,
+        "case_input_max_code_units": 1024,
+        "case_tuple_max_count": 16,
+        "case_assertion_max_count": 16,
+        "network_calls_from_fixture": 0,
+        "storage_writes_from_fixture": 0,
+        "timers_from_fixture": 0
+      },
+      "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+      "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "UNREVIEWED",
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_pass_claimed": false,
+      "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "prediction_is_runtime_evidence": false,
+      "primary_contract_refs": [
+        "https://urlpattern.spec.whatwg.org/"
+      ]
+    },
+    {
+      "id": "U219",
+      "title": "Apply URLPattern ignoreCase across components without changing captures",
+      "mechanism": "URLPattern option propagation to compiled component regex flags",
+      "hypothesis": "ignoreCase may apply only to a subset of components or normalize the text returned in captures.",
+      "application_relevance": "Workers build case-insensitive document routes while retaining user-supplied capture spelling.",
+      "trace": [
+        "Construct the same multi-component pattern once with ignoreCase and once with the default option.",
+        "Match a single differently cased path/query/fragment input and assert opposite verdicts.",
+        "Assert original capture spelling and hash input.",
+        "Assert an unrelated fragment still does not match."
+      ],
+      "desired_behavior": "Case-insensitive pattern matches, default does not; captures remain Guide and Read and unrelated fragment remains excluded.",
+      "source_observation": "Pinned code passes ignoreCase to Rust compilation and chooses ui flags in JS. Both paths must agree.",
+      "distinctness": "One option-propagation mechanism with a within-case control; the two options do not count as two designs.",
+      "layer": "direct-celld-worker-fetch-global-web-api",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/U219",
+        "request_body": null
+      },
+      "implementation": {
+        "file": "cases.js",
+        "symbol": "U219",
+        "start_line": 233,
+        "end_line": 245
+      },
+      "fixed_runtime_assertions": [
+        "t.equal(insensitive.test(input), true, 'ignoreCase applies to pathname query and fragment components');",
+        "t.equal(sensitive.test(input), false, 'default pattern preserves case sensitivity outside canonicalized hostname');",
+        "t.equal(result.pathname.groups.page, 'Guide', 'case-insensitive matching preserves captured input spelling');",
+        "t.equal(result.search.groups.mode, 'Read', 'query capture preserves input case');",
+        "t.equal(result.hash.input, 'top', 'result stores actual canonicalized fragment input');",
+        "t.equal(insensitive.test('https://docs.example.test/docs/Guide?mode=Read#other'), false, 'case folding does not disable component constraints');"
+      ],
+      "assertion_count": 6,
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_pattern.js",
+          "line_start": 37,
+          "line_end": 59
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_pattern.js",
+          "line_start": 71,
+          "line_end": 97
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js.rs",
+          "line_start": 10679,
+          "line_end": 10701
+        }
+      ],
+      "preconditions": [
+        "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+        "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+        "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+      ],
+      "schedule": {
+        "kind": "one synchronous finite trace",
+        "request_ordinal": 19,
+        "path": "/case/U219",
+        "depends_on": [],
+        "overlap": "none",
+        "runtime_operations": [
+          "Construct the same multi-component pattern once with ignoreCase and once with the default option.",
+          "Match a single differently cased path/query/fragment input and assert opposite verdicts.",
+          "Assert original capture spelling and hash input.",
+          "Assert an unrelated fragment still does not match."
+        ]
+      },
+      "limits": {
+        "requests_per_case": 1,
+        "repetitions": 1,
+        "request_body_bytes": 0,
+        "concurrent_requests": 1,
+        "request_outer_deadline_seconds": 5,
+        "response_max_bytes": 65536,
+        "case_input_max_code_units": 1024,
+        "case_tuple_max_count": 16,
+        "case_assertion_max_count": 16,
+        "network_calls_from_fixture": 0,
+        "storage_writes_from_fixture": 0,
+        "timers_from_fixture": 0
+      },
+      "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+      "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "UNREVIEWED",
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_pass_claimed": false,
+      "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "prediction_is_runtime_evidence": false,
+      "primary_contract_refs": [
+        "https://urlpattern.spec.whatwg.org/"
+      ]
+    },
+    {
+      "id": "U220",
+      "title": "Enforce custom regexp and all URLPattern component constraints",
+      "mechanism": "Custom regexp-group metadata and eight-component conjunction",
+      "hypothesis": "Custom group metadata or group-name mapping may be lost at the host seam, or one successful component may mask another component nonmatch.",
+      "application_relevance": "Workers route numeric order IDs only for one hostname and a required query shape.",
+      "trace": [
+        "Construct fixed numeric-id pathname and named search capture patterns for api.example.test.",
+        "Assert custom-regexp flag and exact captures on one matching URL.",
+        "Exec a valid draft-string ID URL and require null.",
+        "Require false for valid URLs with the wrong query shape or hostname."
+      ],
+      "desired_behavior": "2048 and full are separate named captures; nonnumeric id, wrong search key, and wrong hostname each prevent a match.",
+      "source_observation": "Rust returns regex and group-name metadata; JS uses every component for test and stops exec on the first nonmatch.",
+      "distinctness": "Custom regexp restriction and conjunction across components, not optional capture shape or ignoreCase.",
+      "layer": "direct-celld-worker-fetch-global-web-api",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/U220",
+        "request_body": null
+      },
+      "implementation": {
+        "file": "cases.js",
+        "symbol": "U220",
+        "start_line": 247,
+        "end_line": 257
+      },
+      "fixed_runtime_assertions": [
+        "t.equal(pattern.hasRegExpGroups, true, 'custom numeric regexp is reflected by hasRegExpGroups');",
+        "t.equal(result !== null, true, 'numeric order path matches');",
+        "t.equal(result.pathname.groups.id, '2048', 'numeric regexp named capture');",
+        "t.equal(result.search.groups.view, 'full', 'separate query capture is mapped to correct component');",
+        "t.equal(pattern.exec('https://api.example.test/orders/draft?view=full'), null, 'valid URL rejected by numeric path constraint');",
+        "t.equal(pattern.test('https://api.example.test/orders/2048?mode=full'), false, 'matching path cannot override mismatching search component');",
+        "t.equal(pattern.test('https://other.example.test/orders/2048?view=full'), false, 'matching captures cannot override hostname constraint');"
+      ],
+      "assertion_count": 7,
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/url_pattern.js",
+          "line_start": 69,
+          "line_end": 97
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js.rs",
+          "line_start": 10703,
+          "line_end": 10719
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js.rs",
+          "line_start": 10724,
+          "line_end": 10765
+        }
+      ],
+      "preconditions": [
+        "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+        "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+        "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+      ],
+      "schedule": {
+        "kind": "one synchronous finite trace",
+        "request_ordinal": 20,
+        "path": "/case/U220",
+        "depends_on": [],
+        "overlap": "none",
+        "runtime_operations": [
+          "Construct fixed numeric-id pathname and named search capture patterns for api.example.test.",
+          "Assert custom-regexp flag and exact captures on one matching URL.",
+          "Exec a valid draft-string ID URL and require null.",
+          "Require false for valid URLs with the wrong query shape or hostname."
+        ]
+      },
+      "limits": {
+        "requests_per_case": 1,
+        "repetitions": 1,
+        "request_body_bytes": 0,
+        "concurrent_requests": 1,
+        "request_outer_deadline_seconds": 5,
+        "response_max_bytes": 65536,
+        "case_input_max_code_units": 1024,
+        "case_tuple_max_count": 16,
+        "case_assertion_max_count": 16,
+        "network_calls_from_fixture": 0,
+        "storage_writes_from_fixture": 0,
+        "timers_from_fixture": 0
+      },
+      "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+      "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "UNREVIEWED",
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_pass_claimed": false,
+      "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "prediction_is_runtime_evidence": false,
+      "primary_contract_refs": [
+        "https://urlpattern.spec.whatwg.org/"
+      ]
+    }
+  ]
+}

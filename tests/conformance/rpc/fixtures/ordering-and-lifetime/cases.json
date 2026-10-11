@@ -1,0 +1,1032 @@
+[
+  {
+    "id": "O001",
+    "intent": "A synchronous target exception must advance the invocation lane exactly once",
+    "preconditions": [
+      "COMMON",
+      "Empty provider event ledger and live main endpoint"
+    ],
+    "trace": [
+      "Invoke before mark, failing middle call and after mark without awaiting intervening results",
+      "Await before and exact planned:middle Error",
+      "Await after; compare the three-entry provider ledger",
+      "Call the same endpoint again for liveness"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Three eager calls sharing one native capability lane; one synchronous throw",
+    "oracle": "The lane delivers before/fail/after once each and remains usable",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-ORDER",
+      "SC-ERROR"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O001 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O002",
+    "intent": "A pending asynchronous rejection must not serialize unrelated invocation completion on that lane",
+    "preconditions": [
+      "COMMON",
+      "Provider failure gate closed; main endpoint live"
+    ],
+    "trace": [
+      "Start a held call that will reject after gate release",
+      "Observe main:enter:held through independent control RPC",
+      "Complete a later mark while the earlier result remains held",
+      "Release failure gate; require planned:held Error; complete post-rejection mark"
+    ],
+    "failure_schedule": "Explicit named gate is released only after observed entry; no time-based race; at most one injected failure when the trace names it",
+    "stress": "Dispatch versus result-completion order with an explicit asynchronous failure barrier",
+    "oracle": "Later invocation executes before held exit; held error has intended category and later call still works",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-ORDER",
+      "SC-ERROR"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O002 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O003",
+    "intent": "A throwing property resolution must release ordered dispatch for the following method",
+    "preconditions": [
+      "COMMON",
+      "Native RpcProperty supported through returned target; event ledger empty"
+    ],
+    "trace": [
+      "Await property handle through an immediately attached native Promise consumer",
+      "Issue following mark before awaiting the property rejection",
+      "Require planned:getter Error and exactly one getter event",
+      "Require following mark and post-operation ping"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Getter-resolution failure on an ordered target lane",
+    "oracle": "Ledger contains getter once then following method once; target is live",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-ORDER",
+      "SC-ERROR"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O003 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O004",
+    "intent": "Local argument-encoding refusal must not leave a sender-lane sequence gap",
+    "preconditions": [
+      "COMMON",
+      "Supported ordinary Symbol rejection; main endpoint live"
+    ],
+    "trace": [
+      "Run positive mark and capture provider events",
+      "Attempt mark with ordinary non-serializable Symbol",
+      "Require DataCloneError and unchanged provider events",
+      "Complete another valid mark on the same stub and ping"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Pre-enqueue encoding failure followed by same-lane reuse; no large payload",
+    "oracle": "No rejected argument reaches target; exact valid marks before and after",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-ORDER",
+      "SC-CLONE"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O004 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O005",
+    "intent": "Reverse callback reentry into the exact pending capability must not deadlock",
+    "preconditions": [
+      "COMMON",
+      "Local callback can call a remote main handle already awaiting it"
+    ],
+    "trace": [
+      "Call remote outer method with native callback parameter",
+      "Callback calls main.mark while outer waits",
+      "Await returned nested result; compare outer-start/nested-mark/outer-end",
+      "Release callback and require one final disposer plus main liveness"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Two-direction cyclic RPC with one nested callback",
+    "oracle": "Single nested effect precedes outer completion; exact callback count and disposal",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-ORDER",
+      "SC-PARAM",
+      "SC-DISPOSE"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O005 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O006",
+    "intent": "One capability waiting at an application barrier must not globally block another target",
+    "preconditions": [
+      "COMMON",
+      "Two separately exported endpoints in same provider DO and closed gate A"
+    ],
+    "trace": [
+      "Enter lane A held call",
+      "Observe exact entry barrier via control stub",
+      "Complete lane B mark before releasing A",
+      "Release A, await its value and perform resumed A mark"
+    ],
+    "failure_schedule": "Explicit named gate is released only after observed entry; no time-based race; at most one injected failure when the trace names it",
+    "stress": "Independent native capability routes in one owner",
+    "oracle": "B completes during A wait; no missing or duplicated events",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-ORDER"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O006 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O007",
+    "intent": "Last-handle disposal after entry must reject new work while preserving an already-entered call",
+    "preconditions": [
+      "COMMON",
+      "Endpoint wait method entered before disposal; fresh replacement endpoint available"
+    ],
+    "trace": [
+      "Observe held-call entry",
+      "Dispose the sole endpoint handle",
+      "Require disposed Error from new mark and unchanged effects",
+      "Release held body; require its original result and one target disposer",
+      "Call freshly minted endpoint"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Pending invocation versus final handle release",
+    "oracle": "Entered call finishes once; stale call is excluded; endpoint released exactly once; root live",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-ORDER",
+      "SC-DISPOSE"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O007 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O008",
+    "intent": "Fire-and-forget notification rejection must neither reorder nor evict a retained observer",
+    "preconditions": [
+      "COMMON",
+      "Observer throws only for bad; three notification messages plus one liveness call"
+    ],
+    "trace": [
+      "Retain observer; send first, bad and last without awaiting their callback results",
+      "Observe completion receipts and exactly one planned:notification failure",
+      "Compare callback invocation order",
+      "Use the retained callback again, remove it and release original"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Notification result independence and one reverse exception",
+    "oracle": "Callback entries first/bad/last are exact; error captured; later emit succeeds; one final disposal",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-ORDER",
+      "SC-PARAM",
+      "SC-DISPOSE",
+      "SC-ERROR"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O008 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O009",
+    "intent": "Successful parameter auto-release must preserve the modern caller-owned handle",
+    "preconditions": [
+      "COMMON",
+      "Modern duplicate-parameter flag and local RpcStub original"
+    ],
+    "trace": [
+      "Pass original as callback argument",
+      "Await callback result and require no original disposal",
+      "Call original locally through its native stub",
+      "Dispose original and await exactly one disposer"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Parameter borrow success and last caller reference",
+    "oracle": "Remote and caller callback invocations each once; disposal only after original release",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PARAM",
+      "SC-DISPOSE"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O009 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O010",
+    "intent": "Callee rejection before callback use must release its borrowed handle without revoking original",
+    "preconditions": [
+      "COMMON",
+      "Live endpoint; unused callback and empty callback ledger"
+    ],
+    "trace": [
+      "Capture provider ledger after positive ping",
+      "Pass callback to method that records entry then throws",
+      "Require planned:parameter Error and no callback invocation",
+      "Call original callback, dispose it and verify one disposer plus endpoint ping"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Exception cleanup before argument use",
+    "oracle": "One provider failure effect; original callback remains usable; no leaked parameter lease",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PARAM",
+      "SC-DISPOSE",
+      "SC-ERROR"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O010 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O011",
+    "intent": "Reverse callback failure must clean each borrowed invocation independently",
+    "preconditions": [
+      "COMMON",
+      "Callback throws only on bad and remains callable otherwise"
+    ],
+    "trace": [
+      "Run positive callback call",
+      "Capture provider effects; call bad callback branch",
+      "Require planned:callback Error and one provider plus one callback effect",
+      "Run after call, release original and inspect final disposal"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Reverse exception propagation through parameter scope",
+    "oracle": "Exactly control/bad/after callback entries, continued liveness and one last release",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PARAM",
+      "SC-DISPOSE",
+      "SC-ERROR"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O011 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O012",
+    "intent": "Child capability returned by a target owns an independent lifetime from its parent",
+    "preconditions": [
+      "COMMON",
+      "Parent can return separately allocated child"
+    ],
+    "trace": [
+      "Mint child through parent",
+      "Release parent and observe its single disposer",
+      "Invoke child and require it has no disposal yet",
+      "Release child; compare exact independent disposal counts"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Parent-result capability lifetime separation",
+    "oracle": "Child lives after parent release; each target disposed once",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-RESULT",
+      "SC-DISPOSE"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O012 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O013",
+    "intent": "Duplicate-of-duplicate must remain owned after both ancestor handles are released",
+    "preconditions": [
+      "COMMON",
+      "Returned native RpcStub supports dup"
+    ],
+    "trace": [
+      "Create duplicate A then duplicate B from A",
+      "Release A then original while B stays owned",
+      "Assert no target disposal and invoke B",
+      "Release B and observe single target disposer"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Three-generation same-entry duplicate chain",
+    "oracle": "Ancestor release does not revoke descendant; one final cohort release",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-DISPOSE"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O013 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O014",
+    "intent": "Retaining a duplicate before throwing must preserve the retained lease past exceptional return",
+    "preconditions": [
+      "COMMON",
+      "Remote retention slot empty; local original tracked"
+    ],
+    "trace": [
+      "Retain callback into kept slot then throw",
+      "Require planned:retain Error and exactly one retain effect",
+      "Release caller original and prove retained duplicate is not disposed",
+      "Emit later through kept slot, remove it and require one disposer"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Exceptional return after a deliberate ownership fork",
+    "oracle": "Retained callback survives both exception cleanup and caller release",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PARAM",
+      "SC-DISPOSE",
+      "SC-ERROR"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O014 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O015",
+    "intent": "Disposing a child then its containing result must be idempotent and preserve its sibling",
+    "preconditions": [
+      "COMMON",
+      "Result tree contains distinct left and right endpoints"
+    ],
+    "trace": [
+      "Dispose left; await its disposer",
+      "Invoke right and assert right not disposed",
+      "Dispose whole result tree",
+      "Verify left and right each disposed exactly once"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Explicit child disposal overlapping result-group disposal",
+    "oracle": "No sibling invalidation or duplicate child release",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-RESULT",
+      "SC-DISPOSE"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O015 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O016",
+    "intent": "Repeated disposal of the same handle must not re-enter the target or release twice",
+    "preconditions": [
+      "COMMON",
+      "Live endpoint and ability to mint replacement"
+    ],
+    "trace": [
+      "Run control mark; dispose handle twice",
+      "Observe exactly one target disposal and capture ledger",
+      "Require disposed Error on stale mark with unchanged effects",
+      "Mint replacement and complete live mark"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Idempotent handle drop plus post-drop dispatch rejection",
+    "oracle": "Exactly one old disposer, no stale target effect, independent replacement live",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-DISPOSE",
+      "SC-ERROR"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O016 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O017",
+    "intent": "Duplication of a disposed handle must fail without affecting its existing sibling",
+    "preconditions": [
+      "COMMON",
+      "Original and one live sibling duplicate"
+    ],
+    "trace": [
+      "Dispose original; capture provider state",
+      "Attempt original.dup and require disposed Error",
+      "Assert full provider state unchanged",
+      "Use sibling and release it; observe one final disposer"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Invalid local ownership operation with a surviving reference",
+    "oracle": "Failed dup neither creates a lease nor revokes sibling",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-DISPOSE",
+      "SC-ERROR"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O017 state transition; counts, repetitions and deployment placements do not create additional cases.",
+    "contract_scope": "Pinned celld-specific disposed-dup Error. Upstream workerd v1.20261001.1 JsRpcStub::dup reaches an assertion path for an already disposed transient handle; error parity is not established."
+  },
+  {
+    "id": "O018",
+    "intent": "Aliased references in one result group must not over-release an explicit survivor duplicate",
+    "preconditions": [
+      "COMMON",
+      "Result contains the same exported native handle in two fields"
+    ],
+    "trace": [
+      "Call both alias fields",
+      "Duplicate one alias",
+      "Dispose result group while survivor exists",
+      "Use survivor and release it; observe one target disposal"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "One transferred capability appearing repeatedly in a result graph",
+    "oracle": "Result disposal releases alias cohort safely; survivor remains live",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-RESULT",
+      "SC-DISPOSE"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O018 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O019",
+    "intent": "Repeated same-handle parameters must not consume original ownership twice",
+    "preconditions": [
+      "COMMON",
+      "One callback stub appears twice in a single parameter array"
+    ],
+    "trace": [
+      "Call provider with same original in two argument positions",
+      "Require both callbacks in stated order",
+      "Call caller-owned original again",
+      "Release original and observe exactly one final disposer"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Argument alias memoization and automatic cleanup",
+    "oracle": "one/two/caller invocations exact; original survives repeated parameter cleanup",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PARAM",
+      "SC-DISPOSE"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O019 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O020",
+    "intent": "One failing concurrent borrow must not dispose another in-flight borrow of the same callback",
+    "preconditions": [
+      "COMMON",
+      "Two independent remote gates; original shared by two overlapping calls"
+    ],
+    "trace": [
+      "Start good and bad borrow calls; observe both entry barriers",
+      "Release original then bad gate",
+      "Require planned:bad Error, no callback entry and no final disposal",
+      "Release good gate; require good callback once and one final disposal"
+    ],
+    "failure_schedule": "Explicit named gate is released only after observed entry; no time-based race; at most one injected failure when the trace names it",
+    "stress": "Concurrent reference ownership with mixed settlements",
+    "oracle": "Bad branch releases only its borrow; good callback remains usable and eventually disposed",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PARAM",
+      "SC-DISPOSE",
+      "SC-ERROR",
+      "SC-ORDER"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O020 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O021",
+    "intent": "Replacing a retained observer while its old call is pending must route new calls correctly",
+    "preconditions": [
+      "COMMON",
+      "Old callback local barrier closed; distinct replacement callback"
+    ],
+    "trace": [
+      "Retain old and observe entry of held emit",
+      "Replace slot with new and release original old",
+      "Complete new emit before releasing old local gate",
+      "Release old gate; require old result and separate final disposals"
+    ],
+    "failure_schedule": "Explicit named gate is released only after observed entry; no time-based race; at most one injected failure when the trace names it",
+    "stress": "Subscription replacement during an active reverse RPC",
+    "oracle": "Old in-flight operation finishes; later dispatch reaches only new callback",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-PARAM",
+      "SC-DISPOSE",
+      "SC-ORDER"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O021 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O022",
+    "intent": "Two retained slots duplicating one native callback must release independently",
+    "preconditions": [
+      "COMMON",
+      "Same callback original retained in alpha and beta"
+    ],
+    "trace": [
+      "Retain both slots then release original",
+      "Remove alpha and require callback still owned",
+      "Require alpha absent and beta callback succeeds",
+      "Remove beta and require one disposer and one callback entry"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Multi-subscriber slot ownership with one shared underlying stub",
+    "oracle": "Removing one owner does not cancel the remaining slot",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PARAM",
+      "SC-DISPOSE"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O022 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O023",
+    "intent": "Completed observer replacement must release the old route and never call it again",
+    "preconditions": [
+      "COMMON",
+      "Two independent callbacks and one replacement slot"
+    ],
+    "trace": [
+      "Retain old, drop original and call before",
+      "Replace with new and await old disposer",
+      "Emit after and prove only new callback received it",
+      "Remove and drop new, verifying separate disposer counts"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Steady-state observer route swap after old completion",
+    "oracle": "Old sees before only; new sees after only; both released once",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PARAM",
+      "SC-DISPOSE",
+      "SC-ORDER"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O023 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O024",
+    "intent": "Taking a retained callback into a returned result must transfer its surviving lease",
+    "preconditions": [
+      "COMMON",
+      "One retained slot is the last owner after original release"
+    ],
+    "trace": [
+      "Retain callback and release original",
+      "Take slot as RPC result, removing server slot",
+      "Require removed slot absent and invoke returned handle",
+      "Release returned handle and require one final disposer"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Retained parameter to return-value transfer",
+    "oracle": "Result remains callable without sender slot or original handle",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PARAM",
+      "SC-RESULT",
+      "SC-DISPOSE"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O024 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O025",
+    "intent": "A rejected retained callback must stay registered for later successful calls",
+    "preconditions": [
+      "COMMON",
+      "Callback throws for bad only; server slot is sole owner"
+    ],
+    "trace": [
+      "Emit before positive control; capture server ledger",
+      "Emit bad and require planned:retained Error with one dispatch effect",
+      "Emit after through same slot and compare exact callback ledger",
+      "Remove slot and observe final disposal"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Retained reverse RPC error independent of registration lifetime",
+    "oracle": "Exception does not silently unsubscribe or duplicate callback execution",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PARAM",
+      "SC-DISPOSE",
+      "SC-ERROR"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O025 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O026",
+    "intent": "A callback may reenter its owner to unsubscribe itself without canceling its current result",
+    "preconditions": [
+      "COMMON",
+      "Sole retained callback ownership; callback hook removes its own slot"
+    ],
+    "trace": [
+      "Register self-removing callback and release original",
+      "Emit once; callback performs reverse remove",
+      "Require current result and final disposal",
+      "Emit again and require absent with no second callback effect"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Three-leg callback/unsubscribe reentry during final release",
+    "oracle": "Self-removal completes once and future callbacks are excluded",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-PARAM",
+      "SC-DISPOSE",
+      "SC-ORDER"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O026 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O027",
+    "intent": "A notification that already entered must complete after its retained registration is released",
+    "preconditions": [
+      "COMMON",
+      "Local callback barrier; notification completion ledger"
+    ],
+    "trace": [
+      "Retain observer and require notify returns queued without awaiting callback",
+      "Observe callback entry before removing slot and original",
+      "Release local callback barrier",
+      "Require successful notification completion, no error and single disposal",
+      "Require later emit absent"
+    ],
+    "failure_schedule": "Explicit named gate is released only after observed entry; no time-based race; at most one injected failure when the trace names it",
+    "stress": "Fire-and-forget callback lifetime across final registration release",
+    "oracle": "Entry continues once while future dispatch is removed; no swallowed failure",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-PARAM",
+      "SC-DISPOSE",
+      "SC-ORDER"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O027 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O028",
+    "intent": "A capability returned from a reverse callback must outlive both callback parameter scope and parent",
+    "preconditions": [
+      "COMMON",
+      "Callback child hook returns duplicate leaf stub"
+    ],
+    "trace": [
+      "Request child through remote target and reverse parent callback",
+      "Release parent and original leaf",
+      "Invoke returned leaf after both releases",
+      "Dispose result and verify independent parent/leaf finalizers plus forward target liveness"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Two-way returned capability forwarding through nested RPC result",
+    "oracle": "Child ownership survives both intermediate parameter and callback owner cleanup",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PARAM",
+      "SC-RESULT",
+      "SC-DISPOSE"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O028 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O029",
+    "intent": "A parameter retained without dup must become unusable after its call returns",
+    "preconditions": [
+      "COMMON",
+      "Original callback retained locally; provider deliberately stores borrowed parameter"
+    ],
+    "trace": [
+      "Return from storing parameter without duplication",
+      "Attempt later use; require disposed Error and no callback effect",
+      "Call original and then register/use a proper fresh duplicate",
+      "Release all and verify final disposer"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Expired borrowed receiver handle versus still-live caller handle",
+    "oracle": "Expired receiver cannot call target; valid original and fresh retention remain live",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PARAM",
+      "SC-DISPOSE",
+      "SC-ERROR"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O029 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O030",
+    "intent": "Nested capability forwarding under modern parameter duplication must preserve both caller handles",
+    "preconditions": [
+      "COMMON",
+      "Main and destination endpoints plus one callback on origin"
+    ],
+    "trace": [
+      "Pass destination and callback to main forwarding method",
+      "Main calls destination which calls callback",
+      "Invoke caller destination and callback again",
+      "Compare nested provider sequence and release callback"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Three RPC legs with an existing remote stub and callback as borrowed parameters",
+    "oracle": "Forward operation routes exactly once and does not move caller-owned arguments",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PARAM",
+      "SC-DISPOSE",
+      "SC-ORDER"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O030 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O031",
+    "intent": "Separate exports of the same raw RpcTarget create independent disposal cohorts",
+    "preconditions": [
+      "COMMON",
+      "Same local raw target plus separately constructed local stub; two remote retention slots"
+    ],
+    "trace": [
+      "Export raw target separately to first and second slots",
+      "Remove first and observe one disposer while second still callable",
+      "Remove second and observe second disposer",
+      "Drop independent local stub and observe third disposer"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Raw target export identity versus explicit native stub duplication",
+    "oracle": "Independent exports remain live and each cohort finalizes once",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PARAM",
+      "SC-DISPOSE"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O031 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O032",
+    "intent": "A remote retained duplicate of a result child must survive result-group disposal",
+    "preconditions": [
+      "COMMON",
+      "Returned two-child result and empty remote retention slot"
+    ],
+    "trace": [
+      "Retain result right child remotely",
+      "Dispose whole result tree and observe only left disposal",
+      "Take retained right as a fresh result and call it",
+      "Dispose returned right and verify both finalizers exactly once"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Result group to argument duplicate to retained return roundtrip",
+    "oracle": "Container does not revoke retained child; transfer chain releases exactly once",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PARAM",
+      "SC-RESULT",
+      "SC-DISPOSE"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O032 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O033",
+    "intent": "Disposing a pending RPC promise must release a capability that arrives later",
+    "preconditions": [
+      "COMMON",
+      "Native RpcPromise Symbol.dispose detected in precondition; closed producer gate"
+    ],
+    "trace": [
+      "Begin deferred child producer and observe prepare barrier",
+      "Dispose its RpcPromise without claiming body cancellation",
+      "Release producer gate and observe publish effect",
+      "Require late child disposal and live parent"
+    ],
+    "failure_schedule": "Explicit named gate is released only after observed entry; no time-based race; at most one injected failure when the trace names it",
+    "stress": "Abandoned pending result ownership with deterministic publication barrier",
+    "oracle": "Producer runs once; unowned eventual child is disposed once",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-PROMISE",
+      "SC-DISPOSE"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O033 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O034",
+    "intent": "Disposing a resolved RPC promise must dispose its original result but preserve a duplicate",
+    "preconditions": [
+      "COMMON",
+      "Native RpcPromise disposal preflight; child result resolved"
+    ],
+    "trace": [
+      "Duplicate child result from resolved RpcPromise",
+      "Dispose the original promise",
+      "Require disposed Error on original child and unchanged provider effects",
+      "Use surviving duplicate then release and check final disposer"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Resolved promise ownership group with explicit escaping duplicate",
+    "oracle": "Original result invalidated without invalidating duplicate; parent stays live",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-PROMISE",
+      "SC-DISPOSE",
+      "SC-ERROR"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O034 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O035",
+    "intent": "Disposed pending promise must refuse new pipeline admission without target effects",
+    "preconditions": [
+      "COMMON",
+      "Native RpcPromise disposal available; deferred producer gate closed"
+    ],
+    "trace": [
+      "Observe producer prepare barrier and dispose its RpcPromise",
+      "Attempt new speculative child mark and require disposed Error",
+      "Compare unchanged before/after provider ledger",
+      "Release producer; require late child disposal and no forbidden mark"
+    ],
+    "failure_schedule": "Explicit named gate is released only after observed entry; no time-based race; at most one injected failure when the trace names it",
+    "stress": "New pipeline admission after pending ownership cancellation",
+    "oracle": "Refused call never reaches target; producer still finishes and its result releases",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-PROMISE",
+      "SC-DISPOSE",
+      "SC-ERROR"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O035 state transition; counts, repetitions and deployment placements do not create additional cases."
+  },
+  {
+    "id": "O036",
+    "intent": "A previously admitted pipeline call may finish after producer-promise disposal",
+    "preconditions": [
+      "COMMON",
+      "Native RpcPromise disposal available; speculative call queued before producer release"
+    ],
+    "trace": [
+      "Create deferred child promise and immediately enqueue child mark",
+      "Observe producer prepare barrier",
+      "Dispose producer promise and release gate",
+      "Require queued mark result, exact producer/child effects and final child disposal"
+    ],
+    "failure_schedule": "Explicit named gate is released only after observed entry; no time-based race; at most one injected failure when the trace names it",
+    "stress": "Existing pipeline capability lifetime versus disposal of producer ownership",
+    "oracle": "Previously admitted call completes once and does not retain child indefinitely",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-PROMISE",
+      "SC-DISPOSE",
+      "SC-ORDER"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O036 state transition; counts, repetitions and deployment placements do not create additional cases."
+  }
+]

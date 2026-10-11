@@ -1,0 +1,53 @@
+{
+  "id": "logic/wake-recovery/merge-cold-queue-deadlines-without-delaying-unrelated-work",
+  "layer": "logic",
+  "behaviour": "wake-recovery",
+  "title": "Merge cold Queue deadlines without delaying unrelated work",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic",
+      "legacy_id": "corpus/wake-recovery-logic/K020"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+      "sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/wake-recovery-logic/K020"
+  ],
+  "adapter": "native",
+  "corpus_id": "K020",
+  "corpus_wave": "wake-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/wake-recovery/fixtures/decision-cases/tests/wake_recovery.rs",
+  "source_sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86",
+  "test_filter": "k020_queue_recovery_merges_overdue_batch_visibility_lease_and_sweep",
+  "contract": {
+    "intent": "Merge cold Queue deadlines without delaying unrelated work",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Rearm all facts and require immediate100.",
+      "After synthetic batch handling require lease150.",
+      "Expire lease151 to fixed retry2151.",
+      "Require unrelated visible row200, then after its settlement require sweep300 before retry2151."
+    ],
+    "oracle": [
+      "Past deadline clamps to now; later retry cannot push earlier visible/sweep work backward.",
+      "Each next pending source receives the one alarm row under explicit transaction-update premises."
+    ],
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k020_queue_recovery_merges_overdue_batch_visibility_lease_and_sweep"
+  },
+  "selector": "K020"
+}

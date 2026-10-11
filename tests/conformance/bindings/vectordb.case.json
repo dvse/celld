@@ -1,0 +1,28 @@
+{
+  "adapter": "example",
+  "behaviour": "bindings",
+  "fixture": "tests/conformance/bindings/fixtures/vector-database",
+  "id": "conformance/bindings/vectordb",
+  "layer": "conformance",
+  "legacy_ids": [
+    "examples/vectordb"
+  ],
+  "origins": [
+    {
+      "legacy_id": "examples/vectordb",
+      "source": "celld@9c0fca5/examples/vectordb"
+    },
+    {
+      "sha256": "796500d33d867eac97aeb8728aff14af6d07acd0081c5694804ec0154e3d32fb",
+      "source": "celld@9c0fca5/examples/vectordb/wrangler.jsonc"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/conformance/bindings/fixtures/vector-database/wrangler.jsonc",
+  "source_sha256": "796500d33d867eac97aeb8728aff14af6d07acd0081c5694804ec0154e3d32fb",
+  "title": "vectordb"
+}

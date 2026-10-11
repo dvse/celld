@@ -1,0 +1,33 @@
+{
+  "id": "conformance/durable-objects/placement-and-routing/placement",
+  "layer": "conformance",
+  "behaviour": "durable-objects/placement-and-routing",
+  "title": "placement",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/placement",
+      "legacy_id": "hyperbob/placement"
+    },
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/placement/wrangler.json",
+      "sha256": "a13e362e5f59608b42b9806eb117b62f04e32cadbaad2f34f933a811e88905d4"
+    }
+  ],
+  "legacy_ids": [
+    "hyperbob/placement"
+  ],
+  "adapter": "example",
+  "fixture": "tests/conformance/durable-objects/placement-and-routing/fixtures/process-placement",
+  "profiles": [
+    "full"
+  ],
+  "reason": "",
+  "requests": [
+    {
+      "path": "/?v=suite"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/durable-objects/placement-and-routing/fixtures/process-placement/wrangler.json",
+  "source_sha256": "a13e362e5f59608b42b9806eb117b62f04e32cadbaad2f34f933a811e88905d4"
+}

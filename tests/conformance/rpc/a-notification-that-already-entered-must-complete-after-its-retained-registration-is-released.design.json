@@ -1,0 +1,46 @@
+{
+  "id": "conformance/rpc/a-notification-that-already-entered-must-complete-after-its-retained-registration-is-released",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "A notification that already entered must complete after its retained registration is released",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/capability-order",
+      "legacy_id": "capability-order/O027"
+    }
+  ],
+  "corpus_wave": "capability-order",
+  "corpus_id": "O027",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "O027",
+    "intent": "A notification that already entered must complete after its retained registration is released",
+    "preconditions": [
+      "COMMON",
+      "Local callback barrier; notification completion ledger"
+    ],
+    "trace": [
+      "Retain observer and require notify returns queued without awaiting callback",
+      "Observe callback entry before removing slot and original",
+      "Release local callback barrier",
+      "Require successful notification completion, no error and single disposal",
+      "Require later emit absent"
+    ],
+    "failure_schedule": "Explicit named gate is released only after observed entry; no time-based race; at most one injected failure when the trace names it",
+    "stress": "Fire-and-forget callback lifetime across final registration release",
+    "oracle": "Entry continues once while future dispatch is removed; no swallowed failure",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-PARAM",
+      "SC-DISPOSE",
+      "SC-ORDER"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O027 state transition; counts, repetitions and deployment placements do not create additional cases."
+  }
+}

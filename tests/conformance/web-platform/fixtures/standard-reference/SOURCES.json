@@ -1,0 +1,17 @@
+[
+  {
+    "origin": "https://raw.githubusercontent.com/web-platform-tests/wpt/8b139c3a3/url/urlsearchparams-sort.any.js",
+    "path": "urlsearchparams-sort.any.js",
+    "sha256": "cdfc1ef89cfcefa5fae94ebdeaa2a869c47b47b47d08aba4c7db0b6e44b31fca"
+  },
+  {
+    "origin": "https://raw.githubusercontent.com/web-platform-tests/wpt/8b139c3a3/encoding/api-surrogates-utf8.any.js",
+    "path": "api-surrogates-utf8.any.js",
+    "sha256": "fe85f6e4f765ee54e3ddecf0407b9d612d978df211b974a99f72ad2a3cfdbab9"
+  },
+  {
+    "origin": "https://raw.githubusercontent.com/web-platform-tests/wpt/8b139c3a3/LICENSE.md",
+    "path": "LICENSE.md",
+    "sha256": "5fac07febb0e2a97fb0d7b0def149ec08b642e1ba4b9c345283ab1cbd2af6570"
+  }
+]

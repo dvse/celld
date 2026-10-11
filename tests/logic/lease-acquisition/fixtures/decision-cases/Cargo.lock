@@ -1,0 +1,11 @@
+# Independently authored lock for the two dependency-free local packages.
+version = 4
+
+[[package]]
+name = "celld-logic"
+version = "0.1.0"
+
+[[package]]
+name = "celld-routing-acquisition-stress"
+version = "0.1.0"
+dependencies = ["celld-logic"]

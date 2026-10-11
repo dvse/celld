@@ -1,0 +1,45 @@
+{
+  "id": "conformance/dynamic-workers-and-tails/shared-suspended-initializer-rejection",
+  "layer": "conformance",
+  "behaviour": "dynamic-workers-and-tails",
+  "title": "Shared suspended initializer rejection",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/module-graph-stress",
+      "legacy_id": "module-graph-stress/M011"
+    }
+  ],
+  "corpus_wave": "module-graph-stress",
+  "corpus_id": "M011",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "M011",
+    "intent": "Shared suspended initializer rejection",
+    "failure_hypothesis": "Two waiting imports can diverge when a single initialized module rejects after its gate.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Initialize main.",
+      "Start two imports and witness both IDs active behind one failure gate.",
+      "Release; require exact planned error for each and exactly one throw transition."
+    ],
+    "stress": "One pending initializer rejects to two waiters.",
+    "oracle": "Both planned:M011:lazy rejections; one start/hold/release/throw log; no active receivers.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M011",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request overlap of two actual loaded-worker invocations",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  }
+}

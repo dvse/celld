@@ -1,0 +1,29 @@
+{
+  "id": "conformance/web-platform/api-surrogates-utf8-any",
+  "layer": "conformance",
+  "behaviour": "web-platform",
+  "title": "api surrogates utf8.any",
+  "origins": [
+    {
+      "source": "wpt@8b139c3a3 (workerd pinned dependency)",
+      "legacy_id": "wpt/api-surrogates-utf8.any"
+    },
+    {
+      "source": "https://raw.githubusercontent.com/web-platform-tests/wpt/8b139c3a3/encoding/api-surrogates-utf8.any.js",
+      "sha256": "fe85f6e4f765ee54e3ddecf0407b9d612d978df211b974a99f72ad2a3cfdbab9"
+    }
+  ],
+  "legacy_ids": [
+    "wpt/api-surrogates-utf8.any"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/web-platform/fixtures/api-surrogates-utf8.any",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/conformance/web-platform/fixtures/api-surrogates-utf8.any/upstream.js",
+  "source_sha256": "fe85f6e4f765ee54e3ddecf0407b9d612d978df211b974a99f72ad2a3cfdbab9"
+}

@@ -1,0 +1,9 @@
+{
+  "kind": "STATIC_ONLY",
+  "case_functions": 20,
+  "source_pins_verified": 6,
+  "javascript_syntax_files": 2,
+  "literal_assertion_call_sites": 73,
+  "runtime_executions": 0,
+  "independent_review": "pending"
+}

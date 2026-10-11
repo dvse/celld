@@ -1,0 +1,33 @@
+{
+  "id": "conformance/durable-objects/facets/facet-clone",
+  "layer": "conformance",
+  "behaviour": "durable-objects/facets",
+  "title": "facet clone",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/facet-clone",
+      "legacy_id": "hyperbob/facet-clone"
+    },
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/facet-clone/wrangler.json",
+      "sha256": "2de4c2af7b0727156fa70aede0c6bfc2831bccbb279b5137533cec86f6c5a0c8"
+    }
+  ],
+  "legacy_ids": [
+    "hyperbob/facet-clone"
+  ],
+  "adapter": "example",
+  "fixture": "tests/conformance/durable-objects/facets/fixtures/clone-barrier",
+  "profiles": [
+    "full"
+  ],
+  "reason": "",
+  "requests": [
+    {
+      "path": "/?v=suite"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/durable-objects/facets/fixtures/clone-barrier/wrangler.json",
+  "source_sha256": "2de4c2af7b0727156fa70aede0c6bfc2831bccbb279b5137533cec86f6c5a0c8"
+}

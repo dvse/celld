@@ -1,0 +1,634 @@
+{
+  "schema_version": 1,
+  "profile": "direct-celld-stream-backpressure-semantics-v1",
+  "authored_case_count": 6,
+  "runtime_status": "UNRUN",
+  "runtime_executions": 0,
+  "reviewed_credit": 0,
+  "review_receipt_required": true,
+  "fixture": "fixture.js",
+  "config": "wrangler.json",
+  "cases": [
+    {
+      "id": "S301",
+      "intent": "Renew weighted writer readiness epochs",
+      "mechanism": "weighted-ready-promise-epochs",
+      "implementation": "cases.js:S301",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/S301",
+        "request_body": null
+      },
+      "classification": "ordinary-functional-stream-admission",
+      "primary_candidate": true,
+      "independently_reviewed": false,
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "preconditions": [
+        "Exact guarded source, fresh reviewed binary and deployed fixture/config identity verified.",
+        "Actual direct-celld Worker with its real global stream constructors and strategies.",
+        "Independent deadline/resource supervisor controls a proven-owned whole-descendant domain covering dev, bundlers and node despite separate PGIDs, plus one quota/cleanup domain for temporary bundles, logs and stores. No single-PGID fallback or substitute/reference execution."
+      ],
+      "trace": [
+        "Use one ByteLengthQueuingStrategy with highWaterMark 3; admit fixed 2-byte and 1-byte writes with separate callback gates.",
+        "Capture initial ready, below-threshold ready, and zero-desiredSize ready; do not add a payload/HWM matrix.",
+        "Release first write only; witness second callback entered but held and readiness fulfilled with capacity 2.",
+        "Finish second write; write one final 3-byte chunk to create a fresh pressure epoch, release it, close and join."
+      ],
+      "intended_oracle": [
+        "desiredSize is 3 initially, 1 after first admission, 0 after second, 2 with only second in flight, 3 after drain, 0 after final 3-byte admission, and 0 after closed.",
+        "Below-threshold ready is the original fulfilled promise; at pressure it is a new pending promise, reused while pressure remains; a later threshold crossing allocates a different epoch.",
+        "The pressure ready resolves before the held second write resolves, proving readiness is capacity rather than total queue emptiness.",
+        "FIFO sink trace, maxActive=1, exact fixed byte arrays, one close, no abort, joined promises and released writer lock are scaffolding, not additional credit."
+      ],
+      "fixed_runtime_assertions": [
+        "t.equal(writer.desiredSize, 3, 'initial weighted capacity is three');",
+        "t.equal(writer.desiredSize, 1, 'in-flight two-byte write retains its weight');",
+        "t.same(writer.ready, ready0, 'below-pressure admission retains original ready promise');",
+        "t.equal(writer.desiredSize, 0, 'two plus one bytes fill weighted capacity');",
+        "t.equal(ready1 === ready0, false, 'threshold crossing allocates a new ready epoch');",
+        "t.same(writer.ready, ready1, 'repeated ready getter retains pressured epoch');",
+        "t.deep([pressure1.status, a.status, b.status], ['pending', 'pending', 'pending'], 'ready and both writes remain pending at pressure');",
+        "t.deep(events, ['write-1'], 'second callback is not admitted alongside held first');",
+        "t.equal(writer.desiredSize, 2, 'first completion restores two units with second still in flight');",
+        "t.equal(b.status, 'pending', 'ready fulfillment does not require held second write to finish');",
+        "t.equal(second.opened, false, 'second callback gate remains closed when ready fulfills');",
+        "t.same(writer.ready, ready1, 'fulfilled pressure epoch stays current below threshold');",
+        "t.equal(writer.desiredSize, 3, 'full drain restores initial weighted capacity');",
+        "t.equal(writer.desiredSize, 0, 'final three-byte write reaches same fixed threshold');",
+        "t.equal(ready2 === ready1 || ready2 === ready0, false, 'later threshold crossing creates a distinct third epoch');",
+        "t.same(writer.ready, ready2, 'later pressured epoch is stable across getters');",
+        "t.deep([pressure2.status, c.status], ['pending', 'pending'], 'later ready epoch is independently pending');",
+        "t.equal(writer.desiredSize, 3, 'final completion restores capacity');",
+        "t.deep(bytes, [[11, 12], [13], [14, 15, 16]], 'sink receives exact fixed bytes once in order');",
+        "t.deep(events, ['write-1', 'done-1', 'write-2', 'done-2', 'write-3', 'done-3', 'close'], 'weighted trace has exact serialized callback order');",
+        "t.deep([maxActive, closes, aborts], [1, 1, 0], 'one active callback and one successful close without abort');",
+        "t.equal(writer.desiredSize, 0, 'closed writer has zero desired size');",
+        "t.equal(stream.locked, false, 'weighted writer lock released after settlement');"
+      ],
+      "assertion_count": 23,
+      "finite_normal_trace_limits": {
+        "writes": 3,
+        "reads": 0,
+        "closes": 1,
+        "gates": 6,
+        "task_fences": 2,
+        "payload_bytes": 6
+      },
+      "cleanup": "Open all callback and milestone gates. Initiate readable cancellation and writable abortion on still-live owners before joining, so missing HWM0 demand cannot strand an in-flight write. Join original API/closed/ready promises and dynamically recorded callback results, then release owners and observe post-release promises. Require zero pending work, timers and public locks; separate owned-process teardown remains mandatory.",
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 81,
+          "line_end": 116,
+          "purpose": "Writer ready creation and desired size"
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 188,
+          "line_end": 197,
+          "purpose": "Writer ready creation and desired size"
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 278,
+          "line_end": 318,
+          "purpose": "Pressure threshold transitions, queue size and decrement on callback settlement"
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 451,
+          "line_end": 473,
+          "purpose": "Pressure threshold transitions, queue size and decrement on callback settlement"
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 819,
+          "line_end": 825,
+          "purpose": "ByteLengthQueuingStrategy size"
+        }
+      ],
+      "primary_contract_refs": [
+        "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#writable-stream-update-backpressure",
+        "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#writable-stream-default-writer-get-desired-size",
+        "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#writable-stream-default-controller-process-write",
+        "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#blqs-class"
+      ],
+      "overlap_delta": {
+        "S020": "Checks queued write-before-close ordering, not desired-size weighting or ready identity/epochs.",
+        "B015": "Remote sink cohort and close-error isolation explicitly do not constrain write acknowledgment timing.",
+        "tests/streams/fixture/index.js:165-169": "Already checks desiredSize<=0 and awaits each write then ready; does not test positive remaining capacity, pending-ready identity, or readiness while another write is active.",
+        "SBP3": "SBP1 resolves readiness by dropping below pressure after normal write completion; SBP3 resolves it by close request while pressure remains."
+      },
+      "distinctness": "Weighted writable queue accounting drives ready-promise identity and threshold transitions, independently from individual write completion.",
+      "source_predicted_gap": null,
+      "os_relevance": "Recovered historical blueprint-archive.ts:145-162 constructs an ordinary TransformStream and sequentially pipes archive prefix then content. The raw file was reread and matches the retained historical hash. This supports stream relevance without claiming those callers use custom weights or user flush callbacks, or that any OS workflow or distributed placement ran."
+    },
+    {
+      "id": "S302",
+      "intent": "Admit queued writes after successful start",
+      "mechanism": "successful-sink-start-admission",
+      "implementation": "cases.js:S302",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/S302",
+        "request_body": null
+      },
+      "classification": "ordinary-functional-stream-admission",
+      "primary_candidate": true,
+      "independently_reviewed": false,
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "preconditions": [
+        "Exact guarded source, fresh reviewed binary and deployed fixture/config identity verified.",
+        "Actual direct-celld Worker with its real global stream constructors and strategies.",
+        "Independent deadline/resource supervisor controls a proven-owned whole-descendant domain covering dev, bundlers and node despite separate PGIDs, plus one quota/cleanup domain for temporary bundles, logs and stores. No single-PGID fallback or substitute/reference execution."
+      ],
+      "trace": [
+        "Create an ordinary writable whose start returns a finite held gate; capture start entry.",
+        "Observe initial ready fulfillment while start remains held, then enqueue two fixed writes and close.",
+        "At a bounded event-loop fence, assert start-only callback trace and pending writes/close/closed.",
+        "Resolve start; join exact FIFO writes and one close, then release writer."
+      ],
+      "intended_oracle": [
+        "start called exactly once and before writes.",
+        "Initial ready fulfills before initialization finishes.",
+        "No write or close callback enters before start-gate release; both writes, close and closed remain pending.",
+        "After start release both writes and close fulfill; zero aborts, final desiredSize0 and unlocked."
+      ],
+      "fixed_runtime_assertions": [
+        "t.deep([starts, initialReady.status, started.status], [1, 'fulfilled', 'pending'], 'initial ready fulfills while successful sink start is held');",
+        "t.equal(startGate.opened, false, 'initial readiness does not open sink start gate');",
+        "t.deep(events, ['start'], 'queued operations cannot enter callbacks before start completion');",
+        "t.deep([a.status, b.status, close.status, owner.closed.status], ['pending', 'pending', 'pending', 'pending'], 'all admitted requests await held initialization');",
+        "t.equal(closes, 0, 'underlying close has not entered during initialization');",
+        "t.deep(events, ['start', 'start-done', 'write-A', 'write-B', 'close'], 'successful start release admits exact FIFO writes and close');",
+        "t.deep([a.status, b.status, close.status, owner.closed.status], ['fulfilled', 'fulfilled', 'fulfilled', 'fulfilled'], 'queued promises all fulfill after initialization');",
+        "t.deep([starts, closes, aborts], [1, 1, 0], 'one start one close and no abort');",
+        "t.equal(writer.desiredSize, 0, 'successfully closed initialized writer has zero desired size');",
+        "t.equal(stream.locked, false, 'initialized writer lock released');"
+      ],
+      "assertion_count": 10,
+      "finite_normal_trace_limits": {
+        "writes": 2,
+        "reads": 0,
+        "closes": 1,
+        "gates": 1,
+        "task_fences": 1,
+        "payload_bytes": 2
+      },
+      "cleanup": "Open all callback and milestone gates. Initiate readable cancellation and writable abortion on still-live owners before joining, so missing HWM0 demand cannot strand an in-flight write. Join original API/closed/ready promises and dynamically recorded callback results, then release owners and observe post-release promises. Require zero pending work, timers and public locks; separate owned-process teardown remains mandatory.",
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 81,
+          "line_end": 85,
+          "purpose": "Initial ready and async start fulfillment"
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 252,
+          "line_end": 270,
+          "purpose": "Initial ready and async start fulfillment"
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 291,
+          "line_end": 335,
+          "purpose": "Queue admission waits for _started before write/close"
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 436,
+          "line_end": 448,
+          "purpose": "Queue admission waits for _started before write/close"
+        }
+      ],
+      "primary_contract_refs": [
+        "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#set-up-writable-stream-default-controller",
+        "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#writable-stream-default-controller-advance-queue-if-needed",
+        "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#set-up-writable-stream-default-writer"
+      ],
+      "overlap_delta": {
+        "S020": "Delayed callbacks are already admitted; it does not hold sink initialization.",
+        "S206": "Holds an entered sink close through pipeTo, not successful start admission.",
+        "B006/B007": "Fixture-defined application lanes do not exercise WritableStream._started.",
+        "SBP3": "No claim about pressure-ready being lifted by queued close is credited in SBP2."
+      },
+      "distinctness": "Successful asynchronous underlying-sink start is an independent callback-admission barrier; ready is not a start-completion promise.",
+      "source_predicted_gap": null,
+      "os_relevance": "Recovered historical blueprint-archive.ts:145-162 constructs an ordinary TransformStream and sequentially pipes archive prefix then content. The raw file was reread and matches the retained historical hash. This supports stream relevance without claiming those callers use custom weights or user flush callbacks, or that any OS workflow or distributed placement ran."
+    },
+    {
+      "id": "S303",
+      "intent": "Lift ready while close is queued",
+      "mechanism": "close-resolves-pressured-ready",
+      "implementation": "cases.js:S303",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/S303",
+        "request_body": null
+      },
+      "classification": "ordinary-functional-stream-admission",
+      "primary_candidate": true,
+      "independently_reviewed": false,
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "preconditions": [
+        "Exact guarded source, fresh reviewed binary and deployed fixture/config identity verified.",
+        "Actual direct-celld Worker with its real global stream constructors and strategies.",
+        "Independent deadline/resource supervisor controls a proven-owned whole-descendant domain covering dev, bundlers and node despite separate PGIDs, plus one quota/cleanup domain for temporary bundles, logs and stores. No single-PGID fallback or substitute/reference execution."
+      ],
+      "trace": [
+        "Enter and hold a single size-1 sink write at default HWM1; observe ready pending and desiredSize0.",
+        "Queue writer.close; observe captured ready fulfillment while write, close and closed are pending.",
+        "Release write; witness underlying close entry and hold its separate completion gate.",
+        "Release close; join write/close/closed, assert desiredSize0 and release writer."
+      ],
+      "intended_oracle": [
+        "Captured ready resolves because of close while original write gate remains shut and desiredSize remains 0.",
+        "Close callback cannot enter before original write completion.",
+        "With close callback held, close and closed remain pending; after acknowledgment both fulfill exactly once.",
+        "One write, one close, zero aborts, no locks/pending work; these terminal checks support the independent close-to-ready branch."
+      ],
+      "fixed_runtime_assertions": [
+        "t.deep([writer.desiredSize, pressured.status, write.status], [0, 'pending', 'pending'], 'entered held write creates genuine pressure before close');",
+        "t.same(writer.ready, ready, 'close resolves the existing ready epoch rather than replacing it');",
+        "t.deep([writer.desiredSize, writeGate.opened], [0, false], 'close lifts ready while full write weight and closed gate remain');",
+        "t.deep([write.status, close.status, owner.closed.status], ['pending', 'pending', 'pending'], 'ready fulfillment is independent from write close and closed');",
+        "t.deep(events, ['write-held', 'ready-fulfilled'], 'ready relief precedes write completion and close callback admission');",
+        "t.equal(closes, 0, 'queued close cannot overtake held write');",
+        "t.deep([write.status, close.status, owner.closed.status], ['fulfilled', 'pending', 'pending'], 'underlying close acknowledgment still gates terminal promises');",
+        "t.deep(events, ['write-held', 'ready-fulfilled', 'write-done', 'close-enter'], 'close enters only after held write settles');",
+        "t.deep(events, ['write-held', 'ready-fulfilled', 'write-done', 'close-enter', 'close-done'], 'exact close-relief transition order');",
+        "t.deep([writes, closes, aborts], [1, 1, 0], 'normal ready relief uses one write one close and no abort');",
+        "t.equal(writer.desiredSize, 0, 'closed pressure-relief writer has zero desired size');",
+        "t.equal(stream.locked, false, 'pressure-relief writer lock released');"
+      ],
+      "assertion_count": 12,
+      "finite_normal_trace_limits": {
+        "writes": 1,
+        "reads": 0,
+        "closes": 1,
+        "gates": 4,
+        "task_fences": 2,
+        "payload_bytes": 4
+      },
+      "cleanup": "Open all callback and milestone gates. Initiate readable cancellation and writable abortion on still-live owners before joining, so missing HWM0 demand cannot strand an in-flight write. Join original API/closed/ready promises and dynamically recorded callback results, then release owners and observe post-release promises. Require zero pending work, timers and public locks; separate owned-process teardown remains mandatory.",
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 321,
+          "line_end": 335,
+          "purpose": "Close explicitly resolves ready under backpressure"
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 451,
+          "line_end": 515,
+          "purpose": "Write completion, close admission and closed settlement"
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 188,
+          "line_end": 197,
+          "purpose": "Desired size and public promises"
+        }
+      ],
+      "primary_contract_refs": [
+        "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#writable-stream-close",
+        "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#writable-stream-default-controller-process-close"
+      ],
+      "overlap_delta": {
+        "S020": "Already proves close cannot overtake delayed writes; that alone earns zero new credit. Delta is ready fulfillment while pressure remains.",
+        "S206": "Already proves pipe completion/locks await asynchronous close; this proposal makes no new pipe claim.",
+        "SBP1": "Normal pressure relief through dequeue is separate from closing-state readiness relief."
+      },
+      "distinctness": "Normal close resolves an outstanding pressure-ready epoch without releasing queued weight or falsely completing write/close/closed.",
+      "source_predicted_gap": null,
+      "os_relevance": "Recovered historical blueprint-archive.ts:145-162 constructs an ordinary TransformStream and sequentially pipes archive prefix then content. The raw file was reread and matches the retained historical hash. This supports stream relevance without claiming those callers use custom weights or user flush callbacks, or that any OS workflow or distributed placement ran."
+    },
+    {
+      "id": "S304",
+      "intent": "Gate transforms on readable demand",
+      "mechanism": "transform-readable-demand-gating",
+      "implementation": "cases.js:S304",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/S304",
+        "request_body": null
+      },
+      "classification": "ordinary-functional-stream-admission",
+      "primary_candidate": true,
+      "independently_reviewed": false,
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "preconditions": [
+        "Exact guarded source, fresh reviewed binary and deployed fixture/config identity verified.",
+        "Actual direct-celld Worker with its real global stream constructors and strategies.",
+        "Independent deadline/resource supervisor controls a proven-owned whole-descendant domain covering dev, bundlers and node despite separate PGIDs, plus one quota/cleanup domain for temporary bundles, logs and stores. No single-PGID fallback or substitute/reference execution."
+      ],
+      "trace": [
+        "Construct one TransformStream that records successful callback entry and emits one literal output per input.",
+        "Explicitly settle its start barrier before testing admission. Queue first write with no read, then at a bounded fence require no transform entry and pending write.",
+        "Issue one reader.read; join fixed output and first write. Queue second write with no pending read and require no second callback entry.",
+        "Issue the next read, join output/write, close writer, read stable EOF, join both closed promises and release owners."
+      ],
+      "intended_oracle": [
+        "Before each read demand, transform count has not advanced and its write remains pending.",
+        "Each read admits exactly one transform and returns the fixed expected output, then the write fulfills.",
+        "Close fulfills, zero cancel callbacks, stable EOF and both public locks released."
+      ],
+      "fixed_runtime_assertions": [
+        "t.deep([starts, started.status], [1, 'fulfilled'], 'actual transformer start result settles before demand experiment');",
+        "t.deep([transforms, firstWrite.status], [0, 'pending'], 'HWM0 blocks first transform and write without a read');",
+        "t.deep(first, { value: 'ALPHA!', done: false }, 'first read admits exact first transform output');",
+        "t.deep([transforms, firstWrite.status], [1, 'fulfilled'], 'one read admits exactly one completed transform');",
+        "t.deep([transforms, secondWrite.status], [1, 'pending'], 'consumed output rearms demand gate before second transform');",
+        "t.deep(second, { value: 'BETA!', done: false }, 'second read admits exact second transform output');",
+        "t.deep(inputs, ['alpha', 'beta'], 'transform callbacks receive exactly the two fixed inputs');",
+        "t.deep(await t.value(t.read(reader, 'demand-eof')), { value: undefined, done: true }, 'demand-gated transform ends after close');",
+        "t.deep(await t.value(t.read(reader, 'demand-stable-eof')), { value: undefined, done: true }, 'demand-gated EOF is stable');",
+        "t.deep([transforms, cancels, reader.closed.status, writer.closed.status], [2, 0, 'fulfilled', 'fulfilled'], 'successful demand trace settles both sides without cancel');",
+        "t.deep([stream.readable.locked, stream.writable.locked], [false, false], 'demand trace releases both public locks');"
+      ],
+      "assertion_count": 11,
+      "finite_normal_trace_limits": {
+        "writes": 2,
+        "reads": 4,
+        "closes": 1,
+        "gates": 1,
+        "task_fences": 3,
+        "payload_bytes": 20
+      },
+      "cleanup": "Open all callback and milestone gates. Initiate readable cancellation and writable abortion on still-live owners before joining, so missing HWM0 demand cannot strand an in-flight write. Join original API/closed/ready promises and dynamically recorded callback results, then release owners and observe post-release promises. Require zero pending work, timers and public locks; separate owned-process teardown remains mandatory.",
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 601,
+          "line_end": 618,
+          "purpose": "Readable start/cancel but no pull-based write release; default HWM0"
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 637,
+          "line_end": 651,
+          "purpose": "Write invokes transform/enqueue without consulting readable pressure"
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 563,
+          "line_end": 569,
+          "purpose": "Controller forwards enqueue/desiredSize"
+        }
+      ],
+      "primary_contract_refs": [
+        "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#transform-stream-default-sink-write-algorithm",
+        "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#transform-stream-default-source-pull",
+        "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#transform-stream-set-backpressure",
+        "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#initialize-transform-stream",
+        "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#transform-stream-default-controller-enqueue"
+      ],
+      "overlap_delta": {
+        "X015": "Expressly disclaims native backpressure/queue-capacity enforcement and tests delayed compression-output consumption only.",
+        "X001/X002": "Native compression/decompression finalization and peer isolation do not test user TransformStream admission.",
+        "S015/S201": "pipeTo transfer/preventClose reuse do not observe TransformStream read-demand coupling.",
+        "SBP2": "Initialization is finished before admission checks; barrier is downstream demand, not start."
+      },
+      "distinctness": "Ordinary TransformStream readable backpressure gates transform admission at default readable HWM0 and rearms after consumed output.",
+      "source_predicted_gap": {
+        "classification": "EXPECTED_FAILURE_CANDIDATE",
+        "evidence_kind": "STATIC_SOURCE_INFERENCE_ONLY",
+        "source_evidence": "LIKELY_GAP_FROM_SOURCE_ONLY: no cross-side backpressure state or source-pull release exists. Eventual direct-celld execution may fail the first pressure assertion; no run or reference-runtime substitution was performed.",
+        "intended_oracle_unchanged": true,
+        "observed_runtime_failure": false
+      },
+      "os_relevance": "Recovered historical blueprint-archive.ts:145-162 constructs an ordinary TransformStream and sequentially pipes archive prefix then content. The raw file was reread and matches the retained historical hash. This supports stream relevance without claiming those callers use custom weights or user flush callbacks, or that any OS workflow or distributed placement ran."
+    },
+    {
+      "id": "S305",
+      "intent": "Own asynchronous flush tail through EOF",
+      "mechanism": "async-transform-flush-tail-ownership",
+      "implementation": "cases.js:S305",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/S305",
+        "request_body": null
+      },
+      "classification": "ordinary-functional-stream-admission",
+      "primary_candidate": true,
+      "independently_reviewed": false,
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "preconditions": [
+        "Exact guarded source, fresh reviewed binary and deployed fixture/config identity verified.",
+        "Actual direct-celld Worker with its real global stream constructors and strategies.",
+        "Independent deadline/resource supervisor controls a proven-owned whole-descendant domain covering dev, bundlers and node despite separate PGIDs, plus one quota/cleanup domain for temporary bundles, logs and stores. No single-PGID fallback or substitute/reference execution."
+      ],
+      "trace": [
+        "Initiate the prefix read before awaiting its write, so setup terminates under correct default-HWM0 backpressure; join the fixed transformed prefix.",
+        "Call writer.close; witness flush entry, where flush waits on an owned finite gate before enqueueing its fixed tail.",
+        "Issue next read; at a bounded fence require read, close, writer.closed and reader.closed still pending.",
+        "Release flush; enqueue one fixed tail and resolve flush. Join close/closed, read tail then stable EOF, release owners."
+      ],
+      "intended_oracle": [
+        "Exactly one normal transform and one flush; zero cancellation callbacks.",
+        "Held flush cannot cause premature EOF or writable close acknowledgment.",
+        "The tail appears exactly once before EOF; all terminal promises fulfill; both public locks released."
+      ],
+      "fixed_runtime_assertions": [
+        "t.deep(prefix, { value: 'prefix:fixed', done: false }, 'prefix is consumed with compatible HWM0 demand');",
+        "t.equal(transforms, 1, 'exactly one ordinary transform precedes flush');",
+        "t.deep([transforms, flushes, cancels], [1, 1, 0], 'successful close enters one held flush');",
+        "t.equal(flushGate.opened, false, 'flush tail gate is still closed during pending observations');",
+        "t.deep([tailRead.status, close.status, reader.closed.status, writer.closed.status], ['pending', 'pending', 'pending', 'pending'], 'held flush owns tail read and both terminal states');",
+        "t.deep(events, ['transform-fixed', 'flush-enter'], 'no tail or terminal event precedes flush release');",
+        "t.deep(await t.value(tailRead), { value: 'tail!', done: false }, 'released flush emits fixed tail before EOF');",
+        "t.deep(await t.value(t.read(reader, 'flush-eof')), { value: undefined, done: true }, 'flush tail is followed by EOF');",
+        "t.deep(await t.value(t.read(reader, 'flush-stable-eof')), { value: undefined, done: true }, 'flush EOF stays stable without duplicate tail');",
+        "t.deep(events, ['transform-fixed', 'flush-enter', 'tail-enqueued'], 'exact successful transform and flush output trace');",
+        "t.deep([transforms, flushes, cancels, close.status, reader.closed.status, writer.closed.status], [1, 1, 0, 'fulfilled', 'fulfilled', 'fulfilled'], 'flush and both sides complete once without cancellation');",
+        "t.deep([stream.readable.locked, stream.writable.locked], [false, false], 'flush trace releases both public locks');"
+      ],
+      "assertion_count": 12,
+      "finite_normal_trace_limits": {
+        "writes": 1,
+        "reads": 4,
+        "closes": 1,
+        "gates": 2,
+        "task_fences": 1,
+        "payload_bytes": 22
+      },
+      "cleanup": "Open all callback and milestone gates. Initiate readable cancellation and writable abortion on still-live owners before joining, so missing HWM0 demand cannot strand an in-flight write. Join original API/closed/ready promises and dynamically recorded callback results, then release owners and observe post-release promises. Require zero pending work, timers and public locks; separate owned-process teardown remains mandatory.",
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 653,
+          "line_end": 678,
+          "purpose": "flush awaited before readable close"
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 485,
+          "line_end": 515,
+          "purpose": "Writable close joins sink close promise"
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 72,
+          "line_end": 81,
+          "purpose": "Readable close drains queued tail before terminal EOF/closed"
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 138,
+          "line_end": 147,
+          "purpose": "Readable close drains queued tail before terminal EOF/closed"
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 329,
+          "line_end": 355,
+          "purpose": "Readable close drains queued tail before terminal EOF/closed"
+        }
+      ],
+      "primary_contract_refs": [
+        "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#transform-stream-default-sink-close-algorithm",
+        "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#readable-stream-default-controller-close"
+      ],
+      "overlap_delta": {
+        "S206": "An ordinary sink-close join lacks a readable output tail and cannot prove cross-side EOF ownership.",
+        "X001/X002/X021": "Native encoder/decoder/digest finalization does not hold a successful user flush callback with a concurrent ordinary pending read.",
+        "Y220": "Finite eager Response clone owns two body consumers, not TransformStream flush completion."
+      },
+      "distinctness": "Successful transformer.flush completion owns final readable output/closure and is joined by writable close and writer.closed.",
+      "source_predicted_gap": null,
+      "os_relevance": "Recovered historical blueprint-archive.ts:145-162 constructs an ordinary TransformStream and sequentially pipes archive prefix then content. The raw file was reread and matches the retained historical hash. This supports stream relevance without claiming those callers use custom weights or user flush callbacks, or that any OS workflow or distributed placement ran."
+    },
+    {
+      "id": "S306",
+      "intent": "Admit readable pulls by weighted capacity",
+      "mechanism": "weighted-readable-pull-admission",
+      "implementation": "cases.js:S306",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/S306",
+        "request_body": null
+      },
+      "classification": "ordinary-functional-stream-admission",
+      "primary_candidate": true,
+      "independently_reviewed": false,
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "preconditions": [
+        "Exact guarded source, fresh reviewed binary and deployed fixture/config identity verified.",
+        "Actual direct-celld Worker with its real global stream constructors and strategies.",
+        "Independent deadline/resource supervisor controls a proven-owned whole-descendant domain covering dev, bundlers and node despite separate PGIDs, plus one quota/cleanup domain for temporary bundles, logs and stores. No single-PGID fallback or substitute/reference execution."
+      ],
+      "trace": [
+        "Use one ByteLengthQueuingStrategy at HWM4 and a finite two-chunk source, each literal chunk four bytes.",
+        "First pull enqueues first chunk, records desiredSize0, and waits on a finite acknowledgment gate.",
+        "Release first pull without consumer demand; establish callback-promise settlement before a bounded fence, then require pull count1 and desiredSize0.",
+        "Read first chunk, require the one allowed refill to enter, finish the finite second chunk and close; drain exact bytes to stable EOF and release reader."
+      ],
+      "intended_oracle": [
+        "Filling weighted capacity with one chunk stops pull admission before consumer demand.",
+        "First dequeue returns fixed first bytes and permits exactly one refill.",
+        "Exactly two total pulls/chunks, exact combined literal bytes, one close, zero cancel, fulfilled reader.closed and unlocked."
+      ],
+      "fixed_runtime_assertions": [
+        "t.equal(firstDesired, 0, 'one four-byte chunk exhausts weighted source capacity');",
+        "t.equal(firstSettlement.status, 'pending', 'first returned pull promise is genuinely held');",
+        "t.equal(firstSettlement.status, 'fulfilled', 'actual returned pull promise settles before admission observation');",
+        "t.equal(pulls, 1, 'settled full weighted queue admits no second pull before demand');",
+        "t.equal(controller.desiredSize, 0, 'full weighted queue retains zero desired size without demand');",
+        "t.deep(events, ['pull-1', 'first-pull-result-settled'], 'no refill entry before first dequeue');",
+        "t.deep({ value: [...first.value], done: first.done }, { value: [31, 32, 33, 34], done: false }, 'first read returns exact first four bytes');",
+        "t.equal(pulls, 2, 'dequeue admits exactly one weighted refill');",
+        "t.equal(controller.desiredSize, 4, 'dequeue restores four units before held refill enqueue');",
+        "t.equal(secondGate.opened, false, 'second refill remains independently held');",
+        "t.deep({ value: [...second.value], done: second.done }, { value: [35, 36, 37, 38], done: false }, 'refill returns exact second four bytes');",
+        "t.deep(await t.value(t.read(reader, 'weighted-source-eof')), { value: undefined, done: true }, 'finite weighted source reaches EOF');",
+        "t.deep(await t.value(t.read(reader, 'weighted-source-stable-eof')), { value: undefined, done: true }, 'weighted source EOF remains stable');",
+        "t.deep([pulls, closes, cancels, reader.closed.status], [2, 1, 0, 'fulfilled'], 'exact two pulls and one source close without cancellation');",
+        "t.deep(events, ['pull-1', 'first-pull-result-settled', 'pull-2', 'source-close'], 'weighted source has exact bounded callback order');",
+        "t.equal(stream.locked, false, 'weighted source reader lock released');"
+      ],
+      "assertion_count": 16,
+      "finite_normal_trace_limits": {
+        "writes": 0,
+        "reads": 4,
+        "closes": 1,
+        "gates": 4,
+        "task_fences": 1,
+        "payload_bytes": 8
+      },
+      "cleanup": "Open all callback and milestone gates. Initiate readable cancellation and writable abortion on still-live owners before joining, so missing HWM0 demand cannot strand an in-flight write. Join original API/closed/ready promises and dynamically recorded callback results, then release owners and observe post-release promises. Require zero pending work, timers and public locks; separate owned-process teardown remains mandatory.",
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 37,
+          "line_end": 70,
+          "purpose": "enqueue tracks total size and desiredSize uses it"
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 98,
+          "line_end": 102,
+          "purpose": "enqueue tracks total size and desiredSize uses it"
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 138,
+          "line_end": 145,
+          "purpose": "Reads decrement weighted size"
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 329,
+          "line_end": 337,
+          "purpose": "Reads decrement weighted size"
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 366,
+          "line_end": 395,
+          "purpose": "Pull admission computes HWM minus queue.length"
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 819,
+          "line_end": 825,
+          "purpose": "ByteLengthQueuingStrategy"
+        }
+      ],
+      "primary_contract_refs": [
+        "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#readable-stream-default-controller-should-call-pull",
+        "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#readable-stream-default-controller-get-desired-size",
+        "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#readable-stream-default-controller-call-pull-if-needed",
+        "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#blqs-class"
+      ],
+      "overlap_delta": {
+        "tests/streams/fixture/index.js:134-142": "Remote bridge prefetch is unweighted at source HWM0 and tied to transport; no weighted ordinary-source admission.",
+        "S009": "Pending-read FIFO does not exercise non-unit queue size or pull suspension.",
+        "B009-B011": "Cohort/directional progress does not assert weighted capacity.",
+        "SBP1": "Readable source-pull admission, rather than writable readiness; separate source branch is inconsistent."
+      },
+      "distinctness": "ReadableStream pull admission and refill use strategy queueTotalSize rather than number of chunks.",
+      "source_predicted_gap": {
+        "classification": "EXPECTED_FAILURE_CANDIDATE",
+        "evidence_kind": "STATIC_SOURCE_INFERENCE_ONLY",
+        "source_evidence": "LIKELY_GAP_FROM_SOURCE_ONLY: _maybePull uses queue.length instead of _queueTotalSize, so one four-byte chunk at HWM4 can spuriously admit another pull. Finite two-chunk source bounds eventual failure.",
+        "intended_oracle_unchanged": true,
+        "observed_runtime_failure": false
+      },
+      "os_relevance": "Recovered historical blueprint-archive.ts:145-162 constructs an ordinary TransformStream and sequentially pipes archive prefix then content. The raw file was reread and matches the retained historical hash. This supports stream relevance without claiming those callers use custom weights or user flush callbacks, or that any OS workflow or distributed placement ran."
+    }
+  ]
+}

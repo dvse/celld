@@ -1,0 +1,54 @@
+{
+  "id": "logic/lease-acquisition/dead-owner-backoff-yields-admission-then-rechecks-changed-owner",
+  "layer": "logic",
+  "behaviour": "lease-acquisition",
+  "title": "Dead-owner backoff yields admission then rechecks changed owner",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic",
+      "legacy_id": "corpus/routing-acquisition-logic/N026"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+      "sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/routing-acquisition-logic/N026"
+  ],
+  "adapter": "native",
+  "corpus_id": "N026",
+  "corpus_wave": "routing-acquisition-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/lease-acquisition/fixtures/decision-cases/tests/routing_acquisition.rs",
+  "source_sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06",
+  "test_filter": "n026_recovery_backoff_yields_activation_then_rechecks_changed_owner",
+  "contract": {
+    "intent": "Dead-owner backoff yields admission then rechecks changed owner",
+    "preconditions": [
+      "Fresh test-owned State; only frozen production celld_logic::on_event mutates it.",
+      "Empty State; residency2, activations1; a/1 owner dead4 has expired lease with Open log.",
+      "All completion operation IDs and timers come from the exact emitted effects; late IDs are previously issued IDs, never fabricated authority.",
+      "All input storage/lease/proof replies are synthetic facts. No executor, network, runtime, or fleet service is simulated as empirical evidence.",
+      "Static source/pin check and independent review required; compiler, test and runtime have not been launched."
+    ],
+    "trace": [
+      "Capture RecoverNodeLog; queue b/2",
+      "Recovery Ambiguous schedules retry and emits b ReadOwner",
+      "Complete b activation and finish2 while a remains pending",
+      "Fire a retry at110; capture fresh owner read",
+      "Return successor owner8 and live lease",
+      "Deliver late success for old recovery op"
+    ],
+    "oracle": "Retry re-resolves current owner rather than using pre-backoff claim; stale recovery ignored",
+    "cleanup": "Finish every locally completed request and cancel each remaining ownership-only waiter as shown. H::done checks no pending requests, active cells, activation/capacity queues, activation/eviction/release/adoption permits, or nonterminal phases. Drop isolated in-memory State; no external resources created. Stored timer descriptors are never launched.",
+    "implementation": "tests/routing_acquisition.rs:n026_recovery_backoff_yields_activation_then_rechecks_changed_owner"
+  },
+  "selector": "N026"
+}

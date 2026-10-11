@@ -1,0 +1,92 @@
+{
+  "id": "conformance/rpc/a-source-failure-during-one-of-four-loaded-worker-uploads-causes-a-false-document-effect-or-contamin",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "A source failure during one of four loaded-worker uploads causes a false document effect or contaminates sibling consumers.",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/bounded-load",
+      "legacy_id": "bounded-load/B019"
+    }
+  ],
+  "corpus_wave": "bounded-load",
+  "corpus_id": "B019",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "B019",
+    "title": "Loaded upload fails before document effect",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "A source failure during one of four loaded-worker uploads causes a false document effect or contaminates sibling consumers.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Four loaded workers each consume one gated byte stream; document1 source errors after an observed prefix."
+    ],
+    "ordered_trace": [
+      "Observe four worker upload entries/prefixes and four local source pauses.",
+      "Release only document1 and require its propagated source error.",
+      "Ping the failed worker while sibling uploads remain incomplete.",
+      "Release healthy producers and verify exactly three upload effects and complete bytes."
+    ],
+    "stress_dimension": "Four native streams crossing loaded-worker consumers, one interrupted before effect publication.",
+    "safety_oracle": [
+      "document1 receiver reports normalized premature readable disconnect, never records upload-effect, and local source has exactly one planned:source:document1 error.",
+      "Three good results carry 24576 bytes and the correct worker token; all four workers remain callable."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 4,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Four native streams crossing loaded-worker consumers, one interrupted before effect publication."
+    },
+    "source_contracts": [
+      {
+        "key": "loader",
+        "path": "os/packages/workshop-backend/src/overseer.ts",
+        "lines": "4329-4360, 8182",
+        "contract": "OS dynamically loads worker code and obtains entrypoints; these tests use separate anonymous owned workers."
+      },
+      {
+        "key": "git-streams",
+        "path": "os/packages/workshop-backend/src/git-cache.ts",
+        "lines": "307-328, 1170-1203, 1368-1378",
+        "contract": "GitCache accepts and returns native byte streams; fixture traffic is synthetic pack-like bytes, never a claim of valid Git parsing."
+      },
+      {
+        "key": "native-transport",
+        "path": "deliverable/patch-check-final/crates/celld/js/harness.js",
+        "lines": "4186-4237, 4622-4666",
+        "contract": "Frozen native stream bridge: readable errors normalize to premature disconnect, cancellation carries its reason, writable errors propagate."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B019"
+    },
+    "qualification_gate": "pinned-native-characterization",
+    "identity_assumption": "Loaded worker token uniqueness/stability is a frozen-native characterization, not a universal Worker Loader replacement guarantee.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "Explicit owner overlap/authorization review required for possible overlap with separately restricted stateless-capability lifetime work; request adapter refuses B017-B024.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  }
+}

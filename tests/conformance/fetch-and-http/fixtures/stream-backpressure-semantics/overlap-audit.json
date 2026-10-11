@@ -1,0 +1,807 @@
+{
+  "schema_version": 1,
+  "evidence": "STATIC_SOURCE_INSPECTION_ONLY",
+  "input_audit": {
+    "path": "assessments/stream-backpressure-gaps-20261009.json",
+    "sha256": "60cdffa42680edecb9d983a40acab53e844ef2580c9d61f9f24a7b8337de3071",
+    "bytes": 51510
+  },
+  "baseline_and_accepted_entries_indexed": 126,
+  "coverage": [
+    {
+      "family": "streams",
+      "path": "celld-os-stress/cases/streams.json",
+      "count": 24,
+      "cases": [
+        {
+          "id": "S001",
+          "intent": "Empty remote readable terminates once and retains stable EOF",
+          "mechanism": null
+        },
+        {
+          "id": "S002",
+          "intent": "Cancellation before consumption reaches source exactly once",
+          "mechanism": null
+        },
+        {
+          "id": "S003",
+          "intent": "Cancellation after EOF does not reopen or cancel completed source",
+          "mechanism": null
+        },
+        {
+          "id": "S004",
+          "intent": "Zero-length chunks do not truncate intervening binary data",
+          "mechanism": null
+        },
+        {
+          "id": "S005",
+          "intent": "Subarray RPC transfer excludes backing-buffer sentinel bytes",
+          "mechanism": null
+        },
+        {
+          "id": "S006",
+          "intent": "Source exception before data remains an error on repeated reads",
+          "mechanism": null
+        },
+        {
+          "id": "S007",
+          "intent": "Source error preserves already delivered prefix without becoming EOF",
+          "mechanism": null
+        },
+        {
+          "id": "S008",
+          "intent": "Reader lock release and reacquisition preserve remaining remote data",
+          "mechanism": null
+        },
+        {
+          "id": "S009",
+          "intent": "Multiple pending reads resolve in FIFO order before EOF",
+          "mechanism": null
+        },
+        {
+          "id": "S010",
+          "intent": "Cancel resolves a pending read as done and reaches source",
+          "mechanism": null
+        },
+        {
+          "id": "S011",
+          "intent": "One-byte BYOB reads preserve residual data from a larger chunk",
+          "mechanism": null
+        },
+        {
+          "id": "S012",
+          "intent": "BYOB preserves caller view offset and returns only written bytes",
+          "mechanism": null
+        },
+        {
+          "id": "S013",
+          "intent": "BYOB transitions between short source chunks without byte loss",
+          "mechanism": null
+        },
+        {
+          "id": "S014",
+          "intent": "Empty BYOB stream returns terminal zero-length view",
+          "mechanism": null
+        },
+        {
+          "id": "S015",
+          "intent": "pipeTo drains a remote readable into a local writable",
+          "mechanism": null
+        },
+        {
+          "id": "S016",
+          "intent": "Local pipeTo sink failure cancels remote source",
+          "mechanism": null
+        },
+        {
+          "id": "S017",
+          "intent": "Tee gives both concurrent consumers identical remote bytes",
+          "mechanism": null
+        },
+        {
+          "id": "S018",
+          "intent": "Canceling one tee branch preserves remaining consumer",
+          "mechanism": null
+        },
+        {
+          "id": "S019",
+          "intent": "Remote writable closes correctly without writes",
+          "mechanism": null
+        },
+        {
+          "id": "S020",
+          "intent": "Queued close cannot overtake delayed writes",
+          "mechanism": null
+        },
+        {
+          "id": "S021",
+          "intent": "Abort before writer acquisition reaches remote sink once",
+          "mechanism": null
+        },
+        {
+          "id": "S022",
+          "intent": "A failed first write prevents subsequent remote writes",
+          "mechanism": null
+        },
+        {
+          "id": "S023",
+          "intent": "Sink close failure rejects both close and writer.closed",
+          "mechanism": null
+        },
+        {
+          "id": "S024",
+          "intent": "Writer reacquisition preserves remote sink order",
+          "mechanism": null
+        }
+      ]
+    },
+    {
+      "family": "HTTP",
+      "path": "celld-os-stress/waves/http-stream-stress/manifest.json",
+      "count": 26,
+      "cases": [
+        {
+          "id": "H001",
+          "intent": "Advance a small upload beside host-body relay",
+          "mechanism": null
+        },
+        {
+          "id": "H002",
+          "intent": "Complete upload while response body held",
+          "mechanism": null
+        },
+        {
+          "id": "H003",
+          "intent": "Release held response heads out of order",
+          "mechanism": null
+        },
+        {
+          "id": "H004",
+          "intent": "Drain small response around a retained reader",
+          "mechanism": null
+        },
+        {
+          "id": "H005",
+          "intent": "Resume recipient-held relay after source release",
+          "mechanism": null
+        },
+        {
+          "id": "H006",
+          "intent": "Duplicate host HTTP body into delayed consumer",
+          "mechanism": null
+        },
+        {
+          "id": "H007",
+          "intent": "Cancel one host tee consumer before tail",
+          "mechanism": null
+        },
+        {
+          "id": "H008",
+          "intent": "Clone streaming request into separately committed uploads",
+          "mechanism": null
+        },
+        {
+          "id": "H009",
+          "intent": "Forward response-rewrapped host body incrementally",
+          "mechanism": null
+        },
+        {
+          "id": "H010",
+          "intent": "Send offset view beside held application commit",
+          "mechanism": null
+        },
+        {
+          "id": "H011",
+          "intent": "Decode held HTTP text beside binary control",
+          "mechanism": null
+        },
+        {
+          "id": "H012",
+          "intent": "Match buffered arrayBuffer with gated streamed body",
+          "mechanism": null
+        },
+        {
+          "id": "H013",
+          "intent": "Preserve declared length through streamed response",
+          "mechanism": null
+        },
+        {
+          "id": "H014",
+          "intent": "Suppress HEAD payload beside active GET",
+          "mechanism": null
+        },
+        {
+          "id": "H015",
+          "intent": "Acknowledge upload through no-content response",
+          "mechanism": null
+        },
+        {
+          "id": "H016",
+          "intent": "Reject incomplete upload beside healthy writer",
+          "mechanism": null
+        },
+        {
+          "id": "H017",
+          "intent": "Abort before HTTP dispatch with live sibling",
+          "mechanism": null
+        },
+        {
+          "id": "H018",
+          "intent": "Abort accepted request before response head",
+          "mechanism": null
+        },
+        {
+          "id": "H019",
+          "intent": "Cancel one response reader and resume sibling",
+          "mechanism": null
+        },
+        {
+          "id": "H020",
+          "intent": "Fail source body before forwarded upload data",
+          "mechanism": null
+        },
+        {
+          "id": "H021",
+          "intent": "Fail relayed source after sink observes prefix",
+          "mechanism": null
+        },
+        {
+          "id": "H022",
+          "intent": "Fail local stream fallback before dispatch",
+          "mechanism": null
+        },
+        {
+          "id": "H023",
+          "intent": "Refuse locked host body while writer recovers",
+          "mechanism": null
+        },
+        {
+          "id": "H024",
+          "intent": "Retain prefix when HTTP response later errors",
+          "mechanism": null
+        },
+        {
+          "id": "H025",
+          "intent": "Share abort controller across accepted requests",
+          "mechanism": null
+        },
+        {
+          "id": "H026",
+          "intent": "Preserve committed effect after response abandonment",
+          "mechanism": null
+        }
+      ]
+    },
+    {
+      "family": "bounded-load",
+      "path": "celld-os-stress/waves/bounded-load/manifest.json",
+      "count": 24,
+      "cases": [
+        {
+          "id": "B001",
+          "intent": "One held callback incorrectly stalls five independent notifications and metadata RPC.",
+          "mechanism": null
+        },
+        {
+          "id": "B002",
+          "intent": "A callback rejection contaminates five pending siblings or poisons the next broadcast.",
+          "mechanism": null
+        },
+        {
+          "id": "B003",
+          "intent": "Three callback-to-owner reentries deadlock behind three unrelated slow subscribers.",
+          "mechanism": null
+        },
+        {
+          "id": "B004",
+          "intent": "Returning a background dispatch loses borrowed callback authority or strands its outstanding jobs.",
+          "mechanism": null
+        },
+        {
+          "id": "B005",
+          "intent": "One detached callback failure blocks unrelated foreground traffic or hides failed background work.",
+          "mechanism": null
+        },
+        {
+          "id": "B006",
+          "intent": "Cancelling middle queued requests leaks an application admission slot or dispatches cancelled effects.",
+          "mechanism": null
+        },
+        {
+          "id": "B007",
+          "intent": "A rejecting admitted callback prevents queued work from using its freed slot while another slot remains occupied.",
+          "mechanism": null
+        },
+        {
+          "id": "B008",
+          "intent": "A saturated document lane wrongly causes head-of-line blocking for an independent Git lane.",
+          "mechanism": null
+        },
+        {
+          "id": "B009",
+          "intent": "Independently stalled download streams are cross-wired or coupled when completion order differs from creation order.",
+          "mechanism": null
+        },
+        {
+          "id": "B010",
+          "intent": "Six native stream arguments waiting in receivers starve unrelated metadata RPCs or corrupt their resumed bytes.",
+          "mechanism": null
+        },
+        {
+          "id": "B011",
+          "intent": "Blocked download result streams prevent independent upload argument streams from completing on the same owner connection.",
+          "mechanism": null
+        },
+        {
+          "id": "B012",
+          "intent": "Cancelling two pending readers leaks their producers, emits post-cancel frames, or cancels unrelated streams.",
+          "mechanism": null
+        },
+        {
+          "id": "B013",
+          "intent": "A late error after an observed prefix is swallowed or poisons other pending streams and future transfers.",
+          "mechanism": null
+        },
+        {
+          "id": "B014",
+          "intent": "An abandoned upload leaves its source live or propagates receiver failure into five sibling uploads.",
+          "mechanism": null
+        },
+        {
+          "id": "B015",
+          "intent": "A returned WritableStream loses a remote failure at terminal close or conflates failure with three other saturated sinks.",
+          "mechanism": null
+        },
+        {
+          "id": "B016",
+          "intent": "Three slow tee consumers prevent fast branches draining, or late branch cancellation incorrectly cancels already-completed sources.",
+          "mechanism": null
+        },
+        {
+          "id": "B017",
+          "intent": "Two held method calls in one loaded worker stall six calls and recovery requests to other loaded workers.",
+          "mechanism": null
+        },
+        {
+          "id": "B018",
+          "intent": "A worker method failure after an audit effect corrupts other in-flight calls or prevents same-worker recovery.",
+          "mechanism": null
+        },
+        {
+          "id": "B019",
+          "intent": "A source failure during one of four loaded-worker uploads causes a false document effect or contaminates sibling consumers.",
+          "mechanism": null
+        },
+        {
+          "id": "B020",
+          "intent": "A cancelled loaded-worker result stream keeps producing after its pending nested RPC resumes, or stalls independent notification callbacks.",
+          "mechanism": null
+        },
+        {
+          "id": "B021",
+          "intent": "Returned loaded-worker background jobs are lost, block foreground traffic, or fail to drain after finite release.",
+          "mechanism": null
+        },
+        {
+          "id": "B022",
+          "intent": "A handled waitUntil rejection escapes into held foreground requests or leaves active background accounting stranded.",
+          "mechanism": null
+        },
+        {
+          "id": "B023",
+          "intent": "Concurrent native digest work loses data/results or blocks still-held work from later resuming across loaded workers.",
+          "mechanism": null
+        },
+        {
+          "id": "B024",
+          "intent": "Finite synchronous native compression work corrupts restored bytes or requires unrelated held callbacks to drain before making progress.",
+          "mechanism": null
+        }
+      ]
+    },
+    {
+      "family": "native-transform",
+      "path": "celld-os-stress/waves/native-transform-stress/manifest.json",
+      "count": 23,
+      "cases": [
+        {
+          "id": "X001",
+          "intent": "Resume a partially written native gzip encoder after a separate raw exporter finishes",
+          "mechanism": null
+        },
+        {
+          "id": "X002",
+          "intent": "Delay a valid gzip trailer while a pack digest finishes",
+          "mechanism": null
+        },
+        {
+          "id": "X003",
+          "intent": "Cancel a gzip decoder after a decoded prefix is observed",
+          "mechanism": null
+        },
+        {
+          "id": "X004",
+          "intent": "Reject a pending native compression read on consumer cancellation",
+          "mechanism": null
+        },
+        {
+          "id": "X005",
+          "intent": "Abort an unflushed raw exporter and immediately recover",
+          "mechanism": null
+        },
+        {
+          "id": "X006",
+          "intent": "Abort a native transform when its source fails before any bytes",
+          "mechanism": null
+        },
+        {
+          "id": "X007",
+          "intent": "Poison a decoder after independently observed prefix delivery",
+          "mechanism": null
+        },
+        {
+          "id": "X008",
+          "intent": "Isolate deferred gzip checksum corruption from a healthy native peer",
+          "mechanism": null
+        },
+        {
+          "id": "X009",
+          "intent": "Reject missing gzip size trailer and recover the decoder path",
+          "mechanism": null
+        },
+        {
+          "id": "X010",
+          "intent": "Reject trailing bytes after a complete gzip member before close",
+          "mechanism": null
+        },
+        {
+          "id": "X011",
+          "intent": "Recover from a non-byte chunk after a valid exporter prefix",
+          "mechanism": null
+        },
+        {
+          "id": "X012",
+          "intent": "Handoff a compressor writer lock without widening offset views",
+          "mechanism": null
+        },
+        {
+          "id": "X013",
+          "intent": "Propagate AbortSignal through an open source-to-native pipe",
+          "mechanism": null
+        },
+        {
+          "id": "X014",
+          "intent": "Keep a decoded tee branch complete after cancelling its sibling",
+          "mechanism": null
+        },
+        {
+          "id": "X015",
+          "intent": "Drain decoded output only after an independent exporter finishes",
+          "mechanism": null
+        },
+        {
+          "id": "X016",
+          "intent": "Poison one decoder while preserving a second live decoder in the same request",
+          "mechanism": null
+        },
+        {
+          "id": "X018",
+          "intent": "Finish distinct DigestStream payloads in reverse request order",
+          "mechanism": null
+        },
+        {
+          "id": "X019",
+          "intent": "Abort a buffered pack digest and reuse the digest path",
+          "mechanism": null
+        },
+        {
+          "id": "X020",
+          "intent": "Reject a pack digest after the accepted header source fails",
+          "mechanism": null
+        },
+        {
+          "id": "X021",
+          "intent": "Close a buffered digest after a peer decoder poisons and recovers",
+          "mechanism": null
+        },
+        {
+          "id": "X022",
+          "intent": "Dispose an unlocked buffered DigestStream while another digest closes",
+          "mechanism": null
+        },
+        {
+          "id": "X023",
+          "intent": "Keep an imported public HMAC key independent of caller-buffer mutation",
+          "mechanism": null
+        },
+        {
+          "id": "X024",
+          "intent": "Resume an encoder after separate crypto validation failures and recovery",
+          "mechanism": null
+        }
+      ]
+    },
+    {
+      "family": "pipe-cleanup",
+      "path": "pipe-cleanup-semantics/manifest.json",
+      "count": 9,
+      "cases": [
+        {
+          "id": "S201",
+          "intent": "Keep sink writable after pipe EOF",
+          "mechanism": "prevent-close-and-writer-reuse"
+        },
+        {
+          "id": "S202",
+          "intent": "Reuse sink after source error",
+          "mechanism": "prevent-abort-forward-error-isolation"
+        },
+        {
+          "id": "S203",
+          "intent": "Drain source after sink error",
+          "mechanism": "prevent-cancel-backward-error-isolation"
+        },
+        {
+          "id": "S204",
+          "intent": "Reuse both resources after signal shutdown",
+          "mechanism": "prevent-both-inflight-write-shutdown"
+        },
+        {
+          "id": "S205",
+          "intent": "Join write and both signal cleanup actions",
+          "mechanism": "inflight-write-then-async-abort-cancel-join"
+        },
+        {
+          "id": "S206",
+          "intent": "Hold pipe completion through sink close",
+          "mechanism": "eof-async-close-join-and-lock-lifetime"
+        },
+        {
+          "id": "S207",
+          "intent": "Preserve zero pre-abort reason without transfer",
+          "mechanism": "pre-aborted-falsy-reason-identity"
+        },
+        {
+          "id": "S208",
+          "intent": "Join pre-aborted asynchronous cleanup",
+          "mechanism": "pre-aborted-both-actions-join-before-release"
+        },
+        {
+          "id": "S209",
+          "intent": "Surface cancellation failure after signal abort",
+          "mechanism": "shutdown-action-rejection-precedence"
+        }
+      ]
+    },
+    {
+      "family": "body/form",
+      "path": "body-form-semantics/manifest.json",
+      "count": 20,
+      "cases": [
+        {
+          "id": "Y201",
+          "intent": "Snapshot mixed Blob parts with a visible DataView window",
+          "mechanism": "Blob composition and immutable input-buffer ownership"
+        },
+        {
+          "id": "Y202",
+          "intent": "Keep Blob read-result buffers independent from immutable storage",
+          "mechanism": "Blob arrayBuffer and bytes result ownership with repeated reads"
+        },
+        {
+          "id": "Y203",
+          "intent": "Apply byte-relative Blob slicing without inheriting MIME type",
+          "mechanism": "Blob slice endpoint normalization and independent slice metadata"
+        },
+        {
+          "id": "Y204",
+          "intent": "Cancel one independently opened Blob stream while consuming another",
+          "mechanism": "Independent Blob.stream reader lifecycles over one immutable value"
+        },
+        {
+          "id": "Y205",
+          "intent": "Convert Blob and File form entries while preserving file metadata",
+          "mechanism": "FormData File identity and explicit filename conversion"
+        },
+        {
+          "id": "Y206",
+          "intent": "Replace mixed duplicate form entries with one renamed binary File",
+          "mechanism": "FormData ordered mixed-type replacement and File conversion"
+        },
+        {
+          "id": "Y207",
+          "intent": "Convert a consumed binary Response into a reusable typed Blob",
+          "mechanism": "Body.blob byte materialization and MIME-to-Blob conversion"
+        },
+        {
+          "id": "Y208",
+          "intent": "Extract a coherent multipart request snapshot before later form edits",
+          "mechanism": "FormData BodyInit serialization and boundary/body consistency"
+        },
+        {
+          "id": "Y209",
+          "intent": "Parse binary multipart file parts without UTF-8 replacement",
+          "mechanism": "Multipart byte scanner separates text headers from binary file payloads"
+        },
+        {
+          "id": "Y210",
+          "intent": "Preserve mid-line multipart boundary lookalikes in file content",
+          "mechanism": "Multipart delimiter line-position recognition"
+        },
+        {
+          "id": "Y211",
+          "intent": "Read multipart field names when filename parameter comes first",
+          "mechanism": "Content-Disposition parameter token boundaries and valid quoted boundary"
+        },
+        {
+          "id": "Y212",
+          "intent": "Normalize multiline form values on the multipart wire",
+          "mechanism": "Multipart text-field line-ending normalization"
+        },
+        {
+          "id": "Y213",
+          "intent": "Dispatch a URLSearchParams BodyInit through its inferred form media type",
+          "mechanism": "Typed BodyInit extraction, media-type inference, and Body.formData dispatch"
+        },
+        {
+          "id": "Y214",
+          "intent": "Transfer inherited Request bodies while leaving overridden sources unused",
+          "mechanism": "Request constructor body ownership transfer versus explicit replacement"
+        },
+        {
+          "id": "Y215",
+          "intent": "Preserve cloned Response metadata while isolating mutable consumer results",
+          "mechanism": "Buffered Response clone metadata and result-buffer ownership"
+        },
+        {
+          "id": "Y216",
+          "intent": "Snapshot JSON response data while retaining response initialization",
+          "mechanism": "Response.json eager serialization and response initialization composition"
+        },
+        {
+          "id": "Y217",
+          "intent": "Keep absent bodies distinct from empty streams and never disturbed",
+          "mechanism": "Null Body representation and bodyUsed semantics"
+        },
+        {
+          "id": "Y218",
+          "intent": "Reflect direct body-reader disturbance in Response.bodyUsed",
+          "mechanism": "Body state derived from ReadableStream disturbance"
+        },
+        {
+          "id": "Y219",
+          "intent": "Infer text BodyInit media types while preserving an explicit override",
+          "mechanism": "String BodyInit default content-type and caller override precedence"
+        },
+        {
+          "id": "Y220",
+          "intent": "Clone a valid finite streaming Response and settle both bodies",
+          "mechanism": "Response.clone support for unused non-buffered Body streams"
+        }
+      ]
+    }
+  ],
+  "preauthoring_review": {
+    "reviewer": "/root/review_celld_test_additions",
+    "mode": "collaboration message before authoring",
+    "finding": "All six are defensible pre-authoring candidates; no count yet. Source inspection supports SBP4\u2019s missing read-demand coupling and SBP6\u2019s queue.length versus weighted-size mismatch. Keep SBP1 centered on ready promise epochs, SBP3 on close\u2019s independent ready-resolution branch; shared FIFO/terminal bytes are scaffolding. For SBP5 initiate the prefix read before awaiting its write, so the fixture also terminates under correct default-HWM0 backpressure. For SBP6 establish pull settlement before the no-extra-pull observation. Use explicit callback/consumer milestones and bounded fences rather than fixed microtask-count assumptions; cleanup must unblock read-demand plus all held callbacks and join both sides before releasing owners.",
+    "credit": 0
+  },
+  "per_case_distinctness": {
+    "S301": {
+      "mechanism": "weighted-ready-promise-epochs",
+      "delta": {
+        "S020": "Checks queued write-before-close ordering, not desired-size weighting or ready identity/epochs.",
+        "B015": "Remote sink cohort and close-error isolation explicitly do not constrain write acknowledgment timing.",
+        "tests/streams/fixture/index.js:165-169": "Already checks desiredSize<=0 and awaits each write then ready; does not test positive remaining capacity, pending-ready identity, or readiness while another write is active.",
+        "SBP3": "SBP1 resolves readiness by dropping below pressure after normal write completion; SBP3 resolves it by close request while pressure remains."
+      }
+    },
+    "S302": {
+      "mechanism": "successful-sink-start-admission",
+      "delta": {
+        "S020": "Delayed callbacks are already admitted; it does not hold sink initialization.",
+        "S206": "Holds an entered sink close through pipeTo, not successful start admission.",
+        "B006/B007": "Fixture-defined application lanes do not exercise WritableStream._started.",
+        "SBP3": "No claim about pressure-ready being lifted by queued close is credited in SBP2."
+      }
+    },
+    "S303": {
+      "mechanism": "close-resolves-pressured-ready",
+      "delta": {
+        "S020": "Already proves close cannot overtake delayed writes; that alone earns zero new credit. Delta is ready fulfillment while pressure remains.",
+        "S206": "Already proves pipe completion/locks await asynchronous close; this proposal makes no new pipe claim.",
+        "SBP1": "Normal pressure relief through dequeue is separate from closing-state readiness relief."
+      }
+    },
+    "S304": {
+      "mechanism": "transform-readable-demand-gating",
+      "delta": {
+        "X015": "Expressly disclaims native backpressure/queue-capacity enforcement and tests delayed compression-output consumption only.",
+        "X001/X002": "Native compression/decompression finalization and peer isolation do not test user TransformStream admission.",
+        "S015/S201": "pipeTo transfer/preventClose reuse do not observe TransformStream read-demand coupling.",
+        "SBP2": "Initialization is finished before admission checks; barrier is downstream demand, not start."
+      }
+    },
+    "S305": {
+      "mechanism": "async-transform-flush-tail-ownership",
+      "delta": {
+        "S206": "An ordinary sink-close join lacks a readable output tail and cannot prove cross-side EOF ownership.",
+        "X001/X002/X021": "Native encoder/decoder/digest finalization does not hold a successful user flush callback with a concurrent ordinary pending read.",
+        "Y220": "Finite eager Response clone owns two body consumers, not TransformStream flush completion."
+      }
+    },
+    "S306": {
+      "mechanism": "weighted-readable-pull-admission",
+      "delta": {
+        "tests/streams/fixture/index.js:134-142": "Remote bridge prefetch is unweighted at source HWM0 and tied to transport; no weighted ordinary-source admission.",
+        "S009": "Pending-read FIFO does not exercise non-unit queue size or pull suspension.",
+        "B009-B011": "Cohort/directional progress does not assert weighted capacity.",
+        "SBP1": "Readable source-pull admission, rather than writable readiness; separate source branch is inconsistent."
+      }
+    }
+  },
+  "retired_duplicates": [
+    {
+      "mechanism": "Settled writer release/reacquisition preserves bytes/order",
+      "neighbors": [
+        "S024",
+        "X012"
+      ],
+      "credit": 0
+    },
+    {
+      "mechanism": "Bare queued writes precede close",
+      "neighbors": [
+        "S020",
+        "B015"
+      ],
+      "credit": 0
+    },
+    {
+      "mechanism": "Bare asynchronous sink close delays pipe completion/locks",
+      "neighbors": [
+        "S206"
+      ],
+      "credit": 0
+    },
+    {
+      "mechanism": "Delayed native output consumption preserves bytes",
+      "neighbors": [
+        "X015"
+      ],
+      "credit": 0
+    },
+    {
+      "mechanism": "Default pipe success and preventClose reuse",
+      "neighbors": [
+        "S015",
+        "S201"
+      ],
+      "credit": 0
+    },
+    {
+      "mechanism": "Response/Request/Blob cloning and consumer-result ownership",
+      "neighbors": [
+        "H008",
+        "Y201-Y220"
+      ],
+      "credit": 0
+    },
+    {
+      "mechanism": "HWM/payload length/chunk-shape permutations",
+      "neighbors": [
+        "SBP1",
+        "SBP6"
+      ],
+      "credit": 0
+    }
+  ],
+  "deferred": [
+    {
+      "mechanism": "Writer release during queued/in-flight writes",
+      "reason": "Source documents Workerd-specific queued-write dropping; precise contract qualification is needed. Settled handoff is already covered; no extra proposal/credit."
+    }
+  ],
+  "counting": "Six handwritten candidate mechanisms only. FIFO, terminal bytes, EOF and lock cleanup are shared scaffolding, never separately credited. No HWM/payload parameter matrix, writer handoff or bare drain-close addition."
+}

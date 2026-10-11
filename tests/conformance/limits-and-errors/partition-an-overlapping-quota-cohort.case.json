@@ -1,0 +1,51 @@
+{
+  "adapter": "topology",
+  "behaviour": "limits-and-errors",
+  "contract": {
+    "cleanup": "Release every foreground hold; settle all owned promises; dispose all entrypoints and Worker handles inside the active coordinator request; assert zero pending/unsettled holds; delete volatile audit book and close tag. Independently recorded owned guest/process/storage teardown is mandatory. No durable state is created by case logic.",
+    "implementation": "cases.js:cases.Q002",
+    "intent": "Partition an overlapping quota cohort",
+    "oracle": "Exactly two successes and two limit-2 rejections, two unique matching audit effects, no replay, recovery probe",
+    "preconditions": [
+      "One loaded worker with subRequests=2; four calls initiated before awaiting",
+      "Fresh private owned disposable runtime/root name; native Worker Loader/WorkerEntrypoint and Audit loopback positive control",
+      "Verified immutable source/binary and configured 8192-byte code ceiling; independent scope review excludes restricted capability lifetime reproduction",
+      "Parent exclusive run slot; externally enforced wall/memory/PID limits and owned cleanup"
+    ],
+    "trace": [
+      "Start four labeled service RPC attempts in one Promise.all",
+      "Await four explicit success/error outcomes",
+      "Match accepted labels to exactly two recipient effects",
+      "Run independent recovery"
+    ]
+  },
+  "corpus_id": "Q002",
+  "corpus_wave": "bounded-resource",
+  "fixture": "tests/conformance/limits-and-errors/fixtures/invocation-quotas",
+  "id": "conformance/limits-and-errors/partition-an-overlapping-quota-cohort",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/bounded-resource/Q002"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/bounded-resource/Q002",
+      "source": "guarded-source-archive/celld-os-stress/waves/bounded-resource"
+    },
+    {
+      "sha256": "f0ac664b435a5bbfd844d830d03447bb78bfbd1d5d2e31bc4beb6a2d299847b9",
+      "source": "guarded-source-archive/celld-os-stress/waves/bounded-resource/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "Q002",
+  "source": "tests/conformance/limits-and-errors/fixtures/invocation-quotas/entry.js",
+  "source_sha256": "f0ac664b435a5bbfd844d830d03447bb78bfbd1d5d2e31bc4beb6a2d299847b9",
+  "title": "Partition an overlapping quota cohort"
+}

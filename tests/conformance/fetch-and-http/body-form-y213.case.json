@@ -1,0 +1,135 @@
+{
+  "adapter": "http",
+  "behaviour": "fetch-and-http",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "application_relevance": "Workers construct URL-encoded event submissions from a reusable parameter object.",
+    "assertion_count": 5,
+    "authored": true,
+    "cleanup": "Every case is awaited before cleanup. Track explicit readers and body streams; cancel/release readers, initiate all unlocked-stream cancellations before joining them, and retain no request-local objects. Buffered body producers may be lazy; explicit JS stream producers are finite and close synchronously. Cleanup records runtime-retained locks with awaited consumer/descendant proof, and any unverified lock blocks acceptance. No open producer gates, external handles or timers are used. Await both Y220 consumers with allSettled. If a body method or cleanup does not settle within the external deadline, supervisor terminates only the owned process group and records failure/unknown plus incomplete cleanup. It never reports a pass.",
+    "desired_behavior": "Media type application/x-www-form-urlencoded;charset=UTF-8; body event=launch&count=2; parsed FormData has those two fields.",
+    "distinctness": "U209/U210 test parameter algorithms directly; this has deliberately plain values and tests the Request/Body integration seam and snapshot.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/Y213",
+      "request_body": null
+    },
+    "fixed_runtime_assertions": [
+      "t.equal(request.headers.get('content-type'), 'application/x-www-form-urlencoded;charset=UTF-8', 'URLSearchParams BodyInit infers its form media type');",
+      "t.equal(await t.consume(copy, 'text'), 'event=launch&count=2', 'typed extraction snapshots URLSearchParams serialization');",
+      "t.equal(form instanceof FormData, true, 'Body formData dispatch recognizes inferred media type');",
+      "t.deep([...form], [['event', 'launch'], ['count', '2']], 'typed body parses to FormData rather than re-reading source params');",
+      "t.equal(request.bodyUsed, true, 'form body consumer marks request used');"
+    ],
+    "hypothesis": "A typed query object may be stringified without its media type, consulted after mutation, or routed to the wrong body parser.",
+    "id": "Y213",
+    "implementation": {
+      "end_line": 170,
+      "file": "cases.js",
+      "start_line": 158,
+      "symbol": "Y213"
+    },
+    "independently_reviewed": false,
+    "layer": "direct-celld-worker-fetch-global-body-form-api",
+    "limits": {
+      "durable_writes": 0,
+      "fixture_logical_byte_cap": 16384,
+      "incoming_body_bytes": 0,
+      "max_explicit_reader_reads": 16,
+      "max_form_entries": 8,
+      "outbound_fetches": 0,
+      "outer_case_seconds": 5,
+      "repetitions": 1,
+      "requests": 1,
+      "response_bytes": 65536,
+      "timers": 0
+    },
+    "mechanism": "Typed BodyInit extraction, media-type inference, and Body.formData dispatch",
+    "preconditions": [
+      "Reviewed exact direct-celld source/build/deployment pins and fresh isolated local store.",
+      "Native celld Blob, File, FormData, Request, Response, and ReadableStream globals; no mocks or implementation extraction.",
+      "External five-second case deadline plus independent 300-second suite deadline and owned cleanup are active."
+    ],
+    "prediction_is_runtime_evidence": false,
+    "primary_contract_refs": [
+      "https://fetch.spec.whatwg.org/#concept-bodyinit-extract",
+      "https://fetch.spec.whatwg.org/#dom-body-formdata"
+    ],
+    "review_status": "UNREVIEWED",
+    "runtime_pass_claimed": false,
+    "runtime_source_refs": [
+      {
+        "line_end": 30,
+        "line_start": 20,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      },
+      {
+        "line_end": 456,
+        "line_start": 451,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      },
+      {
+        "line_end": 521,
+        "line_start": 511,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      },
+      {
+        "line_end": 10772,
+        "line_start": 10758,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "schedule": {
+      "depends_on": [],
+      "kind": "one finite in-request trace",
+      "ordinal": 13,
+      "parallelism": "two local body consumers joined with allSettled only in Y220; otherwise sequential",
+      "request": "GET /case/Y213"
+    },
+    "source_observation": "Pinned __typedBody has a distinct URLSearchParams branch and formData has a media-type dispatch path.",
+    "static_prediction": "NO_FAILURE_PREDICTION",
+    "status": "NOT_RUN",
+    "title": "Dispatch a URLSearchParams BodyInit through its inferred form media type",
+    "trace": [
+      "Construct a POST Request from two simple params, clone it, then change the original params.",
+      "Assert inferred media type and exact construction-time clone text.",
+      "Consume original through formData and assert output class, pairs, and bodyUsed."
+    ]
+  },
+  "corpus_id": "Y213",
+  "corpus_wave": "body-form-semantics",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/body-form-semantics",
+  "id": "conformance/fetch-and-http/body-form-y213",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/body-form-semantics/Y213"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/body-form-semantics/Y213",
+      "manifest_sha256": "e31598421948f8c190575ce14a8cccfe7a76930797c30c44985d05552d3c95d1",
+      "review_sha256": "1a3807ddb1b0f7c1d81bd25a56c38e0c61c953030da422d8a1d644bf833de35e",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/body-form-semantics",
+      "tranche": "002"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/Y213",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "Y213",
+  "source": "tests/conformance/fetch-and-http/fixtures/body-form-semantics/fixture.js",
+  "source_sha256": "ab850551d9b005bc0636954aeb2151d46ac0c35d15580665aa157230dabe30a5",
+  "title": "Dispatch a URLSearchParams BodyInit through its inferred form media type"
+}

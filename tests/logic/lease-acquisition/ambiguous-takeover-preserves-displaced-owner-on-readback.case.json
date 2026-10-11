@@ -1,0 +1,54 @@
+{
+  "id": "logic/lease-acquisition/ambiguous-takeover-preserves-displaced-owner-on-readback",
+  "layer": "logic",
+  "behaviour": "lease-acquisition",
+  "title": "Ambiguous takeover preserves displaced owner on readback",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic",
+      "legacy_id": "corpus/routing-acquisition-logic/N005"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+      "sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/routing-acquisition-logic/N005"
+  ],
+  "adapter": "native",
+  "corpus_id": "N005",
+  "corpus_wave": "routing-acquisition-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/lease-acquisition/fixtures/decision-cases/tests/routing_acquisition.rs",
+  "source_sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06",
+  "test_filter": "n005_ambiguous_takeover_readback_preserves_displaced_owner",
+  "contract": {
+    "intent": "Ambiguous takeover preserves displaced owner on readback",
+    "preconditions": [
+      "Fresh test-owned State; only frozen production celld_logic::on_event mutates it.",
+      "Empty State; a/1 reads dead owner epoch6 and no node lease.",
+      "All completion operation IDs and timers come from the exact emitted effects; late IDs are previously issued IDs, never fabricated authority.",
+      "All input storage/lease/proof replies are synthetic facts. No executor, network, runtime, or fleet service is simulated as empirical evidence.",
+      "Static source/pin check and independent review required; compiler, test and runtime have not been launched."
+    ],
+    "trace": [
+      "Read dead6 then missing lease to issue takeover CAS7",
+      "CAS Ambiguous emits reconcile ReadOwner",
+      "Read exact self-owned epoch7",
+      "Assert RestoreSpec prior dead, takeover true, fresh false, epoch7",
+      "Restore/start/publish; deliver stale original CAS Applied",
+      "Finish1"
+    ],
+    "oracle": "No second CAS; restoration keeps the displaced owner ancestry",
+    "cleanup": "Finish every locally completed request and cancel each remaining ownership-only waiter as shown. H::done checks no pending requests, active cells, activation/capacity queues, activation/eviction/release/adoption permits, or nonterminal phases. Drop isolated in-memory State; no external resources created. Stored timer descriptors are never launched.",
+    "implementation": "tests/routing_acquisition.rs:n005_ambiguous_takeover_readback_preserves_displaced_owner"
+  },
+  "selector": "N005"
+}

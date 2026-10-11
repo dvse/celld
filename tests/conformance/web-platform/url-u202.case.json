@@ -1,0 +1,132 @@
+{
+  "adapter": "http",
+  "behaviour": "web-platform",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "application_relevance": "Workers compose file paths while preserving independent download-query and fragment state.",
+    "assertion_count": 5,
+    "authored": true,
+    "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+    "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+    "desired_behavior": "Path becomes /caf%C3%A9/report%3Fdraft%23notes, with ?download=yes#keep remaining independent.",
+    "distinctness": "Path-data encoding is independent of host canonicalization, numeric port conversion, and empty-delimiter preservation.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/U202",
+      "request_body": null
+    },
+    "fixed_runtime_assertions": [
+      "t.equal(url.pathname, '/caf%C3%A9/report%3Fdraft%23notes', 'path setter encodes path data');",
+      "t.equal(url.search, '?download=yes', 'path question mark does not start a query');",
+      "t.equal(url.hash, '#keep', 'path hash does not start a fragment');",
+      "t.equal(url.href, 'https://files.example.test/caf%C3%A9/report%3Fdraft%23notes?download=yes#keep', 'serialized setter result');",
+      "t.equal(new URL(url.href).pathname, '/caf%C3%A9/report%3Fdraft%23notes', 'setter serialization survives reparsing');"
+    ],
+    "hypothesis": "The pathname setter may copy Unicode and reserved path data directly into href, changing the meaning after reparsing.",
+    "id": "U202",
+    "implementation": {
+      "end_line": 23,
+      "file": "cases.js",
+      "start_line": 15,
+      "symbol": "U202"
+    },
+    "independently_reviewed": false,
+    "layer": "direct-celld-worker-fetch-global-web-api",
+    "limits": {
+      "case_assertion_max_count": 16,
+      "case_input_max_code_units": 1024,
+      "case_tuple_max_count": 16,
+      "concurrent_requests": 1,
+      "network_calls_from_fixture": 0,
+      "repetitions": 1,
+      "request_body_bytes": 0,
+      "request_outer_deadline_seconds": 5,
+      "requests_per_case": 1,
+      "response_max_bytes": 65536,
+      "storage_writes_from_fixture": 0,
+      "timers_from_fixture": 0
+    },
+    "mechanism": "Path setter percent-encoding and component separation",
+    "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+    "preconditions": [
+      "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+      "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+      "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+    ],
+    "prediction_is_runtime_evidence": false,
+    "primary_contract_refs": [
+      "https://url.spec.whatwg.org/#dom-url-pathname"
+    ],
+    "review_status": "UNREVIEWED",
+    "runtime_pass_claimed": false,
+    "runtime_source_refs": [
+      {
+        "line_end": 185,
+        "line_start": 166,
+        "path": "celld-os-project/celld/crates/celld/js/url.js"
+      },
+      {
+        "line_end": 248,
+        "line_start": 235,
+        "path": "celld-os-project/celld/crates/celld/js/url.js"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "schedule": {
+      "depends_on": [],
+      "kind": "one synchronous finite trace",
+      "overlap": "none",
+      "path": "/case/U202",
+      "request_ordinal": 2,
+      "runtime_operations": [
+        "Construct one HTTPS URL with an existing query and fragment.",
+        "Assign /caf\u00e9/report?draft#notes as pathname data.",
+        "Assert encoded pathname, unchanged query and fragment, exact href, and fixed pathname after reparse."
+      ]
+    },
+    "source_observation": "Pinned pathname setter only removes ASCII line separators, optionally prepends slash, and copies the value. No percent-encoding step is visible. Source discrepancy hypothesis only.",
+    "static_prediction": "EXPECTED_FAILURE_CANDIDATE",
+    "status": "NOT_RUN",
+    "title": "Encode pathname setter data without changing query or fragment",
+    "trace": [
+      "Construct one HTTPS URL with an existing query and fragment.",
+      "Assign /caf\u00e9/report?draft#notes as pathname data.",
+      "Assert encoded pathname, unchanged query and fragment, exact href, and fixed pathname after reparse."
+    ]
+  },
+  "corpus_id": "U202",
+  "corpus_wave": "url-semantics",
+  "fixture": "tests/conformance/web-platform/fixtures/url-semantics",
+  "id": "conformance/web-platform/url-u202",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/url-semantics/U202"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/url-semantics/U202",
+      "manifest_sha256": "d61fdb1b4d070ae5aff0ad1456c39d2842c341f9737a20b67c67c251f638ae91",
+      "review_sha256": "13b98102e846487ca6304032863d1edb29b691c8649ebdea0ad53161ac6da486",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics",
+      "tranche": "001"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/U202",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "U202",
+  "source": "tests/conformance/web-platform/fixtures/url-semantics/fixture.js",
+  "source_sha256": "ccbb1cf21c3f719aa06ed64b498fc396f00736cc96d7cbd2aea437f2cc221ca6",
+  "title": "Encode pathname setter data without changing query or fragment"
+}

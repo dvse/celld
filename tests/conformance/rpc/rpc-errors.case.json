@@ -1,0 +1,33 @@
+{
+  "id": "conformance/rpc/rpc-errors",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "rpc errors",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/rpc-errors",
+      "legacy_id": "hyperbob/rpc-errors"
+    },
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/rpc-errors/wrangler.json",
+      "sha256": "0080f335a84eb3c54117554a1ccb25816f00f112983870f3c436ebf927906155"
+    }
+  ],
+  "legacy_ids": [
+    "hyperbob/rpc-errors"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/rpc/fixtures/error-propagation",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/?v=suite"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/rpc/fixtures/error-propagation/wrangler.json",
+  "source_sha256": "0080f335a84eb3c54117554a1ccb25816f00f112983870f3c436ebf927906155"
+}

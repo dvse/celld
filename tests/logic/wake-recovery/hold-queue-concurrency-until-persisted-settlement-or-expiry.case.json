@@ -1,0 +1,53 @@
+{
+  "id": "logic/wake-recovery/hold-queue-concurrency-until-persisted-settlement-or-expiry",
+  "layer": "logic",
+  "behaviour": "wake-recovery",
+  "title": "Hold Queue concurrency until persisted settlement or expiry",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic",
+      "legacy_id": "corpus/wake-recovery-logic/K022"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+      "sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/wake-recovery-logic/K022"
+  ],
+  "adapter": "native",
+  "corpus_id": "K022",
+  "corpus_wave": "wake-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/wake-recovery/fixtures/decision-cases/tests/wake_recovery.rs",
+  "source_sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86",
+  "test_filter": "k022_handler_return_does_not_release_persisted_batch_concurrency_slot",
+  "contract": {
+    "intent": "Hold Queue concurrency until persisted settlement or expiry",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Check both slots occupied.",
+      "Check unchanged durable active count2 after uncommitted handler return still rejects admission.",
+      "Rearm at earliest lease expiry250.",
+      "Expire to retry1250; assume transaction removes one active lease and check admission1-of2 plus preserved retry delay."
+    ],
+    "oracle": [
+      "Only supplied persisted active-count change opens capacity; free capacity does not remove retry delay.",
+      "After explicit expiry transaction, one new batch can install and failed work has deadline1250."
+    ],
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k022_handler_return_does_not_release_persisted_batch_concurrency_slot"
+  },
+  "selector": "K022"
+}

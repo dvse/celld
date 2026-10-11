@@ -1,0 +1,36 @@
+{
+  "id": "conformance/rpc/characterize-alias-identity-of-a-by-value-host-object-used-in-ordinary-paths-and-as-map-key-value",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "Characterize alias identity of a by-value host object used in ordinary paths and as Map key/value",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec",
+      "legacy_id": "rpc-codec/C021"
+    }
+  ],
+  "corpus_wave": "rpc-codec",
+  "corpus_id": "C021",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "C021",
+    "intent": "Characterize alias identity of a by-value host object used in ordinary paths and as Map key/value",
+    "preconditions": "COMMON; one Headers instance appears in four result locations",
+    "trace": [
+      "request shared Headers graph",
+      "compare object/list identities",
+      "look up Map using revived root Headers and compare value identity",
+      "mutate through one alias and read another"
+    ],
+    "stress": "One host object, four references, one Map",
+    "oracle": "All four paths resolve same host identity; Map lookup works with revived root; mutation shared across aliases",
+    "cleanup": "Shared codecCleanup; by-value host graph has no RPC capabilities",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-LIFT",
+      "SC-REVIVE"
+    ]
+  }
+}

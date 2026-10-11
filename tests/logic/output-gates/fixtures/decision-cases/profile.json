@@ -1,0 +1,29 @@
+{
+  "name": "output-gate-native-state-v1",
+  "layer": "native-component",
+  "sublayer": "state-trace",
+  "node": "fixture",
+  "config": {
+    "max_resident": 4,
+    "max_activations": 2,
+    "max_evictions": 2,
+    "max_releases": 2,
+    "max_outbound_websockets": 2,
+    "ownership_on_evict": "Sticky",
+    "require_node_lease": "false except G020-G024",
+    "peer_protocol": 1,
+    "operation_deadline_ms": 50,
+    "owner_log_recovery_backoff_ms": 10,
+    "owner_log_recovery_attempts": 2,
+    "alarm_resident_ms": 0,
+    "idle_evict_ms": null,
+    "pressure": {"high_bytes": null, "rss_hard_bytes": null}
+  },
+  "lease_fixture": {"node": "fixture", "address": "fixture.invalid:0", "generation": "generation-a", "resume_generation": null, "wall_ms": 100, "monotonic_ms": 100, "ttl_ms": 100, "peer_protocol": 1, "inventory": []},
+  "initial_unleased_clocks_ms": 0,
+  "alarm_fixture": {"fire_offset_ms": 10, "initial_epoch": 1, "initial_sequence": 1, "initial_position": 1, "consume_sequence": 2},
+  "max_events_per_test": 100,
+  "build": {"offline": true, "jobs": 1, "rlimit_as_bytes": 1073741824, "rlimit_cpu_seconds": 60, "wall_seconds": 90, "debug": 0, "incremental": false},
+  "test": {"threads": 1, "rlimit_as_bytes": 1073741824, "rlimit_cpu_seconds": 10, "wall_seconds": 10, "network": "none"},
+  "authorization": "Parent run-slot authorization required before building or executing. These are per-process address-space and CPU caps with outer wall deadline, not a VM/process-network stress profile."
+}

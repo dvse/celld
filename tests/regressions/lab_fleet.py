@@ -35,7 +35,15 @@ class Fleet:
         else:raise RuntimeError('MinIO readiness timeout')
         mc=[MC,'--config-dir',str(self.art/'mc')]
         with (self.art/'setup.log').open('a') as log:
-            subprocess.run(mc+['alias','set','lab',self.endpoint,'lab-public','lab-public-password'],check=True,stdout=log,stderr=log)
+            # The health endpoint can answer before S3 authentication is
+            # initialized. Retry only that startup response, within 30 s.
+            deadline=time.monotonic()+30
+            while True:
+                ready=subprocess.run(mc+['alias','set','lab',self.endpoint,'lab-public','lab-public-password'],stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True,timeout=5)
+                log.write(ready.stdout);log.flush()
+                if ready.returncode==0:break
+                if 'Server not initialized yet' not in ready.stdout or time.monotonic()>=deadline:ready.check_returncode()
+                time.sleep(.1)
             subprocess.run(mc+['mb','-p','lab/'+self.bucket],check=True,stdout=log,stderr=log)
             for script in [p for p in sorted(self.fixture.iterdir()) if p.is_dir() and ((p/'wrangler.json').exists() or (p/'wrangler.jsonc').exists())]+[self.fixture]:
                 subprocess.run([self.binary,'deploy',str(script),'--bucket','s3://'+self.bucket,'--endpoint',self.endpoint],env=self.env,check=True,stdout=log,stderr=log)

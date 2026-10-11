@@ -1,0 +1,1 @@
+../bad-rename/fixture.js

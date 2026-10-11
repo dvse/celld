@@ -1,0 +1,90 @@
+{
+  "status": "STATIC_ONLY",
+  "checks": [
+    {
+      "check": "json-parse",
+      "file": "manifest.json",
+      "status": "PASS"
+    },
+    {
+      "check": "json-parse",
+      "file": "overlap-audit.json",
+      "status": "PASS"
+    },
+    {
+      "check": "json-parse",
+      "file": "overlap-inventory.json",
+      "status": "PASS"
+    },
+    {
+      "check": "json-parse",
+      "file": "schedule.json",
+      "status": "PASS"
+    },
+    {
+      "check": "json-parse",
+      "file": "source-pins.json",
+      "status": "PASS"
+    },
+    {
+      "check": "json-parse",
+      "file": "wrangler.json",
+      "status": "PASS"
+    },
+    {
+      "check": "python-ast-only",
+      "file": "author_manifest.py",
+      "status": "PASS"
+    },
+    {
+      "check": "python-ast-only",
+      "file": "validate_static.py",
+      "status": "PASS"
+    },
+    {
+      "check": "case-manifest-schedule-bijection-and-fixed-oracle",
+      "cases": 1,
+      "assertions": 11,
+      "status": "PASS"
+    },
+    {
+      "check": "sha256-runtime_sources",
+      "files": 3,
+      "status": "PASS"
+    },
+    {
+      "check": "sha256-source_and_scope_evidence",
+      "files": 8,
+      "status": "PASS"
+    },
+    {
+      "check": "sha256-frozen_57_wave_artifacts",
+      "files": 33,
+      "status": "PASS"
+    },
+    {
+      "check": "sha256-fixture_artifacts",
+      "files": 10,
+      "status": "PASS"
+    },
+    {
+      "check": "node-parser-only-no-evaluation",
+      "file": "cases.js",
+      "command": "node --input-type=module --check < cases.js",
+      "status": "PASS"
+    },
+    {
+      "check": "node-parser-only-no-evaluation",
+      "file": "fixture.js",
+      "command": "node --input-type=module --check < fixture.js",
+      "status": "PASS"
+    }
+  ],
+  "authored_cases": 1,
+  "assertions": 11,
+  "status_of_case": "NOT_RUN",
+  "runtime_status": "UNRUN",
+  "runtime_executions": 0,
+  "javascript_evaluation": false,
+  "independent_review_claimed": false
+}

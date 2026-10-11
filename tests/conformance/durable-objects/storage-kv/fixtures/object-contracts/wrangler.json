@@ -1,0 +1,21 @@
+{
+  "name": "ported-do",
+  "main": "index.js",
+  "compatibility_date": "2026-10-01",
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "NS",
+        "class_name": "Contract"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "Contract"
+      ]
+    }
+  ]
+}

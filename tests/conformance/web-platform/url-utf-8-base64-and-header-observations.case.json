@@ -1,0 +1,34 @@
+{
+  "id": "conformance/web-platform/url-utf-8-base64-and-header-observations",
+  "layer": "conformance",
+  "behaviour": "web-platform",
+  "title": "URL, UTF-8, base64 and header observations",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/examples/webapi",
+      "legacy_id": "examples/webapi"
+    },
+    {
+      "source": "celld@9c0fca5/examples/webapi/wrangler.jsonc",
+      "sha256": "159507a997fd4fd6c4aa790ef2d24a8d3db4d569f356a7e5863936933ec88738"
+    }
+  ],
+  "legacy_ids": [
+    "examples/webapi"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/web-platform/fixtures/url-encoding-headers",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/probe?foo=value"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/web-platform/fixtures/url-encoding-headers/wrangler.jsonc",
+  "source_sha256": "159507a997fd4fd6c4aa790ef2d24a8d3db4d569f356a7e5863936933ec88738"
+}

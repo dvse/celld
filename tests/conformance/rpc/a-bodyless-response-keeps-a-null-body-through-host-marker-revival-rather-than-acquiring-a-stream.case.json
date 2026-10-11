@@ -1,0 +1,49 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "No stream resource created; shared codecCleanup",
+    "intent": "A bodyless Response keeps a null body through host marker revival rather than acquiring a stream",
+    "oracle": "Body remains null; status 204; No Payload text; null-body header; text() empty",
+    "preconditions": "COMMON; provider constructs legal 204 Response with null body and custom statusText",
+    "source_contracts": [
+      "SC-HOST",
+      "SC-REVIVE"
+    ],
+    "trace": [
+      "receive bodyless Response",
+      "verify brand and null body before reading",
+      "compare status, custom text and header",
+      "read empty text"
+    ]
+  },
+  "corpus_id": "C019",
+  "corpus_wave": "rpc-codec",
+  "fixture": "tests/conformance/rpc/fixtures/value-codec",
+  "id": "conformance/rpc/a-bodyless-response-keeps-a-null-body-through-host-marker-revival-rather-than-acquiring-a-stream",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/rpc-codec/C019"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/rpc-codec/C019",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec"
+    },
+    {
+      "sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "C019",
+  "source": "tests/conformance/rpc/fixtures/value-codec/entry.js",
+  "source_sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+  "title": "A bodyless Response keeps a null body through host marker revival rather than acquiring a stream"
+}

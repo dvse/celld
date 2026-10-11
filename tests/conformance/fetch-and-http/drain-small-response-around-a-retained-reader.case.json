@@ -1,0 +1,59 @@
+{
+  "adapter": "topology",
+  "behaviour": "fetch-and-http",
+  "contract": {
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "Explicit same-direction HTTP body completion behind held tail; H002 tests opposite-direction request body",
+    "implementation": "cases.js:H004",
+    "intent": "Drain small response around a retained reader",
+    "oracle": "Independent exact313 bytes and server EOF while slow active; slow exact65536 bytes after release",
+    "preconditions": [
+      "Slow body has4096-byte prefix and held tail; independent313-byte body is buffered",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Read slow logical prefix and retain reader",
+      "Drain independent body",
+      "Snapshot proves independent EOF while slow remains active with4096 produced bytes",
+      "Release and drain slow response"
+    ]
+  },
+  "corpus_id": "H004",
+  "corpus_wave": "http-stream-stress",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/body-streaming",
+  "id": "conformance/fetch-and-http/drain-small-response-around-a-retained-reader",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/http-stream-stress/H004"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/http-stream-stress/H004",
+      "source": "guarded-source-archive/celld-os-stress/waves/http-stream-stress"
+    },
+    {
+      "sha256": "bc36e6548386869fea496e7073ebc08ff4a068d89f1860e89f28a03515006e6b",
+      "source": "guarded-source-archive/celld-os-stress/waves/http-stream-stress/fixture.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "H004",
+  "source": "tests/conformance/fetch-and-http/fixtures/body-streaming/fixture.js",
+  "source_sha256": "bc36e6548386869fea496e7073ebc08ff4a068d89f1860e89f28a03515006e6b",
+  "title": "Drain small response around a retained reader"
+}

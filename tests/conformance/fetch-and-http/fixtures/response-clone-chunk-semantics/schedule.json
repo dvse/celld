@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "profile": "direct-celld-response-clone-chunk-semantics-v1",
+  "runtime_status": "UNRUN",
+  "execution_authority": "SEPARATE_PARENT_RUNTIME_ENVELOPE_REQUIRED",
+  "suite_outer_deadline_seconds": 300,
+  "preflight_deadline_seconds": 30,
+  "startup_deadline_seconds": 120,
+  "cleanup_deadline_seconds": 20,
+  "request_count": 1,
+  "concurrency": 1,
+  "retries": 0,
+  "resource_envelope": {
+    "supervisor_enforced": true,
+    "enforcement_status": "REQUIRED_NOT_OBSERVED",
+    "process_group_field_scope": "Legacy field names cover the whole proven-owned dev/bundler/runtime descendant tree across PGIDs, including all owned temporary/log/stage/store paths.",
+    "functional_only_envelope_policy": "Separate functional-only sampled observations cannot claim strict-profile success.",
+    "runtime_process_group_memory_max_bytes": 1073741824,
+    "runtime_process_group_cpu_cores": 1,
+    "v8_heap_limit_mb": 128,
+    "request_response_max_bytes": 65536,
+    "owned_filesystem_max_bytes": 268435456
+  },
+  "requests": [
+    {
+      "id": "Y301",
+      "method": "GET",
+      "path": "/case/Y301",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    }
+  ],
+  "completion_contract": [
+    "All 11 assertions execute and pass.",
+    "All four successful-trace reads and both reader cancellations settle; both explicit readers release.",
+    "All tracked streams have terminal proof; retained source lock has both-descendant proof.",
+    "Exact reviewed source/build/deploy identity plus external listener closure, whole proven-owned dev/bundler/runtime descendant-tree emptiness across all PGIDs, and owned temporary/log/stage/store removal verified."
+  ],
+  "stop_conditions": [
+    "Missing precondition => BLOCKED before entry.",
+    "Witnessed false assertion or API exception => FAIL, with cleanup recorded separately.",
+    "Unsettled read/cancel or ambiguous outcome at external deadline => UNKNOWN with incomplete local cleanup; never PASS.",
+    "Stop the entire proven-owned dev/bundler/runtime descendant tree across PGIDs on deadline/resource breach; verify tree emptiness and owned temporary/log/stage/store cleanup without touching unrelated processes.",
+    "Exactly one request, no retries or parameter variants."
+  ]
+}

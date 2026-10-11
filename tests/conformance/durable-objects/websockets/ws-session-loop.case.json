@@ -1,0 +1,33 @@
+{
+  "id": "conformance/durable-objects/websockets/ws-session-loop",
+  "layer": "conformance",
+  "behaviour": "durable-objects/websockets",
+  "title": "ws session loop",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/ws-session-loop",
+      "legacy_id": "hyperbob/ws-session-loop"
+    },
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/ws-session-loop/wrangler.json",
+      "sha256": "f5c3eca99aa3050adaa459778f535e9a8f23838f93cecc2e77b9ca85a9d4cb3b"
+    }
+  ],
+  "legacy_ids": [
+    "hyperbob/ws-session-loop"
+  ],
+  "adapter": "example",
+  "fixture": "tests/conformance/durable-objects/websockets/fixtures/session-loop",
+  "profiles": [
+    "full"
+  ],
+  "reason": "",
+  "requests": [
+    {
+      "path": "/?v=suite"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/durable-objects/websockets/fixtures/session-loop/wrangler.json",
+  "source_sha256": "f5c3eca99aa3050adaa459778f535e9a8f23838f93cecc2e77b9ca85a9d4cb3b"
+}

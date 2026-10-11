@@ -1,0 +1,97 @@
+{
+  "adapter": "http",
+  "behaviour": "durable-objects/storage-sql",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runs": 0,
+    "application_relevance": "Reusable query factories must remain stable when their source builder changes.",
+    "authored": true,
+    "classification": "functional-regression-candidate",
+    "cleanup": [
+      "Trace must settle before data cleanup; timeout requires external owned-process teardown.",
+      "Record and finish every native SQL cursor within64 remaining rows; no private close hook or GC assumption.",
+      "DeleteAll only on this request\u2019s fresh owned DO; verify its KV empty; external supervisor reaps owned processes and store."
+    ],
+    "distinctness": "Observable prepare input capture, not simultaneous busy-cursor bindings or terminal transaction closure tests.",
+    "failure_hypothesis": "prepare may coerce query lazily on each call, allowing later application mutation to change its SQL.",
+    "id": "D215",
+    "implementation": "cases.js:D215",
+    "independently_reviewed": false,
+    "intent": "Capture prepared query text once and bind each invocation",
+    "limits": {
+      "cleanup_deadline_ms": 2000,
+      "max_application_tables": 2,
+      "max_created_do_roots": 1,
+      "max_external_case_http_requests": 1,
+      "max_frontend_do_fetches": 1,
+      "max_logical_payload_bytes": 4096,
+      "max_outbound_public_network_requests": 0,
+      "max_result_rows_per_cursor": 64,
+      "max_tracked_sql_cursors": 16,
+      "max_user_kv_keys": 8,
+      "outer_case_process_deadline_seconds": 15,
+      "outer_http_deadline_seconds": 10,
+      "precondition_deadline_ms": 1000,
+      "trace_deadline_ms": 5000
+    },
+    "literal_assertion_call_sites": 3,
+    "oracle": "Answers5 and9 from original plus1 source; exactly one toString conversion.",
+    "preconditions": [
+      "Reviewed exact source, build and fixture identities; direct celld only.",
+      "Fresh isolated owned deployment and independently witnessed per-request random DO root; no preexisting user data.",
+      "SQLite-backed StorageCase, sync KV and sql.ingest supported; missing prerequisites BLOCKED."
+    ],
+    "promotion_candidate": true,
+    "runtime_passes": 0,
+    "runtime_status": "NOT_RUN",
+    "schedule": "One external GET /case/D215; frontend creates one fresh randomly named DO and performs one DO.fetch; all case operations execute in written dependency order without inter-request gates.",
+    "source_expectation": "Ordinary intended public storage behavior supported by inspected JS/native implementation; source/static agreement is not a runtime pass.",
+    "source_refs": [
+      {
+        "line_end": 1400,
+        "line_start": 1395,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      }
+    ],
+    "title": "Capture prepared query text once and bind each invocation",
+    "trace": [
+      "Prepare a query object whose toString is counted.",
+      "Change the object-produced SQL.",
+      "Invoke prepared closure with4 and8."
+    ]
+  },
+  "corpus_id": "D215",
+  "corpus_wave": "storage-sql-semantics",
+  "fixture": "tests/conformance/durable-objects/storage-sql/fixtures/storage-sql-semantics",
+  "id": "conformance/durable-objects/storage-sql/storage-sql-d215",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/storage-sql-semantics/D215"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/storage-sql-semantics/D215",
+      "manifest_sha256": "25b49a3bc5158a1b8277be37a06ef424e24da72c8ada091d9bd57d2c68d8bb7c",
+      "review_sha256": "81dfb7cd7a743ccb87c93144b6fb21c2d227be2b50aea33b06729f19c14e49d5",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/storage-sql-semantics",
+      "tranche": "002"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/D215",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "D215",
+  "source": "tests/conformance/durable-objects/storage-sql/fixtures/storage-sql-semantics/fixture.js",
+  "source_sha256": "88a9b8be2e40781bcf1502c79d632723b89fd9a5f1d6a44f5110cea11fe1bbc6",
+  "title": "Capture prepared query text once and bind each invocation"
+}

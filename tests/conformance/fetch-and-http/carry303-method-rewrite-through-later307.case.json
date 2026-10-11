@@ -1,0 +1,60 @@
+{
+  "adapter": "topology",
+  "behaviour": "fetch-and-http",
+  "contract": {
+    "cleanup": [
+      "Coordinator remains in active DO.fetch; close scope, abort pending owned fetches, cancel/release all owned readers and response bodies",
+      "Recipient marks operations stopped before releasing gates; joins all entered handlers and producer pulls; any fault or unresolved work BLOCKS cleanup",
+      "Join complete coordinator trace and every watched task; exact expected abort only; unobserved assertion failures cannot become successful cleanup",
+      "Matched recipient journal and zero active/readers/controllers/pulls plus zero caller response/request/task resources required",
+      "Independent supervisor must close/reap/destroy only owned sockets/processes/fresh storage and provide hash-matched teardown before runtime PASS"
+    ],
+    "distinctness": "F003 covers POST302 branch; this separately reachable PUT303 transition plus preserving subsequent hop owns different state carryover failure",
+    "implementation": "cases.js:F004",
+    "intent": "Carry303 method rewrite through later307",
+    "oracle": "Initial PUT7169 exact; intermediate/final GET0 exact; no body resurrection; sibling effect1 and final701-byte body",
+    "preconditions": [
+      "PUT7169 ->303 ->GET ->307 ->GET; final response head held",
+      "Fresh already-running owned disposable candidate8d27 fleet, parent exclusive slot, independent exact-hash source/oracle review",
+      "External supervisor records actual process/boot/executable/DO/isolate identities and hard resource limits; no synthetic boolean substitutes for evidence",
+      "Distinct coordinator/recipient roots and isolates; recipient local to fixed owned192.168.77.1:18080 ingress; controls and every hop are independent recipient requests",
+      "Native public Fetch, ReadableStream, AbortController and SHA256 APIs; fresh recipient operation journal required before trace entry",
+      "All synthetic bodies and valid ordinary redirects stay in earlier-configured owned fixture endpoints; graph depth at most3, each operation enters at most once"
+    ],
+    "trace": [
+      "Start buffered PUT followed through303",
+      "Witness final entry after later307",
+      "Check PUT input exact then both later requests GET/empty",
+      "Complete sibling upload before releasing final response"
+    ]
+  },
+  "corpus_id": "F004",
+  "corpus_wave": "fetch-redirect-stress",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/redirect-chains",
+  "id": "conformance/fetch-and-http/carry303-method-rewrite-through-later307",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/fetch-redirect-stress/F004"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/fetch-redirect-stress/F004",
+      "source": "guarded-source-archive/celld-os-stress/waves/fetch-redirect-stress"
+    },
+    {
+      "sha256": "bb8d09b77278bb557b9489a205adaa0a6663ce77aa02e13694fa29eeb15f2b8f",
+      "source": "guarded-source-archive/celld-os-stress/waves/fetch-redirect-stress/fixture.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "F004",
+  "source": "tests/conformance/fetch-and-http/fixtures/redirect-chains/fixture.js",
+  "source_sha256": "bb8d09b77278bb557b9489a205adaa0a6663ce77aa02e13694fa29eeb15f2b8f",
+  "title": "Carry303 method rewrite through later307"
+}

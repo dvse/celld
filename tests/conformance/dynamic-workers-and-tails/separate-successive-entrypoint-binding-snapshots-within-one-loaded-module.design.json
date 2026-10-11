@@ -1,0 +1,47 @@
+{
+  "id": "conformance/dynamic-workers-and-tails/separate-successive-entrypoint-binding-snapshots-within-one-loaded-module",
+  "layer": "conformance",
+  "behaviour": "dynamic-workers-and-tails",
+  "title": "Separate successive entrypoint binding snapshots within one loaded module",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/loader-props",
+      "legacy_id": "loader-props/L014"
+    }
+  ],
+  "corpus_wave": "loader-props",
+  "corpus_id": "L014",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "L014",
+    "intent": "Separate successive entrypoint binding snapshots within one loaded module",
+    "failure_hypothesis": "Per-worker props cache overwrites an earlier entrypoint binding",
+    "preconditions": [
+      "Same props variable reused for default then Named; nested object replaced",
+      "Disposable private fixture with fresh supervisor name, live LOADER, facets, restore flag, and positive Loader control",
+      "External reviewed adapter has exclusive run slot and enforces wall/memory/PID/load limits"
+    ],
+    "trace": [
+      "Bind default at first value",
+      "Replace nested config and bind Named",
+      "Mutate second config",
+      "Invoke both bound entries"
+    ],
+    "stress": "1 worker; 2 entrypoints; 2 mutation points",
+    "oracle": "First bound entry sees first and second sees second",
+    "cleanup": "Case-specific finally disposes restored handles and drains finite cancellation hold where used; common cleanup releases code gates, aborts every owned facet, disposes entrypoints and worker handles, removes only tracked fixture KV rows. Parent tears down disposable fleet/storage.",
+    "implementation": "cases.js:loaderCases.L014",
+    "contract_group": "props",
+    "qualification": "characterization",
+    "promotion": "NOT_PROMOTED: independent source/oracle review and recorded frozen-runtime run required",
+    "layer": "real-process-RPC",
+    "profile": "loader-props-2026-09-04",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  }
+}

@@ -1,0 +1,2986 @@
+{
+  "schema_version": 1,
+  "family": "d1-semantics",
+  "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+  "authored_case_count": 20,
+  "review_accepted_cases": 0,
+  "runtime_executed_cases": 0,
+  "runtime_pass_cases": 0,
+  "source_archive": "celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "source_contract": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+  "authoring_scope": "Added only d1-semantics artifacts; immutable source, historical corpus and sibling waves unchanged. Static-only checks never award runtime credit.",
+  "cases": [
+    {
+      "id": "E201",
+      "title": "Keep rebound prepared statements independent",
+      "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+      "family": "d1-semantics",
+      "artifact": "worker.js",
+      "entrypoint": "GET /case/E201",
+      "fixture_line_range": [
+        13,
+        27
+      ],
+      "fixture_slice_sha256": "179364edaabcb9ce1f1e38bd9420a101592af727d7c98476f8a6bd1e9462c75d",
+      "intent": "Reuse a parameterized lookup safely for several application records.",
+      "application_relevance": "Reuse a parameterized lookup safely for several application records.",
+      "sut": "direct celld only",
+      "surface": "public env D1 binding APIs only",
+      "source_refs": [
+        {
+          "key": "api",
+          "path": "celld-os-project/celld/docs/services/d1.md",
+          "line_ranges": [
+            [
+              1,
+              87
+            ]
+          ],
+          "slices_sha256": [
+            "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+          ]
+        },
+        {
+          "key": "bind",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8283,
+              8326
+            ]
+          ],
+          "slices_sha256": [
+            "58eaf450858b0f680fb34f22a628c58caef70fb864bdc8bfeacf5a9d4a0b84cf"
+          ]
+        },
+        {
+          "key": "prepared",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8328,
+              8387
+            ]
+          ],
+          "slices_sha256": [
+            "6574f073369b908ee7dcf385e70c71d166576a0606c29256355c71c9ab87d0df"
+          ]
+        },
+        {
+          "key": "metadata",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2731,
+              2828
+            ]
+          ],
+          "slices_sha256": [
+            "f4024aab42f6717e3e8a9588ee86a59a3e04694a9770871e2653cf4423e12c8e"
+          ]
+        }
+      ],
+      "fixed_finite_trace": [
+        "Seed three label rows.",
+        "Prepare one lookup; bind id 1, rebind that result to 2, and bind the original template to 3.",
+        "Execute blue, red, green, then red again and assert distinct binding objects and exact values."
+      ],
+      "oracle": {
+        "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+        "claim": "bind constructs a new D1PreparedStatement with independently mapped scalar params; each first() dispatch uses that statement params.",
+        "assertions": [
+          "rebind returns a distinct statement",
+          "bind preserves the unbound template object",
+          "rebound statement uses replacement arguments",
+          "earlier bound statement retains its arguments",
+          "original template remains independently bindable",
+          "bound statement can be executed again"
+        ],
+        "executable_assertion_source": [
+          "c.eq(red === blue, false, \"rebind returns a distinct statement\");",
+          "c.eq(base === red, false, \"bind preserves the unbound template object\");",
+          "c.eq(await c.first(blue, \"blue execution\"), {label:\"blue\"}, \"rebound statement uses replacement arguments\");",
+          "c.eq(await c.first(red, \"red execution\"), {label:\"red\"}, \"earlier bound statement retains its arguments\");",
+          "c.eq(await c.first(green, \"green execution\"), {label:\"green\"}, \"original template remains independently bindable\");",
+          "c.eq(await c.first(red, \"red reuse\"), {label:\"red\"}, \"bound statement can be executed again\");"
+        ],
+        "successful_assertion_count": 6,
+        "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed."
+      },
+      "schedule": {
+        "case_requests": 1,
+        "setup_binding_calls_exact_on_success": 1,
+        "main_phase_binding_calls_exact_on_success": 5,
+        "main_phase_dispatch_labels_in_order": [
+          "seed lookup",
+          "blue execution",
+          "red execution",
+          "green execution",
+          "red reuse"
+        ],
+        "cleanup_binding_calls_exact_on_success": 2,
+        "maximum_in_flight_public_calls": 1,
+        "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+        "retries": 0,
+        "restarts": 0,
+        "faults": 0
+      },
+      "limits": {
+        "public_dispatches_per_phase_enforced": 32,
+        "maximum_rows_in_any_fixture_table": 4,
+        "maximum_application_tables": 1,
+        "maximum_bound_parameters_per_statement": 5,
+        "maximum_batch_statements": 5,
+        "maximum_exec_statements": 4,
+        "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+        "maximum_bound_scalar_or_blob_bytes": 64,
+        "external_total_request_deadline_seconds": 30,
+        "external_response_capture_bytes": 1048576,
+        "no_internal_Promise_race_timeout": true
+      },
+      "owned_resources": [
+        {
+          "binding": "DB",
+          "database_identity": "d1-next-id-a",
+          "table": "d1_next_e201"
+        }
+      ],
+      "cleanup": {
+        "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+        "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+        "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+        "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+      },
+      "distinctness": "Public D1 immutable bind object and repeated full-result calls; unlike T011 direct DO busy cached cursor parameters and cross-request overlap.",
+      "cross_wave_overlap": null,
+      "limits_of_evidence": [
+        "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+        "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+        "Successful batch dependencies do not establish concurrent-observer atomicity.",
+        "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+      ],
+      "review_accepted": false,
+      "runtime_execution_count": 0
+    },
+    {
+      "id": "E202",
+      "title": "Address repeated numbered placeholders",
+      "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+      "family": "d1-semantics",
+      "artifact": "worker.js",
+      "entrypoint": "GET /case/E202",
+      "fixture_line_range": [
+        28,
+        36
+      ],
+      "fixture_slice_sha256": "58222495d9202371ca07943a2d0b8879250a72dc548376e389c47e85e04ca893",
+      "intent": "Reuse one invoice quantity in several output fields without shifting later parameters.",
+      "application_relevance": "Reuse one invoice quantity in several output fields without shifting later parameters.",
+      "sut": "direct celld only",
+      "surface": "public env D1 binding APIs only",
+      "source_refs": [
+        {
+          "key": "api",
+          "path": "celld-os-project/celld/docs/services/d1.md",
+          "line_ranges": [
+            [
+              1,
+              87
+            ]
+          ],
+          "slices_sha256": [
+            "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+          ]
+        },
+        {
+          "key": "bind",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8283,
+              8326
+            ]
+          ],
+          "slices_sha256": [
+            "58eaf450858b0f680fb34f22a628c58caef70fb864bdc8bfeacf5a9d4a0b84cf"
+          ]
+        },
+        {
+          "key": "metadata",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2731,
+              2828
+            ]
+          ],
+          "slices_sha256": [
+            "f4024aab42f6717e3e8a9588ee86a59a3e04694a9770871e2653cf4423e12c8e"
+          ]
+        }
+      ],
+      "fixed_finite_trace": [
+        "Create one-row lookup.",
+        "Bind four arguments to a statement whose numbered placeholders appear in order ?2,?1,?2,?3,?4.",
+        "Require the exact quantity, SKU, repeated quantity and null discount."
+      ],
+      "oracle": {
+        "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+        "claim": "SQLite parameter count is validated once; values bind to offset+1, so repeated ?2 uses parameter index 2 and not its occurrence count.",
+        "assertions": [
+          "numbered repeated parameters map by index rather than occurrence"
+        ],
+        "executable_assertion_source": [
+          "c.eq(result, {quantity:7, sku:\"SKU-A\", repeated:7, discount:null}, \"numbered repeated parameters map by index rather than occurrence\");"
+        ],
+        "successful_assertion_count": 1,
+        "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed."
+      },
+      "schedule": {
+        "case_requests": 1,
+        "setup_binding_calls_exact_on_success": 1,
+        "main_phase_binding_calls_exact_on_success": 2,
+        "main_phase_dispatch_labels_in_order": [
+          "seed numbered lookup",
+          "numbered lookup"
+        ],
+        "cleanup_binding_calls_exact_on_success": 2,
+        "maximum_in_flight_public_calls": 1,
+        "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+        "retries": 0,
+        "restarts": 0,
+        "faults": 0
+      },
+      "limits": {
+        "public_dispatches_per_phase_enforced": 32,
+        "maximum_rows_in_any_fixture_table": 4,
+        "maximum_application_tables": 1,
+        "maximum_bound_parameters_per_statement": 5,
+        "maximum_batch_statements": 5,
+        "maximum_exec_statements": 4,
+        "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+        "maximum_bound_scalar_or_blob_bytes": 64,
+        "external_total_request_deadline_seconds": 30,
+        "external_response_capture_bytes": 1048576,
+        "no_internal_Promise_race_timeout": true
+      },
+      "owned_resources": [
+        {
+          "binding": "DB",
+          "database_identity": "d1-next-id-a",
+          "table": "d1_next_e202"
+        }
+      ],
+      "cleanup": {
+        "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+        "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+        "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+        "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+      },
+      "distinctness": "Indexes and repeated placeholders exercise mapping independently of E201 statement-object immutability.",
+      "cross_wave_overlap": null,
+      "limits_of_evidence": [
+        "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+        "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+        "Successful batch dependencies do not establish concurrent-observer atomicity.",
+        "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+      ],
+      "review_accepted": false,
+      "runtime_execution_count": 0
+    },
+    {
+      "id": "E203",
+      "title": "Round-trip application scalar settings",
+      "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+      "family": "d1-semantics",
+      "artifact": "worker.js",
+      "entrypoint": "GET /case/E203",
+      "fixture_line_range": [
+        37,
+        47
+      ],
+      "fixture_slice_sha256": "e93966fc39ee6a0b3185e2b509b4ab3d18140c6cbe75da095f8ee59e936c7124",
+      "intent": "Persist booleans, optional nulls, Unicode text, empty text and finite numbers without silent coercion to NULL.",
+      "application_relevance": "Persist booleans, optional nulls, Unicode text, empty text and finite numbers without silent coercion to NULL.",
+      "sut": "direct celld only",
+      "surface": "public env D1 binding APIs only",
+      "source_refs": [
+        {
+          "key": "api",
+          "path": "celld-os-project/celld/docs/services/d1.md",
+          "line_ranges": [
+            [
+              1,
+              87
+            ]
+          ],
+          "slices_sha256": [
+            "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+          ]
+        },
+        {
+          "key": "bind",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8283,
+              8326
+            ]
+          ],
+          "slices_sha256": [
+            "58eaf450858b0f680fb34f22a628c58caef70fb864bdc8bfeacf5a9d4a0b84cf"
+          ]
+        },
+        {
+          "key": "bind_engine",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2343,
+              2385
+            ]
+          ],
+          "slices_sha256": [
+            "258caf08cb43b1e2c4a0a51595c54f3baac18f26c8aa4179249d09428f24f439"
+          ]
+        },
+        {
+          "key": "row_codec",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2395,
+              2478
+            ]
+          ],
+          "slices_sha256": [
+            "6f96a199a642643db9a5cde84a2d79da532c19a71fadfe585c3367fc3c1fe5e2"
+          ]
+        },
+        {
+          "key": "database",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8448,
+              8491
+            ]
+          ],
+          "slices_sha256": [
+            "d77cc49a62eb8dcae987ad5324e3d0831f91412d02bfdb0b5c3ac0992e263ecb"
+          ]
+        }
+      ],
+      "fixed_finite_trace": [
+        "Create an affinity-free settings table.",
+        "Batch two fixed rows with true/false flags, null, Unicode/newline/empty text, and finite numbers.",
+        "Read values and SQL types in id order and compare exact rows."
+      ],
+      "oracle": {
+        "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+        "claim": "The public client converts booleans to 1/0, preserves finite numbers/text/null, and the engine maps those JSON values to corresponding SQLite values.",
+        "assertions": [
+          "boolean null text and finite number binds keep their intended SQL types and values"
+        ],
+        "executable_assertion_source": [
+          "c.eq(result.results, [{id:1,enabled:1,optional:null,note:\"café\\nready\",amount:2.5,flag_type:\"integer\",optional_type:\"null\",note_type:\"text\"},{id:2,enabled:0,optional:null,note:\"\",amount:0,flag_type:\"integer\",optional_type:\"null\",note_type:\"text\"}], \"boolean null text and finite number binds keep their intended SQL types and values\");"
+        ],
+        "successful_assertion_count": 1,
+        "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed."
+      },
+      "schedule": {
+        "case_requests": 1,
+        "setup_binding_calls_exact_on_success": 1,
+        "main_phase_binding_calls_exact_on_success": 3,
+        "main_phase_dispatch_labels_in_order": [
+          "create settings",
+          "save settings",
+          "load settings"
+        ],
+        "cleanup_binding_calls_exact_on_success": 2,
+        "maximum_in_flight_public_calls": 1,
+        "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+        "retries": 0,
+        "restarts": 0,
+        "faults": 0
+      },
+      "limits": {
+        "public_dispatches_per_phase_enforced": 32,
+        "maximum_rows_in_any_fixture_table": 4,
+        "maximum_application_tables": 1,
+        "maximum_bound_parameters_per_statement": 5,
+        "maximum_batch_statements": 5,
+        "maximum_exec_statements": 4,
+        "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+        "maximum_bound_scalar_or_blob_bytes": 64,
+        "external_total_request_deadline_seconds": 30,
+        "external_response_capture_bytes": 1048576,
+        "no_internal_Promise_race_timeout": true
+      },
+      "owned_resources": [
+        {
+          "binding": "DB",
+          "database_identity": "d1-next-id-a",
+          "table": "d1_next_e203"
+        }
+      ],
+      "cleanup": {
+        "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+        "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+        "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+        "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+      },
+      "distinctness": "One scalar codec case with discriminating types, not separate credit for each input value. Cross-wave: D212 binds native SQL scalars and DataView and returns native ArrayBuffer; E203 exercises public D1 boolean normalization, JSON transport, SQL null and typed scalar persistence across batch/read dispatches.",
+      "cross_wave_overlap": {
+        "neighbors": [
+          "D212"
+        ],
+        "distinction": "D212 binds native SQL scalars and DataView and returns native ArrayBuffer; E203 exercises public D1 boolean normalization, JSON transport, SQL null and typed scalar persistence across batch/read dispatches."
+      },
+      "limits_of_evidence": [
+        "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+        "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+        "Successful batch dependencies do not establish concurrent-observer atomicity.",
+        "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+      ],
+      "review_accepted": false,
+      "runtime_execution_count": 0
+    },
+    {
+      "id": "E204",
+      "title": "Copy and encode binary bind sources",
+      "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+      "family": "d1-semantics",
+      "artifact": "worker.js",
+      "entrypoint": "GET /case/E204",
+      "fixture_line_range": [
+        48,
+        64
+      ],
+      "fixture_slice_sha256": "8224c008ea35d2be62ec5f5238d0c30a4e378a33412d8d2fdcfd1fbf2c7d5b26",
+      "intent": "Store binary attachments while callers reuse mutable typed buffers after binding.",
+      "application_relevance": "Store binary attachments while callers reuse mutable typed buffers after binding.",
+      "sut": "direct celld only",
+      "surface": "public env D1 binding APIs only",
+      "source_refs": [
+        {
+          "key": "api",
+          "path": "celld-os-project/celld/docs/services/d1.md",
+          "line_ranges": [
+            [
+              1,
+              87
+            ]
+          ],
+          "slices_sha256": [
+            "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+          ]
+        },
+        {
+          "key": "bind",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8283,
+              8326
+            ]
+          ],
+          "slices_sha256": [
+            "58eaf450858b0f680fb34f22a628c58caef70fb864bdc8bfeacf5a9d4a0b84cf"
+          ]
+        },
+        {
+          "key": "bind_engine",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2343,
+              2385
+            ]
+          ],
+          "slices_sha256": [
+            "258caf08cb43b1e2c4a0a51595c54f3baac18f26c8aa4179249d09428f24f439"
+          ]
+        },
+        {
+          "key": "row_codec",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2395,
+              2478
+            ]
+          ],
+          "slices_sha256": [
+            "6f96a199a642643db9a5cde84a2d79da532c19a71fadfe585c3367fc3c1fe5e2"
+          ]
+        },
+        {
+          "key": "database",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8448,
+              8491
+            ]
+          ],
+          "slices_sha256": [
+            "d77cc49a62eb8dcae987ad5324e3d0831f91412d02bfdb0b5c3ac0992e263ecb"
+          ]
+        }
+      ],
+      "fixed_finite_trace": [
+        "Create a binary table.",
+        "Bind an ArrayBuffer, Uint16Array, Int8Array and fixed byte array to four inserts.",
+        "Mutate only the ArrayBuffer and typed-array inputs before dispatch.",
+        "Batch inserts; raw-read exact byte arrays and SQLite BLOB types."
+      ],
+      "oracle": {
+        "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+        "claim": "ArrayBuffer is copied to bytes and typed views are copied through Uint8Array.from(element values) at bind time; result BLOBs serialize as byte arrays.",
+        "assertions": [
+          "ArrayBuffer copies bytes and typed views copy byte-truncated elements at bind time",
+          "public D1 BLOB results are byte arrays"
+        ],
+        "executable_assertion_source": [
+          "c.eq(result, [[1,[8,0,255],\"blob\"],[2,[65,66],\"blob\"],[3,[255,0,127],\"blob\"],[4,[1,0,255],\"blob\"]], \"ArrayBuffer copies bytes and typed views copy byte-truncated elements at bind time\");",
+          "c.eq(result.every(row => Array.isArray(row[1])), true, \"public D1 BLOB results are byte arrays\");"
+        ],
+        "successful_assertion_count": 2,
+        "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed."
+      },
+      "schedule": {
+        "case_requests": 1,
+        "setup_binding_calls_exact_on_success": 1,
+        "main_phase_binding_calls_exact_on_success": 3,
+        "main_phase_dispatch_labels_in_order": [
+          "create binary store",
+          "save binary values",
+          "load binary values"
+        ],
+        "cleanup_binding_calls_exact_on_success": 2,
+        "maximum_in_flight_public_calls": 1,
+        "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+        "retries": 0,
+        "restarts": 0,
+        "faults": 0
+      },
+      "limits": {
+        "public_dispatches_per_phase_enforced": 32,
+        "maximum_rows_in_any_fixture_table": 4,
+        "maximum_application_tables": 1,
+        "maximum_bound_parameters_per_statement": 5,
+        "maximum_batch_statements": 5,
+        "maximum_exec_statements": 4,
+        "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+        "maximum_bound_scalar_or_blob_bytes": 64,
+        "external_total_request_deadline_seconds": 30,
+        "external_response_capture_bytes": 1048576,
+        "no_internal_Promise_race_timeout": true
+      },
+      "owned_resources": [
+        {
+          "binding": "DB",
+          "database_identity": "d1-next-id-a",
+          "table": "d1_next_e204"
+        }
+      ],
+      "cleanup": {
+        "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+        "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+        "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+        "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+      },
+      "distinctness": "Byte serialization and bind-time typed-buffer copying on the public D1 wire are distinct from direct DO T019 raw-window cursor binding. No snapshot promise is made for mutable plain byte arrays. Cross-wave: D212 observes a native DataView byte window and ArrayBuffer output. E204 tests the independently implemented D1 bind serializer: Uint16Array/Int8Array element truncation and typed-source copying at bind, then JSON byte-array output. Those are different encoding rules, not a new byte sample.",
+      "cross_wave_overlap": {
+        "neighbors": [
+          "D212"
+        ],
+        "distinction": "D212 observes a native DataView byte window and ArrayBuffer output. E204 tests the independently implemented D1 bind serializer: Uint16Array/Int8Array element truncation and typed-source copying at bind, then JSON byte-array output. Those are different encoding rules, not a new byte sample."
+      },
+      "limits_of_evidence": [
+        "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+        "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+        "Successful batch dependencies do not establish concurrent-observer atomicity.",
+        "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+      ],
+      "review_accepted": false,
+      "runtime_execution_count": 0
+    },
+    {
+      "id": "E205",
+      "title": "Keep all and run result semantics aligned",
+      "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+      "family": "d1-semantics",
+      "artifact": "worker.js",
+      "entrypoint": "GET /case/E205",
+      "fixture_line_range": [
+        65,
+        79
+      ],
+      "fixture_slice_sha256": "39257a1462840e082da327e0b997c9e96496f01994c24ddd141bbbff7c48ecf9",
+      "intent": "Let data-access helpers use either public execution method for reads and DML RETURNING.",
+      "application_relevance": "Let data-access helpers use either public execution method for reads and DML RETURNING.",
+      "sut": "direct celld only",
+      "surface": "public env D1 binding APIs only",
+      "source_refs": [
+        {
+          "key": "api",
+          "path": "celld-os-project/celld/docs/services/d1.md",
+          "line_ranges": [
+            [
+              1,
+              87
+            ]
+          ],
+          "slices_sha256": [
+            "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+          ]
+        },
+        {
+          "key": "prepared",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8328,
+              8387
+            ]
+          ],
+          "slices_sha256": [
+            "6574f073369b908ee7dcf385e70c71d166576a0606c29256355c71c9ab87d0df"
+          ]
+        },
+        {
+          "key": "row_codec",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2395,
+              2478
+            ]
+          ],
+          "slices_sha256": [
+            "6f96a199a642643db9a5cde84a2d79da532c19a71fadfe585c3367fc3c1fe5e2"
+          ]
+        }
+      ],
+      "fixed_finite_trace": [
+        "Create an empty table.",
+        "Insert one row through run and one through all, each with RETURNING.",
+        "Assert success and exact returned rows.",
+        "Execute the same ordered SELECT with all and run and compare exact results."
+      ],
+      "oracle": {
+        "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+        "claim": "run delegates to all, which maps engine columns/rows to the same successful object result shape.",
+        "assertions": [
+          "all and run both expose successful results",
+          "both methods preserve DML RETURNING rows",
+          "all returns exact ordered data",
+          "run is also a read method"
+        ],
+        "executable_assertion_source": [
+          "c.eq([first.success,second.success], [true,true], \"all and run both expose successful results\");",
+          "c.eq([first.results,second.results], [[{id:1,label:\"one\"}],[{id:2,label:\"two\"}]], \"both methods preserve DML RETURNING rows\");",
+          "c.eq(a.results, [{id:1,label:\"one\"},{id:2,label:\"two\"}], \"all returns exact ordered data\");",
+          "c.eq(b.results, a.results, \"run is also a read method\");"
+        ],
+        "successful_assertion_count": 4,
+        "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed."
+      },
+      "schedule": {
+        "case_requests": 1,
+        "setup_binding_calls_exact_on_success": 1,
+        "main_phase_binding_calls_exact_on_success": 5,
+        "main_phase_dispatch_labels_in_order": [
+          "create method parity table",
+          "run returning insert",
+          "all returning insert",
+          "all selection",
+          "run selection"
+        ],
+        "cleanup_binding_calls_exact_on_success": 2,
+        "maximum_in_flight_public_calls": 1,
+        "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+        "retries": 0,
+        "restarts": 0,
+        "faults": 0
+      },
+      "limits": {
+        "public_dispatches_per_phase_enforced": 32,
+        "maximum_rows_in_any_fixture_table": 4,
+        "maximum_application_tables": 1,
+        "maximum_bound_parameters_per_statement": 5,
+        "maximum_batch_statements": 5,
+        "maximum_exec_statements": 4,
+        "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+        "maximum_bound_scalar_or_blob_bytes": 64,
+        "external_total_request_deadline_seconds": 30,
+        "external_response_capture_bytes": 1048576,
+        "no_internal_Promise_race_timeout": true
+      },
+      "owned_resources": [
+        {
+          "binding": "DB",
+          "database_identity": "d1-next-id-a",
+          "table": "d1_next_e205"
+        }
+      ],
+      "cleanup": {
+        "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+        "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+        "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+        "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+      },
+      "distinctness": "Method alias equivalence includes both write-returned rows and reads, not just another SELECT-value variant. Cross-wave: D214 exhausts a native SQL RETURNING cursor and checks terminality. E205 compares public D1 run/all method aliases, success/result envelopes and RETURNING on both, with no exposed cursor.",
+      "cross_wave_overlap": {
+        "neighbors": [
+          "D214"
+        ],
+        "distinction": "D214 exhausts a native SQL RETURNING cursor and checks terminality. E205 compares public D1 run/all method aliases, success/result envelopes and RETURNING on both, with no exposed cursor."
+      },
+      "limits_of_evidence": [
+        "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+        "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+        "Successful batch dependencies do not establish concurrent-observer atomicity.",
+        "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+      ],
+      "review_accepted": false,
+      "runtime_execution_count": 0
+    },
+    {
+      "id": "E206",
+      "title": "Distinguish first row scalar and absence",
+      "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+      "family": "d1-semantics",
+      "artifact": "worker.js",
+      "entrypoint": "GET /case/E206",
+      "fixture_line_range": [
+        80,
+        93
+      ],
+      "fixture_slice_sha256": "45c5daf665ecf3170e7ca6ebec7a025c155b4acb20751ac9fd3ace144367b171",
+      "intent": "Handle nullable application fields and absent records using the first API.",
+      "application_relevance": "Handle nullable application fields and absent records using the first API.",
+      "sut": "direct celld only",
+      "surface": "public env D1 binding APIs only",
+      "source_refs": [
+        {
+          "key": "api",
+          "path": "celld-os-project/celld/docs/services/d1.md",
+          "line_ranges": [
+            [
+              1,
+              87
+            ]
+          ],
+          "slices_sha256": [
+            "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+          ]
+        },
+        {
+          "key": "prepared",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8328,
+              8387
+            ]
+          ],
+          "slices_sha256": [
+            "6574f073369b908ee7dcf385e70c71d166576a0606c29256355c71c9ab87d0df"
+          ]
+        },
+        {
+          "key": "shape",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8389,
+              8401
+            ]
+          ],
+          "slices_sha256": [
+            "1fddf16f819b9d3e4c32f1c93842c0176fb21ef2c500b5780055ca2ad4f5c981"
+          ]
+        },
+        {
+          "key": "drain",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2491,
+              2576
+            ]
+          ],
+          "slices_sha256": [
+            "543df70fa57dc500e477c0ee95b3dd85cca6464b6a7ab141dcc9410a8b55e59c"
+          ]
+        }
+      ],
+      "fixed_finite_trace": [
+        "Seed a null note followed by a later row.",
+        "Read ordered first row, its id scalar, and its null note scalar.",
+        "Execute a zero-row selection through first and first(id)."
+      ],
+      "oracle": {
+        "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+        "claim": "first shapes one retained row, returns the selected existing column, and returns null immediately when the engine returned no rows.",
+        "assertions": [
+          "first returns the ordered first row object",
+          "first column selects one scalar",
+          "present SQL NULL column returns null",
+          "empty first returns null",
+          "empty first column returns null without a row"
+        ],
+        "executable_assertion_source": [
+          "c.eq(await c.first(selection, \"first object\"), {id:1,note:null}, \"first returns the ordered first row object\");",
+          "c.eq(await c.first(selection, \"first scalar\", \"id\"), 1, \"first column selects one scalar\");",
+          "c.eq(await c.first(selection, \"first null column\", \"note\"), null, \"present SQL NULL column returns null\");",
+          "c.eq(await c.first(empty, \"empty first object\"), null, \"empty first returns null\");",
+          "c.eq(await c.first(empty, \"empty first scalar\", \"id\"), null, \"empty first column returns null without a row\");"
+        ],
+        "successful_assertion_count": 5,
+        "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed."
+      },
+      "schedule": {
+        "case_requests": 1,
+        "setup_binding_calls_exact_on_success": 1,
+        "main_phase_binding_calls_exact_on_success": 6,
+        "main_phase_dispatch_labels_in_order": [
+          "seed first selection",
+          "first object",
+          "first scalar",
+          "first null column",
+          "empty first object",
+          "empty first scalar"
+        ],
+        "cleanup_binding_calls_exact_on_success": 2,
+        "maximum_in_flight_public_calls": 1,
+        "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+        "retries": 0,
+        "restarts": 0,
+        "faults": 0
+      },
+      "limits": {
+        "public_dispatches_per_phase_enforced": 32,
+        "maximum_rows_in_any_fixture_table": 4,
+        "maximum_application_tables": 1,
+        "maximum_bound_parameters_per_statement": 5,
+        "maximum_batch_statements": 5,
+        "maximum_exec_statements": 4,
+        "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+        "maximum_bound_scalar_or_blob_bytes": 64,
+        "external_total_request_deadline_seconds": 30,
+        "external_response_capture_bytes": 1048576,
+        "no_internal_Promise_race_timeout": true
+      },
+      "owned_resources": [
+        {
+          "binding": "DB",
+          "database_identity": "d1-next-id-a",
+          "table": "d1_next_e206"
+        }
+      ],
+      "cleanup": {
+        "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+        "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+        "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+        "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+      },
+      "distinctness": "Public row/scalar/null contract; unlike T015 exhausted live SQL cursor reuse, no cursor or cross-request handle exists.",
+      "cross_wave_overlap": null,
+      "limits_of_evidence": [
+        "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+        "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+        "Successful batch dependencies do not establish concurrent-observer atomicity.",
+        "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+      ],
+      "review_accepted": false,
+      "runtime_execution_count": 0
+    },
+    {
+      "id": "E207",
+      "title": "Preserve export headings and column order",
+      "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+      "family": "d1-semantics",
+      "artifact": "worker.js",
+      "entrypoint": "GET /case/E207",
+      "fixture_line_range": [
+        94,
+        106
+      ],
+      "fixture_slice_sha256": "66518a363528548fef5b256e62033c7ce0314a799938de35113d544517835499",
+      "intent": "Produce ordered positional exports including a headings-only empty export.",
+      "application_relevance": "Produce ordered positional exports including a headings-only empty export.",
+      "sut": "direct celld only",
+      "surface": "public env D1 binding APIs only",
+      "source_refs": [
+        {
+          "key": "api",
+          "path": "celld-os-project/celld/docs/services/d1.md",
+          "line_ranges": [
+            [
+              1,
+              87
+            ]
+          ],
+          "slices_sha256": [
+            "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+          ]
+        },
+        {
+          "key": "prepared",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8328,
+              8387
+            ]
+          ],
+          "slices_sha256": [
+            "6574f073369b908ee7dcf385e70c71d166576a0606c29256355c71c9ab87d0df"
+          ]
+        },
+        {
+          "key": "row_codec",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2395,
+              2478
+            ]
+          ],
+          "slices_sha256": [
+            "6f96a199a642643db9a5cde84a2d79da532c19a71fadfe585c3367fc3c1fe5e2"
+          ]
+        },
+        {
+          "key": "metadata",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2731,
+              2828
+            ]
+          ],
+          "slices_sha256": [
+            "f4024aab42f6717e3e8a9588ee86a59a3e04694a9770871e2653cf4423e12c8e"
+          ]
+        }
+      ],
+      "fixed_finite_trace": [
+        "Seed two rows including a null label.",
+        "Read selected caption/record_id columns through raw and raw(columnNames).",
+        "Read an empty selection in both forms."
+      ],
+      "oracle": {
+        "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+        "claim": "raw returns positional rows unchanged, or prepends engine columns even when there are no rows.",
+        "assertions": [
+          "raw preserves selected column order",
+          "columnNames prepends one headings row",
+          "empty raw has no data rows",
+          "empty export retains its column headings"
+        ],
+        "executable_assertion_source": [
+          "c.eq(await c.raw(statement, \"raw data\"), [[\"a\",1],[null,2]], \"raw preserves selected column order\");",
+          "c.eq(await c.raw(statement, \"raw headings\", {columnNames:true}), [[\"caption\",\"record_id\"],[\"a\",1],[null,2]], \"columnNames prepends one headings row\");",
+          "c.eq(await c.raw(empty, \"empty raw\"), [], \"empty raw has no data rows\");",
+          "c.eq(await c.raw(empty, \"empty raw headings\", {columnNames:true}), [[\"caption\",\"record_id\"]], \"empty export retains its column headings\");"
+        ],
+        "successful_assertion_count": 4,
+        "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed."
+      },
+      "schedule": {
+        "case_requests": 1,
+        "setup_binding_calls_exact_on_success": 1,
+        "main_phase_binding_calls_exact_on_success": 5,
+        "main_phase_dispatch_labels_in_order": [
+          "seed export",
+          "raw data",
+          "raw headings",
+          "empty raw",
+          "empty raw headings"
+        ],
+        "cleanup_binding_calls_exact_on_success": 2,
+        "maximum_in_flight_public_calls": 1,
+        "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+        "retries": 0,
+        "restarts": 0,
+        "faults": 0
+      },
+      "limits": {
+        "public_dispatches_per_phase_enforced": 32,
+        "maximum_rows_in_any_fixture_table": 4,
+        "maximum_application_tables": 1,
+        "maximum_bound_parameters_per_statement": 5,
+        "maximum_batch_statements": 5,
+        "maximum_exec_statements": 4,
+        "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+        "maximum_bound_scalar_or_blob_bytes": 64,
+        "external_total_request_deadline_seconds": 30,
+        "external_response_capture_bytes": 1048576,
+        "no_internal_Promise_race_timeout": true
+      },
+      "owned_resources": [
+        {
+          "binding": "DB",
+          "database_identity": "d1-next-id-a",
+          "table": "d1_next_e207"
+        }
+      ],
+      "cleanup": {
+        "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+        "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+        "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+        "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+      },
+      "distinctness": "Static positional export and zero-row metadata contract, not T012/T013 live shared cursor iteration.",
+      "cross_wave_overlap": null,
+      "limits_of_evidence": [
+        "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+        "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+        "Successful batch dependencies do not establish concurrent-observer atomicity.",
+        "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+      ],
+      "review_accepted": false,
+      "runtime_execution_count": 0
+    },
+    {
+      "id": "E208",
+      "title": "Preserve own properties for special column labels",
+      "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+      "family": "d1-semantics",
+      "artifact": "worker.js",
+      "entrypoint": "GET /case/E208",
+      "fixture_line_range": [
+        107,
+        120
+      ],
+      "fixture_slice_sha256": "91eeafad2349066fdf1e1ff4872a18580f8e99a166f9c8c176e731560a9dafec",
+      "intent": "Accept report column labels that coincide with JavaScript prototype members.",
+      "application_relevance": "Accept report column labels that coincide with JavaScript prototype members.",
+      "sut": "direct celld only",
+      "surface": "public env D1 binding APIs only",
+      "source_refs": [
+        {
+          "key": "api",
+          "path": "celld-os-project/celld/docs/services/d1.md",
+          "line_ranges": [
+            [
+              1,
+              87
+            ]
+          ],
+          "slices_sha256": [
+            "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+          ]
+        },
+        {
+          "key": "shape",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8389,
+              8401
+            ]
+          ],
+          "slices_sha256": [
+            "1fddf16f819b9d3e4c32f1c93842c0176fb21ef2c500b5780055ca2ad4f5c981"
+          ]
+        },
+        {
+          "key": "prepared",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8328,
+              8387
+            ]
+          ],
+          "slices_sha256": [
+            "6574f073369b908ee7dcf385e70c71d166576a0606c29256355c71c9ab87d0df"
+          ]
+        }
+      ],
+      "fixed_finite_trace": [
+        "Create one source row.",
+        "Select literal __proto__, constructor and toString aliases.",
+        "Assert exact own enumerable keys and values, then select __proto__ through first(column)."
+      ],
+      "oracle": {
+        "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+        "claim": "Object.fromEntries defines an own property for every column label; first(column) reads that shaped own property.",
+        "assertions": [
+          "prototype-like SQL labels are own enumerable columns",
+          "special columns never disappear into inherited properties",
+          "special columns keep their exact scalar values",
+          "first column uses the shaped own special column"
+        ],
+        "executable_assertion_source": [
+          "c.eq(Object.keys(row).sort(), [\"__proto__\",\"constructor\",\"toString\"].sort(), \"prototype-like SQL labels are own enumerable columns\");",
+          "c.eq([has(row,\"__proto__\"),has(row,\"constructor\"),has(row,\"toString\")], [true,true,true], \"special columns never disappear into inherited properties\");",
+          "c.eq([row.__proto__,row.constructor,row.toString], [\"p\",\"c\",\"s\"], \"special columns keep their exact scalar values\");",
+          "c.eq(await c.first(statement, \"first special column\", \"__proto__\"), \"p\", \"first column uses the shaped own special column\");"
+        ],
+        "successful_assertion_count": 4,
+        "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed."
+      },
+      "schedule": {
+        "case_requests": 1,
+        "setup_binding_calls_exact_on_success": 1,
+        "main_phase_binding_calls_exact_on_success": 3,
+        "main_phase_dispatch_labels_in_order": [
+          "seed special labels",
+          "special object result",
+          "first special column"
+        ],
+        "cleanup_binding_calls_exact_on_success": 2,
+        "maximum_in_flight_public_calls": 1,
+        "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+        "retries": 0,
+        "restarts": 0,
+        "faults": 0
+      },
+      "limits": {
+        "public_dispatches_per_phase_enforced": 32,
+        "maximum_rows_in_any_fixture_table": 4,
+        "maximum_application_tables": 1,
+        "maximum_bound_parameters_per_statement": 5,
+        "maximum_batch_statements": 5,
+        "maximum_exec_statements": 4,
+        "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+        "maximum_bound_scalar_or_blob_bytes": 64,
+        "external_total_request_deadline_seconds": 30,
+        "external_response_capture_bytes": 1048576,
+        "no_internal_Promise_race_timeout": true
+      },
+      "owned_resources": [
+        {
+          "binding": "DB",
+          "database_identity": "d1-next-id-a",
+          "table": "d1_next_e208"
+        }
+      ],
+      "cleanup": {
+        "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+        "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+        "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+        "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+      },
+      "distinctness": "Own-property integrity differs from E209 duplicate-name information loss; no prototype manipulation or malformed input is attempted.",
+      "cross_wave_overlap": null,
+      "limits_of_evidence": [
+        "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+        "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+        "Successful batch dependencies do not establish concurrent-observer atomicity.",
+        "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+      ],
+      "review_accepted": false,
+      "runtime_execution_count": 0
+    },
+    {
+      "id": "E209",
+      "title": "Retain duplicate columns in raw projections",
+      "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+      "family": "d1-semantics",
+      "artifact": "worker.js",
+      "entrypoint": "GET /case/E209",
+      "fixture_line_range": [
+        121,
+        131
+      ],
+      "fixture_slice_sha256": "f7b811bb194866b3ea0fe44d55c4736a2caf5c842cb00cb340abc01ec297887b",
+      "intent": "Recognize when a join report needs positional data rather than object-key projection.",
+      "application_relevance": "Recognize when a join report needs positional data rather than object-key projection.",
+      "sut": "direct celld only",
+      "surface": "public env D1 binding APIs only",
+      "source_refs": [
+        {
+          "key": "api",
+          "path": "celld-os-project/celld/docs/services/d1.md",
+          "line_ranges": [
+            [
+              1,
+              87
+            ]
+          ],
+          "slices_sha256": [
+            "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+          ]
+        },
+        {
+          "key": "shape",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8389,
+              8401
+            ]
+          ],
+          "slices_sha256": [
+            "1fddf16f819b9d3e4c32f1c93842c0176fb21ef2c500b5780055ca2ad4f5c981"
+          ]
+        },
+        {
+          "key": "prepared",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8328,
+              8387
+            ]
+          ],
+          "slices_sha256": [
+            "6574f073369b908ee7dcf385e70c71d166576a0606c29256355c71c9ab87d0df"
+          ]
+        }
+      ],
+      "fixed_finite_trace": [
+        "Create one source row.",
+        "Select two amount columns followed by other.",
+        "Compare all object projection, first(amount), and raw with headings."
+      ],
+      "oracle": {
+        "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+        "claim": "Object.fromEntries collapses duplicate labels with the last value, while raw preserves original duplicate columns and values.",
+        "assertions": [
+          "object shape keeps the last duplicate column value",
+          "first column shares last-duplicate shaping",
+          "raw retains duplicate headings and both original positional values"
+        ],
+        "executable_assertion_source": [
+          "c.eq((await c.all(statement, \"duplicate object selection\")).results, [{amount:20,other:30}], \"object shape keeps the last duplicate column value\");",
+          "c.eq(await c.first(statement, \"duplicate scalar selection\", \"amount\"), 20, \"first column shares last-duplicate shaping\");",
+          "c.eq(await c.raw(statement, \"duplicate positional selection\", {columnNames:true}), [[\"amount\",\"amount\",\"other\"],[10,20,30]], \"raw retains duplicate headings and both original positional values\");"
+        ],
+        "successful_assertion_count": 3,
+        "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed."
+      },
+      "schedule": {
+        "case_requests": 1,
+        "setup_binding_calls_exact_on_success": 1,
+        "main_phase_binding_calls_exact_on_success": 4,
+        "main_phase_dispatch_labels_in_order": [
+          "seed duplicate labels",
+          "duplicate object selection",
+          "duplicate scalar selection",
+          "duplicate positional selection"
+        ],
+        "cleanup_binding_calls_exact_on_success": 2,
+        "maximum_in_flight_public_calls": 1,
+        "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+        "retries": 0,
+        "restarts": 0,
+        "faults": 0
+      },
+      "limits": {
+        "public_dispatches_per_phase_enforced": 32,
+        "maximum_rows_in_any_fixture_table": 4,
+        "maximum_application_tables": 1,
+        "maximum_bound_parameters_per_statement": 5,
+        "maximum_batch_statements": 5,
+        "maximum_exec_statements": 4,
+        "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+        "maximum_bound_scalar_or_blob_bytes": 64,
+        "external_total_request_deadline_seconds": 30,
+        "external_response_capture_bytes": 1048576,
+        "no_internal_Promise_race_timeout": true
+      },
+      "owned_resources": [
+        {
+          "binding": "DB",
+          "database_identity": "d1-next-id-a",
+          "table": "d1_next_e209"
+        }
+      ],
+      "cleanup": {
+        "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+        "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+        "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+        "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+      },
+      "distinctness": "One duplicate-label shaping case; all/first/raw views do not count as independent authored cases. Cross-wave: D213 has the same outward last-duplicate versus positional contract on native SqlStorageCursor paths. E209 independently targets D1 __d1Shape/Object.fromEntries and public raw/first/all across engine JSON rows. This is the closest cross-wave semantic overlap; independent review must decide whether separate public-surface implementation coverage merits distinct credit.",
+      "cross_wave_overlap": {
+        "neighbors": [
+          "D213"
+        ],
+        "distinction": "D213 has the same outward last-duplicate versus positional contract on native SqlStorageCursor paths. E209 independently targets D1 __d1Shape/Object.fromEntries and public raw/first/all across engine JSON rows. This is the closest cross-wave semantic overlap; independent review must decide whether separate public-surface implementation coverage merits distinct credit."
+      },
+      "limits_of_evidence": [
+        "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+        "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+        "Successful batch dependencies do not establish concurrent-observer atomicity.",
+        "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+      ],
+      "review_accepted": false,
+      "runtime_execution_count": 0
+    },
+    {
+      "id": "E210",
+      "title": "Run successful schema and data dependencies in batch",
+      "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+      "family": "d1-semantics",
+      "artifact": "worker.js",
+      "entrypoint": "GET /case/E210",
+      "fixture_line_range": [
+        132,
+        148
+      ],
+      "fixture_slice_sha256": "45f43a402011b2f62b19a8614d662ce895a5b0bb5a1ea6a6f28b0b8631b9ed0a",
+      "intent": "Bootstrap an application table and use its new data within one submitted batch.",
+      "application_relevance": "Bootstrap an application table and use its new data within one submitted batch.",
+      "sut": "direct celld only",
+      "surface": "public env D1 binding APIs only",
+      "source_refs": [
+        {
+          "key": "api",
+          "path": "celld-os-project/celld/docs/services/d1.md",
+          "line_ranges": [
+            [
+              1,
+              87
+            ]
+          ],
+          "slices_sha256": [
+            "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+          ]
+        },
+        {
+          "key": "database",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8448,
+              8491
+            ]
+          ],
+          "slices_sha256": [
+            "d77cc49a62eb8dcae987ad5324e3d0831f91412d02bfdb0b5c3ac0992e263ecb"
+          ]
+        },
+        {
+          "key": "server",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8196,
+              8279
+            ]
+          ],
+          "slices_sha256": [
+            "f206828feb8e030d061e134c221b2bbf588b43812bac3fc95133810df9d254c4"
+          ]
+        },
+        {
+          "key": "batch_exec",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2990,
+              3139
+            ]
+          ],
+          "slices_sha256": [
+            "bb5351f92fc0531bed005334759738d8a13ae8a5e3c9bbd7b0012daa1e37a65d"
+          ]
+        },
+        {
+          "key": "metadata",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2731,
+              2828
+            ]
+          ],
+          "slices_sha256": [
+            "f4024aab42f6717e3e8a9588ee86a59a3e04694a9770871e2653cf4423e12c8e"
+          ]
+        }
+      ],
+      "fixed_finite_trace": [
+        "Batch create table, parameterized insert, read, parameterized update and read in that exact order.",
+        "Require five successful results and exact intermediate/final rows.",
+        "Read after batch return to verify the committed final value."
+      ],
+      "oracle": {
+        "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+        "claim": "The engine prepares and steps statements sequentially on one connection and commits the successful batch before returning one result per statement.",
+        "assertions": [
+          "batch returns one result per submitted statement",
+          "all successful batch statements retain success flags",
+          "batch statements see earlier schema and writes in submission order",
+          "successful batch final value is visible after return"
+        ],
+        "executable_assertion_source": [
+          "c.eq(result.length, 5, \"batch returns one result per submitted statement\");",
+          "c.eq(result.map(item => item.success), [true,true,true,true,true], \"all successful batch statements retain success flags\");",
+          "c.eq(result.map(item => item.results), [[],[],[{quantity:4}],[],[{quantity:7}]], \"batch statements see earlier schema and writes in submission order\");",
+          "c.eq(await c.first(db.prepare(`SELECT quantity FROM ${t} WHERE id=1`), \"committed batch read\"), {quantity:7}, \"successful batch final value is visible after return\");"
+        ],
+        "successful_assertion_count": 4,
+        "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed."
+      },
+      "schedule": {
+        "case_requests": 1,
+        "setup_binding_calls_exact_on_success": 1,
+        "main_phase_binding_calls_exact_on_success": 2,
+        "main_phase_dispatch_labels_in_order": [
+          "schema write read batch",
+          "committed batch read"
+        ],
+        "cleanup_binding_calls_exact_on_success": 2,
+        "maximum_in_flight_public_calls": 1,
+        "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+        "retries": 0,
+        "restarts": 0,
+        "faults": 0
+      },
+      "limits": {
+        "public_dispatches_per_phase_enforced": 32,
+        "maximum_rows_in_any_fixture_table": 4,
+        "maximum_application_tables": 1,
+        "maximum_bound_parameters_per_statement": 5,
+        "maximum_batch_statements": 5,
+        "maximum_exec_statements": 4,
+        "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+        "maximum_bound_scalar_or_blob_bytes": 64,
+        "external_total_request_deadline_seconds": 30,
+        "external_response_capture_bytes": 1048576,
+        "no_internal_Promise_race_timeout": true
+      },
+      "owned_resources": [
+        {
+          "binding": "DB",
+          "database_identity": "d1-next-id-a",
+          "table": "d1_next_e210"
+        }
+      ],
+      "cleanup": {
+        "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+        "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+        "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+        "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+      },
+      "distinctness": "Valid dependency and commit completeness only; this does not prove rollback or atomic visibility to a concurrent observer.",
+      "cross_wave_overlap": null,
+      "limits_of_evidence": [
+        "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+        "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+        "Successful batch dependencies do not establish concurrent-observer atomicity.",
+        "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+      ],
+      "review_accepted": false,
+      "runtime_execution_count": 0
+    },
+    {
+      "id": "E211",
+      "title": "Snapshot mutation metadata per batch statement",
+      "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+      "family": "d1-semantics",
+      "artifact": "worker.js",
+      "entrypoint": "GET /case/E211",
+      "fixture_line_range": [
+        149,
+        167
+      ],
+      "fixture_slice_sha256": "47a841a9ba65af1e0353e6c55eaa28c8293a879226078e84c292d3f2809db2fc",
+      "intent": "Use write receipts to attribute affected rows and insert IDs to individual batched operations.",
+      "application_relevance": "Use write receipts to attribute affected rows and insert IDs to individual batched operations.",
+      "sut": "direct celld only",
+      "surface": "public env D1 binding APIs only",
+      "source_refs": [
+        {
+          "key": "api",
+          "path": "celld-os-project/celld/docs/services/d1.md",
+          "line_ranges": [
+            [
+              1,
+              87
+            ]
+          ],
+          "slices_sha256": [
+            "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+          ]
+        },
+        {
+          "key": "database",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8448,
+              8491
+            ]
+          ],
+          "slices_sha256": [
+            "d77cc49a62eb8dcae987ad5324e3d0831f91412d02bfdb0b5c3ac0992e263ecb"
+          ]
+        },
+        {
+          "key": "batch_exec",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2990,
+              3139
+            ]
+          ],
+          "slices_sha256": [
+            "bb5351f92fc0531bed005334759738d8a13ae8a5e3c9bbd7b0012daa1e37a65d"
+          ]
+        },
+        {
+          "key": "metadata",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2731,
+              2828
+            ]
+          ],
+          "slices_sha256": [
+            "f4024aab42f6717e3e8a9588ee86a59a3e04694a9770871e2653cf4423e12c8e"
+          ]
+        }
+      ],
+      "fixed_finite_trace": [
+        "Create ledger table.",
+        "Batch two explicit-rowid inserts, one real update, one unmatched update and an ordered read.",
+        "Compare exact per-statement changes, rows_written, last_row_id, changed_db and final rows."
+      ],
+      "oracle": {
+        "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+        "claim": "Each d1_run_prepared snapshots total_changes/schema before its own execution and reads connection counters before the next batch item; reads explicitly reset changes and rowid.",
+        "assertions": [
+          "changes are captured for each batch statement",
+          "rows_written does not accumulate earlier batch writes",
+          "write rowids are snapshotted while read rowid resets",
+          "changed_db distinguishes writes no-op update and read",
+          "metadata accompanies the exact final batch rows"
+        ],
+        "executable_assertion_source": [
+          "c.eq(result.map(item => item.meta.changes), [1,1,1,0,0], \"changes are captured for each batch statement\");",
+          "c.eq(result.map(item => item.meta.rows_written), [1,1,1,0,0], \"rows_written does not accumulate earlier batch writes\");",
+          "c.eq(result.map(item => item.meta.last_row_id), [11,22,22,22,0], \"write rowids are snapshotted while read rowid resets\");",
+          "c.eq(result.map(item => item.meta.changed_db), [true,true,true,false,false], \"changed_db distinguishes writes no-op update and read\");",
+          "c.eq(result[4].results, [{id:11,value:3},{id:22,value:2}], \"metadata accompanies the exact final batch rows\");"
+        ],
+        "successful_assertion_count": 5,
+        "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed."
+      },
+      "schedule": {
+        "case_requests": 1,
+        "setup_binding_calls_exact_on_success": 1,
+        "main_phase_binding_calls_exact_on_success": 2,
+        "main_phase_dispatch_labels_in_order": [
+          "create metadata ledger",
+          "snapshot metadata batch"
+        ],
+        "cleanup_binding_calls_exact_on_success": 2,
+        "maximum_in_flight_public_calls": 1,
+        "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+        "retries": 0,
+        "restarts": 0,
+        "faults": 0
+      },
+      "limits": {
+        "public_dispatches_per_phase_enforced": 32,
+        "maximum_rows_in_any_fixture_table": 4,
+        "maximum_application_tables": 1,
+        "maximum_bound_parameters_per_statement": 5,
+        "maximum_batch_statements": 5,
+        "maximum_exec_statements": 4,
+        "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+        "maximum_bound_scalar_or_blob_bytes": 64,
+        "external_total_request_deadline_seconds": 30,
+        "external_response_capture_bytes": 1048576,
+        "no_internal_Promise_race_timeout": true
+      },
+      "owned_resources": [
+        {
+          "binding": "DB",
+          "database_identity": "d1-next-id-a",
+          "table": "d1_next_e211"
+        }
+      ],
+      "cleanup": {
+        "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+        "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+        "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+        "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+      },
+      "distinctness": "Per-item attribution cannot be established by E210 result ordering. Read counter reset is a celld source difference, not universal Cloudflare behavior.",
+      "cross_wave_overlap": null,
+      "limits_of_evidence": [
+        "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+        "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+        "Successful batch dependencies do not establish concurrent-observer atomicity.",
+        "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+      ],
+      "review_accepted": false,
+      "runtime_execution_count": 0
+    },
+    {
+      "id": "E212",
+      "title": "Parse exec statements without splitting SQL text",
+      "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+      "family": "d1-semantics",
+      "artifact": "worker.js",
+      "entrypoint": "GET /case/E212",
+      "fixture_line_range": [
+        168,
+        178
+      ],
+      "fixture_slice_sha256": "e4023e5f827985ced5d6d446273235e1a73f818c2095b97c0c675394aa56587c",
+      "intent": "Apply a small application schema script containing comments, quoted semicolons and multiline SQL.",
+      "application_relevance": "Apply a small application schema script containing comments, quoted semicolons and multiline SQL.",
+      "sut": "direct celld only",
+      "surface": "public env D1 binding APIs only",
+      "source_refs": [
+        {
+          "key": "api",
+          "path": "celld-os-project/celld/docs/services/d1.md",
+          "line_ranges": [
+            [
+              1,
+              87
+            ]
+          ],
+          "slices_sha256": [
+            "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+          ]
+        },
+        {
+          "key": "server",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8196,
+              8279
+            ]
+          ],
+          "slices_sha256": [
+            "f206828feb8e030d061e134c221b2bbf588b43812bac3fc95133810df9d254c4"
+          ]
+        },
+        {
+          "key": "parser",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2625,
+              2729
+            ]
+          ],
+          "slices_sha256": [
+            "239244a15729cc3e5001990eb37b4274300d10f0e9d6040d3c077d4461028dd8"
+          ]
+        },
+        {
+          "key": "batch_exec",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2990,
+              3139
+            ]
+          ],
+          "slices_sha256": [
+            "bb5351f92fc0531bed005334759738d8a13ae8a5e3c9bbd7b0012daa1e37a65d"
+          ]
+        }
+      ],
+      "fixed_finite_trace": [
+        "Execute four complete statements with line/block comments, quoted semicolons, an escaped quote, and no final semicolon.",
+        "Assert count 4, exact public exec keys and well-formed duration.",
+        "Read exact committed text values."
+      ],
+      "oracle": {
+        "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+        "claim": "SQLite sqlite3_prepare_v2 and tail walking determine statement boundaries; exec counts stepped statements, discards trivia, and accepts the final complete statement without semicolon.",
+        "assertions": [
+          "exec counts parsed statements rather than lines or semicolons",
+          "public exec exposes only count and duration",
+          "exec duration is finite nonnegative metadata",
+          "comments quoted semicolons and final unterminated-by-semicolon statement execute correctly"
+        ],
+        "executable_assertion_source": [
+          "c.eq(result.count, 4, \"exec counts parsed statements rather than lines or semicolons\");",
+          "c.eq(Object.keys(result).sort(), [\"count\",\"duration\"], \"public exec exposes only count and duration\");",
+          "c.eq(Number.isFinite(result.duration) && result.duration >= 0, true, \"exec duration is finite nonnegative metadata\");",
+          "c.eq((await c.all(db.prepare(`SELECT id,note FROM ${t} ORDER BY id`), \"read parsed script effects\")).results, [{id:1,note:\"semi;colon;done\"},{id:2,note:\"two's\"}], \"comments quoted semicolons and final unterminated-by-semicolon statement execute correctly\");"
+        ],
+        "successful_assertion_count": 4,
+        "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed."
+      },
+      "schedule": {
+        "case_requests": 1,
+        "setup_binding_calls_exact_on_success": 1,
+        "main_phase_binding_calls_exact_on_success": 2,
+        "main_phase_dispatch_labels_in_order": [
+          "parse multi statement script",
+          "read parsed script effects"
+        ],
+        "cleanup_binding_calls_exact_on_success": 2,
+        "maximum_in_flight_public_calls": 1,
+        "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+        "retries": 0,
+        "restarts": 0,
+        "faults": 0
+      },
+      "limits": {
+        "public_dispatches_per_phase_enforced": 32,
+        "maximum_rows_in_any_fixture_table": 4,
+        "maximum_application_tables": 1,
+        "maximum_bound_parameters_per_statement": 5,
+        "maximum_batch_statements": 5,
+        "maximum_exec_statements": 4,
+        "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+        "maximum_bound_scalar_or_blob_bytes": 64,
+        "external_total_request_deadline_seconds": 30,
+        "external_response_capture_bytes": 1048576,
+        "no_internal_Promise_race_timeout": true
+      },
+      "owned_resources": [
+        {
+          "binding": "DB",
+          "database_identity": "d1-next-id-a",
+          "table": "d1_next_e212"
+        }
+      ],
+      "cleanup": {
+        "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+        "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+        "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+        "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+      },
+      "distinctness": "Valid tokenizer/statement-count contract differs from generic multi-write batch behavior; source count semantics intentionally differ from Cloudflare line counting. Cross-wave: D216/D217 use sql.ingest with remainder/rowsWritten/statementCount. E212 targets the separate D1 SQLite tail walker, public count/duration-only envelope, comments and a complete final statement without semicolon, then post-return committed contents. It makes no ingest or streaming-suffix claim.",
+      "cross_wave_overlap": {
+        "neighbors": [
+          "D216",
+          "D217"
+        ],
+        "distinction": "D216/D217 use sql.ingest with remainder/rowsWritten/statementCount. E212 targets the separate D1 SQLite tail walker, public count/duration-only envelope, comments and a complete final statement without semicolon, then post-return committed contents. It makes no ingest or streaming-suffix claim."
+      },
+      "limits_of_evidence": [
+        "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+        "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+        "Successful batch dependencies do not establish concurrent-observer atomicity.",
+        "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+      ],
+      "review_accepted": false,
+      "runtime_execution_count": 0
+    },
+    {
+      "id": "E213",
+      "title": "Drain row-producing exec statements before return",
+      "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+      "family": "d1-semantics",
+      "artifact": "worker.js",
+      "entrypoint": "GET /case/E213",
+      "fixture_line_range": [
+        179,
+        188
+      ],
+      "fixture_slice_sha256": "604eb2656b9705a196e1e362ba28bfddc2ec1e809acebaffa4110a4b7256a42c",
+      "intent": "Run initialization scripts that contain RETURNING without leaving some mutations incomplete.",
+      "application_relevance": "Run initialization scripts that contain RETURNING without leaving some mutations incomplete.",
+      "sut": "direct celld only",
+      "surface": "public env D1 binding APIs only",
+      "source_refs": [
+        {
+          "key": "api",
+          "path": "celld-os-project/celld/docs/services/d1.md",
+          "line_ranges": [
+            [
+              1,
+              87
+            ]
+          ],
+          "slices_sha256": [
+            "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+          ]
+        },
+        {
+          "key": "server",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8196,
+              8279
+            ]
+          ],
+          "slices_sha256": [
+            "f206828feb8e030d061e134c221b2bbf588b43812bac3fc95133810df9d254c4"
+          ]
+        },
+        {
+          "key": "parser",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2625,
+              2729
+            ]
+          ],
+          "slices_sha256": [
+            "239244a15729cc3e5001990eb37b4274300d10f0e9d6040d3c077d4461028dd8"
+          ]
+        },
+        {
+          "key": "drain",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2491,
+              2576
+            ]
+          ],
+          "slices_sha256": [
+            "543df70fa57dc500e477c0ee95b3dd85cca6464b6a7ab141dcc9410a8b55e59c"
+          ]
+        },
+        {
+          "key": "batch_exec",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2990,
+              3139
+            ]
+          ],
+          "slices_sha256": [
+            "bb5351f92fc0531bed005334759738d8a13ae8a5e3c9bbd7b0012daa1e37a65d"
+          ]
+        }
+      ],
+      "fixed_finite_trace": [
+        "Exec create table, a three-row INSERT RETURNING, a three-row UPDATE RETURNING and a SELECT.",
+        "Require count 4 and no public results field.",
+        "Read the exact three updated rows after exec returns."
+      ],
+      "oracle": {
+        "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+        "claim": "Worker exec requests rows:false, so keep=0 discards output but steps every row to SQLITE_DONE before commit.",
+        "assertions": [
+          "exec counts row-producing statements while discarding their results",
+          "public exec does not expose engine row sets",
+          "exec drains RETURNING statements and commits all successful effects"
+        ],
+        "executable_assertion_source": [
+          "c.eq(result.count, 4, \"exec counts row-producing statements while discarding their results\");",
+          "c.eq(has(result,\"results\"), false, \"public exec does not expose engine row sets\");",
+          "c.eq((await c.all(db.prepare(`SELECT id,n FROM ${t} ORDER BY id`), \"read exec completion\")).results, [{id:1,n:4},{id:2,n:6},{id:3,n:8}], \"exec drains RETURNING statements and commits all successful effects\");"
+        ],
+        "successful_assertion_count": 3,
+        "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed."
+      },
+      "schedule": {
+        "case_requests": 1,
+        "setup_binding_calls_exact_on_success": 1,
+        "main_phase_binding_calls_exact_on_success": 2,
+        "main_phase_dispatch_labels_in_order": [
+          "exec returning script",
+          "read exec completion"
+        ],
+        "cleanup_binding_calls_exact_on_success": 2,
+        "maximum_in_flight_public_calls": 1,
+        "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+        "retries": 0,
+        "restarts": 0,
+        "faults": 0
+      },
+      "limits": {
+        "public_dispatches_per_phase_enforced": 32,
+        "maximum_rows_in_any_fixture_table": 4,
+        "maximum_application_tables": 1,
+        "maximum_bound_parameters_per_statement": 5,
+        "maximum_batch_statements": 5,
+        "maximum_exec_statements": 4,
+        "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+        "maximum_bound_scalar_or_blob_bytes": 64,
+        "external_total_request_deadline_seconds": 30,
+        "external_response_capture_bytes": 1048576,
+        "no_internal_Promise_race_timeout": true
+      },
+      "owned_resources": [
+        {
+          "binding": "DB",
+          "database_identity": "d1-next-id-a",
+          "table": "d1_next_e213"
+        }
+      ],
+      "cleanup": {
+        "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+        "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+        "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+        "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+      },
+      "distinctness": "Zero-row retention for exec is distinct from E216 first retaining one row; neither test assumes RETURNING order. Cross-wave: D219 drains read SELECT rows in sql.ingest before later writes. E213 uses public D1 exec(rows:false) with both multirow INSERT RETURNING and UPDATE RETURNING and checks all effects after its successful transaction-completing response plus no public results field.",
+      "cross_wave_overlap": {
+        "neighbors": [
+          "D219"
+        ],
+        "distinction": "D219 drains read SELECT rows in sql.ingest before later writes. E213 uses public D1 exec(rows:false) with both multirow INSERT RETURNING and UPDATE RETURNING and checks all effects after its successful transaction-completing response plus no public results field."
+      },
+      "limits_of_evidence": [
+        "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+        "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+        "Successful batch dependencies do not establish concurrent-observer atomicity.",
+        "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+      ],
+      "review_accepted": false,
+      "runtime_execution_count": 0
+    },
+    {
+      "id": "E214",
+      "title": "Reset readonly metadata after an acknowledged write",
+      "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+      "family": "d1-semantics",
+      "artifact": "worker.js",
+      "entrypoint": "GET /case/E214",
+      "fixture_line_range": [
+        189,
+        203
+      ],
+      "fixture_slice_sha256": "fef606f192ce10d9213428024f25fdafa94493a8e1f50ecbdc0f3e8b986bf94a",
+      "intent": "Avoid showing a previous write receipt as if a later application read performed that write.",
+      "application_relevance": "Avoid showing a previous write receipt as if a later application read performed that write.",
+      "sut": "direct celld only",
+      "surface": "public env D1 binding APIs only",
+      "source_refs": [
+        {
+          "key": "api",
+          "path": "celld-os-project/celld/docs/services/d1.md",
+          "line_ranges": [
+            [
+              1,
+              87
+            ]
+          ],
+          "slices_sha256": [
+            "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+          ]
+        },
+        {
+          "key": "prepared",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8328,
+              8387
+            ]
+          ],
+          "slices_sha256": [
+            "6574f073369b908ee7dcf385e70c71d166576a0606c29256355c71c9ab87d0df"
+          ]
+        },
+        {
+          "key": "metadata",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2731,
+              2828
+            ]
+          ],
+          "slices_sha256": [
+            "f4024aab42f6717e3e8a9588ee86a59a3e04694a9770871e2653cf4423e12c8e"
+          ]
+        }
+      ],
+      "fixed_finite_trace": [
+        "Create table and insert rowid 41 through run.",
+        "Assert exact write counters.",
+        "Read the row; assert zero read mutation counters, source-primary routing markers and nonexact duration/size types."
+      ],
+      "oracle": {
+        "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+        "claim": "Readonly statements get (last_row_id,changes)=(0,0); metadata publishes served_by=celld, served_by_region=local and served_by_primary=true.",
+        "assertions": [
+          "write has concrete mutation metadata",
+          "read after write returns the saved row",
+          "readonly metadata does not leak previous connection write counters",
+          "celld explicitly identifies local primary service",
+          "readonly duration remains well formed",
+          "database size is a positive integer without a page-size assumption"
+        ],
+        "executable_assertion_source": [
+          "c.eq([write.meta.changes,write.meta.rows_written,write.meta.last_row_id,write.meta.changed_db], [1,1,41,true], \"write has concrete mutation metadata\");",
+          "c.eq(read.results, [{id:41,note:\"saved\"}], \"read after write returns the saved row\");",
+          "c.eq([read.meta.changes,read.meta.rows_written,read.meta.last_row_id,read.meta.changed_db], [0,0,0,false], \"readonly metadata does not leak previous connection write counters\");",
+          "c.eq([read.meta.served_by,read.meta.served_by_region,read.meta.served_by_primary], [\"celld\",\"local\",true], \"celld explicitly identifies local primary service\");",
+          "c.eq(Number.isFinite(read.meta.duration) && read.meta.duration >= 0, true, \"readonly duration remains well formed\");",
+          "c.eq(Number.isInteger(read.meta.size_after) && read.meta.size_after > 0, true, \"database size is a positive integer without a page-size assumption\");"
+        ],
+        "successful_assertion_count": 6,
+        "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed."
+      },
+      "schedule": {
+        "case_requests": 1,
+        "setup_binding_calls_exact_on_success": 1,
+        "main_phase_binding_calls_exact_on_success": 3,
+        "main_phase_dispatch_labels_in_order": [
+          "create read metadata table",
+          "write before readonly",
+          "readonly after write"
+        ],
+        "cleanup_binding_calls_exact_on_success": 2,
+        "maximum_in_flight_public_calls": 1,
+        "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+        "retries": 0,
+        "restarts": 0,
+        "faults": 0
+      },
+      "limits": {
+        "public_dispatches_per_phase_enforced": 32,
+        "maximum_rows_in_any_fixture_table": 4,
+        "maximum_application_tables": 1,
+        "maximum_bound_parameters_per_statement": 5,
+        "maximum_batch_statements": 5,
+        "maximum_exec_statements": 4,
+        "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+        "maximum_bound_scalar_or_blob_bytes": 64,
+        "external_total_request_deadline_seconds": 30,
+        "external_response_capture_bytes": 1048576,
+        "no_internal_Promise_race_timeout": true
+      },
+      "owned_resources": [
+        {
+          "binding": "DB",
+          "database_identity": "d1-next-id-a",
+          "table": "d1_next_e214"
+        }
+      ],
+      "cleanup": {
+        "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+        "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+        "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+        "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+      },
+      "distinctness": "Cross-call read metadata reset and service attribution; E211 covers within-batch snapshots. No exact elapsed time, page size or scan count is asserted.",
+      "cross_wave_overlap": null,
+      "limits_of_evidence": [
+        "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+        "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+        "Successful batch dependencies do not establish concurrent-observer atomicity.",
+        "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+      ],
+      "review_accepted": false,
+      "runtime_execution_count": 0
+    },
+    {
+      "id": "E215",
+      "title": "Distinguish schema changes from no-op writes",
+      "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+      "family": "d1-semantics",
+      "artifact": "worker.js",
+      "entrypoint": "GET /case/E215",
+      "fixture_line_range": [
+        204,
+        215
+      ],
+      "fixture_slice_sha256": "4ed73b07ec36370aa7eb6e9c3c4b31a1ba72803a089582bb77f6661b1a779483",
+      "intent": "Use changed_db to decide whether successful schema maintenance actually altered the database.",
+      "application_relevance": "Use changed_db to decide whether successful schema maintenance actually altered the database.",
+      "sut": "direct celld only",
+      "surface": "public env D1 binding APIs only",
+      "source_refs": [
+        {
+          "key": "api",
+          "path": "celld-os-project/celld/docs/services/d1.md",
+          "line_ranges": [
+            [
+              1,
+              87
+            ]
+          ],
+          "slices_sha256": [
+            "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+          ]
+        },
+        {
+          "key": "metadata",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2731,
+              2828
+            ]
+          ],
+          "slices_sha256": [
+            "f4024aab42f6717e3e8a9588ee86a59a3e04694a9770871e2653cf4423e12c8e"
+          ]
+        },
+        {
+          "key": "authorizer",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              477,
+              486
+            ],
+            [
+              518,
+              679
+            ]
+          ],
+          "slices_sha256": [
+            "dfbac2be8b9a0203baf995a36d7cb5042c609d7d64fc429223912c980633dd17",
+            "dbb9f2b1bf9a0abbae95a3660be6aeb535e63d70fac9c70e21a3d63572d2d8d2"
+          ]
+        }
+      ],
+      "fixed_finite_trace": [
+        "CREATE a table through a prepared run and inspect metadata.",
+        "UPDATE with a valid unmatched predicate and inspect metadata.",
+        "DROP the empty table through run and inspect metadata."
+      ],
+      "oracle": {
+        "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+        "claim": "changed_db compares total row writes and schema cookie while a writable no-op with neither delta is false.",
+        "assertions": [
+          "schema creation changes database without counted row writes",
+          "a writable statement with no matched row is not a database change",
+          "schema removal is visible to changed_db despite zero row writes"
+        ],
+        "executable_assertion_source": [
+          "c.eq([create.meta.rows_written,create.meta.changed_db], [0,true], \"schema creation changes database without counted row writes\");",
+          "c.eq([idle.meta.rows_written,idle.meta.changes,idle.meta.changed_db], [0,0,false], \"a writable statement with no matched row is not a database change\");",
+          "c.eq([drop.meta.rows_written,drop.meta.changed_db], [0,true], \"schema removal is visible to changed_db despite zero row writes\");"
+        ],
+        "successful_assertion_count": 3,
+        "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed."
+      },
+      "schedule": {
+        "case_requests": 1,
+        "setup_binding_calls_exact_on_success": 1,
+        "main_phase_binding_calls_exact_on_success": 3,
+        "main_phase_dispatch_labels_in_order": [
+          "schema mutation",
+          "no matching update",
+          "schema removal"
+        ],
+        "cleanup_binding_calls_exact_on_success": 2,
+        "maximum_in_flight_public_calls": 1,
+        "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+        "retries": 0,
+        "restarts": 0,
+        "faults": 0
+      },
+      "limits": {
+        "public_dispatches_per_phase_enforced": 32,
+        "maximum_rows_in_any_fixture_table": 4,
+        "maximum_application_tables": 1,
+        "maximum_bound_parameters_per_statement": 5,
+        "maximum_batch_statements": 5,
+        "maximum_exec_statements": 4,
+        "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+        "maximum_bound_scalar_or_blob_bytes": 64,
+        "external_total_request_deadline_seconds": 30,
+        "external_response_capture_bytes": 1048576,
+        "no_internal_Promise_race_timeout": true
+      },
+      "owned_resources": [
+        {
+          "binding": "DB",
+          "database_identity": "d1-next-id-a",
+          "table": "d1_next_e215"
+        }
+      ],
+      "cleanup": {
+        "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+        "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+        "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+        "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+      },
+      "distinctness": "Schema-cookie evidence is independent of E211 row DML counts. Does not rely on connection changes/last_row_id after DDL.",
+      "cross_wave_overlap": null,
+      "limits_of_evidence": [
+        "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+        "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+        "Successful batch dependencies do not establish concurrent-observer atomicity.",
+        "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+      ],
+      "review_accepted": false,
+      "runtime_execution_count": 0
+    },
+    {
+      "id": "E216",
+      "title": "Complete mutations behind first RETURNING",
+      "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+      "family": "d1-semantics",
+      "artifact": "worker.js",
+      "entrypoint": "GET /case/E216",
+      "fixture_line_range": [
+        216,
+        226
+      ],
+      "fixture_slice_sha256": "1ece5ee05475857e1957fd2f5f8d7af2aeb7690014b6642756278b73ecef50ac",
+      "intent": "Use a single returned row as a receipt without accidentally stopping a multi-row update.",
+      "application_relevance": "Use a single returned row as a receipt without accidentally stopping a multi-row update.",
+      "sut": "direct celld only",
+      "surface": "public env D1 binding APIs only",
+      "source_refs": [
+        {
+          "key": "api",
+          "path": "celld-os-project/celld/docs/services/d1.md",
+          "line_ranges": [
+            [
+              1,
+              87
+            ]
+          ],
+          "slices_sha256": [
+            "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+          ]
+        },
+        {
+          "key": "prepared",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8328,
+              8387
+            ]
+          ],
+          "slices_sha256": [
+            "6574f073369b908ee7dcf385e70c71d166576a0606c29256355c71c9ab87d0df"
+          ]
+        },
+        {
+          "key": "drain",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2491,
+              2576
+            ]
+          ],
+          "slices_sha256": [
+            "543df70fa57dc500e477c0ee95b3dd85cca6464b6a7ab141dcc9410a8b55e59c"
+          ]
+        },
+        {
+          "key": "metadata",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2731,
+              2828
+            ]
+          ],
+          "slices_sha256": [
+            "f4024aab42f6717e3e8a9588ee86a59a3e04694a9770871e2653cf4423e12c8e"
+          ]
+        }
+      ],
+      "fixed_finite_trace": [
+        "Seed exactly three rows.",
+        "Execute UPDATE of all rows with RETURNING through first.",
+        "Require one valid id/value pair from the known set, without ordered-return assumptions.",
+        "Read all rows in explicit id order and require all updates."
+      ],
+      "oracle": {
+        "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+        "claim": "first sets keep=1, but d1_step_to_done continues stepping to SQLITE_DONE and merely drops later returned rows.",
+        "assertions": [
+          "first RETURNING keeps one valid row without imposing return order",
+          "first RETURNING exposes exactly one row shape",
+          "first drains the mutation to completion despite returning only one row"
+        ],
+        "executable_assertion_source": [
+          "c.eq([1,2,3].includes(first.id) && first.n === first.id+10, true, \"first RETURNING keeps one valid row without imposing return order\");",
+          "c.eq(Object.keys(first).sort(), [\"id\",\"n\"], \"first RETURNING exposes exactly one row shape\");",
+          "c.eq((await c.all(db.prepare(`SELECT id,n FROM ${t} ORDER BY id`), \"verify all returning effects\")).results, [{id:1,n:11},{id:2,n:12},{id:3,n:13}], \"first drains the mutation to completion despite returning only one row\");"
+        ],
+        "successful_assertion_count": 3,
+        "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed."
+      },
+      "schedule": {
+        "case_requests": 1,
+        "setup_binding_calls_exact_on_success": 1,
+        "main_phase_binding_calls_exact_on_success": 3,
+        "main_phase_dispatch_labels_in_order": [
+          "seed first returning",
+          "first mutation result",
+          "verify all returning effects"
+        ],
+        "cleanup_binding_calls_exact_on_success": 2,
+        "maximum_in_flight_public_calls": 1,
+        "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+        "retries": 0,
+        "restarts": 0,
+        "faults": 0
+      },
+      "limits": {
+        "public_dispatches_per_phase_enforced": 32,
+        "maximum_rows_in_any_fixture_table": 4,
+        "maximum_application_tables": 1,
+        "maximum_bound_parameters_per_statement": 5,
+        "maximum_batch_statements": 5,
+        "maximum_exec_statements": 4,
+        "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+        "maximum_bound_scalar_or_blob_bytes": 64,
+        "external_total_request_deadline_seconds": 30,
+        "external_response_capture_bytes": 1048576,
+        "no_internal_Promise_race_timeout": true
+      },
+      "owned_resources": [
+        {
+          "binding": "DB",
+          "database_identity": "d1-next-id-a",
+          "table": "d1_next_e216"
+        }
+      ],
+      "cleanup": {
+        "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+        "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+        "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+        "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+      },
+      "distinctness": "Successful write completion behind first is distinct from E206 SELECT cardinality and E213 exec keep=0. Cross-wave: D214 explicitly drains all native cursor receipts; E216 asks D1 first() to retain one receipt while the engine must still step the entire mutation. A native cursor completion test does not exercise that keep=1 boundary.",
+      "cross_wave_overlap": {
+        "neighbors": [
+          "D214"
+        ],
+        "distinction": "D214 explicitly drains all native cursor receipts; E216 asks D1 first() to retain one receipt while the engine must still step the entire mutation. A native cursor completion test does not exercise that keep=1 boundary."
+      },
+      "limits_of_evidence": [
+        "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+        "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+        "Successful batch dependencies do not establish concurrent-observer atomicity.",
+        "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+      ],
+      "review_accepted": false,
+      "runtime_execution_count": 0
+    },
+    {
+      "id": "E217",
+      "title": "Advance and resume independent query sessions",
+      "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+      "family": "d1-semantics",
+      "artifact": "worker.js",
+      "entrypoint": "GET /case/E217",
+      "fixture_line_range": [
+        227,
+        242
+      ],
+      "fixture_slice_sha256": "e734ef8b3cd40e58dfc7530068953444dd298c471f548c32f7fd9a53abc8e730",
+      "intent": "Carry a read-session bookmark between application components while independent sessions retain their own state.",
+      "application_relevance": "Carry a read-session bookmark between application components while independent sessions retain their own state.",
+      "sut": "direct celld only",
+      "surface": "public env D1 binding APIs only",
+      "source_refs": [
+        {
+          "key": "api",
+          "path": "celld-os-project/celld/docs/services/d1.md",
+          "line_ranges": [
+            [
+              1,
+              87
+            ]
+          ],
+          "slices_sha256": [
+            "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+          ]
+        },
+        {
+          "key": "session",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8403,
+              8446
+            ]
+          ],
+          "slices_sha256": [
+            "e7c861cdf5cc6e7d6bd6364f920d0d8f139ebfc8a08e27421b8b93d5daac8bd6"
+          ]
+        },
+        {
+          "key": "database",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8448,
+              8491
+            ]
+          ],
+          "slices_sha256": [
+            "d77cc49a62eb8dcae987ad5324e3d0831f91412d02bfdb0b5c3ac0992e263ecb"
+          ]
+        }
+      ],
+      "fixed_finite_trace": [
+        "Seed one row.",
+        "Create first-primary and default sessions; require null initial bookmarks.",
+        "Read through the first session, require celld:primary and unchanged other session.",
+        "Create a new session from the returned bookmark and read exact data again."
+      ],
+      "oracle": {
+        "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+        "claim": "Constraints begin with null bookmarks; each successful _query changes only that session bookmark to the constant celld:primary; supplied bookmark is retained initially.",
+        "assertions": [
+          "new constraint sessions start without completed-query bookmarks",
+          "session prepare reads its bound database",
+          "successful session query advances to the stable primary bookmark",
+          "one session query does not mutate another session bookmark",
+          "new session retains the supplied prior bookmark",
+          "resumed session reads exact committed data",
+          "completed reads keep the stable opaque primary token"
+        ],
+        "executable_assertion_source": [
+          "c.eq([session.getBookmark(),other.getBookmark()], [null,null], \"new constraint sessions start without completed-query bookmarks\");",
+          "c.eq(await c.first(session.prepare(`SELECT n FROM ${t} WHERE id=1`), \"session read\"), {n:8}, \"session prepare reads its bound database\");",
+          "c.eq(session.getBookmark(), \"celld:primary\", \"successful session query advances to the stable primary bookmark\");",
+          "c.eq(other.getBookmark(), null, \"one session query does not mutate another session bookmark\");",
+          "c.eq(resumed.getBookmark(), \"celld:primary\", \"new session retains the supplied prior bookmark\");",
+          "c.eq(await c.first(resumed.prepare(`SELECT n FROM ${t} WHERE id=1`), \"resumed session read\"), {n:8}, \"resumed session reads exact committed data\");",
+          "c.eq(resumed.getBookmark(), \"celld:primary\", \"completed reads keep the stable opaque primary token\");"
+        ],
+        "successful_assertion_count": 7,
+        "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed."
+      },
+      "schedule": {
+        "case_requests": 1,
+        "setup_binding_calls_exact_on_success": 1,
+        "main_phase_binding_calls_exact_on_success": 3,
+        "main_phase_dispatch_labels_in_order": [
+          "seed session read",
+          "session read",
+          "resumed session read"
+        ],
+        "cleanup_binding_calls_exact_on_success": 2,
+        "maximum_in_flight_public_calls": 1,
+        "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+        "retries": 0,
+        "restarts": 0,
+        "faults": 0
+      },
+      "limits": {
+        "public_dispatches_per_phase_enforced": 32,
+        "maximum_rows_in_any_fixture_table": 4,
+        "maximum_application_tables": 1,
+        "maximum_bound_parameters_per_statement": 5,
+        "maximum_batch_statements": 5,
+        "maximum_exec_statements": 4,
+        "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+        "maximum_bound_scalar_or_blob_bytes": 64,
+        "external_total_request_deadline_seconds": 30,
+        "external_response_capture_bytes": 1048576,
+        "no_internal_Promise_race_timeout": true
+      },
+      "owned_resources": [
+        {
+          "binding": "DB",
+          "database_identity": "d1-next-id-a",
+          "table": "d1_next_e217"
+        }
+      ],
+      "cleanup": {
+        "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+        "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+        "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+        "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+      },
+      "distinctness": "Session-local query-bookmark lifecycle and resume, explicitly celld source behavior with no replica/consistency-order claim.",
+      "cross_wave_overlap": null,
+      "limits_of_evidence": [
+        "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+        "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+        "Successful batch dependencies do not establish concurrent-observer atomicity.",
+        "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+      ],
+      "review_accepted": false,
+      "runtime_execution_count": 0
+    },
+    {
+      "id": "E218",
+      "title": "Advance a session after successful batch commit",
+      "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+      "family": "d1-semantics",
+      "artifact": "worker.js",
+      "entrypoint": "GET /case/E218",
+      "fixture_line_range": [
+        243,
+        256
+      ],
+      "fixture_slice_sha256": "e0317df913baf596262e22b97080941808a7c82d78824fc7b6d5c754cccd0d1b",
+      "intent": "Use one session for a dependent write batch and its subsequent application read.",
+      "application_relevance": "Use one session for a dependent write batch and its subsequent application read.",
+      "sut": "direct celld only",
+      "surface": "public env D1 binding APIs only",
+      "source_refs": [
+        {
+          "key": "api",
+          "path": "celld-os-project/celld/docs/services/d1.md",
+          "line_ranges": [
+            [
+              1,
+              87
+            ]
+          ],
+          "slices_sha256": [
+            "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+          ]
+        },
+        {
+          "key": "session",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8403,
+              8446
+            ]
+          ],
+          "slices_sha256": [
+            "e7c861cdf5cc6e7d6bd6364f920d0d8f139ebfc8a08e27421b8b93d5daac8bd6"
+          ]
+        },
+        {
+          "key": "database",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8448,
+              8491
+            ]
+          ],
+          "slices_sha256": [
+            "d77cc49a62eb8dcae987ad5324e3d0831f91412d02bfdb0b5c3ac0992e263ecb"
+          ]
+        },
+        {
+          "key": "batch_exec",
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_ranges": [
+            [
+              2990,
+              3139
+            ]
+          ],
+          "slices_sha256": [
+            "bb5351f92fc0531bed005334759738d8a13ae8a5e3c9bbd7b0012daa1e37a65d"
+          ]
+        }
+      ],
+      "fixed_finite_trace": [
+        "Create an empty table and a first-unconstrained session.",
+        "Batch insert, increment and read using statements prepared by that session.",
+        "Require exact batch results and bookmark advancement.",
+        "Read exact final data from both the base binding and the same session."
+      ],
+      "oracle": {
+        "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+        "claim": "Session.batch calls the underlying database batch then advances its own bookmark; all session calls route to the same underlying database.",
+        "assertions": [
+          "batch session has no initial completed-query bookmark",
+          "session batch returns ordered dependent statement results",
+          "successful batch advances the session bookmark",
+          "session batch effects are committed to the underlying binding",
+          "the same session reads its batch result"
+        ],
+        "executable_assertion_source": [
+          "c.eq(session.getBookmark(), null, \"batch session has no initial completed-query bookmark\");",
+          "c.eq(result.map(item => item.results), [[],[],[{n:8}]], \"session batch returns ordered dependent statement results\");",
+          "c.eq(session.getBookmark(), \"celld:primary\", \"successful batch advances the session bookmark\");",
+          "c.eq(await c.first(db.prepare(`SELECT n FROM ${t} WHERE id=1`), \"base read after session batch\"), {n:8}, \"session batch effects are committed to the underlying binding\");",
+          "c.eq(await c.first(session.prepare(`SELECT n FROM ${t} WHERE id=1`), \"session read after batch\"), {n:8}, \"the same session reads its batch result\");"
+        ],
+        "successful_assertion_count": 5,
+        "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed."
+      },
+      "schedule": {
+        "case_requests": 1,
+        "setup_binding_calls_exact_on_success": 1,
+        "main_phase_binding_calls_exact_on_success": 4,
+        "main_phase_dispatch_labels_in_order": [
+          "create session batch table",
+          "session batch",
+          "base read after session batch",
+          "session read after batch"
+        ],
+        "cleanup_binding_calls_exact_on_success": 2,
+        "maximum_in_flight_public_calls": 1,
+        "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+        "retries": 0,
+        "restarts": 0,
+        "faults": 0
+      },
+      "limits": {
+        "public_dispatches_per_phase_enforced": 32,
+        "maximum_rows_in_any_fixture_table": 4,
+        "maximum_application_tables": 1,
+        "maximum_bound_parameters_per_statement": 5,
+        "maximum_batch_statements": 5,
+        "maximum_exec_statements": 4,
+        "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+        "maximum_bound_scalar_or_blob_bytes": 64,
+        "external_total_request_deadline_seconds": 30,
+        "external_response_capture_bytes": 1048576,
+        "no_internal_Promise_race_timeout": true
+      },
+      "owned_resources": [
+        {
+          "binding": "DB",
+          "database_identity": "d1-next-id-a",
+          "table": "d1_next_e218"
+        }
+      ],
+      "cleanup": {
+        "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+        "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+        "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+        "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+      },
+      "distinctness": "The separate session.batch advancement path is not exercised by E217 queries or E210 base database batches.",
+      "cross_wave_overlap": null,
+      "limits_of_evidence": [
+        "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+        "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+        "Successful batch dependencies do not establish concurrent-observer atomicity.",
+        "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+      ],
+      "review_accepted": false,
+      "runtime_execution_count": 0
+    },
+    {
+      "id": "E219",
+      "title": "Share configured database aliases and isolate identities",
+      "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+      "family": "d1-semantics",
+      "artifact": "worker.js",
+      "entrypoint": "GET /case/E219",
+      "fixture_line_range": [
+        257,
+        268
+      ],
+      "fixture_slice_sha256": "27bb29afc94c75e0ea8a1e32533be179894173c1bf4b2918599d40606305a7bb",
+      "intent": "Let renamed bindings share one resource while another tenant database uses the same table and key safely.",
+      "application_relevance": "Let renamed bindings share one resource while another tenant database uses the same table and key safely.",
+      "sut": "direct celld only",
+      "surface": "public env D1 binding APIs only",
+      "source_refs": [
+        {
+          "key": "api",
+          "path": "celld-os-project/celld/docs/services/d1.md",
+          "line_ranges": [
+            [
+              1,
+              87
+            ]
+          ],
+          "slices_sha256": [
+            "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+          ]
+        },
+        {
+          "key": "deploy",
+          "path": "celld-os-project/celld/crates/celld/deploy.rs",
+          "line_ranges": [
+            [
+              1199,
+              1257
+            ],
+            [
+              1465,
+              1513
+            ]
+          ],
+          "slices_sha256": [
+            "f29b01425ed357183a89f8e9da84c1da67c2ce92b7eaaef3f8532731b6da6b65",
+            "d7fb23cdd9182ce8c999361bbb4790c441d55ee8b9e7c927dbd4c7da6de8920f"
+          ]
+        },
+        {
+          "key": "fleet",
+          "path": "celld-os-project/celld/crates/celld/fleet.rs",
+          "line_ranges": [
+            [
+              846,
+              861
+            ]
+          ],
+          "slices_sha256": [
+            "9da01647505e8dbfcc8445e3d28650a05b751c0dcee155162bf2a3c011a71683"
+          ]
+        },
+        {
+          "key": "bootstrap",
+          "path": "celld-os-project/celld/crates/celld/js/bootstrap.rs",
+          "line_ranges": [
+            [
+              659,
+              664
+            ]
+          ],
+          "slices_sha256": [
+            "393a8be47bda758c8fae0be1449c993fffbfccbf9b5700de4fa698a3506e3c85"
+          ]
+        },
+        {
+          "key": "database",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8448,
+              8491
+            ]
+          ],
+          "slices_sha256": [
+            "d77cc49a62eb8dcae987ad5324e3d0831f91412d02bfdb0b5c3ac0992e263ecb"
+          ]
+        }
+      ],
+      "fixed_finite_trace": [
+        "Seed the same table/key with different labels in DB and OTHER identities.",
+        "Read through ALIAS configured with the DB id but another name.",
+        "Write through ALIAS, then read DB and OTHER separately."
+      ],
+      "oracle": {
+        "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+        "claim": "fleet chooses database_id as identity and bootstrap passes it into the public client; identical ids resolve one cell, different ids another.",
+        "assertions": [
+          "different binding and database names with one database_id share data",
+          "alias writes are visible through the original binding",
+          "a different database_id isolates an identical table and key"
+        ],
+        "executable_assertion_source": [
+          "c.eq(await c.first(c.env.ALIAS.prepare(`SELECT label FROM ${t} WHERE id=1`), \"alias read\"), {label:\"primary\"}, \"different binding and database names with one database_id share data\");",
+          "c.eq(await c.first(db.prepare(`SELECT label FROM ${t} WHERE id=1`), \"shared read after alias\"), {label:\"alias-write\"}, \"alias writes are visible through the original binding\");",
+          "c.eq(await c.first(other.prepare(`SELECT label FROM ${t} WHERE id=1`), \"isolated read\"), {label:\"separate\"}, \"a different database_id isolates an identical table and key\");"
+        ],
+        "successful_assertion_count": 3,
+        "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed."
+      },
+      "schedule": {
+        "case_requests": 1,
+        "setup_binding_calls_exact_on_success": 2,
+        "main_phase_binding_calls_exact_on_success": 6,
+        "main_phase_dispatch_labels_in_order": [
+          "seed shared identity",
+          "seed separate identity",
+          "alias read",
+          "alias write",
+          "shared read after alias",
+          "isolated read"
+        ],
+        "cleanup_binding_calls_exact_on_success": 4,
+        "maximum_in_flight_public_calls": 1,
+        "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+        "retries": 0,
+        "restarts": 0,
+        "faults": 0
+      },
+      "limits": {
+        "public_dispatches_per_phase_enforced": 32,
+        "maximum_rows_in_any_fixture_table": 4,
+        "maximum_application_tables": 2,
+        "maximum_bound_parameters_per_statement": 5,
+        "maximum_batch_statements": 5,
+        "maximum_exec_statements": 4,
+        "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+        "maximum_bound_scalar_or_blob_bytes": 64,
+        "external_total_request_deadline_seconds": 30,
+        "external_response_capture_bytes": 1048576,
+        "no_internal_Promise_race_timeout": true
+      },
+      "owned_resources": [
+        {
+          "binding": "DB",
+          "database_identity": "d1-next-id-a",
+          "table": "d1_next_e219"
+        },
+        {
+          "binding": "OTHER",
+          "database_identity": "d1-next-id-b",
+          "table": "d1_next_e219"
+        }
+      ],
+      "cleanup": {
+        "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+        "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+        "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+        "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+      },
+      "distinctness": "Public configuration identity aliasing/isolation; not a direct DO scope or provider-origin test. Cleanup owns one table per actual database identity.",
+      "cross_wave_overlap": null,
+      "limits_of_evidence": [
+        "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+        "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+        "Successful batch dependencies do not establish concurrent-observer atomicity.",
+        "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+      ],
+      "review_accepted": false,
+      "runtime_execution_count": 0
+    },
+    {
+      "id": "E220",
+      "title": "Resolve omitted IDs through database names",
+      "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+      "family": "d1-semantics",
+      "artifact": "worker.js",
+      "entrypoint": "GET /case/E220",
+      "fixture_line_range": [
+        269,
+        278
+      ],
+      "fixture_slice_sha256": "5f2b6c91a8e1f186cdf09a871daf42533d3c15e775453c4211490c6e93d8eddc",
+      "intent": "Preserve a celld-only database identity when an application later introduces an explicit matching ID.",
+      "application_relevance": "Preserve a celld-only database identity when an application later introduces an explicit matching ID.",
+      "sut": "direct celld only",
+      "surface": "public env D1 binding APIs only",
+      "source_refs": [
+        {
+          "key": "api",
+          "path": "celld-os-project/celld/docs/services/d1.md",
+          "line_ranges": [
+            [
+              1,
+              87
+            ]
+          ],
+          "slices_sha256": [
+            "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+          ]
+        },
+        {
+          "key": "deploy",
+          "path": "celld-os-project/celld/crates/celld/deploy.rs",
+          "line_ranges": [
+            [
+              1199,
+              1257
+            ],
+            [
+              1465,
+              1513
+            ]
+          ],
+          "slices_sha256": [
+            "f29b01425ed357183a89f8e9da84c1da67c2ce92b7eaaef3f8532731b6da6b65",
+            "d7fb23cdd9182ce8c999361bbb4790c441d55ee8b9e7c927dbd4c7da6de8920f"
+          ]
+        },
+        {
+          "key": "fleet",
+          "path": "celld-os-project/celld/crates/celld/fleet.rs",
+          "line_ranges": [
+            [
+              846,
+              861
+            ]
+          ],
+          "slices_sha256": [
+            "9da01647505e8dbfcc8445e3d28650a05b751c0dcee155162bf2a3c011a71683"
+          ]
+        },
+        {
+          "key": "bootstrap",
+          "path": "celld-os-project/celld/crates/celld/js/bootstrap.rs",
+          "line_ranges": [
+            [
+              659,
+              664
+            ]
+          ],
+          "slices_sha256": [
+            "393a8be47bda758c8fae0be1449c993fffbfccbf9b5700de4fa698a3506e3c85"
+          ]
+        },
+        {
+          "key": "database",
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_ranges": [
+            [
+              8448,
+              8491
+            ]
+          ],
+          "slices_sha256": [
+            "d77cc49a62eb8dcae987ad5324e3d0831f91412d02bfdb0b5c3ac0992e263ecb"
+          ]
+        }
+      ],
+      "fixed_finite_trace": [
+        "Seed FALLBACK, whose database_id is omitted.",
+        "Read through a second omitted-id binding with the same database_name.",
+        "Write through EXPLICIT_NAME whose database_id equals that fallback name.",
+        "Read both original omitted-id bindings."
+      ],
+      "oracle": {
+        "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+        "claim": "fleet uses database_name only when database_id is absent; the resulting identity string equals an explicit id with the same bytes.",
+        "assertions": [
+          "two omitted-id declarations share their database_name identity",
+          "an explicit database_id equal to the fallback name addresses the same database",
+          "no-id aliases retain shared identity after explicit-id access"
+        ],
+        "executable_assertion_source": [
+          "c.eq(await c.first(alias.prepare(`SELECT label FROM ${t} WHERE id=1`), \"same name no-id read\"), {label:\"by-name\"}, \"two omitted-id declarations share their database_name identity\");",
+          "c.eq(await c.first(db.prepare(`SELECT label FROM ${t} WHERE id=1`), \"fallback after explicit write\"), {label:\"explicit-id\"}, \"an explicit database_id equal to the fallback name addresses the same database\");",
+          "c.eq(await c.first(alias.prepare(`SELECT label FROM ${t} WHERE id=1`), \"fallback alias after explicit write\"), {label:\"explicit-id\"}, \"no-id aliases retain shared identity after explicit-id access\");"
+        ],
+        "successful_assertion_count": 3,
+        "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed."
+      },
+      "schedule": {
+        "case_requests": 1,
+        "setup_binding_calls_exact_on_success": 1,
+        "main_phase_binding_calls_exact_on_success": 5,
+        "main_phase_dispatch_labels_in_order": [
+          "seed name identity",
+          "same name no-id read",
+          "explicit identity write",
+          "fallback after explicit write",
+          "fallback alias after explicit write"
+        ],
+        "cleanup_binding_calls_exact_on_success": 2,
+        "maximum_in_flight_public_calls": 1,
+        "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+        "retries": 0,
+        "restarts": 0,
+        "faults": 0
+      },
+      "limits": {
+        "public_dispatches_per_phase_enforced": 32,
+        "maximum_rows_in_any_fixture_table": 4,
+        "maximum_application_tables": 1,
+        "maximum_bound_parameters_per_statement": 5,
+        "maximum_batch_statements": 5,
+        "maximum_exec_statements": 4,
+        "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+        "maximum_bound_scalar_or_blob_bytes": 64,
+        "external_total_request_deadline_seconds": 30,
+        "external_response_capture_bytes": 1048576,
+        "no_internal_Promise_race_timeout": true
+      },
+      "owned_resources": [
+        {
+          "binding": "FALLBACK",
+          "database_identity": "d1-next-name",
+          "table": "d1_next_e220"
+        }
+      ],
+      "cleanup": {
+        "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+        "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+        "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+        "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+      },
+      "distinctness": "Fallback precedence and fallback-to-explicit identity convergence differ from E219 explicit-id aliasing. This is celld configuration behavior, not Cloudflare provisioning behavior.",
+      "cross_wave_overlap": null,
+      "limits_of_evidence": [
+        "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+        "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+        "Successful batch dependencies do not establish concurrent-observer atomicity.",
+        "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+      ],
+      "review_accepted": false,
+      "runtime_execution_count": 0
+    }
+  ]
+}

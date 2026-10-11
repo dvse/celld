@@ -1,0 +1,146 @@
+{
+  "adapter": "http",
+  "behaviour": "durable-objects/lifecycle",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "classification": "PRIMARY_DIRECT_PUBLIC_API_CANDIDATE",
+    "cleanup": [
+      "Release any owned Control wait normally; join all already dispatched requests before any data cleanup.",
+      "Delete only the three-or-fewer tracked fixture roots storage and verify empty KV; Control is cleaned last and must have zero waiters/timers.",
+      "An unsettled trace or cleanup requires bounded external owned-process reap and store removal; it never earns runtime credit.",
+      "External supervisor verifies final process/store teardown; fixture cleanup alone does not prove it."
+    ],
+    "distinct": "Exercises actual newUniqueId address creation and later valid string reopening, rather than a named ID, a supplied facet display ID or a changed namespace. Two samples are a finite identity check, not randomness/entropy/statistical collision certification.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/A202"
+    },
+    "external_contract_refs": [
+      {
+        "checked_on": "2026-10-09",
+        "last_updated": "2026-05-27",
+        "url": "https://developers.cloudflare.com/durable-objects/api/id/"
+      }
+    ],
+    "fixed_assertions": [
+      "c.eq(a.equals(b),false,'two ordinary random IDs name distinct fixture objects');",
+      "c.eq([a.name,b.name,left.name,right.name],[undefined,undefined,undefined,undefined],'unique IDs and their stubs have no name metadata');",
+      "c.eq((await c.send(rightParsed,'read')).value,null,'fresh independent random address has no left state');",
+      "c.eq(values.map(x=>[x.value,x.name]),[['unique-left',null],['unique-right',null]],'serialized unique addresses recover their own nameless states');",
+      "c.eq(values.map(x=>x.objectId),[a.toString(),b.toString()],'reopened unique objects report exact minted IDs');"
+    ],
+    "id": "A202",
+    "implementation": "cases.js:A202",
+    "limits": {
+      "cleanup_deadline_ms": 3500,
+      "control_successful_fallback_ms": 2500,
+      "external_case_process_deadline_seconds": 20,
+      "external_http_deadline_seconds": 12,
+      "external_rss_limit_bytes": 1073741824,
+      "external_wave_deadline_seconds": 120,
+      "max_concurrent_supervisor_fetches": 3,
+      "max_control_entries": 2,
+      "max_control_poll_calls": 60,
+      "max_created_roots": 3,
+      "max_external_case_requests": 1,
+      "max_keys_per_root": 1,
+      "max_name_utf8_bytes": 1025,
+      "max_response_bytes": 65536,
+      "max_supervisor_do_fetches": 100,
+      "max_total_do_fetches_including_target_control": 110,
+      "max_total_name_bytes": 3074,
+      "max_value_characters": 32,
+      "poll_interval_ms": 15,
+      "trace_deadline_ms": 6000
+    },
+    "literal_assertion_call_sites": 5,
+    "mechanism": "unique-id-reopen-state",
+    "nearest": [
+      "A201 named helper continuity",
+      "U014/U017 namespace separation",
+      "Z202 explicit facet identity"
+    ],
+    "oracle": "Both valid unique IDs reopen their own exact values and native object IDs; neither object receives the other value and no name metadata is invented.",
+    "os_relevance": {
+      "actual_os_checkout_available": false,
+      "actual_os_execution_claimed": false,
+      "evidence": [
+        "celld-os-project/tests/ACCEPTANCE.md",
+        "celld-os-project/tests/duplicate-names/account.js",
+        "celld-os-project/tests/duplicate-names/router.js",
+        "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+      ],
+      "evidence_status": "INFERRED_COMPONENT_RELEVANCE_ONLY",
+      "label": "Supporting public unique-object addressing; actual OS random-ID adoption absent from preserved evidence"
+    },
+    "preconditions": [
+      "Exact reviewed celld source/build/executable identity with a fresh private disposable store and current live migrated DOs.",
+      "Finite external process/HTTP/RSS limits independently enforceable; no runtime or dependency substitution.",
+      "One external GET at a time; no process faults, reconfiguration, restart, foreign-ID operations or retained stateless handles."
+    ],
+    "primary_contract_refs": [
+      {
+        "line_end": 45,
+        "line_start": 19,
+        "path": "celld-os-project/celld/docs/services/durable-objects.md"
+      }
+    ],
+    "review_status": "PENDING_INDEPENDENT_REVIEW",
+    "runtime_passes": 0,
+    "runtime_source_refs": [
+      {
+        "line_end": 2026,
+        "line_start": 2012,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      },
+      {
+        "line_end": 5719,
+        "line_start": 5677,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "static_source_assessment": "NO_RUNTIME_PREDICTION_REQUIRED",
+    "title": "Reopen isolated unique IDs from serialized addresses",
+    "trace": [
+      "Mint two valid IDs using newUniqueId with default options.",
+      "Write only the first, establish the second is empty, then write the second.",
+      "Parse both serialized IDs and read their exact independent nameless object states."
+    ]
+  },
+  "corpus_id": "A202",
+  "corpus_wave": "identity-admission-semantics",
+  "fixture": "tests/conformance/durable-objects/lifecycle/fixtures/identity-admission-semantics",
+  "id": "conformance/durable-objects/lifecycle/identity-admission-a202",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/identity-admission-semantics/A202"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/identity-admission-semantics/A202",
+      "manifest_sha256": "e5eae8135cebe5822551cd30d5fad64d7273726f60d70a8899cd014f3500951e",
+      "review_sha256": "bf9e7422bb248a7b602faf4fc928e16eb392f783c71ac17275ec3f6a4c8356f2",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/identity-admission-semantics",
+      "tranche": "004"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/A202",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "A202",
+  "source": "tests/conformance/durable-objects/lifecycle/fixtures/identity-admission-semantics/fixture.js",
+  "source_sha256": "eeb4d839f7c818b31988e205b843f6584c6cfc066b4723dcb8382d7ca8bf5e33",
+  "title": "Reopen isolated unique IDs from serialized addresses"
+}

@@ -1,0 +1,29 @@
+{
+  "id": "conformance/languages/python",
+  "layer": "conformance",
+  "behaviour": "languages",
+  "title": "python",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/examples/python",
+      "legacy_id": "examples/python"
+    },
+    {
+      "source": "celld@9c0fca5/examples/python/wrangler.jsonc",
+      "sha256": "a3ed0b6806b7294d2fe09d94e3e550be455b0d4b69228d0d2a160ecd3bfbbde5"
+    }
+  ],
+  "legacy_ids": [
+    "examples/python"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/languages/fixtures/python-worker",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": "The supplied Python project has no vendored python_modules Workers SDK or BeautifulSoup wheels. celld requires pywrangler-produced ABI-compatible modules (Pyodide 0.28.3/CPython 3.13); stock workerd CLI also lacks the matching Python snapshot/package bundle. Native Python deployment validation unit tests run separately.",
+  "runnable": false,
+  "source": "tests/conformance/languages/fixtures/python-worker/wrangler.jsonc",
+  "source_sha256": "a3ed0b6806b7294d2fe09d94e3e550be455b0d4b69228d0d2a160ecd3bfbbde5"
+}

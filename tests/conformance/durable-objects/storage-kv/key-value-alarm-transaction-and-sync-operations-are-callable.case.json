@@ -1,0 +1,25 @@
+{
+  "id": "conformance/durable-objects/storage-kv/key-value-alarm-transaction-and-sync-operations-are-callable",
+  "layer": "conformance",
+  "behaviour": "durable-objects/storage-kv",
+  "title": "Key-value, alarm, transaction and sync operations are callable",
+  "origins": [
+    {
+      "source": "workerd@19b1657bd/src/workerd/api/tests/actor-kv-test.js",
+      "legacy_id": "workerd/durable-object/original-kv-operations"
+    }
+  ],
+  "legacy_ids": [
+    "workerd/durable-object/original-kv-operations"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/durable-objects/storage-kv/fixtures/operation-contracts",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/conformance/durable-objects/storage-kv/fixtures/operation-contracts/upstream.js",
+  "source_sha256": "faaf069f57d9e564ce0665263fb271e68c8aeb40eaae23bcb8d763ea792025e6"
+}

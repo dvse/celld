@@ -1,0 +1,611 @@
+[
+  {
+    "id": "M001",
+    "intent": "Static diamond evaluation and shared leaf",
+    "failure_hypothesis": "Diamond imports can duplicate a dependency instance or evaluate an importer before its dependency.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Initialize leaf -> left -> right -> main.",
+      "Issue two probe RPCs without awaiting either.",
+      "Assert branch mutation coherence and the exact single evaluation sequence."
+    ],
+    "stress": "Two caller probes over a four-node diamond.",
+    "oracle": "Each right read equals left+1; left values 41,42; each log is leaf,left,right,main.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M001",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request-concurrent-dispatch; synchronous receiver bodies; live overlap not asserted",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  },
+  {
+    "id": "M002",
+    "intent": "Live reexport during a held writer",
+    "failure_hypothesis": "A reexport or separate static reader can capture a stale export after a suspended writer resumes.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Hold the writer RPC on its local module gate.",
+      "Witness writer invocation ID active; read through barrel and separate observer.",
+      "Release writer; assert both aliases observe reassignment."
+    ],
+    "stress": "One pending writer and two alias readers.",
+    "oracle": "Reads are [1,1] before release and [9,9] after; writer returns9.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M002",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request receiver overlap: writer and later reader",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  },
+  {
+    "id": "M003",
+    "intent": "Default expression versus reassigned named export",
+    "failure_hypothesis": "Reassigning a live named export can incorrectly rebind a default expression snapshot or leave another importer stale.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Read shared initial object.",
+      "Replace the exported named binding with a new object.",
+      "Issue two later readers and compare default snapshot, current binding and observer."
+    ],
+    "stress": "One rebind observed through three distinct import forms.",
+    "oracle": "Default remains1; named and observer become2; identity changes exactly once.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M003",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request concurrent dispatch after reassignment; no held overlap claim",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  },
+  {
+    "id": "M004",
+    "intent": "Static relative referrer separation",
+    "failure_hypothesis": "Static resolution can collapse two same-basename dependencies or fail to share one canonical left dependency.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Initialize left/view and right/view using sibling state.js imports.",
+      "Read both and the root direct left import.",
+      "Mutate through left view; repeat direct and sibling reads."
+    ],
+    "stress": "Two static referrers with identical sibling filenames.",
+    "oracle": "[1,10,1] becomes [2,10,2]; right state remains10.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M004",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request ordered RPCs",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  },
+  {
+    "id": "M005",
+    "intent": "Deferred reads across a legal static cycle",
+    "failure_hypothesis": "A legal cycle can expose uninitialized values to deferred reads or break live edges after initial evaluation.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Initialize A/B cycle with function-deferred binding reads.",
+      "Read both directions.",
+      "Reassign A and issue two post-change probes."
+    ],
+    "stress": "Two-module cyclic graph, one rebind, two readers.",
+    "oracle": "[3,2] becomes [3,7] for both readers.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M005",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request concurrent dispatch after cycle initialization",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  },
+  {
+    "id": "M006",
+    "intent": "Eager cyclic TDZ failure isolation",
+    "failure_hypothesis": "An eager cyclic binding read can be accepted incorrectly or contaminate another valid graph.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Load invalid eager A/B cycle and a separate valid deferred cycle.",
+      "Require TDZ-specific startup rejection.",
+      "Mutate the independent valid graph and assert its live cyclic values."
+    ],
+    "stress": "Two independently loaded cyclic graphs, one finite TDZ failure.",
+    "oracle": "Failure includes before initialization; independent good graph changes to[3,7].",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M006",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request independent recipients; no sustained overlap claim",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  },
+  {
+    "id": "M007",
+    "intent": "Concurrent lazy-module initialization joins",
+    "failure_hypothesis": "Two RPC imports of the same suspended module can duplicate initialization or publish its exports before completion.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Initialize callable main first.",
+      "Start two lazy imports; witness both receiver invocation IDs active with one gate.",
+      "Release initializer and require both complete values and one evaluation log."
+    ],
+    "stress": "Two imports share one finite dynamic-module gate.",
+    "oracle": "Exactly lazy-start,hold,release,lazy-ready; both return17.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M007",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request overlap of two actual loaded-worker invocations",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  },
+  {
+    "id": "M008",
+    "intent": "Static and dynamic namespace identity",
+    "failure_hypothesis": "Dynamic import can create a second namespace/state instance for a statically imported module.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Initialize static namespace at0.",
+      "Issue two dynamic mutators.",
+      "Assert in-receiver namespace identity and static final value."
+    ],
+    "stress": "Two dynamic imports mutate an already statically imported module.",
+    "oracle": "Both namespaces === static namespace; returned values sort1,2; final static state2.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M008",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request concurrent dispatch; completion order unconstrained",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  },
+  {
+    "id": "M009",
+    "intent": "Failed dependent preserves evaluated leaf",
+    "failure_hypothesis": "A dependent evaluation throw can discard its successful leaf or rerun partial effects on repeated import.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Initialize leaf at0.",
+      "Issue failing dependent and healthy leaf-reexport import.",
+      "After error inspect good branch; retry failed dependent and inspect leaf."
+    ],
+    "stress": "Dependent throws after one leaf mutation; healthy sibling and bounded retry.",
+    "oracle": "Exact planned error; leaf persists at1 and repeated failed import cannot increment it.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M009",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request concurrent dispatch; no held overlap claim",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  },
+  {
+    "id": "M010",
+    "intent": "Ambiguous star linkage stays local",
+    "failure_hypothesis": "A dynamically linked consumer can silently choose one conflicting star export or poison a valid source module.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Keep main callable without evaluating consumer.",
+      "Import consumer of ambiguous barrel and require linkage-specific diagnostic.",
+      "Import left source successfully and verify no gate remains."
+    ],
+    "stress": "Two conflicting source exports plus one failed consumer.",
+    "oracle": "Error witnesses ambiguity/conflicting export/value missing export; valid source remains4.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M010",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request ordered RPCs",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  },
+  {
+    "id": "M011",
+    "intent": "Shared suspended initializer rejection",
+    "failure_hypothesis": "Two waiting imports can diverge when a single initialized module rejects after its gate.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Initialize main.",
+      "Start two imports and witness both IDs active behind one failure gate.",
+      "Release; require exact planned error for each and exactly one throw transition."
+    ],
+    "stress": "One pending initializer rejects to two waiters.",
+    "oracle": "Both planned:M011:lazy rejections; one start/hold/release/throw log; no active receivers.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M011",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request overlap of two actual loaded-worker invocations",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  },
+  {
+    "id": "M012",
+    "intent": "Async diamond dependency barrier",
+    "failure_hypothesis": "Separate dynamic branch imports can duplicate a shared pending dependency or evaluate children before its resolution.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Initialize main and issue left/right imports.",
+      "Witness both IDs active on one shared dependency gate.",
+      "Release and verify branch state sharing and dependency-before-branch order."
+    ],
+    "stress": "Two branch modules share one suspended leaf.",
+    "oracle": "One shared-start/ready; one each branch-ready; unique counts1,2 from same leaf object.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M012",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request overlap of two actual loaded-worker invocations",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  },
+  {
+    "id": "M013",
+    "intent": "Independent lazy branches release out of order",
+    "failure_hypothesis": "One pending module evaluation can globally block a different module or release the wrong branch.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Start left and right imports in one graph.",
+      "Witness both IDs and both gates.",
+      "Release right; assert left still pending; release left."
+    ],
+    "stress": "Two independent module evaluation promises and reverse release order.",
+    "oracle": "Right resolves right; left remains active without left-ready; then left resolves left.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M013",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request overlap of two actual loaded-worker invocations",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  },
+  {
+    "id": "M014",
+    "intent": "Independent graph module registries",
+    "failure_hypothesis": "Same module names in separate workers can alias module state or initialization gates.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Initialize two separate main recipients with same module names and different state.",
+      "Start one lazy import in each and witness each active ID/gate.",
+      "Release right, read held left state, then release left and recheck right."
+    ],
+    "stress": "Two graphs, one held import each, identical module and gate names.",
+    "oracle": "Right resolves11 while left stays1/held; left later resolves2; right stays11.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M014",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request independent recipients; two receiver invocation witnesses",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  },
+  {
+    "id": "M015",
+    "intent": "Initializer rejection across independent graphs",
+    "failure_hypothesis": "A failed dynamic module can reject or complete an unrelated graph with the same module name.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Initialize failed and good independent recipients.",
+      "Hold one lazy import per recipient.",
+      "Release failing graph; require marker and good graph still held; release good."
+    ],
+    "stress": "One dynamic evaluation rejection while another graph is held.",
+    "oracle": "Exact planned:M015:bad; good log untouched until release and returns77.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M015",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request independent recipients; two receiver invocation witnesses",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  },
+  {
+    "id": "M016",
+    "intent": "Dynamic referrer canonicalization",
+    "failure_hypothesis": "The dynamic-import host callback can resolve a nested relative path against main or create separate canonical module instances.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Dynamically import state from nested importer using ../nested/../state.js and from main.",
+      "Compare namespace identity.",
+      "Mutate via nested import and run two repeated identity probes."
+    ],
+    "stress": "Nested dynamic referrer and normalized alias resolve the same source.",
+    "oracle": "Namespaces strictly identical; shared value2->3 persists.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M016",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request concurrent dispatch within and across invocations",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  },
+  {
+    "id": "M017",
+    "intent": "Caught nested import rejection fulfills parent",
+    "failure_hypothesis": "A handled child-module rejection can leak through the outer evaluation promise or evaluate recovery twice.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Start two imports of recoverer.",
+      "Witness both IDs waiting while its nested bad import is gated.",
+      "Release bad module; recoverer catches planned error and exports fallback."
+    ],
+    "stress": "Two outer waiters, nested dynamic rejection, handled recovery.",
+    "oracle": "Both return fallback; one bad-throw and one caught event.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M017",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request overlap of two actual loaded-worker invocations",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  },
+  {
+    "id": "M018",
+    "intent": "Lazy back-import of evaluated main",
+    "failure_hypothesis": "A lazy module importing the already evaluated main can deadlock or receive a second main namespace/class.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Prove main is initialized and callable.",
+      "Issue two imports of lazy module which imports main.",
+      "Assert same class inside receiver and main remains callable."
+    ],
+    "stress": "Finite graph back-edge only after main initialization; no startup TLA cycle.",
+    "oracle": "Both return true for class identity; main-live before/after.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M018",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request concurrent dispatch; no held overlap claim",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  },
+  {
+    "id": "M019",
+    "intent": "Live imported binding after await",
+    "failure_hypothesis": "A suspended module can read the binding value from before its await rather than the latest assignment.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Hold lazy reader after it has imported live value.",
+      "Witness its receiver ID; another invocation assigns9.",
+      "Release; reader snapshots9; assign12 afterward and ensure completed const stays9."
+    ],
+    "stress": "One lazy initializer suspended across live binding mutation.",
+    "oracle": "Captured9 after release, constant remains9 after value12; read:9 appears once.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M019",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request receiver overlap: initializer and mutator",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  },
+  {
+    "id": "M020",
+    "intent": "Explicit reexport resolves star collision",
+    "failure_hypothesis": "An explicit reexport can lose precedence to conflicting star exports or cease to be live.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Initialize consumer through explicit right export plus two conflicting stars.",
+      "Read chosen8.",
+      "Mutate right to12 and issue two consumer reads."
+    ],
+    "stress": "Explicit reexport precedence with live update.",
+    "oracle": "8->12; both final consumers12.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M020",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request concurrent dispatch after selected export mutation",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  },
+  {
+    "id": "M021",
+    "intent": "Unselected supplied module remains unevaluated",
+    "failure_hypothesis": "Loader may eagerly evaluate an optional module just because it is present, or poison the selected graph after its later throw.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Start main whose static graph selects only selected.js.",
+      "Assert optional module effect absent.",
+      "Import optional and require marker; read selected; retry optional and require one effect."
+    ],
+    "stress": "Reachability transition from supplied-only to dynamically evaluated failing module.",
+    "oracle": "Initial selected-only log; optional effect appears once after intentional import; selected stays callable.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M021",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request ordered RPCs",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  }
+]

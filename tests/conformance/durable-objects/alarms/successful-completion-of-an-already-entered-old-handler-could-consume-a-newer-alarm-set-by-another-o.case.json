@@ -1,0 +1,61 @@
+{
+  "adapter": "recovery",
+  "behaviour": "durable-objects/alarms",
+  "contract": {
+    "cleanup": [
+      "Release fixture gates, delete outstanding alarms, and tear down the transferred fleet.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A018",
+    "intent": "Successful completion of an already-entered old handler could consume a newer alarm set by another ordinary RPC.",
+    "oracle": [
+      "The new event retains the exact foreground timestamp.",
+      "Exactly old then new entry records and both logical effects; final alarm null."
+    ],
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "Old native event is observed active at its45-second gate before foreground replacement."
+    ],
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "trace": [
+      "Arm entered-old and hold it after native entry.",
+      "While it is still active, arm foreground-new seven seconds ahead.",
+      "Release the old handler, observe both successes, and wait for schedule settlement."
+    ]
+  },
+  "corpus_id": "A018",
+  "corpus_wave": "alarm-event-stress",
+  "fixture": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces",
+  "id": "conformance/durable-objects/alarms/successful-completion-of-an-already-entered-old-handler-could-consume-a-newer-alarm-set-by-another-o",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/alarm-event-stress/A018"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/alarm-event-stress/A018",
+      "source": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress"
+    },
+    {
+      "sha256": "ccde8a8c9c8c7a4cfe02567f656fc149da1ee24fd78973455e64a8fe1c6ea3f3",
+      "source": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress/fixture.js"
+    }
+  ],
+  "phase2_harness": "real process and bucket fault schedule",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "A018",
+  "source": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces/fixture.js",
+  "source_sha256": "ccde8a8c9c8c7a4cfe02567f656fc149da1ee24fd78973455e64a8fe1c6ea3f3",
+  "title": "Successful completion of an already-entered old handler could consume a newer alarm set by another ordinary RPC."
+}

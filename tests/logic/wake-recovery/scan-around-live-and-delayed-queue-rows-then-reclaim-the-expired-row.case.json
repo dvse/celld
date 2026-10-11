@@ -1,0 +1,53 @@
+{
+  "id": "logic/wake-recovery/scan-around-live-and-delayed-queue-rows-then-reclaim-the-expired-row",
+  "layer": "logic",
+  "behaviour": "wake-recovery",
+  "title": "Scan around live and delayed Queue rows then reclaim the expired row",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic",
+      "legacy_id": "corpus/wake-recovery-logic/K021"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+      "sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/wake-recovery-logic/K021"
+  ],
+  "adapter": "native",
+  "corpus_id": "K021",
+  "corpus_wave": "wake-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/wake-recovery/fixtures/decision-cases/tests/wake_recovery.rs",
+  "source_sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86",
+  "test_filter": "k021_queue_batch_skips_live_and_delayed_rows_then_reclaims_after_expiry",
+  "contract": {
+    "intent": "Scan around live and delayed Queue rows then reclaim the expired row",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "At100 plan the mixed rows and require only row3.",
+      "Rearm from visibility150 and lease200.",
+      "Assume row3 settled; at150 plan rows1,2 and require row2.",
+      "Assume row2 settled; at200 plan row1 and require reclaimed generation3."
+    ],
+    "oracle": [
+      "Live/future rows never deliver early; result preserves concrete eligible rows and reclaim metadata.",
+      "Ready tail, later visibility and finally expired row all get a turn."
+    ],
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k021_queue_batch_skips_live_and_delayed_rows_then_reclaims_after_expiry"
+  },
+  "selector": "K021"
+}

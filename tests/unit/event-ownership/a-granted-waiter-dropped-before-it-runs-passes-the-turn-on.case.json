@@ -1,0 +1,24 @@
+{
+  "id": "unit/event-ownership/a-granted-waiter-dropped-before-it-runs-passes-the-turn-on",
+  "layer": "unit",
+  "behaviour": "event-ownership",
+  "title": "a granted waiter dropped before it runs passes the turn on",
+  "origins": [
+    {
+      "source": "crates/celld/pool.rs",
+      "legacy_id": "unit/celld/pool::turn_scheduler_tests::a_granted_waiter_dropped_before_it_runs_passes_the_turn_on"
+    }
+  ],
+  "legacy_ids": [
+    "unit/celld/pool::turn_scheduler_tests::a_granted_waiter_dropped_before_it_runs_passes_the_turn_on"
+  ],
+  "adapter": "cargo",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "crates/celld/pool.rs",
+  "source_sha256": "425295d0227098637d8f068b48a8791b6040fe281c3734512db29bf74d2d5cc7",
+  "test_filter": "pool::turn_scheduler_tests::a_granted_waiter_dropped_before_it_runs_passes_the_turn_on"
+}

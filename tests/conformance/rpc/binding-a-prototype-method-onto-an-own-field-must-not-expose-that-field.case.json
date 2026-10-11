@@ -1,0 +1,50 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "request completion; fixture teardown",
+    "intent": "Binding a prototype method onto an own field must not expose that field",
+    "oracle": "positive control increments once; bound call rejects with specific remote TypeError visibility error; no bound-call effect; recipient remains live and unchanged",
+    "preconditions": "Peer stores bound publicControl as own boundOnly",
+    "trace": [
+      "record recipient identity and public effect count",
+      "invoke public control and assert one increment",
+      "call boundOnly over RPC",
+      "read effect count",
+      "invoke post-operation public control and compare recipient identity"
+    ]
+  },
+  "corpus_id": "R003",
+  "corpus_wave": "base",
+  "fixture": "tests/conformance/rpc/fixtures/object-capabilities/fixture",
+  "id": "conformance/rpc/binding-a-prototype-method-onto-an-own-field-must-not-expose-that-field",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/base/R003"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/base/R003",
+      "source": "guarded-source-archive/celld-os-stress/fixture"
+    },
+    {
+      "sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+      "source": "guarded-source-archive/celld-os-stress/fixture/rpc.js"
+    },
+    {
+      "sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+      "source": "guarded-source-archive/celld-os-stress/waves/do-visibility-regression/rpc.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "R003",
+  "source": "tests/conformance/rpc/fixtures/object-capabilities/fixture/rpc.js",
+  "source_sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+  "title": "Binding a prototype method onto an own field must not expose that field"
+}

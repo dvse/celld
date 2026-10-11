@@ -1,0 +1,133 @@
+{
+  "adapter": "http",
+  "behaviour": "durable-objects/storage-sql",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runs": 0,
+    "application_algorithm_qualification": "readChunks zero-fill and overwrite chunk-splitting are fixture algorithms, not native celld features or separate coverage. Credit rests on real SQL BLOB persistence/replacement/clipping with coherent KV accounting.",
+    "authored": true,
+    "classification": "synthetic-ordinary-functional-regression-candidate",
+    "cleanup": [
+      "All actor handlers/transactions and gate timers must settle before audit/cleanup.",
+      "Every native SQL cursor is immediately drained, retained only for bounded final drain.",
+      "DeleteAll only on the correlated fresh owned root; verify KV empty and SQL application tables absent.",
+      "External supervisor must enforce independent deadlines/RSS and reap owned processes/store; receipts cannot self-prove placement or teardown."
+    ],
+    "distinctness": "T210 overwrites existing fixed chunks. This native LAG predecessor-boundary query discovers an actual extent gap and proves its removal after fill; fixture zero-fill earns no independent credit. T209 ranks whole revision rows for retention, whereas this case computes interval adjacency from BLOB lengths and offsets.",
+    "failure_hypothesis": "Accounting can charge zero-fill as stored data or lose existing extents when filling the gap.",
+    "id": "T211",
+    "implementation": "cases.js:T211",
+    "independently_reviewed": false,
+    "intent": "Native LAG of predecessor end offsets detects the exact hole between disjoint BLOB extents; queued gap-fill removes that gap while changing physical bytes without changing logical EOF.",
+    "left_checkpoint": "Left inserts offset8 [9,10], updates metadata size10/stored4, and holds.",
+    "limits": {
+      "max_active_actor_requests": 2,
+      "max_application_storage_call_sites_executed": 400,
+      "max_chunk_loop_input_bytes": 3,
+      "max_external_case_requests": 1,
+      "max_internal_do_fetches": 4,
+      "max_native_cursors": 240,
+      "max_public_network_requests": 0,
+      "max_recursive_depth": 8,
+      "max_roots": 1,
+      "max_rows_per_cursor": 64,
+      "max_user_kv_keys": 16,
+      "max_user_payload_bytes": 4096
+    },
+    "literal_assertion_call_sites": 7,
+    "nearest_existing": [
+      "D212",
+      "T019",
+      "T210"
+    ],
+    "normative_references": [
+      "https://www.sqlite.org/lang_corefunc.html",
+      "https://www.sqlite.org/windowfunctions.html"
+    ],
+    "oracle": "Native gap rows initially [{gap_start:2,gap_end:8}], then empty; extents offsets0/2bytes,2/6bytes,8/2bytes; file [1..10]; size10/chunks3/stored10, with intermediate size10/stored4.",
+    "os_evidence_status": "RETAINED_PROVENANCE_ONLY: synthetic platform composition; no OS checkout/callsite was reread, and this is not an actual OS integration test.",
+    "os_relevance": "gatekeeper sparse allocation accounting",
+    "preconditions": [
+      "Exact pinned direct celld source and reviewed matching executable; no substitute runtime.",
+      "Fresh owned SQLite DO root, one stable activation, no preexisting KV or user SQL.",
+      "Two ordinary same-deployment DO.fetch requests must pre-enter one recipient before its transaction input gate closes.",
+      "All storage and SQL operations execute on real ctx.storage with public APIs and native SQLite."
+    ],
+    "promotion_candidate": true,
+    "runtime_passes": 0,
+    "runtime_status": "NOT_RUN",
+    "schedule": "schedule.json:preentered-two-request-fifo",
+    "source_refs": [
+      {
+        "line_end": 2008,
+        "line_start": 1898,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js",
+        "purpose": "Real root transactions serialize distinct pre-entered request owners; ordinary input gate and transaction tail."
+      },
+      {
+        "line_end": 3312,
+        "line_start": 3235,
+        "path": "celld-os-project/celld/crates/celld/storage.rs",
+        "purpose": "Public storage transaction controls map to native BEGIN IMMEDIATE, COMMIT and nested SAVEPOINT/RELEASE."
+      },
+      {
+        "line_end": 1435,
+        "line_start": 1287,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js",
+        "purpose": "Public native SQL cursor shaping, typed bindings and finite draining."
+      },
+      {
+        "line_end": 2153,
+        "line_start": 1902,
+        "path": "celld-os-project/celld/crates/celld/storage.rs",
+        "purpose": "Queries execute through native SQLite prepare/bind/step, not a JavaScript SQL emulator."
+      },
+      {
+        "line_end": 623,
+        "line_start": 585,
+        "path": "celld-os-project/celld/crates/celld/js/storage_ops.rs",
+        "purpose": "Exact BLOB byte conversion."
+      }
+    ],
+    "title": "Detect sparse extent gaps with native boundary windows",
+    "trace": [
+      "Seed offset0 bytes[1,2].",
+      "Left inserts offset8 [9,10], updates metadata size10/stored4, and holds.",
+      "Right native LAG boundary query returns gap[2,8], checks stored-byte metadata, then inserts offset2 [3..8]."
+    ]
+  },
+  "corpus_id": "T211",
+  "corpus_wave": "atomic-accounting-semantics",
+  "fixture": "tests/conformance/durable-objects/storage-sql/fixtures/atomic-accounting-semantics",
+  "id": "conformance/durable-objects/storage-sql/atomic-accounting-t211",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/atomic-accounting-semantics/T211"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/atomic-accounting-semantics/T211",
+      "manifest_sha256": "74ca24883b66b7505190af93acdb03199887fecbe09f5d377d344cfafb2cad69",
+      "review_sha256": "ba79e6a940a0c497277bf34361f3b1ad34a6b1a4c9a638701793cacc4ebd10c8",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/atomic-accounting-semantics",
+      "tranche": "003"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/T211",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "T211",
+  "source": "tests/conformance/durable-objects/storage-sql/fixtures/atomic-accounting-semantics/fixture.js",
+  "source_sha256": "686846d5a7b0fac00f11906a8c79c13ca1cb293244ef37fec33f1a6a90871f7e",
+  "title": "Detect sparse extent gaps with native boundary windows"
+}

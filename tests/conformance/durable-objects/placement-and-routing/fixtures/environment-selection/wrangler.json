@@ -1,0 +1,2 @@
+{"name": "do-environment", "main": "index.js", "compatibility_date": "2026-08-14",
+ "durable_objects": {"bindings": [{"name": "OTHER", "class_name": "Thing", "script_name": "other", "environment": "staging"}]}}

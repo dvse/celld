@@ -1,0 +1,45 @@
+{
+  "id": "conformance/dynamic-workers-and-tails/static-diamond-evaluation-and-shared-leaf",
+  "layer": "conformance",
+  "behaviour": "dynamic-workers-and-tails",
+  "title": "Static diamond evaluation and shared leaf",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/module-graph-stress",
+      "legacy_id": "module-graph-stress/M001"
+    }
+  ],
+  "corpus_wave": "module-graph-stress",
+  "corpus_id": "M001",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "M001",
+    "intent": "Static diamond evaluation and shared leaf",
+    "failure_hypothesis": "Diamond imports can duplicate a dependency instance or evaluate an importer before its dependency.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Initialize leaf -> left -> right -> main.",
+      "Issue two probe RPCs without awaiting either.",
+      "Assert branch mutation coherence and the exact single evaluation sequence."
+    ],
+    "stress": "Two caller probes over a four-node diamond.",
+    "oracle": "Each right read equals left+1; left values 41,42; each log is leaf,left,right,main.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M001",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request-concurrent-dispatch; synchronous receiver bodies; live overlap not asserted",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  }
+}

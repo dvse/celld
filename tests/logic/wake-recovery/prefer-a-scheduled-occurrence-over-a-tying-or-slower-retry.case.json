@@ -1,0 +1,53 @@
+{
+  "id": "logic/wake-recovery/prefer-a-scheduled-occurrence-over-a-tying-or-slower-retry",
+  "layer": "logic",
+  "behaviour": "wake-recovery",
+  "title": "Prefer a scheduled occurrence over a tying or slower retry",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic",
+      "legacy_id": "corpus/wake-recovery-logic/K015"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+      "sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/wake-recovery-logic/K015"
+  ],
+  "adapter": "native",
+  "corpus_id": "K015",
+  "corpus_wave": "wake-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/wake-recovery/fixtures/decision-cases/tests/wake_recovery.rs",
+  "source_sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86",
+  "test_filter": "k015_next_cron_occurrence_wins_retry_tie_and_long_backoff",
+  "contract": {
+    "intent": "Prefer a scheduled occurrence over a tying or slower retry",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Plan initial occurrence0.",
+      "Plan tied retry/next deadline60000 and require occurrence attribution.",
+      "At fresh occurrence60000 reset retry to0; fail at61000,63000,67000,75000 and91000 with retries0..4; require exact intermediate63000/67000/75000/91000 then occurrence120000 over backoff123000.",
+      "Plan successful occurrence120000 to180000."
+    ],
+    "oracle": [
+      "A tie is not labelled retry and longer backoff cannot skip the next occurrence.",
+      "Normal per-minute occurrences continue under handler failures."
+    ],
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k015_next_cron_occurrence_wins_retry_tie_and_long_backoff"
+  },
+  "selector": "K015"
+}

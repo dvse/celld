@@ -1,0 +1,7 @@
+{
+  "name": "direct-atomic-accounting-v1",
+  "main": "fixture.js",
+  "compatibility_date": "2026-09-04",
+  "durable_objects": { "bindings": [{ "name": "CASE", "class_name": "AccountingCase" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["AccountingCase"] }]
+}

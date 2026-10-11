@@ -1,0 +1,52 @@
+{
+  "id": "logic/pressure/ignore-expired-pressure-reports-but-reapply-renewed-live-peer-gates",
+  "layer": "logic",
+  "behaviour": "pressure",
+  "title": "Ignore expired pressure reports but reapply renewed live peer gates",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic",
+      "legacy_id": "corpus/pressure-recovery-logic/P026"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic/tests/pressure_recovery.rs",
+      "sha256": "ccb9c2001ec9d427c142017a426801dde5631b1252fae8b2e10ce0e12cc73e47"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/pressure-recovery-logic/P026"
+  ],
+  "adapter": "native",
+  "corpus_id": "P026",
+  "corpus_wave": "pressure-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/pressure/fixtures/decision-cases/tests/pressure_recovery.rs",
+  "source_sha256": "ccb9c2001ec9d427c142017a426801dde5631b1252fae8b2e10ce0e12cc73e47",
+  "test_filter": "p026_expired_pressure_peer_cannot_hold_readiness_but_renewed_peer_can",
+  "contract": {
+    "intent": "Ignore expired pressure reports but reapply renewed live peer gates",
+    "preconditions": [
+      "Caller-owned DrainToken and CapacityPeer snapshots exactly listed in initial_state; production drain::fleet_status called directly",
+      "No simulated writes to State, no transport, store or actual drain execution; result is native policy output",
+      "Pressure samples are synthetic byte-valued facts, not measured RSS, allocator, cgroup or container enforcement",
+      "The immutable source/runtime-manifest pins and exact implementation must pass preflight before any authorized future run"
+    ],
+    "trace": [
+      "at109 old live blocks MemoryHeadroom",
+      "at110 old expires and result is Ok",
+      "renew old expiry1000; at111 old blocks again",
+      "clear old pressured but retain headroom false; at112 still blocks",
+      "set headroom true; at113 returns Ok; drop input vector"
+    ],
+    "oracle": "Expiry filters old report; renewal restores its gate; clearing latch alone supplies no reserve; renewed peer with explicit headroom finally admits readiness",
+    "cleanup": "Drop caller-owned token/peer vectors; no production resources created",
+    "implementation": "tests/pressure_recovery.rs:p026_expired_pressure_peer_cannot_hold_readiness_but_renewed_peer_can"
+  },
+  "selector": "P026"
+}

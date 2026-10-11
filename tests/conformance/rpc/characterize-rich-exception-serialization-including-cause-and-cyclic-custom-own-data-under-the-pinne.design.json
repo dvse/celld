@@ -1,0 +1,37 @@
+{
+  "id": "conformance/rpc/characterize-rich-exception-serialization-including-cause-and-cyclic-custom-own-data-under-the-pinne",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "Characterize rich exception serialization including cause and cyclic custom own data under the pinned legacy profile",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec",
+      "legacy_id": "rpc-codec/C026"
+    }
+  ],
+  "corpus_wave": "rpc-codec",
+  "corpus_id": "C026",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "C026",
+    "intent": "Characterize rich exception serialization including cause and cyclic custom own data under the pinned legacy profile",
+    "preconditions": "COMMON; current 2026-01-01 profile does not imply enhanced_error_serialization; use only as characterization",
+    "trace": [
+      "invoke peer TypeError with cause, code and cyclic details",
+      "catch reconstructed Error",
+      "check effective fields and cause",
+      "check details self-cycle and exactly one provider throw",
+      "verify recovery"
+    ],
+    "stress": "One exception with nested cause and a two-field cyclic details object",
+    "oracle": "name/message/code/cause preserved, details cycle intact, one throw and successful control; no custom-class instanceof contract assumed",
+    "cleanup": "Shared codecCleanup; exception carries no capabilities",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-ERRORS",
+      "SC-ERROR-DOC"
+    ]
+  }
+}

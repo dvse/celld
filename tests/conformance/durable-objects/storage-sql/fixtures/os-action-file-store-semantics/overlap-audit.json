@@ -1,0 +1,120 @@
+{
+  "schema": 1,
+  "scope": "Exact closest case bodies inspected across D/T/X/C/I families; no wrapper, payload-grid, primitive-CRUD or generic-quota credit. Broader files pinned for reviewer reproducibility.",
+  "sources": [
+    {
+      "root": "runtime",
+      "path": "celld-os-stress/waves/sqlite-concurrency/cell-cases.js",
+      "sha256": "0e5116557fa02ad82edc28032c82d9cb7c96530e04880465fc6517acad7095d6",
+      "bytes": 16281
+    },
+    {
+      "root": "runtime",
+      "path": "celld-os-stress/waves/native-transform-stress/operations.js",
+      "sha256": "3c56ee242a504ad001125fec4ec2ba54d07c00ff4757b36be2826624f7e751c6",
+      "bytes": 14588
+    },
+    {
+      "root": "overlap",
+      "path": "storage-sql-semantics/cases.js",
+      "sha256": "1dec37fd6a3caae833bbc95620f407a7d866836410275c1b4b7637ae468bb7f9",
+      "bytes": 12968
+    },
+    {
+      "root": "overlap",
+      "path": "atomic-accounting-semantics/cases.js",
+      "sha256": "b989812ac2fb83e206a9068aa18f77ea92833e76bbb620f6bf8cb024cbdf75e3",
+      "bytes": 23529
+    },
+    {
+      "root": "overlap",
+      "path": "os-typed-storage-semantics/cases.js",
+      "sha256": "2b0a192f9bfdf32f3f0e064513c18b3aac1a915b67186ea073e3427c434adea2",
+      "bytes": 14208
+    },
+    {
+      "root": "overlap",
+      "path": "r2-semantics/cases.js",
+      "sha256": "c42593afe0ea2d40afcddd122e4a4b91dbcf3a1ae6ce8b70ec5ee208efcfcc54",
+      "bytes": 14668
+    }
+  ],
+  "cases": [
+    {
+      "id": "F201",
+      "nearest_existing": [
+        "D201",
+        "D205",
+        "T019",
+        "X023",
+        "I202"
+      ],
+      "distinctness": "D201/D205 snapshot serialized values; T019 snapshots a SQL BLOB during coercion; X023 copies an imported HMAC key; I202 converts R2 input. None exercises the actual ActionFileStore synchronous dual digest/chunk snapshot before its first await and the stored integrity-checked publication."
+    },
+    {
+      "id": "F202",
+      "nearest_existing": [
+        "T210",
+        "T213",
+        "D202",
+        "I203"
+      ],
+      "distinctness": "T210 uses authored four-byte SQL chunks and overwrite logic; T213 uses authored two-byte SQL completeness/charge transfer. D202 is structured-clone brand conversion; I203 is R2 streaming concatenation. This case uses actual OS chunk production and digest-validating reassembly across its real 1 MiB boundaries. It claims complete post-resolution publication, not concurrent isolation."
+    },
+    {
+      "id": "F203",
+      "nearest_existing": [
+        "D210",
+        "D211",
+        "T213"
+      ],
+      "distinctness": "D210/D211 concern primitive deletion receipts and deleteAll reset; T213 presupposes nonempty synthetic SQL chunks. The actual module zero-iteration branch must retain and later remove its allocation even though no payload or positive aggregate charge exists. No size-grid variants are counted."
+    },
+    {
+      "id": "F204",
+      "nearest_existing": [
+        "D210",
+        "T202",
+        "T204",
+        "C206",
+        "I215"
+      ],
+      "distinctness": "Primitive absent-delete idempotence D210/I215 and typed-record key deletion C206 do not establish actual allocation-based once-only aggregate release. T202 retains deduplicated reference counts and T204 uses SQL FK cascade. Capacity reuse was removed here to avoid duplicating F206."
+    },
+    {
+      "id": "F205",
+      "nearest_existing": [
+        "T207",
+        "T209",
+        "C201",
+        "C205",
+        "I211",
+        "I215"
+      ],
+      "distinctness": "T207 transfers KV partitions into SQL and T209 ranks SQL revisions; I211/I215 list/delete R2 objects; C201/C205 buffer typed index groups. Here the actual ActionFileStore first buffers allocation handles then opens deletion lists, enforcing conjunctive live-reference and inclusive-age eligibility with genuine runtime timestamps. Missing witness is BLOCKED, not altered timestamps."
+    },
+    {
+      "id": "F206",
+      "nearest_existing": [
+        "T201",
+        "T213",
+        "C202",
+        "I208"
+      ],
+      "distinctness": "T201 refuses a conditional SQL reservation, T213 reduces synthetic chunk completeness, C202 rolls back typed-index uniqueness changes, and I208 refuses an R2 revision condition. Actual ActionFileStore must refuse a valid payload after hashing but before publishing allocation/chunks and remain usable. No malformed limit or corruption path is tested."
+    }
+  ],
+  "additional_nearest_body_details": {
+    "X023": "Native HMAC import copies public key before caller mutation; no ActionFileStore digest-plus-chunk retention.",
+    "C206": "Computed-key delete with stale non-key fields and repeated delete; no aggregate file allocation unit.",
+    "F204_F206": "Shared capture/read machinery earns no separate credit. F204 owns once-only release; F206 owns aggregate refusal then recovery. Capacity reuse appears only in F206."
+  },
+  "not_authored": [
+    "Payload-size or chunk-count grid",
+    "Repeated direct CRUD/quota names",
+    "Corrupt/missing chunks or forged references",
+    "Malformed limits or integrity metadata",
+    "Authentication, replay, excluded stateless lifetime and denied guarded-core paths"
+  ],
+  "runtime_status": "NOT_RUN"
+}

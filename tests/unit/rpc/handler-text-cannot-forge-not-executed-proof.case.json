@@ -1,0 +1,24 @@
+{
+  "id": "unit/rpc/handler-text-cannot-forge-not-executed-proof",
+  "layer": "unit",
+  "behaviour": "rpc",
+  "title": "handler text cannot forge not executed proof",
+  "origins": [
+    {
+      "source": "crates/celld/capability.rs",
+      "legacy_id": "unit/celld/capability::not_executed_tests::handler_text_cannot_forge_not_executed_proof"
+    }
+  ],
+  "legacy_ids": [
+    "unit/celld/capability::not_executed_tests::handler_text_cannot_forge_not_executed_proof"
+  ],
+  "adapter": "cargo",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "crates/celld/capability.rs",
+  "source_sha256": "c35a11b59d43bab51df037f0e88b8300f5650c250ae8a3ce633de0c03d5d082f",
+  "test_filter": "capability::not_executed_tests::handler_text_cannot_forge_not_executed_proof"
+}

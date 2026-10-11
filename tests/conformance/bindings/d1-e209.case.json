@@ -1,0 +1,176 @@
+{
+  "adapter": "http",
+  "behaviour": "bindings",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "application_relevance": "Recognize when a join report needs positional data rather than object-key projection.",
+    "artifact": "worker.js",
+    "cleanup": {
+      "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+      "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+      "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+      "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+    },
+    "cross_wave_overlap": {
+      "distinction": "D213 has the same outward last-duplicate versus positional contract on native SqlStorageCursor paths. E209 independently targets D1 __d1Shape/Object.fromEntries and public raw/first/all across engine JSON rows. This is the closest cross-wave semantic overlap; independent review must decide whether separate public-surface implementation coverage merits distinct credit.",
+      "neighbors": [
+        "D213"
+      ]
+    },
+    "distinctness": "One duplicate-label shaping case; all/first/raw views do not count as independent authored cases. Cross-wave: D213 has the same outward last-duplicate versus positional contract on native SqlStorageCursor paths. E209 independently targets D1 __d1Shape/Object.fromEntries and public raw/first/all across engine JSON rows. This is the closest cross-wave semantic overlap; independent review must decide whether separate public-surface implementation coverage merits distinct credit.",
+    "entrypoint": "GET /case/E209",
+    "family": "d1-semantics",
+    "fixed_finite_trace": [
+      "Create one source row.",
+      "Select two amount columns followed by other.",
+      "Compare all object projection, first(amount), and raw with headings."
+    ],
+    "fixture_line_range": [
+      121,
+      131
+    ],
+    "fixture_slice_sha256": "f7b811bb194866b3ea0fe44d55c4736a2caf5c842cb00cb340abc01ec297887b",
+    "id": "E209",
+    "intent": "Recognize when a join report needs positional data rather than object-key projection.",
+    "limits": {
+      "external_response_capture_bytes": 1048576,
+      "external_total_request_deadline_seconds": 30,
+      "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+      "maximum_application_tables": 1,
+      "maximum_batch_statements": 5,
+      "maximum_bound_parameters_per_statement": 5,
+      "maximum_bound_scalar_or_blob_bytes": 64,
+      "maximum_exec_statements": 4,
+      "maximum_rows_in_any_fixture_table": 4,
+      "no_internal_Promise_race_timeout": true,
+      "public_dispatches_per_phase_enforced": 32
+    },
+    "limits_of_evidence": [
+      "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+      "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+      "Successful batch dependencies do not establish concurrent-observer atomicity.",
+      "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+    ],
+    "oracle": {
+      "assertions": [
+        "object shape keeps the last duplicate column value",
+        "first column shares last-duplicate shaping",
+        "raw retains duplicate headings and both original positional values"
+      ],
+      "claim": "Object.fromEntries collapses duplicate labels with the last value, while raw preserves original duplicate columns and values.",
+      "executable_assertion_source": [
+        "c.eq((await c.all(statement, \"duplicate object selection\")).results, [{amount:20,other:30}], \"object shape keeps the last duplicate column value\");",
+        "c.eq(await c.first(statement, \"duplicate scalar selection\", \"amount\"), 20, \"first column shares last-duplicate shaping\");",
+        "c.eq(await c.raw(statement, \"duplicate positional selection\", {columnNames:true}), [[\"amount\",\"amount\",\"other\"],[10,20,30]], \"raw retains duplicate headings and both original positional values\");"
+      ],
+      "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+      "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed.",
+      "successful_assertion_count": 3
+    },
+    "owned_resources": [
+      {
+        "binding": "DB",
+        "database_identity": "d1-next-id-a",
+        "table": "d1_next_e209"
+      }
+    ],
+    "review_accepted": false,
+    "runtime_execution_count": 0,
+    "schedule": {
+      "case_requests": 1,
+      "cleanup_binding_calls_exact_on_success": 2,
+      "faults": 0,
+      "main_phase_binding_calls_exact_on_success": 4,
+      "main_phase_dispatch_labels_in_order": [
+        "seed duplicate labels",
+        "duplicate object selection",
+        "duplicate scalar selection",
+        "duplicate positional selection"
+      ],
+      "maximum_in_flight_public_calls": 1,
+      "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+      "restarts": 0,
+      "retries": 0,
+      "setup_binding_calls_exact_on_success": 1
+    },
+    "source_refs": [
+      {
+        "key": "api",
+        "line_ranges": [
+          [
+            1,
+            87
+          ]
+        ],
+        "path": "celld-os-project/celld/docs/services/d1.md",
+        "slices_sha256": [
+          "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+        ]
+      },
+      {
+        "key": "shape",
+        "line_ranges": [
+          [
+            8389,
+            8401
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/js/harness.js",
+        "slices_sha256": [
+          "1fddf16f819b9d3e4c32f1c93842c0176fb21ef2c500b5780055ca2ad4f5c981"
+        ]
+      },
+      {
+        "key": "prepared",
+        "line_ranges": [
+          [
+            8328,
+            8387
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/js/harness.js",
+        "slices_sha256": [
+          "6574f073369b908ee7dcf385e70c71d166576a0606c29256355c71c9ab87d0df"
+        ]
+      }
+    ],
+    "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+    "surface": "public env D1 binding APIs only",
+    "sut": "direct celld only",
+    "title": "Retain duplicate columns in raw projections"
+  },
+  "corpus_id": "E209",
+  "corpus_wave": "d1-semantics",
+  "fixture": "tests/conformance/bindings/fixtures/d1-semantics",
+  "id": "conformance/bindings/d1-e209",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/d1-semantics/E209"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/d1-semantics/E209",
+      "manifest_sha256": "a710fc3341a0ac99cbe9b5dd5847e7fc9c7d355313bac1440415941d7b31780f",
+      "review_sha256": "c6cdb7367eac8cb864520fba365e861793be03ddfd570b61e4a642030f662350",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/d1-semantics",
+      "tranche": "002"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/E209",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "E209",
+  "source": "tests/conformance/bindings/fixtures/d1-semantics/worker.js",
+  "source_sha256": "4b946d92399b5493a1039165af98b4c2159f08296b211eec6a60ce9680c26525",
+  "title": "Retain duplicate columns in raw projections"
+}

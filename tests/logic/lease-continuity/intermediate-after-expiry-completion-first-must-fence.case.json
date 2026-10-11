@@ -1,0 +1,29 @@
+{
+  "id": "logic/lease-continuity/intermediate-after-expiry-completion-first-must-fence",
+  "layer": "logic",
+  "behaviour": "lease-continuity",
+  "title": "intermediate after expiry completion first must fence",
+  "origins": [
+    {
+      "source": "tests/logic/lease-continuity/lease_continuity.rs",
+      "legacy_id": "logic/lease-continuity/intermediate_after_expiry_completion_first_must_fence"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-project/tests/lease-continuity/lease_continuity.rs",
+      "sha256": "9ba2368c5a34a6a1ef0a0b3cd42ca67a20c074e67f229b19f49c5dee58bf555b"
+    }
+  ],
+  "legacy_ids": [
+    "logic/lease-continuity/intermediate_after_expiry_completion_first_must_fence"
+  ],
+  "adapter": "native",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/logic/lease-continuity/lease_continuity.rs",
+  "source_sha256": "9ba2368c5a34a6a1ef0a0b3cd42ca67a20c074e67f229b19f49c5dee58bf555b",
+  "test_filter": "intermediate_after_expiry_completion_first_must_fence"
+}

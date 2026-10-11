@@ -1,0 +1,1290 @@
+{
+  "schema": 1,
+  "wave": "storage-sql-semantics",
+  "authored": 20,
+  "independently_reviewed": 0,
+  "runtime_executions": 0,
+  "runtime_passes": 0,
+  "cases": [
+    {
+      "id": "D201",
+      "title": "Snapshot an admitted cyclic storage graph",
+      "intent": "Snapshot an admitted cyclic storage graph",
+      "failure_hypothesis": "Deferred put batching could retain application object references after admission.",
+      "trace": [
+        "Admit a graph with a cycle and one shared child through async put.",
+        "Mutate the child and add a field before awaiting the returned promise.",
+        "Read one stored graph and compare original scalar, alias and cycle identity."
+      ],
+      "oracle": "Nested score=7, child aliases identical, self-reference targets root, later field absent.",
+      "distinctness": "Tests storage admission snapshot, not RPC graph transport C cases or failed batching T026.",
+      "application_relevance": "A state update should reflect the submitted revision even if the handler reuses its object.",
+      "implementation": "cases.js:D201",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1615,
+          "line_end": 1626
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/storage_ops.rs",
+          "line_start": 158,
+          "line_end": 176
+        }
+      ],
+      "literal_assertion_call_sites": 4,
+      "preconditions": [
+        "Reviewed exact source, build and fixture identities; direct celld only.",
+        "Fresh isolated owned deployment and independently witnessed per-request random DO root; no preexisting user data.",
+        "SQLite-backed StorageCase, sync KV and sql.ingest supported; missing prerequisites BLOCKED."
+      ],
+      "schedule": "One external GET /case/D201; frontend creates one fresh randomly named DO and performs one DO.fetch; all case operations execute in written dependency order without inter-request gates.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_user_kv_keys": 8,
+        "max_application_tables": 2,
+        "max_result_rows_per_cursor": 64,
+        "max_tracked_sql_cursors": 16,
+        "max_logical_payload_bytes": 4096,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "precondition_deadline_ms": 1000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15
+      },
+      "cleanup": [
+        "Trace must settle before data cleanup; timeout requires external owned-process teardown.",
+        "Record and finish every native SQL cursor within64 remaining rows; no private close hook or GC assumption.",
+        "DeleteAll only on this request’s fresh owned DO; verify its KV empty; external supervisor reaps owned processes and store."
+      ],
+      "source_expectation": "Ordinary intended public storage behavior supported by inspected JS/native implementation; source/static agreement is not a runtime pass.",
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "D202",
+      "title": "Revive a typed structured-clone storage graph",
+      "intent": "Revive a typed structured-clone storage graph",
+      "failure_hypothesis": "Native storage may flatten standard brands or lose alias identity between keyed containers.",
+      "trace": [
+        "Store Date, BigInt, Map, Set and Uint16Array in one bounded graph.",
+        "Get the graph and identify its cloned object Map key.",
+        "Compare brands, exact values and alias shared by Map and Set."
+      ],
+      "oracle": "Standard brands retained; date 2026-01-02T03:04:05Z; BigInt 9007199254740993; typed elements [17,513]; mapped value and Set membership correct.",
+      "distinctness": "Storage clone boundary brand/alias behavior, distinct from RPC codec round trips and D201 admission mutation.",
+      "application_relevance": "Application state can contain typed data and rich indexes without JSON flattening.",
+      "implementation": "cases.js:D202",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/storage_ops.rs",
+          "line_start": 12,
+          "line_end": 26
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/storage_ops.rs",
+          "line_start": 158,
+          "line_end": 176
+        }
+      ],
+      "literal_assertion_call_sites": 6,
+      "preconditions": [
+        "Reviewed exact source, build and fixture identities; direct celld only.",
+        "Fresh isolated owned deployment and independently witnessed per-request random DO root; no preexisting user data.",
+        "SQLite-backed StorageCase, sync KV and sql.ingest supported; missing prerequisites BLOCKED."
+      ],
+      "schedule": "One external GET /case/D202; frontend creates one fresh randomly named DO and performs one DO.fetch; all case operations execute in written dependency order without inter-request gates.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_user_kv_keys": 8,
+        "max_application_tables": 2,
+        "max_result_rows_per_cursor": 64,
+        "max_tracked_sql_cursors": 16,
+        "max_logical_payload_bytes": 4096,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "precondition_deadline_ms": 1000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15
+      },
+      "cleanup": [
+        "Trace must settle before data cleanup; timeout requires external owned-process teardown.",
+        "Record and finish every native SQL cursor within64 remaining rows; no private close hook or GC assumption.",
+        "DeleteAll only on this request’s fresh owned DO; verify its KV empty; external supervisor reaps owned processes and store."
+      ],
+      "source_expectation": "Ordinary intended public storage behavior supported by inspected JS/native implementation; source/static agreement is not a runtime pass.",
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "D203",
+      "title": "Isolate read snapshots until explicitly written",
+      "intent": "Isolate read snapshots until explicitly written",
+      "failure_hypothesis": "Deserialized values might be cached by reference and later mutation leak into stored state.",
+      "trace": [
+        "Store one nested document.",
+        "Mutate a first read in memory, then fetch a second read.",
+        "Explicitly put the first edited snapshot and verify the revision."
+      ],
+      "oracle": "Second read stays nested.value=1/list[first] with distinct identities; explicit later write persists value9 and appended item.",
+      "distinctness": "Read-result detachment followed by explicit writeback, not write-admission snapshot.",
+      "application_relevance": "Read-modify-write code must control when in-memory edits become persistent state.",
+      "implementation": "cases.js:D203",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1601,
+          "line_end": 1626
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/storage_ops.rs",
+          "line_start": 12,
+          "line_end": 26
+        }
+      ],
+      "literal_assertion_call_sites": 3,
+      "preconditions": [
+        "Reviewed exact source, build and fixture identities; direct celld only.",
+        "Fresh isolated owned deployment and independently witnessed per-request random DO root; no preexisting user data.",
+        "SQLite-backed StorageCase, sync KV and sql.ingest supported; missing prerequisites BLOCKED."
+      ],
+      "schedule": "One external GET /case/D203; frontend creates one fresh randomly named DO and performs one DO.fetch; all case operations execute in written dependency order without inter-request gates.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_user_kv_keys": 8,
+        "max_application_tables": 2,
+        "max_result_rows_per_cursor": 64,
+        "max_tracked_sql_cursors": 16,
+        "max_logical_payload_bytes": 4096,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "precondition_deadline_ms": 1000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15
+      },
+      "cleanup": [
+        "Trace must settle before data cleanup; timeout requires external owned-process teardown.",
+        "Record and finish every native SQL cursor within64 remaining rows; no private close hook or GC assumption.",
+        "DeleteAll only on this request’s fresh owned DO; verify its KV empty; external supervisor reaps owned processes and store."
+      ],
+      "source_expectation": "Ordinary intended public storage behavior supported by inspected JS/native implementation; source/static agreement is not a runtime pass.",
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "D204",
+      "title": "Share state coherently across async and sync KV APIs",
+      "intent": "Share state coherently across async and sync KV APIs",
+      "failure_hypothesis": "The two storage surfaces may address different rows or fail to observe settled updates.",
+      "trace": [
+        "Await async put revision1.",
+        "Read with sync kv, replace using sync kv, read asynchronously.",
+        "Delete synchronously and read asynchronously."
+      ],
+      "oracle": "Sync sees revision1; async sees revision2; delete returns true; missing read strictly undefined.",
+      "distinctness": "Alternating actual public storage APIs on a single state row; no pending-microtask scheduling claim from T028.",
+      "application_relevance": "Libraries mixing the synchronous and asynchronous storage APIs must share the same object state.",
+      "implementation": "cases.js:D204",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1511,
+          "line_end": 1537
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1601,
+          "line_end": 1662
+        }
+      ],
+      "literal_assertion_call_sites": 4,
+      "preconditions": [
+        "Reviewed exact source, build and fixture identities; direct celld only.",
+        "Fresh isolated owned deployment and independently witnessed per-request random DO root; no preexisting user data.",
+        "SQLite-backed StorageCase, sync KV and sql.ingest supported; missing prerequisites BLOCKED."
+      ],
+      "schedule": "One external GET /case/D204; frontend creates one fresh randomly named DO and performs one DO.fetch; all case operations execute in written dependency order without inter-request gates.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_user_kv_keys": 8,
+        "max_application_tables": 2,
+        "max_result_rows_per_cursor": 64,
+        "max_tracked_sql_cursors": 16,
+        "max_logical_payload_bytes": 4096,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "precondition_deadline_ms": 1000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15
+      },
+      "cleanup": [
+        "Trace must settle before data cleanup; timeout requires external owned-process teardown.",
+        "Record and finish every native SQL cursor within64 remaining rows; no private close hook or GC assumption.",
+        "DeleteAll only on this request’s fresh owned DO; verify its KV empty; external supervisor reaps owned processes and store."
+      ],
+      "source_expectation": "Ordinary intended public storage behavior supported by inspected JS/native implementation; source/static agreement is not a runtime pass.",
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "D205",
+      "title": "Snapshot admitted bulk record and Map entries",
+      "intent": "Snapshot admitted bulk record and Map entries",
+      "failure_hypothesis": "Bulk conversion may include inherited properties or retain mutable Map entries until flush.",
+      "trace": [
+        "Put an object with inherited excluded field and two own entries.",
+        "Admit a Map replacement plus insertion and mutate its contents before await.",
+        "List and test absent inherited/late keys."
+      ],
+      "oracle": "Only alpha1,beta20,gamma3 persist; inherited and late keys absent.",
+      "distinctness": "Successful bulk input-boundary snapshot; T026 instead rejects an unserializable batch.",
+      "application_relevance": "Batch writers often reuse a Map while preparing a later revision.",
+      "implementation": "cases.js:D205",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1628,
+          "line_end": 1651
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/storage_ops.rs",
+          "line_start": 177,
+          "line_end": 220
+        }
+      ],
+      "literal_assertion_call_sites": 3,
+      "preconditions": [
+        "Reviewed exact source, build and fixture identities; direct celld only.",
+        "Fresh isolated owned deployment and independently witnessed per-request random DO root; no preexisting user data.",
+        "SQLite-backed StorageCase, sync KV and sql.ingest supported; missing prerequisites BLOCKED."
+      ],
+      "schedule": "One external GET /case/D205; frontend creates one fresh randomly named DO and performs one DO.fetch; all case operations execute in written dependency order without inter-request gates.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_user_kv_keys": 8,
+        "max_application_tables": 2,
+        "max_result_rows_per_cursor": 64,
+        "max_tracked_sql_cursors": 16,
+        "max_logical_payload_bytes": 4096,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "precondition_deadline_ms": 1000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15
+      },
+      "cleanup": [
+        "Trace must settle before data cleanup; timeout requires external owned-process teardown.",
+        "Record and finish every native SQL cursor within64 remaining rows; no private close hook or GC assumption.",
+        "DeleteAll only on this request’s fresh owned DO; verify its KV empty; external supervisor reaps owned processes and store."
+      ],
+      "source_expectation": "Ordinary intended public storage behavior supported by inspected JS/native implementation; source/static agreement is not a runtime pass.",
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "D206",
+      "title": "Return sparse ordered get-many results",
+      "intent": "Return sparse ordered get-many results",
+      "failure_hypothesis": "Bulk read may add null holes, duplicate keys or preserve input ordering instead of the storage Map contract.",
+      "trace": [
+        "Store alpha and beta.",
+        "Read beta,missing,alpha,beta in one get-many.",
+        "Inspect Map, ordered entries, missing membership and empty-array read."
+      ],
+      "oracle": "Map entries exactly alpha1,beta2; missing omitted; empty array returns empty Map.",
+      "distinctness": "DO storage sparse get-many semantics differ from public KV namespace null-hole Maps; T028 only checks admission order.",
+      "application_relevance": "Callers distinguish absent rows via Map membership when loading a sparse key set.",
+      "implementation": "cases.js:D206",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1601,
+          "line_end": 1613
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/storage_ops.rs",
+          "line_start": 29,
+          "line_end": 54
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 3463,
+          "line_end": 3482
+        }
+      ],
+      "literal_assertion_call_sites": 4,
+      "preconditions": [
+        "Reviewed exact source, build and fixture identities; direct celld only.",
+        "Fresh isolated owned deployment and independently witnessed per-request random DO root; no preexisting user data.",
+        "SQLite-backed StorageCase, sync KV and sql.ingest supported; missing prerequisites BLOCKED."
+      ],
+      "schedule": "One external GET /case/D206; frontend creates one fresh randomly named DO and performs one DO.fetch; all case operations execute in written dependency order without inter-request gates.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_user_kv_keys": 8,
+        "max_application_tables": 2,
+        "max_result_rows_per_cursor": 64,
+        "max_tracked_sql_cursors": 16,
+        "max_logical_payload_bytes": 4096,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "precondition_deadline_ms": 1000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15
+      },
+      "cleanup": [
+        "Trace must settle before data cleanup; timeout requires external owned-process teardown.",
+        "Record and finish every native SQL cursor within64 remaining rows; no private close hook or GC assumption.",
+        "DeleteAll only on this request’s fresh owned DO; verify its KV empty; external supervisor reaps owned processes and store."
+      ],
+      "source_expectation": "Ordinary intended public storage behavior supported by inspected JS/native implementation; source/static agreement is not a runtime pass.",
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "D207",
+      "title": "Intersect storage listing bounds before limiting",
+      "intent": "Intersect storage listing bounds before limiting",
+      "failure_hypothesis": "Prefix, lower and upper predicates may override rather than intersect before applying limit.",
+      "trace": [
+        "Write six nearby keys with one adjacent-prefix decoy.",
+        "List with prefix, inclusive start, exclusive end and limit2; separately list using exclusive startAfter instead of start.",
+        "Continue with exclusive startAfter and same prefix/end."
+      ],
+      "oracle": "Inclusive page log/b=2,log/c=3; exclusive page log/c=3; continuation only log/d=4.",
+      "distinctness": "Public DO key/value list range intersection, not native cursor cache concurrency.",
+      "application_relevance": "Bounded state scans combine prefix namespaces with pagination and date/key windows.",
+      "implementation": "cases.js:D207",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1663,
+          "line_end": 1668
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/storage_ops.rs",
+          "line_start": 778,
+          "line_end": 827
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 3693,
+          "line_end": 3731
+        }
+      ],
+      "literal_assertion_call_sites": 3,
+      "preconditions": [
+        "Reviewed exact source, build and fixture identities; direct celld only.",
+        "Fresh isolated owned deployment and independently witnessed per-request random DO root; no preexisting user data.",
+        "SQLite-backed StorageCase, sync KV and sql.ingest supported; missing prerequisites BLOCKED."
+      ],
+      "schedule": "One external GET /case/D207; frontend creates one fresh randomly named DO and performs one DO.fetch; all case operations execute in written dependency order without inter-request gates.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_user_kv_keys": 8,
+        "max_application_tables": 2,
+        "max_result_rows_per_cursor": 64,
+        "max_tracked_sql_cursors": 16,
+        "max_logical_payload_bytes": 4096,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "precondition_deadline_ms": 1000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15
+      },
+      "cleanup": [
+        "Trace must settle before data cleanup; timeout requires external owned-process teardown.",
+        "Record and finish every native SQL cursor within64 remaining rows; no private close hook or GC assumption.",
+        "DeleteAll only on this request’s fresh owned DO; verify its KV empty; external supervisor reaps owned processes and store."
+      ],
+      "source_expectation": "Ordinary intended public storage behavior supported by inspected JS/native implementation; source/static agreement is not a runtime pass.",
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "D208",
+      "title": "Continue reverse storage pages with exclusive end",
+      "intent": "Continue reverse storage pages with exclusive end",
+      "failure_hypothesis": "Reverse ordering or the end predicate may duplicate/omit entries between pages.",
+      "trace": [
+        "Write four item keys plus a decoy namespace.",
+        "Read descending page of two.",
+        "Continue below its last key, then request an empty terminal page."
+      ],
+      "oracle": "Pages [item/d4,item/c3], [item/b2,item/a1], then empty.",
+      "distinctness": "Reverse keyset page continuation; public KV namespace list has no reverse interface.",
+      "application_relevance": "Applications page newest-first through sorted state keys without offsets.",
+      "implementation": "cases.js:D208",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1663,
+          "line_end": 1668
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 3693,
+          "line_end": 3731
+        }
+      ],
+      "literal_assertion_call_sites": 3,
+      "preconditions": [
+        "Reviewed exact source, build and fixture identities; direct celld only.",
+        "Fresh isolated owned deployment and independently witnessed per-request random DO root; no preexisting user data.",
+        "SQLite-backed StorageCase, sync KV and sql.ingest supported; missing prerequisites BLOCKED."
+      ],
+      "schedule": "One external GET /case/D208; frontend creates one fresh randomly named DO and performs one DO.fetch; all case operations execute in written dependency order without inter-request gates.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_user_kv_keys": 8,
+        "max_application_tables": 2,
+        "max_result_rows_per_cursor": 64,
+        "max_tracked_sql_cursors": 16,
+        "max_logical_payload_bytes": 4096,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "precondition_deadline_ms": 1000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15
+      },
+      "cleanup": [
+        "Trace must settle before data cleanup; timeout requires external owned-process teardown.",
+        "Record and finish every native SQL cursor within64 remaining rows; no private close hook or GC assumption.",
+        "DeleteAll only on this request’s fresh owned DO; verify its KV empty; external supervisor reaps owned processes and store."
+      ],
+      "source_expectation": "Ordinary intended public storage behavior supported by inspected JS/native implementation; source/static agreement is not a runtime pass.",
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "D209",
+      "title": "Keep returned storage list detached from later edits",
+      "intent": "Keep returned storage list detached from later edits",
+      "failure_hypothesis": "A materialized Map or nested values might remain linked to storage or a subsequent write.",
+      "trace": [
+        "List two nested values.",
+        "Mutate the returned Map and one nested value locally.",
+        "Replace another stored key and compare held snapshot with fresh list."
+      ],
+      "oracle": "Held beta remains2; fresh storage alpha1,beta20; local entry absent.",
+      "distinctness": "Materialized key/value list snapshot ownership; no claim about lazy sync iterator mutation from T029.",
+      "application_relevance": "Handlers can prepare local changes from a scan without accidentally persisting them.",
+      "implementation": "cases.js:D209",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1663,
+          "line_end": 1668
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/storage_ops.rs",
+          "line_start": 789,
+          "line_end": 827
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 3672,
+          "line_end": 3689
+        }
+      ],
+      "literal_assertion_call_sites": 2,
+      "preconditions": [
+        "Reviewed exact source, build and fixture identities; direct celld only.",
+        "Fresh isolated owned deployment and independently witnessed per-request random DO root; no preexisting user data.",
+        "SQLite-backed StorageCase, sync KV and sql.ingest supported; missing prerequisites BLOCKED."
+      ],
+      "schedule": "One external GET /case/D209; frontend creates one fresh randomly named DO and performs one DO.fetch; all case operations execute in written dependency order without inter-request gates.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_user_kv_keys": 8,
+        "max_application_tables": 2,
+        "max_result_rows_per_cursor": 64,
+        "max_tracked_sql_cursors": 16,
+        "max_logical_payload_bytes": 4096,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "precondition_deadline_ms": 1000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15
+      },
+      "cleanup": [
+        "Trace must settle before data cleanup; timeout requires external owned-process teardown.",
+        "Record and finish every native SQL cursor within64 remaining rows; no private close hook or GC assumption.",
+        "DeleteAll only on this request’s fresh owned DO; verify its KV empty; external supervisor reaps owned processes and store."
+      ],
+      "source_expectation": "Ordinary intended public storage behavior supported by inspected JS/native implementation; source/static agreement is not a runtime pass.",
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "D210",
+      "title": "Count only existing keys in successful deletion batches",
+      "intent": "Count only existing keys in successful deletion batches",
+      "failure_hypothesis": "Duplicate or absent requested keys could inflate deletion counts or remove an unselected key.",
+      "trace": [
+        "Write three keys.",
+        "Delete beta,missing,beta,alpha in one batch.",
+        "Check scalar absent/present booleans, survivor, and empty-batch return."
+      ],
+      "oracle": "Batch2; absent scalar false; gamma survives and its scalar delete true; empty batch0.",
+      "distinctness": "Committed public deletion return contract, unlike T027 rollback restoring a deletion batch.",
+      "application_relevance": "Cleanup reports should count actual removed objects rather than requested names.",
+      "implementation": "cases.js:D210",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1653,
+          "line_end": 1662
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 3596,
+          "line_end": 3635
+        }
+      ],
+      "literal_assertion_call_sites": 5,
+      "preconditions": [
+        "Reviewed exact source, build and fixture identities; direct celld only.",
+        "Fresh isolated owned deployment and independently witnessed per-request random DO root; no preexisting user data.",
+        "SQLite-backed StorageCase, sync KV and sql.ingest supported; missing prerequisites BLOCKED."
+      ],
+      "schedule": "One external GET /case/D210; frontend creates one fresh randomly named DO and performs one DO.fetch; all case operations execute in written dependency order without inter-request gates.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_user_kv_keys": 8,
+        "max_application_tables": 2,
+        "max_result_rows_per_cursor": 64,
+        "max_tracked_sql_cursors": 16,
+        "max_logical_payload_bytes": 4096,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "precondition_deadline_ms": 1000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15
+      },
+      "cleanup": [
+        "Trace must settle before data cleanup; timeout requires external owned-process teardown.",
+        "Record and finish every native SQL cursor within64 remaining rows; no private close hook or GC assumption.",
+        "DeleteAll only on this request’s fresh owned DO; verify its KV empty; external supervisor reaps owned processes and store."
+      ],
+      "source_expectation": "Ordinary intended public storage behavior supported by inspected JS/native implementation; source/static agreement is not a runtime pass.",
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "D211",
+      "title": "Reinitialize both storage surfaces after deleteAll",
+      "intent": "Reinitialize both storage surfaces after deleteAll",
+      "failure_hypothesis": "DeleteAll may clear KV but leave application SQL schema or break subsequent writes.",
+      "trace": [
+        "Write one KV and create/insert one application table.",
+        "DeleteAll and query both storage surfaces for emptiness.",
+        "Write new KV and recreate the same table name with different row."
+      ],
+      "oracle": "KV empty and application table absent after deletion; fresh KV and recreated row id2/new both work.",
+      "distinctness": "Whole owned object storage reset and subsequent reuse, distinct from deployment migrations/restarts.",
+      "application_relevance": "Applications can reset disposable state and continue using the same live object.",
+      "implementation": "cases.js:D211",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1670,
+          "line_end": 1675
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 4148,
+          "line_end": 4194
+        }
+      ],
+      "literal_assertion_call_sites": 4,
+      "preconditions": [
+        "Reviewed exact source, build and fixture identities; direct celld only.",
+        "Fresh isolated owned deployment and independently witnessed per-request random DO root; no preexisting user data.",
+        "SQLite-backed StorageCase, sync KV and sql.ingest supported; missing prerequisites BLOCKED."
+      ],
+      "schedule": "One external GET /case/D211; frontend creates one fresh randomly named DO and performs one DO.fetch; all case operations execute in written dependency order without inter-request gates.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_user_kv_keys": 8,
+        "max_application_tables": 2,
+        "max_result_rows_per_cursor": 64,
+        "max_tracked_sql_cursors": 16,
+        "max_logical_payload_bytes": 4096,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "precondition_deadline_ms": 1000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15
+      },
+      "cleanup": [
+        "Trace must settle before data cleanup; timeout requires external owned-process teardown.",
+        "Record and finish every native SQL cursor within64 remaining rows; no private close hook or GC assumption.",
+        "DeleteAll only on this request’s fresh owned DO; verify its KV empty; external supervisor reaps owned processes and store."
+      ],
+      "source_expectation": "Ordinary intended public storage behavior supported by inspected JS/native implementation; source/static agreement is not a runtime pass.",
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "D212",
+      "title": "Preserve mixed SQL types across native value conversion",
+      "intent": "Preserve mixed SQL types across native value conversion",
+      "failure_hypothesis": "SQL binds/results might truncate typed-view boundaries, flatten BLOBs or corrupt text containing NUL/Unicode.",
+      "trace": [
+        "Execute one SELECT with integer, REAL, text, null and an offset DataView bind.",
+        "Consume exactly one row.",
+        "Compare scalar values, ArrayBuffer brand and three exact bytes."
+      ],
+      "oracle": "Integer2147483648, REAL1.25, text A/NUL/lambda, null and BLOB[1,2,3].",
+      "distinctness": "Native SQL value seam, not T019 mutation by a later binding serializer.",
+      "application_relevance": "Applications bind binary slices and typed records without JSON-only conversion losses.",
+      "implementation": "cases.js:D212",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1401,
+          "line_end": 1435
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/storage_ops.rs",
+          "line_start": 585,
+          "line_end": 623
+        }
+      ],
+      "literal_assertion_call_sites": 3,
+      "preconditions": [
+        "Reviewed exact source, build and fixture identities; direct celld only.",
+        "Fresh isolated owned deployment and independently witnessed per-request random DO root; no preexisting user data.",
+        "SQLite-backed StorageCase, sync KV and sql.ingest supported; missing prerequisites BLOCKED."
+      ],
+      "schedule": "One external GET /case/D212; frontend creates one fresh randomly named DO and performs one DO.fetch; all case operations execute in written dependency order without inter-request gates.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_user_kv_keys": 8,
+        "max_application_tables": 2,
+        "max_result_rows_per_cursor": 64,
+        "max_tracked_sql_cursors": 16,
+        "max_logical_payload_bytes": 4096,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "precondition_deadline_ms": 1000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15
+      },
+      "cleanup": [
+        "Trace must settle before data cleanup; timeout requires external owned-process teardown.",
+        "Record and finish every native SQL cursor within64 remaining rows; no private close hook or GC assumption.",
+        "DeleteAll only on this request’s fresh owned DO; verify its KV empty; external supervisor reaps owned processes and store."
+      ],
+      "source_expectation": "Ordinary intended public storage behavior supported by inspected JS/native implementation; source/static agreement is not a runtime pass.",
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "D213",
+      "title": "Retain positional duplicate SQL columns in raw results",
+      "intent": "Retain positional duplicate SQL columns in raw results",
+      "failure_hypothesis": "Column-name mapping may destroy positional raw results or metadata when aliases repeat.",
+      "trace": [
+        "Execute a three-column SELECT with two repeated aliases.",
+        "Inspect metadata and consume raw row.",
+        "Execute again and compare object projection."
+      ],
+      "oracle": "Names repeated,repeated,tail; raw [7,9,11]; object repeated9,tail11.",
+      "distinctness": "Duplicate column mapping semantics; T013 checks shared raw/object cursor position without duplicate aliases.",
+      "application_relevance": "Join-style queries need raw positional access when column names collide.",
+      "implementation": "cases.js:D213",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1287,
+          "line_end": 1307
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1372,
+          "line_end": 1384
+        }
+      ],
+      "literal_assertion_call_sites": 3,
+      "preconditions": [
+        "Reviewed exact source, build and fixture identities; direct celld only.",
+        "Fresh isolated owned deployment and independently witnessed per-request random DO root; no preexisting user data.",
+        "SQLite-backed StorageCase, sync KV and sql.ingest supported; missing prerequisites BLOCKED."
+      ],
+      "schedule": "One external GET /case/D213; frontend creates one fresh randomly named DO and performs one DO.fetch; all case operations execute in written dependency order without inter-request gates.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_user_kv_keys": 8,
+        "max_application_tables": 2,
+        "max_result_rows_per_cursor": 64,
+        "max_tracked_sql_cursors": 16,
+        "max_logical_payload_bytes": 4096,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "precondition_deadline_ms": 1000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15
+      },
+      "cleanup": [
+        "Trace must settle before data cleanup; timeout requires external owned-process teardown.",
+        "Record and finish every native SQL cursor within64 remaining rows; no private close hook or GC assumption.",
+        "DeleteAll only on this request’s fresh owned DO; verify its KV empty; external supervisor reaps owned processes and store."
+      ],
+      "source_expectation": "Ordinary intended public storage behavior supported by inspected JS/native implementation; source/static agreement is not a runtime pass.",
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "D214",
+      "title": "Complete SQL RETURNING receipts before later reads",
+      "intent": "Complete SQL RETURNING receipts before later reads",
+      "failure_hypothesis": "A row-producing write cursor may stop before committing all finite effects.",
+      "trace": [
+        "Create empty receipt table.",
+        "Insert two rows with RETURNING and exhaust receipt cursor; locally sort the receipt set by id without assuming SQL return order.",
+        "Compare independent ordered SELECT and exhausted cursor state."
+      ],
+      "oracle": "Sorted receipt set and ordered stored rows exactly id1/left,id2/right; cursor remains done after later read.",
+      "distinctness": "Native result-bearing write completion, not the held read cursor/cache behavior of T011–T024.",
+      "application_relevance": "Applications use insertion receipts as evidence that a bounded write completed.",
+      "implementation": "cases.js:D214",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1314,
+          "line_end": 1384
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1616,
+          "line_end": 1700
+        }
+      ],
+      "literal_assertion_call_sites": 3,
+      "preconditions": [
+        "Reviewed exact source, build and fixture identities; direct celld only.",
+        "Fresh isolated owned deployment and independently witnessed per-request random DO root; no preexisting user data.",
+        "SQLite-backed StorageCase, sync KV and sql.ingest supported; missing prerequisites BLOCKED."
+      ],
+      "schedule": "One external GET /case/D214; frontend creates one fresh randomly named DO and performs one DO.fetch; all case operations execute in written dependency order without inter-request gates.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_user_kv_keys": 8,
+        "max_application_tables": 2,
+        "max_result_rows_per_cursor": 64,
+        "max_tracked_sql_cursors": 16,
+        "max_logical_payload_bytes": 4096,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "precondition_deadline_ms": 1000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15
+      },
+      "cleanup": [
+        "Trace must settle before data cleanup; timeout requires external owned-process teardown.",
+        "Record and finish every native SQL cursor within64 remaining rows; no private close hook or GC assumption.",
+        "DeleteAll only on this request’s fresh owned DO; verify its KV empty; external supervisor reaps owned processes and store."
+      ],
+      "source_expectation": "Ordinary intended public storage behavior supported by inspected JS/native implementation; source/static agreement is not a runtime pass.",
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "D215",
+      "title": "Capture prepared query text once and bind each invocation",
+      "intent": "Capture prepared query text once and bind each invocation",
+      "failure_hypothesis": "prepare may coerce query lazily on each call, allowing later application mutation to change its SQL.",
+      "trace": [
+        "Prepare a query object whose toString is counted.",
+        "Change the object-produced SQL.",
+        "Invoke prepared closure with4 and8."
+      ],
+      "oracle": "Answers5 and9 from original plus1 source; exactly one toString conversion.",
+      "distinctness": "Observable prepare input capture, not simultaneous busy-cursor bindings or terminal transaction closure tests.",
+      "application_relevance": "Reusable query factories must remain stable when their source builder changes.",
+      "implementation": "cases.js:D215",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1395,
+          "line_end": 1400
+        }
+      ],
+      "literal_assertion_call_sites": 3,
+      "preconditions": [
+        "Reviewed exact source, build and fixture identities; direct celld only.",
+        "Fresh isolated owned deployment and independently witnessed per-request random DO root; no preexisting user data.",
+        "SQLite-backed StorageCase, sync KV and sql.ingest supported; missing prerequisites BLOCKED."
+      ],
+      "schedule": "One external GET /case/D215; frontend creates one fresh randomly named DO and performs one DO.fetch; all case operations execute in written dependency order without inter-request gates.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_user_kv_keys": 8,
+        "max_application_tables": 2,
+        "max_result_rows_per_cursor": 64,
+        "max_tracked_sql_cursors": 16,
+        "max_logical_payload_bytes": 4096,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "precondition_deadline_ms": 1000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15
+      },
+      "cleanup": [
+        "Trace must settle before data cleanup; timeout requires external owned-process teardown.",
+        "Record and finish every native SQL cursor within64 remaining rows; no private close hook or GC assumption.",
+        "DeleteAll only on this request’s fresh owned DO; verify its KV empty; external supervisor reaps owned processes and store."
+      ],
+      "source_expectation": "Ordinary intended public storage behavior supported by inspected JS/native implementation; source/static agreement is not a runtime pass.",
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "D216",
+      "title": "Report complete ingest batch effects accurately",
+      "intent": "Report complete ingest batch effects accurately",
+      "failure_hypothesis": "Native ingestion may stop after DDL or miscount top-level statements and affected rows.",
+      "trace": [
+        "Ingest one complete CREATE, two-row INSERT and UPDATE batch.",
+        "Compare remainder/rowsWritten/statementCount.",
+        "Read final ordered journal rows."
+      ],
+      "oracle": "Empty remainder, rowsWritten3, statementCount3; rows first and updated.",
+      "distinctness": "Public sql.ingest finite batch execution and counters; no ingest coverage in restored stress manifests.",
+      "application_relevance": "Importers need counts and a completion suffix for a fully consumed batch.",
+      "implementation": "cases.js:D216",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1437,
+          "line_end": 1441
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/storage_ops.rs",
+          "line_start": 358,
+          "line_end": 374
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1490,
+          "line_end": 1599
+        }
+      ],
+      "literal_assertion_call_sites": 2,
+      "preconditions": [
+        "Reviewed exact source, build and fixture identities; direct celld only.",
+        "Fresh isolated owned deployment and independently witnessed per-request random DO root; no preexisting user data.",
+        "SQLite-backed StorageCase, sync KV and sql.ingest supported; missing prerequisites BLOCKED."
+      ],
+      "schedule": "One external GET /case/D216; frontend creates one fresh randomly named DO and performs one DO.fetch; all case operations execute in written dependency order without inter-request gates.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_user_kv_keys": 8,
+        "max_application_tables": 2,
+        "max_result_rows_per_cursor": 64,
+        "max_tracked_sql_cursors": 16,
+        "max_logical_payload_bytes": 4096,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "precondition_deadline_ms": 1000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15
+      },
+      "cleanup": [
+        "Trace must settle before data cleanup; timeout requires external owned-process teardown.",
+        "Record and finish every native SQL cursor within64 remaining rows; no private close hook or GC assumption.",
+        "DeleteAll only on this request’s fresh owned DO; verify its KV empty; external supervisor reaps owned processes and store."
+      ],
+      "source_expectation": "Ordinary intended public storage behavior supported by inspected JS/native implementation; source/static agreement is not a runtime pass.",
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "D217",
+      "title": "Respect quoted semicolons in complete SQL ingestion",
+      "intent": "Respect quoted semicolons in complete SQL ingestion",
+      "failure_hypothesis": "Boundary splitting could treat a semicolon inside a quoted literal as a statement separator.",
+      "trace": [
+        "Create phrases table.",
+        "Ingest two complete INSERTs containing a semicolon and an escaped quote followed by a semicolon.",
+        "Check two statements, empty remainder and exact strings."
+      ],
+      "oracle": "Two statements, no remainder; text left;right and quote';inside.",
+      "distinctness": "SQLite parser-derived boundaries for valid quoted SQL, not malformed or incomplete-input handling.",
+      "application_relevance": "SQL exports contain ordinary text with punctuation and escaped apostrophes.",
+      "implementation": "cases.js:D217",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1437,
+          "line_end": 1441
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1490,
+          "line_end": 1599
+        }
+      ],
+      "literal_assertion_call_sites": 3,
+      "preconditions": [
+        "Reviewed exact source, build and fixture identities; direct celld only.",
+        "Fresh isolated owned deployment and independently witnessed per-request random DO root; no preexisting user data.",
+        "SQLite-backed StorageCase, sync KV and sql.ingest supported; missing prerequisites BLOCKED."
+      ],
+      "schedule": "One external GET /case/D217; frontend creates one fresh randomly named DO and performs one DO.fetch; all case operations execute in written dependency order without inter-request gates.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_user_kv_keys": 8,
+        "max_application_tables": 2,
+        "max_result_rows_per_cursor": 64,
+        "max_tracked_sql_cursors": 16,
+        "max_logical_payload_bytes": 4096,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "precondition_deadline_ms": 1000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15
+      },
+      "cleanup": [
+        "Trace must settle before data cleanup; timeout requires external owned-process teardown.",
+        "Record and finish every native SQL cursor within64 remaining rows; no private close hook or GC assumption.",
+        "DeleteAll only on this request’s fresh owned DO; verify its KV empty; external supervisor reaps owned processes and store."
+      ],
+      "source_expectation": "Ordinary intended public storage behavior supported by inspected JS/native implementation; source/static agreement is not a runtime pass.",
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "D218",
+      "title": "Keep complete trigger bodies inside one ingest statement",
+      "intent": "Keep complete trigger bodies inside one ingest statement",
+      "failure_hypothesis": "Ingestion may split at trigger-internal semicolons or miscount triggered row effects.",
+      "trace": [
+        "Create source and audit tables.",
+        "Ingest one complete two-action trigger followed by one INSERT.",
+        "Compare statement/write counts and final audit row."
+      ],
+      "oracle": "statementCount2, rowsWritten3, remainder empty; audit id1/value6.",
+      "distinctness": "Trigger-body parser boundary and triggered effect accounting distinct from quoted string semicolons.",
+      "application_relevance": "Schema import must preserve compound trigger definitions and their side effects.",
+      "implementation": "cases.js:D218",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1437,
+          "line_end": 1441
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1490,
+          "line_end": 1599
+        }
+      ],
+      "literal_assertion_call_sites": 4,
+      "preconditions": [
+        "Reviewed exact source, build and fixture identities; direct celld only.",
+        "Fresh isolated owned deployment and independently witnessed per-request random DO root; no preexisting user data.",
+        "SQLite-backed StorageCase, sync KV and sql.ingest supported; missing prerequisites BLOCKED."
+      ],
+      "schedule": "One external GET /case/D218; frontend creates one fresh randomly named DO and performs one DO.fetch; all case operations execute in written dependency order without inter-request gates.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_user_kv_keys": 8,
+        "max_application_tables": 2,
+        "max_result_rows_per_cursor": 64,
+        "max_tracked_sql_cursors": 16,
+        "max_logical_payload_bytes": 4096,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "precondition_deadline_ms": 1000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15
+      },
+      "cleanup": [
+        "Trace must settle before data cleanup; timeout requires external owned-process teardown.",
+        "Record and finish every native SQL cursor within64 remaining rows; no private close hook or GC assumption.",
+        "DeleteAll only on this request’s fresh owned DO; verify its KV empty; external supervisor reaps owned processes and store."
+      ],
+      "source_expectation": "Ordinary intended public storage behavior supported by inspected JS/native implementation; source/static agreement is not a runtime pass.",
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "D219",
+      "title": "Drain row-producing ingest statements before following writes",
+      "intent": "Drain row-producing ingest statements before following writes",
+      "failure_hypothesis": "Ingest may stop at SQLITE_ROW instead of discarding all rows and moving to the next statement.",
+      "trace": [
+        "Ingest a two-row SELECT, an INSERT, and a SELECT over inserted row.",
+        "Compare three statements and one write.",
+        "Read actual row independently."
+      ],
+      "oracle": "No remainder; statementCount3; rowsWritten1; progress.value7.",
+      "distinctness": "Native ingest SQLITE_ROW loop with no row transfer to JS, distinct from materialized SQL cursors.",
+      "application_relevance": "Import scripts may include read statements between data changes.",
+      "implementation": "cases.js:D219",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1437,
+          "line_end": 1441
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1572,
+          "line_end": 1592
+        }
+      ],
+      "literal_assertion_call_sites": 2,
+      "preconditions": [
+        "Reviewed exact source, build and fixture identities; direct celld only.",
+        "Fresh isolated owned deployment and independently witnessed per-request random DO root; no preexisting user data.",
+        "SQLite-backed StorageCase, sync KV and sql.ingest supported; missing prerequisites BLOCKED."
+      ],
+      "schedule": "One external GET /case/D219; frontend creates one fresh randomly named DO and performs one DO.fetch; all case operations execute in written dependency order without inter-request gates.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_user_kv_keys": 8,
+        "max_application_tables": 2,
+        "max_result_rows_per_cursor": 64,
+        "max_tracked_sql_cursors": 16,
+        "max_logical_payload_bytes": 4096,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "precondition_deadline_ms": 1000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15
+      },
+      "cleanup": [
+        "Trace must settle before data cleanup; timeout requires external owned-process teardown.",
+        "Record and finish every native SQL cursor within64 remaining rows; no private close hook or GC assumption.",
+        "DeleteAll only on this request’s fresh owned DO; verify its KV empty; external supervisor reaps owned processes and store."
+      ],
+      "source_expectation": "Ordinary intended public storage behavior supported by inspected JS/native implementation; source/static agreement is not a runtime pass.",
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "D220",
+      "title": "Enroll ingestion in an application transaction boundary",
+      "intent": "Enroll ingestion in an application transaction boundary",
+      "failure_hypothesis": "sql.ingest may commit internally or bypass the outer transaction rollback boundary.",
+      "trace": [
+        "Seed ledger row10.",
+        "Inside transactionSync ingest an update+insert and sync KV put, then throw a specific ordinary application Error.",
+        "Verify rollback of both surfaces; execute and verify a succeeding ingest transaction."
+      ],
+      "oracle": "Original Error identity preserved; ledger remains only id1/value10; transaction-only KV absent; succeeding transaction returns receipt and writes11.",
+      "distinctness": "New sql.ingest enrollment boundary and subsequent reuse; T003/T008 exercise other write APIs and nested async coordination.",
+      "application_relevance": "Import routines must participate in an application-chosen atomic unit.",
+      "implementation": "cases.js:D220",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1759,
+          "line_end": 1812
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1437,
+          "line_end": 1441
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/storage.rs",
+          "line_start": 1490,
+          "line_end": 1599
+        }
+      ],
+      "literal_assertion_call_sites": 5,
+      "preconditions": [
+        "Reviewed exact source, build and fixture identities; direct celld only.",
+        "Fresh isolated owned deployment and independently witnessed per-request random DO root; no preexisting user data.",
+        "SQLite-backed StorageCase, sync KV and sql.ingest supported; missing prerequisites BLOCKED."
+      ],
+      "schedule": "One external GET /case/D220; frontend creates one fresh randomly named DO and performs one DO.fetch; all case operations execute in written dependency order without inter-request gates.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_user_kv_keys": 8,
+        "max_application_tables": 2,
+        "max_result_rows_per_cursor": 64,
+        "max_tracked_sql_cursors": 16,
+        "max_logical_payload_bytes": 4096,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "precondition_deadline_ms": 1000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15
+      },
+      "cleanup": [
+        "Trace must settle before data cleanup; timeout requires external owned-process teardown.",
+        "Record and finish every native SQL cursor within64 remaining rows; no private close hook or GC assumption.",
+        "DeleteAll only on this request’s fresh owned DO; verify its KV empty; external supervisor reaps owned processes and store."
+      ],
+      "source_expectation": "Ordinary intended public storage behavior supported by inspected JS/native implementation; source/static agreement is not a runtime pass.",
+      "authored": true,
+      "independently_reviewed": false,
+      "promotion_candidate": true,
+      "classification": "functional-regression-candidate",
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    }
+  ]
+}

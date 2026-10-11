@@ -1,0 +1,46 @@
+{
+  "id": "conformance/limits-and-errors/event-limits",
+  "layer": "conformance",
+  "behaviour": "limits-and-errors",
+  "title": "event limits",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/event-limits",
+      "legacy_id": "hyperbob/event-limits"
+    },
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/event-limits/wrangler.json",
+      "sha256": "bf5a6d7a9abd84feceb2c0cfe7ee50d98de592eb39c22ef63c526da655a823dc"
+    }
+  ],
+  "legacy_ids": [
+    "hyperbob/event-limits"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/limits-and-errors/fixtures/event-limits",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/stateless-io?ms=4500"
+    },
+    {
+      "path": "/do-io?ms=4500"
+    },
+    {
+      "path": "/session-wait?ms=4500"
+    },
+    {
+      "path": "/start"
+    },
+    {
+      "delay_before": 0.5,
+      "path": "/result"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/limits-and-errors/fixtures/event-limits/wrangler.json",
+  "source_sha256": "bf5a6d7a9abd84feceb2c0cfe7ee50d98de592eb39c22ef63c526da655a823dc"
+}

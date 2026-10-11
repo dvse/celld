@@ -1,0 +1,37 @@
+{
+  "id": "conformance/durable-objects/lifecycle/resume-a-timer-before-reading-and-writing-object-storage",
+  "layer": "conformance",
+  "behaviour": "durable-objects/lifecycle",
+  "title": "Resume a timer before reading and writing object storage",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/examples/async",
+      "legacy_id": "examples/async"
+    },
+    {
+      "source": "celld@9c0fca5/examples/async/wrangler.jsonc",
+      "sha256": "9239fef5d6a85b2a85fbf2773cf900599dc0632112db47beb5bb012e68aba481"
+    }
+  ],
+  "legacy_ids": [
+    "examples/async"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/durable-objects/lifecycle/fixtures/timer-before-storage",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/"
+    },
+    {
+      "path": "/"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/durable-objects/lifecycle/fixtures/timer-before-storage/wrangler.jsonc",
+  "source_sha256": "9239fef5d6a85b2a85fbf2773cf900599dc0632112db47beb5bb012e68aba481"
+}

@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "runtime_status": "NOT_RUN",
+  "request_contract": "Exactly one case request per fresh isolated owned deployment/process, sequential case processes. /manifest is metadata only.",
+  "case_ids": [
+    "X201",
+    "X202",
+    "X203",
+    "X204",
+    "X205",
+    "X206"
+  ],
+  "source_chunks": {
+    "X205": [
+      1,
+      4,
+      12,
+      14,
+      31,
+      64,
+      128,
+      452,
+      462,
+      475
+    ],
+    "X206": [
+      1,
+      12,
+      13,
+      14,
+      279,
+      281,
+      282,
+      283,
+      284,
+      309,
+      310,
+      329,
+      330,
+      347,
+      354,
+      367
+    ]
+  },
+  "chunk_interpretation": "Exclusive cumulative byte ends; boundaries are fixed inputs, not separate cases or transport promises.",
+  "limits": {
+    "max_external_case_http_requests": 1,
+    "max_external_public_network_requests": 0,
+    "max_runtime_storage_calls": 0,
+    "max_rpc_calls": 0,
+    "max_case_payload_bytes": 70000,
+    "max_total_logical_payload_bytes": 300000,
+    "max_pack_bytes": 4096,
+    "max_pack_objects": 4,
+    "max_object_bytes_in_pack": 1024,
+    "max_readable_sources": 2,
+    "max_source_pulls": 64,
+    "max_generator_next_calls": 10,
+    "max_top_level_operations": 64,
+    "max_assertions": 64,
+    "max_response_bytes": 16384,
+    "max_expected_live_decoded_payload_bytes": 300000,
+    "memory_accounting": "Decoded logical payload estimate only; no JS heap or native allocation measurement. Hex strings, temporary values, pako/native state and allocator overhead are bounded solely by the mandatory owned-domain RSS ceiling.",
+    "trace_deadline_ms": 5000,
+    "outer_http_deadline_seconds": 10,
+    "outer_case_process_deadline_seconds": 15,
+    "outer_cleanup_deadline_seconds": 5,
+    "outer_wave_deadline_seconds": 150,
+    "outer_rss_bytes": 536870912,
+    "max_owned_domain_processes": 32,
+    "max_owned_writable_bytes": 134217728,
+    "descendant_supervision": "Entire proven-owned runtime/dev/bundler domain including descendants across PGIDs; no single-process-group assumption."
+  },
+  "cleanup": [
+    "All iterator next calls and the final trailer/EOF completion must settle. In a finally block call generator.return(), which invokes production PackReader using/dispose cancellation on early exit; clear the retained-base map.",
+    "Observe finite source terminal counters. Production privately owns BYOB reader and digest; fixture cannot release its reader lock or prove native reclamation and never reaches into private state.",
+    "In all outcomes externally terminate and reap the full proven-owned runtime/dev/bundler descendant domain across PGIDs, then remove only its staging/bundle/log/temp/private-store artifacts. Enforce five-second cleanup bound; preserve bounded evidence outside that domain.",
+    "Unsettled work, missing dependency/runtime/ownership evidence or unsuccessful reap remains BLOCKED and cannot qualify as PASS. Do not race in-process cleanup with an unsettled trace."
+  ]
+}

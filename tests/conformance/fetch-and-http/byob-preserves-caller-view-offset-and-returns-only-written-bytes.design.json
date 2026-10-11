@@ -1,0 +1,31 @@
+{
+  "id": "conformance/fetch-and-http/byob-preserves-caller-view-offset-and-returns-only-written-bytes",
+  "layer": "conformance",
+  "behaviour": "fetch-and-http",
+  "title": "BYOB preserves caller view offset and returns only written bytes",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/fixture",
+      "legacy_id": "base/S012"
+    }
+  ],
+  "corpus_wave": "base",
+  "corpus_id": "S012",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "S012",
+    "intent": "BYOB preserves caller view offset and returns only written bytes",
+    "preconditions": "Three-byte source and five-byte view at backing offset4",
+    "trace": [
+      "read into offset view",
+      "compare bytes and byteOffset",
+      "read EOF"
+    ],
+    "stress": "nonzero BYOB destination offset",
+    "oracle": "bytes22,23,24; byteOffset4; EOF; unlocked",
+    "cleanup": "release reader; forget source",
+    "gate": "characterization",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  }
+}

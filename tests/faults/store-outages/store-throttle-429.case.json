@@ -1,0 +1,24 @@
+{
+  "id": "faults/store-outages/store-throttle-429",
+  "layer": "faults",
+  "behaviour": "store-outages",
+  "title": "store throttle 429",
+  "origins": [
+    {
+      "source": "tests/faults/fleet.py",
+      "legacy_id": "faults/store-throttle-429"
+    }
+  ],
+  "legacy_ids": [
+    "faults/store-throttle-429"
+  ],
+  "adapter": "fleet",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/lib/fleet.py",
+  "source_sha256": "104d1eb6572ff8481d6c704fb2795333d23c5bdee33c6dfba544299ab2ebfd7c",
+  "selector": "store-throttle-429"
+}

@@ -1,0 +1,155 @@
+{
+  "adapter": "http",
+  "behaviour": "fetch-and-http",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "assertion_count": 23,
+    "classification": "ordinary-functional-stream-admission",
+    "cleanup": "Open all callback and milestone gates. Initiate readable cancellation and writable abortion on still-live owners before joining, so missing HWM0 demand cannot strand an in-flight write. Join original API/closed/ready promises and dynamically recorded callback results, then release owners and observe post-release promises. Require zero pending work, timers and public locks; separate owned-process teardown remains mandatory.",
+    "distinctness": "Weighted writable queue accounting drives ready-promise identity and threshold transitions, independently from individual write completion.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/S301",
+      "request_body": null
+    },
+    "finite_normal_trace_limits": {
+      "closes": 1,
+      "gates": 6,
+      "payload_bytes": 6,
+      "reads": 0,
+      "task_fences": 2,
+      "writes": 3
+    },
+    "fixed_runtime_assertions": [
+      "t.equal(writer.desiredSize, 3, 'initial weighted capacity is three');",
+      "t.equal(writer.desiredSize, 1, 'in-flight two-byte write retains its weight');",
+      "t.same(writer.ready, ready0, 'below-pressure admission retains original ready promise');",
+      "t.equal(writer.desiredSize, 0, 'two plus one bytes fill weighted capacity');",
+      "t.equal(ready1 === ready0, false, 'threshold crossing allocates a new ready epoch');",
+      "t.same(writer.ready, ready1, 'repeated ready getter retains pressured epoch');",
+      "t.deep([pressure1.status, a.status, b.status], ['pending', 'pending', 'pending'], 'ready and both writes remain pending at pressure');",
+      "t.deep(events, ['write-1'], 'second callback is not admitted alongside held first');",
+      "t.equal(writer.desiredSize, 2, 'first completion restores two units with second still in flight');",
+      "t.equal(b.status, 'pending', 'ready fulfillment does not require held second write to finish');",
+      "t.equal(second.opened, false, 'second callback gate remains closed when ready fulfills');",
+      "t.same(writer.ready, ready1, 'fulfilled pressure epoch stays current below threshold');",
+      "t.equal(writer.desiredSize, 3, 'full drain restores initial weighted capacity');",
+      "t.equal(writer.desiredSize, 0, 'final three-byte write reaches same fixed threshold');",
+      "t.equal(ready2 === ready1 || ready2 === ready0, false, 'later threshold crossing creates a distinct third epoch');",
+      "t.same(writer.ready, ready2, 'later pressured epoch is stable across getters');",
+      "t.deep([pressure2.status, c.status], ['pending', 'pending'], 'later ready epoch is independently pending');",
+      "t.equal(writer.desiredSize, 3, 'final completion restores capacity');",
+      "t.deep(bytes, [[11, 12], [13], [14, 15, 16]], 'sink receives exact fixed bytes once in order');",
+      "t.deep(events, ['write-1', 'done-1', 'write-2', 'done-2', 'write-3', 'done-3', 'close'], 'weighted trace has exact serialized callback order');",
+      "t.deep([maxActive, closes, aborts], [1, 1, 0], 'one active callback and one successful close without abort');",
+      "t.equal(writer.desiredSize, 0, 'closed writer has zero desired size');",
+      "t.equal(stream.locked, false, 'weighted writer lock released after settlement');"
+    ],
+    "id": "S301",
+    "implementation": "cases.js:S301",
+    "independently_reviewed": false,
+    "intended_oracle": [
+      "desiredSize is 3 initially, 1 after first admission, 0 after second, 2 with only second in flight, 3 after drain, 0 after final 3-byte admission, and 0 after closed.",
+      "Below-threshold ready is the original fulfilled promise; at pressure it is a new pending promise, reused while pressure remains; a later threshold crossing allocates a different epoch.",
+      "The pressure ready resolves before the held second write resolves, proving readiness is capacity rather than total queue emptiness.",
+      "FIFO sink trace, maxActive=1, exact fixed byte arrays, one close, no abort, joined promises and released writer lock are scaffolding, not additional credit."
+    ],
+    "intent": "Renew weighted writer readiness epochs",
+    "mechanism": "weighted-ready-promise-epochs",
+    "os_relevance": "Recovered historical blueprint-archive.ts:145-162 constructs an ordinary TransformStream and sequentially pipes archive prefix then content. The raw file was reread and matches the retained historical hash. This supports stream relevance without claiming those callers use custom weights or user flush callbacks, or that any OS workflow or distributed placement ran.",
+    "overlap_delta": {
+      "B015": "Remote sink cohort and close-error isolation explicitly do not constrain write acknowledgment timing.",
+      "S020": "Checks queued write-before-close ordering, not desired-size weighting or ready identity/epochs.",
+      "SBP3": "SBP1 resolves readiness by dropping below pressure after normal write completion; SBP3 resolves it by close request while pressure remains.",
+      "tests/streams/fixture/index.js:165-169": "Already checks desiredSize<=0 and awaits each write then ready; does not test positive remaining capacity, pending-ready identity, or readiness while another write is active."
+    },
+    "preconditions": [
+      "Exact guarded source, fresh reviewed binary and deployed fixture/config identity verified.",
+      "Actual direct-celld Worker with its real global stream constructors and strategies.",
+      "Independent deadline/resource supervisor controls a proven-owned whole-descendant domain covering dev, bundlers and node despite separate PGIDs, plus one quota/cleanup domain for temporary bundles, logs and stores. No single-PGID fallback or substitute/reference execution."
+    ],
+    "primary_candidate": true,
+    "primary_contract_refs": [
+      "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#writable-stream-update-backpressure",
+      "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#writable-stream-default-writer-get-desired-size",
+      "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#writable-stream-default-controller-process-write",
+      "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#blqs-class"
+    ],
+    "runtime_source_refs": [
+      {
+        "line_end": 116,
+        "line_start": 81,
+        "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+        "purpose": "Writer ready creation and desired size"
+      },
+      {
+        "line_end": 197,
+        "line_start": 188,
+        "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+        "purpose": "Writer ready creation and desired size"
+      },
+      {
+        "line_end": 318,
+        "line_start": 278,
+        "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+        "purpose": "Pressure threshold transitions, queue size and decrement on callback settlement"
+      },
+      {
+        "line_end": 473,
+        "line_start": 451,
+        "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+        "purpose": "Pressure threshold transitions, queue size and decrement on callback settlement"
+      },
+      {
+        "line_end": 825,
+        "line_start": 819,
+        "path": "celld-os-project/celld/crates/celld/js/streams.js",
+        "purpose": "ByteLengthQueuingStrategy size"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "source_predicted_gap": null,
+    "status": "NOT_RUN",
+    "trace": [
+      "Use one ByteLengthQueuingStrategy with highWaterMark 3; admit fixed 2-byte and 1-byte writes with separate callback gates.",
+      "Capture initial ready, below-threshold ready, and zero-desiredSize ready; do not add a payload/HWM matrix.",
+      "Release first write only; witness second callback entered but held and readiness fulfilled with capacity 2.",
+      "Finish second write; write one final 3-byte chunk to create a fresh pressure epoch, release it, close and join."
+    ]
+  },
+  "corpus_id": "S301",
+  "corpus_wave": "stream-backpressure-semantics",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/stream-backpressure-semantics",
+  "id": "conformance/fetch-and-http/stream-backpressure-s301",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/stream-backpressure-semantics/S301"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/stream-backpressure-semantics/S301",
+      "manifest_sha256": "e7b601830183b60736e3a17f47553c808674a7fcacd422e21694a98057158783",
+      "review_sha256": "28f32477b60ad987cc5022d9566f46b6d679375e9e8667dc0ccd8d22b0a22551",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/stream-backpressure-semantics",
+      "tranche": "004"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/S301",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "S301",
+  "source": "tests/conformance/fetch-and-http/fixtures/stream-backpressure-semantics/fixture.js",
+  "source_sha256": "d3719b882f4c3725bd59187adce6cbb2b547da70949ed2b8ee9ec101a3138c6a",
+  "title": "Renew weighted writer readiness epochs"
+}

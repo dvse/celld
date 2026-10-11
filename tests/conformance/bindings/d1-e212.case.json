@@ -1,0 +1,190 @@
+{
+  "adapter": "http",
+  "behaviour": "bindings",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "application_relevance": "Apply a small application schema script containing comments, quoted semicolons and multiline SQL.",
+    "artifact": "worker.js",
+    "cleanup": {
+      "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+      "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+      "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+      "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+    },
+    "cross_wave_overlap": {
+      "distinction": "D216/D217 use sql.ingest with remainder/rowsWritten/statementCount. E212 targets the separate D1 SQLite tail walker, public count/duration-only envelope, comments and a complete final statement without semicolon, then post-return committed contents. It makes no ingest or streaming-suffix claim.",
+      "neighbors": [
+        "D216",
+        "D217"
+      ]
+    },
+    "distinctness": "Valid tokenizer/statement-count contract differs from generic multi-write batch behavior; source count semantics intentionally differ from Cloudflare line counting. Cross-wave: D216/D217 use sql.ingest with remainder/rowsWritten/statementCount. E212 targets the separate D1 SQLite tail walker, public count/duration-only envelope, comments and a complete final statement without semicolon, then post-return committed contents. It makes no ingest or streaming-suffix claim.",
+    "entrypoint": "GET /case/E212",
+    "family": "d1-semantics",
+    "fixed_finite_trace": [
+      "Execute four complete statements with line/block comments, quoted semicolons, an escaped quote, and no final semicolon.",
+      "Assert count 4, exact public exec keys and well-formed duration.",
+      "Read exact committed text values."
+    ],
+    "fixture_line_range": [
+      168,
+      178
+    ],
+    "fixture_slice_sha256": "e4023e5f827985ced5d6d446273235e1a73f818c2095b97c0c675394aa56587c",
+    "id": "E212",
+    "intent": "Apply a small application schema script containing comments, quoted semicolons and multiline SQL.",
+    "limits": {
+      "external_response_capture_bytes": 1048576,
+      "external_total_request_deadline_seconds": 30,
+      "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+      "maximum_application_tables": 1,
+      "maximum_batch_statements": 5,
+      "maximum_bound_parameters_per_statement": 5,
+      "maximum_bound_scalar_or_blob_bytes": 64,
+      "maximum_exec_statements": 4,
+      "maximum_rows_in_any_fixture_table": 4,
+      "no_internal_Promise_race_timeout": true,
+      "public_dispatches_per_phase_enforced": 32
+    },
+    "limits_of_evidence": [
+      "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+      "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+      "Successful batch dependencies do not establish concurrent-observer atomicity.",
+      "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+    ],
+    "oracle": {
+      "assertions": [
+        "exec counts parsed statements rather than lines or semicolons",
+        "public exec exposes only count and duration",
+        "exec duration is finite nonnegative metadata",
+        "comments quoted semicolons and final unterminated-by-semicolon statement execute correctly"
+      ],
+      "claim": "SQLite sqlite3_prepare_v2 and tail walking determine statement boundaries; exec counts stepped statements, discards trivia, and accepts the final complete statement without semicolon.",
+      "executable_assertion_source": [
+        "c.eq(result.count, 4, \"exec counts parsed statements rather than lines or semicolons\");",
+        "c.eq(Object.keys(result).sort(), [\"count\",\"duration\"], \"public exec exposes only count and duration\");",
+        "c.eq(Number.isFinite(result.duration) && result.duration >= 0, true, \"exec duration is finite nonnegative metadata\");",
+        "c.eq((await c.all(db.prepare(`SELECT id,note FROM ${t} ORDER BY id`), \"read parsed script effects\")).results, [{id:1,note:\"semi;colon;done\"},{id:2,note:\"two's\"}], \"comments quoted semicolons and final unterminated-by-semicolon statement execute correctly\");"
+      ],
+      "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+      "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed.",
+      "successful_assertion_count": 4
+    },
+    "owned_resources": [
+      {
+        "binding": "DB",
+        "database_identity": "d1-next-id-a",
+        "table": "d1_next_e212"
+      }
+    ],
+    "review_accepted": false,
+    "runtime_execution_count": 0,
+    "schedule": {
+      "case_requests": 1,
+      "cleanup_binding_calls_exact_on_success": 2,
+      "faults": 0,
+      "main_phase_binding_calls_exact_on_success": 2,
+      "main_phase_dispatch_labels_in_order": [
+        "parse multi statement script",
+        "read parsed script effects"
+      ],
+      "maximum_in_flight_public_calls": 1,
+      "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+      "restarts": 0,
+      "retries": 0,
+      "setup_binding_calls_exact_on_success": 1
+    },
+    "source_refs": [
+      {
+        "key": "api",
+        "line_ranges": [
+          [
+            1,
+            87
+          ]
+        ],
+        "path": "celld-os-project/celld/docs/services/d1.md",
+        "slices_sha256": [
+          "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+        ]
+      },
+      {
+        "key": "server",
+        "line_ranges": [
+          [
+            8196,
+            8279
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/js/harness.js",
+        "slices_sha256": [
+          "f206828feb8e030d061e134c221b2bbf588b43812bac3fc95133810df9d254c4"
+        ]
+      },
+      {
+        "key": "parser",
+        "line_ranges": [
+          [
+            2625,
+            2729
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/storage.rs",
+        "slices_sha256": [
+          "239244a15729cc3e5001990eb37b4274300d10f0e9d6040d3c077d4461028dd8"
+        ]
+      },
+      {
+        "key": "batch_exec",
+        "line_ranges": [
+          [
+            2990,
+            3139
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/storage.rs",
+        "slices_sha256": [
+          "bb5351f92fc0531bed005334759738d8a13ae8a5e3c9bbd7b0012daa1e37a65d"
+        ]
+      }
+    ],
+    "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+    "surface": "public env D1 binding APIs only",
+    "sut": "direct celld only",
+    "title": "Parse exec statements without splitting SQL text"
+  },
+  "corpus_id": "E212",
+  "corpus_wave": "d1-semantics",
+  "fixture": "tests/conformance/bindings/fixtures/d1-semantics",
+  "id": "conformance/bindings/d1-e212",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/d1-semantics/E212"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/d1-semantics/E212",
+      "manifest_sha256": "a710fc3341a0ac99cbe9b5dd5847e7fc9c7d355313bac1440415941d7b31780f",
+      "review_sha256": "c6cdb7367eac8cb864520fba365e861793be03ddfd570b61e4a642030f662350",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/d1-semantics",
+      "tranche": "002"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/E212",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "E212",
+  "source": "tests/conformance/bindings/fixtures/d1-semantics/worker.js",
+  "source_sha256": "4b946d92399b5493a1039165af98b4c2159f08296b211eec6a60ce9680c26525",
+  "title": "Parse exec statements without splitting SQL text"
+}

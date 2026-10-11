@@ -1,0 +1,29 @@
+{
+  "id": "conformance/bindings/container",
+  "layer": "conformance",
+  "behaviour": "bindings",
+  "title": "container",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/examples/container",
+      "legacy_id": "examples/container"
+    },
+    {
+      "source": "celld@9c0fca5/examples/container/wrangler.jsonc",
+      "sha256": "dcf415464402467149fc16ef4614eff620db068fc6c9c1c4928b49d8e5188763"
+    }
+  ],
+  "legacy_ids": [
+    "examples/container"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/bindings/fixtures/container-binding",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": "The celld container backend installs a privileged host bridge firewall fence (container.rs FENCE_SCRIPT). This shared-host lane is restricted to its own directories/ports and cannot alter the host-wide Docker fence; the supplied guests have no Docker daemon image. Container execution is excluded, not credited by ordinary DO tests.",
+  "runnable": false,
+  "source": "tests/conformance/bindings/fixtures/container-binding/wrangler.jsonc",
+  "source_sha256": "dcf415464402467149fc16ef4614eff620db068fc6c9c1c4928b49d8e5188763"
+}

@@ -1,0 +1,55 @@
+{
+  "id": "logic/log-recovery/bound-queued-overload-without-fabricating-coverage-and-allow-a-fresh-retry-budget",
+  "layer": "logic",
+  "behaviour": "log-recovery",
+  "title": "Bound queued overload without fabricating coverage and allow a fresh retry budget",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic",
+      "legacy_id": "corpus/log-recovery-logic/J024"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic/tests/log_recovery.rs",
+      "sha256": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/log-recovery-logic/J024"
+  ],
+  "adapter": "native",
+  "corpus_id": "J024",
+  "corpus_wave": "log-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/log-recovery/fixtures/decision-cases/tests/log_recovery.rs",
+  "source_sha256": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c",
+  "test_filter": "j024_sustained_progress_caps_queued_wait_then_fresh_retry_gets_own_budget",
+  "contract": {
+    "intent": "Bound queued overload without fabricating coverage and allow a fresh retry budget",
+    "preconditions": [
+      "Each test owns all in-memory values and directly calls public frozen production celld_logic components; no substitute decision implementation",
+      "Storage PUT/delete success, failure, CAS ordering, member confirmations and restore chains are explicit synthetic environmental facts; no disk, bucket, network, actor or VM is exercised",
+      "Every supplied finish_recovery certificate has a stipulated prior durable per-cell/bucket receipt; the pure finish function does not validate that I/O premise",
+      "GC chains are supplied from the stipulated production restore walk, oldest-first and ending at own epoch except the deliberate missing-opener schedules; no restore walk is reimplemented",
+      "GC listed vectors intentionally include base/own/off-chain epochs beyond the current executor scan.below input; these are public-component API robustness premises, not claimed live executor traces",
+      "Hash checks must match delivered runtime manifest lineage before future review/build/run; no compiler or SUT was launched while authoring"
+    ],
+    "trace": [
+      "Node proof150 yields deadline170",
+      "Proof210 reaches total queued cap220",
+      "Proof500 still gives deadline220",
+      "Require row12 not deletable against covered11 despite elapsed budget",
+      "Create explicit new attempt at501, capture12 at505 and require deadline525",
+      "Supply actual per-cell row12 receipt before permitting deletion"
+    ],
+    "oracle": "Queued cap remains220 under continued progress; timeout grants no row coverage; Fresh attempt has its own bounded capture budget; only explicit durable receipt permits deletion",
+    "cleanup": "Drop only this test-owned records, maps, fragments, health tracker and ledger. No external resources exist; unwind also drops all owned values.",
+    "implementation": "tests/log_recovery.rs:j024_sustained_progress_caps_queued_wait_then_fresh_retry_gets_own_budget"
+  },
+  "selector": "J024"
+}

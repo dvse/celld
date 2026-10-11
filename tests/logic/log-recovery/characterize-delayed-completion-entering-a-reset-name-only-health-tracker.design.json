@@ -1,0 +1,60 @@
+{
+  "id": "logic/log-recovery/characterize-delayed-completion-entering-a-reset-name-only-health-tracker",
+  "layer": "logic",
+  "behaviour": "log-recovery",
+  "title": "Characterize delayed completion entering a reset name-only health tracker",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic",
+      "legacy_id": "log-recovery-logic/J022"
+    }
+  ],
+  "corpus_wave": "log-recovery-logic",
+  "corpus_id": "J022",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "J022",
+    "intent": "Characterize delayed completion entering a reset name-only health tracker",
+    "failure_hypothesis": "A generation-free completion API may incorporate an old sample after reset; caller filtering is unknown",
+    "preconditions": [
+      "Each test owns all in-memory values and directly calls public frozen production celld_logic components; no substitute decision implementation",
+      "Storage PUT/delete success, failure, CAS ordering, member confirmations and restore chains are explicit synthetic environmental facts; no disk, bucket, network, actor or VM is exercised",
+      "Every supplied finish_recovery certificate has a stipulated prior durable per-cell/bucket receipt; the pure finish function does not validate that I/O premise",
+      "GC chains are supplied from the stipulated production restore walk, oldest-first and ending at own epoch except the deliberate missing-opener schedules; no restore walk is reimplemented",
+      "GC listed vectors intentionally include base/own/off-chain epochs beyond the current executor scan.below input; these are public-component API robustness premises, not claimed live executor traces",
+      "Hash checks must match delivered runtime manifest lineage before future review/build/run; no compiler or SUT was launched while authoring"
+    ],
+    "initial_state": "Policy window100, hedge floor10, factor2, cap66; append a started at0 in prior ensemble",
+    "trace": [
+      "Reset tracker before completion and observe hedge floor10",
+      "Deliver delayed name-only completion a at30 with latency30",
+      "Record actual hedge deadline60 and probe suppression",
+      "Require single sample remains Healthy under min_samples3",
+      "Age sample out at131; require floor10 and probe due"
+    ],
+    "stress": "Delayed completion crosses ensemble-reset boundary and later ages out; <=100 receipt observations, <=7 listed epochs, <=2 members per ensemble, <=3 unique follower identities per case and finite explicit operations",
+    "safety_oracle": "Nonpromoting characterization: actual current API accepts old-name sample; no stale-callback policy verdict",
+    "liveness_oracle": "Sample effect is bounded by observed sliding window and expiry restores idle behavior",
+    "oracle": "Nonpromoting characterization: actual current API accepts old-name sample; no stale-callback policy verdict; Sample effect is bounded by observed sliding window and expiry restores idle behavior",
+    "terminal_witness": "END J022 after assertion-bearing observations; external resources=0",
+    "cleanup": "Drop only this test-owned records, maps, fragments, health tracker and ledger. No external resources exist; unwind also drops all owned values.",
+    "implementation": "tests/log_recovery.rs:j022_characterize_delayed_health_completion_after_ensemble_reset",
+    "test_function": "j022_characterize_delayed_health_completion_after_ensemble_reset",
+    "source_contract": "log_evict::FollowerHealth::append_completed; log_evict::FollowerHealth::reset; log_evict::FollowerHealth::hedge_deadline_ms",
+    "layer": "native-component",
+    "sublayer": "public-component-model-trace",
+    "classification": "characterization",
+    "qualification": "Native pure-component decisions conditional on stated synthetic environmental facts; never real durable-storage, actor, VM, OS, tenant-boundary or security proof",
+    "promotion": false,
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN",
+    "source_pins": "source-pins.json",
+    "profile": "profile.json"
+  }
+}

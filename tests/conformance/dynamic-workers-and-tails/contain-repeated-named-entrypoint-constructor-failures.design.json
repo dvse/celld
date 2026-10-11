@@ -1,0 +1,47 @@
+{
+  "id": "conformance/dynamic-workers-and-tails/contain-repeated-named-entrypoint-constructor-failures",
+  "layer": "conformance",
+  "behaviour": "dynamic-workers-and-tails",
+  "title": "Contain repeated named-entrypoint constructor failures",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/loader-props",
+      "legacy_id": "loader-props/L011"
+    }
+  ],
+  "corpus_wave": "loader-props",
+  "corpus_id": "L011",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "L011",
+    "intent": "Contain repeated named-entrypoint constructor failures",
+    "failure_hypothesis": "A failing constructor poisons sibling export construction",
+    "preconditions": [
+      "Broken constructor throws constructor-failed; Named is healthy",
+      "Disposable private fixture with fresh supervisor name, live LOADER, facets, restore flag, and positive Loader control",
+      "External reviewed adapter has exclusive run slot and enforces wall/memory/PID/load limits"
+    ],
+    "trace": [
+      "Call Broken",
+      "Call Named",
+      "Call Broken again",
+      "Call Named again"
+    ],
+    "stress": "1 worker; 2 failing constructors; 2 healthy calls",
+    "oracle": "Each Broken call has constructor-failed; Named remains named",
+    "cleanup": "Case-specific finally disposes restored handles and drains finite cancellation hold where used; common cleanup releases code gates, aborts every owned facet, disposes entrypoints and worker handles, removes only tracked fixture KV rows. Parent tears down disposable fleet/storage.",
+    "implementation": "cases.js:loaderCases.L011",
+    "contract_group": "entrypoint",
+    "qualification": "characterization",
+    "promotion": "NOT_PROMOTED: independent source/oracle review and recorded frozen-runtime run required",
+    "layer": "real-process-RPC",
+    "profile": "loader-props-2026-09-04",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  }
+}

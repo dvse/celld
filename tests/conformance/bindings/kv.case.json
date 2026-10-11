@@ -1,0 +1,28 @@
+{
+  "adapter": "example",
+  "behaviour": "bindings",
+  "fixture": "tests/conformance/bindings/fixtures/kv-namespace",
+  "id": "conformance/bindings/kv",
+  "layer": "conformance",
+  "legacy_ids": [
+    "examples/kv"
+  ],
+  "origins": [
+    {
+      "legacy_id": "examples/kv",
+      "source": "celld@9c0fca5/examples/kv"
+    },
+    {
+      "sha256": "6aaa89a015facbd0b0ef8687fc9794a1814ef1c4bf29f804fd1046c73069c1c1",
+      "source": "celld@9c0fca5/examples/kv/wrangler.jsonc"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/conformance/bindings/fixtures/kv-namespace/wrangler.jsonc",
+  "source_sha256": "6aaa89a015facbd0b0ef8687fc9794a1814ef1c4bf29f804fd1046c73069c1c1",
+  "title": "kv"
+}

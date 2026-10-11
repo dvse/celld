@@ -1,0 +1,200 @@
+{
+  "adapter": "http",
+  "behaviour": "bindings",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "application_relevance": "Run initialization scripts that contain RETURNING without leaving some mutations incomplete.",
+    "artifact": "worker.js",
+    "cleanup": {
+      "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+      "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+      "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+      "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+    },
+    "cross_wave_overlap": {
+      "distinction": "D219 drains read SELECT rows in sql.ingest before later writes. E213 uses public D1 exec(rows:false) with both multirow INSERT RETURNING and UPDATE RETURNING and checks all effects after its successful transaction-completing response plus no public results field.",
+      "neighbors": [
+        "D219"
+      ]
+    },
+    "distinctness": "Zero-row retention for exec is distinct from E216 first retaining one row; neither test assumes RETURNING order. Cross-wave: D219 drains read SELECT rows in sql.ingest before later writes. E213 uses public D1 exec(rows:false) with both multirow INSERT RETURNING and UPDATE RETURNING and checks all effects after its successful transaction-completing response plus no public results field.",
+    "entrypoint": "GET /case/E213",
+    "family": "d1-semantics",
+    "fixed_finite_trace": [
+      "Exec create table, a three-row INSERT RETURNING, a three-row UPDATE RETURNING and a SELECT.",
+      "Require count 4 and no public results field.",
+      "Read the exact three updated rows after exec returns."
+    ],
+    "fixture_line_range": [
+      179,
+      188
+    ],
+    "fixture_slice_sha256": "604eb2656b9705a196e1e362ba28bfddc2ec1e809acebaffa4110a4b7256a42c",
+    "id": "E213",
+    "intent": "Run initialization scripts that contain RETURNING without leaving some mutations incomplete.",
+    "limits": {
+      "external_response_capture_bytes": 1048576,
+      "external_total_request_deadline_seconds": 30,
+      "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+      "maximum_application_tables": 1,
+      "maximum_batch_statements": 5,
+      "maximum_bound_parameters_per_statement": 5,
+      "maximum_bound_scalar_or_blob_bytes": 64,
+      "maximum_exec_statements": 4,
+      "maximum_rows_in_any_fixture_table": 4,
+      "no_internal_Promise_race_timeout": true,
+      "public_dispatches_per_phase_enforced": 32
+    },
+    "limits_of_evidence": [
+      "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+      "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+      "Successful batch dependencies do not establish concurrent-observer atomicity.",
+      "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+    ],
+    "oracle": {
+      "assertions": [
+        "exec counts row-producing statements while discarding their results",
+        "public exec does not expose engine row sets",
+        "exec drains RETURNING statements and commits all successful effects"
+      ],
+      "claim": "Worker exec requests rows:false, so keep=0 discards output but steps every row to SQLITE_DONE before commit.",
+      "executable_assertion_source": [
+        "c.eq(result.count, 4, \"exec counts row-producing statements while discarding their results\");",
+        "c.eq(has(result,\"results\"), false, \"public exec does not expose engine row sets\");",
+        "c.eq((await c.all(db.prepare(`SELECT id,n FROM ${t} ORDER BY id`), \"read exec completion\")).results, [{id:1,n:4},{id:2,n:6},{id:3,n:8}], \"exec drains RETURNING statements and commits all successful effects\");"
+      ],
+      "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+      "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed.",
+      "successful_assertion_count": 3
+    },
+    "owned_resources": [
+      {
+        "binding": "DB",
+        "database_identity": "d1-next-id-a",
+        "table": "d1_next_e213"
+      }
+    ],
+    "review_accepted": false,
+    "runtime_execution_count": 0,
+    "schedule": {
+      "case_requests": 1,
+      "cleanup_binding_calls_exact_on_success": 2,
+      "faults": 0,
+      "main_phase_binding_calls_exact_on_success": 2,
+      "main_phase_dispatch_labels_in_order": [
+        "exec returning script",
+        "read exec completion"
+      ],
+      "maximum_in_flight_public_calls": 1,
+      "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+      "restarts": 0,
+      "retries": 0,
+      "setup_binding_calls_exact_on_success": 1
+    },
+    "source_refs": [
+      {
+        "key": "api",
+        "line_ranges": [
+          [
+            1,
+            87
+          ]
+        ],
+        "path": "celld-os-project/celld/docs/services/d1.md",
+        "slices_sha256": [
+          "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+        ]
+      },
+      {
+        "key": "server",
+        "line_ranges": [
+          [
+            8196,
+            8279
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/js/harness.js",
+        "slices_sha256": [
+          "f206828feb8e030d061e134c221b2bbf588b43812bac3fc95133810df9d254c4"
+        ]
+      },
+      {
+        "key": "parser",
+        "line_ranges": [
+          [
+            2625,
+            2729
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/storage.rs",
+        "slices_sha256": [
+          "239244a15729cc3e5001990eb37b4274300d10f0e9d6040d3c077d4461028dd8"
+        ]
+      },
+      {
+        "key": "drain",
+        "line_ranges": [
+          [
+            2491,
+            2576
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/storage.rs",
+        "slices_sha256": [
+          "543df70fa57dc500e477c0ee95b3dd85cca6464b6a7ab141dcc9410a8b55e59c"
+        ]
+      },
+      {
+        "key": "batch_exec",
+        "line_ranges": [
+          [
+            2990,
+            3139
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/storage.rs",
+        "slices_sha256": [
+          "bb5351f92fc0531bed005334759738d8a13ae8a5e3c9bbd7b0012daa1e37a65d"
+        ]
+      }
+    ],
+    "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+    "surface": "public env D1 binding APIs only",
+    "sut": "direct celld only",
+    "title": "Drain row-producing exec statements before return"
+  },
+  "corpus_id": "E213",
+  "corpus_wave": "d1-semantics",
+  "fixture": "tests/conformance/bindings/fixtures/d1-semantics",
+  "id": "conformance/bindings/d1-e213",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/d1-semantics/E213"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/d1-semantics/E213",
+      "manifest_sha256": "a710fc3341a0ac99cbe9b5dd5847e7fc9c7d355313bac1440415941d7b31780f",
+      "review_sha256": "c6cdb7367eac8cb864520fba365e861793be03ddfd570b61e4a642030f662350",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/d1-semantics",
+      "tranche": "002"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/E213",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "E213",
+  "source": "tests/conformance/bindings/fixtures/d1-semantics/worker.js",
+  "source_sha256": "4b946d92399b5493a1039165af98b4c2159f08296b211eec6a60ce9680c26525",
+  "title": "Drain row-producing exec statements before return"
+}

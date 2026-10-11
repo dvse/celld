@@ -1,0 +1,24 @@
+{
+  "id": "unit/object-identity/expired-nonzero-generation-fails-instead-of-current-fallback",
+  "layer": "unit",
+  "behaviour": "object-identity",
+  "title": "expired nonzero generation fails instead of current fallback",
+  "origins": [
+    {
+      "source": "crates/celld/cell_runtime.rs",
+      "legacy_id": "unit/celld/cell_runtime::generation_dispatch_tests::expired_nonzero_generation_fails_instead_of_current_fallback"
+    }
+  ],
+  "legacy_ids": [
+    "unit/celld/cell_runtime::generation_dispatch_tests::expired_nonzero_generation_fails_instead_of_current_fallback"
+  ],
+  "adapter": "cargo",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "crates/celld/cell_runtime.rs",
+  "source_sha256": "d7b525fb96e7d1b3baad19598711070fd1993ff24b83094e6a91b131751509e6",
+  "test_filter": "cell_runtime::generation_dispatch_tests::expired_nonzero_generation_fails_instead_of_current_fallback"
+}

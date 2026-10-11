@@ -1,0 +1,13 @@
+{
+  "name": "celld-d1-semantics-next",
+  "main": "worker.js",
+  "compatibility_date": "2026-01-01",
+  "d1_databases": [
+    { "binding": "DB", "database_name": "d1-next-main", "database_id": "d1-next-id-a" },
+    { "binding": "ALIAS", "database_name": "d1-next-alias", "database_id": "d1-next-id-a" },
+    { "binding": "OTHER", "database_name": "d1-next-other", "database_id": "d1-next-id-b" },
+    { "binding": "FALLBACK", "database_name": "d1-next-name" },
+    { "binding": "FALLBACK_ALIAS", "database_name": "d1-next-name" },
+    { "binding": "EXPLICIT_NAME", "database_name": "d1-next-explicit-alias", "database_id": "d1-next-name" }
+  ]
+}

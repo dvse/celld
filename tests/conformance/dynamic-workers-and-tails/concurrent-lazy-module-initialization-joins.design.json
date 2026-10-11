@@ -1,0 +1,45 @@
+{
+  "id": "conformance/dynamic-workers-and-tails/concurrent-lazy-module-initialization-joins",
+  "layer": "conformance",
+  "behaviour": "dynamic-workers-and-tails",
+  "title": "Concurrent lazy-module initialization joins",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/module-graph-stress",
+      "legacy_id": "module-graph-stress/M007"
+    }
+  ],
+  "corpus_wave": "module-graph-stress",
+  "corpus_id": "M007",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "M007",
+    "intent": "Concurrent lazy-module initialization joins",
+    "failure_hypothesis": "Two RPC imports of the same suspended module can duplicate initialization or publish its exports before completion.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Initialize callable main first.",
+      "Start two lazy imports; witness both receiver invocation IDs active with one gate.",
+      "Release initializer and require both complete values and one evaluation log."
+    ],
+    "stress": "Two imports share one finite dynamic-module gate.",
+    "oracle": "Exactly lazy-start,hold,release,lazy-ready; both return17.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M007",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request overlap of two actual loaded-worker invocations",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  }
+}

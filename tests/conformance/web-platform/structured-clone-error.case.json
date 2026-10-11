@@ -1,0 +1,35 @@
+{
+  "id": "conformance/web-platform/structured-clone-error",
+  "layer": "conformance",
+  "behaviour": "web-platform",
+  "title": "structured Clone Error",
+  "origins": [
+    {
+      "source": "workerd@19b1657bd/src/workerd/api/tests/global-scope-test.js#structuredCloneError",
+      "legacy_id": "workerd/globals/structuredCloneError"
+    },
+    {
+      "source": "workerd@19b1657bd/src/workerd/api/tests/global-scope-test.js",
+      "sha256": "1be7707aee5c456bcdf50ae2f84478119f738fc301cda1209e5697175cdb4327"
+    }
+  ],
+  "legacy_ids": [
+    "workerd/globals/structuredCloneError"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/web-platform/fixtures/global-contracts",
+  "isolated": true,
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/structuredCloneError",
+      "timeout": 5
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/web-platform/fixtures/global-contracts/upstream.js",
+  "source_sha256": "1be7707aee5c456bcdf50ae2f84478119f738fc301cda1209e5697175cdb4327"
+}

@@ -1,0 +1,58 @@
+{
+  "adapter": "topology",
+  "behaviour": "durable-objects/storage-sql",
+  "contract": {
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T031; cases.js#T031; fixture.js; entry.js; private_driver.py",
+    "intent": "A locally resumed preentered request retains its original event identity and queues outside a different owner transaction.",
+    "oracle": "Exact owner-open,preentered-attempt,preentered-queued,owner-rollback,preentered-transaction-enter ordering; distinct request IDs; other-owner absent; B value5; missing schedule BLOCKED.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "B enters and waits on safe external hold; A peer enters before any transaction.",
+      "Release B; it establishes local ready and owner-open waits with bounded timers.",
+      "A waits local ready before beginning transaction, writes dirty KV and resolves owner-open locally.",
+      "B invokes root transaction and signals queued locally; A rolls back.",
+      "B callback enters afterward and commits its own key."
+    ]
+  },
+  "corpus_id": "T031",
+  "corpus_wave": "sqlite-concurrency",
+  "fixture": "tests/conformance/durable-objects/storage-sql/fixtures/concurrent-transactions",
+  "id": "conformance/durable-objects/storage-sql/a-locally-resumed-preentered-request-retains-its-original-event-identity-and-queues-outside-a-differ",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/sqlite-concurrency/T031"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/sqlite-concurrency/T031",
+      "source": "guarded-source-archive/celld-os-stress/waves/sqlite-concurrency"
+    },
+    {
+      "sha256": "b7ff8937b347e643e4c38ef96ba804d5725819a6e740e939f19977c5764c9b39",
+      "source": "guarded-source-archive/celld-os-stress/waves/sqlite-concurrency/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "T031",
+  "source": "tests/conformance/durable-objects/storage-sql/fixtures/concurrent-transactions/entry.js",
+  "source_sha256": "b7ff8937b347e643e4c38ef96ba804d5725819a6e740e939f19977c5764c9b39",
+  "title": "A locally resumed preentered request retains its original event identity and queues outside a different owner transaction."
+}

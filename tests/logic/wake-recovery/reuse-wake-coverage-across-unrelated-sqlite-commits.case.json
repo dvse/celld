@@ -1,0 +1,53 @@
+{
+  "id": "logic/wake-recovery/reuse-wake-coverage-across-unrelated-sqlite-commits",
+  "layer": "logic",
+  "behaviour": "wake-recovery",
+  "title": "Reuse wake coverage across unrelated SQLite commits",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic",
+      "legacy_id": "corpus/wake-recovery-logic/K003"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+      "sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/wake-recovery-logic/K003"
+  ],
+  "adapter": "native",
+  "corpus_id": "K003",
+  "corpus_wave": "wake-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/wake-recovery/fixtures/decision-cases/tests/wake_recovery.rs",
+  "source_sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86",
+  "test_filter": "k003_unrelated_sqlite_write_does_not_require_republication",
+  "contract": {
+    "intent": "Reuse wake coverage across unrelated SQLite commits",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Request initial registration.",
+      "Confirm the initial PUT.",
+      "Compare installation equality against later position100.",
+      "Check later snapshot remains covered and emits no publication; original publication retained position19."
+    ],
+    "oracle": [
+      "Position drift does not rewrite installation identity or the already sampled publication.",
+      "Unchanged alarm stays covered without an extra store round trip."
+    ],
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k003_unrelated_sqlite_write_does_not_require_republication"
+  },
+  "selector": "K003"
+}

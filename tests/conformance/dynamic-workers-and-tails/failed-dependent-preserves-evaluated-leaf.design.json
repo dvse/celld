@@ -1,0 +1,45 @@
+{
+  "id": "conformance/dynamic-workers-and-tails/failed-dependent-preserves-evaluated-leaf",
+  "layer": "conformance",
+  "behaviour": "dynamic-workers-and-tails",
+  "title": "Failed dependent preserves evaluated leaf",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/module-graph-stress",
+      "legacy_id": "module-graph-stress/M009"
+    }
+  ],
+  "corpus_wave": "module-graph-stress",
+  "corpus_id": "M009",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "M009",
+    "intent": "Failed dependent preserves evaluated leaf",
+    "failure_hypothesis": "A dependent evaluation throw can discard its successful leaf or rerun partial effects on repeated import.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Initialize leaf at0.",
+      "Issue failing dependent and healthy leaf-reexport import.",
+      "After error inspect good branch; retry failed dependent and inspect leaf."
+    ],
+    "stress": "Dependent throws after one leaf mutation; healthy sibling and bounded retry.",
+    "oracle": "Exact planned error; leaf persists at1 and repeated failed import cannot increment it.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M009",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request concurrent dispatch; no held overlap claim",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  }
+}

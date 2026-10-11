@@ -1,0 +1,50 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "Call-end releases parameter stub; shared codecCleanup and request teardown",
+    "intent": "Propagate an asynchronous callee rejection after one completed reverse callback without replaying the callback",
+    "oracle": "Callback log exactly before-reject; exception includes after-callback; accepted and throws both one; peer healthy",
+    "preconditions": "COMMON; callee awaits caller callback then throws",
+    "source_contracts": [
+      "SC-ARG-DISPOSE",
+      "SC-ERRORS"
+    ],
+    "trace": [
+      "pass callback recording received argument",
+      "callee invokes and awaits it then rejects",
+      "verify exact local callback sequence",
+      "verify callee accepted and threw once",
+      "verify recovery"
+    ]
+  },
+  "corpus_id": "C030",
+  "corpus_wave": "rpc-codec",
+  "fixture": "tests/conformance/rpc/fixtures/value-codec",
+  "id": "conformance/rpc/propagate-an-asynchronous-callee-rejection-after-one-completed-reverse-callback-without-replaying-th",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/rpc-codec/C030"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/rpc-codec/C030",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec"
+    },
+    {
+      "sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "C030",
+  "source": "tests/conformance/rpc/fixtures/value-codec/entry.js",
+  "source_sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+  "title": "Propagate an asynchronous callee rejection after one completed reverse callback without replaying the callback"
+}

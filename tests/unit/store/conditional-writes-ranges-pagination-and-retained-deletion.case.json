@@ -1,0 +1,24 @@
+{
+  "id": "unit/store/conditional-writes-ranges-pagination-and-retained-deletion",
+  "layer": "unit",
+  "behaviour": "store",
+  "title": "Conditional writes, ranges, pagination and retained deletion",
+  "origins": [
+    {
+      "source": "tests/unit/store_contract.py",
+      "legacy_id": "unit/s3-store-contract"
+    }
+  ],
+  "legacy_ids": [
+    "unit/s3-store-contract"
+  ],
+  "adapter": "python",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/unit/store/store_contract.py",
+  "source_sha256": "90460cdbc2c438e3033bd0eeb12ddd26b27ff4976949c0ae977ad3fedb07dc4f"
+}

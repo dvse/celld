@@ -1,0 +1,20 @@
+[package]
+name = "celld-output-gate-stress"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.94.1"
+publish = false
+
+[workspace]
+
+[dependencies]
+celld-logic = { path = "/workspace/shared/celld-os-project/celld/crates/logic" }
+
+[[test]]
+name = "output_gate"
+path = "tests/output_gate.rs"
+
+[profile.test]
+opt-level = 0
+debug = 0
+incremental = false

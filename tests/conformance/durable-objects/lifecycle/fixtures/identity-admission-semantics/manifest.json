@@ -1,0 +1,571 @@
+{
+  "schema": 1,
+  "wave": "identity-admission-semantics",
+  "authored_case_count": 5,
+  "independently_reviewed": 0,
+  "runtime_status": "UNRUN",
+  "runtime_executions": 0,
+  "runtime_passes": 0,
+  "actual_os_checkout_available": false,
+  "scope": "Independent valid public DO identity/addressing and successful ordinary input admission. No native routing or guarded-core wave is reproduced or resumed.",
+  "cases": [
+    {
+      "id": "A201",
+      "title": "Readdress one named object through valid public helpers",
+      "mechanism": "named-helper-state-equivalence",
+      "trace": [
+        "Mint the same name twice and parse its authentic serialized ID.",
+        "Write through get(idFromName), read through getByName and get(idFromString).",
+        "Write through the parsed address and read again through the original handle."
+      ],
+      "oracle": "The three valid helper routes reach exactly the same object and KV value in both write directions; client parsed ID omits the optional name. Server-side name retention after mixed addressing is not asserted.",
+      "nearest": [
+        "duplicate-names/account.js state/add/loopback",
+        "U014/U015/U017",
+        "Z201/Z202"
+      ],
+      "distinct": "Existing identity coverage addresses class/script/binding separation and facet display identity. It never directly asserts valid namespace idFromString readdressing of durable state. No separate credit is assigned to same-name equality or getByName alone.",
+      "fixed_assertions": [
+        "c.eq([named.equals(again),named.equals(parsed),parsed.equals(named)],[true,true,true],'valid named and parsed IDs compare equal');",
+        "c.eq([named.name,parsed.name],[name,undefined],'parsed address omits optional client name metadata');",
+        "c.eq([direct.id.toString(),shortcut.id.toString(),reopened.id.toString()],[named.toString(),named.toString(),named.toString()],'three public helper paths identify one object');",
+        "c.eq([first.value,second.value,third.value],['named-route','named-route','named-route'],'getByName and valid idFromString observe the named write');",
+        "c.eq((await c.send(direct,'read')).value,'parsed-route','write through parsed handle returns to original named address');"
+      ],
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/A201"
+      },
+      "implementation": "cases.js:A201",
+      "primary_contract_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-objects.md",
+          "line_start": 19,
+          "line_end": 45
+        }
+      ],
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 2012,
+          "line_end": 2026
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 5671,
+          "line_end": 5719
+        }
+      ],
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_passes": 0,
+      "review_status": "PENDING_INDEPENDENT_REVIEW",
+      "limits": {
+        "max_external_case_requests": 1,
+        "max_created_roots": 3,
+        "max_supervisor_do_fetches": 100,
+        "max_total_do_fetches_including_target_control": 110,
+        "max_concurrent_supervisor_fetches": 3,
+        "max_control_poll_calls": 60,
+        "poll_interval_ms": 15,
+        "control_successful_fallback_ms": 2500,
+        "max_control_entries": 2,
+        "max_keys_per_root": 1,
+        "max_value_characters": 32,
+        "max_name_utf8_bytes": 1025,
+        "max_total_name_bytes": 3074,
+        "max_response_bytes": 65536,
+        "trace_deadline_ms": 6000,
+        "cleanup_deadline_ms": 3500,
+        "external_http_deadline_seconds": 12,
+        "external_case_process_deadline_seconds": 20,
+        "external_wave_deadline_seconds": 120,
+        "external_rss_limit_bytes": 1073741824
+      },
+      "literal_assertion_call_sites": 5,
+      "os_relevance": {
+        "label": "Supporting public address serialization for evidenced OS namespaces; specific OS idFromString use unverified",
+        "evidence_status": "INFERRED_COMPONENT_RELEVANCE_ONLY",
+        "evidence": [
+          "celld-os-project/tests/ACCEPTANCE.md",
+          "celld-os-project/tests/duplicate-names/account.js",
+          "celld-os-project/tests/duplicate-names/router.js",
+          "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+        ],
+        "actual_os_checkout_available": false,
+        "actual_os_execution_claimed": false
+      },
+      "preconditions": [
+        "Exact reviewed celld source/build/executable identity with a fresh private disposable store and current live migrated DOs.",
+        "Finite external process/HTTP/RSS limits independently enforceable; no runtime or dependency substitution.",
+        "One external GET at a time; no process faults, reconfiguration, restart, foreign-ID operations or retained stateless handles."
+      ],
+      "cleanup": [
+        "Release any owned Control wait normally; join all already dispatched requests before any data cleanup.",
+        "Delete only the three-or-fewer tracked fixture roots storage and verify empty KV; Control is cleaned last and must have zero waiters/timers.",
+        "An unsettled trace or cleanup requires bounded external owned-process reap and store removal; it never earns runtime credit.",
+        "External supervisor verifies final process/store teardown; fixture cleanup alone does not prove it."
+      ],
+      "classification": "PRIMARY_DIRECT_PUBLIC_API_CANDIDATE",
+      "external_contract_refs": [
+        {
+          "url": "https://developers.cloudflare.com/durable-objects/api/id/",
+          "checked_on": "2026-10-09",
+          "last_updated": "2026-05-27"
+        }
+      ],
+      "static_source_assessment": "NO_RUNTIME_PREDICTION_REQUIRED",
+      "oracle_limit": "Incidental live ctx.id.name retention was removed after review: current official ID documentation says idFromString access omits the server name. This case does not endorse the source retaining an activated name."
+    },
+    {
+      "id": "A202",
+      "title": "Reopen isolated unique IDs from serialized addresses",
+      "mechanism": "unique-id-reopen-state",
+      "trace": [
+        "Mint two valid IDs using newUniqueId with default options.",
+        "Write only the first, establish the second is empty, then write the second.",
+        "Parse both serialized IDs and read their exact independent nameless object states."
+      ],
+      "oracle": "Both valid unique IDs reopen their own exact values and native object IDs; neither object receives the other value and no name metadata is invented.",
+      "nearest": [
+        "A201 named helper continuity",
+        "U014/U017 namespace separation",
+        "Z202 explicit facet identity"
+      ],
+      "distinct": "Exercises actual newUniqueId address creation and later valid string reopening, rather than a named ID, a supplied facet display ID or a changed namespace. Two samples are a finite identity check, not randomness/entropy/statistical collision certification.",
+      "fixed_assertions": [
+        "c.eq(a.equals(b),false,'two ordinary random IDs name distinct fixture objects');",
+        "c.eq([a.name,b.name,left.name,right.name],[undefined,undefined,undefined,undefined],'unique IDs and their stubs have no name metadata');",
+        "c.eq((await c.send(rightParsed,'read')).value,null,'fresh independent random address has no left state');",
+        "c.eq(values.map(x=>[x.value,x.name]),[['unique-left',null],['unique-right',null]],'serialized unique addresses recover their own nameless states');",
+        "c.eq(values.map(x=>x.objectId),[a.toString(),b.toString()],'reopened unique objects report exact minted IDs');"
+      ],
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/A202"
+      },
+      "implementation": "cases.js:A202",
+      "primary_contract_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-objects.md",
+          "line_start": 19,
+          "line_end": 45
+        }
+      ],
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 2012,
+          "line_end": 2026
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 5677,
+          "line_end": 5719
+        }
+      ],
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_passes": 0,
+      "review_status": "PENDING_INDEPENDENT_REVIEW",
+      "limits": {
+        "max_external_case_requests": 1,
+        "max_created_roots": 3,
+        "max_supervisor_do_fetches": 100,
+        "max_total_do_fetches_including_target_control": 110,
+        "max_concurrent_supervisor_fetches": 3,
+        "max_control_poll_calls": 60,
+        "poll_interval_ms": 15,
+        "control_successful_fallback_ms": 2500,
+        "max_control_entries": 2,
+        "max_keys_per_root": 1,
+        "max_value_characters": 32,
+        "max_name_utf8_bytes": 1025,
+        "max_total_name_bytes": 3074,
+        "max_response_bytes": 65536,
+        "trace_deadline_ms": 6000,
+        "cleanup_deadline_ms": 3500,
+        "external_http_deadline_seconds": 12,
+        "external_case_process_deadline_seconds": 20,
+        "external_wave_deadline_seconds": 120,
+        "external_rss_limit_bytes": 1073741824
+      },
+      "literal_assertion_call_sites": 5,
+      "os_relevance": {
+        "label": "Supporting public unique-object addressing; actual OS random-ID adoption absent from preserved evidence",
+        "evidence_status": "INFERRED_COMPONENT_RELEVANCE_ONLY",
+        "evidence": [
+          "celld-os-project/tests/ACCEPTANCE.md",
+          "celld-os-project/tests/duplicate-names/account.js",
+          "celld-os-project/tests/duplicate-names/router.js",
+          "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+        ],
+        "actual_os_checkout_available": false,
+        "actual_os_execution_claimed": false
+      },
+      "preconditions": [
+        "Exact reviewed celld source/build/executable identity with a fresh private disposable store and current live migrated DOs.",
+        "Finite external process/HTTP/RSS limits independently enforceable; no runtime or dependency substitution.",
+        "One external GET at a time; no process faults, reconfiguration, restart, foreign-ID operations or retained stateless handles."
+      ],
+      "cleanup": [
+        "Release any owned Control wait normally; join all already dispatched requests before any data cleanup.",
+        "Delete only the three-or-fewer tracked fixture roots storage and verify empty KV; Control is cleaned last and must have zero waiters/timers.",
+        "An unsettled trace or cleanup requires bounded external owned-process reap and store removal; it never earns runtime credit.",
+        "External supervisor verifies final process/store teardown; fixture cleanup alone does not prove it."
+      ],
+      "classification": "PRIMARY_DIRECT_PUBLIC_API_CANDIDATE",
+      "external_contract_refs": [
+        {
+          "url": "https://developers.cloudflare.com/durable-objects/api/id/",
+          "checked_on": "2026-10-09",
+          "last_updated": "2026-05-27"
+        }
+      ],
+      "static_source_assessment": "NO_RUNTIME_PREDICTION_REQUIRED"
+    },
+    {
+      "id": "A203",
+      "title": "Preserve full routing past the name metadata boundary",
+      "mechanism": "utf8-name-retention-and-full-address",
+      "trace": [
+        "Create one 1024-byte Unicode name and two 1025-byte names differing only after the first 1024 bytes.",
+        "Write a distinct constant to each real object.",
+        "Readdress all three by their complete name and inspect recipient ID, optional name and stored value."
+      ],
+      "oracle": "Server ctx.id.name is retained through 1024 UTF-8 bytes and omitted for longer names; full names still route independently. Client stub.name retains each complete supplied name, including above that server metadata threshold.",
+      "nearest": [
+        "Z201/Z202 named facet display identities",
+        "duplicate-names fixed short names"
+      ],
+      "distinct": "One compound byte-boundary/full-name contract. Cases are not split by length, suffix or Unicode parameter values. No malformed names, truncated IDs or cryptographic validation failures are submitted.",
+      "fixed_assertions": [
+        "c.eq(names.map(n=>new TextEncoder().encode(n).length),[1024,1025,1025],'one exact UTF-8 metadata boundary with two distinct full-name suffixes');",
+        "c.eq([ids[0].equals(ids[1]),ids[1].equals(ids[2])],[false,false],'suppressed display metadata never truncates the routing name');",
+        "c.eq(rows.map(x=>x.name),[boundary,null,null],'object name metadata follows the byte boundary rather than JavaScript character count');",
+        "c.eq(rows.map(x=>x.value),['boundary','suffix-a','suffix-b'],'both long names readdress independent state using their entire name');",
+        "c.eq(rows.map(x=>x.objectId),ids.map(String),'all readdressed objects report exact original IDs');",
+        "c.eq(stubs.map(s=>s.name),names,'client stub retains the complete supplied name despite server metadata cutoff');"
+      ],
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/A203"
+      },
+      "implementation": "cases.js:A203",
+      "primary_contract_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-objects.md",
+          "line_start": 35,
+          "line_end": 41
+        }
+      ],
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 5671,
+          "line_end": 5676
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 5694,
+          "line_end": 5720
+        }
+      ],
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_passes": 0,
+      "review_status": "PENDING_INDEPENDENT_REVIEW",
+      "limits": {
+        "max_external_case_requests": 1,
+        "max_created_roots": 3,
+        "max_supervisor_do_fetches": 100,
+        "max_total_do_fetches_including_target_control": 110,
+        "max_concurrent_supervisor_fetches": 3,
+        "max_control_poll_calls": 60,
+        "poll_interval_ms": 15,
+        "control_successful_fallback_ms": 2500,
+        "max_control_entries": 2,
+        "max_keys_per_root": 1,
+        "max_value_characters": 32,
+        "max_name_utf8_bytes": 1025,
+        "max_total_name_bytes": 3074,
+        "max_response_bytes": 65536,
+        "trace_deadline_ms": 6000,
+        "cleanup_deadline_ms": 3500,
+        "external_http_deadline_seconds": 12,
+        "external_case_process_deadline_seconds": 20,
+        "external_wave_deadline_seconds": 120,
+        "external_rss_limit_bytes": 1073741824
+      },
+      "literal_assertion_call_sites": 6,
+      "os_relevance": {
+        "label": "Supporting large legal names at evidenced OS root namespace boundary; specific OS name lengths unverified",
+        "evidence_status": "INFERRED_COMPONENT_RELEVANCE_ONLY",
+        "evidence": [
+          "celld-os-project/tests/ACCEPTANCE.md",
+          "celld-os-project/tests/duplicate-names/account.js",
+          "celld-os-project/tests/duplicate-names/router.js",
+          "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+        ],
+        "actual_os_checkout_available": false,
+        "actual_os_execution_claimed": false
+      },
+      "preconditions": [
+        "Exact reviewed celld source/build/executable identity with a fresh private disposable store and current live migrated DOs.",
+        "Finite external process/HTTP/RSS limits independently enforceable; no runtime or dependency substitution.",
+        "One external GET at a time; no process faults, reconfiguration, restart, foreign-ID operations or retained stateless handles."
+      ],
+      "cleanup": [
+        "Release any owned Control wait normally; join all already dispatched requests before any data cleanup.",
+        "Delete only the three-or-fewer tracked fixture roots storage and verify empty KV; Control is cleaned last and must have zero waiters/timers.",
+        "An unsettled trace or cleanup requires bounded external owned-process reap and store removal; it never earns runtime credit.",
+        "External supervisor verifies final process/store teardown; fixture cleanup alone does not prove it."
+      ],
+      "classification": "PRIMARY_DIRECT_PUBLIC_API_CANDIDATE",
+      "external_contract_refs": [
+        {
+          "url": "https://developers.cloudflare.com/durable-objects/api/id/",
+          "checked_on": "2026-10-09",
+          "last_updated": "2026-05-27"
+        },
+        {
+          "url": "https://developers.cloudflare.com/durable-objects/api/stub/",
+          "checked_on": "2026-10-09",
+          "last_updated": "2026-04-21"
+        }
+      ],
+      "static_source_assessment": "SOURCE_PREDICTED_COMPATIBILITY_FAILURE",
+      "predicted_gap": "harness.js:5706-5720 reuses dispatchName for client stub.name. The public Stub contract has no server-side 1024-byte metadata exception. The intended full client-name oracle is retained; no runtime failure has been observed."
+    },
+    {
+      "id": "A204",
+      "title": "Admit first requests after successful constructor initialization",
+      "mechanism": "successful-constructor-input-admission",
+      "trace": [
+        "Start the first fetch to a fresh InitTarget whose constructor calls blockConcurrencyWhile.",
+        "Observe its hold through a separately addressed real Control DO.",
+        "Submit the second target fetch and complete an independent Record root write while the constructor remains held.",
+        "Witness held/unadmitted state, explicitly release Control, and join both target fetches."
+      ],
+      "oracle": "Both actual target handlers enter only after successful initialization and explicit release, and return initialized state. A separate root completes before release. Fallback expiration is BLOCKED, never positive evidence.",
+      "nearest": [
+        "distributed-rpc Root.reentry",
+        "T001/T031 storage transaction scheduling",
+        "Z211 successful facet startup options"
+      ],
+      "distinct": "Constructor readiness gates the very first event plus a newly arriving event. This is ordinary public initialization, with no nested blocks, competing gate owners, stale continuations, reset, timer failure, runtime fault or native-state seam.",
+      "fixed_assertions": [
+        "c.eq(held.targetId,target.id.toString(),'constructor hold belongs to the requested live target');",
+        "c.eq((await c.send(peer,'write',{value:'peer-before-release'})).value,'peer-before-release','an independent ordinary root completes while constructor admission is closed');",
+        "c.eq([before.phase,before.entries.length,first.settled,second.settled],['held',0,false,false],'both incoming reads remain unadmitted at the witnessed constructor hold');",
+        "c.eq(results.map(x=>[x.value,x.ready,x.explicitRelease]),[['initialized',true,true],['initialized',true,true]],'first and queued requests see the fully completed successful initialization');",
+        "c.eq(after.entries.map(x=>x.request).sort(),['first','second'],'two distinct request handlers actually entered');",
+        "c.eq(after.entries.every(x=>x.afterRelease&&x.ready&&x.targetId===target.id.toString()),true,'every target admission follows explicit release and completed initialization');",
+        "c.eq(after.fallbackUsed,false,'no fallback timer supplied constructor completion');"
+      ],
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/A204"
+      },
+      "implementation": "cases.js:A204",
+      "primary_contract_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-objects.md",
+          "line_start": 19,
+          "line_end": 31
+        }
+      ],
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 2689,
+          "line_end": 2694
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 2721,
+          "line_end": 2803
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 2879,
+          "line_end": 2879
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 2952,
+          "line_end": 2974
+        }
+      ],
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_passes": 0,
+      "review_status": "PENDING_INDEPENDENT_REVIEW",
+      "limits": {
+        "max_external_case_requests": 1,
+        "max_created_roots": 3,
+        "max_supervisor_do_fetches": 100,
+        "max_total_do_fetches_including_target_control": 110,
+        "max_concurrent_supervisor_fetches": 3,
+        "max_control_poll_calls": 60,
+        "poll_interval_ms": 15,
+        "control_successful_fallback_ms": 2500,
+        "max_control_entries": 2,
+        "max_keys_per_root": 1,
+        "max_value_characters": 32,
+        "max_name_utf8_bytes": 1025,
+        "max_total_name_bytes": 3074,
+        "max_response_bytes": 65536,
+        "trace_deadline_ms": 6000,
+        "cleanup_deadline_ms": 3500,
+        "external_http_deadline_seconds": 12,
+        "external_case_process_deadline_seconds": 20,
+        "external_wave_deadline_seconds": 120,
+        "external_rss_limit_bytes": 1073741824
+      },
+      "literal_assertion_call_sites": 7,
+      "os_relevance": {
+        "label": "Public input-admission support for evidenced OS DO roots; specific constructor use inferred, not inspected",
+        "evidence_status": "INFERRED_COMPONENT_RELEVANCE_ONLY",
+        "evidence": [
+          "celld-os-project/tests/ACCEPTANCE.md",
+          "celld-os-project/tests/duplicate-names/account.js",
+          "celld-os-project/tests/duplicate-names/router.js",
+          "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+        ],
+        "actual_os_checkout_available": false,
+        "actual_os_execution_claimed": false
+      },
+      "preconditions": [
+        "Exact reviewed celld source/build/executable identity with a fresh private disposable store and current live migrated DOs.",
+        "Finite external process/HTTP/RSS limits independently enforceable; no runtime or dependency substitution.",
+        "One external GET at a time; no process faults, reconfiguration, restart, foreign-ID operations or retained stateless handles."
+      ],
+      "cleanup": [
+        "Release any owned Control wait normally; join all already dispatched requests before any data cleanup.",
+        "Delete only the three-or-fewer tracked fixture roots storage and verify empty KV; Control is cleaned last and must have zero waiters/timers.",
+        "An unsettled trace or cleanup requires bounded external owned-process reap and store removal; it never earns runtime credit.",
+        "External supervisor verifies final process/store teardown; fixture cleanup alone does not prove it."
+      ],
+      "classification": "PRIMARY_DIRECT_PUBLIC_API_CANDIDATE",
+      "external_contract_refs": [
+        {
+          "url": "https://developers.cloudflare.com/durable-objects/api/state/#blockconcurrencywhile",
+          "checked_on": "2026-10-09",
+          "last_updated": "2026-09-30"
+        }
+      ],
+      "static_source_assessment": "NO_RUNTIME_PREDICTION_REQUIRED"
+    },
+    {
+      "id": "A205",
+      "title": "Gate one live root while its same-class peer progresses",
+      "mechanism": "successful-request-input-admission-and-root-scope",
+      "trace": [
+        "Seed an EventTarget before the gated request.",
+        "Start one ordinary request whose successful block writes intermediate state then awaits Control.",
+        "After the held witness, send a new read to that root and seed a second root of the same EventTarget class.",
+        "Witness peer completion while the target read is unadmitted; explicitly release, join writer/read and inspect the actual entry log."
+      ],
+      "oracle": "The same-class peer completes before release, the held target admits no reader, and the reader enters after explicit release with committed terminal state. No intermediate value can satisfy the fixed oracle.",
+      "nearest": [
+        "A204 constructor admission",
+        "T001/T031 transaction admission",
+        "distributed-rpc Root.reentry"
+      ],
+      "distinct": "This is an already-live object and ordinary per-request block rather than constructor readiness or storage.transaction. The second same-class root directly distinguishes root-local admission from class-global blocking. No native gate contention, reentry or failure scenario is recreated.",
+      "fixed_assertions": [
+        "c.eq((await c.send(target,'seed')).value,'seed','ordinary target is initialized before the request gate');",
+        "c.eq(held.targetId,target.id.toString(),'request hold belongs to the already live target');",
+        "c.eq((await c.send(peer,'seed')).value,'seed','a second root of the same class remains serviceable during the live request block');",
+        "c.eq([before.phase,before.entries.length,writer.settled,reader.settled],['held',0,false,false],'reader does not enter while the successful critical section awaits control');",
+        "c.eq(results.map(x=>[x.value,x.explicitRelease]),[['committed',true],['committed',true]],'reader observes the terminal write after ordinary gate release');",
+        "c.eq(after.entries.map(x=>[x.request,x.afterRelease,x.ready,x.targetId]),[['reader',true,true,target.id.toString()]],'actual reader admission is recorded after release with terminal local state');",
+        "c.eq(after.fallbackUsed,false,'no fallback timer supplied request completion');"
+      ],
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/A205"
+      },
+      "implementation": "cases.js:A205",
+      "primary_contract_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/durable-objects.md",
+          "line_start": 59,
+          "line_end": 64
+        }
+      ],
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 2689,
+          "line_end": 2694
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 2721,
+          "line_end": 2803
+        }
+      ],
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_passes": 0,
+      "review_status": "PENDING_INDEPENDENT_REVIEW",
+      "limits": {
+        "max_external_case_requests": 1,
+        "max_created_roots": 3,
+        "max_supervisor_do_fetches": 100,
+        "max_total_do_fetches_including_target_control": 110,
+        "max_concurrent_supervisor_fetches": 3,
+        "max_control_poll_calls": 60,
+        "poll_interval_ms": 15,
+        "control_successful_fallback_ms": 2500,
+        "max_control_entries": 2,
+        "max_keys_per_root": 1,
+        "max_value_characters": 32,
+        "max_name_utf8_bytes": 1025,
+        "max_total_name_bytes": 3074,
+        "max_response_bytes": 65536,
+        "trace_deadline_ms": 6000,
+        "cleanup_deadline_ms": 3500,
+        "external_http_deadline_seconds": 12,
+        "external_case_process_deadline_seconds": 20,
+        "external_wave_deadline_seconds": 120,
+        "external_rss_limit_bytes": 1073741824
+      },
+      "literal_assertion_call_sites": 7,
+      "os_relevance": {
+        "label": "Public per-root input-admission support for evidenced multi-root OS operation; exact OS caller unverified",
+        "evidence_status": "INFERRED_COMPONENT_RELEVANCE_ONLY",
+        "evidence": [
+          "celld-os-project/tests/ACCEPTANCE.md",
+          "celld-os-project/tests/duplicate-names/account.js",
+          "celld-os-project/tests/duplicate-names/router.js",
+          "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+        ],
+        "actual_os_checkout_available": false,
+        "actual_os_execution_claimed": false
+      },
+      "preconditions": [
+        "Exact reviewed celld source/build/executable identity with a fresh private disposable store and current live migrated DOs.",
+        "Finite external process/HTTP/RSS limits independently enforceable; no runtime or dependency substitution.",
+        "One external GET at a time; no process faults, reconfiguration, restart, foreign-ID operations or retained stateless handles."
+      ],
+      "cleanup": [
+        "Release any owned Control wait normally; join all already dispatched requests before any data cleanup.",
+        "Delete only the three-or-fewer tracked fixture roots storage and verify empty KV; Control is cleaned last and must have zero waiters/timers.",
+        "An unsettled trace or cleanup requires bounded external owned-process reap and store removal; it never earns runtime credit.",
+        "External supervisor verifies final process/store teardown; fixture cleanup alone does not prove it."
+      ],
+      "classification": "PRIMARY_DIRECT_PUBLIC_API_CANDIDATE",
+      "external_contract_refs": [
+        {
+          "url": "https://developers.cloudflare.com/durable-objects/api/state/#blockconcurrencywhile",
+          "checked_on": "2026-10-09",
+          "last_updated": "2026-09-30"
+        }
+      ],
+      "static_source_assessment": "NO_RUNTIME_PREDICTION_REQUIRED"
+    }
+  ]
+}

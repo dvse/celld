@@ -1,0 +1,24 @@
+{
+  "id": "unit/ltx/ltx-internal-upstream-assertion-coverage",
+  "layer": "unit",
+  "behaviour": "ltx",
+  "title": "LTX internal upstream assertion coverage",
+  "origins": [
+    {
+      "source": "crates/ltx/Cargo.toml",
+      "legacy_id": "unit/ltx-upstream-internal-suite"
+    }
+  ],
+  "legacy_ids": [
+    "unit/ltx-upstream-internal-suite"
+  ],
+  "adapter": "none",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": "Crate declares test=false; unpublished celld_internal_tests include files are absent. Fleet restore and native log cases are separate checks, not a claim of the missing LTX suite.",
+  "runnable": false,
+  "source": "crates/ltx/Cargo.toml",
+  "source_sha256": "ff9bd92d83532c8fd19b1681331f8a774f713c11b8e9cea9d32eaf836fd6f381"
+}

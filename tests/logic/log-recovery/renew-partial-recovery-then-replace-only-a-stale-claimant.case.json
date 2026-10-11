@@ -1,0 +1,55 @@
+{
+  "id": "logic/log-recovery/renew-partial-recovery-then-replace-only-a-stale-claimant",
+  "layer": "logic",
+  "behaviour": "log-recovery",
+  "title": "Renew partial recovery then replace only a stale claimant",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic",
+      "legacy_id": "corpus/log-recovery-logic/J006"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic/tests/log_recovery.rs",
+      "sha256": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/log-recovery-logic/J006"
+  ],
+  "adapter": "native",
+  "corpus_id": "J006",
+  "corpus_wave": "log-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/log-recovery/fixtures/decision-cases/tests/log_recovery.rs",
+  "source_sha256": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c",
+  "test_filter": "j006_recovery_heartbeat_survives_partial_upload_then_stale_claim_changes",
+  "contract": {
+    "intent": "Renew partial recovery then replace only a stale claimant",
+    "preconditions": [
+      "Each test owns all in-memory values and directly calls public frozen production celld_logic components; no substitute decision implementation",
+      "Storage PUT/delete success, failure, CAS ordering, member confirmations and restore chains are explicit synthetic environmental facts; no disk, bucket, network, actor or VM is exercised",
+      "Every supplied finish_recovery certificate has a stipulated prior durable per-cell/bucket receipt; the pure finish function does not validate that I/O premise",
+      "GC chains are supplied from the stipulated production restore walk, oldest-first and ending at own epoch except the deliberate missing-opener schedules; no restore walk is reimplemented",
+      "GC listed vectors intentionally include base/own/off-chain epochs beyond the current executor scan.below input; these are public-component API robustness premises, not claimed live executor traces",
+      "Hash checks must match delivered runtime manifest lineage before future review/build/run; no compiler or SUT was launched while authoring"
+    ],
+    "trace": [
+      "Start first recovery at 100",
+      "Supply heartbeat 140 while some recovery uploads remain incomplete",
+      "Reject second claimant at 180 and keep takeover gate closed",
+      "Permit second claimant at exact stale boundary 190",
+      "Reject first claimant refresh at 191; keep tiered=4 and RecoverFirst",
+      "Supply durable certified tail 8, finish recovery and clear claimant"
+    ],
+    "oracle": "Fresh claim suppresses rival; old claimant cannot refresh successor; incomplete recovery never marks bucket complete; Successor closes certified tail at 8 and clears claim on supplied complete coverage",
+    "cleanup": "Drop only this test-owned records, maps, fragments, health tracker and ledger. No external resources exist; unwind also drops all owned values.",
+    "implementation": "tests/log_recovery.rs:j006_recovery_heartbeat_survives_partial_upload_then_stale_claim_changes"
+  },
+  "selector": "J006"
+}

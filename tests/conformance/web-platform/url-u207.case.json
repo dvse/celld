@@ -1,0 +1,147 @@
+{
+  "adapter": "http",
+  "behaviour": "web-platform",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "application_relevance": "Workers that rewrite a path must not silently change a URL serialized with explicit empty query or fragment markers.",
+    "assertion_count": 8,
+    "authored": true,
+    "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+    "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+    "desired_behavior": "The href sequence is /path?#, /next?#, /next#, /next, /next? while empty query and fragment getters remain empty strings.",
+    "distinctness": "Presence-state representation is independent of percent-encoding and live query object identity.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/U207",
+      "request_body": null
+    },
+    "fixed_runtime_assertions": [
+      "t.equal(url.search, '', 'empty-present query has empty getter');",
+      "t.equal(url.hash, '', 'empty-present fragment has empty getter');",
+      "t.equal(url.href, 'https://markers.example.test/path?#', 'constructor retains both empty delimiters');",
+      "t.equal(url.href, 'https://markers.example.test/next?#', 'unrelated setter retains empty query and fragment presence');",
+      "t.equal(url.href, 'https://markers.example.test/next#', 'clearing query leaves empty-present fragment');",
+      "t.equal(url.href, 'https://markers.example.test/next', 'clearing fragment removes its delimiter');",
+      "t.equal(url.href, 'https://markers.example.test/next?', 'question mark creates empty-present query');",
+      "t.equal(url.search, '', 'empty-present query getter remains empty');"
+    ],
+    "hypothesis": "Collapsing empty and absent fields into the same stored string may lose delimiters on an unrelated setter.",
+    "id": "U207",
+    "implementation": {
+      "end_line": 87,
+      "file": "cases.js",
+      "start_line": 73,
+      "symbol": "U207"
+    },
+    "independently_reviewed": false,
+    "layer": "direct-celld-worker-fetch-global-web-api",
+    "limits": {
+      "case_assertion_max_count": 16,
+      "case_input_max_code_units": 1024,
+      "case_tuple_max_count": 16,
+      "concurrent_requests": 1,
+      "network_calls_from_fixture": 0,
+      "repetitions": 1,
+      "request_body_bytes": 0,
+      "request_outer_deadline_seconds": 5,
+      "requests_per_case": 1,
+      "response_max_bytes": 65536,
+      "storage_writes_from_fixture": 0,
+      "timers_from_fixture": 0
+    },
+    "mechanism": "URL serialization distinction between absent and empty query/fragment",
+    "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+    "preconditions": [
+      "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+      "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+      "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+    ],
+    "prediction_is_runtime_evidence": false,
+    "primary_contract_refs": [
+      "https://url.spec.whatwg.org/#dom-url-search"
+    ],
+    "review_status": "UNREVIEWED",
+    "runtime_pass_claimed": false,
+    "runtime_source_refs": [
+      {
+        "line_end": 100,
+        "line_start": 86,
+        "path": "celld-os-project/celld/crates/celld/js/url.js"
+      },
+      {
+        "line_end": 195,
+        "line_start": 166,
+        "path": "celld-os-project/celld/crates/celld/js/url.js"
+      },
+      {
+        "line_end": 248,
+        "line_start": 235,
+        "path": "celld-os-project/celld/crates/celld/js/url.js"
+      },
+      {
+        "line_end": 10643,
+        "line_start": 10631,
+        "path": "celld-os-project/celld/crates/celld/js.rs"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "schedule": {
+      "depends_on": [],
+      "kind": "one synchronous finite trace",
+      "overlap": "none",
+      "path": "/case/U207",
+      "request_ordinal": 7,
+      "runtime_operations": [
+        "Construct a URL ending in ?# and assert empty getters but exact serialized delimiters.",
+        "Set only pathname and assert both delimiters remain.",
+        "Clear query, then fragment, and assert each serialized state.",
+        "Assign search = ? and assert empty-present query serialization."
+      ]
+    },
+    "source_observation": "Host seam unwrap_or and JS truthiness flatten absent/empty fields, while initial href is retained separately. Source discrepancy hypothesis only.",
+    "static_prediction": "EXPECTED_FAILURE_CANDIDATE",
+    "status": "NOT_RUN",
+    "title": "Preserve empty-present query and fragment delimiters",
+    "trace": [
+      "Construct a URL ending in ?# and assert empty getters but exact serialized delimiters.",
+      "Set only pathname and assert both delimiters remain.",
+      "Clear query, then fragment, and assert each serialized state.",
+      "Assign search = ? and assert empty-present query serialization."
+    ]
+  },
+  "corpus_id": "U207",
+  "corpus_wave": "url-semantics",
+  "fixture": "tests/conformance/web-platform/fixtures/url-semantics",
+  "id": "conformance/web-platform/url-u207",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/url-semantics/U207"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/url-semantics/U207",
+      "manifest_sha256": "d61fdb1b4d070ae5aff0ad1456c39d2842c341f9737a20b67c67c251f638ae91",
+      "review_sha256": "13b98102e846487ca6304032863d1edb29b691c8649ebdea0ad53161ac6da486",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics",
+      "tranche": "001"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/U207",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "U207",
+  "source": "tests/conformance/web-platform/fixtures/url-semantics/fixture.js",
+  "source_sha256": "ccbb1cf21c3f719aa06ed64b498fc396f00736cc96d7cbd2aea437f2cc221ca6",
+  "title": "Preserve empty-present query and fragment delimiters"
+}

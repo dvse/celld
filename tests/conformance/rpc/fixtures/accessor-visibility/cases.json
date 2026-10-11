@@ -1,0 +1,60 @@
+[
+  {
+    "id": "V001",
+    "intent": "Reject an own callable accessor before invoking its getter",
+    "preconditions": "Owned disposable two-owner fleet; actual peer identity; DO defines side-effecting own getter returning function",
+    "trace": [
+      "prove public prototype method works",
+      "capture own getter and callable effect counts",
+      "invoke ownCallableAccessor through ordinary DO RPC",
+      "capture both effect counts",
+      "verify public liveness and unchanged recipient identity"
+    ],
+    "stress": "visibility resolution failure at getter-before-call boundary; no high-load claim",
+    "oracle": "specific remote TypeError missing-method rejection; both getter and returned-callable effect counters unchanged; positive controls work",
+    "cleanup": "no returned capabilities or held resources; per-run owned fleet teardown",
+    "implementation": "index.js:accessorCases.V001",
+    "layer": "real-process-RPC",
+    "coverage_kind": "micro-conformance-regression",
+    "gate": "promotion"
+  },
+  {
+    "id": "V002",
+    "intent": "Permit inherited prototype accessor returning callable while preserving method receiver",
+    "preconditions": "Owned disposable two-owner fleet; DO exposes application prototype getter yielding receiver-sensitive function",
+    "trace": [
+      "capture getter and callable counters",
+      "call inheritedCallableAccessor twice with distinct labels",
+      "assert exact peer identity and label each time",
+      "verify getter and callable counts increase exactly twice",
+      "verify post-call liveness and unchanged identity"
+    ],
+    "stress": "two successive getter-to-call dispatches; guard against overbroad privacy fix",
+    "oracle": "each return identifies actual peer and correct input; callable this equals original DO instance; getter/call counters each+2; recipient remains live",
+    "cleanup": "no retained resources; per-run owned fleet teardown",
+    "implementation": "index.js:accessorCases.V002",
+    "layer": "real-process-RPC",
+    "coverage_kind": "micro-conformance-regression",
+    "gate": "promotion"
+  },
+  {
+    "id": "V003",
+    "intent": "Permit ordinary DO scheduled method because pinned workerd does not reserve that name",
+    "preconditions": "Owned private two-owner fleet; DO declares public prototype scheduled method; no cron triggers configured",
+    "trace": [
+      "prove public method liveness",
+      "capture scheduled effect counter",
+      "call peer.scheduled through ordinary DO RPC",
+      "assert actual peer identity and marker",
+      "verify exactly one effect and post-call liveness"
+    ],
+    "stress": "reserved-name guard regression; no cron scheduler or high-load claim",
+    "oracle": "ordinary scheduled call succeeds at witnessed peer, counter+1, recipient remains live; patch must not add an unsupported name restriction",
+    "cleanup": "no held resources; owned fleet teardown",
+    "implementation": "index.js:accessorCases.V003",
+    "layer": "real-process-RPC",
+    "coverage_kind": "micro-conformance-regression",
+    "gate": "promotion",
+    "source_contract": "Pinned workerd v1.20261001.1 JsRpcEntrypoint::isReservedName excludes scheduled; independently verify before promotion"
+  }
+]

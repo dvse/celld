@@ -1,0 +1,45 @@
+{
+  "id": "conformance/rpc/disposed-pending-promise-must-refuse-new-pipeline-admission-without-target-effects",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "Disposed pending promise must refuse new pipeline admission without target effects",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/capability-order",
+      "legacy_id": "capability-order/O035"
+    }
+  ],
+  "corpus_wave": "capability-order",
+  "corpus_id": "O035",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "O035",
+    "intent": "Disposed pending promise must refuse new pipeline admission without target effects",
+    "preconditions": [
+      "COMMON",
+      "Native RpcPromise disposal available; deferred producer gate closed"
+    ],
+    "trace": [
+      "Observe producer prepare barrier and dispose its RpcPromise",
+      "Attempt new speculative child mark and require disposed Error",
+      "Compare unchanged before/after provider ledger",
+      "Release producer; require late child disposal and no forbidden mark"
+    ],
+    "failure_schedule": "Explicit named gate is released only after observed entry; no time-based race; at most one injected failure when the trace names it",
+    "stress": "New pipeline admission after pending ownership cancellation",
+    "oracle": "Refused call never reaches target; producer still finishes and its result releases",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-PROMISE",
+      "SC-DISPOSE",
+      "SC-ERROR"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O035 state transition; counts, repetitions and deployment placements do not create additional cases."
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "adapter": "topology",
+  "behaviour": "fetch-and-http",
+  "contract": {
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "distinctness": "Writable abort entry versus X004 readable consumer cancellation.",
+    "implementation": "operations.js:X005",
+    "intent": "Abort an unflushed raw exporter and immediately recover",
+    "oracle": "Exact abort reason reaches output; fresh raw encoder reconstructs complete sheet; sibling decode exact.",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "transform writable abort calls native drop"
+    ],
+    "trace": [
+      "Write a raw sheet prefix and keep the native encoder unflushed.",
+      "Complete independent gzip decoding while that prefix state is held.",
+      "Abort the writer, require readable error identity, and roundtrip a new raw encoder."
+    ]
+  },
+  "corpus_id": "X005",
+  "corpus_wave": "native-transform-stress",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/transform-streams",
+  "id": "conformance/fetch-and-http/abort-an-unflushed-raw-exporter-and-immediately-recover",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/native-transform-stress/X005"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/native-transform-stress/X005",
+      "source": "guarded-source-archive/celld-os-stress/waves/native-transform-stress"
+    },
+    {
+      "sha256": "1c4be2004e476ee286465674ad37b81dd9ea8cc33e0dda6ef66b66b5830346de",
+      "source": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "X005",
+  "source": "tests/conformance/fetch-and-http/fixtures/transform-streams/entry.js",
+  "source_sha256": "1c4be2004e476ee286465674ad37b81dd9ea8cc33e0dda6ef66b66b5830346de",
+  "title": "Abort an unflushed raw exporter and immediately recover"
+}

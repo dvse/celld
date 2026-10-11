@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "execution_receipts_present": false,
+  "receipt_prefix": "TRANSITION <case-id> <strictly-increasing-call-number>",
+  "receipt_timing": "Only after an actual production function returns; State cases also finish State::validate before the receipt",
+  "minimum_completed_calls_per_case": 4,
+  "maximum_completed_calls_per_case": 100,
+  "required_terminal": ["END <case-id> completed_calls=<at-least-four>", "Rust harness exact test_function reports ok", "All authored source and profile pins match", "Owned process cleanup confirmed"],
+  "not_evidence_of_execution": ["Receipt constructor", "Source presence", "BEGIN marker", "Static parser/hash PASS", "Compilation alone", "A previous test binary result", "Synthetic storage acknowledgements"],
+  "required_run_artifact_fields": ["case_id", "exact_test_function", "started_at", "finished_at", "source_pins_sha256", "manifest_sha256", "implementation_sha256", "profile_sha256", "native_executable_sha256", "compiler_toolchain_hashes", "exit_code", "stdout_sha256", "stderr_sha256", "completed_transition_count", "terminal_marker", "cleanup", "status"],
+  "counts": {"authored":24,"reviewed":0,"compiled":0,"run":0,"passed":0}
+}

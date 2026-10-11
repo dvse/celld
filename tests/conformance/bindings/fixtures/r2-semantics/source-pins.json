@@ -1,0 +1,12 @@
+{
+  "source_root": "/workspace/shared/celld-recovered/celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "source_snapshot": "celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "files": {
+    "celld-os-project/celld/crates/celld/js/harness.js": "8d3be5ef1b78d302cb2da745c63f8d2e1222115c49a8d08f1096bca7d235c237",
+    "celld-os-project/celld/crates/celld/js/r2_ops.rs": "84edf15f358fb573d103cd6b69451bd277a730d7592dbb6d1ae38ad598d74795",
+    "celld-os-project/celld/crates/celld/r2_store.rs": "ad9dbcc82f9d0d5bb0adbc368f96b439c4263a1afb34d92dcdbae3124aceefa3",
+    "celld-os-project/celld/crates/celld/bucket.rs": "5f65b6fad8f2d455d9be02ee9004ac19568244500bd9bb0dd1552ecf5f01ab46",
+    "celld-os-project/celld/docs/services/r2.md": "f251cb6bc0b4147a14cbc17a1257d7f7e655ab6f865ed18f94f8c0be8c34de11",
+    "celld-os-project/celld/examples/r2/wrangler.jsonc": "76e7d04bf606530e813d0b744b8afad9b5c3615178277819cceaf247902f812f"
+  }
+}

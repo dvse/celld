@@ -1,0 +1,53 @@
+{
+  "id": "logic/wake-recovery/keep-newest-wake-coverage-after-reversed-put-completions",
+  "layer": "logic",
+  "behaviour": "wake-recovery",
+  "title": "Keep newest wake coverage after reversed PUT completions",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic",
+      "legacy_id": "corpus/wake-recovery-logic/K002"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+      "sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/wake-recovery-logic/K002"
+  ],
+  "adapter": "native",
+  "corpus_id": "K002",
+  "corpus_wave": "wake-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/wake-recovery/fixtures/decision-cases/tests/wake_recovery.rs",
+  "source_sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86",
+  "test_filter": "k002_old_put_completion_cannot_replace_newest_coverage",
+  "contract": {
+    "intent": "Keep newest wake coverage after reversed PUT completions",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Request both publications.",
+      "Compare their distinct immutable keys.",
+      "Confirm sequence3 first and sequence2 second.",
+      "Check sequence3 covered, sequence2 not current coverage, and no new sequence3 publication."
+    ],
+    "oracle": [
+      "Old completion cannot overwrite the newer cache identity.",
+      "Current installation stays covered without another PUT."
+    ],
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k002_old_put_completion_cannot_replace_newest_coverage"
+  },
+  "selector": "K002"
+}

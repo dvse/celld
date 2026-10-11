@@ -1,0 +1,33 @@
+{
+  "id": "conformance/rpc/cross-cell-continuation",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "cross cell continuation",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/cross-cell-continuation",
+      "legacy_id": "hyperbob/cross-cell-continuation"
+    },
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/cross-cell-continuation/wrangler.json",
+      "sha256": "98338942e16c103384f9cde87aa39a6740423fd37fd7e5958645d68fb4dccee9"
+    }
+  ],
+  "legacy_ids": [
+    "hyperbob/cross-cell-continuation"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/rpc/fixtures/cross-cell-continuation",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/?v=suite"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/rpc/fixtures/cross-cell-continuation/wrangler.json",
+  "source_sha256": "98338942e16c103384f9cde87aa39a6740423fd37fd7e5958645d68fb4dccee9"
+}

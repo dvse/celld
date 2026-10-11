@@ -1,0 +1,47 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "dispose function and parent",
+    "intent": "Own function properties remain accessible on a callable RPC capability",
+    "oracle": "own-function-value and called:arg",
+    "preconditions": "Returned function has own label property",
+    "trace": [
+      "read function label",
+      "invoke function"
+    ]
+  },
+  "corpus_id": "R018",
+  "corpus_wave": "base",
+  "fixture": "tests/conformance/rpc/fixtures/object-capabilities/fixture",
+  "id": "conformance/rpc/own-function-properties-remain-accessible-on-a-callable-rpc-capability",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/base/R018"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/base/R018",
+      "source": "guarded-source-archive/celld-os-stress/fixture"
+    },
+    {
+      "sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+      "source": "guarded-source-archive/celld-os-stress/fixture/rpc.js"
+    },
+    {
+      "sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+      "source": "guarded-source-archive/celld-os-stress/waves/do-visibility-regression/rpc.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "R018",
+  "source": "tests/conformance/rpc/fixtures/object-capabilities/fixture/rpc.js",
+  "source_sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+  "title": "Own function properties remain accessible on a callable RPC capability"
+}

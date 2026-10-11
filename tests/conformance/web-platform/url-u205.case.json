@@ -1,0 +1,134 @@
+{
+  "adapter": "http",
+  "behaviour": "web-platform",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "application_relevance": "Workers ingest ordinary padded port configuration and use origin or host as stable cache and routing keys.",
+    "assertion_count": 5,
+    "authored": true,
+    "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+    "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+    "desired_behavior": "00443 is the default 443 and disappears; 008443 serializes as 8443; empty assignment clears the port.",
+    "distinctness": "Numeric conversion happens in the direct port setter, not the IPv6 host grammar in U204.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/U205",
+      "request_body": null
+    },
+    "fixed_runtime_assertions": [
+      "t.equal(url.port, '', 'numeric default port is elided after conversion');",
+      "t.equal(url.href, 'https://ports.example.test/a', 'default port absent from href');",
+      "t.equal(url.port, '8443', 'nondefault port stored as canonical decimal');",
+      "t.equal(url.origin, 'https://ports.example.test:8443', 'origin uses canonical nondefault port');",
+      "t.equal(url.host, 'ports.example.test', 'empty port clears explicit port');"
+    ],
+    "hypothesis": "Comparing raw digit strings to scheme defaults may retain leading zeroes and miss numeric default ports.",
+    "id": "U205",
+    "implementation": {
+      "end_line": 56,
+      "file": "cases.js",
+      "start_line": 46,
+      "symbol": "U205"
+    },
+    "independently_reviewed": false,
+    "layer": "direct-celld-worker-fetch-global-web-api",
+    "limits": {
+      "case_assertion_max_count": 16,
+      "case_input_max_code_units": 1024,
+      "case_tuple_max_count": 16,
+      "concurrent_requests": 1,
+      "network_calls_from_fixture": 0,
+      "repetitions": 1,
+      "request_body_bytes": 0,
+      "request_outer_deadline_seconds": 5,
+      "requests_per_case": 1,
+      "response_max_bytes": 65536,
+      "storage_writes_from_fixture": 0,
+      "timers_from_fixture": 0
+    },
+    "mechanism": "Port setter numeric representation and default elision",
+    "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+    "preconditions": [
+      "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+      "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+      "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+    ],
+    "prediction_is_runtime_evidence": false,
+    "primary_contract_refs": [
+      "https://url.spec.whatwg.org/#dom-url-port"
+    ],
+    "review_status": "UNREVIEWED",
+    "runtime_pass_claimed": false,
+    "runtime_source_refs": [
+      {
+        "line_end": 43,
+        "line_start": 34,
+        "path": "celld-os-project/celld/crates/celld/js/url.js"
+      },
+      {
+        "line_end": 164,
+        "line_start": 153,
+        "path": "celld-os-project/celld/crates/celld/js/url.js"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "schedule": {
+      "depends_on": [],
+      "kind": "one synchronous finite trace",
+      "overlap": "none",
+      "path": "/case/U205",
+      "request_ordinal": 5,
+      "runtime_operations": [
+        "Construct an HTTPS URL with an explicit nondefault port.",
+        "Set port to 00443 and assert empty port and no port in href.",
+        "Set port to 008443 and assert canonical 8443 plus origin.",
+        "Clear port and assert host without a port."
+      ]
+    },
+    "source_observation": "Pinned setter accepts digit-only input but compares and stores the original string. Source discrepancy hypothesis only.",
+    "static_prediction": "EXPECTED_FAILURE_CANDIDATE",
+    "status": "NOT_RUN",
+    "title": "Normalize numeric port strings before default-port comparison",
+    "trace": [
+      "Construct an HTTPS URL with an explicit nondefault port.",
+      "Set port to 00443 and assert empty port and no port in href.",
+      "Set port to 008443 and assert canonical 8443 plus origin.",
+      "Clear port and assert host without a port."
+    ]
+  },
+  "corpus_id": "U205",
+  "corpus_wave": "url-semantics",
+  "fixture": "tests/conformance/web-platform/fixtures/url-semantics",
+  "id": "conformance/web-platform/url-u205",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/url-semantics/U205"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/url-semantics/U205",
+      "manifest_sha256": "d61fdb1b4d070ae5aff0ad1456c39d2842c341f9737a20b67c67c251f638ae91",
+      "review_sha256": "13b98102e846487ca6304032863d1edb29b691c8649ebdea0ad53161ac6da486",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics",
+      "tranche": "001"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/U205",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "U205",
+  "source": "tests/conformance/web-platform/fixtures/url-semantics/fixture.js",
+  "source_sha256": "ccbb1cf21c3f719aa06ed64b498fc396f00736cc96d7cbd2aea437f2cc221ca6",
+  "title": "Normalize numeric port strings before default-port comparison"
+}

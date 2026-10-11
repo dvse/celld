@@ -1,0 +1,92 @@
+{
+  "status": "AUTHOR_AUDIT_ONLY",
+  "selected_count": 5,
+  "read_before_selection": [
+    "celld-os-project/tests/ACCEPTANCE.md",
+    "celld-os-project/tests/duplicate-names/account.js",
+    "celld-os-project/tests/duplicate-names/router.js",
+    "celld-os-project/tests/duplicate-names/run_duplicates.py",
+    "celld-os-project/tests/foreign-class/provider.js",
+    "celld-os-project/tests/foreign-class/caller.js",
+    "celld-os-project/tests/fixtures/distributed-rpc/index.js",
+    "celld-os-stress/waves/sqlite-concurrency/manifest.json",
+    "celld-os-stress/waves/sqlite-concurrency/cases.js",
+    "celld-os-stress/waves/sqlite-concurrency/cell-cases.js",
+    "celld-os-stress/waves/loader-props/manifest.json",
+    "celld-os-stress/waves/module-graph-stress/cases.mjs",
+    "celld-os-stress/waves/module-graph-stress/graphs.mjs",
+    "celld-os-stress/waves/deployment-recovery/cases.py"
+  ],
+  "new_wave_baseline_pins": {
+    "facet-root-semantics/cases.js": "3e0d3a30c5c60b02f026d26d58012c6b3a244df8858e3a2fe40b2f3aa9aea359",
+    "facet-root-semantics/manifest.json": "a1615598800adf714f1786dbf6db36365b035d4b9e54a4c56c12e5a427ed7e1f",
+    "atomic-accounting-semantics/cases.js": "b989812ac2fb83e206a9068aa18f77ea92833e76bbb620f6bf8cb024cbdf75e3",
+    "atomic-accounting-semantics/manifest.json": "74ca24883b66b7505190af93acdb03199887fecbe09f5d377d344cfafb2cad69"
+  },
+  "case_distinctions": [
+    {
+      "id": "A201",
+      "nearest": [
+        "duplicate-names/account.js state/add/loopback",
+        "U014/U015/U017",
+        "Z201/Z202"
+      ],
+      "distinct": "Existing identity coverage addresses class/script/binding separation and facet display identity. It never directly asserts valid namespace idFromString readdressing of durable state. No separate credit is assigned to same-name equality or getByName alone."
+    },
+    {
+      "id": "A202",
+      "nearest": [
+        "A201 named helper continuity",
+        "U014/U017 namespace separation",
+        "Z202 explicit facet identity"
+      ],
+      "distinct": "Exercises actual newUniqueId address creation and later valid string reopening, rather than a named ID, a supplied facet display ID or a changed namespace. Two samples are a finite identity check, not randomness/entropy/statistical collision certification."
+    },
+    {
+      "id": "A203",
+      "nearest": [
+        "Z201/Z202 named facet display identities",
+        "duplicate-names fixed short names"
+      ],
+      "distinct": "One compound byte-boundary/full-name contract. Cases are not split by length, suffix or Unicode parameter values. No malformed names, truncated IDs or cryptographic validation failures are submitted."
+    },
+    {
+      "id": "A204",
+      "nearest": [
+        "distributed-rpc Root.reentry",
+        "T001/T031 storage transaction scheduling",
+        "Z211 successful facet startup options"
+      ],
+      "distinct": "Constructor readiness gates the very first event plus a newly arriving event. This is ordinary public initialization, with no nested blocks, competing gate owners, stale continuations, reset, timer failure, runtime fault or native-state seam."
+    },
+    {
+      "id": "A205",
+      "nearest": [
+        "A204 constructor admission",
+        "T001/T031 transaction admission",
+        "distributed-rpc Root.reentry"
+      ],
+      "distinct": "This is an already-live object and ordinary per-request block rather than constructor readiness or storage.transaction. The second same-class root directly distinguishes root-local admission from class-global blocking. No native gate contention, reentry or failure scenario is recreated."
+    }
+  ],
+  "excluded_without_case_ids": [
+    "Same name/class identity alone: subsumed by preserved duplicate-names and U014/U015/U017.",
+    "Facet display-kind/name inheritance: Z201/Z202 already covers it.",
+    "Static/dynamic module namespace: M008 is an ECMAScript module identity test, not a DO ID helper test.",
+    "Lazy get-only object activation: omitted because an independent nonactivation witness would add more machinery than coverage.",
+    "Nested/contended blocks, stale drivers and failure/reset/timeout handling: excluded guarded-core territory, no rephrased case.",
+    "Separate name lengths, character alphabets, unique ID counts or routing ingress permutations: no distinct credit."
+  ],
+  "prohibited_scope": "No N001-N036 retry or reproduction, G/N/P/J122 native paths, invalid/foreign/forged IDs, auth/HMAC-failure tests, lease/draining, ownership takeover, fault injection, retained stateless capabilities or malformed input.",
+  "oracle_review_notes": [
+    {
+      "id": "A201",
+      "resolution": "Removed the incidental assertion that first/shortcut/parsed accesses all preserve the same server ctx.id.name. Official ID docs describe name omission on idFromString access; how that per-access wording applies to reuse of an already initialized live state.id remains ambiguous. State/identity continuity is still the primary contract. No name-retention compatibility or separate metadata-case credit is claimed."
+    },
+    {
+      "id": "A203",
+      "resolution": "Corrected client stub.name to retain full supplied names under the official Stub contract; the server ctx.id.name byte cutoff remains. Source-predicted compatibility failure is labeled separately from UNRUN."
+    }
+  ],
+  "count_rationale": "Five distinct contracts survive overlap/scope review; no padding to the suggested six-to-twelve size."
+}

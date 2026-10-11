@@ -1,0 +1,47 @@
+{
+  "id": "conformance/dynamic-workers-and-tails/defer-failing-code-callback-and-recover-using-a-new-os-code-version",
+  "layer": "conformance",
+  "behaviour": "dynamic-workers-and-tails",
+  "title": "Defer failing code callback and recover using a new OS code version",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/loader-props",
+      "legacy_id": "loader-props/L001"
+    }
+  ],
+  "corpus_wave": "loader-props",
+  "corpus_id": "L001",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "L001",
+    "intent": "Defer failing code callback and recover using a new OS code version",
+    "failure_hypothesis": "Synchronous get invokes its factory immediately or a failed version poisons independent versions",
+    "preconditions": [
+      "Fresh named load; callback throws factory-failed",
+      "Disposable private fixture with fresh supervisor name, live LOADER, facets, restore flag, and positive Loader control",
+      "External reviewed adapter has exclusive run slot and enforces wall/memory/PID/load limits"
+    ],
+    "trace": [
+      "Call get without awaiting",
+      "Check factory counter before a microtask",
+      "Invoke verify and capture factory rejection",
+      "Load independent recovery-v2 and verify"
+    ],
+    "stress": "2 workers; 2 entrypoint calls; one callback failure",
+    "oracle": "Factory count is 0 synchronously then 1; exact failure marker; v2 returns default",
+    "cleanup": "Case-specific finally disposes restored handles and drains finite cancellation hold where used; common cleanup releases code gates, aborts every owned facet, disposes entrypoints and worker handles, removes only tracked fixture KV rows. Parent tears down disposable fleet/storage.",
+    "implementation": "cases.js:loaderCases.L001",
+    "contract_group": "loader",
+    "qualification": "characterization",
+    "promotion": "NOT_PROMOTED: independent source/oracle review and recorded frozen-runtime run required",
+    "layer": "real-process-RPC",
+    "profile": "loader-props-2026-09-04",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  }
+}

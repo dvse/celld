@@ -1,0 +1,134 @@
+{
+  "adapter": "http",
+  "behaviour": "web-platform",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "application_relevance": "Worker code can inspect and decorate blob URL strings; this case neither creates nor dereferences a Blob object URL.",
+    "assertion_count": 5,
+    "authored": true,
+    "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+    "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+    "desired_behavior": "The href continues to begin blob:https://, with ?mode=small#preview appended outside the embedded path.",
+    "distinctness": "Opaque serialization versus the hierarchical HTTPS paths in U201-U207; no object URL lifecycle or retained capability.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/U208",
+      "request_body": null
+    },
+    "fixed_runtime_assertions": [
+      "t.equal(url.origin, 'https://media.example.test', 'blob inherits embedded HTTPS origin');",
+      "t.equal(url.href, 'blob:https://media.example.test:443/11111111-2222-4333-8444-555555555555#preview', 'fragment update preserves opaque-path serialization');",
+      "t.equal(url.href, 'blob:https://media.example.test:443/11111111-2222-4333-8444-555555555555?mode=small#preview', 'bound query update does not insert authority slashes');",
+      "t.equal(url.pathname, 'https://media.example.test:443/11111111-2222-4333-8444-555555555555', 'embedded path is unchanged');",
+      "t.equal(url.origin, 'https://media.example.test', 'fragment and query do not change blob origin');"
+    ],
+    "hypothesis": "The common href rebuild path may insert // after every scheme, corrupting an ordinary blob URL string.",
+    "id": "U208",
+    "implementation": {
+      "end_line": 98,
+      "file": "cases.js",
+      "start_line": 89,
+      "symbol": "U208"
+    },
+    "independently_reviewed": false,
+    "layer": "direct-celld-worker-fetch-global-web-api",
+    "limits": {
+      "case_assertion_max_count": 16,
+      "case_input_max_code_units": 1024,
+      "case_tuple_max_count": 16,
+      "concurrent_requests": 1,
+      "network_calls_from_fixture": 0,
+      "repetitions": 1,
+      "request_body_bytes": 0,
+      "request_outer_deadline_seconds": 5,
+      "requests_per_case": 1,
+      "response_max_bytes": 65536,
+      "storage_writes_from_fixture": 0,
+      "timers_from_fixture": 0
+    },
+    "mechanism": "Opaque-path URL serialization with inherited blob origin",
+    "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+    "preconditions": [
+      "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+      "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+      "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+    ],
+    "prediction_is_runtime_evidence": false,
+    "primary_contract_refs": [
+      "https://url.spec.whatwg.org/#concept-url-serializer"
+    ],
+    "review_status": "UNREVIEWED",
+    "runtime_pass_claimed": false,
+    "runtime_source_refs": [
+      {
+        "line_end": 228,
+        "line_start": 188,
+        "path": "celld-os-project/celld/crates/celld/js/url.js"
+      },
+      {
+        "line_end": 263,
+        "line_start": 235,
+        "path": "celld-os-project/celld/crates/celld/js/url.js"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "schedule": {
+      "depends_on": [],
+      "kind": "one synchronous finite trace",
+      "overlap": "none",
+      "path": "/case/U208",
+      "request_ordinal": 8,
+      "runtime_operations": [
+        "Construct one ordinary blob URL string with an embedded HTTPS origin and fixed UUID.",
+        "Assert inherited origin.",
+        "Set hash and assert exact opaque-path href.",
+        "Append a bound query pair and assert href, original pathname, and unchanged origin."
+      ]
+    },
+    "source_observation": "Pinned origin code handles blob specially, but href reconstruction starts protocol + // for all schemes. Source discrepancy hypothesis only.",
+    "static_prediction": "EXPECTED_FAILURE_CANDIDATE",
+    "status": "NOT_RUN",
+    "title": "Mutate blob URL query and fragment without adding authority slashes",
+    "trace": [
+      "Construct one ordinary blob URL string with an embedded HTTPS origin and fixed UUID.",
+      "Assert inherited origin.",
+      "Set hash and assert exact opaque-path href.",
+      "Append a bound query pair and assert href, original pathname, and unchanged origin."
+    ]
+  },
+  "corpus_id": "U208",
+  "corpus_wave": "url-semantics",
+  "fixture": "tests/conformance/web-platform/fixtures/url-semantics",
+  "id": "conformance/web-platform/url-u208",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/url-semantics/U208"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/url-semantics/U208",
+      "manifest_sha256": "d61fdb1b4d070ae5aff0ad1456c39d2842c341f9737a20b67c67c251f638ae91",
+      "review_sha256": "13b98102e846487ca6304032863d1edb29b691c8649ebdea0ad53161ac6da486",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics",
+      "tranche": "001"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/U208",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "U208",
+  "source": "tests/conformance/web-platform/fixtures/url-semantics/fixture.js",
+  "source_sha256": "ccbb1cf21c3f719aa06ed64b498fc396f00736cc96d7cbd2aea437f2cc221ca6",
+  "title": "Mutate blob URL query and fragment without adding authority slashes"
+}

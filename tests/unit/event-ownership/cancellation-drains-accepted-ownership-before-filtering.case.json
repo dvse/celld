@@ -1,0 +1,24 @@
+{
+  "id": "unit/event-ownership/cancellation-drains-accepted-ownership-before-filtering",
+  "layer": "unit",
+  "behaviour": "event-ownership",
+  "title": "cancellation drains accepted ownership before filtering",
+  "origins": [
+    {
+      "source": "crates/celld/js/ownership_tests.rs",
+      "legacy_id": "unit/celld/js::ownership_tests::cancellation_drains_accepted_ownership_before_filtering"
+    }
+  ],
+  "legacy_ids": [
+    "unit/celld/js::ownership_tests::cancellation_drains_accepted_ownership_before_filtering"
+  ],
+  "adapter": "cargo",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "crates/celld/js/ownership_tests.rs",
+  "source_sha256": "f00b0a541809740ae8cc20d60ecbe00002c54f960ddc342cf28c031bea7dc93d",
+  "test_filter": "js::ownership_tests::cancellation_drains_accepted_ownership_before_filtering"
+}

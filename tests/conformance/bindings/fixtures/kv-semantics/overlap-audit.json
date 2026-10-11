@@ -1,0 +1,43 @@
+{
+  "status": "AUTHOR_AVAILABLE_CORPUS_OVERLAP_AUDIT_ONLY",
+  "source_archive": "celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "inventory": "celld-os-stress/SOURCE-FILES.json",
+  "inventory_sha256": "eeab75b82b6ef052c9728b1b36cbd343ba656f655f4692ae693aff82e5d586bc",
+  "inventory_files_scanned": 173,
+  "javascript_files_scanned": 62,
+  "public_kv_identifier_matches": {
+    "getWithMetadata": [],
+    "deleteBulk": [],
+    "kv_namespaces": [],
+    "KvNamespace": []
+  },
+  "new_id_collisions": [],
+  "related_existing_material": [
+    {
+      "path": "celld-os-project/celld/examples/kv/index.js",
+      "relationship": "Basic GET/PUT/DELETE application example, with no assertions. K201 adds existence/deletion/recreation assertions; remaining cases target distinct mechanics."
+    },
+    {
+      "path": "celld-os-project/tests/foreign-class/provider.js",
+      "relationship": "CONFIG.put(owner)/get(owner) is provider-binding-origin evidence inside foreign DO class tests, not a KV behavior suite. K218 targets two configured namespace cells and cross-namespace deletion/list isolation, with no foreign class or restart."
+    },
+    {
+      "path": "celld-os-stress/waves/sqlite-concurrency/cell-cases.js",
+      "relationship": "T029 uses DO storage.kv iterator generation alongside a SQL cursor; it is not a Workers env KV namespace binding. No iterator invalidation or direct SQL is in K201-K220."
+    },
+    {
+      "path": "celld-os-stress/waves/wake-recovery-logic/manifest.json",
+      "relationship": "K001-K024 are native wake/recovery/Queue source scenarios; the shared K letter is not evidence of any recovered 24-case ordinary KV suite."
+    },
+    {
+      "path": "celld-os-project/celld/docs/testing.md",
+      "relationship": "Read for test strategy. Historical claims in source docs are not runtime evidence for these new fixtures."
+    }
+  ],
+  "scope_limit": "Only the restored immutable archive and its inventoried case bodies were audited. Any absent private conformance includes or an unavailable previously mentioned 24-case KV tranche cannot be semantically audited or claimed recovered.",
+  "distinctness_method": "Each new case has a hand-authored fixed trace and a separate failure mechanism in manifest.json. Input variations inside one case earn one candidate only. No count acceptance is asserted by author.",
+  "newly_authored_candidate_count": 20,
+  "recovered_prior_kv_count": 0,
+  "independent_review_claimed": false,
+  "runtime_execution_claimed": false
+}

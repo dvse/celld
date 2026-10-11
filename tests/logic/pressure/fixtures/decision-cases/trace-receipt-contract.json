@@ -1,0 +1,38 @@
+{
+  "status": "NOT_RUN_NO_NATIVE_RECEIPTS",
+  "source_instrumentation": "tests/pressure_recovery.rs",
+  "state_cases": "P001-P024 emit TRACE_BEGIN, every exact Debug Event and returned Effect vector, public State counters/latch/headroom/waiters after each transition, and TRACE_END after terminal assertions",
+  "policy_cases": "P025-P026 emit DRAIN_TRACE with each exact token, monotonic evaluation time, peer snapshot and production result, then TRACE_END",
+  "future_receipt_fields": [
+    "case_id",
+    "test_function",
+    "started_at",
+    "finished_at",
+    "source_pins_sha256",
+    "manifest_sha256",
+    "profile_sha256",
+    "implementation_sha256",
+    "toolchain_sha256",
+    "native_test_binary_sha256",
+    "exact_argv",
+    "owned_process_group",
+    "resource_limits",
+    "exit_code",
+    "stdout",
+    "stderr",
+    "selected_test_count",
+    "assertion_outcome",
+    "terminal_marker",
+    "cleanup"
+  ],
+  "run_condition": "For P001-P024 require an exact matching case ID and event ordinal in a post-on_event effects receipt, printed only after production on_event returned; preserve the subsequent state receipt when validation succeeds. For P025-P026 require the matching DRAIN_TRACE printed after production fleet_status returned. TRACE_BEGIN, constructor/setup, compilation, discovery and zero-test exits alone never count as SUT runs.",
+  "pass_condition": "Exactly one selected test succeeds and its matching TRACE_END appears, with immutable pins and owned-process cleanup verified",
+  "characterization": [
+    "P009",
+    "P010",
+    "P013",
+    "P021"
+  ],
+  "limitations": "Event/effect receipts are native decision-core evidence. Supplied sample/completion facts are not measurements, actual operations, real runtime eviction or VM proof. Do not fabricate receipts before an authorized run.",
+  "precondition_failure": "Unavailable source/toolchain/resource guard/authorization or failed setup/precondition is BLOCKED, not a semantic product failure and never a semantic pass. Do not count a run without the required production-return receipt; preserve diagnostic evidence separately."
+}

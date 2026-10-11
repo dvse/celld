@@ -1,0 +1,50 @@
+{
+  "id": "conformance/dynamic-workers-and-tails/reconstruct-saved-nested-callback-after-ordinary-facet-abort",
+  "layer": "conformance",
+  "behaviour": "dynamic-workers-and-tails",
+  "title": "Reconstruct saved nested callback after ordinary facet abort",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/loader-props",
+      "legacy_id": "loader-props/L038"
+    }
+  ],
+  "corpus_wave": "loader-props",
+  "corpus_id": "L038",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "L038",
+    "intent": "Reconstruct saved nested callback after ordinary facet abort",
+    "failure_hypothesis": "Stored callback keeps dead process identity instead of parent restore plan",
+    "preconditions": [
+      "Parent restore plan remains live; one saved callback row; no process restart",
+      "Disposable private fixture with fresh supervisor name, live LOADER, facets, restore flag, and positive Loader control",
+      "External reviewed adapter has exclusive run slot and enforces wall/memory/PID/load limits"
+    ],
+    "trace": [
+      "Restore facet",
+      "Mint callback and store in supervisor storage",
+      "Increment facet storage",
+      "Abort facet",
+      "Read saved callback from storage",
+      "Invoke through reconstructed chain",
+      "Dispose all handles"
+    ],
+    "stress": "1 worker; 1 facet name; 1 owned row; 1 abort",
+    "oracle": "Saved label, owner props and count 1 all preserved",
+    "cleanup": "Case-specific finally disposes restored handles and drains finite cancellation hold where used; common cleanup releases code gates, aborts every owned facet, disposes entrypoints and worker handles, removes only tracked fixture KV rows. Parent tears down disposable fleet/storage.",
+    "implementation": "cases.js:loaderCases.L038",
+    "contract_group": "restore",
+    "qualification": "characterization",
+    "promotion": "NOT_PROMOTED: independent source/oracle review and recorded frozen-runtime run required",
+    "layer": "real-process-RPC",
+    "profile": "loader-props-2026-09-04",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  }
+}

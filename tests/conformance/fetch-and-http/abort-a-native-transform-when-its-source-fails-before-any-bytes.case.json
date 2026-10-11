@@ -1,0 +1,51 @@
+{
+  "adapter": "topology",
+  "behaviour": "fetch-and-http",
+  "contract": {
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "distinctness": "Source failure before first native push, distinct from X007 observed prefix failure.",
+    "implementation": "operations.js:X006",
+    "intent": "Abort a native transform when its source fails before any bytes",
+    "oracle": "One source pull; exact planned source Error on pipe and readable; all foreground promises settle.",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "pipeTo source error aborts destination"
+    ],
+    "trace": [
+      "Allocate a gzip encoder and hold it before attaching the failed source.",
+      "Finish a separate digest request during that hold.",
+      "Pipe a source that errors on its first pull, checking both pipe and transform output."
+    ]
+  },
+  "corpus_id": "X006",
+  "corpus_wave": "native-transform-stress",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/transform-streams",
+  "id": "conformance/fetch-and-http/abort-a-native-transform-when-its-source-fails-before-any-bytes",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/native-transform-stress/X006"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/native-transform-stress/X006",
+      "source": "guarded-source-archive/celld-os-stress/waves/native-transform-stress"
+    },
+    {
+      "sha256": "1c4be2004e476ee286465674ad37b81dd9ea8cc33e0dda6ef66b66b5830346de",
+      "source": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "X006",
+  "source": "tests/conformance/fetch-and-http/fixtures/transform-streams/entry.js",
+  "source_sha256": "1c4be2004e476ee286465674ad37b81dd9ea8cc33e0dda6ef66b66b5830346de",
+  "title": "Abort a native transform when its source fails before any bytes"
+}

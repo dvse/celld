@@ -1,0 +1,29 @@
+{
+  "id": "conformance/bindings/opencode",
+  "layer": "conformance",
+  "behaviour": "bindings",
+  "title": "opencode",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/examples/opencode",
+      "legacy_id": "examples/opencode"
+    },
+    {
+      "source": "celld@9c0fca5/examples/opencode/wrangler.jsonc",
+      "sha256": "ead4c41c5d3f8393b0701b7773438c969babbeecbbc8eddf4592403a3cf96643"
+    }
+  ],
+  "legacy_ids": [
+    "examples/opencode"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/bindings/fixtures/coding-model-client",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": "Requires external model service credentials and provider calls; excluded from no-paid-cloud profile.",
+  "runnable": false,
+  "source": "tests/conformance/bindings/fixtures/coding-model-client/wrangler.jsonc",
+  "source_sha256": "ead4c41c5d3f8393b0701b7773438c969babbeecbbc8eddf4592403a3cf96643"
+}

@@ -1,0 +1,33 @@
+{
+  "adapter": "example",
+  "behaviour": "durable-objects/persistent-stubs",
+  "fixture": "tests/conformance/durable-objects/persistent-stubs/fixtures/duplicate-restore",
+  "id": "conformance/durable-objects/persistent-stubs/persistent-dup",
+  "layer": "conformance",
+  "legacy_ids": [
+    "hyperbob/persistent-dup"
+  ],
+  "origins": [
+    {
+      "legacy_id": "hyperbob/persistent-dup",
+      "source": "celld@9c0fca5/tests-hyperbob/persistent-dup"
+    },
+    {
+      "sha256": "0431dec6904649b53bbf9b99f8ea9d8bfbf9ed840e04aa1cc440fe31ea09dd05",
+      "source": "celld@9c0fca5/tests-hyperbob/persistent-dup/wrangler.json"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/?v=suite"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/durable-objects/persistent-stubs/fixtures/duplicate-restore/wrangler.json",
+  "source_sha256": "0431dec6904649b53bbf9b99f8ea9d8bfbf9ed840e04aa1cc440fe31ea09dd05",
+  "title": "persistent dup"
+}

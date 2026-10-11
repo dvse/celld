@@ -1,0 +1,51 @@
+{
+  "adapter": "topology",
+  "behaviour": "limits-and-errors",
+  "contract": {
+    "cleanup": "Release every foreground hold; settle all owned promises; dispose all entrypoints and Worker handles inside the active coordinator request; assert zero pending/unsettled holds; delete volatile audit book and close tag. Independently recorded owned guest/process/storage teardown is mandatory. No durable state is created by case logic.",
+    "implementation": "cases.js:cases.Q005",
+    "intent": "Charge denied egress attempt",
+    "oracle": "Deny error first, subrequest-limit-1 second, empty audit book; this is budget accounting and no network/security certification",
+    "preconditions": [
+      "subRequests=1, globalOutbound=null; reserved fixture.invalid name cannot leave frozen deny path",
+      "Fresh private owned disposable runtime/root name; native Worker Loader/WorkerEntrypoint and Audit loopback positive control",
+      "Verified immutable source/binary and configured 8192-byte code ceiling; independent scope review excludes restricted capability lifetime reproduction",
+      "Parent exclusive run slot; externally enforced wall/memory/PID limits and owned cleanup"
+    ],
+    "trace": [
+      "Attempt fetch of reserved fixture.invalid",
+      "Catch exact not-permitted-internet category",
+      "Attempt legitimate Audit.note",
+      "Assert no recipient effects and recover"
+    ]
+  },
+  "corpus_id": "Q005",
+  "corpus_wave": "bounded-resource",
+  "fixture": "tests/conformance/limits-and-errors/fixtures/invocation-quotas",
+  "id": "conformance/limits-and-errors/charge-denied-egress-attempt",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/bounded-resource/Q005"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/bounded-resource/Q005",
+      "source": "guarded-source-archive/celld-os-stress/waves/bounded-resource"
+    },
+    {
+      "sha256": "f0ac664b435a5bbfd844d830d03447bb78bfbd1d5d2e31bc4beb6a2d299847b9",
+      "source": "guarded-source-archive/celld-os-stress/waves/bounded-resource/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "Q005",
+  "source": "tests/conformance/limits-and-errors/fixtures/invocation-quotas/entry.js",
+  "source_sha256": "f0ac664b435a5bbfd844d830d03447bb78bfbd1d5d2e31bc4beb6a2d299847b9",
+  "title": "Charge denied egress attempt"
+}

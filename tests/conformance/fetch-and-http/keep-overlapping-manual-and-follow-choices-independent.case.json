@@ -1,0 +1,60 @@
+{
+  "adapter": "topology",
+  "behaviour": "fetch-and-http",
+  "contract": {
+    "cleanup": [
+      "Coordinator remains in active DO.fetch; close scope, abort pending owned fetches, cancel/release all owned readers and response bodies",
+      "Recipient marks operations stopped before releasing gates; joins all entered handlers and producer pulls; any fault or unresolved work BLOCKS cleanup",
+      "Join complete coordinator trace and every watched task; exact expected abort only; unobserved assertion failures cannot become successful cleanup",
+      "Matched recipient journal and zero active/readers/controllers/pulls plus zero caller response/request/task resources required",
+      "Independent supervisor must close/reap/destroy only owned sockets/processes/fresh storage and provide hash-matched teardown before runtime PASS"
+    ],
+    "distinctness": "F001 overlaps upload but not another redirect policy; this tests client-policy partitioning rather than generic reader scheduling",
+    "implementation": "cases.js:F011",
+    "intent": "Keep overlapping manual and follow choices independent",
+    "oracle": "Follow target body811 exact and source/final once; manual remains302 with exact9217 bytes; manual-target entered0 throughout",
+    "preconditions": [
+      "Manual-start3xx body prefix held; independent follow-start points to separate final endpoint on same origin",
+      "Fresh already-running owned disposable candidate8d27 fleet, parent exclusive slot, independent exact-hash source/oracle review",
+      "External supervisor records actual process/boot/executable/DO/isolate identities and hard resource limits; no synthetic boolean substitutes for evidence",
+      "Distinct coordinator/recipient roots and isolates; recipient local to fixed owned192.168.77.1:18080 ingress; controls and every hop are independent recipient requests",
+      "Native public Fetch, ReadableStream, AbortController and SHA256 APIs; fresh recipient operation journal required before trace entry",
+      "All synthetic bodies and valid ordinary redirects stay in earlier-configured owned fixture endpoints; graph depth at most3, each operation enters at most once"
+    ],
+    "trace": [
+      "Open and retain manual redirect prefix",
+      "Complete separate same-origin follow chain",
+      "Prove manual target unvisited and manual body still held",
+      "Release manual tail and retain original302 status; reassert target0"
+    ]
+  },
+  "corpus_id": "F011",
+  "corpus_wave": "fetch-redirect-stress",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/redirect-chains",
+  "id": "conformance/fetch-and-http/keep-overlapping-manual-and-follow-choices-independent",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/fetch-redirect-stress/F011"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/fetch-redirect-stress/F011",
+      "source": "guarded-source-archive/celld-os-stress/waves/fetch-redirect-stress"
+    },
+    {
+      "sha256": "bb8d09b77278bb557b9489a205adaa0a6663ce77aa02e13694fa29eeb15f2b8f",
+      "source": "guarded-source-archive/celld-os-stress/waves/fetch-redirect-stress/fixture.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "F011",
+  "source": "tests/conformance/fetch-and-http/fixtures/redirect-chains/fixture.js",
+  "source_sha256": "bb8d09b77278bb557b9489a205adaa0a6663ce77aa02e13694fa29eeb15f2b8f",
+  "title": "Keep overlapping manual and follow choices independent"
+}

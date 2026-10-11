@@ -1,0 +1,230 @@
+{
+  "schema": 1,
+  "source_snapshot": "celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "binary_sha256": null,
+  "runtime_status": "NOT_RUN",
+  "source_root": "/workspace/shared/celld-recovered/celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "runtime_files": [
+    {
+      "path": "celld-os-project/celld/crates/celld/js/harness.js",
+      "sha256": "8d3be5ef1b78d302cb2da745c63f8d2e1222115c49a8d08f1096bca7d235c237",
+      "bytes": 491759
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js/modules.rs",
+      "sha256": "9a16938eb5b2b50d32df41957507245dbbd59b63c28f906c825230cb19315e32",
+      "bytes": 42357
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js/crypto.js",
+      "sha256": "bcd8e83a9ac832d8a375dd2358967ce76b5ca784b864f82a55ffc87b6a716684",
+      "bytes": 35474
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js/crypto.rs",
+      "sha256": "151130269b188fc715d310ed65e0e8143c21b1ed202185b52a0d889e6015d8cb",
+      "bytes": 89896
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js/streams.js",
+      "sha256": "f77b1f59b2abdfeb73d770e0f12952df3a80a014c9fd9db1b277131b47cd054b",
+      "bytes": 26221
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js/byte_streams.js",
+      "sha256": "060bee31d5c7ba2519bc08bad4493dff600a3c9849551069bc13ce0a8aca081b",
+      "bytes": 22348
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+      "sha256": "6b871978c796ffdb6eca104358332e3834aa4945d16fd019754bb28c7b2a3584",
+      "bytes": 22385
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js/zlib.rs",
+      "sha256": "aef6319ab2447cffab5b0d003e8d9c3ec72ecfb1b8ac21c8d0a1b671a80cc473",
+      "bytes": 10012
+    }
+  ],
+  "baseline_files": [
+    {
+      "path": "celld-os-stress/cases/streams.json",
+      "sha256": "5229ce8e44ad3e541e7f96dc788ad946e7d2beade8f7c63aee02aed70b1a1684",
+      "bytes": 15183
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/manifest.json",
+      "sha256": "5cacd1bfe0e3c07d2f2eb469bbcaa19cfdfb140f81a3ad351a5356cada5f17e1",
+      "bytes": 43665
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/operations.js",
+      "sha256": "3c56ee242a504ad001125fec4ec2ba54d07c00ff4757b36be2826624f7e751c6",
+      "bytes": 14588
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-load/manifest.json",
+      "sha256": "3f5bd7c6edaeaff0d0e64f61f3057d470ff3797c9433705a02e007e2b9ab8138",
+      "bytes": 98229
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-load/cases.js",
+      "sha256": "60c6f9a8ae72180a8f549405076efc48a14612d5686d7a38548db329db4a06cf",
+      "bytes": 28395
+    },
+    {
+      "path": "celld-os-stress/waves/durable-recovery-stress/manifest.json",
+      "sha256": "8bfa3397e84966fa629d7adce3504e3674aeb3cdf5f5d56a4615703576ea52b1",
+      "bytes": 101023
+    },
+    {
+      "path": "celld-os-stress/waves/rpc-codec/cases.json",
+      "sha256": "9d098e7bdd59330baf32f48a29bd22674b41a2bb99e0ffc451dfae1a329afc5f",
+      "bytes": 36343
+    }
+  ],
+  "os_root": "/workspace/shared/celld-campaign-next/os-source-inventory/historical-4358072",
+  "os_commit": "4358072f8cb1bc9ddfb6ee11122e194c76cd71e0",
+  "os_files": [
+    {
+      "path": "raw/packages/workshop-backend/src/git-codec.ts",
+      "sha256": "56814f3f0608c88e6e83ba08e43f5af87ed4fabf972554e696c390809e9e1538",
+      "bytes": 33913
+    },
+    {
+      "path": "raw/LICENSE",
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "bytes": 10174
+    },
+    {
+      "path": "SOURCE-MANIFEST.json",
+      "sha256": "fe3dc1ca7a3f717836d21eda731828376fce928fef9ef2246ec5b5f3df33d64e",
+      "bytes": 18337
+    },
+    {
+      "path": "SOURCE-SHA256SUMS",
+      "sha256": "0ff12342dd7f15fd187d4258b7d970b568871e6b336fd9f291487656af2c2ec9",
+      "bytes": 2061
+    },
+    {
+      "path": "download-provenance.json",
+      "sha256": "af303b5eece351dfa61af434c6cff21d6bd2a306d19ec0c0c1104a6152e32731",
+      "bytes": 10772
+    }
+  ],
+  "overlap_root": "/workspace/shared/celld-campaign-next",
+  "overlap_files": [
+    {
+      "path": "reviews/baseline-inventory-review.json",
+      "sha256": "8ebb424c0bffbc0ba5d0bda9e669f094326bc338cb437c15507444a57025d9da",
+      "bytes": 145357
+    },
+    {
+      "path": "atomic-accounting-semantics/manifest.json",
+      "sha256": "74ca24883b66b7505190af93acdb03199887fecbe09f5d377d344cfafb2cad69",
+      "bytes": 73564
+    },
+    {
+      "path": "body-form-semantics/manifest.json",
+      "sha256": "e31598421948f8c190575ce14a8cccfe7a76930797c30c44985d05552d3c95d1",
+      "bytes": 97801
+    },
+    {
+      "path": "d1-semantics/manifest.json",
+      "sha256": "a710fc3341a0ac99cbe9b5dd5847e7fc9c7d355313bac1440415941d7b31780f",
+      "bytes": 144756
+    },
+    {
+      "path": "facet-root-semantics/manifest.json",
+      "sha256": "a1615598800adf714f1786dbf6db36365b035d4b9e54a4c56c12e5a427ed7e1f",
+      "bytes": 92170
+    },
+    {
+      "path": "headers-semantics/manifest.json",
+      "sha256": "7ab0ac34b1ab6bcd773176ff2225a2c246ca835b9487d18b774833a4fc3afd88",
+      "bytes": 51739
+    },
+    {
+      "path": "identity-admission-semantics/manifest.json",
+      "sha256": "e5eae8135cebe5822551cd30d5fad64d7273726f60d70a8899cd014f3500951e",
+      "bytes": 29656
+    },
+    {
+      "path": "kv-semantics/manifest.json",
+      "sha256": "f4906cd842457c8b9a75c0e069decbdcb702bfb3789ce06e6e1a55e2929069c9",
+      "bytes": 105818
+    },
+    {
+      "path": "os-action-file-store-semantics/manifest.json",
+      "sha256": "a508a45f186dbca34d7b5cf31505f8a01848f29a9a610278f230b86dee971ed1",
+      "bytes": 40205
+    },
+    {
+      "path": "os-typed-storage-semantics/manifest.json",
+      "sha256": "70b236edc39a42d460392d283885be675f1626f589f517b458f667be81946fc7",
+      "bytes": 38944
+    },
+    {
+      "path": "pipe-cleanup-semantics/manifest.json",
+      "sha256": "02175a33442a86096c05300b11e15c978b58ea6b69a9bb57acaf53ac51dec730",
+      "bytes": 34462
+    },
+    {
+      "path": "r2-semantics/manifest.json",
+      "sha256": "729bd31ba60fb9c6ff47f4689b48d2a21d120ec10e54e5b484647ca6adbd2179",
+      "bytes": 72000
+    },
+    {
+      "path": "storage-sql-semantics/manifest.json",
+      "sha256": "25b49a3bc5158a1b8277be37a06ef424e24da72c8ada091d9bd57d2c68d8bb7c",
+      "bytes": 64972
+    },
+    {
+      "path": "stream-backpressure-semantics/manifest.json",
+      "sha256": "e7b601830183b60736e3a17f47553c808674a7fcacd422e21694a98057158783",
+      "bytes": 43034
+    },
+    {
+      "path": "url-semantics/manifest.json",
+      "sha256": "d61fdb1b4d070ae5aff0ad1456c39d2842c341f9737a20b67c67c251f638ae91",
+      "bytes": 107854
+    },
+    {
+      "path": "TRANCHE-001.json",
+      "sha256": "7fb52559ebcadf5e1c148507316e20a1ed1b9c4e5eff50f9538f2c529224da3b",
+      "bytes": 6975
+    },
+    {
+      "path": "TRANCHE-002.json",
+      "sha256": "b20318879a6637fe4c6019c606ba029d9159cee96ebefb502fc455e992305cc9",
+      "bytes": 9314
+    },
+    {
+      "path": "TRANCHE-003.json",
+      "sha256": "766c96a3ab1e8992ac59591b168ea468bac74ae27c8a5c6fe0a8b7885654b7de",
+      "bytes": 8487
+    },
+    {
+      "path": "TRANCHE-004.json",
+      "sha256": "1baef982b90cdacf7c42aa461999acda83602816bcf019aad8f25a3969bd1077",
+      "bytes": 14491
+    }
+  ],
+  "lockfile": {
+    "path": "/workspace/shared/celld-campaign-next/os-source-inventory/scheduler-4358072-r1/raw/pnpm-lock.yaml",
+    "sha256": "38bb0c960d93222de73b9baa678dc2ced092cc2241e469ffa053d512af20251f",
+    "bytes": 369010
+  },
+  "vendor_files": [
+    {
+      "path": "vendor/cloudflare-os/packages/workshop-backend/src/git-codec.ts",
+      "sha256": "56814f3f0608c88e6e83ba08e43f5af87ed4fabf972554e696c390809e9e1538",
+      "bytes": 33913
+    },
+    {
+      "path": "vendor/cloudflare-os/LICENSE",
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "bytes": 10174
+    }
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "adapter": "http",
+  "behaviour": "fetch-and-http",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "application_relevance": "Workers wrap an incoming request or deliberately replace its payload before forwarding.",
+    "assertion_count": 6,
+    "authored": true,
+    "cleanup": "Every case is awaited before cleanup. Track explicit readers and body streams; cancel/release readers, initiate all unlocked-stream cancellations before joining them, and retain no request-local objects. Buffered body producers may be lazy; explicit JS stream producers are finite and close synchronously. Cleanup records runtime-retained locks with awaited consumer/descendant proof, and any unverified lock blocks acceptance. No open producer gates, external handles or timers are used. Await both Y220 consumers with allSettled. If a body method or cleanup does not settle within the external deadline, supervisor terminates only the owned process group and records failure/unknown plus incomplete cleanup. It never reports a pass.",
+    "desired_behavior": "Inherited body transfers and marks source used; explicit replacement does not disturb its separate source.",
+    "distinctness": "Request ownership transfer, absent from H008 clone-to-independent-upload and V215 cache clone consumption.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/Y214",
+      "request_body": null
+    },
+    "fixed_runtime_assertions": [
+      "t.equal(original.bodyUsed, true, 'constructing from Request without replacement transfers its body');",
+      "t.equal(moved.bodyUsed, false, 'new Request owns an initially unused transferred body');",
+      "t.equal(await t.consume(moved, 'text'), 'inherited', 'transferred body retains payload');",
+      "t.equal(source.bodyUsed, false, 'explicit replacement body leaves prior body undisturbed');",
+      "t.equal(await t.consume(source, 'text'), 'old', 'original remains consumable when body is overridden');",
+      "t.equal(await t.consume(replacement, 'text'), 'new', 'replacement body is used by new Request');"
+    ],
+    "hypothesis": "The buffered prior-Request path may silently copy bytes instead of transferring body ownership like the streaming path.",
+    "id": "Y214",
+    "implementation": {
+      "end_line": 183,
+      "file": "cases.js",
+      "start_line": 172,
+      "symbol": "Y214"
+    },
+    "independently_reviewed": false,
+    "layer": "direct-celld-worker-fetch-global-body-form-api",
+    "limits": {
+      "durable_writes": 0,
+      "fixture_logical_byte_cap": 16384,
+      "incoming_body_bytes": 0,
+      "max_explicit_reader_reads": 16,
+      "max_form_entries": 8,
+      "outbound_fetches": 0,
+      "outer_case_seconds": 5,
+      "repetitions": 1,
+      "requests": 1,
+      "response_bytes": 65536,
+      "timers": 0
+    },
+    "mechanism": "Request constructor body ownership transfer versus explicit replacement",
+    "preconditions": [
+      "Reviewed exact direct-celld source/build/deployment pins and fresh isolated local store.",
+      "Native celld Blob, File, FormData, Request, Response, and ReadableStream globals; no mocks or implementation extraction.",
+      "External five-second case deadline plus independent 300-second suite deadline and owned cleanup are active."
+    ],
+    "prediction_is_runtime_evidence": false,
+    "primary_contract_refs": [
+      "https://fetch.spec.whatwg.org/#dom-request",
+      "https://streams.spec.whatwg.org/#readablestream-create-a-proxy"
+    ],
+    "review_status": "UNREVIEWED",
+    "runtime_pass_claimed": false,
+    "runtime_source_refs": [
+      {
+        "line_end": 426,
+        "line_start": 402,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      },
+      {
+        "line_end": 466,
+        "line_start": 456,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      },
+      {
+        "line_end": 521,
+        "line_start": 501,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "schedule": {
+      "depends_on": [],
+      "kind": "one finite in-request trace",
+      "ordinal": 14,
+      "parallelism": "two local body consumers joined with allSettled only in Y220; otherwise sequential",
+      "request": "GET /case/Y214"
+    },
+    "source_observation": "Pinned constructor marks prior used only when prior._bodyBytes is null; buffered input instead uses slice(). Static discrepancy hypothesis only.",
+    "static_prediction": "EXPECTED_FAILURE_CANDIDATE",
+    "status": "NOT_RUN",
+    "title": "Transfer inherited Request bodies while leaving overridden sources unused",
+    "trace": [
+      "Construct a POST Request with buffered body and construct another Request from it without replacement.",
+      "Assert original becomes bodyUsed, destination starts unused, and inherited text survives.",
+      "Construct a second source and explicit-body replacement; assert source stays unused and each distinct payload is readable."
+    ]
+  },
+  "corpus_id": "Y214",
+  "corpus_wave": "body-form-semantics",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/body-form-semantics",
+  "id": "conformance/fetch-and-http/body-form-y214",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/body-form-semantics/Y214"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/body-form-semantics/Y214",
+      "manifest_sha256": "e31598421948f8c190575ce14a8cccfe7a76930797c30c44985d05552d3c95d1",
+      "review_sha256": "1a3807ddb1b0f7c1d81bd25a56c38e0c61c953030da422d8a1d644bf833de35e",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/body-form-semantics",
+      "tranche": "002"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/Y214",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "Y214",
+  "source": "tests/conformance/fetch-and-http/fixtures/body-form-semantics/fixture.js",
+  "source_sha256": "ab850551d9b005bc0636954aeb2151d46ac0c35d15580665aa157230dabe30a5",
+  "title": "Transfer inherited Request bodies while leaving overridden sources unused"
+}

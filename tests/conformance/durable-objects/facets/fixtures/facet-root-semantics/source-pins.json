@@ -1,0 +1,143 @@
+{
+  "schema": 1,
+  "source_root": "/workspace/shared/celld-recovered/celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "runtime_sources": [
+    {
+      "path": "celld-os-project/celld/docs/services/durable-object-facets.md",
+      "sha256": "6b803451afc1d6954933b0b532e3d204ee6ce357a805a4fff4d27bdadb899cd9"
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js/harness.js",
+      "sha256": "8d3be5ef1b78d302cb2da745c63f8d2e1222115c49a8d08f1096bca7d235c237"
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js/bootstrap.rs",
+      "sha256": "0210c1f17ec80959aa071724e1a612b181f72715d20afcbd29226674636d6d05"
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/engine_api.rs",
+      "sha256": "e9874a4ad9809b7946761d4f9371921f138612e5997b6aa0d70f7cbce796805f"
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/storage.rs",
+      "sha256": "99ce80c6e273234787ca38367210ebca43baa9df49286dc911cd179f52b6dc2d"
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js.rs",
+      "sha256": "164b11bb2b0f7321d316bcd417b13fea3bf907b1eae335c97d8ebecaacb9ba17"
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/facet_streams.rs",
+      "sha256": "f0fbe483f88107c79d3c184b3f28292223a0b457f014c6a0b2c3276a3748111f"
+    }
+  ],
+  "baseline_evidence": [
+    {
+      "path": "celld-os-project/tests/ACCEPTANCE.md",
+      "sha256": "225d224b02186c96adde8415069286f67b63da5b4bc8938a5c19bc29b4b46256"
+    },
+    {
+      "path": "celld-os-project/tests/fixtures/distributed-rpc/index.js",
+      "sha256": "849f615ae5cef54fc6e983559ea116031c1f52068d9c17a739ccc71ec56f67d6"
+    },
+    {
+      "path": "celld-os-stress/waves/loader-props/cases.js",
+      "sha256": "9a1e6136a123f902050ba5cba63179c5a0c2760f28e4a1bf7dea2c1419c700ef"
+    },
+    {
+      "path": "celld-os-project/celld/examples/facets/index.js",
+      "sha256": "78ce4d71c1f564b55c0b826b0dd94d955eb8787b84e3917e5cc1878ec0e95c51"
+    },
+    {
+      "path": "celld-os-project/celld/examples/facets/wrangler.jsonc",
+      "sha256": "b9f40f7044f97b138fcb5cacc4398d95190eb8bb12e4a6a4fe0ced641ee20e57"
+    },
+    {
+      "path": "celld-os-project/tests/foreign-class/caller.js",
+      "sha256": "4ce2df105b589f6be27715213c5f826669910f4b4e974b59e27ac6fd2ba1d852"
+    },
+    {
+      "path": "celld-os-project/tests/foreign-class/provider.js",
+      "sha256": "57f61f6a381881ef8442ffee08cb8d24cb386dc0c01bd4f457021acde5afd25e"
+    },
+    {
+      "path": "celld-os-stress/fixture/rpc.js",
+      "sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5"
+    },
+    {
+      "path": "celld-os-stress/fixture/index.js",
+      "sha256": "3e137fc03ca2b2e6ca40d538291aaf0e022bdfe491d3ddcdf4f8f9c4eb4c6b72"
+    },
+    {
+      "path": "celld-os-stress/waves/rpc-codec/codec.js",
+      "sha256": "bae54054482046c4b3daf0df871a5c7cd433e17b01bad7cb4804e25537a55f7a"
+    },
+    {
+      "path": "celld-os-stress/waves/loader-props/sources.mjs",
+      "sha256": "22897ce5b7a6f5ede46a6d95a9cb217eaeeef7c6e60f9e0d034aad8964e18d81"
+    },
+    {
+      "path": "celld-os-stress/waves/sqlite-concurrency/cases.js",
+      "sha256": "691eb28d4cee7679b56385040712298155124a272d15d5674e44088bede9080f"
+    }
+  ],
+  "campaign_evidence": [
+    {
+      "path": "storage-sql-semantics/cases.js",
+      "sha256": "1dec37fd6a3caae833bbc95620f407a7d866836410275c1b4b7637ae468bb7f9"
+    },
+    {
+      "path": "storage-sql-semantics/manifest.json",
+      "sha256": "25b49a3bc5158a1b8277be37a06ef424e24da72c8ada091d9bd57d2c68d8bb7c"
+    }
+  ],
+  "fixture_artifacts": [
+    {
+      "path": "facets.js",
+      "sha256": "0c1e77551454e2f4ec65e266e0b4e9768e6bac296550e2960d1242d52c0c0e75"
+    },
+    {
+      "path": "sources.js",
+      "sha256": "809b26affa78b950c747d52b6cd4b350c42672f488ac66c7756a8210d38482d6"
+    },
+    {
+      "path": "fixture.js",
+      "sha256": "2843913af8aa84153e792b41e9367175b7e80a5dbf4f78eb18b07d91b58cb147"
+    },
+    {
+      "path": "cases.js",
+      "sha256": "3e0d3a30c5c60b02f026d26d58012c6b3a244df8858e3a2fe40b2f3aa9aea359"
+    },
+    {
+      "path": "wrangler.json",
+      "sha256": "4f9dfe9709f2b270fd74401ad901104086c89b1f3659cdfb71e9d3135c887fe9"
+    },
+    {
+      "path": "manifest.json",
+      "sha256": "a1615598800adf714f1786dbf6db36365b035d4b9e54a4c56c12e5a427ed7e1f"
+    },
+    {
+      "path": "overlap-audit.json",
+      "sha256": "905bfdeee5563ef34bb7bd6c6589c99c92ea6b86edcf5f8482da107c078e9e1b"
+    },
+    {
+      "path": "schedule.json",
+      "sha256": "5bc678e591cf45bf9574f79876318a7aa468b552a12b7103b5809f5b22f34218"
+    },
+    {
+      "path": "README.md",
+      "sha256": "18c724ec25d31e21eff422aecd27403261acb5cdbf329215ce81876f30a624cf"
+    },
+    {
+      "path": "validate_static.py",
+      "sha256": "0cf9d87174ad676f3c54bc31296300b05d8163b5f234a6533c8f2671ad0b7e0d"
+    },
+    {
+      "path": "author_manifest.py",
+      "sha256": "9b71388cf6c9919ed364a0a3a38d2dce2c83278e74b61c5e92e3d849fe4f2a59"
+    }
+  ],
+  "runtime_executions": 0,
+  "actual_os_source_verified": false,
+  "note": "Source hashes identify inspected preserved sources and authored fixture bytes only. They do not establish compilation, execution, full-OS provenance, runtime success or external cleanup."
+}

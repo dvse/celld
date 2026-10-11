@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "evidence": "STATIC_SOURCE_INSPECTION_ONLY",
+  "baseline_file_count": 259,
+  "campaign_file_count": 268,
+  "inventory": {
+    "path": "overlap-inventory.json",
+    "sha256": "74359ab909cdacbd638a5365e7ba108acc79ccebaa108d8f083c24af3d93330a",
+    "bytes": 96565
+  },
+  "id_collision_audit": {
+    "proposed_id": "Y301",
+    "matches": [],
+    "result": "NO_COLLISION"
+  },
+  "clone_tee_callsite_scan": [
+    {
+      "path": "/workspace/shared/celld-recovered/celld-direct-source-v0.6.2-8d27-guard-20261009/celld-os-stress/fixture/index.js",
+      "line": 152,
+      "excerpt": "    const [a,b]=(await peer.readable(tag,{chunks:[[33],[34,35]]})).tee();const values=await Promise.all([drain(a),drain(b)]);equal(values,[[33,34,35],[33,34,35]],'tee branches diverged');return await peer.settle(tag);"
+    },
+    {
+      "path": "/workspace/shared/celld-recovered/celld-direct-source-v0.6.2-8d27-guard-20261009/celld-os-stress/fixture/index.js",
+      "line": 155,
+      "excerpt": "    const [a,b]=(await peer.readable(tag,{chunks:[[36],[37]]})).tee();const cancel=a.cancel('branch A');equal(await drain(b),[36,37],'one tee cancellation killed sibling');await cancel;"
+    },
+    {
+      "path": "/workspace/shared/celld-recovered/celld-direct-source-v0.6.2-8d27-guard-20261009/celld-os-stress/waves/bounded-load/cases.js",
+      "line": 117,
+      "excerpt": "    const names=ids('document',3),fast=[],slow=[];for(let i=0;i<3;i++){const branches=(await s.download(names[i],121+i)).tee();fast.push(s.drain('fast:'+names[i],branches[0],121+i));const reader=branches[1].getReader();s.local.readers.add(reader);s.watch(reader.closed);const first=await reader.read();ok(!first.done,'slow branch has prefix');checkBytes(first.value,121+i,0);slow.push({reader,prefix:"
+    },
+    {
+      "path": "/workspace/shared/celld-recovered/celld-direct-source-v0.6.2-8d27-guard-20261009/celld-os-stress/waves/http-stream-stress/cases.js",
+      "line": 31,
+      "excerpt": "  const original=await t.open('document'),[left,right]=original.body.tee();t.branches.add(left);t.branches.add(right);"
+    },
+    {
+      "path": "/workspace/shared/celld-recovered/celld-direct-source-v0.6.2-8d27-guard-20261009/celld-os-stress/waves/http-stream-stress/cases.js",
+      "line": 37,
+      "excerpt": "  const original=await t.open('document'),[left,right]=original.body.tee();t.branches.add(left);t.branches.add(right);const cancel=t.watch(right.cancel('one consumer leaves'));"
+    },
+    {
+      "path": "/workspace/shared/celld-recovered/celld-direct-source-v0.6.2-8d27-guard-20261009/celld-os-stress/waves/http-stream-stress/cases.js",
+      "line": 42,
+      "excerpt": "  const source=await t.open('source'),request=new Request(t.origin+'/root/'+t.root+'/op/left',{method:'POST',body:source.body}),copy=request.clone();"
+    },
+    {
+      "path": "/workspace/shared/celld-recovered/celld-direct-source-v0.6.2-8d27-guard-20261009/celld-os-stress/waves/native-transform-stress/operations.js",
+      "line": 94,
+      "excerpt": "  const t=c.open('gzip',true,false);t.reader.releaseLock();const [a,b]=t.stream.readable.tee(),left=c.ownReader(a.getReader(),a),right=c.ownReader(b.getReader(),b);"
+    },
+    {
+      "path": "/workspace/shared/celld-campaign-next/body-form-semantics/cases.js",
+      "line": 101,
+      "excerpt": "    const copy = t.clone(request);"
+    },
+    {
+      "path": "/workspace/shared/celld-campaign-next/body-form-semantics/cases.js",
+      "line": 161,
+      "excerpt": "    const copy = t.clone(request);"
+    },
+    {
+      "path": "/workspace/shared/celld-campaign-next/body-form-semantics/cases.js",
+      "line": 187,
+      "excerpt": "    const copy = t.clone(response);"
+    },
+    {
+      "path": "/workspace/shared/celld-campaign-next/body-form-semantics/cases.js",
+      "line": 255,
+      "excerpt": "    const copy = t.clone(response);"
+    },
+    {
+      "path": "/workspace/shared/celld-campaign-next/headers-semantics/cases.js",
+      "line": 157,
+      "excerpt": "  const copy = original.clone(); t.trackBody(original); t.trackBody(copy);"
+    }
+  ],
+  "nearby_case_boundaries": [
+    {
+      "id": "Y220",
+      "shared": "Response.clone and finite local bytes",
+      "new_boundary": "Final arrayBuffer output copies hide raw tee chunk aliasing; Y301 mutates one raw chunk while retaining the other."
+    },
+    {
+      "id": "Y215",
+      "shared": "Clone data mutation independence",
+      "new_boundary": "Y215 starts with buffered BodyInit and mutates a final arrayBuffer; no raw streaming chunk alias observation."
+    },
+    {
+      "id": "Y202",
+      "shared": "Distinct ArrayBuffer objects and edited bytes",
+      "new_boundary": "Repeated Blob.arrayBuffer copies are a different producer/consumer mechanism; no body-clone tee."
+    },
+    {
+      "id": "V215",
+      "shared": "Consumed clone leaves source available",
+      "new_boundary": "Cache consumption checks body state, not live raw-clone chunk mutation."
+    },
+    {
+      "id": "S017-S018",
+      "shared": "Two tee branches and terminal handling",
+      "new_boundary": "Remote transport equality/cancellation only; no direct Response.clone raw-chunk mutation. No remote case is rerun."
+    },
+    {
+      "id": "H008",
+      "shared": "Cloning a streaming body",
+      "new_boundary": "Request.clone with two host uploads; no local Response raw-chunk copy oracle."
+    },
+    {
+      "id": "stream-backpressure-semantics / pipe-cleanup-semantics",
+      "shared": "Finite stream read/cancel/release primitives",
+      "new_boundary": "Pressure, pipe and cancellation schedules contain no Response.clone raw-chunk storage mutation case."
+    }
+  ],
+  "claim": "Author-assessed distinctness pending independent review. One case only; supporting type/payload/EOF/cleanup subchecks earn no separate design credit."
+}

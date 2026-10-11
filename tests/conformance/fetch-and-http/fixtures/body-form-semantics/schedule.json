@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "profile": "direct-celld-body-form-semantics-v1",
+  "runtime_status": "UNRUN",
+  "suite_outer_deadline_seconds": 300,
+  "preflight_deadline_seconds": 30,
+  "startup_deadline_seconds": 120,
+  "cleanup_deadline_seconds": 20,
+  "request_count": 20,
+  "concurrency": 1,
+  "retries": 0,
+  "resource_envelope": {
+    "supervisor_enforced": true,
+    "runtime_process_group_memory_max_bytes": 1073741824,
+    "runtime_process_group_cpu_cores": 1,
+    "v8_heap_limit_mb": 128,
+    "request_response_max_bytes": 65536,
+    "owned_filesystem_max_bytes": 268435456
+  },
+  "requests": [
+    {
+      "id": "Y201",
+      "method": "GET",
+      "path": "/case/Y201",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "Y202",
+      "method": "GET",
+      "path": "/case/Y202",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "Y203",
+      "method": "GET",
+      "path": "/case/Y203",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "Y204",
+      "method": "GET",
+      "path": "/case/Y204",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "Y205",
+      "method": "GET",
+      "path": "/case/Y205",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "Y206",
+      "method": "GET",
+      "path": "/case/Y206",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "Y207",
+      "method": "GET",
+      "path": "/case/Y207",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "Y208",
+      "method": "GET",
+      "path": "/case/Y208",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "Y209",
+      "method": "GET",
+      "path": "/case/Y209",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "Y210",
+      "method": "GET",
+      "path": "/case/Y210",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "Y211",
+      "method": "GET",
+      "path": "/case/Y211",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "Y212",
+      "method": "GET",
+      "path": "/case/Y212",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "Y213",
+      "method": "GET",
+      "path": "/case/Y213",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "Y214",
+      "method": "GET",
+      "path": "/case/Y214",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "Y215",
+      "method": "GET",
+      "path": "/case/Y215",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "Y216",
+      "method": "GET",
+      "path": "/case/Y216",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "Y217",
+      "method": "GET",
+      "path": "/case/Y217",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "Y218",
+      "method": "GET",
+      "path": "/case/Y218",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "Y219",
+      "method": "GET",
+      "path": "/case/Y219",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "Y220",
+      "method": "GET",
+      "path": "/case/Y220",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    }
+  ],
+  "completion_contract": [
+    "Every assertion declaration executes and passes; no skipped assertions",
+    "Every explicit reader released; unlocked cancellation tasks joined",
+    "Runtime-retained locks need awaited complete-consumer or settled-descendant proof; otherwise cleanup incomplete",
+    "External owned process-group exit and fresh store deletion verified before acceptance"
+  ],
+  "stop_conditions": [
+    "Missing precondition before entry => BLOCKED",
+    "Witnessed case timeout => FAIL; ambiguous execution/outcome => UNKNOWN",
+    "Any timeout/resource breach terminates only owned processes; unresolved cleanup prevents acceptance",
+    "Finish after one request per ID and verified external teardown; no retries/polling"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "id": "conformance/web-platform/complete-web-platform-harness-dependency-coverage",
+  "layer": "conformance",
+  "behaviour": "web-platform",
+  "title": "Complete web-platform harness dependency coverage",
+  "origins": [
+    {
+      "source": "tests/conformance/wpt/upstream-harness/BUILD.bazel",
+      "legacy_id": "wpt/full-upstream-harness"
+    },
+    {
+      "source": "workerd@19b1657bd/src/wpt/BUILD.bazel",
+      "sha256": "a3eb5eeeaea1a68a3910a50c29a2d46da0ce1740ff9f0aca69dd8684c7ff2b3d"
+    }
+  ],
+  "legacy_ids": [
+    "wpt/full-upstream-harness"
+  ],
+  "adapter": "none",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": "Complete WPT requires Bazel-generated bindings, upstream WPT tree, unsafe eval and wptserve sidecars; only the separately listed synchronous portable files are runnable.",
+  "runnable": false,
+  "source": "tests/lib/web-platform-harness/BUILD.bazel",
+  "source_sha256": "a3eb5eeeaea1a68a3910a50c29a2d46da0ce1740ff9f0aca69dd8684c7ff2b3d"
+}

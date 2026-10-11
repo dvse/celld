@@ -1,0 +1,54 @@
+{
+  "id": "logic/wake-recovery/coalesce-repeated-fleet-hints-through-the-whole-cold-pipeline",
+  "layer": "logic",
+  "behaviour": "wake-recovery",
+  "title": "Coalesce repeated Fleet hints through the whole cold pipeline",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic",
+      "legacy_id": "corpus/wake-recovery-logic/K010"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+      "sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/wake-recovery-logic/K010"
+  ],
+  "adapter": "native",
+  "corpus_id": "K010",
+  "corpus_wave": "wake-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/wake-recovery/fixtures/decision-cases/tests/wake_recovery.rs",
+  "source_sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86",
+  "test_filter": "k010_repeated_fleet_ticks_coalesce_through_every_cold_start_phase",
+  "contract": {
+    "intent": "Coalesce repeated Fleet hints through the whole cold pipeline",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Start Fleet owner read and repeat hint while reading.",
+      "Complete read and repeat hint while acquiring.",
+      "Complete CAS and repeat hint while restoring.",
+      "Complete restore and repeat while starting; complete start and repeat while publishing.",
+      "Complete publication and assert exactly one acquisition/runtime start."
+    ],
+    "oracle": [
+      "No duplicate operation of the currently pending kind appears; bounds validated after every event.",
+      "The original captured operation chain alone reaches residency."
+    ],
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k010_repeated_fleet_ticks_coalesce_through_every_cold_start_phase"
+  },
+  "selector": "K010"
+}

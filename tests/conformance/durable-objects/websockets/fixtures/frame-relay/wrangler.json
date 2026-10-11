@@ -1,0 +1,1 @@
+{"name": "ws-relay", "main": "index.js", "compatibility_date": "2026-08-14", "durable_objects": {"bindings": [{"name": "ROOM", "class_name": "Room"}]}, "migrations": [{"tag": "v1", "new_sqlite_classes": ["Room"]}], "services": [{"binding": "KERNEL", "service": "ws-relay", "entrypoint": "Kernel"}, {"binding": "GATEWAY", "service": "ws-relay", "entrypoint": "Gateway"}]}

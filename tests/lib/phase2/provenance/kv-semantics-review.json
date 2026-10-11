@@ -1,0 +1,182 @@
+{
+  "reviewed_at_utc": "2026-10-09T06:21:37.333755+00:00",
+  "reviewer": "review_celld_test_additions",
+  "wave": "kv-semantics",
+  "verdict": "ACCEPTED_PRIMARY_STATIC_FOR_PINNED_SOURCE_CUT",
+  "counts": {
+    "authored": 20,
+    "accepted_primary_static": 20,
+    "characterization": 0,
+    "runtime_executions": 0,
+    "runtime_passes": 0,
+    "expected_successful_assertion_count": 79
+  },
+  "baseline_designs_compared": 575,
+  "scope": "Independent static actual-body, source-contract, fixture, deadline, cleanup and semantic-uniqueness review. No Worker evaluation, celld execution/build, downloads or author-file mutation.",
+  "semantic_uniqueness": "Baseline Durable Object KV/SQL tests exercise storage transaction boundaries rather than the separate public namespace binding, type conversion, metadata and keyset listing implementation. No equivalent cases found in the baseline or concurrent Headers/URL waves. Each of twenty literal case bodies tests a distinct mechanism; no Cartesian or parameter-generated case inflation.",
+  "static_checks": {
+    "source_pin_hashes_passed": 16,
+    "all_delivery_SHA256SUMS_passed": true,
+    "fixture_slice_hashes_passed": 20,
+    "source_line_ranges_passed": true,
+    "exact_case_id_function_bijection": true,
+    "actual_assertion_counts_match_manifest": true,
+    "python_AST_and_JSON_parse_only": true,
+    "javascript_syntax_only_files": 1,
+    "no_runtime_execution": true
+  },
+  "execution_contract": {
+    "actual_fixture": "worker.js uses env.KV_A/KV_B real public bindings configured to separate fresh namespace IDs.",
+    "max_public_calls_per_phase": 64,
+    "per_request_external_deadline_seconds": 30,
+    "wave_deadline_seconds": 700,
+    "requires_external_build_process_source_deployment_resource_teardown_witnesses": true,
+    "runtime_status": "UNRUN"
+  },
+  "case_verdicts": [
+    {
+      "id": "K201",
+      "verdict": "ACCEPTED_PRIMARY_STATIC_PINNED_SOURCE",
+      "runtime_status": "UNRUN",
+      "reason": "Empty versus absent value through deletion/recreation."
+    },
+    {
+      "id": "K202",
+      "verdict": "ACCEPTED_PRIMARY_STATIC_PINNED_SOURCE",
+      "runtime_status": "UNRUN",
+      "reason": "Typed JSON read is detached and does not rewrite stored text."
+    },
+    {
+      "id": "K203",
+      "verdict": "ACCEPTED_PRIMARY_STATIC_PINNED_SOURCE",
+      "runtime_status": "UNRUN",
+      "reason": "DataView extent and synchronous input snapshot before caller reuse."
+    },
+    {
+      "id": "K204",
+      "verdict": "ACCEPTED_PRIMARY_STATIC_PINNED_SOURCE",
+      "runtime_status": "UNRUN",
+      "reason": "Separate returned ArrayBuffer ownership across reads."
+    },
+    {
+      "id": "K205",
+      "verdict": "ACCEPTED_PRIMARY_STATIC_PINNED_SOURCE",
+      "runtime_status": "UNRUN",
+      "reason": "Finite stream concatenation and lock release before text decoding."
+    },
+    {
+      "id": "K206",
+      "verdict": "ACCEPTED_PRIMARY_STATIC_PINNED_SOURCE",
+      "runtime_status": "UNRUN",
+      "reason": "Same-active-request downloaded value snapshot survives later overwrite."
+    },
+    {
+      "id": "K207",
+      "verdict": "ACCEPTED_PRIMARY_STATIC_PINNED_SOURCE",
+      "runtime_status": "UNRUN",
+      "reason": "Write and read metadata isolation, including list materialization."
+    },
+    {
+      "id": "K208",
+      "verdict": "ACCEPTED_PRIMARY_STATIC_PINNED_SOURCE",
+      "runtime_status": "UNRUN",
+      "reason": "Metadata replacement and explicit omission clearing."
+    },
+    {
+      "id": "K209",
+      "verdict": "ACCEPTED_PRIMARY_STATIC_PINNED_SOURCE",
+      "runtime_status": "UNRUN",
+      "reason": "Falsy/null metadata presence versus absent metadata."
+    },
+    {
+      "id": "K210",
+      "verdict": "ACCEPTED_PRIMARY_STATIC_PINNED_SOURCE",
+      "runtime_status": "UNRUN",
+      "reason": "Map key/value pairing for ordinary prototype-like names, missing key and duplicate input."
+    },
+    {
+      "id": "K211",
+      "verdict": "ACCEPTED_PRIMARY_STATIC_PINNED_SOURCE",
+      "runtime_status": "UNRUN",
+      "reason": "Bulk JSON decoding retains per-key metadata and missing holes."
+    },
+    {
+      "id": "K212",
+      "verdict": "ACCEPTED_PRIMARY_STATIC_PINNED_SOURCE",
+      "runtime_status": "UNRUN",
+      "reason": "Exact bulk deletion subset and scalar branch followed by recreation."
+    },
+    {
+      "id": "K213",
+      "verdict": "ACCEPTED_PRIMARY_STATIC_PINNED_SOURCE",
+      "runtime_status": "UNRUN",
+      "reason": "UTF-8 byte ordering distinct from UTF-16 and insertion order."
+    },
+    {
+      "id": "K214",
+      "verdict": "ACCEPTED_PRIMARY_STATIC_PINNED_SOURCE",
+      "runtime_status": "UNRUN",
+      "reason": "Literal case-sensitive percent/underscore prefix matching."
+    },
+    {
+      "id": "K215",
+      "verdict": "ACCEPTED_PRIMARY_STATIC_PINNED_SOURCE",
+      "runtime_status": "UNRUN",
+      "reason": "Limit lookahead marks exactly full final page complete."
+    },
+    {
+      "id": "K216",
+      "verdict": "ACCEPTED_PRIMARY_STATIC_PINNED_SOURCE",
+      "runtime_status": "UNRUN",
+      "reason": "Keyset continuation survives deleted cursor row and intervening insertions."
+    },
+    {
+      "id": "K217",
+      "verdict": "ACCEPTED_PRIMARY_STATIC_PINNED_SOURCE",
+      "runtime_status": "UNRUN",
+      "reason": "Astral-ending prefix successor, code-point length and UTF-8 cursor continuation."
+    },
+    {
+      "id": "K218",
+      "verdict": "ACCEPTED_PRIMARY_STATIC_PINNED_SOURCE",
+      "runtime_status": "UNRUN",
+      "reason": "Equal key names remain logically separate across two configured namespaces."
+    },
+    {
+      "id": "K219",
+      "verdict": "ACCEPTED_PRIMARY_STATIC_PINNED_SOURCE",
+      "runtime_status": "UNRUN",
+      "reason": "Expiration units and nonexpiring replacement clearing; scheduled alarm not claimed removed."
+    },
+    {
+      "id": "K220",
+      "verdict": "ACCEPTED_PRIMARY_STATIC_PINNED_SOURCE",
+      "runtime_status": "UNRUN",
+      "reason": "Joined disjoint writes, typed metadata fan-in and disjoint deletes; no same-key ordering claim."
+    }
+  ],
+  "review_corrections": [
+    "K217 was strengthened so its prefix ends at the astral character; it now actually reaches the code-point successor branch rather than incrementing a trailing slash.",
+    "K219 explicitly distinguishes logical row deletion from namespace alarm disarm; owned process/store teardown remains mandatory."
+  ],
+  "qualifications": [
+    "docs/services/kv.md states that reads do not return stale values, while kv.js comments intentionally publish a weaker freshness promise. Primary acceptance here is for the documented and pinned direct source implementation, not future or universal Cloudflare consistency. Preserve this unresolved documentation inconsistency.",
+    "Missing exact runtime identity, bounded supervisor or disposable fresh store is BLOCKED. No runtime-qualified result can be inferred from the fixture PASS field alone.",
+    "K210 owns three unprefixed ordinary string keys and must never run against an existing user namespace.",
+    "On an API or stream stall there is no unsafe Promise.race cleanup overlap; external owned-process/store teardown is required.",
+    "K219 may leave an armed namespace alarm even after null-read logical cleanup.",
+    "K220 launches finite joined cohorts but does not claim deterministic overlap/fairness or same-key write order."
+  ],
+  "reviewed_file_sha256": {
+    "README.md": "9c528d4ad54e4c1eed38b12d9395e70c08c62d04f3c5d2b31cd7fdb220f7c77b",
+    "SHA256SUMS": "788c20bb048d17cb95db74ff570bf2778ef15593297e9b24a6bed58d456f2af5",
+    "author_manifest.py": "d5816e1ebbf7e4dc40cb03345d01854b918d4451c0a23e9102ed40ad8f16c66b",
+    "manifest.json": "f4906cd842457c8b9a75c0e069decbdcb702bfb3789ce06e6e1a55e2929069c9",
+    "overlap-audit.json": "126330fc158cc1c1cf5106c7bdd3d2c4f58e33f911b1a700c62be9ff96f020f5",
+    "source-pins.json": "aa075346b51da38f069e6c32150a4675754f47fa56f477fe08fab96803df4174",
+    "static-validation.json": "e235cbc8bb5edc4f9f75290d37246018b835c1b57c2e552d4d1a98dc39c3db6f",
+    "validate_static.py": "b627b98d29f5b60911b3aa248cf0ca47576a381cf35eef24f7cb434cf810b8bd",
+    "worker.js": "87ce92492bd300bbf0763c43d37be1edddfffb41fe9cfb06ffbfe7c348b90ee3",
+    "wrangler.jsonc": "157647cd6cd4e0b2f9654b8cc90fa8f25d76a6446300f1581ff43bd860bafc2e"
+  }
+}

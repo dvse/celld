@@ -1,0 +1,14 @@
+{
+  "name": "direct-public-identity-admission-v1",
+  "main": "fixture.js",
+  "compatibility_date": "2026-09-04",
+  "durable_objects": {
+    "bindings": [
+      {"name":"RECORD","class_name":"Record"},
+      {"name":"CONTROL","class_name":"Control"},
+      {"name":"INIT","class_name":"InitTarget"},
+      {"name":"EVENT","class_name":"EventTarget"}
+    ]
+  },
+  "migrations": [{"tag":"v1","new_sqlite_classes":["Record","Control","InitTarget","EventTarget"]}]
+}

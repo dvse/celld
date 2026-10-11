@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "status": "PRIMARY_SPEC_READ_SOURCE_ONLY",
+  "checked_date": "2026-10-09",
+  "standard_commit": "b9ba9f49d95b4280be0dc2372377a006c3a91c18",
+  "snapshot": "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/",
+  "method": "Primary WHATWG snapshot inspected using web read tools; no fixture imported or executed.",
+  "cases": {
+    "S301": {"algorithms": ["WritableStreamUpdateBackpressure", "WritableStreamDefaultControllerProcessWrite", "WritableStreamDefaultControllerGetDesiredSize", "ByteLengthQueuingStrategy.size"], "finding": "Ready epochs change on pressure transitions; successful write completion releases its queued weight. In-flight weight remains counted."},
+    "S302": {"algorithms": ["SetUpWritableStreamDefaultController", "WritableStreamDefaultControllerAdvanceQueueIfNeeded", "WritableStreamDefaultWriter constructor"], "finding": "Start fulfillment enables callback admission. Initial readiness depends on pressure, independently of initialization completion."},
+    "S303": {"algorithms": ["WritableStreamClose", "WritableStreamDefaultControllerProcessClose"], "finding": "A close request resolves existing pressure readiness before outstanding write and close callbacks finish."},
+    "S304": {"algorithms": ["InitializeTransformStream", "TransformStreamDefaultSinkWriteAlgorithm", "TransformStreamDefaultSourcePullAlgorithm", "TransformStreamDefaultControllerEnqueue"], "finding": "Readable demand relieves initial HWM0 backpressure; output consumption without another pending read restores it."},
+    "S305": {"algorithms": ["TransformStreamDefaultSinkCloseAlgorithm", "ReadableStreamDefaultControllerClose"], "finding": "Flush fulfillment precedes readable closure and sink-close completion. Prefix read must accompany write under HWM0."},
+    "S306": {"algorithms": ["ReadableStreamDefaultControllerShouldCallPull", "ReadableStreamDefaultControllerCallPullIfNeeded", "ReadableStreamDefaultControllerGetDesiredSize", "ByteLengthQueuingStrategy.size"], "finding": "Pull admission uses weighted desired size or pending read demand, after start. Pull completion alone does not permit refill at zero capacity."}
+  },
+  "runtime_status": "UNRUN",
+  "runtime_executions": 0
+}

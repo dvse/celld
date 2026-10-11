@@ -1,0 +1,30 @@
+{
+  "id": "conformance/rpc/restore-parameters-cannot-replace-owning-do-provenance",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "Restore parameters cannot replace owning DO provenance",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/fixture",
+      "legacy_id": "base/R028"
+    }
+  ],
+  "corpus_wave": "base",
+  "corpus_id": "R028",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "R028",
+    "intent": "Restore parameters cannot replace owning DO provenance",
+    "preconditions": "Peer supports native ctx.restore returning Child",
+    "trace": [
+      "record actual peer owner",
+      "mint persistent handle with caller label",
+      "invoke identity"
+    ],
+    "stress": "caller-supplied restore metadata with server-owned identity",
+    "oracle": "same peer root/isolate; supplied label only changes label",
+    "cleanup": "dispose persistent handle",
+    "gate": "characterization"
+  }
+}

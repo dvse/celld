@@ -1,0 +1,1068 @@
+[
+  {
+    "id": "K001",
+    "title": "Retry an unknown global wake PUT without changing its name",
+    "intent": "Retry an unknown global wake PUT without changing its name",
+    "failure_hypothesis": "A lost PUT response is mistaken for coverage or retry chooses a new publication identity",
+    "initial_state": "Empty WakeCore; alpha has committed epoch3/sequence7 at SQLite position90, due60050.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Request initial publication and retain its full key/snapshot.",
+      "Withhold confirmation to represent a lost store response; check uncovered.",
+      "Request a second publication and compare exact identity.",
+      "Confirm only the synthetic retry success; check coverage and absence of a third publication."
+    ],
+    "stress": "Two overlapping attempts for one installation; one deliberately missing acknowledgement.",
+    "safety_oracle": "Both attempts are exactly equal; no coverage before a confirmed success.",
+    "liveness_oracle": "One later confirmed PUT makes the installation covered and suppresses subsequent work.",
+    "oracle": [
+      "Both attempts are exactly equal; no coverage before a confirmed success.",
+      "One later confirmed PUT makes the installation covered and suppresses subsequent work."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K001 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k001_lost_put_reply_retries_identical_immutable_key",
+    "test_function": "k001_lost_put_reply_retries_identical_immutable_key",
+    "source_contract": [
+      "wake.rs:WakeCore::publication",
+      "wake.rs:WakeCore::confirm",
+      "wake.rs:WakeCore::covered"
+    ],
+    "layer": "native-component",
+    "sublayer": "public-component-model-trace",
+    "classification": "promotion-candidate",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "K002",
+    "title": "Keep newest wake coverage after reversed PUT completions",
+    "intent": "Keep newest wake coverage after reversed PUT completions",
+    "failure_hypothesis": "A late older PUT replaces current coverage and reopens work for the newer installation",
+    "initial_state": "Empty WakeCore; alpha epoch5 sequences2 and3 share the same due timestamp60100 but own distinct keys.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Request both publications.",
+      "Compare their distinct immutable keys.",
+      "Confirm sequence3 first and sequence2 second.",
+      "Check sequence3 covered, sequence2 not current coverage, and no new sequence3 publication."
+    ],
+    "stress": "Two in-flight same-minute registrations completed in reverse installation order.",
+    "safety_oracle": "Old completion cannot overwrite the newer cache identity.",
+    "liveness_oracle": "Current installation stays covered without another PUT.",
+    "oracle": [
+      "Old completion cannot overwrite the newer cache identity.",
+      "Current installation stays covered without another PUT."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K002 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k002_old_put_completion_cannot_replace_newest_coverage",
+    "test_function": "k002_old_put_completion_cannot_replace_newest_coverage",
+    "source_contract": [
+      "wake.rs:WakeCore::confirm",
+      "wake.rs:WakeCore::covered"
+    ],
+    "layer": "native-component",
+    "sublayer": "public-component-model-trace",
+    "classification": "promotion-candidate",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "K003",
+    "title": "Reuse wake coverage across unrelated SQLite commits",
+    "intent": "Reuse wake coverage across unrelated SQLite commits",
+    "failure_hypothesis": "A higher SQLite position with unchanged installation triggers a needless wake-publication stream",
+    "initial_state": "Alpha epoch2/sequence4 installed at position19 due70000; later ordinary write advances only position to100.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Request initial registration.",
+      "Confirm the initial PUT.",
+      "Compare installation equality against later position100.",
+      "Check later snapshot remains covered and emits no publication; original publication retained position19."
+    ],
+    "stress": "Publication completion followed by a much later local write position for the same alarm identity.",
+    "safety_oracle": "Position drift does not rewrite installation identity or the already sampled publication.",
+    "liveness_oracle": "Unchanged alarm stays covered without an extra store round trip.",
+    "oracle": [
+      "Position drift does not rewrite installation identity or the already sampled publication.",
+      "Unchanged alarm stays covered without an extra store round trip."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K003 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k003_unrelated_sqlite_write_does_not_require_republication",
+    "test_function": "k003_unrelated_sqlite_write_does_not_require_republication",
+    "source_contract": [
+      "wake.rs:AlarmSnapshot::same_installation",
+      "wake.rs:WakeCore::covered"
+    ],
+    "layer": "native-component",
+    "sublayer": "public-component-model-trace",
+    "classification": "promotion-candidate",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "K004",
+    "title": "Preserve cold work through elected-waker handoff",
+    "intent": "Preserve cold work through elected-waker handoff",
+    "failure_hypothesis": "A successor global waker suppresses its own dormant cells or keeps skipping a remote owner that has died",
+    "initial_state": "Other waker lease expires500; candidate fixture observes499 then500; owner-liveness samples are synthetic.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Check global role unavailable before expiry and live remote owner filtered.",
+      "Check role claim eligibility exactly at expiry.",
+      "Assume external role CAS success; check self-owned dormant and dead remote cells both need hints.",
+      "Check released cell needs a hint and healed remote owner no longer does."
+    ],
+    "stress": "One role handoff overlaps remote owner death then recovery across a mixed due set.",
+    "safety_oracle": "Role eligibility does not allow a premature foreign claim; live remote cells avoid redundant activation.",
+    "liveness_oracle": "After explicit role-CAS and liveness premises, self/dead/unowned classes stay discoverable.",
+    "oracle": [
+      "Role eligibility does not allow a premature foreign claim; live remote cells avoid redundant activation.",
+      "After explicit role-CAS and liveness premises, self/dead/unowned classes stay discoverable."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K004 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k004_elected_waker_handoff_keeps_self_and_dead_owner_work",
+    "test_function": "k004_elected_waker_handoff_keeps_self_and_dead_owner_work",
+    "source_contract": [
+      "wake.rs:waker_may_claim",
+      "wake.rs:elected_hint_needed"
+    ],
+    "layer": "native-component",
+    "sublayer": "public-component-model-trace",
+    "classification": "promotion-candidate",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "K005",
+    "title": "Reestablish only the lost cell publication cache",
+    "intent": "Reestablish only the lost cell publication cache",
+    "failure_hypothesis": "Forgetting one cell suppresses its recovery PUT or invalidates another cell coverage",
+    "initial_state": "Alpha and beta share equal snapshot values but both synthetic PUTs completed; original alpha key retained.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Capture alpha key and confirm alpha plus beta.",
+      "Forget only alpha.",
+      "Check alpha uncovered and beta still covered.",
+      "Request alpha again with exactly the original key and confirm recovery success."
+    ],
+    "stress": "One cell local-cache loss while another cell remains confirmed.",
+    "safety_oracle": "Recovery does not borrow beta coverage or invent a new alpha key.",
+    "liveness_oracle": "Successful alpha re-publication reestablishes its coverage.",
+    "oracle": [
+      "Recovery does not borrow beta coverage or invent a new alpha key.",
+      "Successful alpha re-publication reestablishes its coverage."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K005 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k005_local_cache_loss_requires_republish_only_for_forgotten_cell",
+    "test_function": "k005_local_cache_loss_requires_republish_only_for_forgotten_cell",
+    "source_contract": [
+      "wake.rs:WakeCore::forget",
+      "wake.rs:WakeCore::publication"
+    ],
+    "layer": "native-component",
+    "sublayer": "public-component-model-trace",
+    "classification": "promotion-candidate",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "K006",
+    "title": "Isolate registration completion credit by cell",
+    "intent": "Isolate registration completion credit by cell",
+    "failure_hypothesis": "Equal epoch/sequence values allow beta publication success to cover stalled alpha",
+    "initial_state": "Empty WakeCore; alpha and beta independently have epoch1/sequence1 position1 due60000.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Request both publications and compare their cell-qualified names.",
+      "Confirm only beta while alpha PUT is stalled.",
+      "Check alpha uncovered and still needing publication.",
+      "Confirm alpha and check its coverage."
+    ],
+    "stress": "Two cells with equal source identity and deadline, one selectively delayed PUT.",
+    "safety_oracle": "Cell-qualified keys differ and beta cannot grant alpha coverage.",
+    "liveness_oracle": "Alpha becomes covered only when its own PUT completion is supplied.",
+    "oracle": [
+      "Cell-qualified keys differ and beta cannot grant alpha coverage.",
+      "Alpha becomes covered only when its own PUT completion is supplied."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K006 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k006_equal_identity_on_two_cells_does_not_share_publication_credit",
+    "test_function": "k006_equal_identity_on_two_cells_does_not_share_publication_credit",
+    "source_contract": [
+      "wake.rs:WakeCore::publication",
+      "wake.rs:WakeCore::confirm"
+    ],
+    "layer": "native-component",
+    "sublayer": "public-component-model-trace",
+    "classification": "promotion-candidate",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "K007",
+    "title": "Filter unknown Owned hints before allocating state or permits",
+    "intent": "Filter unknown Owned hints before allocating state or permits",
+    "failure_hypothesis": "Non-elected foreign scans fill the cell map or block an elected local activation",
+    "initial_state": "Fresh lease-disabled production State; one residency and activation slot; all foreign cells unknown.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Send Owned hints for foreign-a and foreign-b; assert no effects or cell entries.",
+      "Start one Fleet hint for local and capture its owner-read op.",
+      "Send another unknown Owned hint while slot is occupied; assert no entry/backlog.",
+      "Complete local owner read, CAS, restore, runtime start and publication."
+    ],
+    "stress": "Three foreign scan hints bracket one complete local cold wake at activation capacity1.",
+    "safety_oracle": "Ignored hints allocate no phase and queue no activation.",
+    "liveness_oracle": "The admitted Fleet wake completes residency without client activity.",
+    "oracle": [
+      "Ignored hints allocate no phase and queue no activation.",
+      "The admitted Fleet wake completes residency without client activity."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K007 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k007_owned_foreign_scan_does_not_allocate_or_consume_activation_slot",
+    "test_function": "k007_owned_foreign_scan_does_not_allocate_or_consume_activation_slot",
+    "source_contract": [
+      "lib.rs:wake_hint_authorized",
+      "lib.rs:admit_or_queue_activation"
+    ],
+    "layer": "native-component",
+    "sublayer": "production-state-model-trace",
+    "classification": "promotion-candidate",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "K008",
+    "title": "Let an elected hint revisit a cached remote route",
+    "intent": "Let an elected hint revisit a cached remote route",
+    "failure_hypothesis": "A Fleet wake trusts stale Remote phase forever, or an Owned hint spends a needless owner read",
+    "initial_state": "Fresh State cap1/slot1; first synthetic owner says peer epoch4 with a live lease through1000.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Fleet hint resolves alpha into Remote via captured owner and lease reads.",
+      "Owned hint emits no work for that Remote cell.",
+      "Later Fleet hint emits a fresh owner read.",
+      "Synthetic read now says released epoch4; apply epoch5 CAS and finish restore/start/publication."
+    ],
+    "stress": "Global hints cross a cached remote route and later release of its owner.",
+    "safety_oracle": "Owned hint does no work on Remote; claim reflects the newly supplied record.",
+    "liveness_oracle": "Fleet reprobe reaches local epoch5 residency.",
+    "oracle": [
+      "Owned hint does no work on Remote; claim reflects the newly supplied record.",
+      "Fleet reprobe reaches local epoch5 residency."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K008 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k008_elected_hint_reprobes_cached_remote_but_owned_hint_does_not",
+    "test_function": "k008_elected_hint_reprobes_cached_remote_but_owned_hint_does_not",
+    "source_contract": [
+      "lib.rs:wake_hint_authorized",
+      "lib.rs:owner_read"
+    ],
+    "layer": "native-component",
+    "sublayer": "production-state-model-trace",
+    "classification": "promotion-candidate",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "K009",
+    "title": "Retain alarm demand after the last queued caller cancels",
+    "intent": "Retain alarm demand after the last queued caller cancels",
+    "failure_hypothesis": "Cancelling a joined request removes an independently discovered queued alarm wake",
+    "initial_state": "State cap2/slot1; busy holds owner read; caller7 queues alarm cell; Fleet hint joins that queued demand.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Hold busy owner read.",
+      "Queue caller7 and join a Fleet wake on alarm.",
+      "Cancel caller7 and check alarm remains queued.",
+      "Fail busy read, capture newly emitted alarm read and complete its full cold path."
+    ],
+    "stress": "Client cancellation removes all request demand while independent wake demand waits behind one permit.",
+    "safety_oracle": "Cancelled caller7 never gets a Complete effect.",
+    "liveness_oracle": "Alarm-only demand receives released capacity and becomes resident.",
+    "oracle": [
+      "Cancelled caller7 never gets a Complete effect.",
+      "Alarm-only demand receives released capacity and becomes resident."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K009 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k009_cancelled_last_caller_preserves_queued_alarm_wake_demand",
+    "test_function": "k009_cancelled_last_caller_preserves_queued_alarm_wake_demand",
+    "source_contract": [
+      "lib.rs:cancel",
+      "lib.rs:pump_activations",
+      "lib.rs:wake_hint_authorized"
+    ],
+    "layer": "native-component",
+    "sublayer": "production-state-model-trace",
+    "classification": "promotion-candidate",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "K010",
+    "title": "Coalesce repeated Fleet hints through the whole cold pipeline",
+    "intent": "Coalesce repeated Fleet hints through the whole cold pipeline",
+    "failure_hypothesis": "Periodic duplicate scans emit duplicate restore/start/publication operations for one cell",
+    "initial_state": "Fresh State cap1/slot1; alpha discovered once then repeatedly during each intermediate phase.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Start Fleet owner read and repeat hint while reading.",
+      "Complete read and repeat hint while acquiring.",
+      "Complete CAS and repeat hint while restoring.",
+      "Complete restore and repeat while starting; complete start and repeat while publishing.",
+      "Complete publication and assert exactly one acquisition/runtime start."
+    ],
+    "stress": "Six scanner ticks overlap one five-stage cold activation.",
+    "safety_oracle": "No duplicate operation of the currently pending kind appears; bounds validated after every event.",
+    "liveness_oracle": "The original captured operation chain alone reaches residency.",
+    "oracle": [
+      "No duplicate operation of the currently pending kind appears; bounds validated after every event.",
+      "The original captured operation chain alone reaches residency."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K010 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k010_repeated_fleet_ticks_coalesce_through_every_cold_start_phase",
+    "test_function": "k010_repeated_fleet_ticks_coalesce_through_every_cold_start_phase",
+    "source_contract": [
+      "lib.rs:wake_hint_authorized",
+      "lib.rs:owner_read",
+      "lib.rs:published"
+    ],
+    "layer": "native-component",
+    "sublayer": "production-state-model-trace",
+    "classification": "promotion-candidate",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "K011",
+    "title": "Characterize background probe retry as dependent on a later scan",
+    "intent": "Characterize background probe retry as dependent on a later scan",
+    "failure_hypothesis": "Consumers assume failed wake ownership reads retry autonomously without another scanner tick",
+    "initial_state": "Fresh State cap1/slot1; alpha has background Fleet wake and no caller.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Issue first Fleet owner read.",
+      "Complete it with definite failure.",
+      "Assert Inactive with no immediate retry, permit or backlog.",
+      "Supply a later explicit Fleet tick and complete read/CAS/restore/start/publication."
+    ],
+    "stress": "A transient background read failure with an intentionally quiet interval before the next tick.",
+    "safety_oracle": "Failed probe does not spin or retain an activation permit.",
+    "liveness_oracle": "Recovery is conditional on the supplied later scan tick; no autonomous retry promise.",
+    "oracle": [
+      "Failed probe does not spin or retain an activation permit.",
+      "Recovery is conditional on the supplied later scan tick; no autonomous retry promise."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K011 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k011_failed_background_probe_needs_a_later_scan_tick_to_retry",
+    "test_function": "k011_failed_background_probe_needs_a_later_scan_tick_to_retry",
+    "source_contract": [
+      "lib.rs:owner_read",
+      "lib.rs:wake_hint_authorized"
+    ],
+    "layer": "native-component",
+    "sublayer": "production-state-model-trace",
+    "classification": "characterization",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "K012",
+    "title": "Defer an already-due restored alarm until startup publication",
+    "intent": "Defer an already-due restored alarm until startup publication",
+    "failure_hypothesis": "A due timer fires while the restored runtime is still Starting or Publishing",
+    "initial_state": "State cap1/slot1; durable alpha record names fixture epoch1 and its restored image has deadline100 with covered=false, matching the runtime restore adapter; claim must emit non-fresh RestoreSpec epoch2; K012 alone uses an explicit500ms operation deadline, permitting two honest100ms timer deferrals.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Drive Fleet read of existing self-owned epoch1 and apply CAS; assert RestoreSpec non-fresh epoch2, then restore already-due alarm.",
+      "Deliver emitted alarm timer at100 during Starting; assert its rearm deadline200 and unchanged generation.",
+      "Complete RuntimeStarted at100 before its deadline600; deliver captured alarm timer at200 during Publishing and assert rearm300 with no delivery.",
+      "Complete Published at200 before its deadline600; deliver captured alarm timer at300, capture exactly one FireAlarm, then settle a no-write completion at300 and assert exact alpha absent-alarm ReconcileWakeEntry with no FireAlarm or AwaitDurable."
+    ],
+    "stress": "One alarm deadline races two distinct startup phases before route publication.",
+    "safety_oracle": "No FireAlarm before Resident; at most one dispatch in the trace.",
+    "liveness_oracle": "After publication, the same timer dispatches; the synthetic no-write completion emits exactly the absent-alarm reconciliation without another fire or durability barrier.",
+    "oracle": [
+      "No FireAlarm before Resident; at most one dispatch in the trace.",
+      "After publication, the same timer dispatches; the synthetic no-write completion emits exactly the absent-alarm reconciliation without another fire or durability barrier."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K012 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k012_due_alarm_defers_during_runtime_start_and_route_publication",
+    "test_function": "k012_due_alarm_defers_during_runtime_start_and_route_publication",
+    "source_contract": [
+      "lib.rs:restore_completed",
+      "lib.rs:cell_alarm_timer",
+      "lib.rs:alarm_finished"
+    ],
+    "layer": "native-component",
+    "sublayer": "production-state-model-trace",
+    "classification": "promotion-candidate",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "K013",
+    "title": "Recover failed cold restore through an Owned hint",
+    "intent": "Recover failed cold restore through an Owned hint",
+    "failure_hypothesis": "Restore failure makes a held dormant cell ineligible for the non-elected node own scan",
+    "initial_state": "Fresh State cap1/slot1; first Fleet claim acquires epoch1 then restore fails definitely.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Issue first Fleet wake and apply its CAS.",
+      "Fail restore; verify Dormant epoch1 with returned permit.",
+      "Send Owned hint, read self-owned epoch1 and capture new epoch2 CAS.",
+      "Apply CAS and complete restore/start/publication at epoch2."
+    ],
+    "stress": "Owned-scope rediscovery after failed restore with durable ownership retained.",
+    "safety_oracle": "Failure leaves dormant ownership rather than a leaked active permit or invented resident.",
+    "liveness_oracle": "Own scan remains eligible and creates the next writer epoch through normal claim.",
+    "oracle": [
+      "Failure leaves dormant ownership rather than a leaked active permit or invented resident.",
+      "Own scan remains eligible and creates the next writer epoch through normal claim."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K013 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k013_failed_restore_leaves_owned_hint_eligible_for_fresh_claim",
+    "test_function": "k013_failed_restore_leaves_owned_hint_eligible_for_fresh_claim",
+    "source_contract": [
+      "lib.rs:restore_completed",
+      "lib.rs:wake_hint_authorized"
+    ],
+    "layer": "native-component",
+    "sublayer": "production-state-model-trace",
+    "classification": "promotion-candidate",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "K014",
+    "title": "Keep original cron occurrence identity across retry scheduling",
+    "intent": "Keep original cron occurrence identity across retry scheduling",
+    "failure_hypothesis": "Retry timestamp changes the owed expression set or successful retry keeps retrying",
+    "initial_state": "Hourly cron at minute0; initial occurrence0; failed calls finish1000 and3000; successful retry finishes7000.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Plan initial arm at0.",
+      "Plan first failed occurrence0 to retry3000.",
+      "Plan retry still for occurrence0 to7000.",
+      "Plan successful retry to next hourly3600000 and verify minute1 is not the hourly occurrence."
+    ],
+    "stress": "Two failures followed by success, with retry timestamps outside the original cron minute.",
+    "safety_oracle": "Matching indices stay tied to fired occurrence0; retry versus occurrence flag is exact.",
+    "liveness_oracle": "Success resumes the next hourly occurrence.",
+    "oracle": [
+      "Matching indices stay tied to fired occurrence0; retry versus occurrence flag is exact.",
+      "Success resumes the next hourly occurrence."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K014 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k014_cron_retry_owes_original_occurrence_and_success_resumes_schedule",
+    "test_function": "k014_cron_retry_owes_original_occurrence_and_success_resumes_schedule",
+    "source_contract": [
+      "cron.rs:plan",
+      "cron.rs:matching",
+      "alarm.rs:alarm_retry"
+    ],
+    "layer": "native-component",
+    "sublayer": "public-component-model-trace",
+    "classification": "promotion-candidate",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "K015",
+    "title": "Prefer a scheduled occurrence over a tying or slower retry",
+    "intent": "Prefer a scheduled occurrence over a tying or slower retry",
+    "failure_hypothesis": "Failure backoff occupies the single alarm row past the next scheduled occurrence",
+    "initial_state": "Every-minute cron; failure completes58000 with base retry exactly at60000.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Plan initial occurrence0.",
+      "Plan tied retry/next deadline60000 and require occurrence attribution.",
+      "At fresh occurrence60000 reset retry to0; fail at61000,63000,67000,75000 and91000 with retries0..4; require exact intermediate63000/67000/75000/91000 then occurrence120000 over backoff123000.",
+      "Plan successful occurrence120000 to180000."
+    ],
+    "stress": "One tie and a subsequent long-backoff conflict on the one cron alarm row.",
+    "safety_oracle": "A tie is not labelled retry and longer backoff cannot skip the next occurrence.",
+    "liveness_oracle": "Normal per-minute occurrences continue under handler failures.",
+    "oracle": [
+      "A tie is not labelled retry and longer backoff cannot skip the next occurrence.",
+      "Normal per-minute occurrences continue under handler failures."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K015 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k015_next_cron_occurrence_wins_retry_tie_and_long_backoff",
+    "test_function": "k015_next_cron_occurrence_wins_retry_tie_and_long_backoff",
+    "source_contract": [
+      "cron.rs:cron_rearm",
+      "cron.rs:plan"
+    ],
+    "layer": "native-component",
+    "sublayer": "public-component-model-trace",
+    "classification": "promotion-candidate",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "K016",
+    "title": "Characterize cron plan fanout and caller-owned failed subsets",
+    "intent": "Characterize cron plan fanout and caller-owned failed subsets",
+    "failure_hypothesis": "An adapter assumes Plan remembers only failed expressions when overlapping expressions share an alarm",
+    "initial_state": "One five-minute expression and two identical hourly expressions; all match occurrence0; caller says one remains owed.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Arm one earliest deadline0 across all expressions.",
+      "Plan failed occurrence0 with only one expression owed; check indices0,1,2 retained and retry2000.",
+      "At retry2000 with count1, check all matching indices remain and arm6000; at6000 the owed retry succeeds and schedules300000.",
+      "Plan ordinary occurrence300000 and check only index0 plus next600000."
+    ],
+    "stress": "Coincident expression fanout followed by partial failure and a later noncoincident occurrence.",
+    "safety_oracle": "No implicit deduplication or invented failed-index filtering is claimed.",
+    "liveness_oracle": "Adapter must retain/filter its failed set; next ordinary occurrence has the correct fanout.",
+    "oracle": [
+      "No implicit deduplication or invented failed-index filtering is claimed.",
+      "Adapter must retain/filter its failed set; next ordinary occurrence has the correct fanout."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K016 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k016_cron_retry_plan_reports_all_matches_not_failed_subset",
+    "test_function": "k016_cron_retry_plan_reports_all_matches_not_failed_subset",
+    "source_contract": [
+      "cron.rs:matching",
+      "cron.rs:plan"
+    ],
+    "layer": "native-component",
+    "sublayer": "public-component-model-trace",
+    "classification": "characterization",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "K017",
+    "title": "Characterize scheduling after a multi-day restart gap",
+    "intent": "Characterize scheduling after a multi-day restart gap",
+    "failure_hypothesis": "An adapter mistakes next-after-now for catch-up delivery of every missed cron occurrence",
+    "initial_state": "Daily midnight schedule originally armed0; process resumes172800123 after two complete days.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Plan original arm0.",
+      "Plan completion of old occurrence0 at the recovery time.",
+      "Check next_across chooses259200000, after current time.",
+      "Plan that resumed occurrence to next345600000."
+    ],
+    "stress": "A two-day downtime gap between fired identity and current scheduling time.",
+    "safety_oracle": "Plan retains matching identity0 but does not manufacture missed daily occurrences.",
+    "liveness_oracle": "Future schedule resumes strictly after the supplied recovery clock; catch-up policy is not proven.",
+    "oracle": [
+      "Plan retains matching identity0 but does not manufacture missed daily occurrences.",
+      "Future schedule resumes strictly after the supplied recovery clock; catch-up policy is not proven."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K017 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k017_restart_gap_schedules_future_without_inventing_missed_occurrences",
+    "test_function": "k017_restart_gap_schedules_future_without_inventing_missed_occurrences",
+    "source_contract": [
+      "cron.rs:next_across",
+      "cron.rs:plan"
+    ],
+    "layer": "native-component",
+    "sublayer": "public-component-model-trace",
+    "classification": "characterization",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "K018",
+    "title": "Retain sparse future schedules across long calendar gaps",
+    "intent": "Retain sparse future schedules across long calendar gaps",
+    "failure_hypothesis": "A fixed short lookahead reports no future cron and silently loses a sparse cell wake",
+    "initial_state": "Leap-day schedule at2096-02-29 and fifth-Sunday-February schedule at2004-02-29.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Validate the pre-century leap occurrence.",
+      "Compute next leap date2104-02-29 across skipped2100 and validate it.",
+      "Compute next fifth Sunday in February2032-02-29.",
+      "Plan the cold fifth-Sunday cell and require that long-horizon arm."
+    ],
+    "stress": "Two documented calendar reachability shapes share one bounded-lookahead risk; they count together once.",
+    "safety_oracle": "Neither eight-year nor twenty-eight-year sparse reachability is mistaken for exhaustion.",
+    "liveness_oracle": "Each schedule produces a valid concrete future alarm.",
+    "oracle": [
+      "Neither eight-year nor twenty-eight-year sparse reachability is mistaken for exhaustion.",
+      "Each schedule produces a valid concrete future alarm."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K018 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k018_sparse_calendar_gap_does_not_silently_lose_future_wake",
+    "test_function": "k018_sparse_calendar_gap_does_not_silently_lose_future_wake",
+    "source_contract": [
+      "cron.rs:next_after",
+      "cron.rs:plan"
+    ],
+    "layer": "native-component",
+    "sublayer": "public-component-model-trace",
+    "classification": "promotion-candidate",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "K019",
+    "title": "Characterize impossible schedule alongside a live sibling and old retry",
+    "intent": "Characterize impossible schedule alongside a live sibling and old retry",
+    "failure_hypothesis": "An impossible but valid expression hides another schedule or permits retry with no terminal ceiling",
+    "initial_state": "Valid unsatisfiable February31 expression; minute schedule sibling; old owed handler represented by explicit failed input.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Run next_after on impossible expression to None within one Gregorian scan.",
+      "Plan impossible plus minute sibling and require60000.",
+      "After synthetic config replacement leaves only impossible expression, represent old owed work and require retry2000.",
+      "Execute all intermediate failures at2000,6000,14000,30000,62000 using counts1..5 and exact deadlines6000,14000,30000,62000,126000; at126000 count6 requires no alarm remaining."
+    ],
+    "stress": "Unsatisfiable calendar scan plus a viable sibling and an externally retained old failure after config replacement.",
+    "safety_oracle": "No matching index is invented for impossible schedule; unsatisfiable expression does not mask viable sibling.",
+    "liveness_oracle": "Plan-only failure budget eventually produces no further arm; actual deploy/removal policy is outside this test.",
+    "oracle": [
+      "No matching index is invented for impossible schedule; unsatisfiable expression does not mask viable sibling.",
+      "Plan-only failure budget eventually produces no further arm; actual deploy/removal policy is outside this test."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K019 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k019_unsatisfiable_schedule_cannot_hide_viable_sibling_or_spin_retry",
+    "test_function": "k019_unsatisfiable_schedule_cannot_hide_viable_sibling_or_spin_retry",
+    "source_contract": [
+      "cron.rs:next_after",
+      "cron.rs:next_across",
+      "cron.rs:plan"
+    ],
+    "layer": "native-component",
+    "sublayer": "public-component-model-trace",
+    "classification": "characterization",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "K020",
+    "title": "Merge cold Queue deadlines without delaying unrelated work",
+    "intent": "Merge cold Queue deadlines without delaying unrelated work",
+    "failure_hypothesis": "An old batch timestamp or one consumer retry overwrites earlier independent visibility or sweep work",
+    "initial_state": "Recovered queue at100 has overdue batch20, visible row200, lease150 and sweep300.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Rearm all facts and require immediate100.",
+      "After synthetic batch handling require lease150.",
+      "Expire lease151 to fixed retry2151.",
+      "Require unrelated visible row200, then after its settlement require sweep300 before retry2151."
+    ],
+    "stress": "Four deadline sources successively compete after crash recovery and one lost settlement.",
+    "safety_oracle": "Past deadline clamps to now; later retry cannot push earlier visible/sweep work backward.",
+    "liveness_oracle": "Each next pending source receives the one alarm row under explicit transaction-update premises.",
+    "oracle": [
+      "Past deadline clamps to now; later retry cannot push earlier visible/sweep work backward.",
+      "Each next pending source receives the one alarm row under explicit transaction-update premises."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K020 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k020_queue_recovery_merges_overdue_batch_visibility_lease_and_sweep",
+    "test_function": "k020_queue_recovery_merges_overdue_batch_visibility_lease_and_sweep",
+    "source_contract": [
+      "queue.rs:rearm",
+      "queue.rs:expire_lease"
+    ],
+    "layer": "native-component",
+    "sublayer": "public-component-model-trace",
+    "classification": "promotion-candidate",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "K021",
+    "title": "Scan around live and delayed Queue rows then reclaim the expired row",
+    "intent": "Scan around live and delayed Queue rows then reclaim the expired row",
+    "failure_hypothesis": "A live or delayed row at the front prevents a later visible row from being batched",
+    "initial_state": "Row1 live until200 generation2; row2 delayed to150; row3 ready; batch output limit2.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "At100 plan the mixed rows and require only row3.",
+      "Rearm from visibility150 and lease200.",
+      "Assume row3 settled; at150 plan rows1,2 and require row2.",
+      "Assume row2 settled; at200 plan row1 and require reclaimed generation3."
+    ],
+    "stress": "Distinct eligibility blockers ahead of ready work, removed in later finite turns.",
+    "safety_oracle": "Live/future rows never deliver early; result preserves concrete eligible rows and reclaim metadata.",
+    "liveness_oracle": "Ready tail, later visibility and finally expired row all get a turn.",
+    "oracle": [
+      "Live/future rows never deliver early; result preserves concrete eligible rows and reclaim metadata.",
+      "Ready tail, later visibility and finally expired row all get a turn."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K021 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k021_queue_batch_skips_live_and_delayed_rows_then_reclaims_after_expiry",
+    "test_function": "k021_queue_batch_skips_live_and_delayed_rows_then_reclaims_after_expiry",
+    "source_contract": [
+      "queue.rs:batch_plan",
+      "queue.rs:rearm"
+    ],
+    "layer": "native-component",
+    "sublayer": "public-component-model-trace",
+    "classification": "promotion-candidate",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "K022",
+    "title": "Hold Queue concurrency until persisted settlement or expiry",
+    "intent": "Hold Queue concurrency until persisted settlement or expiry",
+    "failure_hypothesis": "Handler return alone is treated as a free durable batch slot before its settlement commits",
+    "initial_state": "Two persisted active lease IDs with max concurrency2; one handler returned but settlement was not committed.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Check both slots occupied.",
+      "Check unchanged durable active count2 after uncommitted handler return still rejects admission.",
+      "Rearm at earliest lease expiry250.",
+      "Expire to retry1250; assume transaction removes one active lease and check admission1-of2 plus preserved retry delay."
+    ],
+    "stress": "Lost settlement delays slot release; expiry later frees one slot while retry visibility remains future.",
+    "safety_oracle": "Only supplied persisted active-count change opens capacity; free capacity does not remove retry delay.",
+    "liveness_oracle": "After explicit expiry transaction, one new batch can install and failed work has deadline1250.",
+    "oracle": [
+      "Only supplied persisted active-count change opens capacity; free capacity does not remove retry delay.",
+      "After explicit expiry transaction, one new batch can install and failed work has deadline1250."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K022 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k022_handler_return_does_not_release_persisted_batch_concurrency_slot",
+    "test_function": "k022_handler_return_does_not_release_persisted_batch_concurrency_slot",
+    "source_contract": [
+      "queue.rs:can_install_lease",
+      "queue.rs:expire_lease",
+      "queue.rs:rearm"
+    ],
+    "layer": "native-component",
+    "sublayer": "public-component-model-trace",
+    "classification": "promotion-candidate",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "K023",
+    "title": "Use fixed Queue failure delay and stop at the delivery budget",
+    "intent": "Use fixed Queue failure delay and stop at the delivery budget",
+    "failure_hypothesis": "Missing settlement retries compound the configured delay or survive the finite failure ceiling",
+    "initial_state": "Consumer configured delay3 seconds/max_retries3; synthetic persisted failure counts0,1,2,3.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Expire first attempt at100 to3100.",
+      "Expire second at3200 to6200 and compare same fixed delay.",
+      "Check explicit zero settlement delay overrides configured3.",
+      "Expire third at6300 to9300; fourth at9400 is exhausted; empty remaining facts produce no alarm."
+    ],
+    "stress": "Four finite lost-settlement attempts, one explicit zero-delay precedence observation, no real timer waits.",
+    "safety_oracle": "Delay is fixed instead of exponential; fourth failed delivery is Exhausted.",
+    "liveness_oracle": "Finite failures terminate once the explicitly modeled remaining row set is empty.",
+    "oracle": [
+      "Delay is fixed instead of exponential; fourth failed delivery is Exhausted.",
+      "Finite failures terminate once the explicitly modeled remaining row set is empty."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K023 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k023_queue_missing_settlement_uses_fixed_backoff_and_finite_failure_budget",
+    "test_function": "k023_queue_missing_settlement_uses_fixed_backoff_and_finite_failure_budget",
+    "source_contract": [
+      "queue.rs:expire_lease",
+      "queue.rs:retry_at",
+      "queue.rs:rearm"
+    ],
+    "layer": "native-component",
+    "sublayer": "public-component-model-trace",
+    "classification": "promotion-candidate",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "K024",
+    "title": "Characterize the caller-owned Queue scan bound",
+    "intent": "Characterize the caller-owned Queue scan bound",
+    "failure_hypothesis": "An executor mistakes max_batch_size for a bound on rows examined by the public planner",
+    "initial_state": "256 delayed rows followed by one ready row; output batch limit1; BATCH_ROWS is the exported sweep input bound.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Plan exactly first256 rows and obtain no leases.",
+      "Plan all257 with max_batch_size1 and observe ready row256 selected.",
+      "Supply next_sweep=now to request another turn.",
+      "Plan explicit one-row tail page and require the same ready lease."
+    ],
+    "stress": "One 257-row scan frontier demonstrates input/output bounds separately; repeated rows are not extra cases.",
+    "safety_oracle": "Batch output remains capped1, but no claim that batch_plan enforces the scan bound is made.",
+    "liveness_oracle": "Only an explicitly supplied next page/turn reaches the ready frontier; SQL pagination is not exercised.",
+    "oracle": [
+      "Batch output remains capped1, but no claim that batch_plan enforces the scan bound is made.",
+      "Only an explicitly supplied next page/turn reaches the ready frontier; SQL pagination is not exercised."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K024 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k024_sweep_row_bound_is_callers_input_bound_not_batch_output_limit",
+    "test_function": "k024_sweep_row_bound_is_callers_input_bound_not_batch_output_limit",
+    "source_contract": [
+      "sweep.rs:BATCH_ROWS",
+      "queue.rs:batch_plan",
+      "queue.rs:rearm"
+    ],
+    "layer": "native-component",
+    "sublayer": "public-component-model-trace",
+    "classification": "characterization",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  }
+]

@@ -1,0 +1,60 @@
+{
+  "id": "logic/wake-recovery/characterize-cron-plan-fanout-and-caller-owned-failed-subsets",
+  "layer": "logic",
+  "behaviour": "wake-recovery",
+  "title": "Characterize cron plan fanout and caller-owned failed subsets",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic",
+      "legacy_id": "wake-recovery-logic/K016"
+    }
+  ],
+  "corpus_wave": "wake-recovery-logic",
+  "corpus_id": "K016",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "K016",
+    "title": "Characterize cron plan fanout and caller-owned failed subsets",
+    "intent": "Characterize cron plan fanout and caller-owned failed subsets",
+    "failure_hypothesis": "An adapter assumes Plan remembers only failed expressions when overlapping expressions share an alarm",
+    "initial_state": "One five-minute expression and two identical hourly expressions; all match occurrence0; caller says one remains owed.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Arm one earliest deadline0 across all expressions.",
+      "Plan failed occurrence0 with only one expression owed; check indices0,1,2 retained and retry2000.",
+      "At retry2000 with count1, check all matching indices remain and arm6000; at6000 the owed retry succeeds and schedules300000.",
+      "Plan ordinary occurrence300000 and check only index0 plus next600000."
+    ],
+    "stress": "Coincident expression fanout followed by partial failure and a later noncoincident occurrence.",
+    "safety_oracle": "No implicit deduplication or invented failed-index filtering is claimed.",
+    "liveness_oracle": "Adapter must retain/filter its failed set; next ordinary occurrence has the correct fanout.",
+    "oracle": [
+      "No implicit deduplication or invented failed-index filtering is claimed.",
+      "Adapter must retain/filter its failed set; next ordinary occurrence has the correct fanout."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K016 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k016_cron_retry_plan_reports_all_matches_not_failed_subset",
+    "test_function": "k016_cron_retry_plan_reports_all_matches_not_failed_subset",
+    "source_contract": [
+      "cron.rs:matching",
+      "cron.rs:plan"
+    ],
+    "layer": "native-component",
+    "sublayer": "public-component-model-trace",
+    "classification": "characterization",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  }
+}

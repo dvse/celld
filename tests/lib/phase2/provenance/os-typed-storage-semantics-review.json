@@ -1,0 +1,148 @@
+{
+  "reviewed_at_utc": "2026-10-09T07:39:28.238938+00:00",
+  "reviewer": "review_celld_test_additions",
+  "wave": "os-typed-storage-semantics",
+  "verdict": "ACCEPTED_PRIMARY_STATIC",
+  "counts": {
+    "authored": 7,
+    "accepted_primary_static": 7,
+    "accepted_characterization": 0,
+    "case_static_assertion_call_sites": 26,
+    "runtime_executions": 0,
+    "runtime_passes": 0,
+    "retired_unimplemented_candidates": 1
+  },
+  "scope": "Independent full handwritten cases/wrapper and byte-exact production module source review. No TypeScript import, compilation, execution, source adaptation, mock/native-storage replacement, SUT/reference runtime, build or download. Author validators not executed.",
+  "production_module": {
+    "repository": "https://github.com/cloudflare/cloudflare-os",
+    "commit": "4358072f8cb1bc9ddfb6ee11122e194c76cd71e0",
+    "source_url": "https://github.com/cloudflare/cloudflare-os/blob/4358072f8cb1bc9ddfb6ee11122e194c76cd71e0/packages/typed-storage/src/index.ts",
+    "vendor_path": "vendor/cloudflare-os/packages/typed-storage/src/index.ts",
+    "sha256": "561111a1a0787d5158ddfa9df5c1910285b156906d874f5f58719a901e004c12",
+    "bytes": 29223,
+    "license_path": "vendor/cloudflare-os/LICENSE",
+    "license_sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+    "original_source_and_license_exact": true,
+    "runtime_import_dependencies": 0,
+    "future_trusted_TS_bundling_unqualified": true
+  },
+  "oracle_review": "Fixed grouped sequences, raw key ordering, elided primary-key rows, every allocation counter/child identity, rollback keyspace and later edits independently checked from intended module contracts. Raw storage layout and exact conflict text are pinned-module expectations, not general Cloudflare storage-format guarantees. No replay/auth/malformed/corruption/native-fault stimulus. C202 uses ordinary valid business conflicts handled by the application module.",
+  "duplicate_review": "Compared T001-T032 and accepted D/K/T/Z mechanisms. These exercise the unchanged real OS module and its native sync-KV/index transaction compositions, rather than reimplemented SQL bookkeeping. Combined option cases receive one credit each. C208 observer ordering was retired before implementation and gets zero credit; C205 observes only stored audit results, and C207 avoids concurrent alias semantics.",
+  "case_verdicts": [
+    {
+      "id": "C201",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Actual module buffers outer index traversal before native child scans; documented key-limit, reverse and dedupe contracts share one fixed dataset."
+    },
+    {
+      "id": "C202",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Ordinary application uniqueness conflicts roll back earlier index changes and the main row; exact full keyspace and later successful replacement distinguish the production subscriber path."
+    },
+    {
+      "id": "C203",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Real scalar/array/null membership transitions preserve intersection, reclaim empty groups and allocate fresh group identities."
+    },
+    {
+      "id": "C204",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Actual late-index rebuild API backfills rows inside a migration transaction, retains allocation counter across another rebuild and supports coherent edits."
+    },
+    {
+      "id": "C205",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Buffered group deletion survives further native list activity from index maintenance and an ordinary audit callback; exact survivors/postings and stored audit identities are checked."
+    },
+    {
+      "id": "C206",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Documented computed-key deleteRecord ignores stale non-key caller fields; actual stored record controls all posting removals."
+    },
+    {
+      "id": "C207",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Sequential schema property renames reuse explicit physical storage names/keys without shadow records or concurrent-alias assumptions."
+    }
+  ],
+  "execution_contract": {
+    "surface": "One real migrated TypedStorageCase per fresh named root. Frontend performs one real same-deployment DO.fetch, passing the genuine state.storage object directly to the imported production module.",
+    "external_requests_per_case": 1,
+    "real_DO_fetches_per_case": 1,
+    "max_roots_per_case": 1,
+    "max_native_entries": 32,
+    "max_rows_per_consumed_iterator": 64,
+    "max_native_list_calls": 64,
+    "max_schema_instances": 3,
+    "max_sync_transaction_depth": 3,
+    "max_remove_callbacks": 3,
+    "max_logical_payload_bytes": 8192,
+    "preflight_trace_cleanup_timers_ms": [
+      1000,
+      5000,
+      2000
+    ],
+    "outer_HTTP_seconds": 10,
+    "case_owned_process_seconds": 15,
+    "whole_wave_seconds": 120,
+    "max_aggregate_RSS_bytes": 1073741824,
+    "max_owned_processes": 32,
+    "max_owned_writable_bytes": 134217728,
+    "supervision": "Entire proven-owned dev/bundler/runtime descendant domain across PGIDs, with generated bundles/config/logs/temp/store inside the owned quota. No single-PGID fallback. Runtime/bundler/provisioning remain separately unqualified.",
+    "cleanup": "Only after trace settlement, fully drain a fresh public sync-KV iterator to replace abandoned scoped cursors, deleteAll this owned root and verify empty KV. C205 unsubscribes in finally. Unsettled trace never races cleanup; final descendant/store teardown must be independently verified.",
+    "identity_limit": "Object/root/activation/module digest fields are correlations, not independent build, placement or bundle evidence."
+  },
+  "OS_relevance": {
+    "label": "Actual pinned OS-module component integration candidate",
+    "actual_callsite_support": [
+      "overseer-storage.ts:1246-1268 sparse and multikey index declarations",
+      "overseer.ts:10641-10660 reverse bounded indexed history paging",
+      "overseer-migrations.ts:231-246 real rebuilds-plus-version-stamp migration"
+    ],
+    "qualification": "Original module and selected application callers are available as exact historical source. A complete OS checkout/dependency graph and any OS end-to-end execution remain unqualified. No security, fleet, restart or production-readiness result."
+  },
+  "static_checks": {
+    "baseline_pins_verified": 7,
+    "OS_inventory_pins_verified": 9,
+    "vendor_pins_verified": 2,
+    "overlap_pins_verified": 8,
+    "source_and_callsite_ranges": 36,
+    "SHA256SUMS_entries": 14,
+    "case_manifest_bijection": 7,
+    "JavaScript_syntax_files": 2,
+    "Python_AST_only_files": 2,
+    "TS_compiles_imports_executions": 0,
+    "no_prior_case_ID_collisions": true
+  },
+  "authored_artifact_sha256": {
+    "README.md": "e5d7c90388b484dbdf7effbbf81a3c0c0b4205f5ab6af65effe53ce7145042e7",
+    "SHA256SUMS": "ecdf21b026057cc6bb565f81dd4449566eb905f09eebab3a61c02c6cccc39a7b",
+    "THIRD-PARTY.md": "810474b61f539f30f08502f15433b0af8d5ef671165dc8ed7884afd5d681bf21",
+    "author_manifest.py": "82f43dbf5e5303bf5b518f4aee31054de5a0a5195b8738762b4fbea6938144eb",
+    "cases.js": "2b0a192f9bfdf32f3f0e064513c18b3aac1a915b67186ea073e3427c434adea2",
+    "fixture.js": "b90228c2292eafe5253598b111ccf2272743fc1f6f68485f6d8bd454e52cf50f",
+    "manifest.json": "70b236edc39a42d460392d283885be675f1626f589f517b458f667be81946fc7",
+    "overlap-audit.json": "88955f5fc0d6420c39d14f06d89c1d9ac5e225405af4f1cb503da6e1ee262a7f",
+    "provenance.json": "42fcb90c11005a2bdebb0cff20b50fd4db346e200febb5b9e6abb0693f7a4316",
+    "source-pins.json": "3e7611b9de6694a6e2fa1e66007badba6c14f2e936e997b236ab68410900e70d",
+    "static-report.json": "9b54eea29a461c44d6808965af54d67304305922dd9f71fb4438e25f18fdf1f8",
+    "validate_static.py": "352b93a7dc56151fdce44c8e812b8ba98a35a33ee747613f6ec828186c5f5a01",
+    "vendor/cloudflare-os/LICENSE": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+    "vendor/cloudflare-os/packages/typed-storage/src/index.ts": "561111a1a0787d5158ddfa9df5c1910285b156906d874f5f58719a901e004c12",
+    "wrangler.jsonc": "6602e99531eb43088f9293452987974cdae9fced1f26f7d01ff66d06279e6353"
+  },
+  "combined_census_after_acceptance": {
+    "authored": 773,
+    "primary_static": 658,
+    "characterization": 115,
+    "target_primary": 2000,
+    "remaining_primary": 1342
+  }
+}

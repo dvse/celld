@@ -1,0 +1,124 @@
+{
+  "id": "conformance/durable-objects/lifecycle/partial-named-global-publication-is-repaired-explicitly",
+  "layer": "conformance",
+  "behaviour": "durable-objects/lifecycle",
+  "title": "Partial named/global publication is repaired explicitly",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/deployment-recovery",
+      "legacy_id": "deployment-recovery/U021"
+    }
+  ],
+  "corpus_wave": "deployment-recovery",
+  "corpus_id": "U021",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "U021",
+    "title": "Partial named/global publication is repaired explicitly",
+    "intent": "Partial named/global publication is repaired explicitly",
+    "failure_hypothesis": "Two-pointer publication is not assumed atomic; late server persistence after CLI death is observed, and explicit native redeploy reconciles selectors without data loss.",
+    "initial_state": "v2 named selector persisted while global current.json held prewrite",
+    "preconditions": [
+      "Exact frozen binary/source pins and real native APIs verified",
+      "No active runtime execution during authoring; future exclusive supervisor approval required",
+      "v1 already deployed with no_bundle, fixture-only credentials and selector/module verification",
+      "Two owned bounded QEMU guests; guest2 store survives runtime-only cold fault",
+      "Case-specific operation/hold/clock barriers must be observed; missed pre-adoption/pre-cold alarm windows or45s fixture overlap fuses are BLOCKED with original receipts"
+    ],
+    "trace": [
+      "Observe actual global write_held and exact named-v2/global-v1 split",
+      "Force native reload and require v1 primary still serving exact old data",
+      "Kill operator, release server hold, and witness late global PUT persistence",
+      "Redeploy v1 repair then v2-code, acknowledge recovery write and cold restore"
+    ],
+    "ordered_trace": [
+      "Observe actual global write_held and exact named-v2/global-v1 split",
+      "Force native reload and require v1 primary still serving exact old data",
+      "Kill operator, release server hold, and witness late global PUT persistence",
+      "Redeploy v1 repair then v2-code, acknowledge recovery write and cold restore"
+    ],
+    "stress": {
+      "classification": "bounded-deployment-recovery",
+      "mechanism": [
+        "Observe actual global write_held and exact named-v2/global-v1 split",
+        "Force native reload and require v1 primary still serving exact old data",
+        "Kill operator, release server hold, and witness late global PUT persistence",
+        "Redeploy v1 repair then v2-code, acknowledge recovery write and cold restore"
+      ],
+      "bounded": true
+    },
+    "oracle": "Two-pointer publication is not assumed atomic; late server persistence after CLI death is observed, and explicit native redeploy reconciles selectors without data loss.",
+    "safety_oracle": "Two-pointer publication is not assumed atomic; late server persistence after CLI death is observed, and explicit native redeploy reconciles selectors without data loss.",
+    "liveness_oracle": "Each barrier, native deployment, HTTP cohort and recovery finishes within profile bounds; native missing-hook or failed setup is BLOCKED, not PASS.",
+    "cleanup": [
+      "Release trusted owned-store hold when possible",
+      "TERM both exact verified QEMU process groups before a shared10s grace",
+      "Escalate only exact verified survivors; reap each within2s",
+      "Enforce independent35s cleanup deadline plus bounded forced reap; cleanup failure cannot earn PASS",
+      "Fresh run ID, bucket, Guest pair and state directories for the next case; store guest lives until final teardown"
+    ],
+    "bounds": {
+      "name": "bucket",
+      "scope": "One owned disposable OS instance for one test principal; no cross-instance sharing or security certification",
+      "binary_sha256": "62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e",
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "qemu_guests": 2,
+      "guest_memory_mib": 768,
+      "guest_vcpus": 1,
+      "guest_workload_memory_max_bytes": 536870912,
+      "guest_workload_pids_max": 128,
+      "guest_cpu_quota_cores_max": 2,
+      "max_http_jobs_simultaneous": 16,
+      "max_active_http_cohorts": 4,
+      "max_dispatched_async_jobs": 128,
+      "max_sequential_native_deployments": 8,
+      "max_simultaneous_native_deployments": 1,
+      "native_deploy_deadline_seconds": 35,
+      "max_fixture_roots": 2,
+      "max_fixture_job_records_per_root": 96,
+      "max_seed_rows_per_root": 8,
+      "max_durable_rows": 128,
+      "max_logical_payload_bytes": 1048576,
+      "max_response_bytes": 1048576,
+      "max_store_response_bytes": 2097152,
+      "fixture_gate_deadline_ms": 45000,
+      "external_gate_poll_requests_per_handler_max": 45,
+      "external_gate_handlers_max": 2,
+      "external_gate_total_http_requests_max": 90,
+      "external_gate_response_bytes_max": 2097152,
+      "external_gate_response_read_operations_max": 256,
+      "external_gate_request_timeout_ms": 3000,
+      "max_foreground_control_calls": 256,
+      "lease_ttl_ms": 30000,
+      "cold_lease_wait_seconds": 35,
+      "deploy_poll_seconds": 3600,
+      "deploy_max_age_seconds": 60,
+      "alarm_delay_max_ms": 120000,
+      "production_ttl_or_throughput_qualified": false,
+      "store_guest_must_survive": true,
+      "store_guest_power_loss_claim": false,
+      "network": "Only fixture-private192.168.77.1/2; no redirects, public services, real credentials or raw-auth tests",
+      "execution_prerequisite": "Transferred owned running Guest pair, staged exact hashes and native v1 publication, pinned binary, independently reviewed case hashes, exclusive parent run slot and pre-provisioned inherited cgroup bounds"
+    },
+    "layer": "real-process-RPC",
+    "classification": "bounded-deployment-recovery",
+    "promotion_gate": false,
+    "characterization": true,
+    "implementation": {
+      "file": "cases.py",
+      "function": "U021",
+      "driver": "driver.py:run_case",
+      "fixtures": "versions/*/fixture.js and wrangler.jsonc; actual selections in named function"
+    },
+    "test_function": "U021",
+    "profile": "bucket-profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  }
+}

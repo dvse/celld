@@ -1,0 +1,54 @@
+{
+  "id": "logic/lease-acquisition/ownership-only-handoff-can-acquire-above-residency-cap",
+  "layer": "logic",
+  "behaviour": "lease-acquisition",
+  "title": "Ownership-only handoff can acquire above residency cap",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic",
+      "legacy_id": "corpus/routing-acquisition-logic/N016"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+      "sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/routing-acquisition-logic/N016"
+  ],
+  "adapter": "native",
+  "corpus_id": "N016",
+  "corpus_wave": "routing-acquisition-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/lease-acquisition/fixtures/decision-cases/tests/routing_acquisition.rs",
+  "source_sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06",
+  "test_filter": "n016_ownership_only_handoff_admits_above_residency_cap",
+  "contract": {
+    "intent": "Ownership-only handoff can acquire above residency cap",
+    "preconditions": [
+      "Fresh test-owned State; only frozen production celld_logic::on_event mutates it.",
+      "a Resident1 active request1; residency1, activations2; handoff b/2 reads released9.",
+      "All completion operation IDs and timers come from the exact emitted effects; late IDs are previously issued IDs, never fabricated authority.",
+      "All input storage/lease/proof replies are synthetic facts. No executor, network, runtime, or fleet service is simulated as empirical evidence.",
+      "Static source/pin check and independent review required; compiler, test and runtime have not been launched."
+    ],
+    "trace": [
+      "Issue b CAS10 and assert dormant mark",
+      "Assert occupancy stays1",
+      "Apply CAS; assert no Restore or a eviction",
+      "Observe accepted_epoch10 while handoff request has no Local completion",
+      "Cancel handoff acknowledgment waiter",
+      "Warm a/3 succeeds; finish3,1"
+    ],
+    "oracle": "A dormant authority claim must not reserve a runtime or evict the incumbent",
+    "cleanup": "Finish every locally completed request and cancel each remaining ownership-only waiter as shown. H::done checks no pending requests, active cells, activation/capacity queues, activation/eviction/release/adoption permits, or nonterminal phases. Drop isolated in-memory State; no external resources created. Stored timer descriptors are never launched.",
+    "implementation": "tests/routing_acquisition.rs:n016_ownership_only_handoff_admits_above_residency_cap"
+  },
+  "selector": "N016"
+}

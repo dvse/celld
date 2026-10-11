@@ -1,0 +1,54 @@
+{
+  "id": "logic/log-recovery/release-previous-epoch-retention-margin-only-after-successor-opener",
+  "layer": "logic",
+  "behaviour": "log-recovery",
+  "title": "Release previous-epoch retention margin only after successor opener",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic",
+      "legacy_id": "corpus/log-recovery-logic/J018"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic/tests/log_recovery.rs",
+      "sha256": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/log-recovery-logic/J018"
+  ],
+  "adapter": "native",
+  "corpus_id": "J018",
+  "corpus_wave": "log-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/log-recovery/fixtures/decision-cases/tests/log_recovery.rs",
+  "source_sha256": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c",
+  "test_filter": "j018_successor_checkpoint_releases_predecessor_margin_from_prior_pass",
+  "contract": {
+    "intent": "Release previous-epoch retention margin only after successor opener",
+    "preconditions": [
+      "Each test owns all in-memory values and directly calls public frozen production celld_logic components; no substitute decision implementation",
+      "Storage PUT/delete success, failure, CAS ordering, member confirmations and restore chains are explicit synthetic environmental facts; no disk, bucket, network, actor or VM is exercised",
+      "Every supplied finish_recovery certificate has a stipulated prior durable per-cell/bucket receipt; the pure finish function does not validate that I/O premise",
+      "GC chains are supplied from the stipulated production restore walk, oldest-first and ending at own epoch except the deliberate missing-opener schedules; no restore walk is reimplemented",
+      "GC listed vectors intentionally include base/own/off-chain epochs beyond the current executor scan.below input; these are public-component API robustness premises, not claimed live executor traces",
+      "Hash checks must match delivered runtime manifest lineage before future review/build/run; no compiler or SUT was launched while authoring"
+    ],
+    "trace": [
+      "Plan retired mark 6 with victims [3,4], retaining previous epoch 5",
+      "Confirm epoch 5 is logically retired despite physical margin retention",
+      "Supply successor own 7 but chain still [6]; require no plan",
+      "Supply own durable full checkpoint chain [7]",
+      "Require new mark 7 and exactly delete epoch 5, retaining new predecessor 6"
+    ],
+    "oracle": "Own-chain guard blocks collection until successor is visible; each immediate predecessor remains retained; Successor checkpoint makes the prior pass leftover eligible without deleting its own predecessor",
+    "cleanup": "Drop only this test-owned records, maps, fragments, health tracker and ledger. No external resources exist; unwind also drops all owned values.",
+    "implementation": "tests/log_recovery.rs:j018_successor_checkpoint_releases_predecessor_margin_from_prior_pass"
+  },
+  "selector": "J018"
+}

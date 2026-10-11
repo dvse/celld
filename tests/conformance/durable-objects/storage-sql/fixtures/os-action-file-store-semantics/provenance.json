@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "commit": "4358072f8cb1bc9ddfb6ee11122e194c76cd71e0",
+  "source_modified": false,
+  "downloaded_code_executed": false,
+  "downloaded_code_compiled": false,
+  "files": [
+    {
+      "path": "vendor/cloudflare-os/LICENSE",
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "bytes": 10174,
+      "official_blob_url": "https://github.com/cloudflare/cloudflare-os/blob/4358072f8cb1bc9ddfb6ee11122e194c76cd71e0/LICENSE",
+      "commit": "4358072f8cb1bc9ddfb6ee11122e194c76cd71e0",
+      "modified": false,
+      "method": "Byte-exact local copy from sealed historical source inventory.",
+      "copied_from": "/workspace/shared/celld-campaign-next/os-source-inventory/historical-4358072/raw/LICENSE"
+    },
+    {
+      "path": "vendor/cloudflare-os/packages/gatekeeper-kit/AGENTS.md",
+      "sha256": "3b8299d87f6b2893699648e2fcf5b878b9ede3ee05e5f71268f244ffa06cf2df",
+      "bytes": 2054,
+      "official_blob_url": "https://github.com/cloudflare/cloudflare-os/blob/4358072f8cb1bc9ddfb6ee11122e194c76cd71e0/packages/gatekeeper-kit/AGENTS.md",
+      "commit": "4358072f8cb1bc9ddfb6ee11122e194c76cd71e0",
+      "modified": false,
+      "method": "Normal GitHub Download raw file control in dedicated dot cloud browser tab4; completed path copied without transformation.",
+      "completed_download_path": "/opt/codex/downloads/aece9135-ca64-462d-a168-716ed7e4bc07/98839c14-9d06-4870-9080-529a42945945",
+      "retrieved_date_utc": "2026-10-09"
+    },
+    {
+      "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/action-files.ts",
+      "sha256": "e735cdd41333be3297a6e8d7114553483772b33f310edfb0844296650c855da0",
+      "bytes": 10338,
+      "official_blob_url": "https://github.com/cloudflare/cloudflare-os/blob/4358072f8cb1bc9ddfb6ee11122e194c76cd71e0/packages/gatekeeper-kit/src/action-files.ts",
+      "commit": "4358072f8cb1bc9ddfb6ee11122e194c76cd71e0",
+      "modified": false,
+      "method": "Byte-exact local copy from sealed historical source inventory.",
+      "copied_from": "/workspace/shared/celld-campaign-next/os-source-inventory/historical-4358072/raw/packages/gatekeeper-kit/src/action-files.ts"
+    },
+    {
+      "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/kv.ts",
+      "sha256": "2dd68d8822cb4737d8563da0595e250894d0f7f0b2ed2dc4b1505336a1f4ef9d",
+      "bytes": 1201,
+      "official_blob_url": "https://github.com/cloudflare/cloudflare-os/blob/4358072f8cb1bc9ddfb6ee11122e194c76cd71e0/packages/gatekeeper-kit/src/kv.ts",
+      "commit": "4358072f8cb1bc9ddfb6ee11122e194c76cd71e0",
+      "modified": false,
+      "method": "Normal GitHub Download raw file control in dedicated dot cloud browser tab4; completed path copied without transformation.",
+      "completed_download_path": "/opt/codex/downloads/aece9135-ca64-462d-a168-716ed7e4bc07/93f2865e-7a4c-428e-ade1-907b7f79d8bd",
+      "retrieved_date_utc": "2026-10-09"
+    },
+    {
+      "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/positive-int.ts",
+      "sha256": "e9813ec2bd5121a0384dc6bd4af4467ea6aa27f169e11ddc27673a88879bded1",
+      "bytes": 763,
+      "official_blob_url": "https://github.com/cloudflare/cloudflare-os/blob/4358072f8cb1bc9ddfb6ee11122e194c76cd71e0/packages/gatekeeper-kit/src/positive-int.ts",
+      "commit": "4358072f8cb1bc9ddfb6ee11122e194c76cd71e0",
+      "modified": false,
+      "method": "Normal GitHub Download raw file control in dedicated dot cloud browser tab4; completed path copied without transformation.",
+      "completed_download_path": "/opt/codex/downloads/aece9135-ca64-462d-a168-716ed7e4bc07/a7eaf546-0d1a-4255-91c0-c2b8a2ba16b3",
+      "retrieved_date_utc": "2026-10-09"
+    }
+  ],
+  "license": "Apache-2.0",
+  "license_path": "vendor/cloudflare-os/LICENSE",
+  "license_sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+  "import_graph": {
+    "action-files.ts": {
+      "runtime": [
+        "./positive-int"
+      ],
+      "type_only": [
+        "./kv"
+      ]
+    },
+    "positive-int.ts": {
+      "runtime": [],
+      "type_only": []
+    },
+    "kv.ts": {
+      "runtime": [],
+      "type_only": []
+    }
+  },
+  "notice_scope": "Original notices preserved. Inspected exact-commit package root displayed no NOTICE; sealed inventory records repository root. No repo-wide absence claim.",
+  "deferred_build": "Trusted preexisting esbuild, TypeScript erasure, no install/package scripts/vendor edits; separately authorize, record output bundle/config and tool identity in new staging.",
+  "full_os_claim": false
+}

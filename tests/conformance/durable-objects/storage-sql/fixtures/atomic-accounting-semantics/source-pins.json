@@ -1,0 +1,41 @@
+{
+  "source_root": "/workspace/shared/celld-recovered/celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "source_snapshot": "celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "source_cut": "2026-10-09T00:52:35.905873+00:00",
+  "files": {
+    "celld-os-project/celld/crates/celld/js/harness.js": "8d3be5ef1b78d302cb2da745c63f8d2e1222115c49a8d08f1096bca7d235c237",
+    "celld-os-project/celld/crates/celld/js/storage_ops.rs": "33aae2a9d2c25dd46b5ef33e343a20a923e0bd90117e1cf67afe2137e2dcc010",
+    "celld-os-project/celld/crates/celld/storage.rs": "99ce80c6e273234787ca38367210ebca43baa9df49286dc911cd179f52b6dc2d",
+    "celld-os-project/celld/crates/celld/Cargo.toml": "f09c37b96e516a0440abcca1e221c6b3282b9fbe318c6df55ea5d6fd274f6838",
+    "celld-os-project/celld/Cargo.lock": "d6a17422788aa910ba76bed9cf59ac15767f93fe107ebdb336954d0e9efe052b",
+    "celld-os-stress/waves/sqlite-concurrency/source-pins.json": "24b0037a4fca2b354dcfdacd12561813cf8b369329257867243f95feed5500a6",
+    "celld-os-stress/waves/alarm-event-stress/source-pins.json": "45f2572751922c33ee9175d2577dea063f7ee260efbf75898e3b7738a091b5fe",
+    "celld-os-stress/waves/sqlite-concurrency/cell-cases.js": "0e5116557fa02ad82edc28032c82d9cb7c96530e04880465fc6517acad7095d6",
+    "celld-os-stress/waves/sqlite-concurrency/cases.js": "691eb28d4cee7679b56385040712298155124a272d15d5674e44088bede9080f"
+  },
+  "retained_os_evidence": [
+    {
+      "historical_path": "os/packages/typed-storage/src/index.ts",
+      "retained_sha256": "561111a1a0787d5158ddfa9df5c1910285b156906d874f5f58719a901e004c12",
+      "purpose": "Historical OS transaction/indexed collection usage",
+      "status": "RETAINED_PROVENANCE_NOT_REREAD",
+      "retained_from": [
+        "celld-os-stress/waves/sqlite-concurrency/source-pins.json",
+        "celld-os-stress/waves/alarm-event-stress/source-pins.json"
+      ],
+      "usable_as": "relevance context only, never direct evidence of current OS behavior"
+    },
+    {
+      "historical_path": "os/packages/gatekeeper-kit/src/action-files.ts",
+      "retained_sha256": "e735cdd41333be3297a6e8d7114553483772b33f310edfb0844296650c855da0",
+      "purpose": "Historical OS synchronous atomic allocation/chunk/accounting usage",
+      "status": "RETAINED_PROVENANCE_NOT_REREAD",
+      "retained_from": [
+        "celld-os-stress/waves/sqlite-concurrency/source-pins.json",
+        "celld-os-stress/waves/alarm-event-stress/source-pins.json"
+      ],
+      "usable_as": "relevance context only, never direct evidence of current OS behavior"
+    }
+  ],
+  "sqlite_contract_status": "Direct native prepare/bind/step is source-inspected. The fixed relational/data oracles also cite official SQLite contracts; those are API expectations, never runtime observations."
+}

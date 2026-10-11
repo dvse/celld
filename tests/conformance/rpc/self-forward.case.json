@@ -1,0 +1,33 @@
+{
+  "id": "conformance/rpc/self-forward",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "self forward",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/self-forward",
+      "legacy_id": "hyperbob/self-forward"
+    },
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/self-forward/wrangler.json",
+      "sha256": "2ee82c7a7298c1bc76860fc63f4016c11d9f173a59dc517a010d7d2d5576239b"
+    }
+  ],
+  "legacy_ids": [
+    "hyperbob/self-forward"
+  ],
+  "adapter": "example",
+  "fixture": "tests/conformance/rpc/fixtures/self-forwarding",
+  "profiles": [
+    "full"
+  ],
+  "reason": "",
+  "requests": [
+    {
+      "path": "/?v=suite"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/rpc/fixtures/self-forwarding/wrangler.json",
+  "source_sha256": "2ee82c7a7298c1bc76860fc63f4016c11d9f173a59dc517a010d7d2d5576239b"
+}

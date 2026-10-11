@@ -1,0 +1,24 @@
+{
+  "id": "faults/lease-fencing/freeze-owner",
+  "layer": "faults",
+  "behaviour": "lease-fencing",
+  "title": "freeze owner",
+  "origins": [
+    {
+      "source": "tests/faults/fleet.py",
+      "legacy_id": "faults/freeze-owner"
+    }
+  ],
+  "legacy_ids": [
+    "faults/freeze-owner"
+  ],
+  "adapter": "fleet",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/lib/fleet.py",
+  "source_sha256": "104d1eb6572ff8481d6c704fb2795333d23c5bdee33c6dfba544299ab2ebfd7c",
+  "selector": "freeze-owner"
+}

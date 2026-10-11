@@ -1,0 +1,45 @@
+{
+  "schema": 1,
+  "source_root": "/workspace/shared/celld-os-project/celld/crates/logic",
+  "production_files": {
+    "Cargo.toml": "7beb337c73cf0688b8e3a0327933f48793c54fe46a77196dc5774460902d66ba",
+    "alarm.rs": "d6d85d890d0d0dceda5f8521a11dc215d36832833a0706a8269630014b2a7346",
+    "cache.rs": "8bdbf0b1f06edcb1e9d1fd6ccfe4493f860b9cca5a3435079dfaba861eb19830",
+    "cell.rs": "ea9d8ae877d4427ad45106db82528a333ad481169952f39b6a361e05223df445",
+    "cron.rs": "c4b5e5e240ba249da6228b4cdc0f7060d3e64213a236ba47247ee5fdd3d257b2",
+    "dead_node_reconciliation.rs": "1fee003cfd8152511ae6d2fa8df53832f96557eb34ecc94cf485d81c75ed0406",
+    "drain.rs": "4204ab321ffc43fcb939672ee6ad0f2c60ee593aca6cabe815ecdea97fa0e248",
+    "durability.rs": "4e471cd4f01141f8eac80979bcdab9d0c958ec6617691dead4fde6f900b1d931",
+    "epoch_gc.rs": "1f23ea074c1d3d3841b5ede564623c9861136fb852ae0db6917e8628b1bbe650",
+    "format.rs": "3c1fef73d45c0ed0ed104f9431eb3bdf33325e62b82492ec5d04d5805c597d5d",
+    "gate.rs": "889c88f05b1c068e10947fc7f7d76aad97a5aa9434889945cdc9657f133c13a7",
+    "http.rs": "082dfdf4ca7826224f317b41d6aaaf3306feeb2f98a78a33a0630a058ad21519",
+    "isolate.rs": "79272429d00bf825a7d33e09962ca399eb10077edceebf96ef2c87ced12e8b4b",
+    "kv.rs": "a6330ace5fbda162245c816cace4e65778db80a354f1f36232c96042f9531520",
+    "lib.rs": "c42a7598a2eac11ddb5d8e81f24cab545314a7c0f7a7180125e6a771c12a246b",
+    "log_evict.rs": "bf972b31cd2c0fba3bb8ff1e98c147778d77138329b7670cea3b8cf1d832ad8f",
+    "log_tier.rs": "e7f535798208bba95eb7b55f2ffefcf800b4a3a3b9c1eaec471d70d84de460f3",
+    "output_gate.rs": "c5d3a6f524bfe47de933fc66fa67158a19ddb1b0fd3fc371e4f04a722ebacef1",
+    "peer.rs": "e6ad44bc07045cf76c3c746a61e429cea185f1181650d95982a5735a777309cf",
+    "pressure.rs": "7e76009b45633de9d582960e72692116947021afd17652fc15c345510fd4e78c",
+    "queue.rs": "ac0135726b1b034d146af3b4cc976f28b5ee764a246310ef8752098763d36f06",
+    "rebalance.rs": "f827a062eb0de5fdfbdb6955908e16012f8ea4fec8e4268a0cfc6b80b6f998fc",
+    "restore.rs": "75c64cbc160edf6bd628152ad915ae4d6207a921ec81ebe0063b9eceacae3c4a",
+    "routing.rs": "845cec9deba52f4942a22a0b18cf298e9d30cdfa7927050f5a6de4ef27c3a810",
+    "schedule.rs": "09559042beecc2439c9b0aa6b49e82522f3456abdda2eae040c6d99095c344e3",
+    "sqlite.rs": "60480d89d9a8a5b40013450ae71ba06ea3ddd7662dbea12b7d7e51edeb29a019",
+    "sweep.rs": "6291b13e2fb28438aa442338cc56bdb95bf5e652d19b56da24597c1348b968ca",
+    "types.rs": "492ab0cbcbd9d00ea60bc01a04fd09c35811533a10e801db2a863f814f159400",
+    "wake.rs": "7d8b8a0518b12f67a0bd62f19dcbc7c4c047081ac6f5943bd1fd719ebf84c97e"
+  },
+  "delivered_runtime_sha256": "62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e",
+  "runtime_manifest": {
+    "path": "/workspace/shared/celld-os-project/deliverable/package/reports/final/runtime-manifest.json",
+    "sha256": "54da8304fb90c06694cd44c114e0917b8db89ecefa08920a913c99b286359f28"
+  },
+  "test_files": {
+    "tests/output_gate.rs": "4111d744a514b64a36f285dbf4a8b51ca56ce3f3f128dbd5ea1cc188ebed88ba",
+    "Cargo.toml": "0c075c77c926d9e73573956e0460228034568bc8d2f9aae5045745a6b7896f64"
+  },
+  "limitation": "The path-dependent native crate is the executed system under test. The delivered runtime digest supplies lineage only; no runtime is launched."
+}

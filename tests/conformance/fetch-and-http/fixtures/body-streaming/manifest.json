@@ -1,0 +1,1316 @@
+[
+  {
+    "id": "H001",
+    "title": "Advance a small upload beside host-body relay",
+    "intent": "Advance a small upload beside host-body relay",
+    "failure_hypothesis": "A host-backed HTTP upload is collected before local DO dispatch or monopolizes unrelated ingress",
+    "preconditions": [
+      "Source emits 4096 logical bytes then holds; sink has identical expected 32768-byte document",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Start HTTP source-to-sink relay",
+      "Observe at least4096 sink bytes while source tail remains held",
+      "Complete small upload and prove sink effect0",
+      "Release source tail; await exact sink receipt and effect1"
+    ],
+    "stress": {
+      "schedule": "One open download and its forwarded upload overlap an independently completed upload",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "Sink receives bytes before source EOF, small effect1 precedes tail release, sink effect0 before release and exact32768-byte SHA256/effect1 afterward",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "HTTP registry transfer -> direct network -> local DO.fetch ingress; S/B stream arguments use RPC stream capabilities instead",
+    "implementation": "cases.js:H001",
+    "test_function": "H001",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H002",
+    "title": "Complete upload while response body held",
+    "intent": "Complete upload while response body held",
+    "failure_hypothesis": "Retaining a partially consumed HTTP response blocks a fresh opposite-direction upload",
+    "preconditions": [
+      "Download has8192-byte application prefix and held tail; independent upload configured",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Read at least8192 response bytes",
+      "Complete independent upload and exact effect",
+      "Release response tail",
+      "Drain original response with exact bytes and stable EOF"
+    ],
+    "stress": {
+      "schedule": "One response reader stays live across independent complete upload",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "Upload receipt/effect1 before response release; response equals32768 expected bytes followed by repeated done",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "HTTP request/response direction coupling with reader-owned response; H001 instead transfers ownership into a new request",
+    "implementation": "cases.js:H002",
+    "test_function": "H002",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H003",
+    "title": "Release held response heads out of order",
+    "intent": "Release held response heads out of order",
+    "failure_hypothesis": "Pending HTTP response heads exchange metadata/body identity or head-of-line block a third request",
+    "preconditions": [
+      "First and second have separate header gates and distinct MIME types; third is buffered",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Dispatch first and second without awaiting headers",
+      "Observe both recipient entries",
+      "Finish third response",
+      "Release second then first, validating each response metadata and bytes"
+    ],
+    "stress": {
+      "schedule": "Two unresolved response-head promises and a completed third request",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "Third completes before either release; each held result has correct name/root/run/isolate, MIME type and exact body",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "Pre-header HTTP metadata association; B009 gates post-RPC stream prefixes, not HTTP heads",
+    "implementation": "cases.js:H003",
+    "test_function": "H003",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H004",
+    "title": "Drain small response around a retained reader",
+    "intent": "Drain small response around a retained reader",
+    "failure_hypothesis": "An open response reader prevents another response from reaching terminal state",
+    "preconditions": [
+      "Slow body has4096-byte prefix and held tail; independent313-byte body is buffered",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Read slow logical prefix and retain reader",
+      "Drain independent body",
+      "Snapshot proves independent EOF while slow remains active with4096 produced bytes",
+      "Release and drain slow response"
+    ],
+    "stress": {
+      "schedule": "Concurrent response-body ownership without a second request-body producer",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "Independent exact313 bytes and server EOF while slow active; slow exact65536 bytes after release",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "Explicit same-direction HTTP body completion behind held tail; H002 tests opposite-direction request body",
+    "implementation": "cases.js:H004",
+    "test_function": "H004",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H005",
+    "title": "Resume recipient-held relay after source release",
+    "intent": "Resume recipient-held relay after source release",
+    "failure_hypothesis": "A locally held DO request reader loses bytes or blocks independent traffic when source resumes",
+    "preconditions": [
+      "Source4096-byte prefix; recipient pauses after first4096 logical bytes on its own gate",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Relay source into recipient",
+      "Observe recipient prefix",
+      "Release source tail while keeping recipient consume gate closed",
+      "Complete independent probe; assert sink effect0",
+      "Release recipient; require exact receipt/effect1"
+    ],
+    "stress": {
+      "schedule": "Two independently controlled producer/consumer gates with small intervening HTTP response",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "Probe exact111 bytes while sink effect0; released sink has exact complete archive and one effect; no write-ack or buffer-capacity timing asserted",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "Receiver DO.fetch input-reader gate differs from H001 producer-only gate",
+    "implementation": "cases.js:H005",
+    "test_function": "H005",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H006",
+    "title": "Duplicate host HTTP body into delayed consumer",
+    "intent": "Duplicate host HTTP body into delayed consumer",
+    "failure_hypothesis": "Native HTTP tee corrupts one branch while unrelated upload progresses",
+    "preconditions": [
+      "Single49153-byte network response; two host HTTP tee branches",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Tee response and begin left drain",
+      "Complete probe upload while right unread",
+      "Start right drain",
+      "Compare both complete branch bodies and probe effect"
+    ],
+    "stress": {
+      "schedule": "Two native HTTP registry branches, one initially delayed, overlap upload",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "Both exact49153-byte bodies reach stable EOF; probe effect1; no branch chunk shape or promised fast-branch completion before right starts",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "Native HTTP registry tee rather than S017/B016 RPC readable tee",
+    "implementation": "cases.js:H006",
+    "test_function": "H006",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H007",
+    "title": "Cancel one host tee consumer before tail",
+    "intent": "Cancel one host tee consumer before tail",
+    "failure_hypothesis": "Canceling a native HTTP tee branch destroys the surviving branch or unrelated request",
+    "preconditions": [
+      "4096-byte source prefix plus gated tail; tee uses host registry",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Tee response and cancel right branch",
+      "Read left logical prefix",
+      "Complete independent upload",
+      "Release source tail and drain left",
+      "Await canceled-branch settlement"
+    ],
+    "stress": {
+      "schedule": "One canceled HTTP tee branch beside surviving gated branch and upload",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "Left exact32768 bytes/stable EOF, cancellation settles, probe receipt/effect1",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "HTTP tee cancellation and body registry are distinct from S018 RPC stream cancel",
+    "implementation": "cases.js:H007",
+    "test_function": "H007",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H008",
+    "title": "Clone streaming request into separately committed uploads",
+    "intent": "Clone streaming request into separately committed uploads",
+    "failure_hypothesis": "Request.clone host-body tee aliases destination effects or loses one copy",
+    "preconditions": [
+      "Source12289 bytes; left upload commit held, right upload unheld",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Wrap HTTP response body in Request then clone",
+      "Send original and clone bodies to distinct configured operations",
+      "Await right receipt and effect1 while left effect0",
+      "Release left commit; await left exact receipt/effect1"
+    ],
+    "stress": {
+      "schedule": "Two HTTP upload owners from one Request.clone with asymmetric commit gates",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "Both recipients receive complete identical12289 bytes exactly once; right can commit while left cannot",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "Request.clone invokes host tee then transfers both branches into request-body owners, unlike response consumers H006",
+    "implementation": "cases.js:H008",
+    "test_function": "H008",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H009",
+    "title": "Forward response-rewrapped host body incrementally",
+    "intent": "Forward response-rewrapped host body incrementally",
+    "failure_hypothesis": "Wrapping a host body in a new Response loses native stream identity and causes fallback buffering",
+    "preconditions": [
+      "Source4096-byte prefix and gated tail; Response wrapper has replaced MIME metadata",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Create Response(source.body)",
+      "Upload rewrapped body to sink",
+      "Observe sink prefix before source tail release",
+      "Drain unrelated probe",
+      "Release tail and verify sink receipt/effect"
+    ],
+    "stress": {
+      "schedule": "Response wrapper adoption plus live host-body transfer and independent probe",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "Sink consumes at least4096 bytes before tail release; sink exact32768-byte receipt/effect1; probe exact79 bytes",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "Explicit response-constructor host-body adoption seam, unlike H001 direct body transfer",
+    "implementation": "cases.js:H009",
+    "test_function": "H009",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H010",
+    "title": "Send offset view beside held application commit",
+    "intent": "Send offset view beside held application commit",
+    "failure_hypothesis": "Buffered HTTP request transfer sends sentinel bytes outside an ArrayBufferView",
+    "preconditions": [
+      "8193-byte visible subarray embedded at offset7 in251-filled backing array; sink commit held",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Post only backing.subarray(7,8200)",
+      "Observe complete recipient input before commit",
+      "Complete peer upload",
+      "Release slice commit and verify both effects"
+    ],
+    "stress": {
+      "schedule": "Buffered typed-view request conversion overlaps independent write",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "Sink exact8193 visible bytes/hash, no outer sentinels; both effects1 and peer completes before slice commit",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "HTTP byte fallback ArrayBufferView seam differs from S005 RPC subarray codec",
+    "implementation": "cases.js:H010",
+    "test_function": "H010",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H011",
+    "title": "Decode held HTTP text beside binary control",
+    "intent": "Decode held HTTP text beside binary control",
+    "failure_hypothesis": "Network-body text consumption decodes binary payload incorrectly or associates wrong response",
+    "preconditions": [
+      "Text MIME request headers held; binary control has identical invalid-UTF8 byte pattern",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Dispatch text response and observe entry",
+      "Drain binary control before text headers released",
+      "Release text headers",
+      "Consume Response.text and inspect bodyUsed"
+    ],
+    "stress": {
+      "schedule": "Held text response head and binary control use different body consumers",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "Binary exact16391 bytes; text equals TextDecoder replacement decoding of same bytes; bodyUsed true",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "HTTP Response.text body drain/decoding path, not RPC string codec",
+    "implementation": "cases.js:H011",
+    "test_function": "H011",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H012",
+    "title": "Match buffered arrayBuffer with gated streamed body",
+    "intent": "Match buffered arrayBuffer with gated streamed body",
+    "failure_hypothesis": "Buffered and streaming HTTP response representations disagree after partial consumption",
+    "preconditions": [
+      "Both responses contain24577 identical bytes; streamed form has4096 prefix and tail gate",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Read streamed prefix",
+      "Consume buffered response via arrayBuffer while tail held",
+      "Compare buffered result with expected bytes",
+      "Release tail and compare complete streamed bytes with captured arrayBuffer"
+    ],
+    "stress": {
+      "schedule": "Buffered body consumer and retained streaming reader overlap",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "Buffered exact24577 bytes and complete streamed bytes identical, stable streamed EOF",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "Representation conversion parity and Response.arrayBuffer seam rather than same-consumer relay",
+    "implementation": "cases.js:H012",
+    "test_function": "H012",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H013",
+    "title": "Preserve declared length through streamed response",
+    "intent": "Preserve declared length through streamed response",
+    "failure_hypothesis": "Content-Length metadata is lost or declared-body framing truncates gated response",
+    "preconditions": [
+      "Known32771-byte streamed body with explicit length; independent16387-byte unknown-length body",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Open known-length response and verify header",
+      "Read known prefix",
+      "Drain unknown-length sibling",
+      "Release known tail and drain exact body"
+    ],
+    "stress": {
+      "schedule": "HTTP framing with known length versus sibling unknown length",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "Content-Length32771 survives; each response has its own exact bytes and stable EOF; no connection-reuse claim",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "HTTP declared response-body length is absent from RPC stream tests",
+    "implementation": "cases.js:H013",
+    "test_function": "H013",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H014",
+    "title": "Suppress HEAD payload beside active GET",
+    "intent": "Suppress HEAD payload beside active GET",
+    "failure_hypothesis": "HEAD accidentally produces body bytes or its no-body handling interferes with active GET",
+    "preconditions": [
+      "HEAD/GET refer to same49157-byte logical document; GET tail held",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Read GET prefix",
+      "Send HEAD and check length/status",
+      "Verify empty client HEAD body and server outputBytes0/head terminal",
+      "Release and drain GET"
+    ],
+    "stress": {
+      "schedule": "Bodyless HEAD boundary overlaps a live GET stream",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "HEAD200 with length49157 and zero payload; GET exact49157 bytes/stable EOF",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "HTTP method-specific payload suppression not covered by stream terminal-only cases",
+    "implementation": "cases.js:H014",
+    "test_function": "H014",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H015",
+    "title": "Acknowledge upload through no-content response",
+    "intent": "Acknowledge upload through no-content response",
+    "failure_hypothesis": "204 response handling leaves uploaded bytes uncommitted or fabricates a body",
+    "preconditions": [
+      "Receiptless upload16384 bytes completes input before commit gate; independent document response",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Start upload",
+      "Observe input EOF with commit held",
+      "Drain independent document and prove effect0",
+      "Release commit; consume204 and inspect exact input effect"
+    ],
+    "stress": {
+      "schedule": "Request body completes before bodyless response, interleaved with response traffic",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "204 has empty body; recipient input EOF/hash exact and effect1; independent599-byte document exact",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "No-content HTTP response after full input, unlike HEAD request suppression H014",
+    "implementation": "cases.js:H015",
+    "test_function": "H015",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H016",
+    "title": "Reject incomplete upload beside healthy writer",
+    "intent": "Reject incomplete upload beside healthy writer",
+    "failure_hypothesis": "An ordinary409 early response becomes a success effect or poisons an unrelated upload",
+    "preconditions": [
+      "Host source tail held after4096 bytes; recipient rejects without consuming request body",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Forward source to rejecting endpoint",
+      "Observe reject handler entry before releasing source tail",
+      "Complete healthy upload",
+      "Release source tail and require409 body",
+      "Assert rejected effect0 and healthy effect1"
+    ],
+    "stress": {
+      "schedule": "Recipient request cancellation plus non2xx response overlaps valid upload",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "409 with exact31-byte rejection body; reject effect0; healthy exact receipt/effect1; no disconnect rollback claim",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "HTTP early non2xx response semantics instead of RPC consumer exception B014",
+    "implementation": "cases.js:H016",
+    "test_function": "H016",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H017",
+    "title": "Abort before HTTP dispatch with live sibling",
+    "intent": "Abort before HTTP dispatch with live sibling",
+    "failure_hypothesis": "Already-aborted signal still dispatches request bytes or cancels unrelated response",
+    "preconditions": [
+      "Undispatched upload configured; independent download prefix retained",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Read sibling prefix",
+      "Abort controller before calling upload",
+      "Require upload rejection",
+      "Inspect never.entered0/effect0",
+      "Release and drain sibling"
+    ],
+    "stress": {
+      "schedule": "Pre-dispatch abort beside a live response stream",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "Aborted operation never enters recipient; sibling exact bytes/stable EOF Native fetch rejection must preserve exact caller abort-reason identity, Error name and case-specific message. Helper/assertion errors cannot count as expected native rejection.",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "Fetch pre-dispatch signal branch distinct from remote body cancellation",
+    "implementation": "cases.js:H017",
+    "test_function": "H017",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H018",
+    "title": "Abort accepted request before response head",
+    "intent": "Abort accepted request before response head",
+    "failure_hypothesis": "Cancellable fetch waiting for headers fails to reject or interferes with another upload",
+    "preconditions": [
+      "Recipient header gate prevents input consumption and response release",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Start signaled upload",
+      "Observe accepted recipient entry",
+      "Abort and require rejection",
+      "Explicitly stop held application operation",
+      "Complete independent upload and inspect effects"
+    ],
+    "stress": {
+      "schedule": "Abort races held HTTP response head; application stop separately prevents effect",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "Caller rejection, stopped operation effect0, independent exact receipt/effect1; abort alone is not claimed to roll back writes Native fetch rejection must preserve exact caller abort-reason identity, Error name and case-specific message. Helper/assertion errors cannot count as expected native rejection.",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "Native request cancellation window after entry but before response head, unlike H017 pre-dispatch",
+    "implementation": "cases.js:H018",
+    "test_function": "H018",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H019",
+    "title": "Cancel one response reader and resume sibling",
+    "intent": "Cancel one response reader and resume sibling",
+    "failure_hypothesis": "Consumer cancellation of one HTTP body ends the other body or fails to terminate its own reader",
+    "preconditions": [
+      "Two response prefixes observed with independent held tails",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Read both logical prefixes",
+      "Cancel abandoned reader and verify repeated read done",
+      "Stop abandoned application producer",
+      "Release live tail and drain survivor"
+    ],
+    "stress": {
+      "schedule": "Selective body cancellation after response head among two active streams",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "Canceled reader terminal done, observed prefix retained, survivor exact full bytes/stable EOF",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "Registered HTTP body cancellation differs from pre-head AbortSignal and B012 RPC stream cancellation",
+    "implementation": "cases.js:H019",
+    "test_function": "H019",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H020",
+    "title": "Fail source body before forwarded upload data",
+    "intent": "Fail source body before forwarded upload data",
+    "failure_hypothesis": "A zero-byte HTTP source failure becomes normal EOF or a sink effect",
+    "preconditions": [
+      "Source errorBefore gate and target upload configured; independent healthy writer",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Start source relay",
+      "Observe source entry",
+      "Complete healthy upload",
+      "Release source error gate",
+      "Require relay rejection and inspect source/sink witnesses"
+    ],
+    "stress": {
+      "schedule": "No-data response-body failure during attempted host-body request transfer",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "Source outputTerminal error/outputBytes0, sink effect0, healthy effect1; sink entry is not required because response/network error may precede it Native fetch/read rejection requires exact recipient plannedError marker; EOF, byte mismatch and fuse timeout cannot satisfy planned failure. Helper/assertion errors cannot count as expected native rejection.",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "HTTP response-to-request error propagation at zero-byte boundary; S006 reads RPC stream directly",
+    "implementation": "cases.js:H020",
+    "test_function": "H020",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H021",
+    "title": "Fail relayed source after sink observes prefix",
+    "intent": "Fail relayed source after sink observes prefix",
+    "failure_hypothesis": "HTTP source error after accepted upload bytes becomes complete request or commits partial payload",
+    "preconditions": [
+      "Source4096-byte prefix and fail gate; sink expects32768 bytes",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Start relay",
+      "Observe sink at least4096 bytes before fault",
+      "Complete healthy writer",
+      "Release source failure",
+      "Require relay rejection and inspect sink/source"
+    ],
+    "stress": {
+      "schedule": "Already-received request prefix followed by upstream HTTP body error",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "Source error, sink inputBytes below32768/effect0, healthy effect1; no exact network error text asserted Native fetch/read rejection requires exact recipient plannedError marker; EOF, byte mismatch and fuse timeout cannot satisfy planned failure. Helper/assertion errors cannot count as expected native rejection.",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "HTTP failure after DO request input exposure, unlike zero-data H020 and direct RPC readable S007",
+    "implementation": "cases.js:H021",
+    "test_function": "H021",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H022",
+    "title": "Fail local stream fallback before dispatch",
+    "intent": "Fail local stream fallback before dispatch",
+    "failure_hypothesis": "Ordinary JS stream fallback dispatches its prefix before full body conversion succeeds",
+    "preconditions": [
+      "Local stream emits4096 bytes then waits on local error gate; sibling response tail held",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Start upload with ordinary JS stream",
+      "Read independent HTTP response prefix",
+      "Release local producer error gate",
+      "Require upload rejection and never.entered0/effect0",
+      "Release and drain sibling"
+    ],
+    "stress": {
+      "schedule": "Local byte-fallback collection failure beside retained network response",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "No partial request dispatch/effect; live HTTP response exact bytes; error comes from deliberate local producer Native fetch rejection must carry Error: local producer failed before dispatch. Helper/assertion errors cannot count as expected native rejection.",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "Frozen source explicitly buffers unbranded JS streams, unlike incremental host response H001",
+    "implementation": "cases.js:H022",
+    "test_function": "H022",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "native-buffering-characterization",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN",
+    "promotion": false,
+    "promotion_blocker": "Ordinary-JS request-body buffering is frozen celld behavior, not a general Workers HTTP contract."
+  },
+  {
+    "id": "H023",
+    "title": "Refuse locked host body while writer recovers",
+    "intent": "Refuse locked host body while writer recovers",
+    "failure_hypothesis": "Transferring a host body with a held reader double-consumes or dispatches it",
+    "preconditions": [
+      "Host response has data; caller acquires and retains reader before attempted upload",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Read source once while keeping reader lock",
+      "Attempt upload with same locked source body",
+      "Require rejection",
+      "Complete healthy upload",
+      "Inspect never.entered0/effect0 then cancel/release original reader"
+    ],
+    "stress": {
+      "schedule": "Competing reader/transfer ownership at fetch request construction",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "Locked-body upload rejected before recipient entry, healthy receipt/effect1, source reader explicitly cleaned Native fetch must reject with TypeError while body is locked; zero recipient dispatch and healthy control are required. Helper/assertion errors cannot count as expected native rejection.",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "Host HTTP transfer lock gate, unlike ordinary RPC reader lock tests",
+    "implementation": "cases.js:H023",
+    "test_function": "H023",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H024",
+    "title": "Retain prefix when HTTP response later errors",
+    "intent": "Retain prefix when HTTP response later errors",
+    "failure_hypothesis": "Partial response error is converted into clean EOF or erases bytes already delivered",
+    "preconditions": [
+      "Broken response produces4096 bytes before error gate; healthy response buffered",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Read broken prefix and validate exact bytes",
+      "Drain healthy response",
+      "Release error gate",
+      "Require remaining read rejection and source error witness"
+    ],
+    "stress": {
+      "schedule": "One direct consumer sees body error after successful sibling response",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "Exact4096-byte prefix, subsequent rejection rather than EOF, server error terminal, healthy exact1025 bytes Native fetch/read rejection requires exact recipient plannedError marker; EOF, byte mismatch and fuse timeout cannot satisfy planned failure. Helper/assertion errors cannot count as expected native rejection.",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "Direct HTTP response read failure instead of H021 subsequent request transfer and S007 RPC source",
+    "implementation": "cases.js:H024",
+    "test_function": "H024",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H025",
+    "title": "Share abort controller across accepted requests",
+    "intent": "Share abort controller across accepted requests",
+    "failure_hypothesis": "One signal cancels only one registered HTTP request or leaks into an unrelated request",
+    "preconditions": [
+      "Two separately gated response-head requests share controller; third upload does not",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Start left/right requests under one controller",
+      "Observe both recipient entries",
+      "Abort controller; require two rejections",
+      "Stop both application producers",
+      "Complete unrelated upload"
+    ],
+    "stress": {
+      "schedule": "One-to-many AbortSignal listener fanout over two host dispatch IDs",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "Both pending requests reject, unrelated exact receipt/effect1, both owned producers stopped Native fetch rejection must preserve exact caller abort-reason identity, Error name and case-specific message. Helper/assertion errors cannot count as expected native rejection.",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "Signal fanout association differs from one-request cancellation H018",
+    "implementation": "cases.js:H025",
+    "test_function": "H025",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  },
+  {
+    "id": "H026",
+    "title": "Preserve committed effect after response abandonment",
+    "intent": "Preserve committed effect after response abandonment",
+    "failure_hypothesis": "Aborting caller after effect but before response silently undoes or repeats the application mutation",
+    "preconditions": [
+      "Upload exact6143-byte input committed; reply gate holds response head",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Start signaled upload",
+      "Observe effect1 and exact completed input while reply held",
+      "Abort caller and require rejection",
+      "Complete peer upload; inspect original effect1",
+      "Release reply and wait handler inactive; recheck effect1"
+    ],
+    "stress": {
+      "schedule": "Ambiguous caller outcome after known application effect, alongside successful peer",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "Original input EOF/hash exact and effect remains1 before/after reply release; peer effect1; no durable storage or crash-recovery claim Native fetch rejection must preserve exact caller abort-reason identity, Error name and case-specific message. Helper/assertion errors cannot count as expected native rejection.",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "Volatile HTTP request outcome ambiguity without D015 durable replay/restart scenario",
+    "implementation": "cases.js:H026",
+    "test_function": "H026",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "bounded-http-concurrent-failure",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  }
+]

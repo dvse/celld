@@ -1,0 +1,195 @@
+{
+  "reviewed_at_utc": "2026-10-09T06:26:51.255937+00:00",
+  "reviewer": "review_celld_test_additions",
+  "wave": "storage-sql-semantics",
+  "verdict": "ACCEPTED_PRIMARY_STATIC",
+  "counts": {
+    "authored": 20,
+    "accepted_primary_static": 20,
+    "accepted_characterization": 0,
+    "static_assertion_call_sites": 69,
+    "runtime_executions": 0,
+    "runtime_passes": 0
+  },
+  "scope": "Independent actual source/body/contract, semantic uniqueness, real fixture and bounded cleanup review. Only hashing, AST/JSON and JavaScript syntax checks executed.",
+  "baseline_designs_compared": 575,
+  "concurrent_reviewed_designs_compared": 58,
+  "duplicate_review": "No duplicate case found. Baseline T001\u2013T032 emphasizes asynchronous transaction ownership and live cached cursors, whereas these cases target stored clone ownership, successful range/deletion/reset semantics, native value and public ingest boundaries. Concurrent K201\u2013K220 uses service KV byte/metadata/cursor-string semantics, not DO structured clones or SQL. Generic primitives shared by distinct mechanisms earn no extra count themselves.",
+  "review_corrections": [
+    {
+      "case": "D207",
+      "finding": "Original call combined mutually exclusive start and startAfter options.",
+      "resolution": "Author replaced it with separate valid inclusive and exclusive reads in the same case.",
+      "contract": "https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/#list"
+    },
+    {
+      "case": "D214",
+      "finding": "Original receipt array oracle assumed arbitrary SQLite RETURNING order.",
+      "resolution": "Author uses explicit inserted IDs and locally sorts returned receipts; an independent ordered SELECT remains.",
+      "contract": "https://www.sqlite.org/lang_returning.html#limitations_and_caveats"
+    }
+  ],
+  "static_checks": {
+    "source_sha256_pins_passed": 3,
+    "javascript_syntax_only_files": 2,
+    "case_manifest_bijection": 20,
+    "literal_assertion_count_matches": true,
+    "source_ranges_valid": true,
+    "python_AST_JSON_only": true,
+    "config_maps_SQLite_backed_StorageCase": true,
+    "no_SUT_or_case_execution": true
+  },
+  "execution_contract": {
+    "fixture": "Frontend creates one random fresh root and performs one normal DO.fetch; case wrapper delegates to actual state.storage/kv/sql.",
+    "external_case_requests": 1,
+    "max_created_roots_per_case": 1,
+    "precondition_deadline_ms": 1000,
+    "trace_deadline_ms": 5000,
+    "cleanup_deadline_ms": 2000,
+    "outer_http_deadline_seconds": 10,
+    "outer_process_deadline_seconds": 15,
+    "wave_deadline_seconds": 360,
+    "external_runtime_identity_and_owned_teardown_required": true,
+    "runtime_status": "NOT_RUN"
+  },
+  "case_verdicts": [
+    {
+      "id": "D201",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "NOT_RUN",
+      "reason": "Storage graph admission snapshot preserving cycle and alias identity."
+    },
+    {
+      "id": "D202",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "NOT_RUN",
+      "reason": "Stored structured-clone rich brands and cross-container aliases."
+    },
+    {
+      "id": "D203",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "NOT_RUN",
+      "reason": "Read-result detachment followed by explicit writeback."
+    },
+    {
+      "id": "D204",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "NOT_RUN",
+      "reason": "Coherence of settled asynchronous and synchronous storage APIs."
+    },
+    {
+      "id": "D205",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "NOT_RUN",
+      "reason": "Successful own-record/Map batch capture before later mutation."
+    },
+    {
+      "id": "D206",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "NOT_RUN",
+      "reason": "Sparse sorted/deduplicated DO get-many Map, unlike service KV null holes."
+    },
+    {
+      "id": "D207",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "NOT_RUN",
+      "reason": "Valid inclusive/exclusive list options intersect prefix/end/limit in separate reads."
+    },
+    {
+      "id": "D208",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "NOT_RUN",
+      "reason": "Reverse continuation through an exclusive upper bound."
+    },
+    {
+      "id": "D209",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "NOT_RUN",
+      "reason": "Materialized list and nested values remain detached from storage changes."
+    },
+    {
+      "id": "D210",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "NOT_RUN",
+      "reason": "Committed delete count/boolean outcomes and survivor preservation."
+    },
+    {
+      "id": "D211",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "NOT_RUN",
+      "reason": "Whole application KV/SQL reset followed by schema and state reuse."
+    },
+    {
+      "id": "D212",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "NOT_RUN",
+      "reason": "Native five-type SQL conversion including embedded NUL and byte-window BLOB."
+    },
+    {
+      "id": "D213",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "NOT_RUN",
+      "reason": "Duplicate column metadata/raw positions versus object last-name projection."
+    },
+    {
+      "id": "D214",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "NOT_RUN",
+      "reason": "Unordered complete INSERT RETURNING receipt set, statement completion and cursor exhaustion."
+    },
+    {
+      "id": "D215",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "NOT_RUN",
+      "reason": "SQL prepare performs one query string conversion before later parameter calls."
+    },
+    {
+      "id": "D216",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "NOT_RUN",
+      "reason": "Complete SQL ingestion sequence and statement/write counters."
+    },
+    {
+      "id": "D217",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "NOT_RUN",
+      "reason": "Valid quoted semicolons remain inside SQLite parser statement boundaries."
+    },
+    {
+      "id": "D218",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "NOT_RUN",
+      "reason": "Complete trigger definition remains one ingested statement; effects/counts are exact."
+    },
+    {
+      "id": "D219",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "NOT_RUN",
+      "reason": "Ingestion drains row-producing statements before subsequent writes."
+    },
+    {
+      "id": "D220",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "NOT_RUN",
+      "reason": "Ingest and sync KV share caller-chosen transaction rollback, then recover with commit."
+    }
+  ],
+  "qualifications": [
+    "Runtime-qualified PASS requires actual source/build/process/deployment identity and externally enforced bounds; response labels and random root names alone prove neither.",
+    "Internal timers do not interrupt a wedged native call. An unsettled trace does not enter deleteAll cleanup; it requires external owned process/store teardown.",
+    "Tracked native SQL cursors are drained with a 64-row remaining bound. Cleanup failure blocks acceptance and still requires external reaping.",
+    "D220 uses a valid ordinary callback exception to choose transaction rollback; no runtime fault injection or excluded guarded-core path is involved.",
+    "These local public API fixtures establish no crash/fleet/production/full-OS acceptance."
+  ],
+  "reviewed_file_sha256": {
+    "README.md": "beec6e6bdb4e2a845672173e3ad20e9dd72a1a71a601c3cb88126efccc119060",
+    "author_manifest.py": "f7f0569495f064fd536f5823ad75ca49b0971ca7a18dd64083ea5a8e9efb8b6c",
+    "cases.js": "1dec37fd6a3caae833bbc95620f407a7d866836410275c1b4b7637ae468bb7f9",
+    "fixture.js": "88a9b8be2e40781bcf1502c79d632723b89fd9a5f1d6a44f5110cea11fe1bbc6",
+    "manifest.json": "25b49a3bc5158a1b8277be37a06ef424e24da72c8ada091d9bd57d2c68d8bb7c",
+    "source-pins.json": "ebdd87343bd3ce54a815516c5a8587bf9c6f96b098b5f8610e128fffe94f017c",
+    "static-report.json": "7bf3fddbc840bc0cb4c854ab4758b320c7cf7c68183bee24d94a64f4f5031b90",
+    "validate_static.py": "8b10dc5b9359f016c3ea40d68847faac8ea9869a57e554424a0f0aea978ac729",
+    "wrangler.jsonc": "a7b3deb2ca095f43b401557d48aeb91ab3b9b9762e966868c0be65b2677828c0"
+  }
+}

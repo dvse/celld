@@ -1,0 +1,44 @@
+{
+  "adapter": "topology",
+  "behaviour": "fetch-and-http",
+  "contract": {
+    "cleanup": "abort; forget sink",
+    "intent": "Abort before writer acquisition reaches remote sink once",
+    "oracle": "aborted=1; closed=0; no writes; unlocked",
+    "preconditions": "No writer and no writes",
+    "trace": [
+      "obtain writable",
+      "abort stream",
+      "inspect sink"
+    ]
+  },
+  "corpus_id": "S021",
+  "corpus_wave": "base",
+  "fixture": "tests/conformance/rpc/fixtures/object-capabilities/fixture",
+  "id": "conformance/fetch-and-http/abort-before-writer-acquisition-reaches-remote-sink-once",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/base/S021"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/base/S021",
+      "source": "guarded-source-archive/celld-os-stress/fixture"
+    },
+    {
+      "sha256": "3e137fc03ca2b2e6ca40d538291aaf0e022bdfe491d3ddcdf4f8f9c4eb4c6b72",
+      "source": "guarded-source-archive/celld-os-stress/fixture/index.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "S021",
+  "source": "tests/conformance/rpc/fixtures/object-capabilities/fixture/index.js",
+  "source_sha256": "3e137fc03ca2b2e6ca40d538291aaf0e022bdfe491d3ddcdf4f8f9c4eb4c6b72",
+  "title": "Abort before writer acquisition reaches remote sink once"
+}

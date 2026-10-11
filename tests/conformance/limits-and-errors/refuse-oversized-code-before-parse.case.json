@@ -1,0 +1,51 @@
+{
+  "adapter": "topology",
+  "behaviour": "limits-and-errors",
+  "contract": {
+    "cleanup": "Release every foreground hold; settle all owned promises; dispose all entrypoints and Worker handles inside the active coordinator request; assert zero pending/unsettled holds; delete volatile audit book and close tag. Independently recorded owned guest/process/storage teardown is mandatory. No durable state is created by case logic.",
+    "implementation": "cases.js:cases.Q012",
+    "intent": "Refuse oversized code before parse",
+    "oracle": "Error explicitly says maximum allowed size of 8192 bytes, not syntax failure; tiny module returns kind=tiny",
+    "preconditions": [
+      "Verified process env CELLD_MAX_DYNAMIC_WORKER_CODE_BYTES=8192; 16KiB malformed source; no new env mutation",
+      "Fresh private owned disposable runtime/root name; native Worker Loader/WorkerEntrypoint and Audit loopback positive control",
+      "Verified immutable source/binary and configured 8192-byte code ceiling; independent scope review excludes restricted capability lifetime reproduction",
+      "Parent exclusive run slot; externally enforced wall/memory/PID limits and owned cleanup"
+    ],
+    "trace": [
+      "Supply 16384-byte comment plus invalid JavaScript as main module",
+      "Catch byte-limit error before any successful entry invocation",
+      "Load valid tiny module and probe",
+      "Confirm no Audit effects"
+    ]
+  },
+  "corpus_id": "Q012",
+  "corpus_wave": "bounded-resource",
+  "fixture": "tests/conformance/limits-and-errors/fixtures/invocation-quotas",
+  "id": "conformance/limits-and-errors/refuse-oversized-code-before-parse",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/bounded-resource/Q012"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/bounded-resource/Q012",
+      "source": "guarded-source-archive/celld-os-stress/waves/bounded-resource"
+    },
+    {
+      "sha256": "f0ac664b435a5bbfd844d830d03447bb78bfbd1d5d2e31bc4beb6a2d299847b9",
+      "source": "guarded-source-archive/celld-os-stress/waves/bounded-resource/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "Q012",
+  "source": "tests/conformance/limits-and-errors/fixtures/invocation-quotas/entry.js",
+  "source_sha256": "f0ac664b435a5bbfd844d830d03447bb78bfbd1d5d2e31bc4beb6a2d299847b9",
+  "title": "Refuse oversized code before parse"
+}

@@ -1,0 +1,25 @@
+{
+  "repository": "https://github.com/cloudflare/cloudflare-os",
+  "commit": "4358072f8cb1bc9ddfb6ee11122e194c76cd71e0",
+  "source_url": "https://github.com/cloudflare/cloudflare-os/blob/4358072f8cb1bc9ddfb6ee11122e194c76cd71e0/packages/typed-storage/src/index.ts",
+  "source_sha256": "561111a1a0787d5158ddfa9df5c1910285b156906d874f5f58719a901e004c12",
+  "local_original": "os-source-inventory/historical-4358072/raw/packages/typed-storage/src/index.ts",
+  "vendor_path": "vendor/cloudflare-os/packages/typed-storage/src/index.ts",
+  "source_modified": false,
+  "license": {
+    "type": "Apache-2.0",
+    "path": "vendor/cloudflare-os/LICENSE",
+    "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+    "source_url": "https://github.com/cloudflare/cloudflare-os/blob/4358072f8cb1bc9ddfb6ee11122e194c76cd71e0/LICENSE"
+  },
+  "retrieval": "Inventory worker inspected official pinned GitHub blob and used Download raw file. Author copied existing exact local bytes without transformations or new downloads.",
+  "notice_scope": "Pinned repository root listing has no NOTICE entry. No repo-wide statement about per-package notices is made.",
+  "runtime_dependencies": [],
+  "build_inputs_missing": [
+    "Separately authorized trusted esbuild capable of TypeScript syntax erasure",
+    "Exact guarded direct-celld executable and owned deployment supervisor"
+  ],
+  "downloaded_code_executed": false,
+  "downloaded_code_compiled": false,
+  "runtime_executions": 0
+}

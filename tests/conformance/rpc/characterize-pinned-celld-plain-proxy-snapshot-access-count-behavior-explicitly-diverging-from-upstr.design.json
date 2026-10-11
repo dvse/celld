@@ -1,0 +1,38 @@
+{
+  "id": "conformance/rpc/characterize-pinned-celld-plain-proxy-snapshot-access-count-behavior-explicitly-diverging-from-upstr",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "Characterize pinned celld plain-Proxy snapshot/access-count behavior, explicitly diverging from upstream Workers proxy-as-stub semantics",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec",
+      "legacy_id": "rpc-codec/C038"
+    }
+  ],
+  "corpus_wave": "rpc-codec",
+  "corpus_id": "C038",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "C038",
+    "intent": "Characterize pinned celld plain-Proxy snapshot/access-count behavior, explicitly diverging from upstream Workers proxy-as-stub semantics",
+    "preconditions": "COMMON; peer returns Proxy over ordinary object containing scalar and nested target; only field reads counted; this expected snapshot is a native implementation characterization, not the upstream proxy-as-stub contract",
+    "trace": [
+      "request plain-emulating Proxy result",
+      "verify scalar and invoke nested capability",
+      "verify field get trap ran once",
+      "verify caller receives ordinary object prototype"
+    ],
+    "stress": "One Proxy, one counted scalar access, one nested capability",
+    "oracle": "proxy-field and proxy-data arrive; exactly one field read; ordinary result prototype",
+    "cleanup": "Dispose result tree in finally; shared codecCleanup",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-PROJECT",
+      "SC-LIFT",
+      "SC-REVIVE"
+    ],
+    "source_scope": "pinned-celld-only; not a Workers conformance promotion gate"
+  }
+}

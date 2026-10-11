@@ -1,0 +1,30 @@
+{
+  "id": "conformance/rpc/explicit-application-override-of-to-string-remains-exposed",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "Explicit application override of toString remains exposed",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/fixture",
+      "legacy_id": "base/R011"
+    }
+  ],
+  "corpus_wave": "base",
+  "corpus_id": "R011",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "R011",
+    "intent": "Explicit application override of toString remains exposed",
+    "preconditions": "RpcTarget subclass defines its own prototype toString",
+    "trace": [
+      "obtain subclass target",
+      "call toString"
+    ],
+    "stress": "application override versus default Object.prototype exclusion",
+    "oracle": "exact explicit-string result",
+    "cleanup": "dispose target",
+    "gate": "characterization",
+    "contract_status": "Client-surface behavior pending: native RpcStub/Object.prototype names may resolve locally in pinned workerd; ordinary API only, no raw protocol workaround."
+  }
+}

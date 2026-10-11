@@ -1,0 +1,30 @@
+{
+  "id": "conformance/rpc/function-prototype-helpers-do-not-become-callable-grants",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "Function.prototype helpers do not become callable grants",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/fixture",
+      "legacy_id": "base/R019"
+    }
+  ],
+  "corpus_wave": "base",
+  "corpus_id": "R019",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "R019",
+    "intent": "Function.prototype helpers do not become callable grants",
+    "preconditions": "Returned callable has no own apply property",
+    "trace": [
+      "invoke positive control",
+      "attempt inherited apply call"
+    ],
+    "stress": "function-own versus function-prototype visibility",
+    "oracle": "direct call works; inherited apply denied",
+    "cleanup": "dispose function and parent",
+    "gate": "characterization",
+    "contract_status": "Client-surface behavior pending: native RpcStub/Object.prototype names may resolve locally in pinned workerd; ordinary API only, no raw protocol workaround."
+  }
+}

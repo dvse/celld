@@ -1,0 +1,304 @@
+{
+  "schema_version": 1,
+  "candidate": "celld-body-candidate-002",
+  "revision": "r002",
+  "binary_sha256": null,
+  "binary_note": "No binary built, deployed or run by this author. Full virtual source identity is independently reviewed separately.",
+  "runtime_sources": [
+    {
+      "path": "/workspace/shared/celld-build/candidate-001/source/crates/celld/js/harness.js",
+      "sha256": "8d3be5ef1b78d302cb2da745c63f8d2e1222115c49a8d08f1096bca7d235c237",
+      "bytes": 491759
+    },
+    {
+      "path": "/workspace/shared/celld-build/candidate-001/source/crates/celld/js/streams.js",
+      "sha256": "f77b1f59b2abdfeb73d770e0f12952df3a80a014c9fd9db1b277131b47cd054b",
+      "bytes": 26221
+    },
+    {
+      "path": "/workspace/shared/celld-body-candidate-002/revisions/r002/source/crates/celld/js/harness.js",
+      "sha256": "9a345d831a4a06a2cd983cb0027d1b44439b32cd0479662675249f3fd177d2c4",
+      "bytes": 493024
+    }
+  ],
+  "source_and_scope_evidence": [
+    {
+      "path": "/workspace/shared/celld-body-candidate-002/revisions/r002/CANDIDATE-MANIFEST.json",
+      "sha256": "e05094641eeb121eea0e9aa168f45ddc43c790ecaaa2e98a3a4af93340148be7",
+      "bytes": 10047
+    },
+    {
+      "path": "/workspace/shared/celld-body-candidate-002/revisions/r002/VIRTUAL-SOURCE-MANIFEST.json",
+      "sha256": "f9813bb0de25292db3db55986a4a058a928cdb2b2ae8f4f779aa6f86a07b04ab",
+      "bytes": 53575
+    },
+    {
+      "path": "/workspace/shared/celld-body-candidate-002/revisions/r002/CLONE-SCOPE-CLARIFICATION.json",
+      "sha256": "0210610adae50c41a56ea86066a2208f04d461dbd02bf8f74160536682c00a9e",
+      "bytes": 2820
+    },
+    {
+      "path": "/workspace/shared/celld-body-candidate-002/revisions/r002/candidate.patch",
+      "sha256": "94563cab630a8ec23984053115c4570d89d15007378b60eeddbfd8be68617b1d",
+      "bytes": 5898
+    },
+    {
+      "path": "/workspace/shared/celld-body-clone-audit-001/AUDIT.md",
+      "sha256": "ad9854bf477f17cdaf720ae475b813d6f44a293a40010a26967d30b94ddf8aba",
+      "bytes": 13379
+    },
+    {
+      "path": "/workspace/shared/celld-body-clone-audit-001/CLARIFICATION-v2-TEE-TRUE.md",
+      "sha256": "1a757030203e3f60d3a7c68a8847e31e5035de9991befcc3682aef2f94cc30f0",
+      "bytes": 4763
+    },
+    {
+      "path": "/workspace/shared/celld-recovered/celld-direct-source-v0.6.2-8d27-guard-20261009/MANIFEST.json",
+      "sha256": "8855fac9fd4598c697fc6344bee3a4440a4979e8f2c740ece032be2f7bcbeb99",
+      "bytes": 147489
+    },
+    {
+      "path": "/workspace/shared/celld-recovered/celld-direct-source-v0.6.2-8d27-guard-20261009/SHA256SUMS",
+      "sha256": "e00663780ee5233a6bf5da8f090af1ffd48e1b44aae2fbe9aa88572c255ebd55",
+      "bytes": 73692
+    }
+  ],
+  "normative_sources": [
+    {
+      "url": "https://fetch.spec.whatwg.org/#concept-body-clone",
+      "consulted_utc": "2026-10-09",
+      "snapshot": "https://fetch.spec.whatwg.org/commit-snapshots/e9460d1b22ead1c6a72eeac37fb2ec0dc01aeb1d/#concept-body-clone"
+    },
+    {
+      "url": "https://streams.spec.whatwg.org/#readablestream-tee",
+      "consulted_utc": "2026-10-09",
+      "snapshot": "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#readablestream-tee"
+    },
+    {
+      "url": "https://streams.spec.whatwg.org/#readable-stream-default-tee",
+      "consulted_utc": "2026-10-09",
+      "snapshot": "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#readable-stream-default-tee"
+    }
+  ],
+  "frozen_57_wave_artifacts": [
+    {
+      "path": "body-form-semantics/README.md",
+      "sha256": "aa8f598081b5e9e598c53afe49a56a8be6a323a9195b79e8549840878fb314ef",
+      "bytes": 8433
+    },
+    {
+      "path": "body-form-semantics/SHA256SUMS",
+      "sha256": "82f2d0f8d852b52e8f053c27673b1674d75941c858b64c4ea40929ed9a4e5d2e",
+      "bytes": 895
+    },
+    {
+      "path": "body-form-semantics/author_manifest.py",
+      "sha256": "c529857e5d0c8584f133f48c553aa24b7f370324c32a38dff96c8ac480dbe77c",
+      "bytes": 29508
+    },
+    {
+      "path": "body-form-semantics/cases.js",
+      "sha256": "180471bf87e871d625acdc530f33d9829a3c6cd676a19747327f796894d4573d",
+      "bytes": 17359
+    },
+    {
+      "path": "body-form-semantics/fixture.js",
+      "sha256": "ab850551d9b005bc0636954aeb2151d46ac0c35d15580665aa157230dabe30a5",
+      "bytes": 8498
+    },
+    {
+      "path": "body-form-semantics/manifest.json",
+      "sha256": "e31598421948f8c190575ce14a8cccfe7a76930797c30c44985d05552d3c95d1",
+      "bytes": 97801
+    },
+    {
+      "path": "body-form-semantics/overlap-audit.json",
+      "sha256": "c5683224ae4738ac56f331be8dbac1d760320cd4284d3193a9c36c37d3918ee5",
+      "bytes": 11895
+    },
+    {
+      "path": "body-form-semantics/schedule.json",
+      "sha256": "363f24c8b5caba3cba816c1fb6b72f56bdf56abcb6df71e28cc3945a6bc23352",
+      "bytes": 5196
+    },
+    {
+      "path": "body-form-semantics/source-pins.json",
+      "sha256": "77d539f056c98d55c029a953d53d0e9022bc8da7aa513df9dad0ccabb20227ba",
+      "bytes": 7774
+    },
+    {
+      "path": "body-form-semantics/static-validation.json",
+      "sha256": "7bf862330b490dcbea41d267019a7e9be423e3bc7230f70029e9b134456f92f5",
+      "bytes": 1728
+    },
+    {
+      "path": "body-form-semantics/validate_static.py",
+      "sha256": "c1d272392639042042e2984ae7a2fc2445dce5cfc5a88915582fda29baa8e386",
+      "bytes": 4679
+    },
+    {
+      "path": "body-form-semantics/wrangler.json",
+      "sha256": "b7df0404d43d144186263a48409811dc97fc50df5e85d6584f99a3a54c93239d",
+      "bytes": 113
+    },
+    {
+      "path": "url-semantics/README.md",
+      "sha256": "a6a5a6b8ad3ab04f8f1e46f43c3f20b0ceb2218fad5d09df95b1dfeedb0ec603",
+      "bytes": 7996
+    },
+    {
+      "path": "url-semantics/SHA256SUMS",
+      "sha256": "f8088a898011b26c4cdada8c15b4ed1adcd55e551b235e47017bb2db30fdde45",
+      "bytes": 895
+    },
+    {
+      "path": "url-semantics/author_manifest.py",
+      "sha256": "53a1aee514699bb65e446600a0879f27563c95b448b7ab1cda6883e01b6ad191",
+      "bytes": 31582
+    },
+    {
+      "path": "url-semantics/cases.js",
+      "sha256": "05079e449a0839cbe790f111ad63e5155a8482d16fcb66c71a7e111ffa4c2276",
+      "bytes": 16421
+    },
+    {
+      "path": "url-semantics/fixture.js",
+      "sha256": "ccbb1cf21c3f719aa06ed64b498fc396f00736cc96d7cbd2aea437f2cc221ca6",
+      "bytes": 2113
+    },
+    {
+      "path": "url-semantics/manifest.json",
+      "sha256": "d61fdb1b4d070ae5aff0ad1456c39d2842c341f9737a20b67c67c251f638ae91",
+      "bytes": 107854
+    },
+    {
+      "path": "url-semantics/overlap-audit.json",
+      "sha256": "3f0d128064bb3f76212378ce724a3a5037aaf781247bbb8c19bcae152640cb3f",
+      "bytes": 17388
+    },
+    {
+      "path": "url-semantics/schedule.json",
+      "sha256": "ed241045ee78c9efef4d8c6440119aa813929f802cf4eafcfedfc776db2f1ee1",
+      "bytes": 5403
+    },
+    {
+      "path": "url-semantics/source-pins.json",
+      "sha256": "2254e29189caf162853607947a47a2e8097302aa3992508bda758ce1d07da641",
+      "bytes": 8954
+    },
+    {
+      "path": "url-semantics/static-validation.json",
+      "sha256": "83227c6b6c8b21b7d23e78490e55d1a286d121fadb55530d0afb4ffffbf8de2c",
+      "bytes": 1631
+    },
+    {
+      "path": "url-semantics/validate_static.py",
+      "sha256": "007bac5bf1a54acfe0388aea1c4c859e2b6018169d7cb8fc3efb0f60298cab5f",
+      "bytes": 4631
+    },
+    {
+      "path": "url-semantics/wrangler.json",
+      "sha256": "8f5ef34ebe9550ac822ff9dd4589c4cf4a5ee9fd73e14e9d7b00cf1e47c91e61",
+      "bytes": 107
+    },
+    {
+      "path": "headers-semantics/README.md",
+      "sha256": "1ecb90142dade46db36d8191448858d5a15e30ba1fb761bafc680c6da74e7cf7",
+      "bytes": 5370
+    },
+    {
+      "path": "headers-semantics/author_manifest.py",
+      "sha256": "193545c6e74db2b24ce2ae3f3d25594399ae7464acec6ffb8ab538ca0b042f01",
+      "bytes": 14696
+    },
+    {
+      "path": "headers-semantics/cases.js",
+      "sha256": "1bd1c82a6aee68e2558764043487db6a89105e5f4a402ef72190539fcc9d4a96",
+      "bytes": 10403
+    },
+    {
+      "path": "headers-semantics/fixture.js",
+      "sha256": "db81f86f93ee27f81864134f3323405a4410c1672f92531fbd0d780931fdafbf",
+      "bytes": 3425
+    },
+    {
+      "path": "headers-semantics/manifest.json",
+      "sha256": "7ab0ac34b1ab6bcd773176ff2225a2c246ca835b9487d18b774833a4fc3afd88",
+      "bytes": 51739
+    },
+    {
+      "path": "headers-semantics/source-pins.json",
+      "sha256": "33dabad7154ff8f5f39f9733281f1732e8e6bb9c2ebf786ae0b7443d17c45f32",
+      "bytes": 831
+    },
+    {
+      "path": "headers-semantics/static-report.json",
+      "sha256": "5fa775b31c14bdfbbdbf3e4987f8ee4501326b62b39a585c4113055626918e9e",
+      "bytes": 180
+    },
+    {
+      "path": "headers-semantics/validate.py",
+      "sha256": "64df9497d58b94534616b6965bb9704c553212ae3ed21259fb45235c37d12275",
+      "bytes": 1811
+    },
+    {
+      "path": "headers-semantics/wrangler.jsonc",
+      "sha256": "e7c95aaa6a14933b4195c021ffab9f9555151a8d67181a1bc7890e4cc9145102",
+      "bytes": 112
+    }
+  ],
+  "frozen_artifacts_root": "/workspace/shared/celld-campaign-next",
+  "fixture_artifacts": [
+    {
+      "path": "cases.js",
+      "sha256": "c85acc7520eceaea54f5cc6e7651c21c761e9a213a21d50a695ca5c35817896c",
+      "bytes": 2193
+    },
+    {
+      "path": "fixture.js",
+      "sha256": "744bc0261c9cdcb63ecb972ac3185eaad51d7115ee07100dd88d77ca283fb3a7",
+      "bytes": 7447
+    },
+    {
+      "path": "wrangler.json",
+      "sha256": "8fc28d0d31a268317b63e4d1c388b5acba200729602a2e61a889171bbda47d43",
+      "bytes": 124
+    },
+    {
+      "path": "manifest.json",
+      "sha256": "048b55c13a991eeedb8c7cd39d89644ac278c740fb7d24e9eb4ba4d5608e26b9",
+      "bytes": 7846
+    },
+    {
+      "path": "schedule.json",
+      "sha256": "7de4d389be984e3b27ac7a0b81146c73e9fcb068687298f518416cfa9dbc3290",
+      "bytes": 2318
+    },
+    {
+      "path": "overlap-audit.json",
+      "sha256": "435d64b6cd9614b385cc247d99fb6245a8981b263a719cb3285dfb45a36afad2",
+      "bytes": 5838
+    },
+    {
+      "path": "overlap-inventory.json",
+      "sha256": "74359ab909cdacbd638a5365e7ba108acc79ccebaa108d8f083c24af3d93330a",
+      "bytes": 96565
+    },
+    {
+      "path": "README.md",
+      "sha256": "97b90c0c21481ddcc290468363ca12e7d70e53320554e8789cfd417364fa7295",
+      "bytes": 6672
+    },
+    {
+      "path": "author_manifest.py",
+      "sha256": "128d085f3b72b8cba0e9c9dd7d1779aa032f853592796b9d52774a70068edfde",
+      "bytes": 14487
+    },
+    {
+      "path": "validate_static.py",
+      "sha256": "1eadb1104a1ce18007de30270ad3cc695f2de68ba36b59ad5f4a621a82bebeba",
+      "bytes": 4318
+    }
+  ],
+  "qualification": "Static hashes and syntax only. Original 57-case wave files are preserved, not re-authored. Separate review receipt needed before one case may enter tranche007."
+}

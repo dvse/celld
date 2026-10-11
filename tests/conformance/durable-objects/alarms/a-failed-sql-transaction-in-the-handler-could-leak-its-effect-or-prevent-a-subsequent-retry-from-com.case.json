@@ -1,0 +1,61 @@
+{
+  "adapter": "recovery",
+  "behaviour": "durable-objects/alarms",
+  "contract": {
+    "cleanup": [
+      "Clear retry state and tear down both transferred guests.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A015",
+    "intent": "A failed SQL transaction in the handler could leak its effect or prevent a subsequent retry from committing the intended effect.",
+    "oracle": [
+      "Exactly failed retry0 then successful retry1.",
+      "Effect value is exactly1; a leaked999 would remain observable because the retry uses INSERT OR IGNORE."
+    ],
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "First attempt inserts effect value999 inside transactionSync, throws, and rolls it back before failing the handler."
+    ],
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "trace": [
+      "Arm rolled-effect.",
+      "Allow the first transactional effect attempt to roll back and the handler to fail.",
+      "Observe native retry one succeed and complete bookkeeping."
+    ]
+  },
+  "corpus_id": "A015",
+  "corpus_wave": "alarm-event-stress",
+  "fixture": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces",
+  "id": "conformance/durable-objects/alarms/a-failed-sql-transaction-in-the-handler-could-leak-its-effect-or-prevent-a-subsequent-retry-from-com",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/alarm-event-stress/A015"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/alarm-event-stress/A015",
+      "source": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress"
+    },
+    {
+      "sha256": "ccde8a8c9c8c7a4cfe02567f656fc149da1ee24fd78973455e64a8fe1c6ea3f3",
+      "source": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress/fixture.js"
+    }
+  ],
+  "phase2_harness": "real process and bucket fault schedule",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "A015",
+  "source": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces/fixture.js",
+  "source_sha256": "ccde8a8c9c8c7a4cfe02567f656fc149da1ee24fd78973455e64a8fe1c6ea3f3",
+  "title": "A failed SQL transaction in the handler could leak its effect or prevent a subsequent retry from committing the intended effect."
+}

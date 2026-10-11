@@ -1,0 +1,30 @@
+{
+  "id": "conformance/rpc/throwing-proxy-get-trap-fails-exactly-once-without-fallback-dispatch",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "Throwing Proxy get trap fails exactly once without fallback dispatch",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/fixture",
+      "legacy_id": "base/R022"
+    }
+  ],
+  "corpus_wave": "base",
+  "corpus_id": "R022",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "R022",
+    "intent": "Throwing Proxy get trap fails exactly once without fallback dispatch",
+    "preconditions": "Proxy synthesized name throws on get and counts effects",
+    "trace": [
+      "capture trap count",
+      "attempt call",
+      "check error and count"
+    ],
+    "stress": "exception during method resolution",
+    "oracle": "proxy-trap-rejection preserved; exactly one trap call",
+    "cleanup": "dispose target",
+    "gate": "characterization"
+  }
+}

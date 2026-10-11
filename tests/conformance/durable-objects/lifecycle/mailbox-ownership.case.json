@@ -1,0 +1,33 @@
+{
+  "id": "conformance/durable-objects/lifecycle/mailbox-ownership",
+  "layer": "conformance",
+  "behaviour": "durable-objects/lifecycle",
+  "title": "mailbox ownership",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/mailbox-ownership",
+      "legacy_id": "hyperbob/mailbox-ownership"
+    },
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/mailbox-ownership/wrangler.json",
+      "sha256": "933873e412f30dddb3a138d9780bc65fdb59b53ed650b9a1268d785abc6a4bb8"
+    }
+  ],
+  "legacy_ids": [
+    "hyperbob/mailbox-ownership"
+  ],
+  "adapter": "example",
+  "fixture": "tests/conformance/durable-objects/lifecycle/fixtures/mailbox-ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": "",
+  "requests": [
+    {
+      "path": "/?v=suite"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/durable-objects/lifecycle/fixtures/mailbox-ownership/wrangler.json",
+  "source_sha256": "933873e412f30dddb3a138d9780bc65fdb59b53ed650b9a1268d785abc6a4bb8"
+}

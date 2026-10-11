@@ -1,0 +1,261 @@
+{
+  "schema_version": 1,
+  "source_snapshot": "celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "source_root_at_authoring": "/workspace/shared/celld-recovered/celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "upstream_commit": "90b43017241f81189453d326d05948f388b34652",
+  "binary_sha256": null,
+  "binary_note": "No build or runtime execution. Historical unguarded binary evidence does not qualify these new guarded-source cases.",
+  "runtime_sources": [
+    {
+      "path": "celld-os-project/celld/crates/celld/js/streams.js",
+      "sha256": "f77b1f59b2abdfeb73d770e0f12952df3a80a014c9fd9db1b277131b47cd054b",
+      "bytes": 26221
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+      "sha256": "6b871978c796ffdb6eca104358332e3834aa4945d16fd019754bb28c7b2a3584",
+      "bytes": 22385
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js/harness.js",
+      "sha256": "8d3be5ef1b78d302cb2da745c63f8d2e1222115c49a8d08f1096bca7d235c237",
+      "bytes": 491759
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/dev.rs",
+      "sha256": "829ea2e7f02ec22c8376bc23406ffb2a80cbd3165bfa59164a4d75e4fd98c313",
+      "bytes": 33127
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/deploy.rs",
+      "sha256": "b9383268709233302082eb2dc08753499ac3a69a983a598f41ab9a9383dae7e2",
+      "bytes": 123934
+    }
+  ],
+  "baseline_evidence": [
+    {
+      "path": "celld-os-stress/cases/streams.json",
+      "sha256": "5229ce8e44ad3e541e7f96dc788ad946e7d2beade8f7c63aee02aed70b1a1684",
+      "bytes": 15183
+    },
+    {
+      "path": "celld-os-stress/fixture/index.js",
+      "sha256": "3e137fc03ca2b2e6ca40d538291aaf0e022bdfe491d3ddcdf4f8f9c4eb4c6b72",
+      "bytes": 14347
+    },
+    {
+      "path": "celld-os-stress/waves/http-stream-stress/manifest.json",
+      "sha256": "089c5862ac6c145045dceb77b5e22106f7666e928074dadd27d55f2c81d68c00",
+      "bytes": 84278
+    },
+    {
+      "path": "celld-os-stress/waves/http-stream-stress/cases.js",
+      "sha256": "96fb832714b9437de94f48bb1c2fdb1fb5dc2eedb723901040c06cfb9bb305aa",
+      "bytes": 18310
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-load/manifest.json",
+      "sha256": "3f5bd7c6edaeaff0d0e64f61f3057d470ff3797c9433705a02e007e2b9ab8138",
+      "bytes": 98229
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-load/cases.js",
+      "sha256": "60c6f9a8ae72180a8f549405076efc48a14612d5686d7a38548db329db4a06cf",
+      "bytes": 28395
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-load/fixture.js",
+      "sha256": "dcad2094078d264e222e44846b21d0919bcf9798645ee5e0792759afe48a295e",
+      "bytes": 17736
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-load/source-pins.json",
+      "sha256": "02b6de06eed33124802d9b22bc0c6b4aecf3da6a4b9f808d719b005ffa32756c",
+      "bytes": 3675
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/manifest.json",
+      "sha256": "5cacd1bfe0e3c07d2f2eb469bbcaa19cfdfb140f81a3ad351a5356cada5f17e1",
+      "bytes": 43665
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/operations.js",
+      "sha256": "3c56ee242a504ad001125fec4ec2ba54d07c00ff4757b36be2826624f7e751c6",
+      "bytes": 14588
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/source-pins.json",
+      "sha256": "22850dc72e870f4ae1a5f9e7a512534c8e11fed24ca93e56161613d8e3619987",
+      "bytes": 6269
+    },
+    {
+      "path": "celld-os-project/tests/streams/fixture/index.js",
+      "sha256": "66215d1537212afeeac6a5f66f5ba913a163932f58b6269119ee4e2264c7c3f6",
+      "bytes": 12507
+    },
+    {
+      "path": "celld-os-project/tests/streams/README.md",
+      "sha256": "e83af0d948f24b40c043afbfd49025bffecddd7e818539094ec76197d24cf7c4",
+      "bytes": 2707
+    },
+    {
+      "path": "celld-os-project/tests/ACCEPTANCE.md",
+      "sha256": "225d224b02186c96adde8415069286f67b63da5b4bc8938a5c19bc29b4b46256",
+      "bytes": 6384
+    },
+    {
+      "path": "BUILD_AND_TEST.md",
+      "sha256": "14d182794d90bed90ee488abde70a9cba2004112e21a946441e621666196ecb1",
+      "bytes": 11861
+    },
+    {
+      "path": "MANIFEST.json",
+      "sha256": "8855fac9fd4598c697fc6344bee3a4440a4979e8f2c740ece032be2f7bcbeb99",
+      "bytes": 147489
+    },
+    {
+      "path": "SHA256SUMS",
+      "sha256": "e00663780ee5233a6bf5da8f090af1ffd48e1b44aae2fbe9aa88572c255ebd55",
+      "bytes": 73692
+    }
+  ],
+  "campaign_evidence": [
+    {
+      "path": "pipe-cleanup-semantics/manifest.json",
+      "sha256": "02175a33442a86096c05300b11e15c978b58ea6b69a9bb57acaf53ac51dec730",
+      "bytes": 34462
+    },
+    {
+      "path": "pipe-cleanup-semantics/cases.js",
+      "sha256": "c854fc02b5d268af0d7ed55c58df23f3f67954ef36ce23d04b7a3cf21e78638e",
+      "bytes": 12235
+    },
+    {
+      "path": "pipe-cleanup-semantics/fixture.js",
+      "sha256": "9903a92f43f96b3b38046171b7575e99b84eac2ef8e626b2377fb621f5a821b5",
+      "bytes": 9395
+    },
+    {
+      "path": "pipe-cleanup-semantics/overlap-audit.json",
+      "sha256": "f40c27b7d11e47710ff9172dec25c2264fcf48c00789fc1ebdbb9bb52c6e871f",
+      "bytes": 22604
+    },
+    {
+      "path": "body-form-semantics/manifest.json",
+      "sha256": "e31598421948f8c190575ce14a8cccfe7a76930797c30c44985d05552d3c95d1",
+      "bytes": 97801
+    },
+    {
+      "path": "body-form-semantics/cases.js",
+      "sha256": "180471bf87e871d625acdc530f33d9829a3c6cd676a19747327f796894d4573d",
+      "bytes": 17359
+    },
+    {
+      "path": "body-form-semantics/fixture.js",
+      "sha256": "ab850551d9b005bc0636954aeb2151d46ac0c35d15580665aa157230dabe30a5",
+      "bytes": 8498
+    },
+    {
+      "path": "body-form-semantics/overlap-audit.json",
+      "sha256": "c5683224ae4738ac56f331be8dbac1d760320cd4284d3193a9c36c37d3918ee5",
+      "bytes": 11895
+    },
+    {
+      "path": "assessments/stream-backpressure-gaps-20261009.json",
+      "sha256": "60cdffa42680edecb9d983a40acab53e844ef2580c9d61f9f24a7b8337de3071",
+      "bytes": 51510
+    },
+    {
+      "path": "assessments/stream-backpressure-gaps-20261009.md",
+      "sha256": "bfd077a15397020595a669043fc6944f005eb65bdad790fbb6f11a437c2fd7a8",
+      "bytes": 18788
+    },
+    {
+      "path": "os-source-inventory/historical-4358072/raw/packages/workshop-backend/src/blueprint-archive.ts",
+      "sha256": "3169045728d1eb6a9de86afa08b1eddf8c14766affda28e8e95f1d01a2a846c1",
+      "bytes": 11122
+    }
+  ],
+  "fixture_artifacts": [
+    {
+      "path": "cases.js",
+      "sha256": "5b0602798844955748dc1edf1779e75aa09c9d1f08fb2c7252e5703e033f0964",
+      "bytes": 18930
+    },
+    {
+      "path": "fixture.js",
+      "sha256": "d3719b882f4c3725bd59187adce6cbb2b547da70949ed2b8ee9ec101a3138c6a",
+      "bytes": 8401
+    },
+    {
+      "path": "wrangler.json",
+      "sha256": "78f79258adf247aa77225c204efe4819c975cd601c255025900f66917596f54d",
+      "bytes": 123
+    }
+  ],
+  "primary_standard": {
+    "url": "https://streams.spec.whatwg.org/",
+    "commit_snapshot": "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/",
+    "commit": "b9ba9f49d95b4280be0dc2372377a006c3a91c18",
+    "retrieved_date": "2026-10-09",
+    "method": "Primary WHATWG pages read with web tool; no shell download or execution.",
+    "authority": "Normative stream algorithms checked independently of implementation source; normative-verification.json records the inspected algorithms."
+  },
+  "os_provenance_context": {
+    "status": "ONE_RECOVERED_HISTORICAL_RAW_FILE_VERIFIED_FULL_OS_CHECKOUT_UNAVAILABLE",
+    "os_commit": "4358072f8cb1bc9ddfb6ee11122e194c76cd71e0",
+    "source_manifest": "celld-os-stress/waves/native-transform-stress/source-pins.json",
+    "preserved_records": [
+      {
+        "path": "/workspace/shared/celld-os-project/os/packages/workshop-backend/src/blueprint-archive.ts",
+        "sha256": "3169045728d1eb6a9de86afa08b1eddf8c14766affda28e8e95f1d01a2a846c1",
+        "manifest_key": null,
+        "lines": "95-113",
+        "purpose": "OS gzip archive imports",
+        "authority": "OS-use-source-only-not-in-runtime-manifest"
+      },
+      {
+        "path": "/workspace/shared/celld-os-project/os/packages/bundled-blueprints/blueprints/workspace-sheets/files/lib/zip.ts",
+        "sha256": "9033a9d3db083296a96f59a13424e05d79aeb8c3ee04fbb7b5aa06f3ab1c248f",
+        "manifest_key": null,
+        "lines": "106-140",
+        "purpose": "OS raw-deflate streaming XLSX export",
+        "authority": "OS-use-source-only-not-in-runtime-manifest"
+      },
+      {
+        "path": "/workspace/shared/celld-os-project/os/packages/workshop-backend/src/git-codec.ts",
+        "sha256": "56814f3f0608c88e6e83ba08e43f5af87ed4fabf972554e696c390809e9e1538",
+        "manifest_key": null,
+        "lines": "616-735",
+        "purpose": "OS SHA1 DigestStream pack reader and close",
+        "authority": "OS-use-source-only-not-in-runtime-manifest"
+      },
+      {
+        "path": "/workspace/shared/celld-os-project/os/packages/gatekeeper-kit/src/action-files.ts",
+        "sha256": "e735cdd41333be3297a6e8d7114553483772b33f310edfb0844296650c855da0",
+        "manifest_key": null,
+        "lines": "250",
+        "purpose": "OS SHA256 attachment/content digest",
+        "authority": "OS-use-source-only-not-in-runtime-manifest"
+      },
+      {
+        "path": "/workspace/shared/celld-os-project/os/packages/workshop-backend/src/sharing.ts",
+        "sha256": "0e10443304ae850a008b3b8771d26d28e5fa1f6240c0091cc01516627c8672af",
+        "manifest_key": null,
+        "lines": "55-74",
+        "purpose": "OS public HMAC personalization; fixture uses its own public key bytes",
+        "authority": "OS-use-source-only-not-in-runtime-manifest"
+      }
+    ],
+    "recovered_verified_source": {
+      "path": "os-source-inventory/historical-4358072/raw/packages/workshop-backend/src/blueprint-archive.ts",
+      "sha256": "3169045728d1eb6a9de86afa08b1eddf8c14766affda28e8e95f1d01a2a846c1",
+      "bytes": 11122,
+      "line_start": 145,
+      "line_end": 162,
+      "historical_retained_hash_match": true,
+      "purpose": "Archive prefix/content sequence uses ordinary TransformStream."
+    },
+    "qualification": "Only the named raw file was reread. Other preserved entries remain metadata-only. The immutable baseline still lacks OS source; full checkout, dependencies and actual OS execution remain unavailable. No OS acceptance claimed."
+  }
+}

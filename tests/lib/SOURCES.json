@@ -1,0 +1,2783 @@
+{
+  "schema_version": 1,
+  "files": [
+    {
+      "origin": "celld@9c0fca5/examples/README.md",
+      "path": "tests/lib/provenance/examples-overview.source.md",
+      "sha256": "b13dea290c476aac6158e50d51ad026cc3d246d2357428ff3d831ba4ffee08d0",
+      "bytes": 2731
+    },
+    {
+      "origin": "celld@9c0fca5/examples/facets/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/facets/fixtures/facet-counter/wrangler.jsonc",
+      "sha256": "b9f40f7044f97b138fcb5cacc4398d95190eb8bb12e4a6a4fe0ced641ee20e57",
+      "bytes": 302
+    },
+    {
+      "origin": "celld@9c0fca5/examples/facets/index.js",
+      "path": "tests/conformance/durable-objects/facets/fixtures/facet-counter/index.js",
+      "sha256": "78ce4d71c1f564b55c0b826b0dd94d955eb8787b84e3917e5cc1878ec0e95c51",
+      "bytes": 1316
+    },
+    {
+      "origin": "celld@9c0fca5/examples/facets/README.md",
+      "path": "tests/conformance/durable-objects/facets/fixtures/facet-counter/README.md",
+      "sha256": "a834441822b1106f649e68f6d2d25d7d5f34f0119636861d7486c1f3925f707a",
+      "bytes": 870
+    },
+    {
+      "origin": "celld@9c0fca5/examples/kv/wrangler.jsonc",
+      "path": "tests/conformance/bindings/fixtures/kv-namespace/wrangler.jsonc",
+      "sha256": "6aaa89a015facbd0b0ef8687fc9794a1814ef1c4bf29f804fd1046c73069c1c1",
+      "bytes": 173
+    },
+    {
+      "origin": "celld@9c0fca5/examples/kv/index.js",
+      "path": "tests/conformance/bindings/fixtures/kv-namespace/index.js",
+      "sha256": "479317f9afa3b2d08df20b7fd0ee8d14c1ec5f16258cc09cddb30c27359f0ad9",
+      "bytes": 601
+    },
+    {
+      "origin": "celld@9c0fca5/examples/wsclient/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/outbound-client/wrangler.jsonc",
+      "sha256": "21f0556648aefe290b845d65fa44014de13a616ee55c9d14ea392f89879ec64c",
+      "bytes": 265
+    },
+    {
+      "origin": "celld@9c0fca5/examples/wsclient/index.js",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/outbound-client/index.js",
+      "sha256": "69870215e3761f7603cd8b82a716d6665fd9eb46ea0bc3e49552394b7ef096cc",
+      "bytes": 892
+    },
+    {
+      "origin": "celld@9c0fca5/examples/d1/wrangler.jsonc",
+      "path": "tests/conformance/bindings/fixtures/d1-database/wrangler.jsonc",
+      "sha256": "b1f086eb4f6f1526663429d085244333b1624d62a3f1cbbbd3fccba02ee5878f",
+      "bytes": 235
+    },
+    {
+      "origin": "celld@9c0fca5/examples/d1/index.js",
+      "path": "tests/conformance/bindings/fixtures/d1-database/index.js",
+      "sha256": "fc53391840ad9c3a7b3722d06297896ce42462ae7fbe2efc1af51d5246889424",
+      "bytes": 1150
+    },
+    {
+      "origin": "celld@9c0fca5/examples/python/wrangler.jsonc",
+      "path": "tests/conformance/languages/fixtures/python-worker/wrangler.jsonc",
+      "sha256": "a3ed0b6806b7294d2fe09d94e3e550be455b0d4b69228d0d2a160ecd3bfbbde5",
+      "bytes": 224
+    },
+    {
+      "origin": "celld@9c0fca5/examples/python/pyproject.toml",
+      "path": "tests/conformance/languages/fixtures/python-worker/pyproject.toml",
+      "sha256": "f009258a026322e367d0602528187ee6c1f36a1bfe5f43aaaabdd593dcc8f18e",
+      "bytes": 178
+    },
+    {
+      "origin": "celld@9c0fca5/examples/python/.gitignore",
+      "path": "tests/conformance/languages/fixtures/python-worker/.gitignore",
+      "sha256": "088221e33b508ca82d04745ef5d68b7583801a6f0e18900292452cb769242eb2",
+      "bytes": 43
+    },
+    {
+      "origin": "celld@9c0fca5/examples/async/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/timer-before-storage/wrangler.jsonc",
+      "sha256": "9239fef5d6a85b2a85fbf2773cf900599dc0632112db47beb5bb012e68aba481",
+      "bytes": 247
+    },
+    {
+      "origin": "celld@9c0fca5/examples/async/index.js",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/timer-before-storage/index.js",
+      "sha256": "00c4cf200f33ce6e24019b4a1b0c77ff024f62c201533971314f6c3020d5d628",
+      "bytes": 446
+    },
+    {
+      "origin": "celld@9c0fca5/examples/wasm/Cargo.toml",
+      "path": "tests/conformance/languages/fixtures/wasm-worker/Cargo.toml",
+      "sha256": "9a834be5c1c5858239eb94daf182aa08748fdce4ad6b2b11ba93d807b756fbd7",
+      "bytes": 225
+    },
+    {
+      "origin": "celld@9c0fca5/examples/wasm/wrangler.jsonc",
+      "path": "tests/conformance/languages/fixtures/wasm-worker/wrangler.jsonc",
+      "sha256": "fcbb22e75f5cb572a5f523f63610998db500a241d9dca42c1354270826397faf",
+      "bytes": 268
+    },
+    {
+      "origin": "celld@9c0fca5/examples/wasm/README.md",
+      "path": "tests/conformance/languages/fixtures/wasm-worker/README.md",
+      "sha256": "8ee4b2e464438250e279cbb1c5b31368ec0ef6dfa286e922f548317b20be5474",
+      "bytes": 858
+    },
+    {
+      "origin": "celld@9c0fca5/examples/wasm/.gitignore",
+      "path": "tests/conformance/languages/fixtures/wasm-worker/.gitignore",
+      "sha256": "8957ca4a53e1b76fc7006f6c9a092acf4910134ba79ce95ae9a1e8e54855714c",
+      "bytes": 26
+    },
+    {
+      "origin": "celld@9c0fca5/examples/vectordb/wrangler.jsonc",
+      "path": "tests/conformance/bindings/fixtures/vector-database/wrangler.jsonc",
+      "sha256": "796500d33d867eac97aeb8728aff14af6d07acd0081c5694804ec0154e3d32fb",
+      "bytes": 351
+    },
+    {
+      "origin": "celld@9c0fca5/examples/vectordb/index.js",
+      "path": "tests/conformance/bindings/fixtures/vector-database/index.js",
+      "sha256": "2cdd820ab2f32df0c00fdf231d253148358499c8e7789c72de2be7840afb66f7",
+      "bytes": 1355
+    },
+    {
+      "origin": "celld@9c0fca5/examples/body/wrangler.jsonc",
+      "path": "tests/conformance/fetch-and-http/fixtures/json-body-counter/wrangler.jsonc",
+      "sha256": "854a1d81fb7769eb8f5a18731b1575296587199c30bdab85375886c138bfd5ce",
+      "bytes": 229
+    },
+    {
+      "origin": "celld@9c0fca5/examples/body/index.js",
+      "path": "tests/conformance/fetch-and-http/fixtures/json-body-counter/index.js",
+      "sha256": "9b770c3d9de115369c0cdc4a74d301fd390038c9ee33fccca7b23c84fab4455c",
+      "bytes": 711
+    },
+    {
+      "origin": "celld@9c0fca5/examples/dynamic-worker-tails/wrangler.jsonc",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/tail-events/wrangler.jsonc",
+      "sha256": "739ff9fb5a22e1dfa5c1a9b8c94d655d6180ac39379de6d3b51a48614aedcc6e",
+      "bytes": 144
+    },
+    {
+      "origin": "celld@9c0fca5/examples/dynamic-worker-tails/index.js",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/tail-events/index.js",
+      "sha256": "9ed9c2b444ba9519a9aa66c517311b2de1c16252645c4050dba42806c632d290",
+      "bytes": 1026
+    },
+    {
+      "origin": "celld@9c0fca5/examples/dynamic-worker-tails/README.md",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/tail-events/README.md",
+      "sha256": "c63bdda577c04b9cc4cc62593e06dbe3977633179c759e5d99ab70793562d4b7",
+      "bytes": 589
+    },
+    {
+      "origin": "celld@9c0fca5/examples/static-assets/wrangler.jsonc",
+      "path": "tests/conformance/bindings/fixtures/static-assets/wrangler.jsonc",
+      "sha256": "5b47802c8b2cf38117817af9d303e2fa8d88f3899723140c7ab8fc482a26513e",
+      "bytes": 109
+    },
+    {
+      "origin": "celld@9c0fca5/examples/container/server.py",
+      "path": "tests/conformance/bindings/fixtures/container-binding/server.py",
+      "sha256": "665eab72d7f747cdde1ec481624c9321d192fabd248d782d2d5c44c87c692c65",
+      "bytes": 1044
+    },
+    {
+      "origin": "celld@9c0fca5/examples/container/Dockerfile",
+      "path": "tests/conformance/bindings/fixtures/container-binding/Dockerfile",
+      "sha256": "aba40f6b4304c94c658031a38e8c5166f0f5ed7238977734ad854e30ef7ee26e",
+      "bytes": 109
+    },
+    {
+      "origin": "celld@9c0fca5/examples/container/wrangler.jsonc",
+      "path": "tests/conformance/bindings/fixtures/container-binding/wrangler.jsonc",
+      "sha256": "dcf415464402467149fc16ef4614eff620db068fc6c9c1c4928b49d8e5188763",
+      "bytes": 438
+    },
+    {
+      "origin": "celld@9c0fca5/examples/container/index.js",
+      "path": "tests/conformance/bindings/fixtures/container-binding/index.js",
+      "sha256": "d66a299944dcf130a1d4360d5ecd03d0f311ae257adcbc583dbb480b8470fcb1",
+      "bytes": 1149
+    },
+    {
+      "origin": "celld@9c0fca5/examples/container/README.md",
+      "path": "tests/conformance/bindings/fixtures/container-binding/README.md",
+      "sha256": "ec26a08c4d6215a50fba2438ee9786152b3c5cc146e65d42dd0dff7645f72336",
+      "bytes": 1353
+    },
+    {
+      "origin": "celld@9c0fca5/examples/container/package.json",
+      "path": "tests/conformance/bindings/fixtures/container-binding/package.json",
+      "sha256": "4b7f6a8a48cf640a719032406310121977c08532084d9ca09dfcdc74c676f84e",
+      "bytes": 143
+    },
+    {
+      "origin": "celld@9c0fca5/examples/pi/wrangler.jsonc",
+      "path": "tests/conformance/bindings/fixtures/agent-model-client/wrangler.jsonc",
+      "sha256": "20e496a55f80b8688d832186d53af545cca32822b265fdc563daa3b094435837",
+      "bytes": 552
+    },
+    {
+      "origin": "celld@9c0fca5/examples/pi/index.js",
+      "path": "tests/conformance/bindings/fixtures/agent-model-client/index.js",
+      "sha256": "1a8bc92e6ba557c9ff27a350c578b25e4349883845e44622896690eb96dee7dd",
+      "bytes": 2603
+    },
+    {
+      "origin": "celld@9c0fca5/examples/pi/README.md",
+      "path": "tests/conformance/bindings/fixtures/agent-model-client/README.md",
+      "sha256": "2c4d0bb94bf217341710d56b392c8c4852dfec7031a4c7108ec21e39c2ba6032",
+      "bytes": 1741
+    },
+    {
+      "origin": "celld@9c0fca5/examples/pi/package.json",
+      "path": "tests/conformance/bindings/fixtures/agent-model-client/package.json",
+      "sha256": "59001e0b53ebb610ce7e89ba8b020e057070cfc75faa42e257ddacf6534e9ae9",
+      "bytes": 142
+    },
+    {
+      "origin": "celld@9c0fca5/examples/wsecho/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/echo-server/wrangler.jsonc",
+      "sha256": "90fb530a2d11a5caea0a473d14db0a8a80787ca91d379a32c758d38505835dad",
+      "bytes": 222
+    },
+    {
+      "origin": "celld@9c0fca5/examples/wsecho/index.js",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/echo-server/index.js",
+      "sha256": "57ab1339dba9971156f330f2db1862a68ba9d87f6a058450199860037651e585",
+      "bytes": 762
+    },
+    {
+      "origin": "celld@9c0fca5/examples/sandbox/Dockerfile",
+      "path": "tests/conformance/bindings/fixtures/container-sandbox/Dockerfile",
+      "sha256": "ff8bc84f02325719f791d95e912bb26316d4325d7875b13d9ab358836e6aaa5c",
+      "bytes": 233
+    },
+    {
+      "origin": "celld@9c0fca5/examples/sandbox/wrangler.jsonc",
+      "path": "tests/conformance/bindings/fixtures/container-sandbox/wrangler.jsonc",
+      "sha256": "8bbcda4b608cfc9b22be3a4420f329fc4ee614de1ae95bbc7ce9be39f080e700",
+      "bytes": 445
+    },
+    {
+      "origin": "celld@9c0fca5/examples/sandbox/index.js",
+      "path": "tests/conformance/bindings/fixtures/container-sandbox/index.js",
+      "sha256": "94c435bcfda181d2b6580f1dfe43d3628a6fb417a105f6354aa8aee3e3ed3585",
+      "bytes": 1851
+    },
+    {
+      "origin": "celld@9c0fca5/examples/sandbox/README.md",
+      "path": "tests/conformance/bindings/fixtures/container-sandbox/README.md",
+      "sha256": "a648e9fa826c11c35aaa01bc545d5080947f571f88009762498fd607d8104456",
+      "bytes": 1176
+    },
+    {
+      "origin": "celld@9c0fca5/examples/sandbox/package.json",
+      "path": "tests/conformance/bindings/fixtures/container-sandbox/package.json",
+      "sha256": "d0857756014102e0f6d03abd326e2a7a06e1f0c81c980086fd69695f28054635",
+      "bytes": 138
+    },
+    {
+      "origin": "celld@9c0fca5/examples/workflow/wrangler.jsonc",
+      "path": "tests/conformance/bindings/fixtures/workflow-execution/wrangler.jsonc",
+      "sha256": "dd09d547315cc9cd926e957c0db509bb9a6ce54ee32e424388910b7b6e0a7300",
+      "bytes": 215
+    },
+    {
+      "origin": "celld@9c0fca5/examples/workflow/index.js",
+      "path": "tests/conformance/bindings/fixtures/workflow-execution/index.js",
+      "sha256": "c4d6aaf7cd0bb63fceeb70a45cb338a65ea0ed3988f14b615d69de89581ade2a",
+      "bytes": 1151
+    },
+    {
+      "origin": "celld@9c0fca5/examples/queues/wrangler.jsonc",
+      "path": "tests/conformance/bindings/fixtures/queue-consumer/wrangler.jsonc",
+      "sha256": "b9f7db6822a23464534b888acd0d68cccf1e356b67cf74129371c6942afffa4a",
+      "bytes": 434
+    },
+    {
+      "origin": "celld@9c0fca5/examples/queues/index.js",
+      "path": "tests/conformance/bindings/fixtures/queue-consumer/index.js",
+      "sha256": "8adaef0528487822a1ae3a91b7aee47f22ca5a83a206d3d33c6a9450fdc27b11",
+      "bytes": 732
+    },
+    {
+      "origin": "celld@9c0fca5/examples/hello/wrangler.jsonc",
+      "path": "tests/conformance/fetch-and-http/fixtures/request-echo/wrangler.jsonc",
+      "sha256": "ad2814a5cc1ca44e2ead19cb0b85e5562fd309a4e48cadc9e45fe33778f3cc92",
+      "bytes": 76
+    },
+    {
+      "origin": "celld@9c0fca5/examples/hello/index.js",
+      "path": "tests/conformance/fetch-and-http/fixtures/request-echo/index.js",
+      "sha256": "bfc3d330c4f08097ebe6d34a59ce6c79647a2bf20af832182af4956835f6aece",
+      "bytes": 148
+    },
+    {
+      "origin": "celld@9c0fca5/examples/counter/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/fetch-counter/wrangler.jsonc",
+      "sha256": "6b431b363a84b9da425cb52fa70e5c78da99e91b5ad85d9e0314d4cee499966d",
+      "bytes": 247
+    },
+    {
+      "origin": "celld@9c0fca5/examples/counter/index.js",
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/fetch-counter/index.js",
+      "sha256": "173088ca56ed4328b887813a8accaa9900c8306c4ab999ea682e93501e83dfc8",
+      "bytes": 490
+    },
+    {
+      "origin": "celld@9c0fca5/examples/webapi/wrangler.jsonc",
+      "path": "tests/conformance/web-platform/fixtures/url-encoding-headers/wrangler.jsonc",
+      "sha256": "159507a997fd4fd6c4aa790ef2d24a8d3db4d569f356a7e5863936933ec88738",
+      "bytes": 77
+    },
+    {
+      "origin": "celld@9c0fca5/examples/webapi/index.js",
+      "path": "tests/conformance/web-platform/fixtures/url-encoding-headers/index.js",
+      "sha256": "4369c5727ff65da18b2fa8ee3dddc35e4a57757855a01301d64e8c44dfed5981",
+      "bytes": 523
+    },
+    {
+      "origin": "celld@9c0fca5/examples/alarm/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/alarms/fixtures/scheduled-counter/wrangler.jsonc",
+      "sha256": "548727633f8770fdbbb1b9c45e17c86ffc54efd1aa652395b6aa69f4b38a7cb2",
+      "bytes": 239
+    },
+    {
+      "origin": "celld@9c0fca5/examples/alarm/index.js",
+      "path": "tests/conformance/durable-objects/alarms/fixtures/scheduled-counter/index.js",
+      "sha256": "1d3abffedde17c9f75354290e303f7201a1044a4a7a9bebec4f37de78b8b90f4",
+      "bytes": 876
+    },
+    {
+      "origin": "celld@9c0fca5/examples/rpc/wrangler.jsonc",
+      "path": "tests/conformance/rpc/fixtures/method-counter/wrangler.jsonc",
+      "sha256": "3d5840e1768d991ab1f11503128f425a8f5eb34bb3b84491ea5069403c6e395a",
+      "bytes": 243
+    },
+    {
+      "origin": "celld@9c0fca5/examples/rpc/index.js",
+      "path": "tests/conformance/rpc/fixtures/method-counter/index.js",
+      "sha256": "120a6376877e4252d70bdee3a249aa3a833f49345b34bd95fc7bd4569be4abca",
+      "bytes": 634
+    },
+    {
+      "origin": "celld@9c0fca5/examples/opencode/wrangler.jsonc",
+      "path": "tests/conformance/bindings/fixtures/coding-model-client/wrangler.jsonc",
+      "sha256": "ead4c41c5d3f8393b0701b7773438c969babbeecbbc8eddf4592403a3cf96643",
+      "bytes": 313
+    },
+    {
+      "origin": "celld@9c0fca5/examples/opencode/index.js",
+      "path": "tests/conformance/bindings/fixtures/coding-model-client/index.js",
+      "sha256": "512e44baebe9039d03d8ffbb4f4edf9746d1c995e648e24c40ea4a84972059e7",
+      "bytes": 4120
+    },
+    {
+      "origin": "celld@9c0fca5/examples/opencode/README.md",
+      "path": "tests/conformance/bindings/fixtures/coding-model-client/README.md",
+      "sha256": "a082830dd61300bf2daea8b4691a6a08369e633db5917c515b19b5f3a1ecf36b",
+      "bytes": 1065
+    },
+    {
+      "origin": "celld@9c0fca5/examples/opencode/package.json",
+      "path": "tests/conformance/bindings/fixtures/coding-model-client/package.json",
+      "sha256": "57077181c782d3276a3d06606bfd92c18c7192549a64105dbded8b5664b14f26",
+      "bytes": 126
+    },
+    {
+      "origin": "celld@9c0fca5/examples/cron/wrangler.jsonc",
+      "path": "tests/conformance/bindings/fixtures/scheduled-events/wrangler.jsonc",
+      "sha256": "8f5eaa236ee7d38f52fc3f79e8ed714925f982426883a0d14e3875e3ccc9a197",
+      "bytes": 123
+    },
+    {
+      "origin": "celld@9c0fca5/examples/cron/index.js",
+      "path": "tests/conformance/bindings/fixtures/scheduled-events/index.js",
+      "sha256": "b5cd7a82b828ecd3bcec5d62f956f9e964b4ccb5afe31d2c0533a23a3fddfd47",
+      "bytes": 212
+    },
+    {
+      "origin": "celld@9c0fca5/examples/r2/wrangler.jsonc",
+      "path": "tests/conformance/bindings/fixtures/r2-bucket/wrangler.jsonc",
+      "sha256": "76e7d04bf606530e813d0b744b8afad9b5c3615178277819cceaf247902f812f",
+      "bytes": 161
+    },
+    {
+      "origin": "celld@9c0fca5/examples/r2/index.js",
+      "path": "tests/conformance/bindings/fixtures/r2-bucket/index.js",
+      "sha256": "7f1c8336e1fcd02024af7d158af2dd1806aa756cd6908a24cc7e0687d1603be2",
+      "bytes": 1005
+    },
+    {
+      "origin": "celld@9c0fca5/examples/router/wrangler.jsonc",
+      "path": "tests/conformance/rpc/fixtures/service-router/wrangler.jsonc",
+      "sha256": "3df69133e79a3cb71d97e18f26bdf59a07ea51b6ea58fcf4cea959daeae5da9f",
+      "bytes": 246
+    },
+    {
+      "origin": "celld@9c0fca5/examples/router/index.js",
+      "path": "tests/conformance/rpc/fixtures/service-router/index.js",
+      "sha256": "d6319a67b9c306af16d4667ee5477d2ffd69d1f48f2fda51e7652f3afcbf67ee",
+      "bytes": 541
+    },
+    {
+      "origin": "celld@9c0fca5/examples/static-assets/public/index.html",
+      "path": "tests/conformance/bindings/fixtures/static-assets/public/index.html",
+      "sha256": "d9d021af17974c4a0c770289e94661f869d336c3917d64fff1843c318d9460cb",
+      "bytes": 261
+    },
+    {
+      "origin": "celld@9c0fca5/examples/static-assets/public/_redirects",
+      "path": "tests/conformance/bindings/fixtures/static-assets/public/_redirects",
+      "sha256": "1313a6e1b24abd1e05c7a5e4f09c42e4777c324849c017962313147050802ea4",
+      "bytes": 12
+    },
+    {
+      "origin": "celld@9c0fca5/examples/static-assets/public/_headers",
+      "path": "tests/conformance/bindings/fixtures/static-assets/public/_headers",
+      "sha256": "c583c4807929e5d700c388b715b49c52d04d4f83b8edd171ecc1e344257ff7d6",
+      "bytes": 24
+    },
+    {
+      "origin": "celld@9c0fca5/examples/wasm/src/lib.rs",
+      "path": "tests/conformance/languages/fixtures/wasm-worker/src/lib.rs",
+      "sha256": "c16bbb3d5fbd5c7f1ac442446f034de20cee27efa9eeadfaaca6e7fd4c047673",
+      "bytes": 1167
+    },
+    {
+      "origin": "celld@9c0fca5/examples/python/src/entry.py",
+      "path": "tests/conformance/languages/fixtures/python-worker/src/entry.py",
+      "sha256": "6621655db8f295fe8d6133a675350e3fd190af90203b15a8a2da715386b57937",
+      "bytes": 1425
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/README.md",
+      "path": "tests/lib/provenance/hyperbob-overview.source.md",
+      "sha256": "b4dd0201de52fd8f4c26d789fcd080a4d35c11434d5504695f4a598bf03af9f2",
+      "bytes": 77
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/rpc-dispose/wrangler.json",
+      "path": "tests/conformance/rpc/fixtures/handle-disposal/wrangler.json",
+      "sha256": "97bdd07bf025193e78feff9327eca776a0b15e61df5c3b618967a0cbcb643852",
+      "bytes": 225
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/rpc-dispose/index.js",
+      "path": "tests/conformance/rpc/fixtures/handle-disposal/index.js",
+      "sha256": "88e3e0bc288330532dd367c1cb265f3e58aeb6c0a6fd77365a8fc20ee5e27817",
+      "bytes": 1492
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/rpc-dispose/run.sh",
+      "path": "tests/conformance/rpc/fixtures/handle-disposal/run.sh",
+      "sha256": "e7d525c86af2a4c6d2b0509dd2cd30c2c56301a8f4cf80908d2b1a5ab3d60db1",
+      "bytes": 616
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/ws-session-loop/wrangler.json",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/session-loop/wrangler.json",
+      "sha256": "f5c3eca99aa3050adaa459778f535e9a8f23838f93cecc2e77b9ca85a9d4cb3b",
+      "bytes": 304
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/ws-session-loop/client.mjs",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/session-loop/client.mjs",
+      "sha256": "dec0d4014e677149a5071aba16e7283b3619a5bd031bd74fce63a7f161b9bb08",
+      "bytes": 559
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/ws-session-loop/index.js",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/session-loop/index.js",
+      "sha256": "9887e51851a4e5a9eca6f23450db88d7fd8c4639ca227f1c4ce3a4662e0cdaab",
+      "bytes": 1748
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/ws-session-loop/run.sh",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/session-loop/run.sh",
+      "sha256": "229985225b9cdd82fef2c2b4418971ff820e9553897b6afbdcf274e2380f4d18",
+      "bytes": 674
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/ws-relay/run.py",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/frame-relay/run.py",
+      "sha256": "d9c80c3d0933b62b3bbc6bfbef7ae79a4fc4f9a5c633a9c52522c51cc46c8ec9",
+      "bytes": 2859
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/ws-relay/wrangler.json",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/frame-relay/wrangler.json",
+      "sha256": "ea5a74c6ab77d744b2556898131bc6bf39977889c55af13836f53e13f1671149",
+      "bytes": 370
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/ws-relay/client.mjs",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/frame-relay/client.mjs",
+      "sha256": "4522c904ab401a2da18b8683a11b25f087e10374ad1e4f9ccbc5954191c618d0",
+      "bytes": 373
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/ws-relay/index.js",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/frame-relay/index.js",
+      "sha256": "e85569c14bac2696f73dd8adfca6f79ba1e1131d3b7bbdf8ba869f5fba39fba9",
+      "bytes": 1803
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/cross-cell-continuation/wrangler.json",
+      "path": "tests/conformance/rpc/fixtures/cross-cell-continuation/wrangler.json",
+      "sha256": "98338942e16c103384f9cde87aa39a6740423fd37fd7e5958645d68fb4dccee9",
+      "bytes": 280
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/cross-cell-continuation/index.js",
+      "path": "tests/conformance/rpc/fixtures/cross-cell-continuation/index.js",
+      "sha256": "66c620b3b27a3d5088eff2531b01da3555d6c07ef2d112144a2e3da93a09b140",
+      "bytes": 1691
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/cross-cell-continuation/run.sh",
+      "path": "tests/conformance/rpc/fixtures/cross-cell-continuation/run.sh",
+      "sha256": "e7d525c86af2a4c6d2b0509dd2cd30c2c56301a8f4cf80908d2b1a5ab3d60db1",
+      "bytes": 616
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/turn-queue-facet/wrangler.json",
+      "path": "tests/conformance/durable-objects/facets/fixtures/turn-queue/wrangler.json",
+      "sha256": "7ebbcfcdcce5452d46498ff21bbf0f53522318335086e8b4fb33315b8fe77024",
+      "bytes": 225
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/turn-queue-facet/index.js",
+      "path": "tests/conformance/durable-objects/facets/fixtures/turn-queue/index.js",
+      "sha256": "f07446f6783d670d608211d79c9de25305f8c033741f9425622590e1c1eb8006",
+      "bytes": 2211
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/turn-queue-facet/run.sh",
+      "path": "tests/conformance/durable-objects/facets/fixtures/turn-queue/run.sh",
+      "sha256": "68a0dd350d13dd0a70924c2a1eeca7e9ccd0d0a11cc3f2db7e74da10f1074f42",
+      "bytes": 1270
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/callback-continuation/run.py",
+      "path": "tests/conformance/rpc/fixtures/callback-continuation/run.py",
+      "sha256": "14aadc6ba696e526ca3f3bf4e4bc1990af0d741a0e3a225ec5772c0ea8eaeb6a",
+      "bytes": 2765
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/callback-continuation/wrangler.json",
+      "path": "tests/conformance/rpc/fixtures/callback-continuation/wrangler.json",
+      "sha256": "164ec34bf23fbbd0e384a39770a12c112793d1769f894f0ff4a589d0be243433",
+      "bytes": 299
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/callback-continuation/index.js",
+      "path": "tests/conformance/rpc/fixtures/callback-continuation/index.js",
+      "sha256": "9ec0cd58a9533abcbe02ba83c6fa2583045f2a175cb0d768ee468a1cf6ea0abd",
+      "bytes": 1733
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/webidl-accessors/wrangler.json",
+      "path": "tests/conformance/web-platform/fixtures/abort-accessors/wrangler.json",
+      "sha256": "3d1ba59d8ab12ace383f45cda9eab0962550916c6ee622dad370c01df9d24a43",
+      "bytes": 85
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/webidl-accessors/index.js",
+      "path": "tests/conformance/web-platform/fixtures/abort-accessors/index.js",
+      "sha256": "9449a748495652d85415ed4ef35bd7b4764ae3cdb4d759abe8c28ee1a818e72a",
+      "bytes": 843
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/webidl-accessors/run.sh",
+      "path": "tests/conformance/web-platform/fixtures/abort-accessors/run.sh",
+      "sha256": "e7d525c86af2a4c6d2b0509dd2cd30c2c56301a8f4cf80908d2b1a5ab3d60db1",
+      "bytes": 616
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/restore-disposer/wrangler.json",
+      "path": "tests/conformance/durable-objects/persistent-stubs/fixtures/restore-disposal/wrangler.json",
+      "sha256": "ebf295d69e7b68371a22ff12ff7ef98295c498cd714fc78fd7cba422bc81c5a0",
+      "bytes": 288
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/restore-disposer/index.js",
+      "path": "tests/conformance/durable-objects/persistent-stubs/fixtures/restore-disposal/index.js",
+      "sha256": "fb97f410bfd7c4923ea8aaed657d94d4bc58e35764c0652c9913d972d56b97d6",
+      "bytes": 2297
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/restore-disposer/run.sh",
+      "path": "tests/conformance/durable-objects/persistent-stubs/fixtures/restore-disposal/run.sh",
+      "sha256": "e7d525c86af2a4c6d2b0509dd2cd30c2c56301a8f4cf80908d2b1a5ab3d60db1",
+      "bytes": 616
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/self-forward/wrangler.json",
+      "path": "tests/conformance/rpc/fixtures/self-forwarding/wrangler.json",
+      "sha256": "2ee82c7a7298c1bc76860fc63f4016c11d9f173a59dc517a010d7d2d5576239b",
+      "bytes": 444
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/self-forward/index.js",
+      "path": "tests/conformance/rpc/fixtures/self-forwarding/index.js",
+      "sha256": "f0da1ae173a9c502085c303c20b8d184cbc798e0c57e3ba285c014ec6145b552",
+      "bytes": 3199
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/island-lockdown/wrangler.json",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/module-lockdown/wrangler.json",
+      "sha256": "33e118702f95380b82838a79101f54af8410dfd4a013455bc6c605b20df6da60",
+      "bytes": 160
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/island-lockdown/index.js",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/module-lockdown/index.js",
+      "sha256": "e64775748968970290b2e713eba30174706349335c143bf6da70636d1ce81e23",
+      "bytes": 1172
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/island-lockdown/run.sh",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/module-lockdown/run.sh",
+      "sha256": "b868bc6d5c58b941e1b49ca3d0caaebc0fb22d594fe75ce5d64da9bddd0d671d",
+      "bytes": 669
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/island-lockdown/lockdown.js",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/module-lockdown/lockdown.js",
+      "sha256": "c6e4643605a5fbdfb2e9dd5bfc9aad8384db93437ed7afc1cb4db4f6346e2a59",
+      "bytes": 10373
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/stateless-continuation/wrangler.json",
+      "path": "tests/conformance/rpc/fixtures/stateless-continuation/wrangler.json",
+      "sha256": "ea337366f5f3d3217a4d68876d1f05aea0b6ae9bef44567e00ef772ae227984d",
+      "bytes": 234
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/stateless-continuation/index.js",
+      "path": "tests/conformance/rpc/fixtures/stateless-continuation/index.js",
+      "sha256": "d886bf43fdb571112c53de7402f4f3e4d128a74df38001dbeb2377a0b4ed1524",
+      "bytes": 1143
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/stateless-continuation/run.sh",
+      "path": "tests/conformance/rpc/fixtures/stateless-continuation/run.sh",
+      "sha256": "4e9499b7f14ce7f18efcdaf096b3636f0f92c08559572c9ffa52f9442aa37c68",
+      "bytes": 655
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/context-ownership/wrangler.json",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/context-ownership/wrangler.json",
+      "sha256": "b632e742830eee7932f563ed2011e891509af8329a6354ca0de929e2ccdbb420",
+      "bytes": 287
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/context-ownership/index.js",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/context-ownership/index.js",
+      "sha256": "9cc1b848cdaae25581f82d2f04067326ef5c1c6ec0c1cb43b61b7f274ba704a8",
+      "bytes": 2073
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/context-ownership/run.sh",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/context-ownership/run.sh",
+      "sha256": "083588bb342e8caf86cd6aa7c7d67ca14fe6d5b640f0b9c7b6ec40f1596565ed",
+      "bytes": 1030
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/core-fidelity/with-store.py",
+      "path": "tests/conformance/durable-objects/facets/fixtures/binding-fidelity/with-store.py",
+      "sha256": "a2a5d1e721a664e195168c8b56eef0ea944cf9c9bd4b64712d06ce5b55bf6947",
+      "bytes": 981
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/core-fidelity/wrangler.json",
+      "path": "tests/conformance/durable-objects/facets/fixtures/binding-fidelity/wrangler.json",
+      "sha256": "fb181ef54edb5a9e3e92eabc2ee27720fc93066801aff6b11b72f5837c77a20d",
+      "bytes": 341
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/core-fidelity/index.js",
+      "path": "tests/conformance/durable-objects/facets/fixtures/binding-fidelity/index.js",
+      "sha256": "120443c3e5f99c04b5a82ba0bf4c581b65631a98156cc9af15900e7d8ee2df22",
+      "bytes": 5556
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/core-fidelity/run-node.py",
+      "path": "tests/conformance/durable-objects/facets/fixtures/binding-fidelity/run-node.py",
+      "sha256": "2c90a2a349f346ec1eef229706cd5fd196810cf5b01cfebbf1adf42cd9294af4",
+      "bytes": 3092
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/core-fidelity/run.sh",
+      "path": "tests/conformance/durable-objects/facets/fixtures/binding-fidelity/run.sh",
+      "sha256": "558b7c390d1e71efa1ae1011f2216f9c0027ef9a364ec285a001766f2b570836",
+      "bytes": 897
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/rpc-errors/wrangler.json",
+      "path": "tests/conformance/rpc/fixtures/error-propagation/wrangler.json",
+      "sha256": "0080f335a84eb3c54117554a1ccb25816f00f112983870f3c436ebf927906155",
+      "bytes": 168
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/rpc-errors/index.js",
+      "path": "tests/conformance/rpc/fixtures/error-propagation/index.js",
+      "sha256": "1145e902b9ab654da3c3a7f0f90ed077b5b2cc627afe7f2c74336bd3e425a311",
+      "bytes": 1577
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/rpc-errors/run.sh",
+      "path": "tests/conformance/rpc/fixtures/error-propagation/run.sh",
+      "sha256": "e7d525c86af2a4c6d2b0509dd2cd30c2c56301a8f4cf80908d2b1a5ab3d60db1",
+      "bytes": 616
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/actor-io/wrangler.json",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/actor-io/wrangler.json",
+      "sha256": "944b394b614ba3d690b1990ec56dfb2f7bb623b6b312d37279752cf3baf822e8",
+      "bytes": 274
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/actor-io/client.mjs",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/actor-io/client.mjs",
+      "sha256": "1de307f93546a9591edbf72ad95a50964c21cb5322bcc67e5ca89dbe46b29cd6",
+      "bytes": 738
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/actor-io/index.js",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/actor-io/index.js",
+      "sha256": "f1cca6b25e4f34738df7324f2796238b123d7a6ab5eb63eeb5104498f0a24551",
+      "bytes": 1531
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/actor-io/run.sh",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/actor-io/run.sh",
+      "sha256": "a142367ec12c241e9b28b5ec1fb6880bbcaa7a031c854e01852d9ded9431400f",
+      "bytes": 519
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/rpc-surface/wrangler.json",
+      "path": "tests/conformance/rpc/fixtures/receiver-visibility/wrangler.json",
+      "sha256": "9207f136b1544a9dadffc5afe0f68c10374c5bb1af26c69e1b3174c98104c855",
+      "bytes": 223
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/rpc-surface/index.js",
+      "path": "tests/conformance/rpc/fixtures/receiver-visibility/index.js",
+      "sha256": "f81e71ae5f73e32ed5be260cae20880c618d60672289193d21d130b49e5f0ca7",
+      "bytes": 2305
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/rpc-surface/run.sh",
+      "path": "tests/conformance/rpc/fixtures/receiver-visibility/run.sh",
+      "sha256": "9f234153f1d08ebcb16f593676c5a26e4f7eacb33cb66498e91c72a9d63f898e",
+      "bytes": 684
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/facet-clone/wrangler.json",
+      "path": "tests/conformance/durable-objects/facets/fixtures/clone-barrier/wrangler.json",
+      "sha256": "2de4c2af7b0727156fa70aede0c6bfc2831bccbb279b5137533cec86f6c5a0c8",
+      "bytes": 144
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/facet-clone/index.js",
+      "path": "tests/conformance/durable-objects/facets/fixtures/clone-barrier/index.js",
+      "sha256": "5e55ea944d0cd67e0c3acbede7707d3464b4b29be710ed005cfd6d90dcbf278a",
+      "bytes": 3426
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/facet-clone/run.sh",
+      "path": "tests/conformance/durable-objects/facets/fixtures/clone-barrier/run.sh",
+      "sha256": "0ee7cd3c971d7ff597a37fbda4fd210aec502830edf57778ed342e57016bc2f4",
+      "bytes": 688
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/facet-clone/run-bucket.py",
+      "path": "tests/conformance/durable-objects/facets/fixtures/clone-barrier/run-bucket.py",
+      "sha256": "048fc37ded7acd6857aef3c69d8370835a1b84b5a14b0d1a82369b25acff9b92",
+      "bytes": 2759
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/event-limits/wrangler.json",
+      "path": "tests/conformance/limits-and-errors/fixtures/event-limits/wrangler.json",
+      "sha256": "bf5a6d7a9abd84feceb2c0cfe7ee50d98de592eb39c22ef63c526da655a823dc",
+      "bytes": 218
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/event-limits/index.js",
+      "path": "tests/conformance/limits-and-errors/fixtures/event-limits/index.js",
+      "sha256": "9db0f96912f5ec12766405aa348444b5c861ccbcaec7117d4e3cc19c01a97d03",
+      "bytes": 3663
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/event-limits/run.sh",
+      "path": "tests/conformance/limits-and-errors/fixtures/event-limits/run.sh",
+      "sha256": "fdd85e6dd871262b68df596ab0304148b398857bb3387bf427eb0570e4aebafd",
+      "bytes": 2057
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/mailbox-ownership/wrangler.json",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/mailbox-ownership/wrangler.json",
+      "sha256": "933873e412f30dddb3a138d9780bc65fdb59b53ed650b9a1268d785abc6a4bb8",
+      "bytes": 274
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/mailbox-ownership/index.js",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/mailbox-ownership/index.js",
+      "sha256": "fe5291f5a8082bbdff61c0030cd77645294dddf466a65440093ceb4e82905e47",
+      "bytes": 2045
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/mailbox-ownership/run.sh",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/mailbox-ownership/run.sh",
+      "sha256": "0a9512855338720badc657c87350e53ac6d323f01422612d02adc537924b7ce9",
+      "bytes": 889
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/persistent-dup/wrangler.json",
+      "path": "tests/conformance/durable-objects/persistent-stubs/fixtures/duplicate-restore/wrangler.json",
+      "sha256": "0431dec6904649b53bbf9b99f8ea9d8bfbf9ed840e04aa1cc440fe31ea09dd05",
+      "bytes": 143
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/persistent-dup/index.js",
+      "path": "tests/conformance/durable-objects/persistent-stubs/fixtures/duplicate-restore/index.js",
+      "sha256": "8296c54cc754a096d15a5c53a9622711a9d1a0cf3be16138d638f2547150293e",
+      "bytes": 960
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/persistent-dup/run.sh",
+      "path": "tests/conformance/durable-objects/persistent-stubs/fixtures/duplicate-restore/run.sh",
+      "sha256": "e7d525c86af2a4c6d2b0509dd2cd30c2c56301a8f4cf80908d2b1a5ab3d60db1",
+      "bytes": 616
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/bindings/owner.js",
+      "path": "tests/conformance/rpc/fixtures/bound-context/owner.js",
+      "sha256": "8c7d82609af18274877774c5469abf425a0462e13d5aafbea750cbf7ab17e65d",
+      "bytes": 621
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/bindings/owner.json",
+      "path": "tests/conformance/rpc/fixtures/bound-context/owner.json",
+      "sha256": "eb12a069053e446b66d87922445cb24b5e2504bbc2c06dd6d821f1e288662407",
+      "bytes": 146
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/bindings/caller.js",
+      "path": "tests/conformance/rpc/fixtures/bound-context/caller.js",
+      "sha256": "f8527ebd1bbfac553ab686ffd4b2515298edbba4b889a2f514398ad5e037e69d",
+      "bytes": 643
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/bindings/wrangler.json",
+      "path": "tests/conformance/rpc/fixtures/bound-context/wrangler.json",
+      "sha256": "844504604a865619eba7bd07abbff739d8cb900384cc1cb313f3c0cf00af93cf",
+      "bytes": 461
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/bindings/run.sh",
+      "path": "tests/conformance/rpc/fixtures/bound-context/run.sh",
+      "sha256": "2ea7de8d71b3861c3a63696a69d9fddc6f6b6273cd231e8dce06ce33b4509b98",
+      "bytes": 788
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/do-environment/wrangler.json",
+      "path": "tests/conformance/durable-objects/placement-and-routing/fixtures/environment-selection/wrangler.json",
+      "sha256": "08c58760711d104e908e087cf83396ce8ee62267ef69da63a798a4230f00c9a2",
+      "bytes": 211
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/do-environment/index.js",
+      "path": "tests/conformance/durable-objects/placement-and-routing/fixtures/environment-selection/index.js",
+      "sha256": "47decdf46cb0a817d0d77368328d27d33683e7f7af9c1c58a3b56426771b4f0e",
+      "bytes": 163
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/do-environment/run.sh",
+      "path": "tests/conformance/durable-objects/placement-and-routing/fixtures/environment-selection/run.sh",
+      "sha256": "eccdeb3897151b29b72d534f081f9fddf49d0ae1300bcdb9d902dd64b20c9538",
+      "bytes": 517
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/do-property/wrangler.json",
+      "path": "tests/conformance/rpc/fixtures/object-properties/wrangler.json",
+      "sha256": "7e44763149f64f63759b603227b668fc78bd553c84906463e53291adbff081e3",
+      "bytes": 217
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/do-property/index.js",
+      "path": "tests/conformance/rpc/fixtures/object-properties/index.js",
+      "sha256": "63e3d120e646a68d94ced938b8d31c7ac7a386ce8396aa02af9e8e3e1030a507",
+      "bytes": 1166
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/do-property/run.sh",
+      "path": "tests/conformance/rpc/fixtures/object-properties/run.sh",
+      "sha256": "e7d525c86af2a4c6d2b0509dd2cd30c2c56301a8f4cf80908d2b1a5ab3d60db1",
+      "bytes": 616
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/dup-lifetime/run.py",
+      "path": "tests/conformance/rpc/fixtures/duplicate-lifetime/run.py",
+      "sha256": "d3d7fc25ebb3e8d81e706f65d4ac3fb81523bab834d97a2518fedb9cf9dfed38",
+      "bytes": 3086
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/dup-lifetime/wrangler.json",
+      "path": "tests/conformance/rpc/fixtures/duplicate-lifetime/wrangler.json",
+      "sha256": "3ad76e491d2f377548fb5228a386bff1e5bfeb5ca4fbf75f4dd3894466816db9",
+      "bytes": 366
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/dup-lifetime/client.mjs",
+      "path": "tests/conformance/rpc/fixtures/duplicate-lifetime/client.mjs",
+      "sha256": "e24756fbee398fef3ae06a3e2a1535095218e89a9876f27a3f412173f71c4702",
+      "bytes": 373
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/dup-lifetime/index.js",
+      "path": "tests/conformance/rpc/fixtures/duplicate-lifetime/index.js",
+      "sha256": "df3c92ad5d5596128123ceb1f82a8cc9eb52153c03fc7e8b4b912f71890a449a",
+      "bytes": 4110
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/placement/run.py",
+      "path": "tests/conformance/durable-objects/placement-and-routing/fixtures/process-placement/run.py",
+      "sha256": "2e233fd4d9abc6fd99628b5c9b729dad290c11d66da91919a86c0cae285a3c1a",
+      "bytes": 3750
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/placement/wrangler.json",
+      "path": "tests/conformance/durable-objects/placement-and-routing/fixtures/process-placement/wrangler.json",
+      "sha256": "a13e362e5f59608b42b9806eb117b62f04e32cadbaad2f34f933a811e88905d4",
+      "bytes": 152
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/placement/index.js",
+      "path": "tests/conformance/durable-objects/placement-and-routing/fixtures/process-placement/index.js",
+      "sha256": "63ba4865272af1788d7009c39dd7c9f5f70cae8c9964c80cbd4201e8aa69692e",
+      "bytes": 550
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/core-fidelity/vendor/wrangler.json",
+      "path": "tests/conformance/durable-objects/facets/fixtures/binding-fidelity/vendor/wrangler.json",
+      "sha256": "84f384fcd7cc8e0019c9f6ddfb3714f4016f15cebcf52a9da676502ca5aba334",
+      "bytes": 201
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/core-fidelity/vendor/index.js",
+      "path": "tests/conformance/durable-objects/facets/fixtures/binding-fidelity/vendor/index.js",
+      "sha256": "7efad1c2ac7fc8aef38b23ac0869f190f2d32e06d60b7470a885fbc7a7054a06",
+      "bytes": 785
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/self-forward/portal/wrangler.json",
+      "path": "tests/conformance/rpc/fixtures/self-forwarding/portal/wrangler.json",
+      "sha256": "86b7e38a2cddcf76e0e3a79b9ffd6456fc784865ceb7b32abe7f695d25143469",
+      "bytes": 203
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/self-forward/portal/index.js",
+      "path": "tests/conformance/rpc/fixtures/self-forwarding/portal/index.js",
+      "sha256": "2b263accb2592c1158f60cd1c1f840b211d35ab3ac0514ae178af281543ff63d",
+      "bytes": 391
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/self-forward/runner/wrangler.json",
+      "path": "tests/conformance/rpc/fixtures/self-forwarding/runner/wrangler.json",
+      "sha256": "0a1f4618826fa2e381f6229350da383d7e5cf2f3dbd5c269e938d16f9d85c5a0",
+      "bytes": 184
+    },
+    {
+      "origin": "celld@9c0fca5/tests-hyperbob/self-forward/runner/index.js",
+      "path": "tests/conformance/rpc/fixtures/self-forwarding/runner/index.js",
+      "sha256": "1b5b415c92b1b2d792ae8cb7f03bb44cc7073116109670fb0c00ab74f8f9d633",
+      "bytes": 428
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/COUNTS.json",
+      "path": "tests/lib/provenance/COUNTS.json",
+      "sha256": "8221870307e3a6aa652f68df167a636d1235b2babd0573753809c94adde72be2",
+      "bytes": 20716
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/EXPORT-SHA256.json",
+      "path": "tests/lib/provenance/EXPORT-SHA256.json",
+      "sha256": "65e24c448ae9ff53992adf81d0a19b9858314bec2d9e6e4bcd0a122f571cc0ac",
+      "bytes": 20139
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/README.md",
+      "path": "tests/lib/provenance/README.md",
+      "sha256": "478ba102b90eb4a9021a1b2fa60095da1f2c1b2d7a82af5266ca5d8ac651c387",
+      "bytes": 2968
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/RUNNER-EXPORT-SHA256.json",
+      "path": "tests/lib/provenance/RUNNER-EXPORT-SHA256.json",
+      "sha256": "e3bb2afa97a484bf01e77f47a987ae324daf57171c3953e238c81bab1e194b6b",
+      "bytes": 9080
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/RUNNER-SOURCES.json",
+      "path": "tests/lib/provenance/RUNNER-SOURCES.json",
+      "sha256": "bc3fd2d8d1aaf146732435cc434fd2aaf9e4550d012d295173a1b189e089e069",
+      "bytes": 21766
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/RUNNERS.md",
+      "path": "tests/lib/provenance/RUNNERS.md",
+      "sha256": "9d83be79fec067a64c2f2448c9a7353775b1ce26b7de093ddabcee73405391f1",
+      "bytes": 2031
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/SOURCE-FILES.json",
+      "path": "tests/lib/provenance/SOURCE-FILES.json",
+      "sha256": "eeab75b82b6ef052c9728b1b36cbd343ba656f655f4692ae693aff82e5d586bc",
+      "bytes": 37087
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/cases/rpc.json",
+      "path": "tests/conformance/rpc/fixtures/object-capabilities/cases/rpc.json",
+      "sha256": "341c423b306548b1d8b92a828f037c16332d00d612c8e42e639817844e3002c2",
+      "bytes": 15053
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/cases/streams.json",
+      "path": "tests/conformance/rpc/fixtures/object-capabilities/cases/streams.json",
+      "sha256": "5229ce8e44ad3e541e7f96dc788ad946e7d2beade8f7c63aee02aed70b1a1684",
+      "bytes": 15183
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/fixture/index.js",
+      "path": "tests/conformance/rpc/fixtures/object-capabilities/fixture/index.js",
+      "sha256": "3e137fc03ca2b2e6ca40d538291aaf0e022bdfe491d3ddcdf4f8f9c4eb4c6b72",
+      "bytes": 14347
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/fixture/rpc.js",
+      "path": "tests/conformance/rpc/fixtures/object-capabilities/fixture/rpc.js",
+      "sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+      "bytes": 14684
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/fixture/wrangler.jsonc",
+      "path": "tests/conformance/rpc/fixtures/object-capabilities/fixture/wrangler.jsonc",
+      "sha256": "8b7b1e0c54afd4c2d6be00be6b6f7ff04e19ac80e1a92c3a6eef709862b3dac2",
+      "bytes": 403
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/revisions/r027-v2/rpc.js",
+      "path": "tests/conformance/durable-objects/persistent-stubs/fixtures/transient-storage-rejection/rpc.js",
+      "sha256": "9072e9b02913a4e0b73721eaecc7f4fa62529638e358d186c0c38c6c9674e425",
+      "bytes": 14989
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/runners/run.py",
+      "path": "tests/lib/qualification/run.py",
+      "sha256": "e63168e2456811faccaec0b86073d8579bf043c8c72c7862e732505a75692a58",
+      "bytes": 3215
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/runners/test_guest_command.py",
+      "path": "tests/lib/qualification/test_guest_command.py",
+      "sha256": "66c367371c5c89bd6a20c294354494a267f0e64fb62ead773bd6a0c61c03f9eb",
+      "bytes": 2623
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/active-websocket-stress/author_manifest.py",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/event-traces/author_manifest.py",
+      "sha256": "e3b4a53e861bdfc9e7aee049a87edf3b196126c7e5ce041335dfadd59cc5935c",
+      "bytes": 17478
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/active-websocket-stress/cases.js",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/event-traces/cases.js",
+      "sha256": "1fb7fc64b31809ddee2f9e874026813f0fe38fc28df520047a3cd1c58dd03eab",
+      "bytes": 14393
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/active-websocket-stress/common.js",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/event-traces/common.js",
+      "sha256": "765fe3f7bf95c743888a6272bba70ca8783e740c21b98f49fd062ffc03dd65d7",
+      "bytes": 2310
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/active-websocket-stress/fixture.js",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/event-traces/fixture.js",
+      "sha256": "2ea74d4323d34e1121e93c9637f19d6f46349f17a06516a6e2d13d4a86187317",
+      "bytes": 8287
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/active-websocket-stress/lab.js",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/event-traces/lab.js",
+      "sha256": "c06945df9ce35fae1b1af7051fd53b3def3d9c8e83765d5ec390ab348eb7c6fa",
+      "bytes": 10933
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/active-websocket-stress/manifest.json",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/event-traces/manifest.json",
+      "sha256": "b48994aa5d1dbdb02bb5fb7472d3ae0caa9f9710e246413bc6a413b78ea9e5e9",
+      "bytes": 63813
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/active-websocket-stress/private_driver.py",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/event-traces/private_driver.py",
+      "sha256": "8ea718d17545775b2e0ef05b9f5181c1e7a6745c04725c0094c32d1e873d64fd",
+      "bytes": 14915
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/active-websocket-stress/profile.json",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/event-traces/profile.json",
+      "sha256": "17dfc8a88d254f4ed463a139f8333f092e6946e16ba65c84582fe83b72fde774",
+      "bytes": 2075
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/active-websocket-stress/source-pins.json",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/event-traces/source-pins.json",
+      "sha256": "db3ed9dc6c302391d802d3e2809763116987680753509a58964ef9d2011933b3",
+      "bytes": 3415
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/active-websocket-stress/test_preflight.py",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/event-traces/test_preflight.py",
+      "sha256": "05e489a9c7421cf23701c62319bcb3efee40cf14778ebdb305a45b9863bce72b",
+      "bytes": 1482
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/active-websocket-stress/validate.py",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/event-traces/validate.py",
+      "sha256": "c88ddb753799d7a1c90ae07279fa38b2a63b2eaa92a59a8a676e82c36f01a2da",
+      "bytes": 3186
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/active-websocket-stress/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/websockets/fixtures/event-traces/wrangler.jsonc",
+      "sha256": "4b10331248a0709d82f9772e5306253cea57bec087ba86145f671c3f16f89fac",
+      "bytes": 262
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress/author_manifest.py",
+      "path": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces/author_manifest.py",
+      "sha256": "55093f766e3d800740a3913a412c0336bbdba70ba6ac3fa6750da8e43f1bf245",
+      "bytes": 26137
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress/bucket-profile.json",
+      "path": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces/bucket-profile.json",
+      "sha256": "ca302dc1fec9518e2df322499dcae4c65dd567a1a549aaf185cbb8cd0cd33845",
+      "bytes": 1773
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress/cases.py",
+      "path": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces/cases.py",
+      "sha256": "3e22482c38c850a8103b374eb5ad7baa3df6364fe9a664e8944b6144ec70ecaa",
+      "bytes": 21613
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress/driver.py",
+      "path": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces/driver.py",
+      "sha256": "eaeccfba059ca4785dd41533fe5f744842ad30107bd83837ab60a4f49593d828",
+      "bytes": 34099
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress/fixture.js",
+      "path": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces/fixture.js",
+      "sha256": "ccde8a8c9c8c7a4cfe02567f656fc149da1ee24fd78973455e64a8fe1c6ea3f3",
+      "bytes": 12448
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress/http_jobs.py",
+      "path": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces/http_jobs.py",
+      "sha256": "42da2dfd881bf1ceeffb4ac84689e939ece424909e91d43c237a9ee8eb99e7c6",
+      "bytes": 2147
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress/manifest.json",
+      "path": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces/manifest.json",
+      "sha256": "865ae3a9e5f61df64bded511650269e53e34a4d680a024d6dfcb57917c0548b8",
+      "bytes": 80418
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress/source-pins.json",
+      "path": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces/source-pins.json",
+      "sha256": "45f2572751922c33ee9175d2577dea063f7ee260efbf75898e3b7738a091b5fe",
+      "bytes": 4604
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress/test_preflight.py",
+      "path": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces/test_preflight.py",
+      "sha256": "c9d7a53981e35f5115bb0d1563b7823c0a8e64e96de1ba993aefeb0b640a458f",
+      "bytes": 11120
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress/validate.py",
+      "path": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces/validate.py",
+      "sha256": "6d24f835fc2376ee8984717e42770cfd9573c80099af52ccc32896906545ff23",
+      "bytes": 3218
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces/wrangler.jsonc",
+      "sha256": "b9a8d5eadb8c20b6841b4df8780492d488376b311bd31ea9fb90448c977e6ab3",
+      "bytes": 356
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/bounded-load/author_manifest.py",
+      "path": "tests/conformance/limits-and-errors/fixtures/admission-and-progress/author_manifest.py",
+      "sha256": "dd94f20b7bffa492bdf9e99af5a55eb66b855e7880f436e75f6ddcde444c283c",
+      "bytes": 27432
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/bounded-load/cases.js",
+      "path": "tests/conformance/limits-and-errors/fixtures/admission-and-progress/cases.js",
+      "sha256": "60c6f9a8ae72180a8f549405076efc48a14612d5686d7a38548db329db4a06cf",
+      "bytes": 28395
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/bounded-load/entry.js",
+      "path": "tests/conformance/limits-and-errors/fixtures/admission-and-progress/entry.js",
+      "sha256": "d45e8d319cc476a70976563100261ffd65f5e3b94245c2de009fcd5942903e23",
+      "bytes": 4575
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/bounded-load/fixture.js",
+      "path": "tests/conformance/limits-and-errors/fixtures/admission-and-progress/fixture.js",
+      "sha256": "dcad2094078d264e222e44846b21d0919bcf9798645ee5e0792759afe48a295e",
+      "bytes": 17736
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/bounded-load/manifest.json",
+      "path": "tests/conformance/limits-and-errors/fixtures/admission-and-progress/manifest.json",
+      "sha256": "3f5bd7c6edaeaff0d0e64f61f3057d470ff3797c9433705a02e007e2b9ab8138",
+      "bytes": 98229
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/bounded-load/run.py",
+      "path": "tests/conformance/limits-and-errors/fixtures/admission-and-progress/run.py",
+      "sha256": "6fcb07a6ad83012e48cc704618e718970adecd15508e97c3b31a82c991001e8f",
+      "bytes": 9309
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/bounded-load/source-pins.json",
+      "path": "tests/conformance/limits-and-errors/fixtures/admission-and-progress/source-pins.json",
+      "sha256": "02b6de06eed33124802d9b22bc0c6b4aecf3da6a4b9f808d719b005ffa32756c",
+      "bytes": 3675
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/bounded-load/test_preflight.py",
+      "path": "tests/conformance/limits-and-errors/fixtures/admission-and-progress/test_preflight.py",
+      "sha256": "f2d8d06d8446ddefa2d4050d72b83853c8306dbb52bd89904d3d2e4efe1967c2",
+      "bytes": 3099
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/bounded-load/validate.py",
+      "path": "tests/conformance/limits-and-errors/fixtures/admission-and-progress/validate.py",
+      "sha256": "bd02e74bcd91257eb2dba3d0f340580efbc8d98928a7710f67ffa7d69e3025d7",
+      "bytes": 4620
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/bounded-load/workers.js",
+      "path": "tests/conformance/limits-and-errors/fixtures/admission-and-progress/workers.js",
+      "sha256": "976773c60498ef981b1b3c1be5979c739db4831fcc506976be20cff019595fc7",
+      "bytes": 4118
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/bounded-load/wrangler.jsonc",
+      "path": "tests/conformance/limits-and-errors/fixtures/admission-and-progress/wrangler.jsonc",
+      "sha256": "6439cd84594064e2f46695b4781e20f0ad175437aed83c27b33bcaa3437010c3",
+      "bytes": 353
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/bounded-resource/author_manifest.py",
+      "path": "tests/conformance/limits-and-errors/fixtures/invocation-quotas/author_manifest.py",
+      "sha256": "151e51fef3fcbde098697705ccfe29cd9981e5f062144e5f08fe00475733a850",
+      "bytes": 16893
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/bounded-resource/cases.js",
+      "path": "tests/conformance/limits-and-errors/fixtures/invocation-quotas/cases.js",
+      "sha256": "7a808ee50d9cc12655886a6727e9faf6115af36f95f1a0125f49b0cbdfaafcc1",
+      "bytes": 7704
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/bounded-resource/entry.js",
+      "path": "tests/conformance/limits-and-errors/fixtures/invocation-quotas/entry.js",
+      "sha256": "f0ac664b435a5bbfd844d830d03447bb78bfbd1d5d2e31bc4beb6a2d299847b9",
+      "bytes": 2964
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/bounded-resource/fixture.js",
+      "path": "tests/conformance/limits-and-errors/fixtures/invocation-quotas/fixture.js",
+      "sha256": "363d7485428a0171decc42c352d1817fab100d3e250818c6bd5952b35792f496",
+      "bytes": 4627
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/bounded-resource/manifest.json",
+      "path": "tests/conformance/limits-and-errors/fixtures/invocation-quotas/manifest.json",
+      "sha256": "146a361928473370af035feab68842898b962535623b2e9e3e2d2d4fb2e668b2",
+      "bytes": 42242
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/bounded-resource/profile.json",
+      "path": "tests/conformance/limits-and-errors/fixtures/invocation-quotas/profile.json",
+      "sha256": "4b0b3cbaa5387dd5e95f388a0cc159260d6aac9d903eb19060aec449387d7528",
+      "bytes": 1176
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/bounded-resource/run.py",
+      "path": "tests/conformance/limits-and-errors/fixtures/invocation-quotas/run.py",
+      "sha256": "2a19f98e0984211a11da80bbc37e698e9e9a574a7e851a320ddc5f6ff17709d8",
+      "bytes": 7510
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/bounded-resource/source-pins.json",
+      "path": "tests/conformance/limits-and-errors/fixtures/invocation-quotas/source-pins.json",
+      "sha256": "a6d82bf09516b2ee5767f23fdd824dbcc00e0a9986f1faa0be8e8194c9b8b7ed",
+      "bytes": 4211
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/bounded-resource/test_preflight.py",
+      "path": "tests/conformance/limits-and-errors/fixtures/invocation-quotas/test_preflight.py",
+      "sha256": "74406477feab4964b95fe85e51c3027904519c3e6461c0358e305a9cfaca25a5",
+      "bytes": 2771
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/bounded-resource/validate.py",
+      "path": "tests/conformance/limits-and-errors/fixtures/invocation-quotas/validate.py",
+      "sha256": "8ec9401e99b833947d85b5c2a5f5ea3995e9abbaa0b38c2113fb805da26927fe",
+      "bytes": 3568
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/bounded-resource/workers.js",
+      "path": "tests/conformance/limits-and-errors/fixtures/invocation-quotas/workers.js",
+      "sha256": "e37f088cbdf7732244a2c592451f1177a13230bdedfd6a1b6b5f970f8d209f7e",
+      "bytes": 3466
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/bounded-resource/wrangler.jsonc",
+      "path": "tests/conformance/limits-and-errors/fixtures/invocation-quotas/wrangler.jsonc",
+      "sha256": "b31f8c520da3adc3401aa01cd1f01abb3f423af20e7f1294938b7d1f278b2edc",
+      "bytes": 291
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/capability-order/cases.js",
+      "path": "tests/conformance/rpc/fixtures/ordering-and-lifetime/cases.js",
+      "sha256": "b28c7dcccc3ec3d81c2db236494b94fe3285389ce9914479e31b91b6d64cd43e",
+      "bytes": 23545
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/capability-order/cases.json",
+      "path": "tests/conformance/rpc/fixtures/ordering-and-lifetime/cases.json",
+      "sha256": "0d43f72d1bf72550b1334811d9d1db725e499d2226b70ba4b7958a989be849a5",
+      "bytes": 55667
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/capability-order/entry.js",
+      "path": "tests/conformance/rpc/fixtures/ordering-and-lifetime/entry.js",
+      "sha256": "2dd846ea32e9b72b740619d977febe62cdc0aa8157e08c5261436c00e030e187",
+      "bytes": 4610
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/capability-order/fixture.js",
+      "path": "tests/conformance/rpc/fixtures/ordering-and-lifetime/fixture.js",
+      "sha256": "9189a242e82445ff01d4a374fb919e70468e8a0c1902033ac51db7570bccaec0",
+      "bytes": 12696
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/capability-order/run.py",
+      "path": "tests/conformance/rpc/fixtures/ordering-and-lifetime/run.py",
+      "sha256": "0e6c64824141f2e73a7e55fa5c9901f6af18ce4e82a116a9e8f50aabc8dceac5",
+      "bytes": 7413
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/capability-order/test_preflight.py",
+      "path": "tests/conformance/rpc/fixtures/ordering-and-lifetime/test_preflight.py",
+      "sha256": "4df5065b6bebfcecc5c321784d4f77faf66a241d5da9a6c080c8474e4fd38385",
+      "bytes": 3553
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/capability-order/validate.py",
+      "path": "tests/conformance/rpc/fixtures/ordering-and-lifetime/validate.py",
+      "sha256": "3221dd04788c0298bf8a1c2b3ecdc679313b11b4c01c07e27e6f98d562cfe16d",
+      "bytes": 4442
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/capability-order/wrangler.jsonc",
+      "path": "tests/conformance/rpc/fixtures/ordering-and-lifetime/wrangler.jsonc",
+      "sha256": "e536ef0460f23d6f8adadef5dd8120991089a2e009a4f4ce2a8528fdf2b9976b",
+      "bytes": 303
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/assemble_fixtures.py",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/assemble_fixtures.py",
+      "sha256": "ba7cdcef302e76e9ccb8a1a9b6d129a9362848b43002597d6447ab90cb0bb40b",
+      "bytes": 3147
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/author_manifest.py",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/author_manifest.py",
+      "sha256": "7b728d65e23e28f0017dd72f8d9a9e42ae3a6ad6600bfadb0085b439b30bb7da",
+      "bytes": 20329
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/bucket-profile.json",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/bucket-profile.json",
+      "sha256": "3549368cf731cb90ebed082c7f7163a8725e68e6462a3c38a042cb529e4e0810",
+      "bytes": 1933
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/cases.py",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/cases.py",
+      "sha256": "bf2422f0f26a3a8d07843a67372a587797a531704bc8d9cb81b8b992502a970d",
+      "bytes": 24271
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/deploy_job.py",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/deploy_job.py",
+      "sha256": "38980543dc81048c2222b1687086c0029ac09c976c263bd25de311316d2c6ffc",
+      "bytes": 3695
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/driver.py",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/driver.py",
+      "sha256": "d4149aeb98b571ff9f79ecefa81106574a719b2ea810cfbc369be354969f3fc2",
+      "bytes": 43545
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/fixture-body.js",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/fixture-body.js",
+      "sha256": "98498f273a88f44d95e35ce3c19139113842985018aaac3e056ccab6b8398d6b",
+      "bytes": 10301
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/front.js",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/front.js",
+      "sha256": "f23feb07760fb3b6ebaef99ff55c90bb31da927355db4c8e4d80f073ca88331a",
+      "bytes": 570
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/http_jobs.py",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/http_jobs.py",
+      "sha256": "42da2dfd881bf1ceeffb4ac84689e939ece424909e91d43c237a9ee8eb99e7c6",
+      "bytes": 2147
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/manifest.json",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/manifest.json",
+      "sha256": "49de28e3fc01e79ef63ba813af9358e5f772ba9002e9ed7da8611dfc07d15a20",
+      "bytes": 159227
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/operator_methods.inc",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/operator_methods.inc",
+      "sha256": "be2c2650ab3a6d70033e44494cc4b7fcfe0ebfd582c4aad919cf29d7eb0a1855",
+      "bytes": 11849
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/source-pins.json",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/source-pins.json",
+      "sha256": "cb68cb1909e4f00d3424594a4dcde1fd4452f5c4213c41576e0e3dabc7995044",
+      "bytes": 3193
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/test_preflight.py",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/test_preflight.py",
+      "sha256": "014c6197418be342b9397f640d0f658a74098757a3a52e2478107ae38e2b90e3",
+      "bytes": 10866
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/validate.py",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/validate.py",
+      "sha256": "7096b19445181ca8c86561bf8f578bc00a1fd2f737fff8aaee1bdda0e20bb44e",
+      "bytes": 4118
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/bad-rename/fixture.js",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/bad-rename/fixture.js",
+      "sha256": "18ec6afc81275ed855d97e45bc0ddfc2ada13af7e1ab055c82cb16a66ac05371",
+      "bytes": 10342
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/bad-rename/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/bad-rename/wrangler.jsonc",
+      "sha256": "4d228df488358c58356066ed731d0e0661e8148beeab2c377fab3db2751cba20",
+      "bytes": 513
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/bad-syntax/fixture.js",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/bad-syntax/fixture.js",
+      "sha256": "0bcc2bb510c4acfc32dc24cbe3e4d29c05a71fd4c82e1ed0ec1cc259412e0f92",
+      "bytes": 68
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/bad-syntax/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/bad-syntax/wrangler.jsonc",
+      "sha256": "c6ee9f7fe0c948a5a3f284fde1b47b86434f39113622b53ec90c72d5d44b9c53",
+      "bytes": 359
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/front-missing/fixture.js",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/front-missing/fixture.js",
+      "sha256": "f23feb07760fb3b6ebaef99ff55c90bb31da927355db4c8e4d80f073ca88331a",
+      "bytes": 570
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/front-missing/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/front-missing/wrangler.jsonc",
+      "sha256": "d2f5b58ed1dff98fc803feafdd6590b8d6aa2aaf1c4fe925b3ba0395c331fd08",
+      "bytes": 239
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/front-new/fixture.js",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/front-new/fixture.js",
+      "sha256": "f23feb07760fb3b6ebaef99ff55c90bb31da927355db4c8e4d80f073ca88331a",
+      "bytes": 570
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/front-new/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/front-new/wrangler.jsonc",
+      "sha256": "a931f298d3c1612c5baa303b756f27d6d3179efcfde440a73026de9f2b125554",
+      "bytes": 236
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/front-old/fixture.js",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/front-old/fixture.js",
+      "sha256": "f23feb07760fb3b6ebaef99ff55c90bb31da927355db4c8e4d80f073ca88331a",
+      "bytes": 570
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/front-old/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/front-old/wrangler.jsonc",
+      "sha256": "f3b5418b17cdb4890a5654323c3b59dcc8cfa0be8dfffec7a81b853178511282",
+      "bytes": 236
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v1/fixture.js",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v1/fixture.js",
+      "sha256": "18ec6afc81275ed855d97e45bc0ddfc2ada13af7e1ab055c82cb16a66ac05371",
+      "bytes": 10342
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v1/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v1/wrangler.jsonc",
+      "sha256": "c6ee9f7fe0c948a5a3f284fde1b47b86434f39113622b53ec90c72d5d44b9c53",
+      "bytes": 359
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v2-abort/fixture.js",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v2-abort/fixture.js",
+      "sha256": "e291575ad2bf7b26ccb0947014f1c661cf6efd9422f287609de98e47734a38b5",
+      "bytes": 10349
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v2-abort/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v2-abort/wrangler.jsonc",
+      "sha256": "c6ee9f7fe0c948a5a3f284fde1b47b86434f39113622b53ec90c72d5d44b9c53",
+      "bytes": 359
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v2-add/fixture.js",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v2-add/fixture.js",
+      "sha256": "c7266b17bba60e3ed738868a9415e3b0c704bf13a57618cf51b1e1b5efbbf64b",
+      "bytes": 10345
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v2-add/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v2-add/wrangler.jsonc",
+      "sha256": "c6ee9f7fe0c948a5a3f284fde1b47b86434f39113622b53ec90c72d5d44b9c53",
+      "bytes": 359
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v2-binding/fixture.js",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v2-binding/fixture.js",
+      "sha256": "1199fc503a346ea4cca36c2ed20e0ce2edc87a3afd0fb198c7743437124a5800",
+      "bytes": 10350
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v2-binding/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v2-binding/wrangler.jsonc",
+      "sha256": "5e2336f0487efbb624fc3e6d16766faa8858f50862384dd4d4f71723a9078922",
+      "bytes": 362
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v2-code/fixture.js",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v2-code/fixture.js",
+      "sha256": "5938e572bab09a3f2cca5eb5b023d8fead27b4eee3f2a84692f6d49357a4076a",
+      "bytes": 10347
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v2-code/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v2-code/wrangler.jsonc",
+      "sha256": "c6ee9f7fe0c948a5a3f284fde1b47b86434f39113622b53ec90c72d5d44b9c53",
+      "bytes": 359
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v2-omitted/fixture.js",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v2-omitted/fixture.js",
+      "sha256": "12c09889bf8c4e69b470f2ba384d6b83e07082e85653b3aa00c54f1d52fdde94",
+      "bytes": 10350
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v2-omitted/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v2-omitted/wrangler.jsonc",
+      "sha256": "cef3889c8b998800deff67e3f2db5d746a91b1c7d1cc0687fe1e05bd2a773ba1",
+      "bytes": 362
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v2-rebuild/fixture.js",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v2-rebuild/fixture.js",
+      "sha256": "b30037539d5b2fa08405d6e3adbf6a936997a6ab6143ab30620e18b43f8c3c5f",
+      "bytes": 10353
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v2-rebuild/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v2-rebuild/wrangler.jsonc",
+      "sha256": "c6ee9f7fe0c948a5a3f284fde1b47b86434f39113622b53ec90c72d5d44b9c53",
+      "bytes": 359
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v2-script/fixture.js",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v2-script/fixture.js",
+      "sha256": "22c85e67b3ccc085c02d07a974e7b1fe42df99e12b448559f108251a712d7729",
+      "bytes": 10349
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v2-script/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v2-script/wrangler.jsonc",
+      "sha256": "ea95e1bfe6f96ab20dab9adf761f40e89a2b367dcf7d7489df397e9e906f88b3",
+      "bytes": 362
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v2-sibling/fixture.js",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v2-sibling/fixture.js",
+      "sha256": "b5cd042aa20c392f2ea55db449c5f9d628049843a509baef9e5c27498fb515fe",
+      "bytes": 10350
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v2-sibling/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v2-sibling/wrangler.jsonc",
+      "sha256": "58922b93b289e6c697d568fc55104a601044c72c1cf5cb86e841d38c3d7f752b",
+      "bytes": 462
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v2-unique/fixture.js",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v2-unique/fixture.js",
+      "sha256": "e7f588221584d801a5d199daa728ee118a5e0fe6660324eb61893779bb4196ba",
+      "bytes": 10351
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v2-unique/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v2-unique/wrangler.jsonc",
+      "sha256": "c6ee9f7fe0c948a5a3f284fde1b47b86434f39113622b53ec90c72d5d44b9c53",
+      "bytes": 359
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/do-visibility-regression/cases.json",
+      "path": "tests/conformance/rpc/fixtures/accessor-visibility/cases.json",
+      "sha256": "377cf1b2aa3c6d7d69c03c7a4870dfaf25d6b718ed3f3e6dc3aaff3d4ac3c1c7",
+      "bytes": 3231
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/do-visibility-regression/index.js",
+      "path": "tests/conformance/rpc/fixtures/accessor-visibility/index.js",
+      "sha256": "5eceb2b55d3b2db0cc2f4a5de052d35b8c3933ecd026958d37dc582fdcc53577",
+      "bytes": 4242
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/do-visibility-regression/rpc.js",
+      "path": "tests/conformance/rpc/fixtures/accessor-visibility/rpc.js",
+      "sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+      "bytes": 14684
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/do-visibility-regression/wrangler.jsonc",
+      "path": "tests/conformance/rpc/fixtures/accessor-visibility/wrangler.jsonc",
+      "sha256": "8b7b1e0c54afd4c2d6be00be6b6f7ff04e19ac80e1a92c3a6eef709862b3dac2",
+      "bytes": 403
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/durable-recovery-stress/author_manifest.py",
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/durable-recovery/author_manifest.py",
+      "sha256": "a7e9a63ec0c7528396419d8499784ff0df0f6e6c0e37dbc62f0505f8e8185705",
+      "bytes": 18865
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/durable-recovery-stress/bucket-profile.json",
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/durable-recovery/bucket-profile.json",
+      "sha256": "f94ef25f013dab088d4c4caa2ad9911a8d00358db4b5732538858bc552ac5fce",
+      "bytes": 1539
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/durable-recovery-stress/cases.py",
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/durable-recovery/cases.py",
+      "sha256": "32cfd099c9b2757fd1cdf08eec23668b606e5bc030d537360264eab9b12d2b0d",
+      "bytes": 19338
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/durable-recovery-stress/driver.py",
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/durable-recovery/driver.py",
+      "sha256": "fc2d73e94c460f413f1a0fa905ddc17bf808dddd68d1097b86c36c994faff380",
+      "bytes": 30123
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/durable-recovery-stress/fixture.js",
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/durable-recovery/fixture.js",
+      "sha256": "230ace803967738d3296f251b34db6418515449fb7c5e4147c7ddd2af9a7585a",
+      "bytes": 9352
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/durable-recovery-stress/fleet-profile.json",
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/durable-recovery/fleet-profile.json",
+      "sha256": "82f43ec347ff811f130e7946c88357eebd5f51a1aa85973be1455ef94633d4dc",
+      "bytes": 916
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/durable-recovery-stress/http_jobs.py",
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/durable-recovery/http_jobs.py",
+      "sha256": "42da2dfd881bf1ceeffb4ac84689e939ece424909e91d43c237a9ee8eb99e7c6",
+      "bytes": 2147
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/durable-recovery-stress/manifest.json",
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/durable-recovery/manifest.json",
+      "sha256": "8bfa3397e84966fa629d7adce3504e3674aeb3cdf5f5d56a4615703576ea52b1",
+      "bytes": 101023
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/durable-recovery-stress/source-pins.json",
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/durable-recovery/source-pins.json",
+      "sha256": "1e2948c222c6d4d6f477d7f935b7d478b55a4f3f6c2b60471991399748568392",
+      "bytes": 2488
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/durable-recovery-stress/test_preflight.py",
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/durable-recovery/test_preflight.py",
+      "sha256": "ec4c17df8e5588b29023c075416b9eb33896c20ce2ffe87fd1d181198145cd9c",
+      "bytes": 6001
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/durable-recovery-stress/validate.py",
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/durable-recovery/validate.py",
+      "sha256": "c87161a0def5d1c3c7eb57f57d3bd3f9d6a3c5b14a3647584534f87ad0ab18a3",
+      "bytes": 3296
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/durable-recovery-stress/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/durable-recovery/wrangler.jsonc",
+      "sha256": "88512635f8d2d6fde2d0ef027431aa37ce338ebfa613c85fd4e70a8eff510e22",
+      "bytes": 266
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/fetch-redirect-stress/author_manifest.py",
+      "path": "tests/conformance/fetch-and-http/fixtures/redirect-chains/author_manifest.py",
+      "sha256": "e8f701eb3606e522906558a871460ff76d48180d50c917622c790631cfc104f4",
+      "bytes": 13785
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/fetch-redirect-stress/cases.js",
+      "path": "tests/conformance/fetch-and-http/fixtures/redirect-chains/cases.js",
+      "sha256": "7cfb44a2581651a842f833024f7a810c83944b70743ba3485bf0d1dff85e60d6",
+      "bytes": 12377
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/fetch-redirect-stress/common.js",
+      "path": "tests/conformance/fetch-and-http/fixtures/redirect-chains/common.js",
+      "sha256": "3e78cfa5894e87eadf5e80133545b1fef4b1f3491a1e09949912831e53227aea",
+      "bytes": 2708
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/fetch-redirect-stress/fixture.js",
+      "path": "tests/conformance/fetch-and-http/fixtures/redirect-chains/fixture.js",
+      "sha256": "bb8d09b77278bb557b9489a205adaa0a6663ce77aa02e13694fa29eeb15f2b8f",
+      "bytes": 9592
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/fetch-redirect-stress/lab.js",
+      "path": "tests/conformance/fetch-and-http/fixtures/redirect-chains/lab.js",
+      "sha256": "51d1365da5670610fb5065b434422c8f5707ad9d98db77710399af85b5d9e7ee",
+      "bytes": 10820
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/fetch-redirect-stress/manifest.json",
+      "path": "tests/conformance/fetch-and-http/fixtures/redirect-chains/manifest.json",
+      "sha256": "ad3d52c7e21c4e1bb943bc7e5cf1c07a81f50329e342d2927905a2d5f9c29398",
+      "bytes": 46983
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/fetch-redirect-stress/private_driver.py",
+      "path": "tests/conformance/fetch-and-http/fixtures/redirect-chains/private_driver.py",
+      "sha256": "0fd8569c855f44e171a5abfda54ec336815e5b192773ef082fa5ebd40f0d5125",
+      "bytes": 14658
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/fetch-redirect-stress/profile.json",
+      "path": "tests/conformance/fetch-and-http/fixtures/redirect-chains/profile.json",
+      "sha256": "7a252fc1153df8a9f121422fcbfbb688189b64b576f1d193f12f0fad311eadcd",
+      "bytes": 2551
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/fetch-redirect-stress/source-pins.json",
+      "path": "tests/conformance/fetch-and-http/fixtures/redirect-chains/source-pins.json",
+      "sha256": "7c7608267eafda129414333aa40759a5f8c6ed676b32d7031c63a2eae81144ef",
+      "bytes": 2528
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/fetch-redirect-stress/test_helpers.mjs",
+      "path": "tests/conformance/fetch-and-http/fixtures/redirect-chains/test_helpers.mjs",
+      "sha256": "74dd393abdf8eea43d9bf15ba464d3beb88560f122f61d9489120982075063bf",
+      "bytes": 3566
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/fetch-redirect-stress/test_preflight.py",
+      "path": "tests/conformance/fetch-and-http/fixtures/redirect-chains/test_preflight.py",
+      "sha256": "db228e5bbd9462cebae3bdb85f1cf353d8ea955e6f7a72ab2d21eebe82984c88",
+      "bytes": 3090
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/fetch-redirect-stress/validate.py",
+      "path": "tests/conformance/fetch-and-http/fixtures/redirect-chains/validate.py",
+      "sha256": "f719335e552e8af7c51e1fe32ace0cacf95d7c4f50eec3e5aab165ebcd59eb12",
+      "bytes": 4987
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/fetch-redirect-stress/wrangler.jsonc",
+      "path": "tests/conformance/fetch-and-http/fixtures/redirect-chains/wrangler.jsonc",
+      "sha256": "9fa4d7e2e8de43b2622a2db6ef63951667fea54d9d06975513f5d6cb7b2aef6a",
+      "bytes": 411
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/http-stream-stress/author_manifest.py",
+      "path": "tests/conformance/fetch-and-http/fixtures/body-streaming/author_manifest.py",
+      "sha256": "4f6a69327bd346ffa8f3fb79fd76381823a751ec228810a173450c591c0647d9",
+      "bytes": 23293
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/http-stream-stress/cases.js",
+      "path": "tests/conformance/fetch-and-http/fixtures/body-streaming/cases.js",
+      "sha256": "96fb832714b9437de94f48bb1c2fdb1fb5dc2eedb723901040c06cfb9bb305aa",
+      "bytes": 18310
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/http-stream-stress/common.js",
+      "path": "tests/conformance/fetch-and-http/fixtures/body-streaming/common.js",
+      "sha256": "41a9f52dfe2cb5fe110ead9a7c059d15ef00fd63b02752053e5b3fc3683d2fdb",
+      "bytes": 2732
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/http-stream-stress/fixture.js",
+      "path": "tests/conformance/fetch-and-http/fixtures/body-streaming/fixture.js",
+      "sha256": "bc36e6548386869fea496e7073ebc08ff4a068d89f1860e89f28a03515006e6b",
+      "bytes": 9559
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/http-stream-stress/lab.js",
+      "path": "tests/conformance/fetch-and-http/fixtures/body-streaming/lab.js",
+      "sha256": "946eddee9d4a58d6bf586e75933fe8396185a1bd9013963e8b2b3e6d0ffa4270",
+      "bytes": 11804
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/http-stream-stress/manifest.json",
+      "path": "tests/conformance/fetch-and-http/fixtures/body-streaming/manifest.json",
+      "sha256": "089c5862ac6c145045dceb77b5e22106f7666e928074dadd27d55f2c81d68c00",
+      "bytes": 84278
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/http-stream-stress/private_driver.py",
+      "path": "tests/conformance/fetch-and-http/fixtures/body-streaming/private_driver.py",
+      "sha256": "076dcd78953bef5ac7a6c0bb7b3dfb7e5df56065fba6997c227031e491dd9b72",
+      "bytes": 13105
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/http-stream-stress/profile.json",
+      "path": "tests/conformance/fetch-and-http/fixtures/body-streaming/profile.json",
+      "sha256": "ea0a9035f4321fea0cd0d2780360e8aa3e736ba7f447ff259889b68d87f0f5a7",
+      "bytes": 2441
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/http-stream-stress/source-pins.json",
+      "path": "tests/conformance/fetch-and-http/fixtures/body-streaming/source-pins.json",
+      "sha256": "dd937a04fe8b729b03c0a75ae421a77d057f58a1b9f4c9e1ca2799f540fd7d14",
+      "bytes": 3729
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/http-stream-stress/test_oracle_helpers.mjs",
+      "path": "tests/conformance/fetch-and-http/fixtures/body-streaming/test_oracle_helpers.mjs",
+      "sha256": "ee456e24904ecddca5156cb2be6b77829fb6f4eaf6e3f6a0b044c0a811bcde52",
+      "bytes": 2068
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/http-stream-stress/test_preflight.py",
+      "path": "tests/conformance/fetch-and-http/fixtures/body-streaming/test_preflight.py",
+      "sha256": "da982f0ed773937be0fb9583a3cc3e335c8821aceacd4a9898c9a8402a6e2334",
+      "bytes": 4005
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/http-stream-stress/validate.py",
+      "path": "tests/conformance/fetch-and-http/fixtures/body-streaming/validate.py",
+      "sha256": "b0764716b66c7cf4b0ae1d38a0dddc1d6f06d9f2a4f9926e998a964b4d30cf0b",
+      "bytes": 4498
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/http-stream-stress/wrangler.jsonc",
+      "path": "tests/conformance/fetch-and-http/fixtures/body-streaming/wrangler.jsonc",
+      "sha256": "4a4e336131835fb37ad0c7c86b4ef776a3b1a87758671a484e6ffb5ed19ac968",
+      "bytes": 300
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/loader-props/author_manifest.py",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/loading-and-environment/author_manifest.py",
+      "sha256": "1428a16c2250197e8681a37c862479d42ba07e74ee12483d18e84bb1044b1d9d",
+      "bytes": 19703
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/loader-props/cases.js",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/loading-and-environment/cases.js",
+      "sha256": "9a1e6136a123f902050ba5cba63179c5a0c2760f28e4a1bf7dea2c1419c700ef",
+      "bytes": 23629
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/loader-props/index.js",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/loading-and-environment/index.js",
+      "sha256": "6bf5d0056b5a83052017c38c9141c1da4873c9969fb699ede26b93c5ff0613d9",
+      "bytes": 4250
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/loader-props/manifest.json",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/loading-and-environment/manifest.json",
+      "sha256": "c8768ca53d71e6b6193c4732dac7dd7aa22f2faec8dd8e83f430d5a5c22fe083",
+      "bytes": 63297
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/loader-props/run.py",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/loading-and-environment/run.py",
+      "sha256": "86971426940cd0df5023ca3dbf90d52988035fcf58ef6cf89426ab793015ad4b",
+      "bytes": 5460
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/loader-props/sources.mjs",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/loading-and-environment/sources.mjs",
+      "sha256": "22897ce5b7a6f5ede46a6d95a9cb217eaeeef7c6e60f9e0d034aad8964e18d81",
+      "bytes": 3721
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/loader-props/validate.mjs",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/loading-and-environment/validate.mjs",
+      "sha256": "534af4405b81c2d6bbb77aa990a7e91f3bdef6ccc7710471cce0ef10f9a40cbf",
+      "bytes": 1822
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/loader-props/wrangler.jsonc",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/loading-and-environment/wrangler.jsonc",
+      "sha256": "41de5e89e0fea3fe7e5c377610230e3927823fc78bcef941447ade6d7984ba75",
+      "bytes": 399
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic/Cargo.lock",
+      "path": "tests/logic/log-recovery/fixtures/decision-cases/Cargo.lock",
+      "sha256": "eff4678f9fd0b2bf159a2ac6a1172035834acc203d6335b077ab238e1f468052",
+      "bytes": 231
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic/Cargo.toml",
+      "path": "tests/logic/log-recovery/fixtures/decision-cases/Cargo.toml",
+      "sha256": "fac66567366c229397505d418f65138ef91e1c04b0e767de9a35ced387ab39bf",
+      "bytes": 353
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic/author_manifest.py",
+      "path": "tests/logic/log-recovery/fixtures/decision-cases/author_manifest.py",
+      "sha256": "45e590f299822de84e676e25f5e94869f1fe58e28828d1cfc75540e17ace636f",
+      "bytes": 27911
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic/manifest.json",
+      "path": "tests/logic/log-recovery/fixtures/decision-cases/manifest.json",
+      "sha256": "731cc2389086c96d370eca18ce7bc1b62415bcb022ad6f75756e7aea74f74f90",
+      "bytes": 86458
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic/profile.json",
+      "path": "tests/logic/log-recovery/fixtures/decision-cases/profile.json",
+      "sha256": "7ab3eb5297f5311c7299369d245fcd1f53bb56045f023c00b3886466f94d99a9",
+      "bytes": 1659
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic/source-pins.json",
+      "path": "tests/logic/log-recovery/fixtures/decision-cases/source-pins.json",
+      "sha256": "9cd2e2f867ce2f17d09908b8738e4419cd0712164b2e9a888eb9bf8cb710dc5c",
+      "bytes": 4354
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic/tests/log_recovery.rs",
+      "path": "tests/logic/log-recovery/fixtures/decision-cases/tests/log_recovery.rs",
+      "sha256": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c",
+      "bytes": 33540
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic/trace-receipt-contract.json",
+      "path": "tests/logic/log-recovery/fixtures/decision-cases/trace-receipt-contract.json",
+      "sha256": "0029295116e47c59e08d67ed2e8238bb7816e747cf51dbc36efd08459c21d712",
+      "bytes": 1272
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic/validate.py",
+      "path": "tests/logic/log-recovery/fixtures/decision-cases/validate.py",
+      "sha256": "efe6273231e185458077d5ae2a6dece7e51e64fdf38533b8b91680539a9fb256",
+      "bytes": 8290
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/module-graph-stress/author_manifest.py",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/module-graphs/author_manifest.py",
+      "sha256": "d75a2f4e78a19d7eb5b0754121474a86219182edee5421d316a9b609d95a9b4f",
+      "bytes": 12563
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/module-graph-stress/cases.mjs",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/module-graphs/cases.mjs",
+      "sha256": "9aed65f3bb4622a8a777fb142173e4d64986598c3744af261649ba77675bb8d8",
+      "bytes": 11100
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/module-graph-stress/entry.mjs",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/module-graphs/entry.mjs",
+      "sha256": "cb41805fe25218497663aac097837f9c40ed538608b5358a99a7fc4745a5726c",
+      "bytes": 2316
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/module-graph-stress/fixture.mjs",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/module-graphs/fixture.mjs",
+      "sha256": "115853330ccf52bd8f58bcc3b065972100b524c8b5f07caf45e9b7775d7b8285",
+      "bytes": 6370
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/module-graph-stress/graphs.mjs",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/module-graphs/graphs.mjs",
+      "sha256": "3d4d4dbee83c8529c24494cf735b9c05d2e94cdd792caa4b59db39745cbaa419",
+      "bytes": 11105
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/module-graph-stress/manifest.json",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/module-graphs/manifest.json",
+      "sha256": "28a4b34caa2b858fa1da7066013e23bdf99339ba2c8a6f15ebd2e180ace1014b",
+      "bytes": 36773
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/module-graph-stress/profile.json",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/module-graphs/profile.json",
+      "sha256": "61cb8bb804a662eac46a37cb2ff77cf6d2d862dd12dc805e5abd2e43664263db",
+      "bytes": 829
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/module-graph-stress/run.py",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/module-graphs/run.py",
+      "sha256": "8c6d8356d5eb12bdcf369a7e660720eb231eba336b4b46726406c890f7ae1c69",
+      "bytes": 8607
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/module-graph-stress/source-pins.json",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/module-graphs/source-pins.json",
+      "sha256": "6d59b93d0b7d6c711f567c0e42abfff4acfa94860d7cb8f6db1468de480703be",
+      "bytes": 2662
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/module-graph-stress/test_cleanup.mjs",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/module-graphs/test_cleanup.mjs",
+      "sha256": "30ec76c35ad66923eac5a3b2f58cbef176e3d6750f33c81bc33286a9c95073ac",
+      "bytes": 3594
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/module-graph-stress/test_receipts.py",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/module-graphs/test_receipts.py",
+      "sha256": "73d20455aa560b85f859ae7b6dcb88b88acaec69dd86e1e2fcbc71cd1f1cff62",
+      "bytes": 1877
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/module-graph-stress/validate.mjs",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/module-graphs/validate.mjs",
+      "sha256": "4016e1a3f7972207b0ff627af4b4e6dddac8bb9754be1f20e4e8290a0c2112c6",
+      "bytes": 4223
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/module-graph-stress/wrangler.jsonc",
+      "path": "tests/conformance/dynamic-workers-and-tails/fixtures/module-graphs/wrangler.jsonc",
+      "sha256": "3b3a604c2ac4e0baa91a8ee35cd7e7dfb5dccf00631f25441aaf12e50ea65892",
+      "bytes": 274
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/author_manifest.py",
+      "path": "tests/conformance/fetch-and-http/fixtures/transform-streams/author_manifest.py",
+      "sha256": "40f36813c778c3fe19ccd84b0f69ee6a2552e37d9b72333a3b4805b59e2141bb",
+      "bytes": 17966
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/common.js",
+      "path": "tests/conformance/fetch-and-http/fixtures/transform-streams/common.js",
+      "sha256": "58b5cc7bf2a16a25f8dbdddc48ea4825bee03c0f79b898e4767e92b297c8d007",
+      "bytes": 2519
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/context.js",
+      "path": "tests/conformance/fetch-and-http/fixtures/transform-streams/context.js",
+      "sha256": "845e39cdea794c74bea122c22f1005a62b70536f5ee688b3e06af6732552d091",
+      "bytes": 12817
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/entry.js",
+      "path": "tests/conformance/fetch-and-http/fixtures/transform-streams/entry.js",
+      "sha256": "1c4be2004e476ee286465674ad37b81dd9ea8cc33e0dda6ef66b66b5830346de",
+      "bytes": 1136
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/fixture.js",
+      "path": "tests/conformance/fetch-and-http/fixtures/transform-streams/fixture.js",
+      "sha256": "e98721556a970c8d6acd6715a174741de9dc22751f734aac14df31a5e04b6a75",
+      "bytes": 12660
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/make_vectors.py",
+      "path": "tests/conformance/fetch-and-http/fixtures/transform-streams/make_vectors.py",
+      "sha256": "df9d0f13438c126c594cecc740b5c07145fed1ab47d4166c4c805d17682374ac",
+      "bytes": 1358
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/manifest.json",
+      "path": "tests/conformance/fetch-and-http/fixtures/transform-streams/manifest.json",
+      "sha256": "5cacd1bfe0e3c07d2f2eb469bbcaa19cfdfb140f81a3ad351a5356cada5f17e1",
+      "bytes": 43665
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/operations.js",
+      "path": "tests/conformance/fetch-and-http/fixtures/transform-streams/operations.js",
+      "sha256": "3c56ee242a504ad001125fec4ec2ba54d07c00ff4757b36be2826624f7e751c6",
+      "bytes": 14588
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/private_driver.py",
+      "path": "tests/conformance/fetch-and-http/fixtures/transform-streams/private_driver.py",
+      "sha256": "34ad4e2dafe6d54fc0abdeb203439e67c479cceb8906bc4dd27992d9a757980a",
+      "bytes": 18308
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/profile.json",
+      "path": "tests/conformance/fetch-and-http/fixtures/transform-streams/profile.json",
+      "sha256": "80f8bdb5f22931d0992a4643619334378ba879bc5c6276fc3c153393c25b02b5",
+      "bytes": 1767
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/source-pins.json",
+      "path": "tests/conformance/fetch-and-http/fixtures/transform-streams/source-pins.json",
+      "sha256": "22850dc72e870f4ae1a5f9e7a512534c8e11fed24ca93e56161613d8e3619987",
+      "bytes": 6269
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/test_helpers.mjs",
+      "path": "tests/conformance/fetch-and-http/fixtures/transform-streams/test_helpers.mjs",
+      "sha256": "508e76498242bb4662ba34394c7448e35f4b79a1ae0232b47a408b819746d0fa",
+      "bytes": 1528
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/test_lifecycle_helpers.mjs",
+      "path": "tests/conformance/fetch-and-http/fixtures/transform-streams/test_lifecycle_helpers.mjs",
+      "sha256": "d5aeebc67114f074a3d8871d376c37866ca06fb660047ec73271445831a713f7",
+      "bytes": 7012
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/test_preflight.py",
+      "path": "tests/conformance/fetch-and-http/fixtures/transform-streams/test_preflight.py",
+      "sha256": "f741badfa841d0fd86e9b2a4f6863e589684009273ec46f40795a53074674b23",
+      "bytes": 7822
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/test_terminal_helpers.mjs",
+      "path": "tests/conformance/fetch-and-http/fixtures/transform-streams/test_terminal_helpers.mjs",
+      "sha256": "79df9b292d032660be5dea6add1c178054aedd1a979c95e6070f9087bfd71f6c",
+      "bytes": 8482
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/validate.py",
+      "path": "tests/conformance/fetch-and-http/fixtures/transform-streams/validate.py",
+      "sha256": "75bb99ad4264d4f097b0accb231d0bdf8286f47ff707fcf2c022a7a772903e08",
+      "bytes": 3870
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/vectors.js",
+      "path": "tests/conformance/fetch-and-http/fixtures/transform-streams/vectors.js",
+      "sha256": "93ed22b254652f7f269094b5dfa63ece18b782c52fe15d3923e3fd0c5c3d7380",
+      "bytes": 17794
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/wrangler.jsonc",
+      "path": "tests/conformance/fetch-and-http/fixtures/transform-streams/wrangler.jsonc",
+      "sha256": "f8b6146a89b55f0df338d5346495d23efabf298445c07d0543e72e559e473a2b",
+      "bytes": 262
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/output-gate-logic/Cargo.lock",
+      "path": "tests/logic/output-gates/fixtures/decision-cases/Cargo.lock",
+      "sha256": "2f90c4981641d84cf719f667a91ed3ca1050ccedc22eba320978e5a2d8bf1012",
+      "bytes": 255
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/output-gate-logic/Cargo.toml",
+      "path": "tests/logic/output-gates/fixtures/decision-cases/Cargo.toml",
+      "sha256": "0c075c77c926d9e73573956e0460228034568bc8d2f9aae5045745a6b7896f64",
+      "bytes": 350
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/output-gate-logic/author_manifest.py",
+      "path": "tests/logic/output-gates/fixtures/decision-cases/author_manifest.py",
+      "sha256": "6bb5bbafabf7fdc9df961dd663ef017a1c974c9520c4da39b32ba2b2fa89c9f1",
+      "bytes": 18726
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/output-gate-logic/manifest.json",
+      "path": "tests/logic/output-gates/fixtures/decision-cases/manifest.json",
+      "sha256": "84148f9f295e44ae68cb2fd33fab2bc0168ad34102ffc8e057a927a78b119a62",
+      "bytes": 100281
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/output-gate-logic/profile-v2.json",
+      "path": "tests/logic/output-gates/fixtures/decision-cases/profile-v2.json",
+      "sha256": "321d41357eda97690a5c649b4b39dde102d78d154a6354d974299b816b0fa74c",
+      "bytes": 1873
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/output-gate-logic/profile.json",
+      "path": "tests/logic/output-gates/fixtures/decision-cases/profile.json",
+      "sha256": "4f915c7d7c0594677259e4eaab2216c179826484e12e0c764cc4d2454f0c9d82",
+      "bytes": 1510
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/output-gate-logic/run_selected.py",
+      "path": "tests/logic/output-gates/fixtures/decision-cases/run_selected.py",
+      "sha256": "efe1bb7762d14105b76809567948de972f03d4c18e421238d795a80fdf624cdf",
+      "bytes": 8433
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/output-gate-logic/source-pins.json",
+      "path": "tests/logic/output-gates/fixtures/decision-cases/source-pins.json",
+      "sha256": "2e06ae03480e8f4a36ea41fd7e0da83519b51a3334fbeea4c9ba6982596df2f1",
+      "bytes": 3285
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/output-gate-logic/tests/output_gate.rs",
+      "path": "tests/logic/output-gates/fixtures/decision-cases/tests/output_gate.rs",
+      "sha256": "4111d744a514b64a36f285dbf4a8b51ca56ce3f3f128dbd5ea1cc188ebed88ba",
+      "bytes": 41334
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/output-gate-logic/validate.py",
+      "path": "tests/logic/output-gates/fixtures/decision-cases/validate.py",
+      "sha256": "238b70d963cbc5318d2cf44b8ccae970cef9cab355d1242dcea915f563c2f812",
+      "bytes": 2910
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic/Cargo.lock",
+      "path": "tests/logic/pressure/fixtures/decision-cases/Cargo.lock",
+      "sha256": "e67c251bc9c6d0399c763736ad4ebb5a639741988474136082264dab41ec11be",
+      "bytes": 248
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic/Cargo.toml",
+      "path": "tests/logic/pressure/fixtures/decision-cases/Cargo.toml",
+      "sha256": "5b585c42f046e29af646ffb2f46c18a3513c564baae3267792789b55f600015a",
+      "bytes": 368
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic/author_manifest.py",
+      "path": "tests/logic/pressure/fixtures/decision-cases/author_manifest.py",
+      "sha256": "c6d274130577ddbdeca776b4747ccddca5f4ea32f2e4e95429f73479ed030870",
+      "bytes": 24345
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic/manifest.json",
+      "path": "tests/logic/pressure/fixtures/decision-cases/manifest.json",
+      "sha256": "8c20b20d5f3848fbea5226c2c099cd0691a8ce21e6b7f4c46b8b78f5a1370141",
+      "bytes": 80399
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic/profile.json",
+      "path": "tests/logic/pressure/fixtures/decision-cases/profile.json",
+      "sha256": "fe1b78ba6dd4f01ccd142d573116b598681bd0bbd7bb112661c850b6567c0ddf",
+      "bytes": 1634
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic/source-pins.json",
+      "path": "tests/logic/pressure/fixtures/decision-cases/source-pins.json",
+      "sha256": "d6ed2a5474099eae900ee2a1f63081dc584fb1d99a4feb9e8881d6241a00469e",
+      "bytes": 4897
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic/tests/pressure_recovery.rs",
+      "path": "tests/logic/pressure/fixtures/decision-cases/tests/pressure_recovery.rs",
+      "sha256": "ccb9c2001ec9d427c142017a426801dde5631b1252fae8b2e10ce0e12cc73e47",
+      "bytes": 27759
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic/trace-receipt-contract.json",
+      "path": "tests/logic/pressure/fixtures/decision-cases/trace-receipt-contract.json",
+      "sha256": "2cf9ddcf5799b983fce2af660bc2f26e09718575be9548492e9cfd2c688a01fd",
+      "bytes": 2122
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic/validate.py",
+      "path": "tests/logic/pressure/fixtures/decision-cases/validate.py",
+      "sha256": "a7cbe2dc6840b71ce8b8d4a5b74cfe58ac548755c603236c6e930d5444cfb81b",
+      "bytes": 6320
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic/Cargo.lock",
+      "path": "tests/logic/lease-acquisition/fixtures/decision-cases/Cargo.lock",
+      "sha256": "3f98666e83b98a5db8694c74a26f844bc48c6af1ea1e46405951d77c97b3f54c",
+      "bytes": 242
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic/Cargo.toml",
+      "path": "tests/logic/lease-acquisition/fixtures/decision-cases/Cargo.toml",
+      "sha256": "91a5e0ae85f7d9b9de2d24a7b630cf71ec161654377d70f9bd35dfb5c14deef9",
+      "bytes": 374
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic/author_manifest.py",
+      "path": "tests/logic/lease-acquisition/fixtures/decision-cases/author_manifest.py",
+      "sha256": "f17a8a4ee1c398d8379e9451e04918c59a3b29ed8e7a2bd87e66b35607e44f88",
+      "bytes": 24958
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic/manifest.json",
+      "path": "tests/logic/lease-acquisition/fixtures/decision-cases/manifest.json",
+      "sha256": "f055a1b302e5f2546df23910f8713d3b39344fef98cfa2e30c946081ba2e1b66",
+      "bytes": 107853
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic/profile.json",
+      "path": "tests/logic/lease-acquisition/fixtures/decision-cases/profile.json",
+      "sha256": "a0f1d536b48c1fbcb8ad80e8d614b201273e38afbbe43c5c9de1670bdf361568",
+      "bytes": 5466
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic/source-pins.json",
+      "path": "tests/logic/lease-acquisition/fixtures/decision-cases/source-pins.json",
+      "sha256": "bd3559404928c86c8be903798b6fda5f678900a491919ef8953531848c97b397",
+      "bytes": 3877
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+      "path": "tests/logic/lease-acquisition/fixtures/decision-cases/tests/routing_acquisition.rs",
+      "sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06",
+      "bytes": 42988
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic/validate.py",
+      "path": "tests/logic/lease-acquisition/fixtures/decision-cases/validate.py",
+      "sha256": "bcb44b274861c601e7252610f10b09c8c6f2aa1038c20f89c483c745f7ea1bbe",
+      "bytes": 6050
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/rpc-codec/cases.json",
+      "path": "tests/conformance/rpc/fixtures/value-codec/cases.json",
+      "sha256": "9d098e7bdd59330baf32f48a29bd22674b41a2bb99e0ffc451dfae1a329afc5f",
+      "bytes": 36343
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/rpc-codec/codec.js",
+      "path": "tests/conformance/rpc/fixtures/value-codec/codec.js",
+      "sha256": "bae54054482046c4b3daf0df871a5c7cd433e17b01bad7cb4804e25537a55f7a",
+      "bytes": 33545
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/rpc-codec/entry.js",
+      "path": "tests/conformance/rpc/fixtures/value-codec/entry.js",
+      "sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+      "bytes": 1937
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/rpc-codec/validate.py",
+      "path": "tests/conformance/rpc/fixtures/value-codec/validate.py",
+      "sha256": "1a8d7296ac402e0922e1071f1e4538880d3e3b059a520d729aae7db995d8504c",
+      "bytes": 4075
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/rpc-codec/wrangler.jsonc",
+      "path": "tests/conformance/rpc/fixtures/value-codec/wrangler.jsonc",
+      "sha256": "28e5e23497bde34e2b0e5fddca773a57ef199dab912f8b8c004e505549254cbe",
+      "bytes": 312
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/sqlite-concurrency/author_manifest.py",
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/concurrent-transactions/author_manifest.py",
+      "sha256": "9937ecff41ff320d92eefaafdbf480bbb6ad86ee7be4365a67d3852959a8830f",
+      "bytes": 21400
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/sqlite-concurrency/cases.js",
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/concurrent-transactions/cases.js",
+      "sha256": "691eb28d4cee7679b56385040712298155124a272d15d5674e44088bede9080f",
+      "bytes": 2905
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/sqlite-concurrency/cell-cases.js",
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/concurrent-transactions/cell-cases.js",
+      "sha256": "0e5116557fa02ad82edc28032c82d9cb7c96530e04880465fc6517acad7095d6",
+      "bytes": 16281
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/sqlite-concurrency/common.js",
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/concurrent-transactions/common.js",
+      "sha256": "246be7908dcd178ec5621e2ea03a1784784a767823a9801e22454e0e519d4577",
+      "bytes": 1863
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/sqlite-concurrency/entry.js",
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/concurrent-transactions/entry.js",
+      "sha256": "b7ff8937b347e643e4c38ef96ba804d5725819a6e740e939f19977c5764c9b39",
+      "bytes": 3588
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/sqlite-concurrency/fixture.js",
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/concurrent-transactions/fixture.js",
+      "sha256": "0bfc734b1e5b63b947972c226baedb0ed38c87c371a93b1406c79dce4329edc8",
+      "bytes": 16834
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/sqlite-concurrency/manifest.json",
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/concurrent-transactions/manifest.json",
+      "sha256": "991cfa1edce682ba4dcfbb6b6070abedee80b43af45c6bcc300ba27666516bab",
+      "bytes": 74170
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/sqlite-concurrency/private_driver.py",
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/concurrent-transactions/private_driver.py",
+      "sha256": "822c3204e84c7df87c7891e4c8e6b17be0b57627b1f2075f075dbb3d56a9b663",
+      "bytes": 15220
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/sqlite-concurrency/profile.json",
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/concurrent-transactions/profile.json",
+      "sha256": "c9a7a79c8c3e0375a3f3d1d5dce3f814bd46f2217692590584bcad4f31861056",
+      "bytes": 1311
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/sqlite-concurrency/source-pins.json",
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/concurrent-transactions/source-pins.json",
+      "sha256": "24b0037a4fca2b354dcfdacd12561813cf8b369329257867243f95feed5500a6",
+      "bytes": 3208
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/sqlite-concurrency/test_helpers.mjs",
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/concurrent-transactions/test_helpers.mjs",
+      "sha256": "222ebe350279022cf76cde53140e3038e2621ad4cf92a5f10ae8c87f4f67e964",
+      "bytes": 1688
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/sqlite-concurrency/test_preflight.py",
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/concurrent-transactions/test_preflight.py",
+      "sha256": "93b0b2cf5b67778b8397e723255569e4515dabde2faaac19127e416c041c6bc0",
+      "bytes": 6097
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/sqlite-concurrency/validate.py",
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/concurrent-transactions/validate.py",
+      "sha256": "77059cbdb10d98df77f5502f2d8ebe8f09943e5bd278ccaa71a6d9d027d5150a",
+      "bytes": 3669
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/sqlite-concurrency/wrangler.jsonc",
+      "path": "tests/conformance/durable-objects/storage-sql/fixtures/concurrent-transactions/wrangler.jsonc",
+      "sha256": "629b808b6431228a2e565c76955bbe88293708fcb91e712e2a5f5d882c7406ea",
+      "bytes": 275
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/Cargo.lock",
+      "path": "tests/logic/wake-recovery/fixtures/decision-cases/Cargo.lock",
+      "sha256": "6363931bcea4e72bd558202d160dafbe6f570bc2dad6ed4c74b3f53d223d9cdc",
+      "bytes": 232
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/Cargo.toml",
+      "path": "tests/logic/wake-recovery/fixtures/decision-cases/Cargo.toml",
+      "sha256": "acc7fed0273915eec0ec9505c648faab248f1d88639fd64ac3b5055c873a1376",
+      "bytes": 356
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/author_manifest.py",
+      "path": "tests/logic/wake-recovery/fixtures/decision-cases/author_manifest.py",
+      "sha256": "440b1e340fa27684d516758b3c5e0612c66a6cd807763e68504af596ef3dd934",
+      "bytes": 23875
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/manifest.json",
+      "path": "tests/logic/wake-recovery/fixtures/decision-cases/manifest.json",
+      "sha256": "1b97975b95f13eb02997fa304a74290761ac3c5b54d0709d71f9907f83269aab",
+      "bytes": 62614
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/profile.json",
+      "path": "tests/logic/wake-recovery/fixtures/decision-cases/profile.json",
+      "sha256": "1359062cd0983f437eeb7762fd803721157acdac5dc7aebd17a4c5c9de2f278b",
+      "bytes": 1701
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/source-pins.json",
+      "path": "tests/logic/wake-recovery/fixtures/decision-cases/source-pins.json",
+      "sha256": "4e72694ec181865fc290261cd142bc0e46b925817034c3f6842337f9833be6f5",
+      "bytes": 5956
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+      "path": "tests/logic/wake-recovery/fixtures/decision-cases/tests/wake_recovery.rs",
+      "sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86",
+      "bytes": 39589
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/trace-receipt-contract.json",
+      "path": "tests/logic/wake-recovery/fixtures/decision-cases/trace-receipt-contract.json",
+      "sha256": "acb7febdefc9fbdbd853543793b2abc264aaaf0a36e21f5f60fd807ddb50f49a",
+      "bytes": 1194
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/validate.py",
+      "path": "tests/logic/wake-recovery/fixtures/decision-cases/validate.py",
+      "sha256": "9e7ce4908f9d55cf4188e7cfc9d033d4bec9a4ea55b1970ab5586fabb4d5d620",
+      "bytes": 7460
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-project/tests/lease-continuity/guard_predicate.rs",
+      "path": "tests/logic/lease-continuity/guard_predicate.rs",
+      "sha256": "949f4a650cd174006392bd2a67ae667cff6ab341ba51b31030a6a7a936eb66b0",
+      "bytes": 2731
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-project/tests/lease-continuity/lease_continuity.rs",
+      "path": "tests/logic/lease-continuity/lease_continuity.rs",
+      "sha256": "9ba2368c5a34a6a1ef0a0b3cd42ca67a20c074e67f229b19f49c5dee58bf555b",
+      "bytes": 14080
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-project/tests/lease-continuity/run_offline.py",
+      "path": "tests/logic/lease-continuity/run_offline.py",
+      "sha256": "bbf159d09304fb4b4a0cd8e06fed93eececd6bdcf2f2ec46625b8270c74c6b8e",
+      "bytes": 12410
+    },
+    {
+      "origin": "guarded-source-archive/celld-os-project/tests/lease-continuity/source-pins.json",
+      "path": "tests/logic/lease-continuity/source-pins.json",
+      "sha256": "f60e821cc8dada53d1938127661a905af49db8edc97edb2c6ae6486ff07dda2b",
+      "bytes": 5013
+    },
+    {
+      "origin": "guarded-source-archive/BUILD_AND_TEST.md",
+      "path": "tests/lib/provenance/BUILD_AND_TEST.source.md",
+      "sha256": "14d182794d90bed90ee488abde70a9cba2004112e21a946441e621666196ecb1",
+      "bytes": 11861
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/encoding-test.ts",
+      "path": "tests/lib/web-platform-harness/encoding-test.ts",
+      "sha256": "efff64500ad708498a661be2d50d9292af4b89fa4feef05a68ea211f6f2e98fb",
+      "bytes": 29454
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/streams-test.ts",
+      "path": "tests/lib/web-platform-harness/streams-test.ts",
+      "sha256": "f8bf2bc5bbcd92e9ed54f0a6fa8391abaf9b8fe663a2be8d0e5df30ebcb92ebb",
+      "bytes": 42520
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/urlpattern-test.ts",
+      "path": "tests/lib/web-platform-harness/urlpattern-test.ts",
+      "sha256": "18a8efb60c57e25cf07bada6e9e898d205fdccd8811ec5b1bf145c2af4a52876",
+      "bytes": 16282
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/url-test.ts",
+      "path": "tests/lib/web-platform-harness/url-test.ts",
+      "sha256": "c63f07fd83d2d7131b155df2147256014460277e8037a3e85ee34749b6b3e93c",
+      "bytes": 2833
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/performance-timeline-test.ts",
+      "path": "tests/lib/web-platform-harness/performance-timeline-test.ts",
+      "sha256": "8053082c5892a2665d31f637657106063c253295a077f1d7f7c3ea173d41566c",
+      "bytes": 5756
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/urlpattern-standard-test.ts",
+      "path": "tests/lib/web-platform-harness/urlpattern-standard-test.ts",
+      "sha256": "fcf1fca507bea3519b3644fcd78e1aadf90f3c7c032fcc41aa7bc683faacb75d",
+      "bytes": 467
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/webidl-test.ts",
+      "path": "tests/lib/web-platform-harness/webidl-test.ts",
+      "sha256": "45c9bd5630c4f96a9a7d2917f96d5a4511a84516a26a4bc12d128e925384c1c0",
+      "bytes": 4496
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/websockets-test.ts",
+      "path": "tests/lib/web-platform-harness/websockets-test.ts",
+      "sha256": "120c912b2bdce61a115475ef79d4afeda57a15a817bd4bd52665626797ef64ee",
+      "bytes": 13839
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/encoding-test-ts.ts",
+      "path": "tests/lib/web-platform-harness/encoding-test-ts.ts",
+      "sha256": "a9faf30fd5e2a5d20fdf95a2a61e6840a68015734f1be4cba88c608a47611117",
+      "bytes": 7058
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/fs-test.ts",
+      "path": "tests/lib/web-platform-harness/fs-test.ts",
+      "sha256": "7e4a0cbbb37df3a0964969c321dafb82c6626f3b752b5b70c2fd6329b4ff7dc2",
+      "bytes": 13441
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/compression-test.ts",
+      "path": "tests/lib/web-platform-harness/compression-test.ts",
+      "sha256": "4d2e09746da48d3910ebd8a1fa4ea25541e07a25875c88d6434d9f2af7eec2c1",
+      "bytes": 3823
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/streams-test-ts.ts",
+      "path": "tests/lib/web-platform-harness/streams-test-ts.ts",
+      "sha256": "e71db658a09ad69addda2cc62cb636f9383d8c33d18f0a7ae8afd6257b7efb09",
+      "bytes": 10957
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/BUILD.bazel",
+      "path": "tests/lib/web-platform-harness/BUILD.bazel",
+      "sha256": "a3eb5eeeaea1a68a3910a50c29a2d46da0ce1740ff9f0aca69dd8684c7ff2b3d",
+      "bytes": 5030
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/tsconfig.json",
+      "path": "tests/lib/web-platform-harness/tsconfig.json",
+      "sha256": "1ce284c34391d3e2d9801a11a3918f41f549bd0290ea0297e8c19ee73c3dcb5c",
+      "bytes": 285
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/eventsource-test.ts",
+      "path": "tests/lib/web-platform-harness/eventsource-test.ts",
+      "sha256": "abc71d1c7031a22125fa463ebc4db8c85faf91ffe0e02062d257b6de469e20a6",
+      "bytes": 8718
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/eslint.config.mjs",
+      "path": "tests/lib/web-platform-harness/eslint.config.mjs",
+      "sha256": "d6df64a41b3a0c1b7cfbeb60b0116bab8848dfedeee9c93ed26138052b9b3b17",
+      "bytes": 199
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/WebCryptoAPI-test.ts",
+      "path": "tests/lib/web-platform-harness/WebCryptoAPI-test.ts",
+      "sha256": "f053b802357993f28df3a51b56ce9bf8d13363da4c022bdc59f1645676f32fe9",
+      "bytes": 17588
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/harness/common.ts",
+      "path": "tests/lib/web-platform-harness/harness/common.ts",
+      "sha256": "7130db3de24cbf2d92d39b64bc3b533cf3dce5834fa5de410d11e04f65136fb8",
+      "bytes": 5360
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/harness/utils.ts",
+      "path": "tests/lib/web-platform-harness/harness/utils.ts",
+      "sha256": "adcb6e69a15d45c25702cf6a430ca769f52b2ecec4cf5dd5bf6496aa12ee77f4",
+      "bytes": 6074
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/harness/assertions.ts",
+      "path": "tests/lib/web-platform-harness/harness/assertions.ts",
+      "sha256": "9c6281533027f17dbf5cb29b1edc4ee815b71ff4dd1786537f96506ecb8815b0",
+      "bytes": 30213
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/harness/test.ts",
+      "path": "tests/lib/web-platform-harness/harness/test.ts",
+      "sha256": "6b1daacc90ee31971d2e0c14a0627ab6bac29419b398ab4e194f0793f70c3790",
+      "bytes": 10894
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/harness/globals.ts",
+      "path": "tests/lib/web-platform-harness/harness/globals.ts",
+      "sha256": "95d2dd5a03898811a34a0519755dbd3ad5ad73f961a6aa1ed90708b67a7c96e1",
+      "bytes": 5166
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/harness/harness.ts",
+      "path": "tests/lib/web-platform-harness/harness/harness.ts",
+      "sha256": "fe69826262658bc09c3d2fd06232c59930a5bd169e122f0fc9f8437ba699db5f",
+      "bytes": 18810
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/fetch/api-test.ts",
+      "path": "tests/lib/web-platform-harness/fetch/api-test.ts",
+      "sha256": "10493d91430093017d36ea41252b448b4497a946e2e13e1766dbd54aadea1b4c",
+      "bytes": 43593
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/dom/events-test.ts",
+      "path": "tests/lib/web-platform-harness/dom/events-test.ts",
+      "sha256": "de2b0b4bda0bfbc7c3cff1aba106501985cca4125b908a7707d98434ac685b84",
+      "bytes": 3201
+    },
+    {
+      "origin": "workerd@19b1657bd/src/wpt/dom/abort-test.ts",
+      "path": "tests/lib/web-platform-harness/dom/abort-test.ts",
+      "sha256": "41ff1e183a52ebc05cf39c08c2f0b723a18e30e5c7353efbad8150a549428655",
+      "bytes": 696
+    },
+    {
+      "origin": "workerd@19b1657bd/LICENSE",
+      "path": "tests/lib/provenance/workerd-LICENSE",
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "bytes": 10174
+    },
+    {
+      "origin": "workerd@19b1657bd/src/workerd/api/tests/actor-kv-test.js",
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/reference-contracts/actor-kv-test.js",
+      "sha256": "faaf069f57d9e564ce0665263fb271e68c8aeb40eaae23bcb8d763ea792025e6",
+      "bytes": 1766
+    },
+    {
+      "origin": "workerd@19b1657bd/src/workerd/api/tests/global-scope-test.wd-test",
+      "path": "tests/conformance/web-platform/fixtures/reference-contracts/global-scope-test.wd-test",
+      "sha256": "758100ed979d7467651f84f19c11d4d999ebed74f4d8c7cb7e3a5f950a912bea",
+      "bytes": 435
+    },
+    {
+      "origin": "workerd@19b1657bd/src/workerd/api/tests/actor-stub-test.js",
+      "path": "tests/conformance/durable-objects/placement-and-routing/fixtures/reference-contracts/actor-stub-test.js",
+      "sha256": "54815d234a48ff8ee7db2b96fdb15ba41776395eab73d068ffd06ae481e91437",
+      "bytes": 3805
+    },
+    {
+      "origin": "workerd@19b1657bd/src/workerd/api/tests/global-scope-test.js",
+      "path": "tests/conformance/web-platform/fixtures/reference-contracts/global-scope-test.js",
+      "sha256": "1be7707aee5c456bcdf50ae2f84478119f738fc301cda1209e5697175cdb4327",
+      "bytes": 24910
+    },
+    {
+      "origin": "workerd@19b1657bd/src/workerd/api/tests/actor-stub-test.wd-test",
+      "path": "tests/conformance/durable-objects/placement-and-routing/fixtures/reference-contracts/actor-stub-test.wd-test",
+      "sha256": "7be905c22a6ef7bc4bd7d62440a489ab368b79b32c958863a6c4f11840987bea",
+      "bytes": 664
+    },
+    {
+      "origin": "workerd@19b1657bd/src/workerd/api/tests/actor-kv-test.wd-test",
+      "path": "tests/conformance/durable-objects/storage-kv/fixtures/reference-contracts/actor-kv-test.wd-test",
+      "sha256": "85d653b2c79592c5a52d8cc69bb20ed4e372aab17562264c1f731e81f0ef9587",
+      "bytes": 1033
+    },
+    {
+      "origin": "https://raw.githubusercontent.com/web-platform-tests/wpt/8b139c3a3/url/urlsearchparams-sort.any.js",
+      "path": "tests/conformance/web-platform/fixtures/standard-reference/urlsearchparams-sort.any.js",
+      "sha256": "cdfc1ef89cfcefa5fae94ebdeaa2a869c47b47b47d08aba4c7db0b6e44b31fca",
+      "bytes": 1811
+    },
+    {
+      "origin": "https://raw.githubusercontent.com/web-platform-tests/wpt/8b139c3a3/encoding/api-surrogates-utf8.any.js",
+      "path": "tests/conformance/web-platform/fixtures/standard-reference/api-surrogates-utf8.any.js",
+      "sha256": "fe85f6e4f765ee54e3ddecf0407b9d612d978df211b974a99f72ad2a3cfdbab9",
+      "bytes": 1461
+    },
+    {
+      "origin": "https://raw.githubusercontent.com/web-platform-tests/wpt/8b139c3a3/LICENSE.md",
+      "path": "tests/conformance/web-platform/fixtures/standard-reference/LICENSE.md",
+      "sha256": "5fac07febb0e2a97fb0d7b0def149ec08b642e1ba4b9c345283ab1cbd2af6570",
+      "bytes": 1500
+    }
+  ]
+}

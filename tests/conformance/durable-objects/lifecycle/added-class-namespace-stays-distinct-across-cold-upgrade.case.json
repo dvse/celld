@@ -1,0 +1,63 @@
+{
+  "adapter": "deployment",
+  "behaviour": "durable-objects/lifecycle",
+  "contract": {
+    "cleanup": [
+      "Release trusted owned-store hold when possible",
+      "TERM both exact verified QEMU process groups before a shared10s grace",
+      "Escalate only exact verified survivors; reap each within2s",
+      "Enforce independent35s cleanup deadline plus bounded forced reap; cleanup failure cannot earn PASS",
+      "Fresh run ID, bucket, Guest pair and state directories for the next case; store guest lives until final teardown"
+    ],
+    "implementation": {
+      "driver": "driver.py:run_case",
+      "file": "cases.py",
+      "fixtures": "versions/*/fixture.js and wrangler.jsonc; actual selections in named function",
+      "function": "U014"
+    },
+    "intent": "Added class namespace stays distinct across cold upgrade",
+    "oracle": "Root a9 and sibling a12 remain distinct, each with only its own exact writer-tagged operation; original namespace identity remains stable.",
+    "preconditions": [
+      "Exact frozen binary/source pins and real native APIs verified",
+      "No active runtime execution during authoring; future exclusive supervisor approval required",
+      "v1 already deployed with no_bundle, fixture-only credentials and selector/module verification",
+      "Two owned bounded QEMU guests; guest2 store survives runtime-only cold fault",
+      "Case-specific operation/hold/clock barriers must be observed; missed pre-adoption/pre-cold alarm windows or45s fixture overlap fuses are BLOCKED with original receipts"
+    ],
+    "trace": [
+      "Adopt class-add deployment preserving original root",
+      "Create sibling with exactly same name; require distinct native DO IDs",
+      "Concurrently gate root a+2 and sibling a+5, then release",
+      "Cold restore both class scopes"
+    ]
+  },
+  "corpus_id": "U014",
+  "corpus_wave": "deployment-recovery",
+  "fixture": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations",
+  "id": "conformance/durable-objects/lifecycle/added-class-namespace-stays-distinct-across-cold-upgrade",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/deployment-recovery/U014"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/deployment-recovery/U014",
+      "source": "guarded-source-archive/celld-os-stress/waves/deployment-recovery"
+    },
+    {
+      "sha256": "49de28e3fc01e79ef63ba813af9358e5f772ba9002e9ed7da8611dfc07d15a20",
+      "source": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/manifest.json"
+    }
+  ],
+  "phase2_harness": "native generation cutover plus process/bucket recovery",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "U014",
+  "source": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/manifest.json",
+  "source_sha256": "49de28e3fc01e79ef63ba813af9358e5f772ba9002e9ed7da8611dfc07d15a20",
+  "title": "Added class namespace stays distinct across cold upgrade"
+}
