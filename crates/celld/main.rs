@@ -4148,6 +4148,8 @@ async fn async_main(telemetry_config: Option<celld::telemetry::Config>) -> anyho
                         .collect(),
                     assets: None,
                     services: Vec::new(),
+                    json_vars: Vec::new(),
+                    service_props: Vec::new(),
                     crons,
                     containers: Vec::new(),
                     fence_image: None,

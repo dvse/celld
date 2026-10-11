@@ -1916,6 +1916,10 @@ pub struct WorkerConfig {
     /// `[[services]]`: (binding name, target script, optional entrypoint).
     /// The target runs in this process; see [[service-bindings]].
     services: Vec<(String, String, Option<String>)>,
+    /// (var name, JSON text): vars whose value is not a string.
+    json_vars: Vec<(String, String)>,
+    /// (service binding name, JSON text): static `ctx.props` of the target.
+    service_props: Vec<(String, String)>,
     asset_binding: Option<String>,
     /// `env` names of the Worker Loader bindings, if this Worker can spawn
     /// dynamic isolates. A config can declare more than one loader, and each
@@ -2068,6 +2072,8 @@ impl WorkerConfig {
             modules,
             compat,
             services: Vec::new(),
+            json_vars: Vec::new(),
+            service_props: Vec::new(),
             asset_binding: None,
             loader_bindings: Vec::new(),
             egress: EgressPolicy::Allow,
@@ -2176,6 +2182,17 @@ impl WorkerConfig {
     /// Declare the service bindings this Worker may call.
     pub fn with_services(mut self, services: Vec<(String, String, Option<String>)>) -> Self {
         self.services = services;
+        self
+    }
+
+    /// JSON vars and service-binding props from the deployed config.
+    pub fn with_binding_data(
+        mut self,
+        json_vars: Vec<(String, String)>,
+        service_props: Vec<(String, String)>,
+    ) -> Self {
+        self.json_vars = json_vars;
+        self.service_props = service_props;
         self
     }
 

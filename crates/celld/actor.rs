@@ -2471,46 +2471,49 @@ impl Actor {
         };
         Ok(Self {
             node_log: Arc::new(std::sync::Mutex::new(None)),
-            state: ActorState::from(State::new(
-                node,
-                Config {
-                    max_resident: limits.resident,
-                    max_activations: limits.activations,
-                    // Each eviction proves durability, so bound background bucket I/O.
-                    #[cfg(not(all(test, celld_internal_tests)))]
-                    max_evictions: 4,
-                    #[cfg(all(test, celld_internal_tests))]
-                    max_evictions: limits.evictions,
-                    max_releases: limits.releases,
-                    alarm_resident_ms: crate::wake::resident_ms().max(0) as u64,
-                    require_node_lease: true,
-                    peer_protocol: crate::peer_auth::PROTOCOL_VERSION,
-                    operation_deadline_ms: Some(operation_deadline_ms),
-                    owner_log_recovery_backoff_ms: crate::env_vars::positive_or(
-                        "CELLD_RECOVERY_RETRY_MS",
-                        DEFAULT_OWNER_LOG_RECOVERY_BACKOFF_MS,
-                    )?,
-                    owner_log_recovery_attempts: crate::env_vars::positive_or(
-                        "CELLD_RECOVERY_RETRIES",
-                        DEFAULT_OWNER_LOG_RECOVERY_ATTEMPTS,
-                    )?,
-                    idle_evict_ms: crate::env_vars::positive::<u64>("CELLD_IDLE_EVICT_S")?
-                        .map(|seconds| seconds.saturating_mul(1_000)),
-                    pressure: pressure_config_from_environment()?,
-                    max_outbound_websockets: crate::env_vars::positive_or(
-                        "CELLD_MAX_OUTBOUND_WEBSOCKETS",
-                        DEFAULT_MAX_OUTBOUND_WEBSOCKETS,
-                    )?,
-                    ownership_on_evict: match &ownership {
-                        // Releasing a cell says "any node may take this
-                        // one", which is only true if some other node could
-                        // restore it. Without a bucket the sole copy is this
-                        // node's disk, keyed to an epoch a re-acquire will
-                        // step past, so releasing would lose the cell.
-                        Ownership::Memory(_) => OwnershipOnEvict::Sticky,
-                        Ownership::Bucket(_) => ownership_on_evict_from_environment()?,
+            state: ActorState::from(with_placement(
+                State::new(
+                    node,
+                    Config {
+                        max_resident: limits.resident,
+                        max_activations: limits.activations,
+                        // Each eviction proves durability, so bound background bucket I/O.
+                        #[cfg(not(all(test, celld_internal_tests)))]
+                        max_evictions: 4,
+                        #[cfg(all(test, celld_internal_tests))]
+                        max_evictions: limits.evictions,
+                        max_releases: limits.releases,
+                        alarm_resident_ms: crate::wake::resident_ms().max(0) as u64,
+                        require_node_lease: true,
+                        peer_protocol: crate::peer_auth::PROTOCOL_VERSION,
+                        operation_deadline_ms: Some(operation_deadline_ms),
+                        owner_log_recovery_backoff_ms: crate::env_vars::positive_or(
+                            "CELLD_RECOVERY_RETRY_MS",
+                            DEFAULT_OWNER_LOG_RECOVERY_BACKOFF_MS,
+                        )?,
+                        owner_log_recovery_attempts: crate::env_vars::positive_or(
+                            "CELLD_RECOVERY_RETRIES",
+                            DEFAULT_OWNER_LOG_RECOVERY_ATTEMPTS,
+                        )?,
+                        idle_evict_ms: crate::env_vars::positive::<u64>("CELLD_IDLE_EVICT_S")?
+                            .map(|seconds| seconds.saturating_mul(1_000)),
+                        pressure: pressure_config_from_environment()?,
+                        max_outbound_websockets: crate::env_vars::positive_or(
+                            "CELLD_MAX_OUTBOUND_WEBSOCKETS",
+                            DEFAULT_MAX_OUTBOUND_WEBSOCKETS,
+                        )?,
+                        ownership_on_evict: match &ownership {
+                            // Releasing a cell says "any node may take this
+                            // one", which is only true if some other node could
+                            // restore it. Without a bucket the sole copy is this
+                            // node's disk, keyed to an epoch a re-acquire will
+                            // step past, so releasing would lose the cell.
+                            Ownership::Memory(_) => OwnershipOnEvict::Sticky,
+                            Ownership::Bucket(_) => ownership_on_evict_from_environment()?,
+                        },
                     },
-                },
+                ),
+                placement_from_environment()?,
             )),
             ownership,
             peer_http,
@@ -3307,7 +3310,12 @@ impl Actor {
                     // its leases are copies that age while the nodes renew.
                     let (now_ms, result) = match ownership.read_capacity_view().await {
                         Ok((view_ms, peers)) => (view_ms, Ok(peers)),
-                        Err(error) => (now_ms(), Err(error)),
+                        Err(error) => {
+                            // A placement-deferred claim retries on this error;
+                            // pace it while the shared sample is being refreshed.
+                            crate::asyncrt::sleep(std::time::Duration::from_millis(100)).await;
+                            (now_ms(), Err(error))
+                        }
                     };
                     CompletedEffect::timed(
                         Event::CapacityPeersRead { op, now_ms, result },
@@ -4350,3 +4358,26 @@ fn apply_core_event(state: &mut ActorState, event: Event) -> Vec<Effect> {
 
 #[cfg(all(test, celld_internal_tests))]
 include!(env!("CELLD_INTERNAL_ACTOR_OBSERVERS"));
+
+/// `CELLD_PLACEMENT`: a JSON object from class name to the node ids that may
+/// first claim an unowned cell of that class, for example
+/// `{"OverseerDurableObject":["node-b","node-c"]}`. Unset or empty places
+/// every class on the node that routes it, as before.
+fn placement_from_environment() -> anyhow::Result<std::collections::BTreeMap<String, Vec<String>>> {
+    match std::env::var("CELLD_PLACEMENT") {
+        Err(std::env::VarError::NotPresent) => Ok(Default::default()),
+        Err(error) => Err(anyhow::anyhow!("CELLD_PLACEMENT: {error}")),
+        Ok(value) if value.trim().is_empty() => Ok(Default::default()),
+        Ok(value) => serde_json::from_str(&value).map_err(|error| {
+            anyhow::anyhow!("CELLD_PLACEMENT must map class names to node id lists: {error}")
+        }),
+    }
+}
+
+fn with_placement(
+    mut state: State,
+    rules: std::collections::BTreeMap<String, Vec<String>>,
+) -> State {
+    state.set_placement(rules);
+    state
+}

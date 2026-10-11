@@ -1,0 +1,5 @@
+{"name": "bindings-caller", "main": "caller.js", "compatibility_date": "2026-08-14",
+ "durable_objects": {"bindings": [{"name": "BOX", "class_name": "Box", "script_name": "bindings-owner"}]},
+ "services": [{"binding": "ECHO", "service": "bindings-owner", "entrypoint": "Echo", "props": {"tenant": "t1", "n": [1, 2]}},
+              {"binding": "PLAIN", "service": "bindings-owner", "entrypoint": "Echo"}],
+ "vars": {"LIMITS": [3, {"a": "b"}], "NAME": "plain"}}
