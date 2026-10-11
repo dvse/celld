@@ -1,0 +1,27 @@
+{
+  "name": "facet-probe",
+  "main": "index.js",
+  "no_bundle": true,
+  "compatibility_date": "2026-09-16",
+  "worker_loaders": [
+    {
+      "binding": "LOADER"
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "ROOT",
+        "class_name": "Root"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "Root"
+      ]
+    }
+  ]
+}

@@ -1691,6 +1691,9 @@ class DurableObjectStorage {
       throw new Error(
         "storage.sync: " + this._scope + " was aborted; the object is no " +
         "longer running");
+    // Facet clones started before this call are part of what it proves.
+    const clones = this._state?._facetClones;
+    if (clones !== undefined && clones.size > 0) await Promise.all([...clones]);
     await __storage_sync(this._scope);
   }
   async setAlarm(t) {
@@ -2291,34 +2294,46 @@ class DurableObjectFacets {
       });
     const invoke = async (operation) => {
       if (record.aborted) throw record.error;
-      return operation(await start());
+      // A clone of this facet copies what it had committed when clone() was
+      // called, as workerd's synchronous copy does: later calls wait for it.
+      if (record.hold !== undefined) await record.hold;
+      if (record.aborted) throw record.error;
+      const started = await start();
+      if (record.aborted) throw record.error;
+      return operation(started);
     };
     const target = {};
+    // A facet stub belongs to the event context that made it: for a Durable
+    // Object, its incarnation, so its own later events keep using it.
+    const bound = __requestBound("OutgoingFactory");
     // Methods share the loaded-worker RPC transport. A facet stub is not
     // awaitable, and a property is a single callable pipeline node.
     const session = {
       get: () => Promise.reject(new Error(
         "Awaitable properties on facets are not supported yet.")),
-      call: (path, args) => invoke(async ([loader, className, id, propsSc]) => {
+      call: (path, admission) => __admittedCall(admission, (bytes, check) =>
+        invoke(async ([loader, className, id, propsSc]) => {
+        check();
         if (path.length !== 1)
           throw new Error(
             "Pipelined property paths on facets are not supported yet.");
         return __rpcDes(await __facet_rpc(
           loader, className, this._state._scope, record.owner, name, id,
-          propsSc, path[0], __rpcOut(args, true)));
-      }),
+          propsSc, path[0], bytes));
+      })),
     };
     // Arrow closures retain the manager because `target.fetch`'s method
     // receiver is the target object, not the DurableObjectFacets instance.
     const manager = this;
     target.fetch = async function(input, init) {
+      bound();
       return invoke(async ([loader, className, id, propsSc]) => {
         const req = new Request(input, init);
         const headers = JSON.stringify(req.headers.__celldHeaderList);
         const { body, streamId } = await __subrequestBody(req);
         const response = JSON.parse(await __facet_fetch(
           loader, className, manager._state._scope, record.owner, name, id,
-          propsSc, req.url, req.method, body, headers, streamId));
+          propsSc, req.url, req.method, body, headers, streamId, __fetchRestoreBytes()));
         const responseBody = response.streamId !== undefined
           ? new CelldHttpBodyStream(response.streamId)
           : response.body !== undefined ? response.body
@@ -2333,43 +2348,96 @@ class DurableObjectFacets {
         }), req.url);
       });
     };
+    const boundSession = __boundSession(session, bound);
     record.stub = new Proxy(target, {
       get(base, prop) {
         if (prop === "then") return undefined;
         if (Reflect.has(base, prop)) return Reflect.get(base, prop);
         if (typeof prop !== "string") return undefined;
-        return __makeNode(session, [prop], null);
+        return __makeNode(boundSession, [prop], null);
       },
     });
-    __rawRpcMeta.set(record.stub, session);
+    __rawRpcMeta.set(record.stub, boundSession);
+    __boundStubs.set(record.stub, bound);
+    __nontransferableFacets.add(record.stub);
     this._running.set(name, record);
     return record.stub;
   }
   _abort(name, reason) {
     name = this._validName(name);
+    const earlier = this._barriers.get(name);
     const record = this._running.get(name);
-    if (record === undefined) return Promise.resolve();
+    if (record === undefined) return Promise.resolve(earlier);
     record.aborted = true;
     record.error = reason;
     this._running.delete(name);
-    const barrier = record.started === null ? Promise.resolve() : record.started
+    const stopped = record.started === null ? Promise.resolve() : record.started
       .then(([loader, className]) =>
         __facet_abort(
           loader, className, this._state._scope, record.owner, name), () => {});
+    const barrier = Promise.all([earlier, stopped]).then(() => {});
     this._barriers.set(name, barrier);
     const clear = () => {
       if (this._barriers.get(name) === barrier) this._barriers.delete(name);
     };
-    barrier.then(clear, clear);
+    barrier.then(clear, () => {});
     return barrier;
   }
   abort(name, reason) {
     this._abort(name, reason);
   }
+  // workerd's ctx.facets.clone() (api/actor-state.c++ DurableObjectFacets::clone,
+  // server/server.c++ cloneFacet): abort `destination` with "Facet was
+  // cloned-over.", and when the names differ replace its subtree with a copy
+  // of `source`'s. Capture is synchronous across the whole subtree; later
+  // persistence is ordered behind close and owns a root output proof.
+  clone(source, destination) {
+    source = this._validName(source);
+    destination = this._validName(destination);
+    // Capture the prior mutation before _abort installs its own close barrier.
+    const earlier = [source, destination]
+      .map((name) => this._barriers.get(name))
+      .filter((barrier) => barrier !== undefined);
+    const stopped = this._abort(destination, new Error("Facet was cloned-over."));
+    if (source === destination) return;
+    // Capture before returning to JS. Host storage operations in any facet
+    // isolate participate in this cut; asynchronous persistence uses this image.
+    const snapshot = __facet_snapshot(this._state._scope, source, destination);
+    const barrier = Promise.all([...earlier, stopped]).then(() =>
+      __facet_apply(this._state._scope, snapshot), error =>
+      __facet_apply(this._state._scope, snapshot, __describeFailure(error)));
+    const pending = (this._state._facetClones ??= new Set());
+    pending.add(barrier);
+    for (const name of [source, destination]) this._barriers.set(name, barrier);
+    const running = this._running.get(source);
+    if (running !== undefined) {
+      const hold = barrier.catch(() => {});
+      running.hold = hold;
+      hold.then(() => {
+        if (running.hold === hold) running.hold = undefined;
+      });
+    }
+    const clear = () => {
+      pending.delete(barrier);
+      for (const name of [source, destination])
+        if (this._barriers.get(name) === barrier) this._barriers.delete(name);
+    };
+    // A failed clone stays the destination's barrier, as a failed delete
+    // does; the source opens again.
+    barrier.then(clear, () => {
+      // Keep a failed clone in storage.sync()'s proof set. A later sync must
+      // not report success merely because this rejection already settled.
+      if (this._barriers.get(source) === barrier) this._barriers.delete(source);
+    });
+  }
   delete(name) {
     name = this._validName(name);
-    const barrier = this._abort(name, new Error("Facet was deleted.")).then(() =>
-      __facet_delete(this._state._scope, name));
+    const earlier = this._barriers.get(name);
+    const stopped = this._abort(name, new Error("Facet was deleted."));
+    const snapshot = __facet_snapshot(this._state._scope, null, name);
+    const barrier = Promise.all([earlier, stopped]).then(() =>
+      __facet_apply(this._state._scope, snapshot), error =>
+      __facet_apply(this._state._scope, snapshot, __describeFailure(error)));
     this._barriers.set(name, barrier);
     const clear = () => {
       if (this._barriers.get(name) === barrier) this._barriers.delete(name);

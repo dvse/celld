@@ -608,6 +608,9 @@ async fn dispatch_facet(app: AppHandle, req: celld::js::FacetReq) {
         match req {
             FacetReq::Open { reply, .. } => drop(reply.send(Err(error()))),
             FacetReq::Delete { reply, .. } => drop(reply.send(Err(error()))),
+            FacetReq::Clone { reply, .. } => drop(reply.send(Err(error()))),
+            FacetReq::Capture { reply, .. } => drop(reply.send(Err(error()))),
+            FacetReq::Apply { reply, .. } => drop(reply.send(Err(error()))),
             FacetReq::Prove { reply, .. } => drop(reply.send(Err(error()))),
         }
         return;
@@ -625,6 +628,36 @@ async fn dispatch_facet(app: AppHandle, req: celld::js::FacetReq) {
             names,
             reply,
         } => drop(reply.send(runtime.delete_facet(&root, epoch, &names).await)),
+        FacetReq::Clone {
+            root,
+            epoch,
+            source,
+            destination,
+            reply,
+        } => drop(
+            reply.send(
+                runtime
+                    .clone_facet(&root, epoch, &source, &destination)
+                    .await,
+            ),
+        ),
+        FacetReq::Capture {
+            root,
+            epoch,
+            source,
+            destination,
+            cut,
+            reply,
+        } => {
+            let result = runtime
+                .capture_facet_mutation(&root, epoch, source.as_deref(), &destination)
+                .await;
+            drop(cut);
+            drop(reply.send(result));
+        }
+        FacetReq::Apply { mutation, reply } => {
+            drop(reply.send(runtime.apply_facet_mutation(mutation).await));
+        }
         FacetReq::Prove {
             stream,
             epoch,

@@ -1,0 +1,16 @@
+{
+  "id": "UPSTREAM-292",
+  "description": "v0.5.1 facet image survives first v0.6.3 open",
+  "command": [
+    "python3",
+    "run.py"
+  ],
+  "runtimes": [
+    "celld"
+  ],
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "timeout_seconds": 120
+}
