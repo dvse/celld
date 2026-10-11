@@ -1416,6 +1416,40 @@ fn read_project(path: &Path, root: &Path, overrides: &VarOverrides) -> anyhow::R
             .get("class_name")
             .and_then(Value::as_str)
             .ok_or_else(|| anyhow!("durable object binding {name} has no `class_name`"))?;
+        // Wrangler's `environment` selects one of the target script's
+        // Wrangler environments, a separately deployed Worker. celld has no
+        // environments, so the binding would silently reach the wrong
+        // script: refuse it and ask for the deployed name instead.
+        if binding.get("environment").is_some() {
+            bail!(
+                "durable object binding {name} sets `environment`; celld has no Wrangler \
+                 environments, so name the deployed script in `script_name` instead"
+            );
+        }
+        let target_script = binding
+            .get("script_name")
+            .map(|value| {
+                value.as_str().ok_or_else(|| {
+                    anyhow!("durable object binding {name} `script_name` must be a string")
+                })
+            })
+            .transpose()?
+            .filter(|target| *target != script_name);
+        if let Some(target) = target_script {
+            // Another co-hosted script owns the class. This script neither
+            // exports it nor gets its storage; the binding derives the owning
+            // script's ids, and activation selects that script by the id.
+            if !valid_script_name(target) {
+                bail!("durable object binding {name} names an invalid `script_name`: {target:?}");
+            }
+            bindings.push(json!({
+                "type": "durable_object_namespace",
+                "name": name,
+                "class_name": class_name,
+                "script_name": target,
+            }));
+            continue;
+        }
         if !do_classes.iter().any(|class| class == class_name) {
             do_classes.push(class_name.to_string());
         }
@@ -1458,6 +1492,12 @@ fn read_project(path: &Path, root: &Path, overrides: &VarOverrides) -> anyhow::R
         });
         if let Some(entrypoint) = entrypoint {
             encoded["entrypoint"] = json!(entrypoint);
+        }
+        // Static `ctx.props` for the target entrypoint, as in Wrangler.
+        match service.get("props") {
+            None => {}
+            Some(props @ Value::Object(_)) => encoded["props"] = props.clone(),
+            Some(_) => bail!("service binding {binding} `props` must be an object"),
         }
         bindings.push(encoded);
         service_count += 1;
@@ -1880,14 +1920,18 @@ fn read_project(path: &Path, root: &Path, overrides: &VarOverrides) -> anyhow::R
         }));
     }
     let mut vars = BTreeMap::new();
+    let mut json_vars: Vec<(&str, Value)> = Vec::new();
     match object.get("vars") {
         None => {}
         Some(Value::Object(object)) => {
             for (name, value) in object {
-                let value = value
-                    .as_str()
-                    .ok_or_else(|| anyhow!("var binding {name} must be a string"))?;
-                vars.insert(name.as_str(), value);
+                // A non-string var is a JSON value, as in Wrangler.
+                match value.as_str() {
+                    Some(value) => {
+                        vars.insert(name.as_str(), value);
+                    }
+                    None => json_vars.push((name.as_str(), value.clone())),
+                }
             }
         }
         Some(_) => bail!("config `vars` must be an object"),
@@ -1895,7 +1939,7 @@ fn read_project(path: &Path, root: &Path, overrides: &VarOverrides) -> anyhow::R
     // An asset-only project has no Worker to hand a variable to, so a
     // `.dev.vars` or `.env` beside it is residue, not a binding the guard below
     // should refuse in the config's name.
-    let declared_vars = !vars.is_empty();
+    let declared_vars = !vars.is_empty() || !json_vars.is_empty();
     if main.is_some() {
         match overrides {
             VarOverrides::None => {}
@@ -1936,6 +1980,19 @@ fn read_project(path: &Path, root: &Path, overrides: &VarOverrides) -> anyhow::R
             "type": "plain_text",
             "name": name,
             "text": value,
+        }));
+    }
+    for (name, value) in &json_vars {
+        if !valid_binding(name) {
+            bail!("invalid var binding name: {name:?}");
+        }
+        if vars.contains_key(name) {
+            continue;
+        }
+        bindings.push(json!({
+            "type": "json",
+            "name": name,
+            "json": value,
         }));
     }
     if main.is_none()

@@ -410,6 +410,9 @@ pub struct DrainPin {
 #[derive(Clone, Debug)]
 struct Cell {
     phase: Phase,
+    /// Capacity lookups this placement-deferred claim has retried because no
+    /// eligible peer could be read; see `capacity_peers_read`.
+    placement_lookups: u32,
     /// The highest committed-write position a verified proof has covered in
     /// this residency, and the epoch it belongs to. A read-only output that
     /// observed no more than this reveals nothing a crash can still lose, so
@@ -594,6 +597,7 @@ impl Default for Cell {
     fn default() -> Self {
         Self {
             phase: Phase::Inactive,
+            placement_lookups: 0,
             proven_position: None,
             owner_log_recovery_attempts: 0,
             quiescing: false,
@@ -745,6 +749,10 @@ pub struct State {
     /// the same advertised final slot twice by accident.
     capacity_reservations: BTreeMap<NodeId, usize>,
     capacity_samples: BTreeMap<NodeId, u64>,
+    /// Operator placement: the nodes that may first claim a cell of a class.
+    /// A class without a rule may be claimed by any node. See
+    /// `set_placement`.
+    placement: BTreeMap<String, Vec<NodeId>>,
     /// A refusal disproves exactly one load sample. The node becomes eligible
     /// again only after its lease advertises a newer sample.
     capacity_rejections: BTreeMap<NodeId, u64>,
@@ -882,6 +890,7 @@ impl State {
             handoff_requests: BTreeSet::new(),
             capacity_reservations: BTreeMap::new(),
             capacity_samples: BTreeMap::new(),
+            placement: BTreeMap::new(),
             capacity_rejections: BTreeMap::new(),
             node_lease_cache: BTreeMap::new(),
             retired_runtime_ops: BTreeMap::new(),
@@ -3932,6 +3941,38 @@ impl State {
             .retain(|request| self.request_cells.contains_key(request));
     }
 
+    /// Install the operator's placement rules: class name to the nodes that
+    /// may first claim an unowned cell of that class. A rule only steers
+    /// placement; ownership, fencing and takeover are unchanged, and a cell
+    /// already owned elsewhere stays where it is.
+    pub fn set_placement(&mut self, rules: BTreeMap<String, Vec<NodeId>>) {
+        self.placement = rules;
+    }
+
+    /// The placement rule for a cell id `Class:id`, if its class has one.
+    fn placement_nodes(&self, id: &str) -> Option<&Vec<NodeId>> {
+        if self.placement.is_empty() {
+            return None;
+        }
+        let class = id.split_once(':').map_or(id, |(class, _)| class);
+        self.placement.get(class).filter(|nodes| !nodes.is_empty())
+    }
+
+    /// Whether this node should claim `id` itself rather than ask an eligible
+    /// peer. A request a peer already handed over is accepted here, so two
+    /// nodes never pass one activation back and forth.
+    fn placement_defers(&self, id: &str, cell: &Cell) -> bool {
+        let Some(nodes) = self.placement_nodes(id) else {
+            return false;
+        };
+        !nodes.contains(&self.node)
+            && self.config.require_node_lease
+            && !cell.requests.is_empty()
+            && !cell.requests.iter().any(|request| {
+                self.capacity_requests.contains(request) || self.handoff_requests.contains(request)
+            })
+    }
+
     fn begin_capacity_lookup(
         &mut self,
         id: &str,
@@ -3966,6 +4007,10 @@ impl State {
         effects: &mut Vec<Effect>,
     ) {
         if self.refuse_new_ownership_during_drain(id, cell, claim.prior.as_deref(), effects) {
+            return;
+        }
+        if self.placement_defers(id, cell) {
+            self.begin_capacity_lookup(id, cell, claim, effects);
             return;
         }
         if self.has_capacity() {
@@ -4296,8 +4341,28 @@ impl State {
         };
         let claim = claim.clone();
         let issued_mono_ms = *issued_mono_ms;
+        // A claim this node defers under placement must not fall back to a local
+        // claim while the fleet sample is unreadable (it is being refreshed at
+        // startup): look again, a bounded number of times, then fail the
+        // requests so their callers retry instead of misplacing the cell.
+        let deferred = self.placement_defers(&id, &cell);
+        let retry_placement = |state: &mut Self, cell: &mut Cell, effects: &mut Vec<Effect>| {
+            if cell.placement_lookups < 200 {
+                cell.placement_lookups += 1;
+                state.begin_capacity_lookup(&id, cell, claim.clone(), effects);
+            } else {
+                cell.placement_lookups = 0;
+                set_phase(&mut state.occupied, cell, Phase::Inactive);
+                state.finish_requests(&id, cell, Err(RequestError::NodeUnavailable), effects);
+            }
+        };
         let peers = match result {
             Ok(peers) => peers,
+            Err(_) if deferred => {
+                retry_placement(self, &mut cell, effects);
+                self.cells.insert(id, cell);
+                return;
+            }
             Err(_) => {
                 // The lookup did not answer, so the fleet's room is unknown.
                 // The sample it reads is shared and periodic, so a claim race
@@ -4331,8 +4396,17 @@ impl State {
             }
         }
 
+        // A placement rule restricts the candidates and picks among them by a
+        // stable hash of the cell id, so one class spreads over its nodes and
+        // a cell asks the same node again.
+        let placement = self.placement_nodes(&id).cloned();
         let selected = peers
             .into_iter()
+            .filter(|peer| {
+                placement
+                    .as_ref()
+                    .is_none_or(|nodes| nodes.contains(&peer.node))
+            })
             .filter(|peer| {
                 peer.node != self.node
                     && peer.expires_ms > now_ms
@@ -4355,12 +4429,17 @@ impl State {
                 (peer, projected)
             })
             .min_by_key(|(peer, projected)| {
+                let spread = match &placement {
+                    Some(_) => placement_hash(&id, &peer.node),
+                    None => 0,
+                };
                 // The third key is the memory the peer holds, which is what
                 // the peer decides its own pressure on. A peer from before that
                 // field existed reports nothing, and its resident set size is
                 // the only number available -- which reads as more loaded than
                 // it is, and is the conservative direction for a tiebreak.
                 (
+                    spread,
                     *projected,
                     peer.host_websockets,
                     peer.in_use_bytes.unwrap_or(peer.rss_bytes),
@@ -4368,7 +4447,13 @@ impl State {
                 )
             });
 
+        if selected.is_none() && deferred {
+            retry_placement(self, &mut cell, effects);
+            self.cells.insert(id, cell);
+            return;
+        }
         if let Some((peer, _)) = selected {
+            cell.placement_lookups = 0;
             *self
                 .capacity_reservations
                 .entry(peer.node.clone())
@@ -7116,4 +7201,14 @@ fn runtime_epoch(phase: &Phase) -> Option<Epoch> {
         | Phase::Resident { epoch } => Some(*epoch),
         _ => None,
     }
+}
+
+/// A stable 64-bit FNV-1a hash of a cell id and a node, for placement.
+fn placement_hash(id: &str, node: &str) -> u64 {
+    let mut hash: u64 = 0xcbf2_9ce4_8422_2325;
+    for byte in id.bytes().chain([0]).chain(node.bytes()) {
+        hash ^= u64::from(byte);
+        hash = hash.wrapping_mul(0x0000_0100_0000_01b3);
+    }
+    hash
 }
