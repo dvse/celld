@@ -1,0 +1,1 @@
+{"id": "R9-03", "description": "Reusable class props channel snapshots", "command": ["python3", "run.py"], "runtimes": ["celld", "workerd"], "profiles": ["quick", "full"], "timeout_seconds": 240, "expected_failure": null}

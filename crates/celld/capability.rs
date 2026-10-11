@@ -197,6 +197,17 @@ pub(crate) fn peer_auth() -> Option<Arc<crate::peer_auth::PeerAuth>> {
     TRANSPORT.get().map(|transport| transport.auth.clone())
 }
 
+/// See `capability_ops::restore_control_token`.
+pub(crate) fn restore_control_token() -> String {
+    match TRANSPORT.get() {
+        Some(transport) => transport.auth.restore_control_token(),
+        None => {
+            static LOCAL: OnceLock<String> = OnceLock::new();
+            LOCAL.get_or_init(random_id).clone()
+        }
+    }
+}
+
 pub(crate) fn configured() -> bool {
     TRANSPORT.get().is_some()
 }

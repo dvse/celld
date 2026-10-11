@@ -2108,6 +2108,33 @@ const __capturePropsBytes = (props) => {
   const tree = __storedLift(props, true);
   return tree === null ? __sc_encode(props) : __tagged(1, __sc_encode(tree));
 };
+// Validate already captured channel graphs without restoring clients. STORAGE
+// usage is transitive through opaque props, as ChannelTokenContext::encode() is.
+const __validateStoredProps = (bytes) => {
+  if (bytes === undefined || bytes.length === 0 || bytes[0] !== 1) return;
+  const seen = new Set();
+  const visit = value => {
+    if (value === null || typeof value !== "object" || seen.has(value)) return;
+    seen.add(value);
+    if (Object.hasOwn(value, "__celld$svc") && value.a !== true)
+      throw new DOMException("The nested target worker did not enable allow_irrevocable_stub_storage.", "DataCloneError");
+    if (Object.hasOwn(value, "__celld$class") &&
+        JSON.parse(value["__celld$class"]).allow_storage !== true)
+      throw new DOMException("The nested class target did not enable allow_irrevocable_stub_storage.", "DataCloneError");
+    // Configured bindings have no durable channel token in celld. The same
+    // restriction applies whether the binding is direct or hidden in props.
+    if (Object.hasOwn(value, "__celld$svcb"))
+      throw new DOMException("Configured service bindings cannot be stored without a persistent channel.", "DataCloneError");
+    if ((Object.hasOwn(value, "__celld$svc") || Object.hasOwn(value, "__celld$class")) &&
+        Object.hasOwn(value, "q")) __validateStoredProps(value.q);
+    if (value instanceof Map) for (const [k,v] of value) { visit(k); visit(v); }
+    else if (value instanceof Set) for (const v of value) visit(v);
+    else if (Object.getPrototypeOf(value) === Object.prototype ||
+        Object.getPrototypeOf(value) === null || Array.isArray(value))
+      for (const key of Object.keys(value)) visit(value[key]);
+  };
+  visit(__sc_decode(bytes.subarray(1)));
+};
 const __captureLoaderProps = (props) => {
   let bytes = __capturePropsBytes(props);
   if (bytes === undefined) return undefined;
@@ -3930,6 +3957,10 @@ const __ctxRun = (id, fn) => {
   if (create) __ctxNativeThrough = id;
   const prior = __als_get();
   const frame = new Map(prior);
+  // A fresh request context starts no restore chain of its own: a chain
+  // reaches a receiver only through the restore interceptions, as workerd
+  // passes a restored self-token factory only with the restored call.
+  if (fresh) frame.delete(__restoreContextKey);
   frame.set(__ctxKey, id);
   __als_set(frame);
   try {
@@ -4626,10 +4657,14 @@ const __stubLift = (value, allowCapabilities = true, originals, duplicate = fals
       const marker = { "__celld$persistent": null };
       seen.set(v, marker);
       marker["__celld$persistent"] = lift(persistent.descriptor);
-      if (persistent.live !== undefined && !(persistent.live instanceof Promise)) {
-        marker.l = lift(persistent.live);
-        if (!duplicate) persistent.live = undefined;
-      }
+      // RPC carries one live/promised client as well as its storage channel.
+      // A descriptor-only snapshot is reserved for Frankenvalue/storage.
+      const client = __persistentWireClient(persistent);
+      const clientMeta = __stubMeta.get(client);
+      rollbackRefs.push(clientMeta);
+      marker.l = lift(client);
+      commitMoves.push(() => __disposeStub(clientMeta));
+      if (!duplicate) (rootDisposer !== undefined ? pipelineMoves : commitMoves).push(() => v[Symbol.dispose]());
       return marker;
     }
     const meta = __stubMeta.get(v);
@@ -5148,12 +5183,12 @@ const __rpcWalk = async (root, path, args, entrypointRoot, onStart) => {
     onStart?.();
     return dispatched;
   }
-  if (path.length === 1 && path[0] === __restoreReplay) {
+  if (path.length === 1 && path[0] === __restoreControlNames().replay) {
     const restoring = __restoreAt(root, ...args);
     onStart?.();
     return restoring;
   }
-  if (path.length === 1 && path[0] === __restoreInvoke) {
+  if (path.length === 1 && path[0] === __restoreControlNames().invoke) {
     const [descriptor, nextPath, nextArgs] = args;
     return __withRestore(descriptor,
       () => __rpcWalk(root, nextPath, nextArgs, entrypointRoot, onStart));
@@ -5738,8 +5773,18 @@ const __nontransferableFacets = new WeakSet();
 const __restoreReceivers = new WeakMap();
 const __restoreOrigins = new WeakMap();
 const __restoreContextKey = Symbol("celld.restore-chain");
-const __restoreReplay = "__celld$restore$replay";
-const __restoreInvoke = "__celld$restore$invoke";
+// Restore control operations travel as RPC method names, so the names carry a
+// fleet secret from the host: application code cannot name them, and the
+// ordinary entrypoint resolver never sees them. The harness never forwards
+// them to a pure-JS (Cap'n Web) target, so the secret does not leave celld.
+// Resolved on first use, during a request, after the node has configured its
+// fleet transport; never during isolate setup.
+let __restoreControl;
+const __restoreControlNames = () => __restoreControl ??= (() => {
+  const token = __restore_control_token();
+  return { replay: "$celld-restore-replay-" + token,
+           invoke: "$celld-restore-invoke-" + token };
+})();
 const __persistentEnabled = () =>
   globalThis.Cloudflare?.compatibilityFlags?.allow_irrevocable_stub_storage === true;
 const __requirePersistence = () => {
@@ -5757,36 +5802,40 @@ const __restoreParent = () => __als_get()?.get(__restoreContextKey);
 const __persistentTarget = (target) => {
   if (target === null ||
       (typeof target !== "object" && typeof target !== "function"))
-    throw new TypeError("[restore]() must return an RPC capability.");
+    throw new TypeError("The [restore]() method must return a ServiceStub or RpcStub.");
   if (!(target instanceof __cf.RpcTarget) && typeof target !== "function" &&
       !__rawRpcMeta.has(target) && !__doStubMeta.has(target) &&
       !__outboundMeta.has(target) && !__persistentMeta.has(target))
-    throw new TypeError("[restore]() must return an RPC capability.");
+    throw new TypeError("The [restore]() method must return a ServiceStub or RpcStub.");
   return target;
 };
 const __restoreAt = async (target, descriptor, index) => {
   __requirePersistence();
   if (!descriptor || !Array.isArray(descriptor.steps) ||
-      descriptor.steps.length > 64 || index >= descriptor.steps.length)
+      descriptor.steps.length > 64 || !Number.isInteger(index) || index < 0 ||
+      index >= descriptor.steps.length)
     throw new TypeError("Invalid persistent RPC restore chain.");
   const parent = { root: descriptor.root, steps: descriptor.steps.slice(0, index) };
   const next = await __withRestore(parent, () => {
     const method = target[__restoreSymbol];
-    if (typeof method !== "function") throw new TypeError("Receiver has no [restore]() method.");
+    if (typeof method !== "function") throw new TypeError("The WorkerEntrypoint or DurableObject class does not implement a [restore]() method.");
     return method.call(target, descriptor.steps[index]);
   });
   __persistentTarget(next);
-  if (index + 1 === descriptor.steps.length) return next;
-  return __persistentInvokeTarget(next, __restoreReplay, [descriptor, index + 1]);
+  if (index + 1 === descriptor.steps.length)
+    return __nontransferableFacets.has(next) ? __makeStub(__newEntry(next), false) : next;
+  return __persistentInvokeTarget(next, __restoreControlNames().replay, [descriptor, index + 1]);
 };
 const __persistentInvokeTarget = (target, operation, payload) => {
+  // Native stubs only: the receiving harness intercepts the control name.
   const raw = __rawRpcMeta.get(target);
-  if (raw) return raw.call([operation], payload);
+  if (raw) return raw.call([operation], __admitAt(raw, [operation], payload));
   const stub = __stubMeta.get(target);
-  if (stub) return __stubOp(stub, [operation], payload);
+  if (stub) return __stubOp(stub, [operation], __rpcAdmit(payload));
   const persisted = __persistentMeta.get(target);
-  if (persisted) return __persistentCall(persisted, [operation], payload);
-  if (operation === __restoreReplay) return __restoreAt(target, ...payload);
+  if (persisted) return __persistentCall(persisted, [operation],
+    __persistentAdmit(persisted, [operation], payload));
+  if (operation === __restoreControlNames().replay) return __restoreAt(target, ...payload);
   const [descriptor, path, args] = payload;
   return __withRestore(descriptor, () => __rpcWalk(target, path, args, false));
 };
@@ -5794,45 +5843,84 @@ const __restoreFromRoot = (descriptor) => {
   const root = descriptor.root;
   if (root.kind === "actor")
     return __rpcDesPromise(__rpc_call(root.scope, root.name ?? null,
-      __restoreReplay, __rpcOut([descriptor, 0], true)));
+      __restoreControlNames().replay, __rpcOut([descriptor, 0], true)));
   if (root.kind === "service")
     return __rpcDesPromise(__svc_rpc(root.script, root.name,
-      JSON.stringify([__restoreReplay]), __rpcOut([descriptor, 0], true),
-      root.props === undefined ? new Uint8Array() : __rpcOut(root.props, true)));
+      JSON.stringify([__restoreControlNames().replay]), __rpcOut([descriptor, 0], true),
+      root.props === undefined ? new Uint8Array() : __capturePropsBytes(root.props)));
   throw new TypeError("Invalid persistent RPC root.");
 };
 const __rpcDesPromise = async (value) => __rpcDes(await value);
-const __persistentCall = async (meta, path, args) => {
+// Admit a call before any await. A pending restoration is a promised client:
+// register its independent reference before wrapper disposal can release it.
+const __persistentAcquire = (meta) => {
   if (meta.disposed) throw __stubDisposedError();
-  let live = await (meta.live ??= __restoreFromRoot(meta.descriptor));
-  if (!__stubMeta.has(live)) live = __makeStub(__newEntry(live), typeof live === "function");
-  if (meta.disposed) throw __stubDisposedError();
-  meta.live = live;
-  // Prepare once: capability transfer is a move. A proven pre-dispatch
-  // rejection must resend the same owning envelope, not serialize disposed
-  // argument handles or already-locked streams a second time.
-  const prepared = __rpcOut([meta.descriptor, path, args], true);
+  __checkStubOwner(meta);
+  const handle = target => __stubMeta.has(target) ? target
+    : __makeStub(__newEntry(target), typeof target === "function");
+  const live = meta.live ?? __restoreFromRoot(meta.descriptor);
+  if (live instanceof Promise) {
+    const ready = live.then(target => {
+      const resolved = handle(target);
+      if (meta.live === ready) meta.live = resolved;
+      return resolved;
+    });
+    meta.live = ready;
+    return ready.then(target => target.dup());
+  }
+  meta.live = handle(live);
+  return meta.live.dup();
+};
+// A promised client is exported through an owned forwarding endpoint. It
+// resolves once, preserves failure, and never reconstructs from the descriptor.
+const __persistentWireClient = (meta) => {
+  const acquired = __persistentAcquire(meta);
+  if (!(acquired instanceof Promise)) return acquired;
+  acquired.catch(() => {});
+  const target = {
+    [Symbol.dispose]() { return acquired.then(client => client[Symbol.dispose](), () => {}); },
+  };
+  __rawRpcMeta.set(target, {
+    async get(path) { return __stubOp(__stubMeta.get(await acquired), path, null); },
+    async call(path, admission) { return __stubOp(__stubMeta.get(await acquired), path, admission); },
+  });
+  const entry = __newEntry(target);
+  return __makeStub(entry, true);
+};
+// The restore-chain envelope is the persistent dispatcher's parameter form.
+const __persistentAdmit = (meta, path, args) =>
+  __rpcAdmit([meta.descriptor, path, args]);
+const __persistentCall = async (meta, path, admission) => {
+  // Both the target and parameters belong to this invocation before it yields.
+  // A promised target delays dispatch, never parameter cloning/duplication.
+  let acquired;
+  try { acquired = __persistentAcquire(meta); }
+  catch (error) { admission.release(); throw error; }
+  let live;
   try {
-    return await __stubOp(__stubMeta.get(live), [__restoreInvoke], [], prepared);
-  } catch (error) {
-    // Retry only a direct dispatch rejection proven to precede execution.
-    // Timeouts, lost replies and user-code errors may follow committed side
-    // effects and are never replayed automatically.
-    if (!__capabilityNotExecuted.has(error) || meta.disposed) throw error;
-    meta.live = __restoreFromRoot(meta.descriptor);
-    let restored = await meta.live;
-    if (meta.disposed) throw __stubDisposedError();
-    if (!__stubMeta.has(restored))
-      restored = __makeStub(__newEntry(restored), typeof restored === "function");
-    meta.live = restored;
-    return __stubOp(__stubMeta.get(restored), [__restoreInvoke], [], prepared);
+    live = await acquired;
+    // A resolved persistent stub never reconnects to another incarnation.
+    return await __stubOp(__stubMeta.get(live), [__restoreControlNames().invoke], admission);
+  } finally {
+    // Idempotent after adoption; otherwise releases arguments when restoration
+    // or dispatch fails, without waiting for the source byte buffer's GC.
+    admission.release();
+    if (live !== undefined) live[Symbol.dispose]();
+    else Promise.resolve(acquired).then(target => target[Symbol.dispose](), () => {});
   }
 };
 const __makePersistentStub = (descriptor, live) => {
-  const meta = { descriptor, live, disposed: false };
+  // Even a token-only client is an IoContext-owned resource. Only decoding a
+  // transferred/stored token establishes a new owner; first use cannot do so.
+  const meta = { descriptor, live, disposed: false, owner: __io_context_id() };
   const session = {
-    get: path => __persistentCall(meta, path, null),
-    call: (path, args) => __persistentCall(meta, path, args),
+    acquire: () => {
+      if (meta.disposed) throw __stubDisposedError();
+      __checkStubOwner(meta);
+    },
+    admit: (path, args) => __persistentAdmit(meta, path, args),
+    get: path => __persistentCall(meta, path, __persistentAdmit(meta, path, null)),
+    call: (path, admission) => __persistentCall(meta, path, admission),
   };
   const stub = new Proxy(function () {}, {
     getPrototypeOf: () => __cf.RpcStub.prototype,
@@ -5846,15 +5934,23 @@ const __makePersistentStub = (descriptor, live) => {
           if (typeof disposer === "function") return disposer.call(target);
         }).catch(() => {});
       };
+      // workerd JsRpcStub::dup copies the live capability with the token
+      // (api/worker-rpc.c++), so a dup acts on the same restored object.
       if (prop === "dup") return () => {
         if (meta.disposed) throw __stubDisposedError();
-        return __makePersistentStub(descriptor, undefined);
+        __checkStubOwner(meta);
+        const dupLive = (target) =>
+          typeof target?.dup === "function" ? target.dup() : undefined;
+        const live = meta.live;
+        const liveDup = live === undefined ? undefined
+          : live instanceof Promise ? live.then(dupLive) : dupLive(live);
+        return __makePersistentStub(descriptor, liveDup);
       };
       if (typeof prop !== "string") return undefined;
-      return __makeNode(session, [prop], null);
+      return __makeNode(session, [prop], meta.owner);
     },
     apply: (_base, _this, args) => __makeNode(
-      __valueSession(__persistentCall(meta, [], args)), [], null),
+      __valueSession(__invokeAdmitted(session, [], args)), [], meta.owner),
   });
   __persistentMeta.set(stub, meta);
   return stub;
@@ -5863,15 +5959,26 @@ const __ctxRestore = async (ctx, params) => {
   __requirePersistence();
   const target = __restoreReceivers.get(ctx);
   if (!target) throw new Error("ctx.restore() requires an RPC receiver.");
-  let parent = __restoreParent();
-  if (parent === undefined) {
-    let root = __restoreOrigins.get(ctx);
-    if (ctx instanceof DurableObjectState && ctx._facetDepth === 0)
-      root = { kind: "actor", scope: ctx._scope, name: ctx.id.name };
-    if (!root || __cell.script.startsWith("__loader:"))
-      throw new Error("A dynamic worker or facet requires a parent restore chain.");
-    parent = { root, steps: [] };
-  }
+  // workerd roots a chain at every static entrypoint and every top-level
+  // Durable Object, whatever chain the call arrived on (server/server.c++:
+  // a root actor "MUST NOT accept a restoredSelfTokenFactory passed in from
+  // the caller"; a static entrypoint always mints its own self-token). Only
+  // Dynamic Workers and facets inherit the restored chain
+  // (io/io-channels.h).
+  const loader = __cell.script.startsWith("__loader:");
+  let root;
+  if (!loader && ctx instanceof DurableObjectState && ctx._facetDepth === 0)
+    root = { kind: "actor", scope: ctx._scope, name: ctx.id.name };
+  else if (!loader && !(ctx instanceof DurableObjectState))
+    root = __restoreOrigins.get(ctx);
+  let parent = root === undefined ? __restoreParent() : { root, steps: [] };
+  if (parent === undefined)
+    throw new Error("ctx.restore() cannot be used in this context because the system does " +
+      "not know how to restore this context itself, in order to be able to invoke its " +
+      "[restore]() method. This may happen if the current worker is a Dynamic Worker or a " +
+      "Durable Object Facet (or both), and the immediate caller did not specify how to " +
+      "restore it. To fix this, ensure that the caller of this Worker uses a stub that was " +
+      "created via its own context.restore().");
   if (parent.steps.length >= 64) throw new Error("Persistent restore chain is too deep.");
   // Snapshot parameters using the durable-only codec: transient capabilities
   // in arguments must fail here, before they can enter a persistent token.
@@ -5880,7 +5987,7 @@ const __ctxRestore = async (ctx, params) => {
     : __storedRevive(__sc_decode(__sc_encode(lifted)));
   const descriptor = { root: parent.root, steps: [...parent.steps, saved] };
   const method = target[__restoreSymbol];
-  if (typeof method !== "function") throw new TypeError("Receiver has no [restore]() method.");
+  if (typeof method !== "function") throw new TypeError("The WorkerEntrypoint or DurableObject class does not implement a [restore]() method.");
   const live = __persistentTarget(await __withRestore(parent,
     () => method.call(target, saved)));
   const handle = __stubMeta.has(live) || __persistentMeta.has(live)
@@ -5922,6 +6029,7 @@ const __storedLift = (value, transferOnly = false) => {
       lifted = true;
       const marker = { "__celld$class": reference };
       seen.set(v, marker);
+      if (!transferOnly) __validateStoredProps(durableClass.propsSc);
       marker.q = durableClass.propsSc;
       return marker;
     }
@@ -5959,6 +6067,7 @@ const __storedLift = (value, transferOnly = false) => {
       const marker = { "__celld$svc": svc.name, s: svc.script, a: svc.persistent };
       seen.set(v, marker);
       if (svc.propsSc !== undefined) {
+        if (!transferOnly) __validateStoredProps(svc.propsSc);
         marker.q = svc.propsSc;
       }
       return marker;
@@ -6618,9 +6727,9 @@ const __rpcTargetMethod = async (scope, method) => {
       "order to enable RPC, make sure your class extends the " +
       "special class `DurableObject`, which can be imported from " +
       "the module \"cloudflare:workers\".");
-  if (method === __restoreReplay)
+  if (method === __restoreControlNames().replay)
     return [inst, function(descriptor, index) { return __restoreAt(this, descriptor, index); }];
-  if (method === __restoreInvoke)
+  if (method === __restoreControlNames().invoke)
     return [inst, function(descriptor, path, args) {
       return __withRestore(descriptor, () => __rpcWalk(this, path, args, true));
     }];
@@ -6710,7 +6819,10 @@ const __constructEntrypoint = (cls, props) => {
 // work that Cloudflare delivers to one receiver.
 const __newEntrypointInstance = (name, props) => {
   const inst = __constructEntrypoint(__entrypointClass(name), props);
-  if (!__cell.script.startsWith("__loader:"))
+  // An entrypoint that does not keep its context (no `this.ctx`) has no
+  // restore origin to record.
+  if (!__cell.script.startsWith("__loader:") && inst.ctx !== null &&
+      typeof inst.ctx === "object")
     __restoreOrigins.set(inst.ctx, { kind: "service", script: __cell.script,
       name, props });
   return inst;
@@ -10834,7 +10946,9 @@ const __cf = __celld.__cf = {
   DurableObject: class DurableObject {
     constructor(ctx, env) {
       this.ctx = ctx; this.env = env;
-      __restoreReceivers.set(ctx, this);
+      // Application code may construct an entrypoint or object itself, with
+      // no host context; only a host context is a restore receiver.
+      if (ctx !== null && typeof ctx === "object") __restoreReceivers.set(ctx, this);
     }
   },
   // The enumerable function-valued brand makes V8's structured clone
@@ -10852,7 +10966,9 @@ const __cf = __celld.__cf = {
   WorkerEntrypoint: class WorkerEntrypoint {
     constructor(ctx, env) {
       this.ctx = ctx; this.env = env;
-      __restoreReceivers.set(ctx, this);
+      // Application code may construct an entrypoint or object itself, with
+      // no host context; only a host context is a restore receiver.
+      if (ctx !== null && typeof ctx === "object") __restoreReceivers.set(ctx, this);
     }
   },
   // Base class for `workflows` classes. The reserved workflow cell

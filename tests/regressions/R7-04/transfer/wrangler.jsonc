@@ -1,0 +1,1 @@
+{"name": "r7-04-transfer", "main": "index.js", "compatibility_date": "2026-08-01", "compatibility_flags": ["allow_irrevocable_stub_storage", "rpc_params_transfer_stubs"], "durable_objects": {"bindings": [{"name": "ACTOR", "class_name": "Actor"}, {"name": "RECEIVER", "class_name": "Receiver"}]}, "migrations": [{"tag": "v1", "new_sqlite_classes": ["Actor", "Receiver"]}]}
