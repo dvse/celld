@@ -1132,6 +1132,63 @@ mod not_executed_tests {
     }
 }
 
+/// The HTTP half of a live Fetcher. It has the same incarnation and ordering
+/// authority as its RPC half, but carries native body streams and upgrades.
+pub const FETCH_ENTRYPOINT: &str = "\0celld-capability-fetch-v1";
+#[derive(Clone, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct FetchControl {
+    #[serde(default)]
+    pub session: Option<String>,
+    pub route: Route,
+    pub order: Option<CallOrder>,
+    pub restore: Vec<u8>,
+}
+pub struct Fetch {
+    pub control: FetchControl,
+    pub url: String,
+    pub method: String,
+    pub body: crate::js::RequestBody,
+    pub headers: Vec<(String, String)>,
+}
+pub type FetchDispatch = Arc<
+    dyn Fn(Fetch) -> Pin<Box<dyn Future<Output = Result<crate::js::HttpResponse>> + Send>>
+        + Send
+        + Sync,
+>;
+static FETCH_DISPATCH: OnceLock<FetchDispatch> = OnceLock::new();
+pub fn configure_fetch(dispatch: FetchDispatch) {
+    assert!(
+        FETCH_DISPATCH.set(dispatch).is_ok(),
+        "capability HTTP transport already configured"
+    );
+}
+pub(crate) async fn fetch_ordered(
+    call: Fetch,
+    mut slot: CallerOrderSlot,
+) -> Result<crate::js::HttpResponse> {
+    let local = local_route(&call.control.route);
+    let mut result = FETCH_DISPATCH
+        .get()
+        .context("capability HTTP transport unavailable")?(call)
+    .await;
+    // As for RPC: only the remote callee's resolution header disarms the
+    // skip; a same-process call keeps it armed until the call ends.
+    if let Ok(response) = &mut result {
+        let before = response.headers.len();
+        response
+            .headers
+            .retain(|(name, _)| !name.eq_ignore_ascii_case(ORDER_RESOLVED_HEADER));
+        if !local && response.headers.len() != before {
+            slot.delivered();
+        }
+    }
+    result
+}
+#[cfg(test)]
+#[path = "../../tests/regressions/OR1-01/native_http.rs"]
+mod same_process_fetch_slot_regressions;
+
 pub fn local_route(route: &Route) -> bool {
     route.process == process()
 }
@@ -1152,4 +1209,94 @@ pub fn verify_peer_route(route: &Route) -> Result<()> {
         "capability owner has no peer route"
     );
     Ok(())
+}
+#[derive(Serialize, Deserialize)]
+pub(crate) struct FetchInvocation {
+    pub control: FetchControl,
+    pub started: String,
+}
+pub async fn invoke_local_fetch(call: Fetch) -> Result<crate::js::HttpResponse> {
+    let route = &call.control.route;
+    let _slot = OrderSlot::new(
+        route,
+        call.control.order.as_ref(),
+        call.control.session.as_deref(),
+    );
+    preflight(route)?;
+    let mut permit = ordered_admission(
+        route,
+        call.control.order.as_ref(),
+        call.control.session.as_deref(),
+    )
+    .await?;
+    let slot = exports()
+        .lock()
+        .unwrap()
+        .get(&route.token)
+        .and_then(|entry| entry.slot.upgrade())
+        .context("capability owner isolate is gone")?;
+    let _live = slot
+        .try_affiliate_capability()
+        .await
+        .context("capability owner isolate retired")?;
+    let (reply, mut receive) = tokio::sync::oneshot::channel();
+    let ticket = StartTicket(random_id());
+    let (send_start, mut receive_start) = tokio::sync::oneshot::channel();
+    starts()
+        .lock()
+        .unwrap()
+        .insert(ticket.0.clone(), send_start);
+    let invocation = FetchInvocation {
+        control: call.control,
+        started: ticket.0.clone(),
+    };
+    let cancellation = CancelCall {
+        slot: slot.clone(),
+        invocation: serde_json::to_vec(&Invocation {
+            route: invocation.control.route.clone(),
+            started: ticket.0.clone(),
+        })?,
+        armed: true,
+    };
+    let job = crate::WorkerJob::Fetch {
+        queued_at: std::time::Instant::now(),
+        entrypoint: Some(crate::WorkerFetchEntrypoint {
+            name: FETCH_ENTRYPOINT.into(),
+            restore: None,
+            props: serde_json::to_vec(&invocation)?.into(),
+        }),
+        invocation_limits: None,
+        url: call.url,
+        method: call.method,
+        body: call.body,
+        headers: call.headers,
+        request_id: None,
+        tail_report: None,
+        reply,
+    };
+    let mut driving = Running(Some(tokio::spawn(crate::runtime::drive_capability(
+        slot, job,
+    ))));
+    let completed = crate::asyncrt::select! {
+        _ = &mut receive_start => { permit.take(); receive.await },
+        result = &mut receive => { permit.take(); result },
+    };
+    match completed {
+        Ok(result) => {
+            driving.0.take();
+            result.map(|mut response| {
+                if let Some(stream) = response.stream.take() {
+                    response.stream = Some(Box::pin(futures_util::stream::unfold(
+                        (stream, cancellation),
+                        |(mut stream, cancel)| async move {
+                            use futures_util::StreamExt;
+                            stream.next().await.map(|item| (item, (stream, cancel)))
+                        },
+                    )));
+                }
+                response
+            })
+        }
+        Err(_) => Err(anyhow!("capability HTTP owner dropped reply")),
+    }
 }

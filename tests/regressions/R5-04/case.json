@@ -1,0 +1,1 @@
+{"id": "R5-04", "description": "Restored Fetcher HTTP, storage, streaming, upgrades and restored self", "command": ["python3", "../R5-03/http_runner.py"], "runtimes": ["celld", "workerd"], "profiles": ["quick", "full"], "timeout_seconds": 150, "expected_failure": null}

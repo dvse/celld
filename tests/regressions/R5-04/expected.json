@@ -1,0 +1,95 @@
+{
+  "service": {
+    "direct": {
+      "status": 201,
+      "header": "http",
+      "body": "payload"
+    },
+    "transferred": {
+      "status": 201,
+      "header": "http",
+      "body": "payload"
+    },
+    "reloaded": {
+      "status": 201,
+      "header": "http",
+      "body": "payload"
+    },
+    "self": "73",
+    "websocket": {
+      "status": 101,
+      "header": "upgrade",
+      "message": "echo:ping"
+    }
+  },
+  "do": {
+    "direct": {
+      "status": 201,
+      "header": "http",
+      "body": "payload"
+    },
+    "transferred": {
+      "status": 201,
+      "header": "http",
+      "body": "payload"
+    },
+    "reloaded": {
+      "status": 201,
+      "header": "http",
+      "body": "payload"
+    },
+    "self": "73",
+    "websocket": {
+      "status": 101,
+      "header": "upgrade",
+      "message": "echo:ping"
+    }
+  },
+  "facet": {
+    "direct": {
+      "status": 201,
+      "header": "http",
+      "body": "payload"
+    },
+    "transferred": {
+      "status": 201,
+      "header": "http",
+      "body": "payload"
+    },
+    "reloaded": {
+      "status": 201,
+      "header": "http",
+      "body": "payload"
+    },
+    "self": "73",
+    "websocket": {
+      "status": 101,
+      "header": "upgrade",
+      "message": "echo:ping"
+    }
+  },
+  "dynamic": {
+    "direct": {
+      "status": 201,
+      "header": "http",
+      "body": "payload"
+    },
+    "transferred": {
+      "status": 201,
+      "header": "http",
+      "body": "payload"
+    },
+    "reloaded": {
+      "status": 201,
+      "header": "http",
+      "body": "payload"
+    },
+    "self": "73",
+    "websocket": {
+      "status": 101,
+      "header": "upgrade",
+      "message": "echo:ping"
+    }
+  },
+  "rpc": "ordinary RPC"
+}

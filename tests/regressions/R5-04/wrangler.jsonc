@@ -1,0 +1,1 @@
+{"name":"r5-04","main":"index.js","compatibility_date":"2026-08-01","compatibility_flags":["allow_irrevocable_stub_storage"],"worker_loaders":[{"binding":"LOADER"}],"durable_objects":{"bindings":[{"name":"ROOT","class_name":"Root"},{"name":"ECHO","class_name":"Echo"},{"name":"STORE","class_name":"Store"}]},"migrations":[{"tag":"v1","new_sqlite_classes":["Root","Echo","Store"]}]}
