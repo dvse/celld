@@ -1,0 +1,17 @@
+{
+  "id": "UPSTREAM-277",
+  "description": "Retired constructor continuations retain same-object fetch and input gates",
+  "command": [
+    "python3",
+    "run.py"
+  ],
+  "runtimes": [
+    "celld",
+    "workerd"
+  ],
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "timeout_seconds": 120
+}

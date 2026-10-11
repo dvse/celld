@@ -24,6 +24,16 @@ use std::sync::{Arc, Mutex, OnceLock, Weak};
 use std::time::{Duration, Instant};
 use v8::{ValueDeserializerHelper, ValueSerializerHelper};
 
+macro_rules! require_event_context {
+    ($scope:expr) => {{
+        let context: Arc<IoContext> = match event_context($scope) {
+            Some(context) => context,
+            None => return loader_throw($scope, DEAD_IO_CONTEXT),
+        };
+        context
+    }};
+}
+
 mod capability_ops;
 mod static_class;
 pub(crate) use static_class::register as register_static_config;
@@ -828,9 +838,12 @@ impl EgressGate {
 /// A's reaction would otherwise be gated against the wrong cell's position, or
 /// refused as belonging to the wrong cell. The turn owner remains the answer
 /// for a context that installs no continuation token.
-fn event_context(scope: &mut v8::PinScope) -> Arc<IoContext> {
-    current_reaction_io_context(scope).unwrap_or_else(current_context)
+fn event_context(scope: &mut v8::PinScope) -> Option<Arc<IoContext>> {
+    reaction_or_current_context(scope)
 }
+
+const DEAD_IO_CONTEXT: &str =
+    "The execution context which hosts this callback is no longer running.";
 
 /// What one cell event's outbound effects gate against.
 #[derive(Clone)]
@@ -2471,6 +2484,12 @@ struct ActorRuntimeState {
     termination: std::sync::Mutex<Option<ExecutionTermination>>,
     pending_puts: std::sync::Mutex<PendingPuts>,
     io_contexts: std::sync::Mutex<HashMap<u64, Weak<IoContext>>>,
+    /// Resource authority lasts for the actor's current residency, independently
+    /// of incoming request drivers. A later incarnation receives a new token.
+    actor_contexts: Mutex<HashMap<String, Arc<IoContext>>>,
+    /// Native re-entry authority for existing JS RPC contexts. Session owners
+    /// survive a driver; actor entries borrow the incarnation's resource owner.
+    rpc_contexts: Mutex<HashMap<u64, RpcIoContext>>,
     /// WebSocket captures that received a frame in the current isolate turn.
     /// Weak references record every continuation context without extending
     /// an event's lifetime merely to flush its output.
@@ -2551,13 +2570,110 @@ fn advance_io_time(scope: &mut v8::PinScope) -> i64 {
 }
 
 impl ActorRuntimeState {
+    /// Hand an op to the mailbox of a running event of `cell`, if one accepts it.
+    fn hand_to_running_event(
+        &self,
+        cell: &str,
+        id: u64,
+        future: asyncrt::OpFuture,
+        lifetime: asyncrt::OpLifetime,
+        resource: u64,
+    ) -> std::result::Result<(), asyncrt::OpFuture> {
+        let contexts: Vec<Arc<IoContext>> = self
+            .io_contexts
+            .lock()
+            .unwrap()
+            .values()
+            .filter_map(std::sync::Weak::upgrade)
+            .collect();
+        let mut future = future;
+        for context in contexts {
+            if context.cell().as_deref() != Some(cell) {
+                continue;
+            }
+            // The op's owner retired, so this event drives it for the object
+            // and carries that ownership: see `Ownership::Adopted`.
+            match context.try_hand_op(id, future, lifetime, Ownership::Adopted(resource)) {
+                Ok(()) => return Ok(()),
+                Err(back) => future = back,
+            }
+        }
+        Err(future)
+    }
+
+    fn event_cell(&self, id: u64) -> Option<String> {
+        self.io_context(id).and_then(|context| context.cell())
+    }
+
+    /// One resource context per actor incarnation (workerd io/io-context.h:257).
+    /// Event drivers keep their own mailboxes and input-gate claims.
+    fn actor_context(self: &Arc<Self>, cell: &str, frame: EgressFrame) -> Arc<IoContext> {
+        self.actor_contexts
+            .lock()
+            .unwrap()
+            .entry(cell.to_string())
+            .or_insert_with(|| {
+                let context = IoContext::tracked(self);
+                context.egress.lock().unwrap().push(frame);
+                let _ = context.close_handed_ops();
+                context
+            })
+            .clone()
+    }
+
+    fn release_actor_context(&self, cell: &str) {
+        let context = self.actor_contexts.lock().unwrap().remove(cell);
+        if let Some(context) = context {
+            let id = context.continuation_id().unwrap();
+            self.rpc_contexts.lock().unwrap().retain(|_, session| {
+                session
+                    .context()
+                    .is_some_and(|context| context.continuation_id() != Some(id))
+            });
+            self.io_contexts.lock().unwrap().remove(&id);
+            self.wake_drivers();
+        }
+    }
+
+    fn wake_drivers(&self) {
+        let contexts = self
+            .io_contexts
+            .lock()
+            .unwrap()
+            .values()
+            .filter_map(Weak::upgrade)
+            .collect::<Vec<_>>();
+        for driver in contexts {
+            driver.handed_wake.notify_one();
+        }
+    }
+
     fn io_context(&self, id: u64) -> Option<Arc<IoContext>> {
         let mut contexts = self.io_contexts.lock().unwrap();
-        let context = contexts.get(&id)?.upgrade();
+        let context = contexts
+            .get(&id)?
+            .upgrade()
+            .filter(|context| context.abort_reason.get().is_none());
         if context.is_none() {
             contexts.remove(&id);
         }
         context
+    }
+}
+
+// Retain existing live RPC contexts for re-entry (workerd Release 2026-10-08
+// api/worker-rpc.c++:3447-3449). Completion accounting remains with the harness.
+enum RpcIoContext {
+    Actor(Weak<IoContext>),
+    Session(Arc<IoContext>),
+}
+
+impl RpcIoContext {
+    fn context(&self) -> Option<Arc<IoContext>> {
+        match self {
+            Self::Actor(context) => context.upgrade(),
+            Self::Session(context) => Some(context.clone()),
+        }
     }
 }
 
@@ -3332,6 +3448,13 @@ pub struct InFlight {
     /// The subset of `ops` whose resource owns this event's `IoContext`.
     /// These operations continue after the handler and `waitUntil` settle.
     io_context_ops: std::collections::HashSet<u64>,
+    /// Ops this event adopted from another event of its own Durable Object.
+    /// workerd keeps one I/O context per actor (io/io-context.h), so this
+    /// work belongs to the object, not to the adopting request: it keeps
+    /// running when that request's client hangs up or its budget ends, and
+    /// the event stays until it settles.
+    adopted_ops: HashMap<u64, u64>,
+    cancel_own_ops: bool,
     /// The subset of `ops` that can run while referenced work is live but
     /// cannot keep this event alive by themselves.
     unrefed_ops: std::collections::HashSet<u64>,
@@ -3788,11 +3911,20 @@ impl InFlight {
     /// workerd's critical section does, and its `finally` opens the gate.
     /// Dropping its ops with the reply dropped the timer or subrequest it
     /// awaited, and the gate stayed shut for every later event (#733).
-    pub(crate) fn keeps_native_ops(&self) -> bool {
-        self.reply.is_some()
-            || self.completed_cell_event
-            || !self.io_context_ops.is_empty()
-            || self.keeps_native_ops_after_disconnect()
+    #[cfg(test)]
+    fn keeps_native_ops(&self) -> bool {
+        self.keeps_own_native_ops() || !self.adopted_ops.is_empty()
+    }
+
+    fn keeps_own_native_ops(&self) -> bool {
+        !self.cancel_own_ops
+            && (self.reply.is_some()
+                || self.completed_cell_event
+                || self
+                    .io_context_ops
+                    .iter()
+                    .any(|id| !self.adopted_ops.contains_key(id))
+                || self.keeps_native_ops_after_disconnect())
     }
 
     /// Whether work that survives a normal client disconnect still needs
@@ -3849,6 +3981,7 @@ impl InFlight {
         self.context.seal_wait_until();
         self.io_context_ops.clear();
         self.unrefed_ops.clear();
+        self.adopted_ops.clear();
         // An op a foreign turn handed this event after its driver's last pass
         // never reached `ops`, so the drain below cannot reach its resolver.
         // Closing the mailbox both yields those ops and refuses every later
@@ -3862,9 +3995,56 @@ impl InFlight {
         for id in self.ops.drain() {
             promises.remove(&id);
         }
-        for (id, _, _) in handed {
+        for (id, ..) in handed {
             promises.remove(&id);
         }
+    }
+
+    /// Inspect accepted ownership before dropping any native work. A handoff
+    /// can land after the last turn, or behind an already queued cancellation.
+    /// Closing the mailbox serializes that edge with every handing turn.
+    pub(crate) fn retain_native_ops(&mut self, mut started: Vec<Op>) -> Vec<Op> {
+        self.fail_aborted_context();
+        if !self.keeps_own_native_ops() {
+            started.extend(self.close_mailbox());
+        }
+        // The drain can reveal resource-lifetime own ops too. Decide after
+        // recording every accepted operation's ownership and lifetime.
+        let keep_own = self.keeps_own_native_ops();
+        let mut promises = self.runtime_state.promises.lock().unwrap();
+        self.ops.retain(|id| {
+            let keep = match self.adopted_ops.get(id) {
+                Some(resource) => self.runtime_state.io_context(*resource).is_some(),
+                None => keep_own,
+            };
+            if !keep {
+                promises.remove(id);
+            }
+            keep
+        });
+        self.adopted_ops.retain(|id, _| self.ops.contains(id));
+        self.io_context_ops.retain(|id| self.ops.contains(id));
+        self.unrefed_ops.retain(|id| self.ops.contains(id));
+        started.retain(|(id, _)| self.ops.contains(id));
+        started
+    }
+
+    pub(crate) fn owns_native_op(&self, id: u64) -> bool {
+        self.ops.contains(&id)
+    }
+
+    fn fail_aborted_context(&mut self) -> bool {
+        let reason = self.context.abort_reason.get().cloned();
+        let Some(reason) = reason else {
+            return false;
+        };
+        self.cancel_own_ops = true;
+        self.completed_cell_event = false;
+        self.background = None;
+        self.context.seal_wait_until();
+        self.fail(anyhow!(reason));
+        self.abandon();
+        true
     }
 
     /// The context whose mailbox carries the ops other turns enqueued for
@@ -3883,27 +4063,101 @@ impl InFlight {
     /// is cancelled and this event's retirement cannot take it away. An owner
     /// that is already gone can never run the continuation again, so its
     /// resolver goes with the op, exactly as `abandon` drops this event's own.
+    /// Hand an op to the event its continuation belongs to. Answers the op
+    /// back when this event must adopt it instead.
     fn hand_op(
         &mut self,
         owner: u64,
         id: u64,
         future: asyncrt::OpFuture,
         lifetime: asyncrt::OpLifetime,
-    ) {
-        // One branch for both refusals — an owner that is already gone, and
-        // one whose mailbox closed while this turn ran. Splitting them let the
-        // second forget to drop the resolver, which is the whole defect.
-        let delivered = self
-            .runtime_state
-            .io_context(owner)
-            .is_some_and(|context| context.hand_op(id, future, lifetime));
-        if !delivered {
+        ownership: Ownership,
+        resource: u64,
+    ) -> Option<asyncrt::OpFuture> {
+        // The owner's driver polls the op while the owner runs; it takes
+        // whatever reached its mailbox before it retires (`close_mailbox`).
+        let refused = match self.runtime_state.io_context(owner) {
+            Some(context) => match context.try_hand_op(id, future, lifetime, ownership) {
+                Ok(()) => return None,
+                Err(future) => future,
+            },
+            None => future,
+        };
+        // The owning event retired. workerd keeps one I/O context for a
+        // Durable Object's whole life (io/io-context.h), so a continuation
+        // that outlives the event that started it (a WebSocket session loop
+        // begun in `fetch`) can still do I/O. A running event of the same
+        // cell adopts the op, keeps it under that cell's gates, and drives it
+        // even past its own reply or cancellation (`adopted_ops`).
+        let owner_cell = self.runtime_state.event_cell(resource);
+        let same_cell = owner_cell
+            .clone()
+            .zip(self.context.cell())
+            .is_some_and(|(owner_cell, cell)| owner_cell == cell);
+        if same_cell {
+            return Some(refused);
+        }
+        // This turn belongs to another object. A running event of the owner's
+        // own object takes the op instead, as the actor's I/O context would.
+        let refused = match owner_cell.as_deref() {
+            Some(cell) => match self
+                .runtime_state
+                .hand_to_running_event(cell, id, refused, lifetime, resource)
+            {
+                Ok(()) => return None,
+                Err(future) => future,
+            },
+            None => refused,
+        };
+        if self.runtime_state.io_context(resource).is_none() {
             self.runtime_state.promises.lock().unwrap().remove(&id);
+            return None;
+        }
+        // A retained live session may have no request driver now. This turn
+        // drives its operation, preserving its independent cancellation owner.
+        Some(refused)
+    }
+
+    /// The retirement edge of a finished event: close its mailbox, and answer
+    /// any op that reached it after the driver's last pass, now recorded as
+    /// this event's own so the driver keeps going instead of retiring. Once
+    /// closed, a later hand-off is refused at the source and adopted by the
+    /// running event, so no op falls between the two.
+    pub(crate) fn close_mailbox(&mut self) -> Vec<Op> {
+        let handed = self.context.close_handed_ops();
+        let mut ops = Vec::with_capacity(handed.len());
+        for (id, future, lifetime, ownership) in handed {
+            self.record_handed_op(id, lifetime, ownership);
+            ops.push((id, future));
+        }
+        if !ops.is_empty() {
+            self.context.reopen_handed_ops();
+        }
+        ops
+    }
+
+    /// Record an op a mailbox delivered as one this event drives.
+    ///
+    /// An op adopted from a retired event of the same object keeps that
+    /// ownership: it is the object's I/O, which workerd keeps in the actor's
+    /// one I/O context (io/io-context.h:257-259), so this event's own
+    /// cancellation does not drop it (`adopted_ops`), exactly as for an op
+    /// adopted directly in a turn (`adopt`).
+    fn record_handed_op(&mut self, id: u64, lifetime: asyncrt::OpLifetime, ownership: Ownership) {
+        self.ops.insert(id);
+        if lifetime == asyncrt::OpLifetime::IoContext {
+            self.io_context_ops.insert(id);
+        }
+        if lifetime == asyncrt::OpLifetime::Unrefed {
+            self.unrefed_ops.insert(id);
+        }
+        if let Ownership::Adopted(resource) = ownership {
+            self.adopted_ops.insert(id, resource);
         }
     }
 
     /// Take the ops another turn enqueued for this event, and record them as
-    /// this event's own so that `deliver` and `abandon` treat them alike.
+    /// ops this event drives so that `deliver` and `abandon` treat them alike.
     pub(crate) fn take_handed_ops(&mut self) -> Vec<Op> {
         // The common answer is "none", and reaching it without the queue's
         // lock is why the count exists.
@@ -3912,14 +4166,8 @@ impl InFlight {
         }
         let handed = self.context.take_handed_ops();
         let mut ops = Vec::with_capacity(handed.len());
-        for (id, future, lifetime) in handed {
-            self.ops.insert(id);
-            if lifetime == asyncrt::OpLifetime::IoContext {
-                self.io_context_ops.insert(id);
-            }
-            if lifetime == asyncrt::OpLifetime::Unrefed {
-                self.unrefed_ops.insert(id);
-            }
+        for (id, future, lifetime, ownership) in handed {
+            self.record_handed_op(id, lifetime, ownership);
             ops.push((id, future));
         }
         ops
@@ -3940,8 +4188,9 @@ impl InFlight {
 /// Telemetry once took the whole slot and exposed this collision.
 ///
 /// When all three riders are absent, the slot stays undefined and V8 can use
-/// its empty-state fast path. Stateless code can retain that path. A cell
-/// event intentionally installs the native token even when telemetry is off.
+/// its empty-state fast path. Plain stateless fetch reactions keep that path:
+/// workerd permits them to run in a later context (io/worker.c++:1381-1385).
+/// Native RPC re-entry and actor events carry a resource-context token.
 ///
 /// This reads one rider and leaves the other two unmaterialized. Reading a
 /// single rider is what every caller wants, so the layout rule lives here
@@ -4071,6 +4320,40 @@ fn restore_io_context(scope: &mut v8::PinScope, previous: Option<v8::Local<v8::V
     }
 }
 
+/// Keep resource authority separate from the event polling its operations.
+/// Ordinary actor/session work can move to another driver after retirement;
+/// a critical section must retain the driver that owns its input gate.
+fn install_resource_context<'s>(
+    scope: &mut v8::PinScope<'s, '_>,
+    resource: &IoContext,
+    driver: &IoContext,
+    critical_section: bool,
+) -> Option<v8::Local<'s, v8::Value>> {
+    let resource = resource.continuation_id()?;
+    let driver = driver.continuation_id()?;
+    let previous = scope.get_continuation_preserved_embedder_data();
+    let resource = v8::BigInt::new_from_u64(scope, resource);
+    let driver = v8::BigInt::new_from_u64(scope, driver);
+    let critical_section = v8::Boolean::new(scope, critical_section);
+    let token = v8::Array::new_with_elements(
+        scope,
+        &[resource.into(), driver.into(), critical_section.into()],
+    );
+    let frame = cped_frame(scope);
+    let trace = cped_trace(scope);
+    set_cped(scope, frame, trace, token.into());
+    Some(previous)
+}
+
+fn in_input_gate_context(scope: &mut v8::PinScope) -> bool {
+    let Ok(token) = v8::Local::<v8::Array>::try_from(cped_io_context(scope)) else {
+        return false;
+    };
+    token
+        .get_index(scope, 2)
+        .is_some_and(|value| value.boolean_value(scope))
+}
+
 fn current_reaction_io_context(scope: &mut v8::PinScope) -> Option<Arc<IoContext>> {
     let id = reaction_continuation_id(scope)?;
     actor_runtime_state(scope).io_context(id)
@@ -4086,9 +4369,10 @@ fn reaction_continuation_id(scope: &mut v8::PinScope) -> Option<u64> {
 }
 
 /// A plain token names both the resource context and the operation driver.
-/// A critical section carries [origin, driver] instead: its driver owns the
-/// gate and must also poll its operations, while storage and resource access
-/// must still resolve to the origin. Keeping both in the same CPED rider
+/// Actor/session work carries [origin, driver, criticalSection] instead: its
+/// driver polls operations, while resource access resolves to the origin.
+/// Critical sections additionally bind the driver that owns their input gate.
+/// Keeping both in the same CPED rider
 /// preserves this relationship across foreign microtask checkpoints and ALS
 /// frame changes without charging ordinary continuations for another rider.
 fn continuation_context_id(scope: &mut v8::PinScope, index: u32) -> Option<u64> {
@@ -4115,23 +4399,28 @@ fn op_with_input_gate_context(
     args: v8::FunctionCallbackArguments,
     mut rv: v8::ReturnValue<v8::Value>,
 ) {
-    let Ok(callback) = v8::Local::<v8::Function>::try_from(args.get(0)) else {
+    let Ok(callback) = v8::Local::<v8::Function>::try_from(args.get(2)) else {
         return;
     };
     let previous = scope.get_continuation_preserved_embedder_data();
-    let token = cped_io_context(scope);
-    // A nested block inherits its driver's identity, even if a third event
-    // runs the checkpoint. A new block uses the entry driving this turn.
-    if !token.is_array() {
-        if let Some(origin) = reaction_continuation_id(scope) {
-            let driver = current_context().continuation_id().unwrap_or(origin);
-            let origin = v8::BigInt::new_from_u64(scope, origin);
-            let driver = v8::BigInt::new_from_u64(scope, driver);
-            let pair = v8::Array::new_with_elements(scope, &[origin.into(), driver.into()]);
-            let frame = cped_frame(scope);
-            let trace = cped_trace(scope);
-            set_cped(scope, frame, trace, pair.into());
-        }
+    // A nested block retains its original driver. A new outer block may
+    // be started by a continuation of an already-completed block (#277),
+    // but only a live event of its own actor can drive that new acquisition.
+    let cell = args.get(0).to_rust_string_lossy(scope);
+    let new_actor_block = args.get(1).boolean_value(scope)
+        && current_context().accepts_handed_ops()
+        && current_context().cell().as_deref() == Some(cell.as_str())
+        && current_reaction_io_context(scope).is_some_and(|origin| {
+            actor_runtime_state(scope)
+                .actor_contexts
+                .lock()
+                .unwrap()
+                .get(&cell)
+                .is_some_and(|actor| Arc::ptr_eq(actor, &origin))
+        });
+    if !in_input_gate_context(scope) || new_actor_block {
+        let resource = require_event_context!(scope);
+        install_resource_context(scope, &resource, &current_context(), true);
     }
     let receiver = v8::undefined(scope).into();
     let result = callback.call(scope, receiver, &[]);
@@ -4146,8 +4435,7 @@ fn op_with_input_gate_context(
 ///
 /// Cell events always install a token. A token that no longer resolves names
 /// a retired event and must not borrow another event's ambient context.
-/// Stateless requests install no token, so their current turn remains the
-/// only context that can own a synchronous operation such as `process.exit`.
+/// Only code with no captured token uses the current turn's context.
 fn current_reaction_or_untracked_io_context(scope: &mut v8::PinScope) -> Option<Arc<IoContext>> {
     if cped_io_context(scope).is_undefined() {
         return Some(current_context());
@@ -4261,8 +4549,12 @@ impl Worker {
                 entry.trace = trace;
                 // A handler that returned an already-resolved promise is
                 // finished before it ever suspends, and must not wait for an
-                // op it will never start.
+                // op it will never start. The rest of this first turn (its
+                // settlement, the response body bridge, the microtask
+                // checkpoint) is the request's own work, as for a cell event.
+                let previous_io_context = install_io_context(tc, &entry.context);
                 let ops = finish_turn(tc, &mut entry);
+                restore_io_context(tc, previous_io_context);
                 (Some(*entry), ops)
             }
             Begun::Threw(failure) => {
@@ -4520,9 +4812,46 @@ fn adopt(entry: &mut InFlight) -> Vec<Op> {
     let mine = entry.context.continuation_id();
     let mut ops = Vec::with_capacity(spawns.len());
     for (id, future, lifetime, owner) in spawns {
-        if let Some(owner) = owner.filter(|owner| Some(*owner) != mine) {
-            entry.hand_op(owner, id, future, lifetime);
-            continue;
+        let mut future = future;
+        if let Some(owner) = owner {
+            if entry.runtime_state.io_context(owner.resource).is_none() {
+                entry.runtime_state.promises.lock().unwrap().remove(&id);
+                continue;
+            }
+            // A gate may select this driver while its resources still belong
+            // to another actor/session. Cancellation must preserve both riders.
+            if Some(owner.driver) == mine {
+                entry.record_handed_op(
+                    id,
+                    lifetime,
+                    if owner.resource == owner.driver {
+                        Ownership::Own
+                    } else {
+                        Ownership::Adopted(owner.resource)
+                    },
+                );
+                ops.push((id, future));
+                continue;
+            }
+            let ownership = if owner.resource == owner.driver {
+                Ownership::Own
+            } else {
+                Ownership::Adopted(owner.resource)
+            };
+            match entry.hand_op(
+                owner.driver,
+                id,
+                future,
+                lifetime,
+                ownership,
+                owner.resource,
+            ) {
+                None => continue,
+                Some(adopted) => {
+                    future = adopted;
+                    entry.adopted_ops.insert(id, owner.resource);
+                }
+            }
         }
         entry.ops.insert(id);
         if lifetime == asyncrt::OpLifetime::IoContext {
@@ -4613,7 +4942,8 @@ fn begin<'s>(
     // option also applies to RPC and cell events, but those events have no
     // report to consume retained logs, so enabling capture for them only
     // holds records until their IoContext retires.
-    let context = IoContext::with_options(
+    let context = IoContext::tracked_with_options(
+        &runtime_state,
         effective_resource_limits(runtime_state.resource_limits, invocation_limits),
         tail_reporting,
     );
@@ -4621,6 +4951,11 @@ fn begin<'s>(
         context.own_body_stream(stream_id);
     }
     let guard = CurrentGuard::enter(context.clone());
+    // The handler runs in its own IoContext, as every other event does: the
+    // I/O objects it receives (RPC results, stream and stub handles) are owned
+    // by this context, and the response body pump that settles it later runs
+    // in the same one (workerd io/io-context.h: one IoContext per request).
+    let previous_io_context = install_io_context(tc, &context);
     context.begin_cpu_turn();
     let target = match entrypoint {
         Some(entrypoint) => FetchTarget::Entrypoint(entrypoint),
@@ -4646,6 +4981,7 @@ fn begin<'s>(
         },
         Ok(Started::Threw) => {
             let cpu_error = context.finish_cpu_turn().err();
+            restore_io_context(tc, previous_io_context);
             drop(guard);
             return Begun::Threw(Box::new(BegunFailure {
                 answer: Answer::Fetch(reply),
@@ -4672,6 +5008,8 @@ fn begin<'s>(
                 completed_cell_event: false,
                 ops: std::collections::HashSet::new(),
                 io_context_ops: std::collections::HashSet::new(),
+                adopted_ops: HashMap::new(),
+                cancel_own_ops: false,
                 unrefed_ops: std::collections::HashSet::new(),
                 alarm: None,
                 started: Instant::now(),
@@ -4679,6 +5017,7 @@ fn begin<'s>(
                 failure: None,
                 tail_report,
             };
+            restore_io_context(tc, previous_io_context);
             drop(guard);
             Begun::Running(Box::new(entry))
         }
@@ -4691,6 +5030,7 @@ fn begin<'s>(
                 report.record_failure(format!("{error:#}"));
                 report.finish(&context);
             }
+            restore_io_context(tc, previous_io_context);
             drop(guard);
             let _ = reply.send(Err(error));
             Begun::Nothing
@@ -4726,7 +5066,8 @@ fn begin_entrypoint_rpc(
     }
 
     let runtime_state = actor_runtime_state(tc);
-    let context = IoContext::with_options(
+    let context = IoContext::tracked_with_options(
+        &runtime_state,
         effective_resource_limits(runtime_state.resource_limits, invocation_limits),
         tail_report.is_some(),
     );
@@ -4747,6 +5088,7 @@ fn begin_entrypoint_rpc(
         failure: None,
     });
     let guard = CurrentGuard::enter(context.clone());
+    let previous_io_context = install_io_context(tc, &context);
     context.begin_cpu_turn();
     let started = (|| {
         let f = internal_function(tc, "__dispatchEntrypointRpc")?;
@@ -4796,6 +5138,8 @@ fn begin_entrypoint_rpc(
                 completed_cell_event: false,
                 ops: std::collections::HashSet::new(),
                 io_context_ops: std::collections::HashSet::new(),
+                adopted_ops: HashMap::new(),
+                cancel_own_ops: false,
                 unrefed_ops: std::collections::HashSet::new(),
                 alarm: None,
                 started: event_started,
@@ -4803,6 +5147,7 @@ fn begin_entrypoint_rpc(
                 failure: None,
                 tail_report,
             };
+            restore_io_context(tc, previous_io_context);
             drop(guard);
             Begun::Running(Box::new(entry))
         }
@@ -4816,6 +5161,7 @@ fn begin_entrypoint_rpc(
                 report.record_failure(format!("{error:#}"));
                 report.finish(&context);
             }
+            restore_io_context(tc, previous_io_context);
             drop(guard);
             let _ = reply.send(Err(error));
             Begun::Nothing
@@ -5005,8 +5351,10 @@ fn begin_queue(
     batch: QueueBatch,
     reply: tokio::sync::oneshot::Sender<Result<QueueDispatchResult>>,
 ) -> Begun {
-    let context = IoContext::with_resource_limits(actor_runtime_state(tc).resource_limits);
+    let runtime_state = actor_runtime_state(tc);
+    let context = IoContext::tracked(&runtime_state);
     let guard = CurrentGuard::enter(context.clone());
+    let previous_io_context = install_io_context(tc, &context);
     context.begin_cpu_turn();
     let started = (|| {
         let dispatch = internal_function(tc, "__dispatchEntrypointQueue")?;
@@ -5039,6 +5387,8 @@ fn begin_queue(
                 completed_cell_event: false,
                 ops: std::collections::HashSet::new(),
                 io_context_ops: std::collections::HashSet::new(),
+                adopted_ops: HashMap::new(),
+                cancel_own_ops: false,
                 unrefed_ops: std::collections::HashSet::new(),
                 alarm: None,
                 started: Instant::now(),
@@ -5046,6 +5396,7 @@ fn begin_queue(
                 failure: None,
                 tail_report: None,
             };
+            restore_io_context(tc, previous_io_context);
             drop(guard);
             Begun::Running(Box::new(entry))
         }
@@ -5055,6 +5406,7 @@ fn begin_queue(
             let error = take_execution_termination(tc)
                 .or(cpu_error)
                 .unwrap_or(error);
+            restore_io_context(tc, previous_io_context);
             drop(guard);
             let _ = reply.send(Err(error));
             Begun::Nothing
@@ -5176,7 +5528,6 @@ fn start_cell_event<'s>(
         context.own_body_stream(stream_id);
     }
     let guard = CurrentGuard::enter(context.clone());
-    let previous_io_context = install_io_context(tc, &context);
     context.begin_cpu_turn();
     // Sampled before the handler runs so the output gate can tell a write
     // this event made from celld's own activation writes. The first sample of
@@ -5192,6 +5543,11 @@ fn start_cell_event<'s>(
         // one without the other.
         root: storage::embedded_root_gate(scope),
     });
+    let resource_context = runtime_state.actor_context(
+        scope,
+        context.egress.lock().unwrap().last().unwrap().clone(),
+    );
+    let previous_io_context = install_resource_context(tc, &resource_context, &context, false);
     if capture_frames {
         ws_capture_begin();
     }
@@ -5227,6 +5583,8 @@ fn start_cell_event<'s>(
                 completed_cell_event: false,
                 ops: std::collections::HashSet::new(),
                 io_context_ops: std::collections::HashSet::new(),
+                adopted_ops: HashMap::new(),
+                cancel_own_ops: false,
                 unrefed_ops: std::collections::HashSet::new(),
                 alarm: None,
                 started: event_started,
@@ -5282,6 +5640,8 @@ fn start_cell_event<'s>(
                     completed_cell_event: false,
                     ops: std::collections::HashSet::new(),
                     io_context_ops: std::collections::HashSet::new(),
+                    adopted_ops: HashMap::new(),
+                    cancel_own_ops: false,
                     unrefed_ops: std::collections::HashSet::new(),
                     alarm: None,
                     started: event_started,
@@ -5663,6 +6023,7 @@ fn deliver(
     entry.ops.remove(&op);
     entry.io_context_ops.remove(&op);
     entry.unrefed_ops.remove(&op);
+    entry.adopted_ops.remove(&op);
     let guard = CurrentGuard::enter(entry.context.clone());
     resolve_res(tc, op, res);
     tc.perform_microtask_checkpoint();
@@ -5719,8 +6080,10 @@ fn cancel(tc: &mut v8::PinScope, entry: &mut InFlight, shutdown: bool) {
     // cross-entry block can still use an operation started by this event.
     // Not at shutdown: nothing will run the block to its end, so its gate is
     // given up instead.
-    if shutdown || !entry.keeps_native_ops_after_disconnect() {
+    if shutdown {
         entry.abandon();
+    } else if !entry.keeps_native_ops_after_disconnect() {
+        entry.cancel_own_ops = true;
     }
 }
 
@@ -6546,7 +6909,10 @@ macro_rules! ops {
                     $op(scope, args, rv);
                     if asyncrt::spawn_count() != before {
                         if let Some(owner) = operation_continuation_id(scope) {
-                            asyncrt::attribute_spawns(before, owner);
+                            asyncrt::attribute_spawns(before, asyncrt::OpOwner {
+                                driver: owner,
+                                resource: reaction_continuation_id(scope).unwrap_or(owner),
+                            });
                         }
                     }
                 }
@@ -6948,6 +7314,9 @@ ops! { OP_NAMES, install_op_functions,
         "__isolate_condemn" => op_isolate_condemn,
         "__timer_alloc" => op_timer_alloc,
         "__io_context_id" => op_io_context_id,
+        "__io_context_run" => op_io_context_run,
+        "__io_context_end" => op_io_context_end,
+        "__actor_context_end" => op_actor_context_end,
         "__with_input_gate_context" => op_with_input_gate_context,
         "__gate_acquire" => op_gate_acquire,
         "__gate_wait" => op_gate_wait,
@@ -7038,7 +7407,10 @@ fn op_kv_blob(
     let value = view_bytes(args.get(1));
     // Bucket I/O is egress, so it waits on the same gate a service call does
     // rather than escaping the shed the node applies under pressure.
-    let gate = egress_gate_request(&event_context(scope), celld_logic::Channel::Service);
+    let gate = egress_gate_request(
+        &*require_event_context!(scope),
+        celld_logic::Channel::Service,
+    );
     // Blob authority follows the storage installed for this exact cell
     // activation. Capturing it before enqueue prevents a later ownership
     // lookup from lending a deposed collector the new owner's epoch.
@@ -7085,7 +7457,7 @@ fn op_queue_dispatch(
     let script = args.get(0).to_rust_string_lossy(scope);
     let queue = args.get(1).to_rust_string_lossy(scope);
     let envelope = args.get(2).to_rust_string_lossy(scope);
-    let gate = egress_gate_request(&event_context(scope), celld_logic::Channel::Queue);
+    let gate = egress_gate_request(&*require_event_context!(scope), celld_logic::Channel::Queue);
     let cell = gate.cell_scope().map(str::to_string).unwrap_or_default();
     let request = match crate::queue_policy::dispatch_request(
         current_generation(scope),
@@ -7161,7 +7533,7 @@ fn op_svc_rpc(
     args: v8::FunctionCallbackArguments,
     mut rv: v8::ReturnValue<v8::Value>,
 ) {
-    let context = event_context(scope);
+    let context = require_event_context!(scope);
     if let Err(error) = context.charge_subrequest() {
         return loader_throw(scope, &error);
     }
@@ -7182,7 +7554,10 @@ fn op_svc_rpc(
     };
     let props = view_bytes(args.get(4)).unwrap_or_default();
     let (tx, rx) = tokio::sync::oneshot::channel();
-    let gate = egress_gate_request(&event_context(scope), celld_logic::Channel::Service);
+    let gate = egress_gate_request(
+        &*require_event_context!(scope),
+        celld_logic::Channel::Service,
+    );
     let request = SvcRpcReq {
         generation: current_generation(scope),
         script,
@@ -7228,7 +7603,7 @@ fn op_svc_call_impl(
     rv: &mut v8::ReturnValue<v8::Value>,
     cancellable: bool,
 ) {
-    if let Err(error) = event_context(scope).charge_subrequest() {
+    if let Err(error) = require_event_context!(scope).charge_subrequest() {
         return loader_throw(scope, &error);
     }
     let script = args.get(0).to_rust_string_lossy(scope);
@@ -7294,7 +7669,10 @@ fn op_svc_call_impl(
     } else {
         (None, None, None)
     };
-    let gate = egress_gate_request(&event_context(scope), celld_logic::Channel::Service);
+    let gate = egress_gate_request(
+        &*require_event_context!(scope),
+        celld_logic::Channel::Service,
+    );
     let request = SvcCallReq {
         cancel,
         generation: current_generation(scope),
@@ -7307,7 +7685,7 @@ fn op_svc_call_impl(
         headers,
         reply: tx,
     };
-    let response_context = event_context(scope);
+    let response_context = require_event_context!(scope);
     let stream_service = http_stream_service();
     let id = asyncrt::enqueue(async move {
         let mut cancel_guard = cancel_guard;
@@ -7907,8 +8285,11 @@ fn op_loader_fetch(
         .unwrap()
         .get(&id)
         .map(|entry| entry.state.clone());
-    let gate = egress_gate_request(&event_context(scope), celld_logic::Channel::Service);
-    let response_context = event_context(scope);
+    let gate = egress_gate_request(
+        &*require_event_context!(scope),
+        celld_logic::Channel::Service,
+    );
+    let response_context = require_event_context!(scope);
     let stream_service = http_stream_service();
     let async_id = asyncrt::enqueue(async move {
         let mut cancel_guard = cancel_guard;
@@ -8019,7 +8400,10 @@ fn op_loader_rpc(
         .unwrap()
         .get(&id)
         .map(|entry| entry.state.clone());
-    let gate = egress_gate_request(&event_context(scope), celld_logic::Channel::Service);
+    let gate = egress_gate_request(
+        &*require_event_context!(scope),
+        celld_logic::Channel::Service,
+    );
     let async_id = asyncrt::enqueue(async move {
         // The same rule as `op_loader_fetch`: the call carries cell state.
         await_egress_gate(gate).await?;
@@ -8636,7 +9020,7 @@ fn op_facet_fetch(
     };
     let host = FacetHost::of(loader, &class_name);
     let trace = current_trace_context(scope);
-    let response_context = event_context(scope);
+    let response_context = require_event_context!(scope);
     let stream_service = http_stream_service();
     let async_id = asyncrt::enqueue(async move {
         let facet = prepare_facet(
@@ -8897,7 +9281,7 @@ fn op_do_call_impl(
     let (tx, rx) = tokio::sync::oneshot::channel();
     // Taken here and nowhere later: this is the last point that still runs
     // in the order the script made the calls.
-    let order = Some(enter_call_order(current_context(), &cell));
+    let order = Some(enter_call_order(require_event_context!(scope), &cell));
     // Every host op needs an internal cancellation channel. A caller without
     // an AbortSignal cannot cancel from JavaScript, but its enclosing Worker
     // can still disappear and drop this op before routing completes.
@@ -8908,7 +9292,10 @@ fn op_do_call_impl(
         .unwrap()
         .insert(request_id, cancel_sender);
     let mut cancel_guard = DoCallCancelGuard::new(request_id);
-    let gate = egress_gate_request(&event_context(scope), celld_logic::Channel::CellRpc);
+    let gate = egress_gate_request(
+        &*require_event_context!(scope),
+        celld_logic::Channel::CellRpc,
+    );
     let request = DoCallReq {
         request_id: Some(request_id),
         cancel: Some(cancel),
@@ -8924,7 +9311,7 @@ fn op_do_call_impl(
         order,
         parent: current_trace_context(scope),
     };
-    let response_context = event_context(scope);
+    let response_context = require_event_context!(scope);
     let stream_service = http_stream_service();
     let id = asyncrt::enqueue(async move {
         gated_channel_send(gate, &DO_CALL_TX, request, "no proxy channel").await?;
@@ -9113,7 +9500,10 @@ fn op_rpc_call(
     let method = args.get(2).to_rust_string_lossy(scope);
     let args = RpcData::V8(view_bytes(args.get(3)).unwrap_or_default().into());
     let (tx, rx) = tokio::sync::oneshot::channel();
-    let gate = egress_gate_request(&event_context(scope), celld_logic::Channel::CellRpc);
+    let gate = egress_gate_request(
+        &*require_event_context!(scope),
+        celld_logic::Channel::CellRpc,
+    );
     let request = RpcCallReq {
         scope: cell,
         name,
@@ -9141,7 +9531,7 @@ fn op_fetch(
     args: v8::FunctionCallbackArguments,
     mut rv: v8::ReturnValue<v8::Value>,
 ) {
-    let context = event_context(scope);
+    let context = require_event_context!(scope);
     if let Err(error) = context.charge_subrequest() {
         return loader_throw(scope, &error);
     }
@@ -9226,7 +9616,8 @@ fn op_fetch(
             (None, None, None)
         };
         let (tx, rx) = tokio::sync::oneshot::channel();
-        let gate = egress_gate_request(&event_context(scope), celld_logic::Channel::Fetch);
+        let gate =
+            egress_gate_request(&*require_event_context!(scope), celld_logic::Channel::Fetch);
         let request = SvcCallReq {
             cancel,
             generation: broker.generation,
@@ -9239,7 +9630,7 @@ fn op_fetch(
             headers,
             reply: tx,
         };
-        let response_context = event_context(scope);
+        let response_context = require_event_context!(scope);
         let stream_service = http_stream_service();
         let id = asyncrt::enqueue(async move {
             let mut cancel_guard = cancel_guard;
@@ -9296,7 +9687,7 @@ fn op_fetch(
     // third party that has acted on a write celld then loses cannot be told to
     // un-act. That covers a write this handler made and a value it only read,
     // because the third party cannot tell the two apart.
-    let gate = egress_gate_request(&event_context(scope), celld_logic::Channel::Fetch);
+    let gate = egress_gate_request(&*require_event_context!(scope), celld_logic::Channel::Fetch);
     // Shares the cancel registry, the id encoding and the `__do_call_cancel`
     // op that a Durable Object call and a service binding call already use.
     // Only a caller that supplied an AbortSignal registers: without one there
@@ -9448,6 +9839,7 @@ fn op_asset_fetch(
     args: v8::FunctionCallbackArguments,
     mut rv: v8::ReturnValue<v8::Value>,
 ) {
+    let response_context = require_event_context!(scope);
     let script = args.get(0).to_rust_string_lossy(scope);
     let method = args.get(1).to_rust_string_lossy(scope);
     let url = args.get(2).to_rust_string_lossy(scope);
@@ -9475,7 +9867,6 @@ fn op_asset_fetch(
             })
             .is_ok()
     });
-    let response_context = event_context(scope);
     let stream_service = http_stream_service();
     let id = asyncrt::enqueue(async move {
         if !sent {
@@ -9523,6 +9914,7 @@ fn op_http_stream_tee(
     args: v8::FunctionCallbackArguments,
     mut rv: v8::ReturnValue<v8::Value>,
 ) {
+    let context = require_event_context!(scope);
     let stream_id = args.get(0).integer_value(scope).unwrap_or(0).max(0) as u64;
     let service = http_stream_service();
     let source = service.checkout_transfer(stream_id, None).ok();
@@ -9541,7 +9933,7 @@ fn op_http_stream_tee(
             return;
         }
     };
-    current_context().replace_body_stream(stream_id, &service, ids);
+    context.replace_body_stream(stream_id, &service, ids);
     let json = serde_json::to_string(&ids).unwrap();
     rv.set(v8::String::new(scope, &json).unwrap().into());
 }
@@ -9602,7 +9994,10 @@ fn op_response_stream_write(
     // expiry still runs during the wait, so a proof that never lands ends the
     // body with an error rather than releasing the chunk, which is the
     // direction this gate exists to fail in.
-    let gate = egress_gate_request(&event_context(scope), celld_logic::Channel::Response);
+    let gate = egress_gate_request(
+        &*require_event_context!(scope),
+        celld_logic::Channel::Response,
+    );
     let service = http_stream_service();
     let id = asyncrt::enqueue(async move {
         await_egress_gate(gate).await?;
@@ -9661,6 +10056,7 @@ fn op_timer(
     args: v8::FunctionCallbackArguments,
     mut rv: v8::ReturnValue<v8::Value>,
 ) {
+    let _context = require_event_context!(scope);
     let timer_id = args.get(0).integer_value(scope).unwrap_or(0).max(0) as u64;
     let ms = args.get(1).number_value(scope).unwrap_or(0.0).max(0.0) as u64;
     let (cancel_tx, mut cancel_rx) = tokio::sync::oneshot::channel();
@@ -9677,17 +10073,107 @@ fn op_timer(
     rv.set(p);
 }
 
-/// `__io_context_id(operationDriver = false)` — return the live context id.
+fn op_io_context_run(
+    scope: &mut v8::PinScope,
+    args: v8::FunctionCallbackArguments,
+    mut rv: v8::ReturnValue<v8::Value>,
+) {
+    let id = args.get(0).integer_value(scope).unwrap_or(0) as u64;
+    let create = args.get(1).boolean_value(scope);
+    let state = actor_runtime_state(scope);
+    let critical_section = in_input_gate_context(scope);
+    let driver = if critical_section {
+        let Some(driver) = operation_driver_context(scope) else {
+            return loader_throw(scope, DEAD_IO_CONTEXT);
+        };
+        driver
+    } else {
+        current_context()
+    };
+    let context = if create {
+        let origin = require_event_context!(scope);
+        let (context, retained) = if origin.cell().is_some() {
+            (origin.clone(), RpcIoContext::Actor(Arc::downgrade(&origin)))
+        } else {
+            let context = IoContext::tracked(&state);
+            let _ = context.close_handed_ops();
+            (context.clone(), RpcIoContext::Session(context))
+        };
+        state.rpc_contexts.lock().unwrap().insert(id, retained);
+        context
+    } else {
+        let context = state
+            .rpc_contexts
+            .lock()
+            .unwrap()
+            .get(&id)
+            .and_then(RpcIoContext::context);
+        let Some(context) = context.filter(|context| {
+            context
+                .continuation_id()
+                .is_some_and(|id| state.io_context(id).is_some())
+        }) else {
+            return loader_throw(scope, DEAD_IO_CONTEXT);
+        };
+        context
+    };
+    let Ok(callback) = v8::Local::<v8::Function>::try_from(args.get(2)) else {
+        return;
+    };
+    let previous = install_resource_context(scope, &context, &driver, critical_section);
+    let receiver = v8::undefined(scope).into();
+    let result = callback.call(scope, receiver, &[]);
+    restore_io_context(scope, previous);
+    if let Some(result) = result {
+        rv.set(result);
+    }
+}
+
+fn op_actor_context_end(
+    scope: &mut v8::PinScope,
+    args: v8::FunctionCallbackArguments,
+    _rv: v8::ReturnValue<v8::Value>,
+) {
+    let cell = args.get(0).to_rust_string_lossy(scope);
+    actor_runtime_state(scope).release_actor_context(&cell);
+}
+
+fn op_io_context_end(
+    scope: &mut v8::PinScope,
+    args: v8::FunctionCallbackArguments,
+    _rv: v8::ReturnValue<v8::Value>,
+) {
+    let id = args.get(0).integer_value(scope).unwrap_or(0) as u64;
+    let state = actor_runtime_state(scope);
+    let retained = state.rpc_contexts.lock().unwrap().remove(&id);
+    if let Some(RpcIoContext::Session(context)) = retained {
+        state
+            .io_contexts
+            .lock()
+            .unwrap()
+            .remove(&context.continuation_id().unwrap());
+        state.wake_drivers();
+    }
+}
+
+/// `__io_context_id(operationDriver = false, retired = false)` — return the
+/// live context id.
 ///
 /// The default returns the resource origin. A true argument returns the
 /// operation driver, so a nested block can refuse a retained stale context.
+/// A true second argument returns the origin even when that context has
+/// ended, so code resumed after its request finished can tell itself apart
+/// from code that never had a request.
 fn op_io_context_id(
     scope: &mut v8::PinScope,
     args: v8::FunctionCallbackArguments,
     mut rv: v8::ReturnValue<v8::Value>,
 ) {
     let driver = args.get(0).boolean_value(scope);
-    let id = if driver {
+    let retired = args.get(1).boolean_value(scope);
+    let id = if retired {
+        reaction_continuation_id(scope)
+    } else if driver {
         operation_continuation_id(scope).filter(|id| {
             actor_runtime_state(scope)
                 .io_context(*id)
@@ -10123,10 +10609,12 @@ fn op_actor_abort(
     args: v8::FunctionCallbackArguments,
     _rv: v8::ReturnValue<v8::Value>,
 ) {
-    let Some(context) = current_reaction_io_context(scope) else {
-        return;
-    };
+    let context = require_event_context!(scope);
     let cell = args.get(0).to_rust_string_lossy(scope);
+    if context.cell().as_deref() != Some(cell.as_str()) {
+        return loader_throw(scope, "abort() belongs to a different actor context");
+    }
+    let driver = current_context();
     let reason = args.get(1).to_rust_string_lossy(scope);
     let state = actor_runtime_state(scope);
     state
@@ -10134,10 +10622,11 @@ fn op_actor_abort(
         .lock()
         .expect("pending puts lock poisoned")
         .remove(&cell);
+    state.release_actor_context(&cell);
     *state.termination.lock().expect("termination lock poisoned") = Some(ExecutionTermination {
         error: format!("__CELLD_ACTOR_ABORT__:{reason}"),
         actor_scope: Some(cell),
-        context_id: context.continuation_id(),
+        context_id: driver.continuation_id(),
     });
     scope.terminate_execution();
 }
@@ -11086,6 +11575,7 @@ impl RequestVfs {
 /// The gate releases that claim when the block ends. The interiors are
 /// `Mutex`; only the isolate's holder reaches them.
 pub struct IoContext {
+    abort_reason: OnceLock<String>,
     /// A process-wide identity captured by V8 with each promise reaction.
     /// The process-wide cell-gate map also uses it, so another isolate must
     /// not reuse it. The isolate registry holds only a `Weak`, so a
@@ -11206,8 +11696,19 @@ pub struct IoContext {
 }
 
 /// An op enqueued by one event's continuation during another event's turn: the
-/// promise id, the work, and its complete lifetime classification.
-type HandedOp = (u64, asyncrt::OpFuture, asyncrt::OpLifetime);
+/// promise id, the work, its complete lifetime classification, and whether it
+/// belongs to another event the recipient adopts rather than to the recipient.
+type HandedOp = (u64, asyncrt::OpFuture, asyncrt::OpLifetime, Ownership);
+
+/// Who an op handed through a mailbox belongs to.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) enum Ownership {
+    /// The recipient's own continuation enqueued it during a foreign turn.
+    Own,
+    /// A retired event of the recipient's object enqueued it. The recipient
+    /// drives it for the object, so its own cancellation must not drop it.
+    Adopted(u64),
+}
 
 impl IoContext {
     fn record_tail_log(&self, level: &str, body: &str) {
@@ -11355,6 +11856,7 @@ impl IoContext {
 
     fn with_options(limits: Option<ResourceLimits>, tail_reporting: bool) -> Arc<Self> {
         Arc::new(Self {
+            abort_reason: OnceLock::new(),
             continuation: None,
             call_chains: Mutex::new(CallChains::default()),
             events: Mutex::new(IoEventState::default()),
@@ -11386,42 +11888,18 @@ impl IoContext {
     }
 
     fn tracked(runtime_state: &Arc<ActorRuntimeState>) -> Arc<Self> {
+        Self::tracked_with_options(runtime_state, runtime_state.resource_limits, false)
+    }
+
+    fn tracked_with_options(
+        runtime_state: &Arc<ActorRuntimeState>,
+        limits: Option<ResourceLimits>,
+        tail_reporting: bool,
+    ) -> Arc<Self> {
         let id = allocate_io_context_id();
-        let context = Arc::new(Self {
-            continuation: Some((id, Arc::downgrade(runtime_state))),
-            call_chains: Mutex::new(CallChains::default()),
-            events: Mutex::new(IoEventState::default()),
-            vfs: OnceLock::new(),
-            sockets: Mutex::new(Vec::new()),
-            rewriters: Mutex::new(Vec::new()),
-            tcp_sockets: Mutex::new(Vec::new()),
-            input_gates: Mutex::new(InputGateClaims::default()),
-            cross_entry_gates: CrossEntryGateClaims::default(),
-            body_streams: Mutex::new(HashMap::new()),
-            ws_capture: Mutex::new(Vec::new()),
-            egress: Mutex::new(Vec::new()),
-            handed: Mutex::new(Some(Vec::new())),
-            handed_len: AtomicUsize::new(0),
-            handed_wake: tokio::sync::Notify::new(),
-            pending_events: Mutex::new(HashSet::new()),
-            subrequest_limit: runtime_state
-                .resource_limits
-                .and_then(|limits| limits.sub_requests),
-            subrequests: AtomicUsize::new(0),
-            redirect_client: OnceLock::new(),
-            cpu_limit_nanos: runtime_state
-                .resource_limits
-                .and_then(|limits| limits.cpu_ms)
-                .map(|milliseconds| u64::from(milliseconds).saturating_mul(1_000_000)),
-            cpu_used_nanos: AtomicU64::new(0),
-            cpu_turn: Mutex::new(None),
-            // Tracked contexts drive cell and RPC events. Dynamic Worker tail
-            // reports currently belong only to fetch jobs, whose untracked
-            // context is constructed from the report sender in `begin`.
-            tail_reporting: false,
-            tail_logs: Mutex::new(TailLogCapture::default()),
-            tail_exceptions: Mutex::new(Vec::new()),
-        });
+        let mut context = Self::with_options(limits, tail_reporting);
+        Arc::get_mut(&mut context).unwrap().continuation =
+            Some((id, Arc::downgrade(runtime_state)));
         runtime_state
             .io_contexts
             .lock()
@@ -11432,22 +11910,36 @@ impl IoContext {
 
     /// Take an op that another event's turn enqueued for this event.
     ///
-    /// Reports whether the mailbox accepted it. A closed mailbox refuses, and
-    /// the caller must then drop the op's resolver: this event will never run
-    /// the continuation waiting on it.
-    #[must_use]
-    fn hand_op(&self, id: u64, future: asyncrt::OpFuture, lifetime: asyncrt::OpLifetime) -> bool {
+    /// A closed mailbox refuses and answers the op back: the caller must then
+    /// adopt it or drop its resolver, since this event will never run the
+    /// continuation waiting on it.
+    fn try_hand_op(
+        &self,
+        id: u64,
+        future: asyncrt::OpFuture,
+        lifetime: asyncrt::OpLifetime,
+        ownership: Ownership,
+    ) -> std::result::Result<(), asyncrt::OpFuture> {
         let mut handed = self.handed.lock().unwrap();
         let Some(queue) = handed.as_mut() else {
-            return false;
+            return Err(future);
         };
-        queue.push((id, future, lifetime));
+        queue.push((id, future, lifetime, ownership));
         // Published under the lock, so a reader that sees this count can take
         // the lock and find the op there.
         self.handed_len.store(queue.len(), Ordering::Release);
         drop(handed);
         self.handed_wake.notify_one();
-        true
+        Ok(())
+    }
+
+    /// The cell this event runs in: its outermost egress frame's scope.
+    fn cell(&self) -> Option<String> {
+        self.egress
+            .lock()
+            .unwrap()
+            .first()
+            .map(|frame| frame.storage.clone())
     }
 
     /// Whether a foreign turn has left this event an op, without locking.
@@ -11519,6 +12011,15 @@ impl IoContext {
         let mut handed = self.handed.lock().unwrap();
         self.handed_len.store(0, Ordering::Release);
         handed.take().unwrap_or_default()
+    }
+
+    /// Open the mailbox again: `InFlight::close_mailbox` found work, so the
+    /// event keeps running and can still be handed ops.
+    fn reopen_handed_ops(&self) {
+        let mut handed = self.handed.lock().unwrap();
+        if handed.is_none() {
+            *handed = Some(Vec::new());
+        }
     }
 
     fn begin_event(&self) {
@@ -11780,11 +12281,14 @@ impl IoContextRegistryForTest {
     /// only stores it, so nothing here polls it.
     #[doc(hidden)]
     pub fn hand_pending_op(&self, context: &Arc<IoContext>, id: u64) -> bool {
-        context.hand_op(
-            id,
-            Box::pin(std::future::pending()),
-            asyncrt::OpLifetime::Handler,
-        )
+        context
+            .try_hand_op(
+                id,
+                Box::pin(std::future::pending()),
+                asyncrt::OpLifetime::Handler,
+                Ownership::Own,
+            )
+            .is_ok()
     }
 
     /// The op ids `context` still holds for a driver that has not taken them.
@@ -11795,7 +12299,7 @@ impl IoContextRegistryForTest {
             .lock()
             .unwrap()
             .as_ref()
-            .map(|queue| queue.iter().map(|(id, _, _)| *id).collect())
+            .map(|queue| queue.iter().map(|(id, ..)| *id).collect())
             .unwrap_or_default()
     }
 
@@ -11806,7 +12310,7 @@ impl IoContextRegistryForTest {
         context
             .close_handed_ops()
             .into_iter()
-            .map(|(id, _, _)| id)
+            .map(|(id, ..)| id)
             .collect()
     }
 }
@@ -11955,22 +12459,42 @@ fn op_event_end<'s>(
 /// during another request's microtask checkpoint. A missing captured context
 /// is retired, so it must not fall back to the request driving this turn.
 fn reaction_or_current_context(scope: &mut v8::PinScope) -> Option<Arc<IoContext>> {
-    match reaction_continuation_id(scope) {
-        Some(id) => actor_runtime_state(scope).io_context(id),
-        None => Some(current_context()),
+    if cped_io_context(scope).is_undefined() {
+        Some(current_context())
+    } else {
+        current_reaction_io_context(scope)
+    }
+}
+
+/// A live resource can ask the current turn to drive work after its old
+/// mailbox closes. A critical section's explicit driver must still be live.
+fn operation_driver_context(scope: &mut v8::PinScope) -> Option<Arc<IoContext>> {
+    event_context(scope)?;
+    let driver = operation_continuation_id(scope)
+        .and_then(|id| actor_runtime_state(scope).io_context(id))
+        .filter(|context| context.accepts_handed_ops());
+    if driver.is_some() || in_input_gate_context(scope) {
+        driver
+    } else {
+        Some(current_context())
     }
 }
 
 fn op_pending_event_begin(
     scope: &mut v8::PinScope,
     args: v8::FunctionCallbackArguments,
-    _rv: v8::ReturnValue<v8::Value>,
+    mut rv: v8::ReturnValue<v8::Value>,
 ) {
     let Some(id) = args.get(0).integer_value(scope) else {
         return;
     };
-    if let Some(context) = reaction_or_current_context(scope) {
+    if let Some(context) = operation_driver_context(scope) {
         context.register_pending_event(id as u64);
+        let driver = context
+            .continuation_id()
+            .map(|id| id.to_string())
+            .unwrap_or_default();
+        rv.set(v8::String::new(scope, &driver).unwrap().into());
     }
 }
 
@@ -11982,7 +12506,10 @@ fn op_pending_event_end(
     let Some(id) = args.get(0).integer_value(scope) else {
         return;
     };
-    if let Some(context) = reaction_or_current_context(scope) {
+    // Cleanup uses the accepted driver, even when the callee has already
+    // ended its resource context. It grants no re-entry authority.
+    let driver = args.get(1).to_rust_string_lossy(scope).parse::<u64>().ok();
+    if let Some(context) = driver.and_then(|driver| actor_runtime_state(scope).io_context(driver)) {
         context.finish_pending_event(id as u64);
     }
 }
@@ -12101,18 +12628,30 @@ fn op_wait_until<'s>(
             Err(_) => return,
         },
     };
-    if let Some(context) = reaction_or_current_context(scope) {
+    if let Some(context) = operation_driver_context(scope) {
         context.register_wait_until(v8::Global::new(scope, promise));
     }
 }
 
+/// Whether imported `waitUntil()` runs inside a request or an actor.
+///
+/// Workerd's `EntrypointsModule::waitUntil` (api/workers-module.c++:55-59)
+/// throws its global-scope error only when no `IoContext` is current
+/// (io/io-context.c++:1593-1605). A Durable Object has one `IoContext` for
+/// its whole life (io/io-context.h:257-259), so code running in the object —
+/// including a continuation of an event that already answered or retired —
+/// always has one, and its `waitUntil` is accepted. Requiring an open event
+/// frame or live background aggregate there made `reportIssue` throw from a
+/// Planet's agent continuation (Tunez Celld 4, 20:37:49).
 fn op_wait_until_active(
     scope: &mut v8::PinScope,
     _args: v8::FunctionCallbackArguments,
     mut rv: v8::ReturnValue<v8::Value>,
 ) {
-    let active =
-        reaction_or_current_context(scope).is_some_and(|context| context.accepts_wait_until());
+    let active = event_context(scope).is_some_and(|resource| {
+        resource.cell().is_some()
+            || operation_driver_context(scope).is_some_and(|driver| driver.accepts_wait_until())
+    });
     rv.set(v8::Boolean::new(scope, active).into());
 }
 
@@ -12298,7 +12837,7 @@ fn op_alarm_set(
         // current event's output gate. Inside an explicit transaction (`Ok(None)`)
         // the gate registers at that transaction's commit instead.
         Ok(Some(committed)) if committed >= 0 => {
-            spawn_arm_gate(&s, committed, current_reaction_io_context(scope))
+            spawn_arm_gate(&s, committed, operation_driver_context(scope))
         }
         Ok(_) => {}
     }
@@ -12866,3 +13405,6 @@ pub fn init_engine_for_tests() {
 
 #[cfg(celld_internal_tests)]
 include!(env!("CELLD_INTERNAL_JS_OBSERVERS"));
+
+#[cfg(test)]
+mod ownership_tests;

@@ -1,0 +1,17 @@
+{
+  "id": "UPSTREAM-287",
+  "description": "Facet RPC settles from a finished fetch WebSocket loop",
+  "command": [
+    "python3",
+    "run.py"
+  ],
+  "runtimes": [
+    "celld",
+    "workerd"
+  ],
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "timeout_seconds": 120
+}

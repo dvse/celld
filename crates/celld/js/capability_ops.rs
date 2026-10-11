@@ -17,7 +17,7 @@ pub(super) fn export(
         return loader_throw(scope, "capability export requires a live isolate turn");
     };
     let token = args.get(0).to_rust_string_lossy(scope);
-    let context = event_context(scope);
+    let context = require_event_context!(scope);
     // A target can be serialized from a different event in this same heap.
     // The harness records its originating actor; validate that storage here
     // rather than lending it the serializing caller's identity.
@@ -77,7 +77,7 @@ fn request(
     rv: &mut v8::ReturnValue<v8::Value>,
     release: bool,
 ) {
-    let context = event_context(scope);
+    let context = require_event_context!(scope);
     if !release {
         if let Err(error) = context.charge_subrequest() {
             return loader_throw(scope, &error);
@@ -235,6 +235,8 @@ pub(super) fn begin(
                 completed_cell_event: false,
                 ops: HashSet::new(),
                 io_context_ops: HashSet::new(),
+                adopted_ops: HashMap::new(),
+                cancel_own_ops: false,
                 unrefed_ops: HashSet::new(),
                 alarm: None,
                 started: Instant::now(),

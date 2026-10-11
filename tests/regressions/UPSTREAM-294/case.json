@@ -1,0 +1,17 @@
+{
+  "id": "UPSTREAM-294",
+  "description": "Shared timer and fetch survive initiating request cancellation",
+  "command": [
+    "python3",
+    "run.py"
+  ],
+  "runtimes": [
+    "celld",
+    "workerd"
+  ],
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "timeout_seconds": 120
+}

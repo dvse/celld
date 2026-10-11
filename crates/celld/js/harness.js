@@ -2689,7 +2689,9 @@ class DurableObjectState {
   blockConcurrencyWhile(f) {
     // The native context binds the gate and its operations to one driver.
     // Its async continuations keep that driver even inside a foreign turn.
-    return __with_input_gate_context(() => this._blockConcurrencyWhile(f));
+    return __with_input_gate_context(
+      this._scope, this._blockDepth === 0, () => this._blockConcurrencyWhile(f),
+    );
   }
   _blockConcurrencyWhile(f) {
     if (typeof f !== "function")
@@ -2846,6 +2848,7 @@ class DurableObjectState {
     if (this._aborted) return;
     this._aborted = true;
     __storage_cancel_pending_puts(this._scope);
+    __actor_context_end(this._scope);
     const instance = __cell.instances[this._scope];
     if (instance && instance.__celldState === this)
       delete __cell.instances[this._scope];
@@ -2873,6 +2876,7 @@ class DurableObjectState {
       __actor_abort(this._scope, message);
       return;
     }
+    __actor_context_end(this._scope);
     __actorBreak(this._scope,
       reason instanceof Error ? reason : new Error(message));
   }
@@ -3898,13 +3902,22 @@ const __ctxNow = () => {
 // fn started inside keeps the frame across its awaits. The prior
 // frame is cloned so user AsyncLocalStorage stores still flow into
 // same-isolate callees, as they did before contexts existed.
+// Context ids are allocated and first entered synchronously in order. Retain
+// only the high-water mark so ended contexts cannot be recreated by re-entry.
+let __ctxNativeThrough = 0;
 const __ctxRun = (id, fn) => {
+  const fresh = id === undefined;
+  id ??= __nextCtxId++;
+  const create = id > __ctxNativeThrough;
+  if (create) __ctxNativeThrough = id;
   const prior = __als_get();
   const frame = new Map(prior);
-  frame.set(__ctxKey, id ?? __nextCtxId++);
+  frame.set(__ctxKey, id);
   __als_set(frame);
   try {
-    return fn();
+    return __io_context_run(id, create, () => {
+      return fn();
+    });
   } finally {
     __als_set(prior);
   }
@@ -3965,9 +3978,10 @@ const __ctxUnregister = (meta) => {
 // dup() leaked into it reaches the sender's disposal callback.
 const __ctxEnd = (id) => {
   const set = __ctxStubs.get(id);
-  if (set === undefined) return;
   __ctxStubs.delete(id);
-  for (const meta of set) __disposeStub(meta);
+  if (set !== undefined) for (const meta of set) __disposeStub(meta);
+  // A surviving callback cannot recreate the native owner after teardown.
+  __io_context_end(id);
 };
 const __ctxAbort = (id, reason) => {
   if (id === undefined || __abortedCtxs.has(id)) return;

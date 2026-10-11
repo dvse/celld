@@ -470,6 +470,12 @@ pub enum OpLifetime {
     Unrefed,
 }
 
+#[derive(Clone, Copy)]
+pub struct OpOwner {
+    pub driver: u64,
+    pub resource: u64,
+}
+
 /// One enqueued operation, waiting for a driver to take it.
 struct Spawn {
     id: u64,
@@ -478,7 +484,7 @@ struct Spawn {
     /// The `IoContext` of the continuation that enqueued it, when the op layer
     /// could read one. `None` for work with no event behind it, which the
     /// running turn owns as it always has.
-    owner: Option<u64>,
+    owner: Option<OpOwner>,
 }
 
 fn enqueue_with_lifetime<T: Into<OpOut>>(
@@ -516,7 +522,7 @@ pub fn spawn_count() -> usize {
 /// turn: V8 runs a foreign continuation during another event's microtask
 /// checkpoint. Without this the running turn adopts the operation and cancels
 /// it when it retires, and the event that is really waiting never settles.
-pub fn attribute_spawns(from: usize, owner: u64) {
+pub fn attribute_spawns(from: usize, owner: OpOwner) {
     SPAWNS.with(|spawns| {
         for spawn in spawns.borrow_mut().iter_mut().skip(from) {
             // A native callback can invoke JS that enqueues under a nested
@@ -552,7 +558,7 @@ pub(crate) fn enqueue_unrefed<T: Into<OpOut>>(
     enqueue_with_lifetime(future, OpLifetime::Unrefed)
 }
 
-pub fn drain_spawns() -> Vec<(u64, OpFuture, OpLifetime, Option<u64>)> {
+pub fn drain_spawns() -> Vec<(u64, OpFuture, OpLifetime, Option<OpOwner>)> {
     SPAWNS.with(|spawns| {
         spawns
             .borrow_mut()
