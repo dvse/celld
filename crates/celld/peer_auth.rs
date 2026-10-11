@@ -266,6 +266,14 @@ impl PeerAuth {
         mac.verify_slice(&signature).is_ok()
     }
 
+    /// The fleet-wide secret that names restore control RPC operations. It
+    /// has its own HMAC domain, so it reveals nothing about other seals.
+    pub(crate) fn restore_control_token(&self) -> String {
+        let mut mac = <Hmac<Sha256> as Mac>::new_from_slice(&self.key).expect("HMAC key");
+        mac.update(b"celld-restore-control-v1\0");
+        encode_hex(&mac.finalize().into_bytes())
+    }
+
     pub(crate) fn seal_static_class(&self, payload: &[u8]) -> String {
         let mut mac = <Hmac<Sha256> as Mac>::new_from_slice(&self.key).expect("HMAC key");
         mac.update(b"celld-static-class-reference-v1\0");
