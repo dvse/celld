@@ -3100,10 +3100,13 @@ const __endActorEventsForContext = (context) => {
   }
 };
 const __incomingRequestSignals = new Map();
+const __abortSignalStates = new WeakMap();
 const __abortSignal = (signal, reason) => {
-  if (signal.aborted) return;
-  signal.aborted = true;
-  signal.reason = reason;
+  const state = __abortSignalStates.get(signal);
+  if (!state) throw new TypeError("Illegal invocation");
+  if (state.aborted) return;
+  state.aborted = true;
+  state.reason = reason;
   signal.dispatchEvent(new Event("abort"));
 };
 const __abortIncomingRequest = __celld.__abortIncomingRequest = (requestId) => {
@@ -11514,6 +11517,20 @@ if (!globalThis.DOMException) {
 }
 if (!globalThis.AbortSignal) {
   const __abortBrand = Symbol("abortSignal");
+  const controllerStates = new WeakMap();
+  const onPrototype = globalThis.Cloudflare?.compatibilityFlags
+    ?.workers_api_getters_setters_on_prototype === true;
+  const attribute = (object, name, states) => {
+    const get = function() {
+      const state = states.get(this);
+      if (!state) throw new TypeError("Illegal invocation");
+      return state[name];
+    };
+    if (!onPrototype) return __native_readonly(object, name, get);
+    Object.defineProperty(object, name, {
+      configurable: true, enumerable: true, get,
+    });
+  };
   globalThis.AbortSignal = class AbortSignal extends EventTarget {
     // The Headers/Blob clone-poisoning brand: V8's structured
     // clone throws on functions, so a live signal reaches the
@@ -11526,11 +11543,18 @@ if (!globalThis.AbortSignal) {
         throw new TypeError("Illegal constructor");
       }
       super();
-      this.aborted = false;
-      this.reason = undefined;
+      __abortSignalStates.set(this, {aborted: false, reason: undefined});
+      if (!onPrototype) {
+        attribute(this, "aborted", __abortSignalStates);
+        attribute(this, "reason", __abortSignalStates);
+      }
       this.__celldHost = __rpcNoClone;
     }
-    throwIfAborted() { if (this.aborted) throw this.reason; }
+    throwIfAborted() {
+      const state = __abortSignalStates.get(this);
+      if (!state) throw new TypeError("Illegal invocation");
+      if (state.aborted) throw state.reason;
+    }
     static abort(reason = new DOMException("This operation was aborted", "AbortError")) {
       const c = new AbortController(); c.abort(reason); return c.signal;
     }
@@ -11554,22 +11578,32 @@ if (!globalThis.AbortSignal) {
     configurable: true,
     enumerable: true,
     get() {
-      if (!(this instanceof globalThis.AbortSignal))
+      if (!__abortSignalStates.has(this))
         throw new TypeError("Illegal invocation");
       return __getEventHandler(this, "abort");
     },
     set(value) {
-      if (!(this instanceof globalThis.AbortSignal))
+      if (!__abortSignalStates.has(this))
         throw new TypeError("Illegal invocation");
       __setEventHandler(this, "abort", value);
     },
   });
   globalThis.AbortController = class AbortController {
-    constructor() { this.signal = new AbortSignal(__abortBrand); }
+    constructor() {
+      controllerStates.set(this, {signal: new AbortSignal(__abortBrand)});
+      if (!onPrototype) attribute(this, "signal", controllerStates);
+    }
     abort(reason = new DOMException("This operation was aborted", "AbortError")) {
-      __abortSignal(this.signal, reason);
+      const state = controllerStates.get(this);
+      if (!state) throw new TypeError("Illegal invocation");
+      __abortSignal(state.signal, reason);
     }
   };
+  if (onPrototype) {
+    attribute(globalThis.AbortSignal.prototype, "aborted", __abortSignalStates);
+    attribute(globalThis.AbortSignal.prototype, "reason", __abortSignalStates);
+    attribute(globalThis.AbortController.prototype, "signal", controllerStates);
+  }
 }
 if (!globalThis.Blob) {
   // Same clone-poisoning brand as Headers: an enumerable

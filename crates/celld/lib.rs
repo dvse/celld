@@ -308,6 +308,11 @@ pub fn worker_compat(metadata: &serde_json::Value) -> js::Compat {
         date.is_some_and(|date| date >= since)
     };
     js::Compat {
+        workers_api_getters_setters_on_prototype: switch(
+            "workers_api_getters_setters_on_prototype",
+            "workers_api_getters_setters_on_instance",
+            "2022-01-31",
+        ),
         allow_irrevocable_stub_storage: has_flag("allow_irrevocable_stub_storage"),
         enable_abortsignal_rpc: has_flag("enable_abortsignal_rpc"),
         rpc_params_dup_stubs: switch(
