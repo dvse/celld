@@ -13,6 +13,113 @@ An inactive cell costs almost nothing. Learn more at
 [celld.dev](https://celld.dev) or read the
 [documentation](https://celld.dev/docs).
 
+## About this fork
+
+This is [celld](https://github.com/denoland/celld) v0.6.2 with a series of
+patches that enhance Durable Object and JS RPC behaviour so that it matches
+[workerd](https://github.com/cloudflare/workerd) when the caller and the
+callee live on **different nodes**.
+
+Upstream celld runs each cell on one node and forwards calls between nodes
+over signed peer HTTP. Simple calls work, but much of what a Worker can do
+with RPC breaks as soon as a stub, capability, disposer, service binding or
+WebSocket crosses a node boundary. Our reference for the right behaviour is
+workerd itself, plus workerd
+[PR #6780](https://github.com/cloudflare/workerd/pull/6780), an experimental
+"cluster mode" that let several workerd processes share Durable Objects and
+route RPC between them. That PR was closed without being merged, but its
+design is the clearest statement of what cross-process Durable Object RPC
+has to preserve. We did not port its code (celld is Rust and its transport is
+different); we used it and workerd's own sources as the specification, and
+each patch cites the workerd behaviour it reproduces.
+
+### The patch series
+
+The base (`5712a0a`) is upstream `90b4301` plus four small patches used by
+our deployment (OS extensions, draining callbacks, Durable Object visibility,
+a lease-continuity guard). On top of it sit ten feature patches, one per
+workerd behaviour, and the test suite. Each commit on `main` after `5712a0a` is one patch;
+apply them in order. Each patch uses only definitions from itself and earlier
+patches, and builds and passes `cargo test --workspace --locked` on its own.
+
+| Patch | workerd behaviour ported |
+|---|---|
+| Worker bindings and placement | cross-script Durable Object bindings, static service props and JSON vars; `CELLD_PLACEMENT`; stored class references follow a redeploy; Wrangler-environment bindings refused at deploy |
+| Actor I/O ownership and isolate turns | continuations keep doing I/O in a running event of their cell; adopted ops belong to the object; native I/O keeps its owner across cancellation and retirement; a dropped turn waiter passes the isolate on; requests keep polling while they wait for a turn; `waitUntil()` after the event answered |
+| Alarm wall timeout | an alarm's 15-minute limit aborts the actor and breaks its exported capabilities; no wall-clock limit on an event awaiting I/O otherwise |
+| JS RPC capability graphs, transport sessions and stub lifetime | pipelined RPC promises and properties; disposable promises and results; routable disposers; `dup()`; streams and AbortSignals as capabilities; one synchronous argument snapshot at the call site for every call path; reusable props snapshots decoded per receiver; native capability packets on authenticated process sessions; per-session ordered delivery with exactly-once sequence resolution; session loss fails waiting calls; capabilities live as long as their session or caller |
+| Persistent RPC clients and restore channels | restore chains restart at static entrypoints and top-level Durable Objects; fleet-secret restore control; persistent clients acquired before the call returns, never reconnected once resolved; STORAGE channel checks on stored props; no replay on unauthenticated peer headers; workerd's restore error messages |
+| Fetcher HTTP and WebSocket across RPC | a Fetcher keeps its HTTP channel through RPC, storage and restore; service bindings revive as service bindings; restored-self context on HTTP requests; ordered fetches; full WebSocket tunnel handshake; streamed bodies fail on session loss instead of ending cleanly |
+| Facets | `ctx.facets.clone()` copies the source subtree atomically |
+| Modules | scheme-less specifiers resolve against the importer; live static class lookup |
+| AbortSignal | branded prototype accessors, or reflecting instance attributes before 2022-01-31 |
+| RPC errors | own properties kept, `DOMException` stays a `DOMException`, no remote stack |
+| Test suite | `tests/`: unit, logic, conformance, fault and per-finding regression tests, grouped by behaviour and run differentially against stock workerd (`tests/run.sh`) |
+
+### Fixed under load (Tunez on a five-node fleet, October 2026)
+- **Memory growth.** Stateless isolates that still exported a capability were
+  retired anyway and could never finish draining (one node reached 20 GB).
+  An isolate with live exports is no longer retired; one that exports while
+  draining returns to service, as workerd keeps an exporter alive.
+- **Ordering storms.** A sequence number assigned to a call that never
+  reached the callee left a gap that broke the caller-callee lane for good.
+  Every sequence number is now resolved exactly once: by the call, by the
+  callee, or by a skip notice on the session.
+- **Edge timeouts.** All HTTP clients share one keep-alive policy (10 s idle,
+  at most 16 idle connections per host), below the edge's 30 s idle close.
+
+### Request IoContexts (found on Hyperbob published routes, October 2026)
+- **Published routes answered nothing.** A Response that a stateless handler
+  received over RPC and returned (a router answering with a gatekeeper's
+  `route()` result) reached the client as an empty reply: the handler ran
+  without its request's IoContext, so the node's body pump was refused the
+  stream. Every stateless event now runs in its own IoContext, from the
+  handler through the turn that settles it.
+- **Request-bound stubs.** These belong to the request (or, inside a
+  Durable Object, the object) that made or received them:
+  - a `ctx.exports` stub made with its own props;
+  - a service stub received over RPC or read from storage (from this script
+    or another one, with or without props);
+  - a Durable Object stub, created or received over RPC;
+  - a Durable Object class carrying props (`ctx.exports.Name({props})`, a
+    Worker Loader class, or one received over RPC, alone or inside a value
+    such as `{class}`);
+  - a Worker Loader stub and its entrypoints (with or without props), and a
+    facet stub.
+
+  Another request is refused them with workerd's cross-request error
+  (another Durable Object in the same isolate with workerd's "different
+  Durable Object" error), while the first is live and after it ended,
+  whether it calls them, fetches through them, starts a facet of the class,
+  or passes them on: as an RPC argument or result, nested in a value, or
+  into a Durable Object's storage. Streams and RPC targets
+  received over RPC were already bound. Bindings of the isolate (`env`,
+  `ctx.exports`' own entries, namespaces) stay shared (C7-02, C7-03).
+
+### Known open gaps
+- Idle ordering lanes on a long-lived, widely shared export are only freed
+  when the export is revoked or the session closes (bounded at 4096 lanes
+  per export).
+- During a burst, cross-node calls still use one HTTP/1 connection each;
+  multiplexing them over the session, as workerd does, is not done.
+- Other request-context differences from workerd: a continuation of a
+  finished stateless request that another request resumes is not canceled
+  (its I/O is refused instead, with no warning, and stubs it makes are
+  usable by no request); returning another request's
+  RPC stream as a response body gives an empty reply instead of a 500; a
+  same-script service-binding `fetch` hands the callee's Response object to
+  the caller, so a body that reads the callee's RPC objects is refused.
+  Details in tests/regressions/C7-02/README.md.
+- Not compared with workerd for use from another request: TCP sockets from
+  `connect()`, WebSockets, request and response bodies held across requests,
+  Cache API objects and Workflow instance handles; values sent through a
+  queue; stubs of another script kept in a Durable Object's storage.
+  `structuredClone` of a stub fails with DataCloneError where workerd gives
+  the cross-request error. A Worker Loader entrypoint passed over RPC by its
+  own request is refused when the receiver calls it (cross-request), where
+  workerd refuses the transfer itself.
+- Treat this fork as experimental.
+
 ## How it works
 
 A node is one `celld` process, and you run one on each machine. Every
