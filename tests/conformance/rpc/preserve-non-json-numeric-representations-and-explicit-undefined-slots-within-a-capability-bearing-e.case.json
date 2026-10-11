@@ -1,0 +1,49 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "Dispose result tree in finally; shared codecCleanup; evidence converts bigint to decimal strings",
+    "intent": "Preserve non-JSON numeric representations and explicit undefined slots within a capability-bearing envelope",
+    "oracle": "Undefined remains present; Object.is(-0), Number.isNaN and exact infinity/bigint comparisons succeed",
+    "preconditions": "COMMON; peer returns fixed mixed numeric vector plus one target",
+    "source_contracts": [
+      "SC-CLONE",
+      "SC-LIFT"
+    ],
+    "trace": [
+      "receive numeric vector with lifted target",
+      "check own undefined slot and signed zero using non-JSON predicates",
+      "check NaN, infinities and exact signed bigints",
+      "invoke target"
+    ]
+  },
+  "corpus_id": "C024",
+  "corpus_wave": "rpc-codec",
+  "fixture": "tests/conformance/rpc/fixtures/value-codec",
+  "id": "conformance/rpc/preserve-non-json-numeric-representations-and-explicit-undefined-slots-within-a-capability-bearing-e",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/rpc-codec/C024"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/rpc-codec/C024",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec"
+    },
+    {
+      "sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "C024",
+  "source": "tests/conformance/rpc/fixtures/value-codec/entry.js",
+  "source_sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+  "title": "Preserve non-JSON numeric representations and explicit undefined slots within a capability-bearing envelope"
+}

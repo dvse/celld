@@ -1,0 +1,7 @@
+{
+  "name": "active-websocket-stress",
+  "main": "fixture.js",
+  "compatibility_date": "2026-09-04",
+  "durable_objects": {"bindings": [{"name": "ROOT", "class_name": "WebSocketRoot"}]},
+  "migrations": [{"tag": "v1", "new_sqlite_classes": ["WebSocketRoot"]}]
+}

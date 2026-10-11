@@ -1,0 +1,133 @@
+{
+  "adapter": "http",
+  "behaviour": "web-platform",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "application_relevance": "Ordinary Worker endpoint configuration may use documentation-range IPv6 literals without making a network request.",
+    "assertion_count": 6,
+    "authored": true,
+    "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+    "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+    "desired_behavior": "IPv6 brackets are preserved as part of hostname; only the colon after the closing bracket separates port.",
+    "distinctness": "Authority tokenization rather than domain IDNA or direct numeric port conversion.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/U204",
+      "request_body": null
+    },
+    "fixed_runtime_assertions": [
+      "t.equal(url.hostname, '[2001:db8::7]', 'bracketed IPv6 is one hostname');",
+      "t.equal(url.port, '8443', 'port split occurs after IPv6 closing bracket');",
+      "t.equal(url.host, '[2001:db8::7]:8443', 'IPv6 host serialization');",
+      "t.equal(url.href, 'https://[2001:db8::7]:8443/path?q=1#part', 'IPv6 setter keeps path and query');",
+      "t.equal(url.port, '', 'default IPv6 port is elided');",
+      "t.equal(url.origin, 'https://[2001:db8::8]', 'IPv6 origin after default-port elision');"
+    ],
+    "hypothesis": "Splitting host at the first colon may corrupt a valid IPv6 literal and its port.",
+    "id": "U204",
+    "implementation": {
+      "end_line": 44,
+      "file": "cases.js",
+      "start_line": 34,
+      "symbol": "U204"
+    },
+    "independently_reviewed": false,
+    "layer": "direct-celld-worker-fetch-global-web-api",
+    "limits": {
+      "case_assertion_max_count": 16,
+      "case_input_max_code_units": 1024,
+      "case_tuple_max_count": 16,
+      "concurrent_requests": 1,
+      "network_calls_from_fixture": 0,
+      "repetitions": 1,
+      "request_body_bytes": 0,
+      "request_outer_deadline_seconds": 5,
+      "requests_per_case": 1,
+      "response_max_bytes": 65536,
+      "storage_writes_from_fixture": 0,
+      "timers_from_fixture": 0
+    },
+    "mechanism": "Host setter IPv6 bracket awareness and scheme-default port handling",
+    "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+    "preconditions": [
+      "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+      "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+      "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+    ],
+    "prediction_is_runtime_evidence": false,
+    "primary_contract_refs": [
+      "https://url.spec.whatwg.org/#dom-url-host"
+    ],
+    "review_status": "UNREVIEWED",
+    "runtime_pass_claimed": false,
+    "runtime_source_refs": [
+      {
+        "line_end": 145,
+        "line_start": 126,
+        "path": "celld-os-project/celld/crates/celld/js/url.js"
+      },
+      {
+        "line_end": 228,
+        "line_start": 197,
+        "path": "celld-os-project/celld/crates/celld/js/url.js"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "schedule": {
+      "depends_on": [],
+      "kind": "one synchronous finite trace",
+      "overlap": "none",
+      "path": "/case/U204",
+      "request_ordinal": 4,
+      "runtime_operations": [
+        "Construct an HTTPS URL with existing port, path, query, and fragment.",
+        "Replace host with [2001:db8::7]:8443 and assert hostname, port, host, and href.",
+        "Replace with [2001:db8::8]:443 and assert default-port elision and origin."
+      ]
+    },
+    "source_observation": "Pinned host setter uses indexOf(':'), without bracket handling. Source discrepancy hypothesis only.",
+    "static_prediction": "EXPECTED_FAILURE_CANDIDATE",
+    "status": "NOT_RUN",
+    "title": "Parse bracketed IPv6 host replacements and their ports",
+    "trace": [
+      "Construct an HTTPS URL with existing port, path, query, and fragment.",
+      "Replace host with [2001:db8::7]:8443 and assert hostname, port, host, and href.",
+      "Replace with [2001:db8::8]:443 and assert default-port elision and origin."
+    ]
+  },
+  "corpus_id": "U204",
+  "corpus_wave": "url-semantics",
+  "fixture": "tests/conformance/web-platform/fixtures/url-semantics",
+  "id": "conformance/web-platform/url-u204",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/url-semantics/U204"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/url-semantics/U204",
+      "manifest_sha256": "d61fdb1b4d070ae5aff0ad1456c39d2842c341f9737a20b67c67c251f638ae91",
+      "review_sha256": "13b98102e846487ca6304032863d1edb29b691c8649ebdea0ad53161ac6da486",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics",
+      "tranche": "001"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/U204",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "U204",
+  "source": "tests/conformance/web-platform/fixtures/url-semantics/fixture.js",
+  "source_sha256": "ccbb1cf21c3f719aa06ed64b498fc396f00736cc96d7cbd2aea437f2cc221ca6",
+  "title": "Parse bracketed IPv6 host replacements and their ports"
+}

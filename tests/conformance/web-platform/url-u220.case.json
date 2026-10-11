@@ -1,0 +1,141 @@
+{
+  "adapter": "http",
+  "behaviour": "web-platform",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "application_relevance": "Workers route numeric order IDs only for one hostname and a required query shape.",
+    "assertion_count": 7,
+    "authored": true,
+    "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+    "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+    "desired_behavior": "2048 and full are separate named captures; nonnumeric id, wrong search key, and wrong hostname each prevent a match.",
+    "distinctness": "Custom regexp restriction and conjunction across components, not optional capture shape or ignoreCase.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/U220",
+      "request_body": null
+    },
+    "fixed_runtime_assertions": [
+      "t.equal(pattern.hasRegExpGroups, true, 'custom numeric regexp is reflected by hasRegExpGroups');",
+      "t.equal(result !== null, true, 'numeric order path matches');",
+      "t.equal(result.pathname.groups.id, '2048', 'numeric regexp named capture');",
+      "t.equal(result.search.groups.view, 'full', 'separate query capture is mapped to correct component');",
+      "t.equal(pattern.exec('https://api.example.test/orders/draft?view=full'), null, 'valid URL rejected by numeric path constraint');",
+      "t.equal(pattern.test('https://api.example.test/orders/2048?mode=full'), false, 'matching path cannot override mismatching search component');",
+      "t.equal(pattern.test('https://other.example.test/orders/2048?view=full'), false, 'matching captures cannot override hostname constraint');"
+    ],
+    "hypothesis": "Custom group metadata or group-name mapping may be lost at the host seam, or one successful component may mask another component nonmatch.",
+    "id": "U220",
+    "implementation": {
+      "end_line": 257,
+      "file": "cases.js",
+      "start_line": 247,
+      "symbol": "U220"
+    },
+    "independently_reviewed": false,
+    "layer": "direct-celld-worker-fetch-global-web-api",
+    "limits": {
+      "case_assertion_max_count": 16,
+      "case_input_max_code_units": 1024,
+      "case_tuple_max_count": 16,
+      "concurrent_requests": 1,
+      "network_calls_from_fixture": 0,
+      "repetitions": 1,
+      "request_body_bytes": 0,
+      "request_outer_deadline_seconds": 5,
+      "requests_per_case": 1,
+      "response_max_bytes": 65536,
+      "storage_writes_from_fixture": 0,
+      "timers_from_fixture": 0
+    },
+    "mechanism": "Custom regexp-group metadata and eight-component conjunction",
+    "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+    "preconditions": [
+      "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+      "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+      "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+    ],
+    "prediction_is_runtime_evidence": false,
+    "primary_contract_refs": [
+      "https://urlpattern.spec.whatwg.org/"
+    ],
+    "review_status": "UNREVIEWED",
+    "runtime_pass_claimed": false,
+    "runtime_source_refs": [
+      {
+        "line_end": 97,
+        "line_start": 69,
+        "path": "celld-os-project/celld/crates/celld/js/url_pattern.js"
+      },
+      {
+        "line_end": 10719,
+        "line_start": 10703,
+        "path": "celld-os-project/celld/crates/celld/js.rs"
+      },
+      {
+        "line_end": 10765,
+        "line_start": 10724,
+        "path": "celld-os-project/celld/crates/celld/js.rs"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "schedule": {
+      "depends_on": [],
+      "kind": "one synchronous finite trace",
+      "overlap": "none",
+      "path": "/case/U220",
+      "request_ordinal": 20,
+      "runtime_operations": [
+        "Construct fixed numeric-id pathname and named search capture patterns for api.example.test.",
+        "Assert custom-regexp flag and exact captures on one matching URL.",
+        "Exec a valid draft-string ID URL and require null.",
+        "Require false for valid URLs with the wrong query shape or hostname."
+      ]
+    },
+    "source_observation": "Rust returns regex and group-name metadata; JS uses every component for test and stops exec on the first nonmatch.",
+    "static_prediction": "NO_FAILURE_PREDICTION",
+    "status": "NOT_RUN",
+    "title": "Enforce custom regexp and all URLPattern component constraints",
+    "trace": [
+      "Construct fixed numeric-id pathname and named search capture patterns for api.example.test.",
+      "Assert custom-regexp flag and exact captures on one matching URL.",
+      "Exec a valid draft-string ID URL and require null.",
+      "Require false for valid URLs with the wrong query shape or hostname."
+    ]
+  },
+  "corpus_id": "U220",
+  "corpus_wave": "url-semantics",
+  "fixture": "tests/conformance/web-platform/fixtures/url-semantics",
+  "id": "conformance/web-platform/url-u220",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/url-semantics/U220"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/url-semantics/U220",
+      "manifest_sha256": "d61fdb1b4d070ae5aff0ad1456c39d2842c341f9737a20b67c67c251f638ae91",
+      "review_sha256": "13b98102e846487ca6304032863d1edb29b691c8649ebdea0ad53161ac6da486",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics",
+      "tranche": "001"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/U220",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "U220",
+  "source": "tests/conformance/web-platform/fixtures/url-semantics/fixture.js",
+  "source_sha256": "ccbb1cf21c3f719aa06ed64b498fc396f00736cc96d7cbd2aea437f2cc221ca6",
+  "title": "Enforce custom regexp and all URLPattern component constraints"
+}

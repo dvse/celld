@@ -1,0 +1,233 @@
+{
+  "reviewed_at_utc": "2026-10-09T06:37:18.579312+00:00",
+  "reviewer": "review_celld_test_additions",
+  "wave": "body-form-semantics",
+  "verdict": "ACCEPTED_PRIMARY_STATIC",
+  "counts": {
+    "authored": 20,
+    "accepted_primary_static": 20,
+    "accepted_characterization": 0,
+    "static_assertion_call_sites": 105,
+    "expected_failure_candidates": 6,
+    "runtime_executions": 0,
+    "runtime_passes": 0
+  },
+  "scope": "Independent actual case/fixture/source and intended-contract review; semantic comparison against baseline 575, accepted 98 campaign cases and concurrent R2 draft. Hash/JSON/Python AST and JavaScript syntax checks only.",
+  "duplicate_review": "No duplicate accepted. Closest C016/Y201 and V215/Y215 share subchecks that receive no extra credit; their new mixed-composition and clone metadata/buffer-ownership mechanisms are explicit. R2 service value conversion is separate from local Blob construction; D1 and DO/KV storage codecs do not duplicate local Body/FormData mechanisms.",
+  "review_corrections": [
+    {
+      "finding": "Initial cleanup prose claimed every producer was eagerly closed and silently skipped locked streams.",
+      "resolution": "Author now tracks fulfilled real Body consumers and clone/proxy lineage, joins unlocked cancellations, explicitly reports retained runtime locks, and blocks PASS for any without terminal proof. Buffered sources are accurately described as potentially lazy."
+    },
+    {
+      "finding": "Y201 novelty risk against baseline C016.",
+      "resolution": "Credit expressly limited to heterogeneous ordered UTF-8/DataView/Blob/string composition; shared copying/view/type checks are supporting assertions."
+    },
+    {
+      "finding": "Y205 renamed File lastModified detail not explicit in HTML create-an-entry prose.",
+      "resolution": "Supporting equality identified as pinned source same-file metadata behavior; identity/rename/bytes contract remains normative and case primary."
+    }
+  ],
+  "static_checks": {
+    "runtime_sources_pins": 8,
+    "baseline_evidence_pins": 21,
+    "campaign_evidence_pins": 4,
+    "fixture_artifacts_pins": 9,
+    "fixed_assertion_declarations": 105,
+    "source_ranges_validated": 48,
+    "javascript_syntax_files": 2,
+    "SHA256SUMS_entries": 11,
+    "case_manifest_schedule_bijection": 20,
+    "runtime_executions": 0,
+    "author_validator_executed": false
+  },
+  "contract_policy": "Six discrepancies remain correct-oracle EXPECTED_FAILURE_CANDIDATE and UNRUN, not source-observed passes or executed failures. No expected value changed to bless a suspected defect.",
+  "source_gap_candidates": [
+    {
+      "id": "Y212",
+      "static_source_observation": "__multipartBody emits text values without CRLF normalization.",
+      "intended_contract": "https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#multipart-form-data",
+      "runtime_observation": "NONE_UNRUN"
+    },
+    {
+      "id": "Y214",
+      "static_source_observation": "Buffered new Request(existing) copies bytes without disturbing inherited input.",
+      "intended_contract": "https://fetch.spec.whatwg.org/#dom-request",
+      "runtime_observation": "NONE_UNRUN"
+    },
+    {
+      "id": "Y217",
+      "static_source_observation": "Convenience readers set bodyUsed on null bodies; POST without input gets a stream.",
+      "intended_contract": "https://fetch.spec.whatwg.org/#dom-body-bodyused",
+      "runtime_observation": "NONE_UNRUN"
+    },
+    {
+      "id": "Y218",
+      "static_source_observation": "Plain bodyUsed field does not follow direct stream-reader disturbance.",
+      "intended_contract": "https://fetch.spec.whatwg.org/#dom-body-bodyused",
+      "runtime_observation": "NONE_UNRUN"
+    },
+    {
+      "id": "Y219",
+      "static_source_observation": "String body fast path does not infer the required text media type.",
+      "intended_contract": "https://fetch.spec.whatwg.org/#concept-bodyinit-extract",
+      "runtime_observation": "NONE_UNRUN"
+    },
+    {
+      "id": "Y220",
+      "static_source_observation": "Response.clone rejects unbuffered streams before valid teeing.",
+      "intended_contract": "https://fetch.spec.whatwg.org/#dom-response-clone",
+      "runtime_observation": "NONE_UNRUN"
+    }
+  ],
+  "execution_contract": {
+    "fixture": "Standalone dependency-free Worker, one GET /case/<id>, actual celld globals. Clone/consumer helpers forward methods without shims. Generated multipart boundary normalized by independent tiny parser. No outbound network or persistent mutation.",
+    "outer_request_seconds": 5,
+    "suite_seconds": 300,
+    "external_cleanup_seconds": 20,
+    "max_payload_bytes": 16384,
+    "max_reader_reads": 16,
+    "max_form_entries": 8,
+    "concurrency": 1,
+    "retries": 0,
+    "cleanup": "Await trace, cancel/release explicit readers; initiate all unlocked stream cancellations before joining; report runtime-retained locks backed by fulfilled consumer or settled descendant proof. COMPLETE is local settlement only. Always require owned process/store teardown.",
+    "runtime_provenance_and_limits_required": true,
+    "runtime_status": "UNRUN"
+  },
+  "case_verdicts": [
+    {
+      "id": "Y201",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Heterogeneous ordered Blob composition; C016 view/copy/MIME primitives earn no additional credit."
+    },
+    {
+      "id": "Y202",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Independent immutable Blob output buffers across arrayBuffer and bytes."
+    },
+    {
+      "id": "Y203",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Byte-relative Blob slicing with independent type and clamped/reversed ranges."
+    },
+    {
+      "id": "Y204",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Independently opened Blob stream lifecycle; not a tee or remote capability."
+    },
+    {
+      "id": "Y205",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "FormData File identity versus rename and Blob conversion; source-backed same-file lastModified supporting assertion explicitly qualified."
+    },
+    {
+      "id": "Y206",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Mixed File/string FormData.set conversion and duplicate replacement with unrelated identity preserved."
+    },
+    {
+      "id": "Y207",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Binary Body-to-Blob conversion creates a reusable immutable value with normalized MIME."
+    },
+    {
+      "id": "Y208",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Construction-time FormData extraction verified by independent wire parser and separately consumed runtime parser."
+    },
+    {
+      "id": "Y209",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Valid multipart binary File payload preserved separately from UTF-8 text decoding."
+    },
+    {
+      "id": "Y210",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Valid mid-line boundary lookalike retained inside file content."
+    },
+    {
+      "id": "Y211",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Quoted boundary and legal reordered name/filename parameters parsed independently."
+    },
+    {
+      "id": "Y212",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Multipart text newline normalization without mutating source FormData; normative failure candidate."
+    },
+    {
+      "id": "Y213",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "URLSearchParams typed BodyInit MIME inference and form parser dispatch; not URL encoding algorithm coverage."
+    },
+    {
+      "id": "Y214",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Inherited Request body ownership transfer versus explicit replacement; normative failure candidate."
+    },
+    {
+      "id": "Y215",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Response clone metadata/header ownership and consumer-buffer detachment; shared V215 consumption primitive not recounted."
+    },
+    {
+      "id": "Y216",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Response.json construction-time snapshot and response initialization."
+    },
+    {
+      "id": "Y217",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Absent body representation and non-disturbance across empty consumers; beyond C019 RPC revival."
+    },
+    {
+      "id": "Y218",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Body.bodyUsed coupling to direct reader disturbance; beyond convenience-consumer checks."
+    },
+    {
+      "id": "Y219",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Scalar-string BodyInit MIME inference and explicit override precedence."
+    },
+    {
+      "id": "Y220",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Unused finite streaming Response.clone support with both consumers joined; distinct from H008 Request clone/upload."
+    }
+  ],
+  "reviewed_artifact_sha256": {
+    "README.md": "aa8f598081b5e9e598c53afe49a56a8be6a323a9195b79e8549840878fb314ef",
+    "SHA256SUMS": "82f2d0f8d852b52e8f053c27673b1674d75941c858b64c4ea40929ed9a4e5d2e",
+    "author_manifest.py": "c529857e5d0c8584f133f48c553aa24b7f370324c32a38dff96c8ac480dbe77c",
+    "cases.js": "180471bf87e871d625acdc530f33d9829a3c6cd676a19747327f796894d4573d",
+    "fixture.js": "ab850551d9b005bc0636954aeb2151d46ac0c35d15580665aa157230dabe30a5",
+    "manifest.json": "e31598421948f8c190575ce14a8cccfe7a76930797c30c44985d05552d3c95d1",
+    "overlap-audit.json": "c5683224ae4738ac56f331be8dbac1d760320cd4284d3193a9c36c37d3918ee5",
+    "schedule.json": "363f24c8b5caba3cba816c1fb6b72f56bdf56abcb6df71e28cc3945a6bc23352",
+    "source-pins.json": "77d539f056c98d55c029a953d53d0e9022bc8da7aa513df9dad0ccabb20227ba",
+    "static-validation.json": "7bf862330b490dcbea41d267019a7e9be423e3bc7230f70029e9b134456f92f5",
+    "validate_static.py": "c1d272392639042042e2984ae7a2fc2445dce5cfc5a88915582fda29baa8e386",
+    "wrangler.json": "b7df0404d43d144186263a48409811dc97fc50df5e85d6584f99a3a54c93239d"
+  }
+}

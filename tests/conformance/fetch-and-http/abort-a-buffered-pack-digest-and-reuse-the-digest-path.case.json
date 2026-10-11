@@ -1,0 +1,51 @@
+{
+  "adapter": "topology",
+  "behaviour": "fetch-and-http",
+  "contract": {
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "distinctness": "Direct writable abort of a digest accumulator versus compression abort or upstream source error.",
+    "implementation": "operations.js:X019",
+    "intent": "Abort a buffered pack digest and reuse the digest path",
+    "oracle": "Exact planned Error at digest and later write; fresh pack SHA1 exact.",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "DigestStream abort clears chunks and rejects its digest promise"
+    ],
+    "trace": [
+      "Buffer 32 pack bytes and hold the unfinished DigestStream.",
+      "Finish a separate raw exporter while that digest remains pending.",
+      "Abort it, reject a later write, then hash a fresh complete pack."
+    ]
+  },
+  "corpus_id": "X019",
+  "corpus_wave": "native-transform-stress",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/transform-streams",
+  "id": "conformance/fetch-and-http/abort-a-buffered-pack-digest-and-reuse-the-digest-path",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/native-transform-stress/X019"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/native-transform-stress/X019",
+      "source": "guarded-source-archive/celld-os-stress/waves/native-transform-stress"
+    },
+    {
+      "sha256": "1c4be2004e476ee286465674ad37b81dd9ea8cc33e0dda6ef66b66b5830346de",
+      "source": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "X019",
+  "source": "tests/conformance/fetch-and-http/fixtures/transform-streams/entry.js",
+  "source_sha256": "1c4be2004e476ee286465674ad37b81dd9ea8cc33e0dda6ef66b66b5830346de",
+  "title": "Abort a buffered pack digest and reuse the digest path"
+}

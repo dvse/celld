@@ -1,0 +1,1043 @@
+{
+  "schema_version": 1,
+  "files": [
+    {
+      "path": "cases/rpc.json",
+      "sha256": "341c423b306548b1d8b92a828f037c16332d00d612c8e42e639817844e3002c2",
+      "bytes": 15053,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "cases/streams.json",
+      "sha256": "5229ce8e44ad3e541e7f96dc788ad946e7d2beade8f7c63aee02aed70b1a1684",
+      "bytes": 15183,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "fixture/index.js",
+      "sha256": "3e137fc03ca2b2e6ca40d538291aaf0e022bdfe491d3ddcdf4f8f9c4eb4c6b72",
+      "bytes": 14347,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "fixture/rpc.js",
+      "sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+      "bytes": 14684,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "fixture/wrangler.jsonc",
+      "sha256": "8b7b1e0c54afd4c2d6be00be6b6f7ff04e19ac80e1a92c3a6eef709862b3dac2",
+      "bytes": 403,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "revisions/r027-v2/rpc.js",
+      "sha256": "9072e9b02913a4e0b73721eaecc7f4fa62529638e358d186c0c38c6c9674e425",
+      "bytes": 14989,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/active-websocket-stress/author_manifest.py",
+      "sha256": "e3b4a53e861bdfc9e7aee049a87edf3b196126c7e5ce041335dfadd59cc5935c",
+      "bytes": 17478,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/active-websocket-stress/cases.js",
+      "sha256": "1fb7fc64b31809ddee2f9e874026813f0fe38fc28df520047a3cd1c58dd03eab",
+      "bytes": 14393,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/active-websocket-stress/common.js",
+      "sha256": "765fe3f7bf95c743888a6272bba70ca8783e740c21b98f49fd062ffc03dd65d7",
+      "bytes": 2310,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/active-websocket-stress/fixture.js",
+      "sha256": "2ea74d4323d34e1121e93c9637f19d6f46349f17a06516a6e2d13d4a86187317",
+      "bytes": 8287,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/active-websocket-stress/lab.js",
+      "sha256": "c06945df9ce35fae1b1af7051fd53b3def3d9c8e83765d5ec390ab348eb7c6fa",
+      "bytes": 10933,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/active-websocket-stress/manifest.json",
+      "sha256": "b48994aa5d1dbdb02bb5fb7472d3ae0caa9f9710e246413bc6a413b78ea9e5e9",
+      "bytes": 63813,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/active-websocket-stress/profile.json",
+      "sha256": "17dfc8a88d254f4ed463a139f8333f092e6946e16ba65c84582fe83b72fde774",
+      "bytes": 2075,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/active-websocket-stress/wrangler.jsonc",
+      "sha256": "4b10331248a0709d82f9772e5306253cea57bec087ba86145f671c3f16f89fac",
+      "bytes": 262,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/alarm-event-stress/author_manifest.py",
+      "sha256": "55093f766e3d800740a3913a412c0336bbdba70ba6ac3fa6750da8e43f1bf245",
+      "bytes": 26137,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/alarm-event-stress/bucket-profile.json",
+      "sha256": "ca302dc1fec9518e2df322499dcae4c65dd567a1a549aaf185cbb8cd0cd33845",
+      "bytes": 1773,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/alarm-event-stress/cases.py",
+      "sha256": "3e22482c38c850a8103b374eb5ad7baa3df6364fe9a664e8944b6144ec70ecaa",
+      "bytes": 21613,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/alarm-event-stress/fixture.js",
+      "sha256": "ccde8a8c9c8c7a4cfe02567f656fc149da1ee24fd78973455e64a8fe1c6ea3f3",
+      "bytes": 12448,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/alarm-event-stress/manifest.json",
+      "sha256": "865ae3a9e5f61df64bded511650269e53e34a4d680a024d6dfcb57917c0548b8",
+      "bytes": 80418,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/alarm-event-stress/wrangler.jsonc",
+      "sha256": "b9a8d5eadb8c20b6841b4df8780492d488376b311bd31ea9fb90448c977e6ab3",
+      "bytes": 356,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/bounded-load/author_manifest.py",
+      "sha256": "dd94f20b7bffa492bdf9e99af5a55eb66b855e7880f436e75f6ddcde444c283c",
+      "bytes": 27432,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/bounded-load/cases.js",
+      "sha256": "60c6f9a8ae72180a8f549405076efc48a14612d5686d7a38548db329db4a06cf",
+      "bytes": 28395,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/bounded-load/entry.js",
+      "sha256": "d45e8d319cc476a70976563100261ffd65f5e3b94245c2de009fcd5942903e23",
+      "bytes": 4575,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/bounded-load/fixture.js",
+      "sha256": "dcad2094078d264e222e44846b21d0919bcf9798645ee5e0792759afe48a295e",
+      "bytes": 17736,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/bounded-load/manifest.json",
+      "sha256": "3f5bd7c6edaeaff0d0e64f61f3057d470ff3797c9433705a02e007e2b9ab8138",
+      "bytes": 98229,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/bounded-load/workers.js",
+      "sha256": "976773c60498ef981b1b3c1be5979c739db4831fcc506976be20cff019595fc7",
+      "bytes": 4118,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/bounded-load/wrangler.jsonc",
+      "sha256": "6439cd84594064e2f46695b4781e20f0ad175437aed83c27b33bcaa3437010c3",
+      "bytes": 353,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/bounded-resource/author_manifest.py",
+      "sha256": "151e51fef3fcbde098697705ccfe29cd9981e5f062144e5f08fe00475733a850",
+      "bytes": 16893,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/bounded-resource/cases.js",
+      "sha256": "7a808ee50d9cc12655886a6727e9faf6115af36f95f1a0125f49b0cbdfaafcc1",
+      "bytes": 7704,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/bounded-resource/entry.js",
+      "sha256": "f0ac664b435a5bbfd844d830d03447bb78bfbd1d5d2e31bc4beb6a2d299847b9",
+      "bytes": 2964,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/bounded-resource/fixture.js",
+      "sha256": "363d7485428a0171decc42c352d1817fab100d3e250818c6bd5952b35792f496",
+      "bytes": 4627,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/bounded-resource/manifest.json",
+      "sha256": "146a361928473370af035feab68842898b962535623b2e9e3e2d2d4fb2e668b2",
+      "bytes": 42242,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/bounded-resource/profile.json",
+      "sha256": "4b0b3cbaa5387dd5e95f388a0cc159260d6aac9d903eb19060aec449387d7528",
+      "bytes": 1176,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/bounded-resource/workers.js",
+      "sha256": "e37f088cbdf7732244a2c592451f1177a13230bdedfd6a1b6b5f970f8d209f7e",
+      "bytes": 3466,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/bounded-resource/wrangler.jsonc",
+      "sha256": "b31f8c520da3adc3401aa01cd1f01abb3f423af20e7f1294938b7d1f278b2edc",
+      "bytes": 291,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/capability-order/cases.js",
+      "sha256": "b28c7dcccc3ec3d81c2db236494b94fe3285389ce9914479e31b91b6d64cd43e",
+      "bytes": 23545,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/capability-order/cases.json",
+      "sha256": "0d43f72d1bf72550b1334811d9d1db725e499d2226b70ba4b7958a989be849a5",
+      "bytes": 55667,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/capability-order/entry.js",
+      "sha256": "2dd846ea32e9b72b740619d977febe62cdc0aa8157e08c5261436c00e030e187",
+      "bytes": 4610,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/capability-order/fixture.js",
+      "sha256": "9189a242e82445ff01d4a374fb919e70468e8a0c1902033ac51db7570bccaec0",
+      "bytes": 12696,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/capability-order/wrangler.jsonc",
+      "sha256": "e536ef0460f23d6f8adadef5dd8120991089a2e009a4f4ce2a8528fdf2b9976b",
+      "bytes": 303,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/assemble_fixtures.py",
+      "sha256": "ba7cdcef302e76e9ccb8a1a9b6d129a9362848b43002597d6447ab90cb0bb40b",
+      "bytes": 3147,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/author_manifest.py",
+      "sha256": "7b728d65e23e28f0017dd72f8d9a9e42ae3a6ad6600bfadb0085b439b30bb7da",
+      "bytes": 20329,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/bucket-profile.json",
+      "sha256": "3549368cf731cb90ebed082c7f7163a8725e68e6462a3c38a042cb529e4e0810",
+      "bytes": 1933,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/cases.py",
+      "sha256": "bf2422f0f26a3a8d07843a67372a587797a531704bc8d9cb81b8b992502a970d",
+      "bytes": 24271,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/fixture-body.js",
+      "sha256": "98498f273a88f44d95e35ce3c19139113842985018aaac3e056ccab6b8398d6b",
+      "bytes": 10301,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/front.js",
+      "sha256": "f23feb07760fb3b6ebaef99ff55c90bb31da927355db4c8e4d80f073ca88331a",
+      "bytes": 570,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/manifest.json",
+      "sha256": "49de28e3fc01e79ef63ba813af9358e5f772ba9002e9ed7da8611dfc07d15a20",
+      "bytes": 159227,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/operator_methods.inc",
+      "sha256": "be2c2650ab3a6d70033e44494cc4b7fcfe0ebfd582c4aad919cf29d7eb0a1855",
+      "bytes": 11849,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/bad-rename/fixture.js",
+      "sha256": "18ec6afc81275ed855d97e45bc0ddfc2ada13af7e1ab055c82cb16a66ac05371",
+      "bytes": 10342,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/bad-rename/wrangler.jsonc",
+      "sha256": "4d228df488358c58356066ed731d0e0661e8148beeab2c377fab3db2751cba20",
+      "bytes": 513,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/bad-syntax/fixture.js",
+      "sha256": "0bcc2bb510c4acfc32dc24cbe3e4d29c05a71fd4c82e1ed0ec1cc259412e0f92",
+      "bytes": 68,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/bad-syntax/wrangler.jsonc",
+      "sha256": "c6ee9f7fe0c948a5a3f284fde1b47b86434f39113622b53ec90c72d5d44b9c53",
+      "bytes": 359,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/front-missing/fixture.js",
+      "sha256": "f23feb07760fb3b6ebaef99ff55c90bb31da927355db4c8e4d80f073ca88331a",
+      "bytes": 570,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/front-missing/wrangler.jsonc",
+      "sha256": "d2f5b58ed1dff98fc803feafdd6590b8d6aa2aaf1c4fe925b3ba0395c331fd08",
+      "bytes": 239,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/front-new/fixture.js",
+      "sha256": "f23feb07760fb3b6ebaef99ff55c90bb31da927355db4c8e4d80f073ca88331a",
+      "bytes": 570,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/front-new/wrangler.jsonc",
+      "sha256": "a931f298d3c1612c5baa303b756f27d6d3179efcfde440a73026de9f2b125554",
+      "bytes": 236,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/front-old/fixture.js",
+      "sha256": "f23feb07760fb3b6ebaef99ff55c90bb31da927355db4c8e4d80f073ca88331a",
+      "bytes": 570,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/front-old/wrangler.jsonc",
+      "sha256": "f3b5418b17cdb4890a5654323c3b59dcc8cfa0be8dfffec7a81b853178511282",
+      "bytes": 236,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/v1/fixture.js",
+      "sha256": "18ec6afc81275ed855d97e45bc0ddfc2ada13af7e1ab055c82cb16a66ac05371",
+      "bytes": 10342,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/v1/wrangler.jsonc",
+      "sha256": "c6ee9f7fe0c948a5a3f284fde1b47b86434f39113622b53ec90c72d5d44b9c53",
+      "bytes": 359,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/v2-abort/fixture.js",
+      "sha256": "e291575ad2bf7b26ccb0947014f1c661cf6efd9422f287609de98e47734a38b5",
+      "bytes": 10349,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/v2-abort/wrangler.jsonc",
+      "sha256": "c6ee9f7fe0c948a5a3f284fde1b47b86434f39113622b53ec90c72d5d44b9c53",
+      "bytes": 359,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/v2-add/fixture.js",
+      "sha256": "c7266b17bba60e3ed738868a9415e3b0c704bf13a57618cf51b1e1b5efbbf64b",
+      "bytes": 10345,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/v2-add/wrangler.jsonc",
+      "sha256": "c6ee9f7fe0c948a5a3f284fde1b47b86434f39113622b53ec90c72d5d44b9c53",
+      "bytes": 359,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/v2-binding/fixture.js",
+      "sha256": "1199fc503a346ea4cca36c2ed20e0ce2edc87a3afd0fb198c7743437124a5800",
+      "bytes": 10350,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/v2-binding/wrangler.jsonc",
+      "sha256": "5e2336f0487efbb624fc3e6d16766faa8858f50862384dd4d4f71723a9078922",
+      "bytes": 362,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/v2-code/fixture.js",
+      "sha256": "5938e572bab09a3f2cca5eb5b023d8fead27b4eee3f2a84692f6d49357a4076a",
+      "bytes": 10347,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/v2-code/wrangler.jsonc",
+      "sha256": "c6ee9f7fe0c948a5a3f284fde1b47b86434f39113622b53ec90c72d5d44b9c53",
+      "bytes": 359,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/v2-omitted/fixture.js",
+      "sha256": "12c09889bf8c4e69b470f2ba384d6b83e07082e85653b3aa00c54f1d52fdde94",
+      "bytes": 10350,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/v2-omitted/wrangler.jsonc",
+      "sha256": "cef3889c8b998800deff67e3f2db5d746a91b1c7d1cc0687fe1e05bd2a773ba1",
+      "bytes": 362,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/v2-rebuild/fixture.js",
+      "sha256": "b30037539d5b2fa08405d6e3adbf6a936997a6ab6143ab30620e18b43f8c3c5f",
+      "bytes": 10353,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/v2-rebuild/wrangler.jsonc",
+      "sha256": "c6ee9f7fe0c948a5a3f284fde1b47b86434f39113622b53ec90c72d5d44b9c53",
+      "bytes": 359,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/v2-script/fixture.js",
+      "sha256": "22c85e67b3ccc085c02d07a974e7b1fe42df99e12b448559f108251a712d7729",
+      "bytes": 10349,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/v2-script/wrangler.jsonc",
+      "sha256": "ea95e1bfe6f96ab20dab9adf761f40e89a2b367dcf7d7489df397e9e906f88b3",
+      "bytes": 362,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/v2-sibling/fixture.js",
+      "sha256": "b5cd042aa20c392f2ea55db449c5f9d628049843a509baef9e5c27498fb515fe",
+      "bytes": 10350,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/v2-sibling/wrangler.jsonc",
+      "sha256": "58922b93b289e6c697d568fc55104a601044c72c1cf5cb86e841d38c3d7f752b",
+      "bytes": 462,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/v2-unique/fixture.js",
+      "sha256": "e7f588221584d801a5d199daa728ee118a5e0fe6660324eb61893779bb4196ba",
+      "bytes": 10351,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/versions/v2-unique/wrangler.jsonc",
+      "sha256": "c6ee9f7fe0c948a5a3f284fde1b47b86434f39113622b53ec90c72d5d44b9c53",
+      "bytes": 359,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/do-visibility-regression/cases.json",
+      "sha256": "377cf1b2aa3c6d7d69c03c7a4870dfaf25d6b718ed3f3e6dc3aaff3d4ac3c1c7",
+      "bytes": 3231,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/do-visibility-regression/index.js",
+      "sha256": "5eceb2b55d3b2db0cc2f4a5de052d35b8c3933ecd026958d37dc582fdcc53577",
+      "bytes": 4242,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/do-visibility-regression/rpc.js",
+      "sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+      "bytes": 14684,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/do-visibility-regression/wrangler.jsonc",
+      "sha256": "8b7b1e0c54afd4c2d6be00be6b6f7ff04e19ac80e1a92c3a6eef709862b3dac2",
+      "bytes": 403,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/durable-recovery-stress/author_manifest.py",
+      "sha256": "a7e9a63ec0c7528396419d8499784ff0df0f6e6c0e37dbc62f0505f8e8185705",
+      "bytes": 18865,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/durable-recovery-stress/bucket-profile.json",
+      "sha256": "f94ef25f013dab088d4c4caa2ad9911a8d00358db4b5732538858bc552ac5fce",
+      "bytes": 1539,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/durable-recovery-stress/cases.py",
+      "sha256": "32cfd099c9b2757fd1cdf08eec23668b606e5bc030d537360264eab9b12d2b0d",
+      "bytes": 19338,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/durable-recovery-stress/fixture.js",
+      "sha256": "230ace803967738d3296f251b34db6418515449fb7c5e4147c7ddd2af9a7585a",
+      "bytes": 9352,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/durable-recovery-stress/fleet-profile.json",
+      "sha256": "82f43ec347ff811f130e7946c88357eebd5f51a1aa85973be1455ef94633d4dc",
+      "bytes": 916,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/durable-recovery-stress/manifest.json",
+      "sha256": "8bfa3397e84966fa629d7adce3504e3674aeb3cdf5f5d56a4615703576ea52b1",
+      "bytes": 101023,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/durable-recovery-stress/wrangler.jsonc",
+      "sha256": "88512635f8d2d6fde2d0ef027431aa37ce338ebfa613c85fd4e70a8eff510e22",
+      "bytes": 266,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/fetch-redirect-stress/author_manifest.py",
+      "sha256": "e8f701eb3606e522906558a871460ff76d48180d50c917622c790631cfc104f4",
+      "bytes": 13785,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/fetch-redirect-stress/cases.js",
+      "sha256": "7cfb44a2581651a842f833024f7a810c83944b70743ba3485bf0d1dff85e60d6",
+      "bytes": 12377,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/fetch-redirect-stress/common.js",
+      "sha256": "3e78cfa5894e87eadf5e80133545b1fef4b1f3491a1e09949912831e53227aea",
+      "bytes": 2708,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/fetch-redirect-stress/fixture.js",
+      "sha256": "bb8d09b77278bb557b9489a205adaa0a6663ce77aa02e13694fa29eeb15f2b8f",
+      "bytes": 9592,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/fetch-redirect-stress/lab.js",
+      "sha256": "51d1365da5670610fb5065b434422c8f5707ad9d98db77710399af85b5d9e7ee",
+      "bytes": 10820,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/fetch-redirect-stress/manifest.json",
+      "sha256": "ad3d52c7e21c4e1bb943bc7e5cf1c07a81f50329e342d2927905a2d5f9c29398",
+      "bytes": 46983,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/fetch-redirect-stress/profile.json",
+      "sha256": "7a252fc1153df8a9f121422fcbfbb688189b64b576f1d193f12f0fad311eadcd",
+      "bytes": 2551,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/fetch-redirect-stress/wrangler.jsonc",
+      "sha256": "9fa4d7e2e8de43b2622a2db6ef63951667fea54d9d06975513f5d6cb7b2aef6a",
+      "bytes": 411,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/http-stream-stress/author_manifest.py",
+      "sha256": "4f6a69327bd346ffa8f3fb79fd76381823a751ec228810a173450c591c0647d9",
+      "bytes": 23293,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/http-stream-stress/cases.js",
+      "sha256": "96fb832714b9437de94f48bb1c2fdb1fb5dc2eedb723901040c06cfb9bb305aa",
+      "bytes": 18310,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/http-stream-stress/common.js",
+      "sha256": "41a9f52dfe2cb5fe110ead9a7c059d15ef00fd63b02752053e5b3fc3683d2fdb",
+      "bytes": 2732,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/http-stream-stress/fixture.js",
+      "sha256": "bc36e6548386869fea496e7073ebc08ff4a068d89f1860e89f28a03515006e6b",
+      "bytes": 9559,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/http-stream-stress/lab.js",
+      "sha256": "946eddee9d4a58d6bf586e75933fe8396185a1bd9013963e8b2b3e6d0ffa4270",
+      "bytes": 11804,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/http-stream-stress/manifest.json",
+      "sha256": "089c5862ac6c145045dceb77b5e22106f7666e928074dadd27d55f2c81d68c00",
+      "bytes": 84278,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/http-stream-stress/profile.json",
+      "sha256": "ea0a9035f4321fea0cd0d2780360e8aa3e736ba7f447ff259889b68d87f0f5a7",
+      "bytes": 2441,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/http-stream-stress/wrangler.jsonc",
+      "sha256": "4a4e336131835fb37ad0c7c86b4ef776a3b1a87758671a484e6ffb5ed19ac968",
+      "bytes": 300,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/loader-props/author_manifest.py",
+      "sha256": "1428a16c2250197e8681a37c862479d42ba07e74ee12483d18e84bb1044b1d9d",
+      "bytes": 19703,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/loader-props/cases.js",
+      "sha256": "9a1e6136a123f902050ba5cba63179c5a0c2760f28e4a1bf7dea2c1419c700ef",
+      "bytes": 23629,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/loader-props/index.js",
+      "sha256": "6bf5d0056b5a83052017c38c9141c1da4873c9969fb699ede26b93c5ff0613d9",
+      "bytes": 4250,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/loader-props/manifest.json",
+      "sha256": "c8768ca53d71e6b6193c4732dac7dd7aa22f2faec8dd8e83f430d5a5c22fe083",
+      "bytes": 63297,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/loader-props/sources.mjs",
+      "sha256": "22897ce5b7a6f5ede46a6d95a9cb217eaeeef7c6e60f9e0d034aad8964e18d81",
+      "bytes": 3721,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/loader-props/wrangler.jsonc",
+      "sha256": "41de5e89e0fea3fe7e5c377610230e3927823fc78bcef941447ade6d7984ba75",
+      "bytes": 399,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/log-recovery-logic/Cargo.lock",
+      "sha256": "eff4678f9fd0b2bf159a2ac6a1172035834acc203d6335b077ab238e1f468052",
+      "bytes": 231,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/log-recovery-logic/Cargo.toml",
+      "sha256": "fac66567366c229397505d418f65138ef91e1c04b0e767de9a35ced387ab39bf",
+      "bytes": 353,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/log-recovery-logic/author_manifest.py",
+      "sha256": "45e590f299822de84e676e25f5e94869f1fe58e28828d1cfc75540e17ace636f",
+      "bytes": 27911,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/log-recovery-logic/manifest.json",
+      "sha256": "731cc2389086c96d370eca18ce7bc1b62415bcb022ad6f75756e7aea74f74f90",
+      "bytes": 86458,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/log-recovery-logic/profile.json",
+      "sha256": "7ab3eb5297f5311c7299369d245fcd1f53bb56045f023c00b3886466f94d99a9",
+      "bytes": 1659,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/log-recovery-logic/tests/log_recovery.rs",
+      "sha256": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c",
+      "bytes": 33540,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/module-graph-stress/author_manifest.py",
+      "sha256": "d75a2f4e78a19d7eb5b0754121474a86219182edee5421d316a9b609d95a9b4f",
+      "bytes": 12563,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/module-graph-stress/cases.mjs",
+      "sha256": "9aed65f3bb4622a8a777fb142173e4d64986598c3744af261649ba77675bb8d8",
+      "bytes": 11100,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/module-graph-stress/entry.mjs",
+      "sha256": "cb41805fe25218497663aac097837f9c40ed538608b5358a99a7fc4745a5726c",
+      "bytes": 2316,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/module-graph-stress/fixture.mjs",
+      "sha256": "115853330ccf52bd8f58bcc3b065972100b524c8b5f07caf45e9b7775d7b8285",
+      "bytes": 6370,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/module-graph-stress/graphs.mjs",
+      "sha256": "3d4d4dbee83c8529c24494cf735b9c05d2e94cdd792caa4b59db39745cbaa419",
+      "bytes": 11105,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/module-graph-stress/manifest.json",
+      "sha256": "28a4b34caa2b858fa1da7066013e23bdf99339ba2c8a6f15ebd2e180ace1014b",
+      "bytes": 36773,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/module-graph-stress/profile.json",
+      "sha256": "61cb8bb804a662eac46a37cb2ff77cf6d2d862dd12dc805e5abd2e43664263db",
+      "bytes": 829,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/module-graph-stress/wrangler.jsonc",
+      "sha256": "3b3a604c2ac4e0baa91a8ee35cd7e7dfb5dccf00631f25441aaf12e50ea65892",
+      "bytes": 274,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/native-transform-stress/author_manifest.py",
+      "sha256": "40f36813c778c3fe19ccd84b0f69ee6a2552e37d9b72333a3b4805b59e2141bb",
+      "bytes": 17966,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/native-transform-stress/common.js",
+      "sha256": "58b5cc7bf2a16a25f8dbdddc48ea4825bee03c0f79b898e4767e92b297c8d007",
+      "bytes": 2519,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/native-transform-stress/context.js",
+      "sha256": "845e39cdea794c74bea122c22f1005a62b70536f5ee688b3e06af6732552d091",
+      "bytes": 12817,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/native-transform-stress/entry.js",
+      "sha256": "1c4be2004e476ee286465674ad37b81dd9ea8cc33e0dda6ef66b66b5830346de",
+      "bytes": 1136,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/native-transform-stress/fixture.js",
+      "sha256": "e98721556a970c8d6acd6715a174741de9dc22751f734aac14df31a5e04b6a75",
+      "bytes": 12660,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/native-transform-stress/make_vectors.py",
+      "sha256": "df9d0f13438c126c594cecc740b5c07145fed1ab47d4166c4c805d17682374ac",
+      "bytes": 1358,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/native-transform-stress/manifest.json",
+      "sha256": "5cacd1bfe0e3c07d2f2eb469bbcaa19cfdfb140f81a3ad351a5356cada5f17e1",
+      "bytes": 43665,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/native-transform-stress/operations.js",
+      "sha256": "3c56ee242a504ad001125fec4ec2ba54d07c00ff4757b36be2826624f7e751c6",
+      "bytes": 14588,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/native-transform-stress/profile.json",
+      "sha256": "80f8bdb5f22931d0992a4643619334378ba879bc5c6276fc3c153393c25b02b5",
+      "bytes": 1767,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/native-transform-stress/vectors.js",
+      "sha256": "93ed22b254652f7f269094b5dfa63ece18b782c52fe15d3923e3fd0c5c3d7380",
+      "bytes": 17794,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/native-transform-stress/wrangler.jsonc",
+      "sha256": "f8b6146a89b55f0df338d5346495d23efabf298445c07d0543e72e559e473a2b",
+      "bytes": 262,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/output-gate-logic/Cargo.lock",
+      "sha256": "2f90c4981641d84cf719f667a91ed3ca1050ccedc22eba320978e5a2d8bf1012",
+      "bytes": 255,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/output-gate-logic/Cargo.toml",
+      "sha256": "0c075c77c926d9e73573956e0460228034568bc8d2f9aae5045745a6b7896f64",
+      "bytes": 350,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/output-gate-logic/author_manifest.py",
+      "sha256": "6bb5bbafabf7fdc9df961dd663ef017a1c974c9520c4da39b32ba2b2fa89c9f1",
+      "bytes": 18726,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/output-gate-logic/manifest.json",
+      "sha256": "84148f9f295e44ae68cb2fd33fab2bc0168ad34102ffc8e057a927a78b119a62",
+      "bytes": 100281,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/output-gate-logic/profile.json",
+      "sha256": "4f915c7d7c0594677259e4eaab2216c179826484e12e0c764cc4d2454f0c9d82",
+      "bytes": 1510,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/output-gate-logic/tests/output_gate.rs",
+      "sha256": "4111d744a514b64a36f285dbf4a8b51ca56ce3f3f128dbd5ea1cc188ebed88ba",
+      "bytes": 41334,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/pressure-recovery-logic/Cargo.lock",
+      "sha256": "e67c251bc9c6d0399c763736ad4ebb5a639741988474136082264dab41ec11be",
+      "bytes": 248,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/pressure-recovery-logic/Cargo.toml",
+      "sha256": "5b585c42f046e29af646ffb2f46c18a3513c564baae3267792789b55f600015a",
+      "bytes": 368,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/pressure-recovery-logic/author_manifest.py",
+      "sha256": "c6d274130577ddbdeca776b4747ccddca5f4ea32f2e4e95429f73479ed030870",
+      "bytes": 24345,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/pressure-recovery-logic/manifest.json",
+      "sha256": "8c20b20d5f3848fbea5226c2c099cd0691a8ce21e6b7f4c46b8b78f5a1370141",
+      "bytes": 80399,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/pressure-recovery-logic/profile.json",
+      "sha256": "fe1b78ba6dd4f01ccd142d573116b598681bd0bbd7bb112661c850b6567c0ddf",
+      "bytes": 1634,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/pressure-recovery-logic/tests/pressure_recovery.rs",
+      "sha256": "ccb9c2001ec9d427c142017a426801dde5631b1252fae8b2e10ce0e12cc73e47",
+      "bytes": 27759,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/routing-acquisition-logic/Cargo.lock",
+      "sha256": "3f98666e83b98a5db8694c74a26f844bc48c6af1ea1e46405951d77c97b3f54c",
+      "bytes": 242,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/routing-acquisition-logic/Cargo.toml",
+      "sha256": "91a5e0ae85f7d9b9de2d24a7b630cf71ec161654377d70f9bd35dfb5c14deef9",
+      "bytes": 374,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/routing-acquisition-logic/author_manifest.py",
+      "sha256": "f17a8a4ee1c398d8379e9451e04918c59a3b29ed8e7a2bd87e66b35607e44f88",
+      "bytes": 24958,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/routing-acquisition-logic/manifest.json",
+      "sha256": "f055a1b302e5f2546df23910f8713d3b39344fef98cfa2e30c946081ba2e1b66",
+      "bytes": 107853,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/routing-acquisition-logic/profile.json",
+      "sha256": "a0f1d536b48c1fbcb8ad80e8d614b201273e38afbbe43c5c9de1670bdf361568",
+      "bytes": 5466,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+      "sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06",
+      "bytes": 42988,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/rpc-codec/cases.json",
+      "sha256": "9d098e7bdd59330baf32f48a29bd22674b41a2bb99e0ffc451dfae1a329afc5f",
+      "bytes": 36343,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/rpc-codec/codec.js",
+      "sha256": "bae54054482046c4b3daf0df871a5c7cd433e17b01bad7cb4804e25537a55f7a",
+      "bytes": 33545,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/rpc-codec/entry.js",
+      "sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+      "bytes": 1937,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/rpc-codec/wrangler.jsonc",
+      "sha256": "28e5e23497bde34e2b0e5fddca773a57ef199dab912f8b8c004e505549254cbe",
+      "bytes": 312,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/sqlite-concurrency/author_manifest.py",
+      "sha256": "9937ecff41ff320d92eefaafdbf480bbb6ad86ee7be4365a67d3852959a8830f",
+      "bytes": 21400,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/sqlite-concurrency/cases.js",
+      "sha256": "691eb28d4cee7679b56385040712298155124a272d15d5674e44088bede9080f",
+      "bytes": 2905,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/sqlite-concurrency/cell-cases.js",
+      "sha256": "0e5116557fa02ad82edc28032c82d9cb7c96530e04880465fc6517acad7095d6",
+      "bytes": 16281,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/sqlite-concurrency/common.js",
+      "sha256": "246be7908dcd178ec5621e2ea03a1784784a767823a9801e22454e0e519d4577",
+      "bytes": 1863,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/sqlite-concurrency/entry.js",
+      "sha256": "b7ff8937b347e643e4c38ef96ba804d5725819a6e740e939f19977c5764c9b39",
+      "bytes": 3588,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/sqlite-concurrency/fixture.js",
+      "sha256": "0bfc734b1e5b63b947972c226baedb0ed38c87c371a93b1406c79dce4329edc8",
+      "bytes": 16834,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/sqlite-concurrency/manifest.json",
+      "sha256": "991cfa1edce682ba4dcfbb6b6070abedee80b43af45c6bcc300ba27666516bab",
+      "bytes": 74170,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/sqlite-concurrency/profile.json",
+      "sha256": "c9a7a79c8c3e0375a3f3d1d5dce3f814bd46f2217692590584bcad4f31861056",
+      "bytes": 1311,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/sqlite-concurrency/wrangler.jsonc",
+      "sha256": "629b808b6431228a2e565c76955bbe88293708fcb91e712e2a5f5d882c7406ea",
+      "bytes": 275,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/wake-recovery-logic/Cargo.lock",
+      "sha256": "6363931bcea4e72bd558202d160dafbe6f570bc2dad6ed4c74b3f53d223d9cdc",
+      "bytes": 232,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/wake-recovery-logic/Cargo.toml",
+      "sha256": "acc7fed0273915eec0ec9505c648faab248f1d88639fd64ac3b5055c873a1376",
+      "bytes": 356,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/wake-recovery-logic/author_manifest.py",
+      "sha256": "440b1e340fa27684d516758b3c5e0612c66a6cd807763e68504af596ef3dd934",
+      "bytes": 23875,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/wake-recovery-logic/manifest.json",
+      "sha256": "1b97975b95f13eb02997fa304a74290761ac3c5b54d0709d71f9907f83269aab",
+      "bytes": 62614,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/wake-recovery-logic/profile.json",
+      "sha256": "1359062cd0983f437eeb7762fd803721157acdac5dc7aebd17a4c5c9de2f278b",
+      "bytes": 1701,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/wake-recovery-logic/tests/wake_recovery.rs",
+      "sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86",
+      "bytes": 39589,
+      "source_bytes_unchanged": true
+    }
+  ]
+}

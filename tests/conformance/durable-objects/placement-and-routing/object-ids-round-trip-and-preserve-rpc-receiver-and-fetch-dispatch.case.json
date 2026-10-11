@@ -1,0 +1,35 @@
+{
+  "id": "conformance/durable-objects/placement-and-routing/object-ids-round-trip-and-preserve-rpc-receiver-and-fetch-dispatch",
+  "layer": "conformance",
+  "behaviour": "durable-objects/placement-and-routing",
+  "title": "Object IDs round-trip and preserve RPC receiver and fetch dispatch",
+  "origins": [
+    {
+      "source": "celld tests lane, authored portable HTTP observation in tests/conformance/durable-objects/storage-kv/fixtures/object-contracts/index.js",
+      "role": "implementation"
+    },
+    {
+      "source": "workerd@19b1657bd/src/workerd/api/tests/actor-stub-test.js (selected portable port)",
+      "legacy_id": "workerd/durable-object/stub",
+      "role": "reference contract family; selected authored HTTP probe, not an unchanged upstream assertion"
+    }
+  ],
+  "legacy_ids": [
+    "workerd/durable-object/stub"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/durable-objects/storage-kv/fixtures/object-contracts",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/stub"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/durable-objects/storage-kv/fixtures/object-contracts/index.js",
+  "source_sha256": "ad3c818f40453f911566166805ed5fdb725bbee23f89a53d3120dc1ec5e96aa1"
+}

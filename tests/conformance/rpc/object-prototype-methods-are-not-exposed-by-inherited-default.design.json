@@ -1,0 +1,31 @@
+{
+  "id": "conformance/rpc/object-prototype-methods-are-not-exposed-by-inherited-default",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "Object.prototype methods are not exposed by inherited default",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/fixture",
+      "legacy_id": "base/R010"
+    }
+  ],
+  "corpus_wave": "base",
+  "corpus_id": "R010",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "R010",
+    "intent": "Object.prototype methods are not exposed by inherited default",
+    "preconditions": "RpcTarget does not override hasOwnProperty or valueOf",
+    "trace": [
+      "call application method",
+      "attempt hasOwnProperty",
+      "attempt valueOf"
+    ],
+    "stress": "bottom-of-prototype-chain RPC visibility",
+    "oracle": "both Object.prototype calls reject",
+    "cleanup": "dispose target",
+    "gate": "characterization",
+    "contract_status": "Client-surface behavior pending: native RpcStub/Object.prototype names may resolve locally in pinned workerd; ordinary API only, no raw protocol workaround."
+  }
+}

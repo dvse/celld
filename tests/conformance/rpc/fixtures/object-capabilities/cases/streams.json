@@ -1,0 +1,352 @@
+[
+  {
+    "id": "S001",
+    "intent": "Empty remote readable terminates once and retains stable EOF",
+    "preconditions": "Remote source has no chunks and highWaterMark zero",
+    "trace": [
+      "obtain remote readable",
+      "read twice",
+      "release reader",
+      "inspect source"
+    ],
+    "stress": "two terminal reads over one remote source",
+    "oracle": "both reads done; sent=0, closed=1, cancelled=0; origin unlocked",
+    "cleanup": "release reader; forget unlocked source",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  },
+  {
+    "id": "S002",
+    "intent": "Cancellation before consumption reaches source exactly once",
+    "preconditions": "Two-chunk remote source; no reader acquired",
+    "trace": [
+      "obtain stream",
+      "cancel with structured code",
+      "inspect source"
+    ],
+    "stress": "cancel before first consumer read",
+    "oracle": "cancelled=1; reason.code=unread; at most one prefetched chunk; unlocked",
+    "cleanup": "cancel; forget unlocked source",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing",
+    "gate": "characterization",
+    "contract_status": "At-most-one-prefetch needs pinned transport qualification before promotion"
+  },
+  {
+    "id": "S003",
+    "intent": "Cancellation after EOF does not reopen or cancel completed source",
+    "preconditions": "One-byte remote stream",
+    "trace": [
+      "read payload",
+      "read EOF",
+      "cancel reader",
+      "release reader"
+    ],
+    "stress": "late terminal operation",
+    "oracle": "payload=3; EOF; closed=1; cancelled=0; unlocked",
+    "cleanup": "release reader; forget source",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  },
+  {
+    "id": "S004",
+    "intent": "Zero-length chunks do not truncate intervening binary data",
+    "preconditions": "Empty chunks before, between and after two nonempty chunks",
+    "trace": [
+      "drain remote stream",
+      "compare concatenated bytes",
+      "inspect close"
+    ],
+    "stress": "empty/nonempty transitions",
+    "oracle": "bytes exactly 4,5,6 and one close; unlocked",
+    "cleanup": "drain; release reader; forget source",
+    "gate": "characterization",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  },
+  {
+    "id": "S005",
+    "intent": "Subarray RPC transfer excludes backing-buffer sentinel bytes",
+    "preconditions": "Source enqueues offset subarray in larger sentinel-filled buffer",
+    "trace": [
+      "obtain remote stream",
+      "drain bytes",
+      "inspect source"
+    ],
+    "stress": "nonzero source view offset",
+    "oracle": "bytes exactly 0,255,7 with no 251 sentinel; unlocked",
+    "cleanup": "drain; release reader; forget source",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  },
+  {
+    "id": "S006",
+    "intent": "Source exception before data remains an error on repeated reads",
+    "preconditions": "Remote pull throws before first enqueue",
+    "trace": [
+      "read and require rejection",
+      "read again and require rejection",
+      "release reader"
+    ],
+    "stress": "early error and repeated terminal read",
+    "oracle": "both reads reject; receiver normalizes premature disconnect; source failure marker/source-failure count1 and pulls1; no sent/closed; unlocked",
+    "cleanup": "release reader; forget source",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  },
+  {
+    "id": "S007",
+    "intent": "Source error preserves already delivered prefix without becoming EOF",
+    "preconditions": "Remote source throws on second pull",
+    "trace": [
+      "read prefix",
+      "read error",
+      "release reader"
+    ],
+    "stress": "data-to-error transition",
+    "oracle": "prefix9,10; next read premature-disconnect error; source failure marker/count1 and pulls2; sent1/closed0; unlocked",
+    "cleanup": "release reader; forget source",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  },
+  {
+    "id": "S008",
+    "intent": "Reader lock release and reacquisition preserve remaining remote data",
+    "preconditions": "Two-chunk stream with one consumer at a time",
+    "trace": [
+      "read first chunk",
+      "release first reader",
+      "acquire new reader",
+      "drain remainder"
+    ],
+    "stress": "consumer lock transfer midstream",
+    "oracle": "first=12; remainder exactly13; unlocked at terminal state",
+    "cleanup": "drain second reader; forget source",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  },
+  {
+    "id": "S009",
+    "intent": "Multiple pending reads resolve in FIFO order before EOF",
+    "preconditions": "Three delayed one-byte source chunks",
+    "trace": [
+      "queue four reads without awaiting",
+      "await all",
+      "release reader"
+    ],
+    "stress": "four simultaneous reader operations",
+    "oracle": "results are14,15,16 then EOF; unlocked",
+    "cleanup": "release reader; forget source",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  },
+  {
+    "id": "S010",
+    "intent": "Cancel resolves a pending read as done and reaches source",
+    "preconditions": "Remote pull waits at explicit held-pull barrier until cancellation",
+    "trace": [
+      "start read",
+      "poll source until pullPending barrier observed",
+      "cancel while pull held",
+      "await pending read",
+      "inspect cancellation"
+    ],
+    "stress": "pending-pull cancellation race",
+    "oracle": "pullPending observed before cancel; pending read done; cancelled=1; origin unlocked",
+    "cleanup": "cancel; release reader; forget source",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  },
+  {
+    "id": "S011",
+    "intent": "One-byte BYOB reads preserve residual data from a larger chunk",
+    "preconditions": "One three-byte chunk; one-byte destination views",
+    "trace": [
+      "read three one-byte views",
+      "read EOF",
+      "release reader"
+    ],
+    "stress": "retained fragment across BYOB reads",
+    "oracle": "bytes19,20,21; each view length1; EOF; unlocked",
+    "cleanup": "release reader; forget source",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  },
+  {
+    "id": "S012",
+    "intent": "BYOB preserves caller view offset and returns only written bytes",
+    "preconditions": "Three-byte source and five-byte view at backing offset4",
+    "trace": [
+      "read into offset view",
+      "compare bytes and byteOffset",
+      "read EOF"
+    ],
+    "stress": "nonzero BYOB destination offset",
+    "oracle": "bytes22,23,24; byteOffset4; EOF; unlocked",
+    "cleanup": "release reader; forget source",
+    "gate": "characterization",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  },
+  {
+    "id": "S013",
+    "intent": "BYOB transitions between short source chunks without byte loss",
+    "preconditions": "One-byte then two-byte chunks; eight-byte BYOB views",
+    "trace": [
+      "read BYOB views until EOF",
+      "concatenate actual views",
+      "release reader"
+    ],
+    "stress": "short read and source-chunk transition",
+    "oracle": "exactly25,26,27; unlocked",
+    "cleanup": "release reader; forget source",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  },
+  {
+    "id": "S014",
+    "intent": "Empty BYOB stream returns terminal zero-length view",
+    "preconditions": "Empty source; four-byte BYOB destination",
+    "trace": [
+      "read destination",
+      "check terminal shape",
+      "release reader"
+    ],
+    "stress": "BYOB EOF without any prior data",
+    "oracle": "done=true; value.byteLength=0; unlocked",
+    "cleanup": "release reader; forget source",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  },
+  {
+    "id": "S015",
+    "intent": "pipeTo drains a remote readable into a local writable",
+    "preconditions": "Two remote chunks; local collecting sink",
+    "trace": [
+      "pipeTo local sink",
+      "wait completion",
+      "compare bytes"
+    ],
+    "stress": "native stream bridge composed with pipeTo",
+    "oracle": "exact bytes28,29; source unlocked",
+    "cleanup": "await pipeTo; forget source",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  },
+  {
+    "id": "S016",
+    "intent": "Local pipeTo sink failure cancels remote source",
+    "preconditions": "Three-chunk source; local sink throws on write",
+    "trace": [
+      "pipeTo throwing sink",
+      "require rejection",
+      "inspect source cancellation"
+    ],
+    "stress": "failure propagates against data flow",
+    "oracle": "pipe rejects; cancelled=1; source unlocked",
+    "cleanup": "pipe cancellation; forget source",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  },
+  {
+    "id": "S017",
+    "intent": "Tee gives both concurrent consumers identical remote bytes",
+    "preconditions": "Two remote chunks; both branches drain",
+    "trace": [
+      "tee returned stream",
+      "drain branches concurrently",
+      "compare both outputs"
+    ],
+    "stress": "two consumers and shared remote source",
+    "oracle": "both exactly33,34,35; source unlocked",
+    "cleanup": "drain both branches; forget source",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  },
+  {
+    "id": "S018",
+    "intent": "Canceling one tee branch preserves remaining consumer",
+    "preconditions": "Two-chunk source; one tee branch canceled before drain",
+    "trace": [
+      "tee",
+      "start branchA cancellation",
+      "drain branchB",
+      "await branchA cancel"
+    ],
+    "stress": "one canceled and one live consumer",
+    "oracle": "branchB36,37; source closed=1 and cancelled=0; unlocked",
+    "cleanup": "join cancellation and drain; forget source",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  },
+  {
+    "id": "S019",
+    "intent": "Remote writable closes correctly without writes",
+    "preconditions": "Unwritten remote sink",
+    "trace": [
+      "acquire writer",
+      "close",
+      "await closed",
+      "release writer"
+    ],
+    "stress": "empty sink terminal lifecycle",
+    "oracle": "writes empty; closed=1; aborted=0; unlocked",
+    "cleanup": "close; release writer; forget sink",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  },
+  {
+    "id": "S020",
+    "intent": "Queued close cannot overtake delayed writes",
+    "preconditions": "Remote writes delay20ms",
+    "trace": [
+      "enqueue two writes",
+      "enqueue close immediately",
+      "await all",
+      "inspect sink trace"
+    ],
+    "stress": "queued writes and terminal ordering",
+    "oracle": "sink writes exactly[[38],[39]]; start0,end0,start1,end1,close; maxActive1; unlocked",
+    "cleanup": "await queue; release writer; forget sink",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  },
+  {
+    "id": "S021",
+    "intent": "Abort before writer acquisition reaches remote sink once",
+    "preconditions": "No writer and no writes",
+    "trace": [
+      "obtain writable",
+      "abort stream",
+      "inspect sink"
+    ],
+    "stress": "unwritten sink cancellation",
+    "oracle": "aborted=1; closed=0; no writes; unlocked",
+    "cleanup": "abort; forget sink",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  },
+  {
+    "id": "S022",
+    "intent": "A failed first write prevents subsequent remote writes",
+    "preconditions": "Sink throws on first write",
+    "trace": [
+      "write and require failure",
+      "write again and require failure",
+      "release writer"
+    ],
+    "stress": "error-state writer reentry",
+    "oracle": "both reject; exactly one sink write; closed=0; unlocked",
+    "cleanup": "observe closed rejection; release writer; forget sink",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  },
+  {
+    "id": "S023",
+    "intent": "Sink close failure rejects both close and writer.closed",
+    "preconditions": "One accepted write; close handler throws",
+    "trace": [
+      "write payload",
+      "close and require rejection",
+      "require closed rejection",
+      "release writer"
+    ],
+    "stress": "failure after successful data before terminal ack",
+    "oracle": "both promises reject; one sink write; one close attempt; unlocked",
+    "cleanup": "observe rejection; release writer; forget sink",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  },
+  {
+    "id": "S024",
+    "intent": "Writer reacquisition preserves remote sink order",
+    "preconditions": "Writable with two sequential writer owners",
+    "trace": [
+      "write43 with first writer",
+      "release",
+      "write44 with new writer",
+      "close"
+    ],
+    "stress": "writer lock transfer before terminal state",
+    "oracle": "sink writes exactly43 then44; closed=1; unlocked",
+    "cleanup": "close; release second writer; forget sink",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing"
+  }
+]

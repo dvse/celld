@@ -1,0 +1,8 @@
+{
+ "name":"module-graph-candidate8d27-v1",
+ "main":"entry.mjs",
+ "compatibility_date":"2026-09-04",
+ "worker_loaders":[{"binding":"LOADER"}],
+ "durable_objects":{"bindings":[{"name":"ROOT","class_name":"Root"}]},
+ "migrations":[{"tag":"v1","new_sqlite_classes":["Root"]}]
+}

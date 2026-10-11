@@ -1,0 +1,27 @@
+{
+  "name": "upgrade-test",
+  "main": "fixture.js",
+  "no_bundle": true,
+  "compatibility_date": "2026-01-01",
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "ROOT",
+        "class_name": "UpgradeRoot"
+      },
+      {
+        "name": "SIBLING",
+        "class_name": "SiblingRoot"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "initial",
+      "new_sqlite_classes": [
+        "UpgradeRoot",
+        "SiblingRoot"
+      ]
+    }
+  ]
+}

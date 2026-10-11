@@ -1,0 +1,130 @@
+{
+  "adapter": "http",
+  "behaviour": "fetch-and-http",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "application_relevance": "Workers assemble uploads with user files, renamed attachments, and generated Blobs.",
+    "assertion_count": 9,
+    "authored": true,
+    "cleanup": "Every case is awaited before cleanup. Track explicit readers and body streams; cancel/release readers, initiate all unlocked-stream cancellations before joining them, and retain no request-local objects. Buffered body producers may be lazy; explicit JS stream producers are finite and close synchronously. Cleanup records runtime-retained locks with awaited consumer/descendant proof, and any unverified lock blocks acceptance. No open producer gates, external handles or timers are used. Await both Y220 consumers with allSettled. If a body method or cleanup does not settle within the external deadline, supervisor terminates only the owned process group and records failure/unknown plus incomplete cleanup. It never reports a pass.",
+    "desired_behavior": "Unrenamed File is identical; renamed File is distinct upload.txt with unchanged bytes/type/123456789 lastModified; plain Blob is named blob.",
+    "distinctness": "Entry-value type and metadata conversion, which URLSearchParams and remote-stream cases do not implement.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/Y205",
+      "request_body": null
+    },
+    "fixed_runtime_assertions": [
+      "t.equal(form.get('unchanged') === file, true, 'File append without filename preserves File identity');",
+      "t.equal(renamed instanceof File && renamed !== file, true, 'explicit filename creates a renamed File');",
+      "t.equal(renamed.name, 'upload.txt', 'explicit upload filename');",
+      "t.equal(renamed.lastModified, 123456789, 'renaming preserves File lastModified');",
+      "t.equal(renamed.type, 'text/plain', 'renaming preserves normalized type');",
+      "t.equal(await renamed.text(), 'hello', 'renaming preserves bytes');",
+      "t.equal(file.name, 'original.txt', 'original File metadata unchanged');",
+      "t.equal(form.get('default').name, 'blob', 'plain Blob becomes File with default name');",
+      "t.equal(form.get('default').type, 'application/x-raw', 'Blob-to-File entry retains type');"
+    ],
+    "hypothesis": "Appending a File may gratuitously clone it or rename it in place; Blob conversion may omit the default filename or lose type/lastModified.",
+    "id": "Y205",
+    "implementation": {
+      "end_line": 66,
+      "file": "cases.js",
+      "start_line": 50,
+      "symbol": "Y205"
+    },
+    "independently_reviewed": false,
+    "layer": "direct-celld-worker-fetch-global-body-form-api",
+    "limits": {
+      "durable_writes": 0,
+      "fixture_logical_byte_cap": 16384,
+      "incoming_body_bytes": 0,
+      "max_explicit_reader_reads": 16,
+      "max_form_entries": 8,
+      "outbound_fetches": 0,
+      "outer_case_seconds": 5,
+      "repetitions": 1,
+      "requests": 1,
+      "response_bytes": 65536,
+      "timers": 0
+    },
+    "mechanism": "FormData File identity and explicit filename conversion",
+    "preconditions": [
+      "Reviewed exact direct-celld source/build/deployment pins and fresh isolated local store.",
+      "Native celld Blob, File, FormData, Request, Response, and ReadableStream globals; no mocks or implementation extraction.",
+      "External five-second case deadline plus independent 300-second suite deadline and owned cleanup are active."
+    ],
+    "prediction_is_runtime_evidence": false,
+    "primary_contract_refs": [
+      "https://xhr.spec.whatwg.org/#interface-formdata",
+      "https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#create-an-entry",
+      "https://w3c.github.io/FileAPI/#file-constructor"
+    ],
+    "review_status": "UNREVIEWED",
+    "runtime_pass_claimed": false,
+    "runtime_source_refs": [
+      {
+        "line_end": 10713,
+        "line_start": 10677,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      },
+      {
+        "line_end": 10914,
+        "line_start": 10893,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "schedule": {
+      "depends_on": [],
+      "kind": "one finite in-request trace",
+      "ordinal": 5,
+      "parallelism": "two local body consumers joined with allSettled only in Y220; otherwise sequential",
+      "request": "GET /case/Y205"
+    },
+    "source_observation": "Pinned form-value conversion returns a File directly without a filename override and creates a new File for overrides or Blobs. The lastModified assertion is specifically the source-supported same-file metadata carry-through at harness.js 10899-10906; HTML create-an-entry independently supports identity/rename/bytes but does not spell out lastModified. This supporting assertion earns no separate case credit.",
+    "static_prediction": "NO_FAILURE_PREDICTION",
+    "status": "NOT_RUN",
+    "title": "Convert Blob and File form entries while preserving file metadata",
+    "trace": [
+      "Append one File unchanged and once with a new filename.",
+      "Append an ordinary Blob without filename.",
+      "Assert File identity/renaming, bytes, fixed lastModified, type, original metadata, and default blob filename."
+    ]
+  },
+  "corpus_id": "Y205",
+  "corpus_wave": "body-form-semantics",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/body-form-semantics",
+  "id": "conformance/fetch-and-http/body-form-y205",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/body-form-semantics/Y205"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/body-form-semantics/Y205",
+      "manifest_sha256": "e31598421948f8c190575ce14a8cccfe7a76930797c30c44985d05552d3c95d1",
+      "review_sha256": "1a3807ddb1b0f7c1d81bd25a56c38e0c61c953030da422d8a1d644bf833de35e",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/body-form-semantics",
+      "tranche": "002"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/Y205",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "Y205",
+  "source": "tests/conformance/fetch-and-http/fixtures/body-form-semantics/fixture.js",
+  "source_sha256": "ab850551d9b005bc0636954aeb2151d46ac0c35d15580665aa157230dabe30a5",
+  "title": "Convert Blob and File form entries while preserving file metadata"
+}

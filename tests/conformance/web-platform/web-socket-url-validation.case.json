@@ -1,0 +1,35 @@
+{
+  "id": "conformance/web-platform/web-socket-url-validation",
+  "layer": "conformance",
+  "behaviour": "web-platform",
+  "title": "web Socket Url Validation",
+  "origins": [
+    {
+      "source": "workerd@19b1657bd/src/workerd/api/tests/global-scope-test.js#webSocketUrlValidation",
+      "legacy_id": "workerd/globals/webSocketUrlValidation"
+    },
+    {
+      "source": "workerd@19b1657bd/src/workerd/api/tests/global-scope-test.js",
+      "sha256": "1be7707aee5c456bcdf50ae2f84478119f738fc301cda1209e5697175cdb4327"
+    }
+  ],
+  "legacy_ids": [
+    "workerd/globals/webSocketUrlValidation"
+  ],
+  "adapter": "example",
+  "fixture": "tests/conformance/web-platform/fixtures/global-contracts",
+  "isolated": true,
+  "profiles": [
+    "full"
+  ],
+  "reason": "",
+  "requests": [
+    {
+      "path": "/webSocketUrlValidation",
+      "timeout": 5
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/web-platform/fixtures/global-contracts/upstream.js",
+  "source_sha256": "1be7707aee5c456bcdf50ae2f84478119f738fc301cda1209e5697175cdb4327"
+}

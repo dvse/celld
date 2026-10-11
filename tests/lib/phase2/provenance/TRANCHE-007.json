@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "tranche": "007",
+  "frozen_at_utc": "2026-10-09T10:23:00.933915+00:00",
+  "baseline_source_snapshot": "celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "prior_tranches": [
+    {
+      "inventory": "TRANCHE-001.json",
+      "sha256": "7fb52559ebcadf5e1c148507316e20a1ed1b9c4e5eff50f9538f2c529224da3b",
+      "immutable_original": true
+    },
+    {
+      "inventory": "TRANCHE-002.json",
+      "sha256": "b20318879a6637fe4c6019c606ba029d9159cee96ebefb502fc455e992305cc9",
+      "immutable_original": true
+    },
+    {
+      "inventory": "TRANCHE-003.json",
+      "sha256": "766c96a3ab1e8992ac59591b168ea468bac74ae27c8a5c6fe0a8b7885654b7de",
+      "immutable_original": true
+    },
+    {
+      "inventory": "TRANCHE-004.json",
+      "sha256": "1baef982b90cdacf7c42aa461999acda83602816bcf019aad8f25a3969bd1077",
+      "immutable_original": true
+    },
+    {
+      "inventory": "TRANCHE-005.json",
+      "sha256": "c74e5ead122a6b79e925479d57999645ed3ddbf8944654b3cdc0bf04ddcbc755",
+      "immutable_original": true
+    },
+    {
+      "inventory": "TRANCHE-006.json",
+      "sha256": "4833c27875927954dbc27f82e1ff3718039920b9523ecc9f42352369c40fed68",
+      "immutable_original": true
+    }
+  ],
+  "accepted_waves": [
+    {
+      "name": "response-clone-chunk-semantics",
+      "path": "response-clone-chunk-semantics",
+      "review_path": "reviews/response-clone-chunk-semantics-review.json",
+      "authored": 1,
+      "accepted_primary_static": 1,
+      "accepted_characterization": 0,
+      "case_ids": [
+        "Y301"
+      ],
+      "runtime_executions": 0,
+      "runtime_passes": 0
+    }
+  ],
+  "counts": {
+    "new_authored": 1,
+    "new_reviewed_primary_static": 1,
+    "new_reviewed_characterization": 0,
+    "new_runtime_executions": 0,
+    "new_runtime_passes": 0,
+    "combined_authored": 786,
+    "combined_reviewed_primary_static": 671,
+    "combined_reviewed_characterization": 115,
+    "target_primary": 2000,
+    "remaining_reviewed_primary": 1329,
+    "target_complete": false
+  },
+  "files_sha256": {
+    "TRANCHE-007-README.md": "90d617fb473e669eb6e61cec5258358a5545166d5458b0db07190a36c34e7197",
+    "response-clone-chunk-semantics/README.md": "97b90c0c21481ddcc290468363ca12e7d70e53320554e8789cfd417364fa7295",
+    "response-clone-chunk-semantics/SHA256SUMS": "cb329726cdab61383dc09cd7f764438db1ef922dc8248cec94aed148ef1c82e8",
+    "response-clone-chunk-semantics/author_manifest.py": "128d085f3b72b8cba0e9c9dd7d1779aa032f853592796b9d52774a70068edfde",
+    "response-clone-chunk-semantics/cases.js": "c85acc7520eceaea54f5cc6e7651c21c761e9a213a21d50a695ca5c35817896c",
+    "response-clone-chunk-semantics/fixture.js": "744bc0261c9cdcb63ecb972ac3185eaad51d7115ee07100dd88d77ca283fb3a7",
+    "response-clone-chunk-semantics/manifest.json": "048b55c13a991eeedb8c7cd39d89644ac278c740fb7d24e9eb4ba4d5608e26b9",
+    "response-clone-chunk-semantics/overlap-audit.json": "435d64b6cd9614b385cc247d99fb6245a8981b263a719cb3285dfb45a36afad2",
+    "response-clone-chunk-semantics/overlap-inventory.json": "74359ab909cdacbd638a5365e7ba108acc79ccebaa108d8f083c24af3d93330a",
+    "response-clone-chunk-semantics/schedule.json": "7de4d389be984e3b27ac7a0b81146c73e9fcb068687298f518416cfa9dbc3290",
+    "response-clone-chunk-semantics/source-pins.json": "f372973c550aa580bafbbd2dfdb26a5687a14e0bc5d1bb7bfb054341aa6e9669",
+    "response-clone-chunk-semantics/static-validation.json": "96ac16a1f315338d98b7a524576c101f667185e5f23bd26d4073073cc26b84c3",
+    "response-clone-chunk-semantics/validate_static.py": "1eadb1104a1ce18007de30270ad3cc695f2de68ba36b59ad5f4a621a82bebeba",
+    "response-clone-chunk-semantics/wrangler.json": "8fc28d0d31a268317b63e4d1c388b5acba200729602a2e61a889171bbda47d43",
+    "reviews/response-clone-chunk-independent-static-check.json": "96ac16a1f315338d98b7a524576c101f667185e5f23bd26d4073073cc26b84c3",
+    "reviews/response-clone-chunk-semantics-review.json": "e7989bc28fcfa618e27fd5f23d7e9c4baf755e66e95bc90e8f0a00cd010e7520"
+  },
+  "qualification": "One independently reviewed finite local Response.clone raw-chunk mutation design, UNRUN at freeze. Static/inert checks add no runtime credit. All existing57 regression bodies/oracles and previous tranches remain unchanged. Candidate002 source/build/runner and later observations require their separate exact review gates."
+}

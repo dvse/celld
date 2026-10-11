@@ -1,0 +1,58 @@
+{
+  "id": "conformance/limits-and-errors/observe-finite-native-kdf-accounting",
+  "layer": "conformance",
+  "behaviour": "limits-and-errors",
+  "title": "Observe finite native KDF accounting",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/bounded-resource",
+      "legacy_id": "bounded-resource/Q017"
+    }
+  ],
+  "corpus_wave": "bounded-resource",
+  "corpus_id": "Q017",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "Q017",
+    "title": "Observe finite native KDF accounting",
+    "intent": "Observe finite native KDF accounting",
+    "failure_hypothesis": "A CPU-limit error could be misreported as proof of native cancellation",
+    "preconditions": [
+      "cpuMs=1; fixed 20,000-iteration PBKDF2 SHA256, 4-byte salt, 32-byte output, no real credential",
+      "Fresh private owned disposable runtime/root name; native Worker Loader/WorkerEntrypoint and Audit loopback positive control",
+      "Verified immutable source/binary and configured 8192-byte code ceiling; independent scope review excludes restricted capability lifetime reproduction",
+      "Parent exclusive run slot; externally enforced wall/memory/PID limits and owned cleanup"
+    ],
+    "trace": [
+      "Import synthetic fixed key",
+      "Execute one finite PBKDF2 request",
+      "Accept only exact 32-byte result or CPU-limit-1 category as observation",
+      "Run fresh recovery; block native-cancellation qualification"
+    ],
+    "stress": {
+      "rpc_attempts": 2,
+      "loaded_workers": 2,
+      "foreground_max": 1,
+      "payload_bytes": 65536,
+      "pbkdf2_iterations": 20000
+    },
+    "wall_seconds_max": 30,
+    "oracle": "Finite outcome matches documented alternatives and unrelated worker recovers; protection remains BLOCKED because native entry/exit/cancel proof is absent",
+    "cleanup": "Release every foreground hold; settle all owned promises; dispose all entrypoints and Worker handles inside the active coordinator request; assert zero pending/unsettled holds; delete volatile audit book and close tag. Independently recorded owned guest/process/storage teardown is mandatory. No durable state is created by case logic.",
+    "implementation": "cases.js:cases.Q017",
+    "layer": "real-process-RPC",
+    "layer_limits": "Native runtime process and RPC/Loader execution, not necessarily cross-process, cross-VM, real-OS workflow, hard boundary or tenant certification.",
+    "classification": "nonpromoting-source-gap-observation",
+    "execution_blocker": "Unsupported protection observation requires separately reviewed scope/profile; ordinary adapter and entry refuse before trace",
+    "qualification": "characterization",
+    "promotion": "BLOCKED_UNSUPPORTED_PROTECTION",
+    "profile": "bounded-resource-frozen-v1",
+    "authored": true,
+    "reviewed": false,
+    "executable": false,
+    "run": false,
+    "passed": false,
+    "status": "BLOCKED"
+  }
+}

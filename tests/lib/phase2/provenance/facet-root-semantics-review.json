@@ -1,0 +1,162 @@
+{
+  "reviewed_at_utc": "2026-10-09T06:57:04.075354+00:00",
+  "reviewer": "review_celld_test_additions",
+  "wave": "facet-root-semantics",
+  "verdict": "ACCEPTED_PRIMARY_STATIC",
+  "counts": {
+    "authored": 18,
+    "accepted_primary_static": 18,
+    "accepted_characterization": 0,
+    "static_assertion_call_sites": 59,
+    "retired_duplicate_drafts": 1,
+    "runtime_executions": 0,
+    "runtime_passes": 0
+  },
+  "scope": "Count adjudication and final hash verification of independent all-body/source audit, supplemented by direct read of all case bodies and fixture. No case, SQL or runtime executed.",
+  "independent_audit": {
+    "path": "reviews/facet-root-semantics-independent-audit.json",
+    "sha256": "6f0da2d19e92e4871173d65d27c1f677aae65dc2c23200f279882693e2be89f7",
+    "reviewer": "review_facet_root_cases"
+  },
+  "novelty_adjudication": "Accept 18 individually motivated public facet/root mechanisms. Z214 remains retired with zero credit for its location-only duplication of Z213. Z211 credit rests on successful Promise-valued startup configuration resolved before constructor capture, not repeated laziness/caching controls. Z210 observes the independent native constructor-time typed-graph decode boundary. Z213 root rollback and Z215 handled child rollback test different independent-database outcomes.",
+  "retired_ids": [
+    "Z214"
+  ],
+  "static_hash_checks": {
+    "frozen_wave_files_verified": 14,
+    "comparison_reports_verified": 8,
+    "independent_audit_sha256_verified": true
+  },
+  "runtime_qualification": "All UNRUN. No runtime acceptance until actual source/build/deployment/process identity, fresh private store, enforced 12-second HTTP/20-second owned-process/420-second suite and RSS/output bounds, plus complete owned teardown. Logical cleanup uses same-name empty probes behind deletion barriers; residual empty probe facets require final external teardown.",
+  "os_relevance": {
+    "priority": "core",
+    "basis": "Preserved component acceptance/provenance ties facets/root/class/props/storage to OS mechanisms. Actual OS checkout and end-to-end execution remain unavailable and unqualified.",
+    "separate_eligibility_count": false
+  },
+  "case_verdicts": [
+    {
+      "id": "Z201",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Omitted startup ID preserves named DurableObjectId kind, value and name through an immediate-parent inheritance chain. L024 only stringifies explicitly supplied equal display IDs."
+    },
+    {
+      "id": "Z202",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Explicit named DurableObjectId and literal-string branches retain distinct public types/names; descendants inherit the immediate override or use their own explicit override. This is the supplied-ID serialization branch, distinct from Z201 default inheritance."
+    },
+    {
+      "id": "Z203",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "A single resident durable facet shares constructor token, heap progression and stored count through fetch to RPC to fetch. L012 selects different stateless exports; L017 asserts the opposite stateless receiver lifetime."
+    },
+    {
+      "id": "Z204",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Documented plain (state, env) facet construction and js_rpc-enabled dispatch are exercised through the plain-class registration path. Shared receiver primitives do not supply extra credit beyond this independently supported class contract."
+    },
+    {
+      "id": "Z205",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "One positive full-depth branch reaches all four permitted levels, records distinct state at every level and preserves the root. No unsupported-depth error or extra count for individual levels."
+    },
+    {
+      "id": "Z206",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Equal leaf names beneath two different live parent facet managers, with equal inherited visible IDs, select different databases. L024 only partitions top-level names; L037 concerns restored callback provenance."
+    },
+    {
+      "id": "Z207",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "A legal slash-containing name remains one component and cannot alias a two-component descendant path. The public name contract and independently hashed path segments support this ordinary-input boundary."
+    },
+    {
+      "id": "Z208",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Three incompatible same-named SQL tables prove separate SQLite schema catalogs across root, child and grandchild. KV key separation in L022/L024 cannot establish this stronger database-catalog contract."
+    },
+    {
+      "id": "Z209",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Mutable startup props persist on one durable receiver yet remain detached from the reusable class template used to start another facet. L036 only samples scalar binding snapshots; L015 resets stateless invocation props."
+    },
+    {
+      "id": "Z210",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "The only observation is a typed-graph summary captured inside the loaded facet constructor. This targets native embedded-startup decoding before construction, explicitly documented in bootstrap.rs, rather than repeating C001 RPC or D201/D202 storage serialization."
+    },
+    {
+      "id": "Z211",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "A successful Promise-valued startup-options callback awaits supervisor storage and supplies resolved props before the facet constructor captures them. Synchronous caching/laziness controls overlap L025/L027 but earn no separate credit."
+    },
+    {
+      "id": "Z212",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "A nested facet fetch forwards a finite POST and response metadata over two facet edges, while its effect is stored only in the selected descendant database. Generic request/body tests do not assert this facet routing and effect-placement boundary."
+    },
+    {
+      "id": "Z213",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "An ordinary explicit root transaction rollback removes the root write while an already awaited facet database write remains committed, exactly as the public facet documentation promises."
+    },
+    {
+      "id": "Z215",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "The inverse independent transaction outcome: child-local rollback returns a normal application decision, which the parent records while committing its own transaction. This tests the handled child outcome crossing back to a live parent transaction, not a location-only rerun of Z213."
+    },
+    {
+      "id": "Z216",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "storage.deleteAll clears only the current facet database and leaves its descendant and root intact. D211 resets one object; it cannot distinguish local storage reset from recursive facet deletion."
+    },
+    {
+      "id": "Z217",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Selective nested leaf deletion followed immediately by a fresh same-name call observes the public delete/start barrier; parent and sibling data survive and the new leaf is writable. No stopped handle is invoked."
+    },
+    {
+      "id": "Z218",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Deleting an internal facet removes every descendant database before same-path recreation while preserving root and adjacent sibling. Z217 only removes a leaf; production FacetStreams.delete prefix removal is separately evidenced."
+    },
+    {
+      "id": "Z219",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Nested ctx.exports resolves the active module-local class and environment for both loopback and loaded facets. Relational module tokens distinguish same-isolate loopback from loaded module execution; L022/L023 only select direct loaded classes."
+    }
+  ],
+  "frozen_artifact_sha256": {
+    "README.md": "18c724ec25d31e21eff422aecd27403261acb5cdbf329215ce81876f30a624cf",
+    "SHA256SUMS": "a4f59149f7ba8ecaa6e2ab7a09f94a5ddc4e2cdc443307f678b376045c105ccc",
+    "author_manifest.py": "9b71388cf6c9919ed364a0a3a38d2dce2c83278e74b61c5e92e3d849fe4f2a59",
+    "cases.js": "3e0d3a30c5c60b02f026d26d58012c6b3a244df8858e3a2fe40b2f3aa9aea359",
+    "facets.js": "0c1e77551454e2f4ec65e266e0b4e9768e6bac296550e2960d1242d52c0c0e75",
+    "fixture.js": "2843913af8aa84153e792b41e9367175b7e80a5dbf4f78eb18b07d91b58cb147",
+    "manifest.json": "a1615598800adf714f1786dbf6db36365b035d4b9e54a4c56c12e5a427ed7e1f",
+    "overlap-audit.json": "905bfdeee5563ef34bb7bd6c6589c99c92ea6b86edcf5f8482da107c078e9e1b",
+    "schedule.json": "5bc678e591cf45bf9574f79876318a7aa468b552a12b7103b5809f5b22f34218",
+    "source-pins.json": "b25bc6d9a28ffc8535d5d55157ecaad750423e71fa48e7bb81f6f292ba18d326",
+    "sources.js": "809b26affa78b950c747d52b6cd4b350c42672f488ac66c7756a8210d38482d6",
+    "static-validation.json": "88e937d3ae9b526c8a6bd350027d26fdd52d3cc1f0ffa3fc96f2c3fdb49ff8fe",
+    "validate_static.py": "0cf9d87174ad676f3c54bc31296300b05d8163b5f234a6533c8f2671ad0b7e0d",
+    "wrangler.json": "4f9dfe9709f2b270fd74401ad901104086c89b1f3659cdfb71e9d3135c887fe9"
+  }
+}

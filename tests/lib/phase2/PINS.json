@@ -1,0 +1,36 @@
+{
+  "source_columns": {
+    "def239b": "def239b8b5bea70bfe8674f3117d6862f140a711",
+    "fixes": "c877e5523378b189a4dc3e5798572b8d03a81345"
+  },
+  "fixes_snapshot_aest": "2026-10-10T18:53:00+10:00",
+  "rust": "1.98.1",
+  "go": "1.25.3",
+  "esbuild": {
+    "version": "0.28.2",
+    "source_commit": "609683d892977362a0f99026cb74b96263d728a9"
+  },
+  "worker_build": "0.8.7",
+  "wasm_bindgen_cli": "0.2.129",
+  "workerd_oracle": "1.20261010.1",
+  "seaweedfs": "4.48",
+  "historical_candidate002_archive_sha256": "192aeb5457fbb0cf65d2d403d7e6e04e9bf2c7c339e8d4fa86724901252c8629",
+  "historical_candidate002_binary_sha256": "7ab402de478adad5ed53e2098aca9114a8ff5ec389c66de1075f9c9f40e153db",
+  "historical_candidate002_allowed_scope": [
+    "two-VM checkpoint gate",
+    "cold-restart-v1"
+  ],
+  "source_trees": {
+    "def239b": "2edc30524c9b73b3405d7bc3938a14e8d0d7deb7",
+    "fixes": "48fc7873e7607a1e1ff904778b3ff8aacd7df22c"
+  },
+  "preferred_next_refresh_ref": "ported",
+  "later_ref_observation": {
+    "observed_aest": "2026-10-10T21:35:26.307032+10:00",
+    "ref": "ported",
+    "commit": "40dca2bdcc4fdd99ecf96c203c3ebc0d9e06b37d",
+    "tree": "8450f1b5f3a5cd466d5078e6a7061f4f9e28d3c0",
+    "qualified": false,
+    "reason": "Advanced beyond the frozen 18:53 AEST source snapshot; no source refresh in this final adapter-only resume."
+  }
+}

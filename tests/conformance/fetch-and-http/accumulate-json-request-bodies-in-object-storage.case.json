@@ -1,0 +1,46 @@
+{
+  "id": "conformance/fetch-and-http/accumulate-json-request-bodies-in-object-storage",
+  "layer": "conformance",
+  "behaviour": "fetch-and-http",
+  "title": "Accumulate JSON request bodies in object storage",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/examples/body",
+      "legacy_id": "examples/body"
+    },
+    {
+      "source": "celld@9c0fca5/examples/body/wrangler.jsonc",
+      "sha256": "854a1d81fb7769eb8f5a18731b1575296587199c30bdab85375886c138bfd5ce"
+    }
+  ],
+  "legacy_ids": [
+    "examples/body"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/json-body-counter",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "json": {
+        "n": 3
+      },
+      "path": "/suite"
+    },
+    {
+      "json": {
+        "n": 5
+      },
+      "path": "/suite"
+    },
+    {
+      "path": "/suite"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/fetch-and-http/fixtures/json-body-counter/wrangler.jsonc",
+  "source_sha256": "854a1d81fb7769eb8f5a18731b1575296587199c30bdab85375886c138bfd5ce"
+}

@@ -1,0 +1,152 @@
+{
+  "adapter": "http",
+  "behaviour": "durable-objects/lifecycle",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "classification": "PRIMARY_DIRECT_PUBLIC_API_CANDIDATE",
+    "cleanup": [
+      "Release any owned Control wait normally; join all already dispatched requests before any data cleanup.",
+      "Delete only the three-or-fewer tracked fixture roots storage and verify empty KV; Control is cleaned last and must have zero waiters/timers.",
+      "An unsettled trace or cleanup requires bounded external owned-process reap and store removal; it never earns runtime credit.",
+      "External supervisor verifies final process/store teardown; fixture cleanup alone does not prove it."
+    ],
+    "distinct": "One compound byte-boundary/full-name contract. Cases are not split by length, suffix or Unicode parameter values. No malformed names, truncated IDs or cryptographic validation failures are submitted.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/A203"
+    },
+    "external_contract_refs": [
+      {
+        "checked_on": "2026-10-09",
+        "last_updated": "2026-05-27",
+        "url": "https://developers.cloudflare.com/durable-objects/api/id/"
+      },
+      {
+        "checked_on": "2026-10-09",
+        "last_updated": "2026-04-21",
+        "url": "https://developers.cloudflare.com/durable-objects/api/stub/"
+      }
+    ],
+    "fixed_assertions": [
+      "c.eq(names.map(n=>new TextEncoder().encode(n).length),[1024,1025,1025],'one exact UTF-8 metadata boundary with two distinct full-name suffixes');",
+      "c.eq([ids[0].equals(ids[1]),ids[1].equals(ids[2])],[false,false],'suppressed display metadata never truncates the routing name');",
+      "c.eq(rows.map(x=>x.name),[boundary,null,null],'object name metadata follows the byte boundary rather than JavaScript character count');",
+      "c.eq(rows.map(x=>x.value),['boundary','suffix-a','suffix-b'],'both long names readdress independent state using their entire name');",
+      "c.eq(rows.map(x=>x.objectId),ids.map(String),'all readdressed objects report exact original IDs');",
+      "c.eq(stubs.map(s=>s.name),names,'client stub retains the complete supplied name despite server metadata cutoff');"
+    ],
+    "id": "A203",
+    "implementation": "cases.js:A203",
+    "limits": {
+      "cleanup_deadline_ms": 3500,
+      "control_successful_fallback_ms": 2500,
+      "external_case_process_deadline_seconds": 20,
+      "external_http_deadline_seconds": 12,
+      "external_rss_limit_bytes": 1073741824,
+      "external_wave_deadline_seconds": 120,
+      "max_concurrent_supervisor_fetches": 3,
+      "max_control_entries": 2,
+      "max_control_poll_calls": 60,
+      "max_created_roots": 3,
+      "max_external_case_requests": 1,
+      "max_keys_per_root": 1,
+      "max_name_utf8_bytes": 1025,
+      "max_response_bytes": 65536,
+      "max_supervisor_do_fetches": 100,
+      "max_total_do_fetches_including_target_control": 110,
+      "max_total_name_bytes": 3074,
+      "max_value_characters": 32,
+      "poll_interval_ms": 15,
+      "trace_deadline_ms": 6000
+    },
+    "literal_assertion_call_sites": 6,
+    "mechanism": "utf8-name-retention-and-full-address",
+    "nearest": [
+      "Z201/Z202 named facet display identities",
+      "duplicate-names fixed short names"
+    ],
+    "oracle": "Server ctx.id.name is retained through 1024 UTF-8 bytes and omitted for longer names; full names still route independently. Client stub.name retains each complete supplied name, including above that server metadata threshold.",
+    "os_relevance": {
+      "actual_os_checkout_available": false,
+      "actual_os_execution_claimed": false,
+      "evidence": [
+        "celld-os-project/tests/ACCEPTANCE.md",
+        "celld-os-project/tests/duplicate-names/account.js",
+        "celld-os-project/tests/duplicate-names/router.js",
+        "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+      ],
+      "evidence_status": "INFERRED_COMPONENT_RELEVANCE_ONLY",
+      "label": "Supporting large legal names at evidenced OS root namespace boundary; specific OS name lengths unverified"
+    },
+    "preconditions": [
+      "Exact reviewed celld source/build/executable identity with a fresh private disposable store and current live migrated DOs.",
+      "Finite external process/HTTP/RSS limits independently enforceable; no runtime or dependency substitution.",
+      "One external GET at a time; no process faults, reconfiguration, restart, foreign-ID operations or retained stateless handles."
+    ],
+    "predicted_gap": "harness.js:5706-5720 reuses dispatchName for client stub.name. The public Stub contract has no server-side 1024-byte metadata exception. The intended full client-name oracle is retained; no runtime failure has been observed.",
+    "primary_contract_refs": [
+      {
+        "line_end": 41,
+        "line_start": 35,
+        "path": "celld-os-project/celld/docs/services/durable-objects.md"
+      }
+    ],
+    "review_status": "PENDING_INDEPENDENT_REVIEW",
+    "runtime_passes": 0,
+    "runtime_source_refs": [
+      {
+        "line_end": 5676,
+        "line_start": 5671,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      },
+      {
+        "line_end": 5720,
+        "line_start": 5694,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "static_source_assessment": "SOURCE_PREDICTED_COMPATIBILITY_FAILURE",
+    "title": "Preserve full routing past the name metadata boundary",
+    "trace": [
+      "Create one 1024-byte Unicode name and two 1025-byte names differing only after the first 1024 bytes.",
+      "Write a distinct constant to each real object.",
+      "Readdress all three by their complete name and inspect recipient ID, optional name and stored value."
+    ]
+  },
+  "corpus_id": "A203",
+  "corpus_wave": "identity-admission-semantics",
+  "fixture": "tests/conformance/durable-objects/lifecycle/fixtures/identity-admission-semantics",
+  "id": "conformance/durable-objects/lifecycle/identity-admission-a203",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/identity-admission-semantics/A203"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/identity-admission-semantics/A203",
+      "manifest_sha256": "e5eae8135cebe5822551cd30d5fad64d7273726f60d70a8899cd014f3500951e",
+      "review_sha256": "bf9e7422bb248a7b602faf4fc928e16eb392f783c71ac17275ec3f6a4c8356f2",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/identity-admission-semantics",
+      "tranche": "004"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/A203",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "A203",
+  "source": "tests/conformance/durable-objects/lifecycle/fixtures/identity-admission-semantics/fixture.js",
+  "source_sha256": "eeb4d839f7c818b31988e205b843f6584c6cfc066b4723dcb8382d7ca8bf5e33",
+  "title": "Preserve full routing past the name metadata boundary"
+}

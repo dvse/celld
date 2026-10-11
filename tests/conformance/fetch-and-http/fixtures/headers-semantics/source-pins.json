@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "source_root": "/workspace/shared/celld-recovered/celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "upstream_commit": "90b43017241f81189453d326d05948f388b34652",
+  "source_cut": "2026-10-09T00:52:35.905873Z",
+  "historical_binary_attribution": "none: this newly authored wave has never run",
+  "files": {
+    "celld-os-project/celld/crates/celld/js/headers.js": "021943cd8e7387456b79343381d757024e987ab1bdc550fd6ebbb6afe65d961d",
+    "celld-os-project/celld/crates/celld/js/cache.js": "3aedac1988f4b3ec88740a6116079716bca5296117d92fa46454c8192602eefa",
+    "celld-os-project/celld/crates/celld/js/harness.js": "8d3be5ef1b78d302cb2da745c63f8d2e1222115c49a8d08f1096bca7d235c237",
+    "celld-os-project/celld/crates/celld/js/bootstrap.rs": "0210c1f17ec80959aa071724e1a612b181f72715d20afcbd29226674636d6d05"
+  }
+}

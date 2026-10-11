@@ -1,0 +1,33 @@
+{
+  "id": "conformance/durable-objects/placement-and-routing/do-environment",
+  "layer": "conformance",
+  "behaviour": "durable-objects/placement-and-routing",
+  "title": "do environment",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/do-environment",
+      "legacy_id": "hyperbob/do-environment"
+    },
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/do-environment/wrangler.json",
+      "sha256": "08c58760711d104e908e087cf83396ce8ee62267ef69da63a798a4230f00c9a2"
+    }
+  ],
+  "legacy_ids": [
+    "hyperbob/do-environment"
+  ],
+  "adapter": "example",
+  "fixture": "tests/conformance/durable-objects/placement-and-routing/fixtures/environment-selection",
+  "profiles": [
+    "full"
+  ],
+  "reason": "",
+  "requests": [
+    {
+      "path": "/?v=suite"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/durable-objects/placement-and-routing/fixtures/environment-selection/wrangler.json",
+  "source_sha256": "08c58760711d104e908e087cf83396ce8ee62267ef69da63a798a4230f00c9a2"
+}

@@ -1,0 +1,69 @@
+{
+  "id": "conformance/fetch-and-http/fail-local-stream-fallback-before-dispatch",
+  "layer": "conformance",
+  "behaviour": "fetch-and-http",
+  "title": "Fail local stream fallback before dispatch",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/http-stream-stress",
+      "legacy_id": "http-stream-stress/H022"
+    }
+  ],
+  "corpus_wave": "http-stream-stress",
+  "corpus_id": "H022",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "H022",
+    "title": "Fail local stream fallback before dispatch",
+    "intent": "Fail local stream fallback before dispatch",
+    "failure_hypothesis": "Ordinary JS stream fallback dispatches its prefix before full body conversion succeeds",
+    "preconditions": [
+      "Local stream emits4096 bytes then waits on local error gate; sibling response tail held",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Start upload with ordinary JS stream",
+      "Read independent HTTP response prefix",
+      "Release local producer error gate",
+      "Require upload rejection and never.entered0/effect0",
+      "Release and drain sibling"
+    ],
+    "stress": {
+      "schedule": "Local byte-fallback collection failure beside retained network response",
+      "bounded": true,
+      "logical_payload_bytes_max": 4194304,
+      "coordinator_http_max": 6,
+      "fixture_operations_max": 24,
+      "read_operations_per_body_max": 262144,
+      "wall_seconds_max": 30
+    },
+    "oracle": "No partial request dispatch/effect; live HTTP response exact bytes; error comes from deliberate local producer Native fetch rejection must carry Error: local producer failed before dispatch. Helper/assertion errors cannot count as expected native rejection.",
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "Frozen source explicitly buffers unbranded JS streams, unlike incremental host response H001",
+    "implementation": "cases.js:H022",
+    "test_function": "H022",
+    "layer": "real-process-RPC",
+    "transport": "ordinary HTTP direct-network and local DO.fetch body seams",
+    "layer_limits": "Requires two observed native processes but does not claim cross-VM isolation, OS workflow, Git correctness, throughput, durability or tenant security",
+    "classification": "native-buffering-characterization",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable_source_implementation": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN",
+    "promotion": false,
+    "promotion_blocker": "Ordinary-JS request-body buffering is frozen celld behavior, not a general Workers HTTP contract."
+  }
+}

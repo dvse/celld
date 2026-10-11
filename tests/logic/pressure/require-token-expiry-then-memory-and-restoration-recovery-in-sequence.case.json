@@ -1,0 +1,52 @@
+{
+  "id": "logic/pressure/require-token-expiry-then-memory-and-restoration-recovery-in-sequence",
+  "layer": "logic",
+  "behaviour": "pressure",
+  "title": "Require token expiry then memory and restoration recovery in sequence",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic",
+      "legacy_id": "corpus/pressure-recovery-logic/P025"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic/tests/pressure_recovery.rs",
+      "sha256": "ccb9c2001ec9d427c142017a426801dde5631b1252fae8b2e10ce0e12cc73e47"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/pressure-recovery-logic/P025"
+  ],
+  "adapter": "native",
+  "corpus_id": "P025",
+  "corpus_wave": "pressure-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/pressure/fixtures/decision-cases/tests/pressure_recovery.rs",
+  "source_sha256": "ccb9c2001ec9d427c142017a426801dde5631b1252fae8b2e10ce0e12cc73e47",
+  "test_filter": "p025_token_expiry_memory_relief_and_restore_recovery_are_separate_gates",
+  "contract": {
+    "intent": "Require token expiry then memory and restoration recovery in sequence",
+    "preconditions": [
+      "Caller-owned DrainToken and CapacityPeer snapshots exactly listed in initial_state; production drain::fleet_status called directly",
+      "No simulated writes to State, no transport, store or actual drain execution; result is native policy output",
+      "Pressure samples are synthetic byte-valued facts, not measured RSS, allocator, cgroup or container enforcement",
+      "The immutable source/runtime-manifest pins and exact implementation must pass preflight before any authorized future run"
+    ],
+    "trace": [
+      "fleet_status at109 returns Drain",
+      "at110 token expires but old returns MemoryHeadroom",
+      "set old headroom true; at111 returns Restoration current6 maximum5",
+      "set old restoring5; at112 returns Ok",
+      "drop caller-owned token and peer vector"
+    ],
+    "oracle": "Each independently unsettled condition blocks even after prior gate clears; readiness reaches Ok only after both memory and backlog recovery",
+    "cleanup": "Drop caller-owned token/peer vectors; no production resources created",
+    "implementation": "tests/pressure_recovery.rs:p025_token_expiry_memory_relief_and_restore_recovery_are_separate_gates"
+  },
+  "selector": "P025"
+}

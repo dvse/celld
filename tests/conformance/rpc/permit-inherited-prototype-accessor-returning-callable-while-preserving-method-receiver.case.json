@@ -1,0 +1,47 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "no retained resources; per-run owned fleet teardown",
+    "implementation": "index.js:accessorCases.V002",
+    "intent": "Permit inherited prototype accessor returning callable while preserving method receiver",
+    "oracle": "each return identifies actual peer and correct input; callable this equals original DO instance; getter/call counters each+2; recipient remains live",
+    "preconditions": "Owned disposable two-owner fleet; DO exposes application prototype getter yielding receiver-sensitive function",
+    "trace": [
+      "capture getter and callable counters",
+      "call inheritedCallableAccessor twice with distinct labels",
+      "assert exact peer identity and label each time",
+      "verify getter and callable counts increase exactly twice",
+      "verify post-call liveness and unchanged identity"
+    ]
+  },
+  "corpus_id": "V002",
+  "corpus_wave": "do-visibility-regression",
+  "fixture": "tests/conformance/rpc/fixtures/accessor-visibility",
+  "id": "conformance/rpc/permit-inherited-prototype-accessor-returning-callable-while-preserving-method-receiver",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/do-visibility-regression/V002"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/do-visibility-regression/V002",
+      "source": "guarded-source-archive/celld-os-stress/waves/do-visibility-regression"
+    },
+    {
+      "sha256": "5eceb2b55d3b2db0cc2f4a5de052d35b8c3933ecd026958d37dc582fdcc53577",
+      "source": "guarded-source-archive/celld-os-stress/waves/do-visibility-regression/index.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "V002",
+  "source": "tests/conformance/rpc/fixtures/accessor-visibility/index.js",
+  "source_sha256": "5eceb2b55d3b2db0cc2f4a5de052d35b8c3933ecd026958d37dc582fdcc53577",
+  "title": "Permit inherited prototype accessor returning callable while preserving method receiver"
+}

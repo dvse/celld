@@ -1,0 +1,61 @@
+{
+  "runtime_manifest": "/workspace/shared/celld-os-project/deliverable/package/reports/final/runtime-manifest.json",
+  "runtime_manifest_sha256": "54da8304fb90c06694cd44c114e0917b8db89ecefa08920a913c99b286359f28",
+  "binary_sha256": "62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e",
+  "celld_commit": "90b43017241f81189453d326d05948f388b34652",
+  "os_commit": "4358072f8cb1bc9ddfb6ee11122e194c76cd71e0",
+  "sources": [
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/js/harness.js",
+      "manifest_key": "celld/crates/celld/js/harness.js",
+      "sha256": "9d31b01bd4d1a6b136cfbc02bcb26a47deba29f27066009fc3f3b9c6d8d9c407",
+      "lines": "139-173,214-243,331-371,500-537,586-712,5738-5805,12028-12150",
+      "contract": "HTTP host-body reader/tee, Request.clone, buffered vs streamed conversions, locked transfer, abort-before-dispatch, ordinary JS fallback, DO local stream forwarding and native response bridge"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/js.rs",
+      "manifest_key": "celld/crates/celld/js.rs",
+      "sha256": "164b11bb2b0f7321d316bcd417b13fea3bf907b1eae335c97d8ebecaacb9ba17",
+      "lines": "8840-8905,9100-9415,9478-9620,11646-11684,11800-11835",
+      "contract": "Native body claims, direct reqwest streaming/cancellable response-head window, tee/read/cancel, bounded queue response write acknowledgement is not downstream read acknowledgement"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/http_streams.rs",
+      "manifest_key": "celld/crates/celld/http_streams.rs",
+      "sha256": "6910e3e5c55e8030563802fab0bd3019611fc632cf04ca194c153ace6af9c5bf",
+      "lines": "1830-1965 and native tee implementation",
+      "contract": "Host source transfer/read terminal and cancellation; registry read/writer ownership and bounded branch queues"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/main.rs",
+      "manifest_key": "celld/crates/celld/main.rs",
+      "sha256": "6d661101df7c44142e7338c493560cf212438116b3d65c06186217ee3182e892",
+      "lines": "1768-1889",
+      "contract": "Ingress body declaration/threshold selects held bytes vs host stream; body-less and small known-length inputs collect; unknown-length relays remain incremental"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/engine_api.rs",
+      "manifest_key": "celld/crates/celld/engine_api.rs",
+      "sha256": "e9874a4ad9809b7946761d4f9371921f138612e5997b6aa0d70f7cbce796805f",
+      "lines": "RequestBody and HttpResponse declarations",
+      "contract": "Native HTTP request/response representations; not RPC returned capability transport"
+    }
+  ],
+  "candidate_context": {
+    "files": [
+      {
+        "path": "/workspace/shared/celld-os-project/artifacts/do-visibility-candidate/source-manifest.json",
+        "sha256": "8fdc6bc89301c6d137688b5a623e32141457f04f5140105b20880ab6425f5c11"
+      },
+      {
+        "path": "/workspace/shared/celld-os-project/artifacts/do-visibility-candidate/build-manifest.json",
+        "sha256": "e84f9ec275ce62bb67af53a5b97ddce90375016be136d49709d85dd9f52fcf8e"
+      },
+      {
+        "path": "/workspace/shared/celld-os-project/artifacts/do-visibility-candidate/from-648e17.patch",
+        "sha256": "5c0f20185655e00031e3a8b19908fdbcd4090adb35b5c2b46f647c847d30b825"
+      }
+    ],
+    "meaning": "Read-only comparison: candidate changes DO RPC method visibility; this HTTP-only wave remains pinned to frozen delivered binary and does not qualify candidate behavior."
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "unit/rpc/static-class-seal-binds-storage-authority-and-has-separate-domain",
+  "layer": "unit",
+  "behaviour": "rpc",
+  "title": "static class seal binds storage authority and has separate domain",
+  "origins": [
+    {
+      "source": "crates/celld/peer_auth.rs",
+      "legacy_id": "unit/celld/peer_auth::capability_route_tests::static_class_seal_binds_storage_authority_and_has_separate_domain"
+    }
+  ],
+  "legacy_ids": [
+    "unit/celld/peer_auth::capability_route_tests::static_class_seal_binds_storage_authority_and_has_separate_domain"
+  ],
+  "adapter": "cargo",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "crates/celld/peer_auth.rs",
+  "source_sha256": "140a9db6fca147ecbd15aac1a14a7d47f7243359a2bf34515ebdbc082cce3074",
+  "test_filter": "peer_auth::capability_route_tests::static_class_seal_binds_storage_authority_and_has_separate_domain"
+}

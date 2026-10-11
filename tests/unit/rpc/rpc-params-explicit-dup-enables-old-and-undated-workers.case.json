@@ -1,0 +1,24 @@
+{
+  "id": "unit/rpc/rpc-params-explicit-dup-enables-old-and-undated-workers",
+  "layer": "unit",
+  "behaviour": "rpc",
+  "title": "rpc params explicit dup enables old and undated workers",
+  "origins": [
+    {
+      "source": "crates/celld/lib.rs",
+      "legacy_id": "unit/celld/rpc_params_compat_tests::rpc_params_explicit_dup_enables_old_and_undated_workers"
+    }
+  ],
+  "legacy_ids": [
+    "unit/celld/rpc_params_compat_tests::rpc_params_explicit_dup_enables_old_and_undated_workers"
+  ],
+  "adapter": "cargo",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "crates/celld/lib.rs",
+  "source_sha256": "24efebb359d84402f4996adebdb80f5fe963044657fbaa47f450e15e99637faf",
+  "test_filter": "rpc_params_compat_tests::rpc_params_explicit_dup_enables_old_and_undated_workers"
+}

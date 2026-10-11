@@ -1,0 +1,24 @@
+{
+  "id": "unit/object-identity/same-named-class-routes-by-existing-namespace-signature",
+  "layer": "unit",
+  "behaviour": "object-identity",
+  "title": "same named class routes by existing namespace signature",
+  "origins": [
+    {
+      "source": "crates/celld/generation.rs",
+      "legacy_id": "unit/celld/generation::namespace_collision_tests::same_named_class_routes_by_existing_namespace_signature"
+    }
+  ],
+  "legacy_ids": [
+    "unit/celld/generation::namespace_collision_tests::same_named_class_routes_by_existing_namespace_signature"
+  ],
+  "adapter": "cargo",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "crates/celld/generation.rs",
+  "source_sha256": "107651393b2508265762ada6e97a9b8ec621ce950a7c993e06357986c9cb44a9",
+  "test_filter": "generation::namespace_collision_tests::same_named_class_routes_by_existing_namespace_signature"
+}

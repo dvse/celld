@@ -1,0 +1,56 @@
+{
+  "adapter": "topology",
+  "behaviour": "durable-objects/websockets",
+  "contract": {
+    "cleanup": "Every trace normal-closes its sockets; finally cleanup independently aborts control requests, accepts any already obtained pending upgrade for closure, closes every local endpoint, discards held echoes, closes recipient sockets, joins normalization and records unresolved resources. Separately owned supervisor must reap only owned processes/sockets and destroy fresh storage. Any incomplete cleanup or unknown entry is BLOCKED/FAIL, never PASS.",
+    "distinctness": "Native incoming socket routing rather than downlink selection in W007.",
+    "intent": "Keep concurrent client lanes independent",
+    "oracle": "Each recipient journal is exact and echo order follows its own queue",
+    "preconditions": [
+      "Exact candidate binary and pinned implementation/source/profile hashes; independently reviewed ordinary-WebSocket scope and case oracle",
+      "Fresh disposable caller and recipient DOs in separately observed owned processes with actual root/isolate/process identities",
+      "Already enforced external wall/memory/PID/CPU ceilings and exclusive parent run slot; no deployment or launch by adapter",
+      "Public WebSocket/WebSocketPair and ordinary valid private-network upgrades; preflight echo and clean-close control must complete before entry",
+      "Case-specific initial state and options are established by the explicit W008 trace; no state or socket is reused from another case."
+    ],
+    "source_contracts": [
+      "SC-IDENTITY"
+    ],
+    "trace": [
+      "Witness a0 and b0 held",
+      "Interleave a1/b1,a2/b2,a3/b3 sends",
+      "Read exact separate recipient journals",
+      "Drain B then A",
+      "Clean-close each"
+    ]
+  },
+  "corpus_id": "W008",
+  "corpus_wave": "active-websocket-stress",
+  "fixture": "tests/conformance/durable-objects/websockets/fixtures/event-traces",
+  "id": "conformance/durable-objects/websockets/keep-concurrent-client-lanes-independent",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/active-websocket-stress/W008"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/active-websocket-stress/W008",
+      "source": "guarded-source-archive/celld-os-stress/waves/active-websocket-stress"
+    },
+    {
+      "sha256": "2ea74d4323d34e1121e93c9637f19d6f46349f17a06516a6e2d13d4a86187317",
+      "source": "guarded-source-archive/celld-os-stress/waves/active-websocket-stress/fixture.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "W008",
+  "source": "tests/conformance/durable-objects/websockets/fixtures/event-traces/fixture.js",
+  "source_sha256": "2ea74d4323d34e1121e93c9637f19d6f46349f17a06516a6e2d13d4a86187317",
+  "title": "Keep concurrent client lanes independent"
+}

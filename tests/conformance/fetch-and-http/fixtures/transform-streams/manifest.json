@@ -1,0 +1,623 @@
+[
+  {
+    "id": "X001",
+    "intent": "Resume a partially written native gzip encoder after a separate raw exporter finishes",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "process-wide zlib handle survives inter-request execution"
+    ],
+    "trace": [
+      "Accept the first 211 archive bytes into gzip native state.",
+      "Hold that request while the secondary request compresses and roundtrips a raw-deflate sheet.",
+      "Write the remaining archive bytes, finalize gzip, and decode every output byte."
+    ],
+    "stress": "Prefix-established encoder state can be replaced or lost when another request creates and ends two native handles.",
+    "oracle": "Exact reconstructed archive bytes; both requests PASS; held/peer-enter/peer-done/released/main-done order.",
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "implementation": "operations.js:X001",
+    "test_function": "X001",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-native-state-stress",
+    "promotion": true,
+    "status": "NOT_RUN",
+    "hold_label": "prefix-encoder",
+    "peer_operation": "raw",
+    "distinctness": "Stateful continuation after native push, unlike B024 one-shot compression fanout."
+  },
+  {
+    "id": "X002",
+    "intent": "Delay a valid gzip trailer while a pack digest finishes",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "gzip accepts a valid split eight-byte trailer"
+    ],
+    "trace": [
+      "Push all fixed gzip bytes except its eight-byte trailer and concurrently drain output.",
+      "Hold the decoder with native state alive while another recipient hashes a pack stream to completion.",
+      "Supply the trailer, close the decoder, and compare all restored archive bytes."
+    ],
+    "stress": "Native finish can lose checksum state across unrelated native digest work.",
+    "oracle": "Exact full archive; successful close only after trailer; independent SHA1 pack peer.",
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "implementation": "operations.js:X002",
+    "test_function": "X002",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-native-state-stress",
+    "promotion": true,
+    "status": "NOT_RUN",
+    "hold_label": "trailer-pending",
+    "peer_operation": "digest",
+    "distinctness": "Delayed producer EOF with an already draining consumer, distinct from X015 delayed consumption."
+  },
+  {
+    "id": "X003",
+    "intent": "Cancel a gzip decoder after a decoded prefix is observed",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "decoder emits a finite prefix before trailer"
+    ],
+    "trace": [
+      "Push the gzip prefix and read one nonempty correctly matched decoded prefix.",
+      "Hold that reader while the independent recipient fully decodes its own archive.",
+      "Cancel the main reader and attempt the withheld trailer write."
+    ],
+    "stress": "Cancellation may address a different live native handle or permit further writes on the cancelled transform.",
+    "oracle": "Observed prefix matches owned bytes; later write rejects with the exact cancel Error; peer remains healthy.",
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "implementation": "operations.js:X003",
+    "test_function": "X003",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-native-state-stress",
+    "promotion": true,
+    "status": "NOT_RUN",
+    "hold_label": "decoded-prefix-retained",
+    "peer_operation": "decode",
+    "distinctness": "Partial output cancellation of native decompression, not H019 HTTP body-reader cancellation."
+  },
+  {
+    "id": "X004",
+    "intent": "Reject a pending native compression read on consumer cancellation",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "small encoder input stays below native 32KiB emission threshold"
+    ],
+    "trace": [
+      "Issue a pending encoder read and accept 64 pack bytes without finalizing.",
+      "Keep that request held while a separate public-fixture HMAC completes.",
+      "Cancel the reader, inspect the already-pending read rejection, then attempt close."
+    ],
+    "stress": "Native compression cancellation can resolve a pending read as EOF or allow a terminal flush after state drop.",
+    "oracle": "Pending read and later close reject with the same planned Error identity; no computation-preemption assertion.",
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "implementation": "operations.js:X004",
+    "test_function": "X004",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-native-state-stress",
+    "promotion": true,
+    "status": "NOT_RUN",
+    "hold_label": "pending-native-read",
+    "peer_operation": "sign",
+    "distinctness": "Native compression-specific _cancelRejectsReads branch, not ordinary stream cancellation."
+  },
+  {
+    "id": "X005",
+    "intent": "Abort an unflushed raw exporter and immediately recover",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "transform writable abort calls native drop"
+    ],
+    "trace": [
+      "Write a raw sheet prefix and keep the native encoder unflushed.",
+      "Complete independent gzip decoding while that prefix state is held.",
+      "Abort the writer, require readable error identity, and roundtrip a new raw encoder."
+    ],
+    "stress": "Writable-side cancellation can leave an unusable native table entry that disrupts the next exporter.",
+    "oracle": "Exact abort reason reaches output; fresh raw encoder reconstructs complete sheet; sibling decode exact.",
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "implementation": "operations.js:X005",
+    "test_function": "X005",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-native-state-stress",
+    "promotion": true,
+    "status": "NOT_RUN",
+    "hold_label": "unflushed-raw-state",
+    "peer_operation": "decode",
+    "distinctness": "Writable abort entry versus X004 readable consumer cancellation."
+  },
+  {
+    "id": "X006",
+    "intent": "Abort a native transform when its source fails before any bytes",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "pipeTo source error aborts destination"
+    ],
+    "trace": [
+      "Allocate a gzip encoder and hold it before attaching the failed source.",
+      "Finish a separate digest request during that hold.",
+      "Pipe a source that errors on its first pull, checking both pipe and transform output."
+    ],
+    "stress": "A zero-prefix upstream failure may leave the newly allocated native encoder hanging.",
+    "oracle": "One source pull; exact planned source Error on pipe and readable; all foreground promises settle.",
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "implementation": "operations.js:X006",
+    "test_function": "X006",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-boundary-recovery",
+    "promotion": true,
+    "status": "NOT_RUN",
+    "hold_label": "encoder-before-source",
+    "peer_operation": "digest",
+    "distinctness": "Source failure before first native push, distinct from X007 observed prefix failure."
+  },
+  {
+    "id": "X007",
+    "intent": "Poison a decoder after independently observed prefix delivery",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "fixed gzip prefix yields decoded bytes without its trailer"
+    ],
+    "trace": [
+      "Start pipeTo from a controlled source and enqueue gzip bytes excluding its trailer.",
+      "Observe positive decoded output before holding; complete a separate raw exporter.",
+      "Error the source and require that neither pipe nor decoded output reports successful completion."
+    ],
+    "stress": "Post-prefix source error may be swallowed after native bytes have already reached the collector.",
+    "oracle": "Positive accepted decoded prefix; exact planned Error on pipe and full collector; peer roundtrip exact.",
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "implementation": "operations.js:X007",
+    "test_function": "X007",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-native-state-stress",
+    "promotion": true,
+    "status": "NOT_RUN",
+    "hold_label": "source-tail-error",
+    "peer_operation": "raw",
+    "distinctness": "Receiver-observed native decoded progress, not merely source enqueue acknowledgment."
+  },
+  {
+    "id": "X008",
+    "intent": "Isolate deferred gzip checksum corruption from a healthy native peer",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "native gzip finish validates the fixed fixture CRC"
+    ],
+    "trace": [
+      "Flip exactly one public fixture CRC bit, leaving compressed data and size unchanged.",
+      "Push the valid compressed prefix and hold while a pack digest closes.",
+      "Supply the damaged trailer and close, accepting rejection from write or finalization only."
+    ],
+    "stress": "Late checksum failure may leak successful EOF or corrupt a separate native digest result.",
+    "oracle": "TypeError Decompression failed from actual native write/close and output; independent pack SHA1.",
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "implementation": "operations.js:X008",
+    "test_function": "X008",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-native-state-stress",
+    "promotion": true,
+    "status": "NOT_RUN",
+    "hold_label": "crc-awaiting-validation",
+    "peer_operation": "digest",
+    "distinctness": "Trailer CRC corruption distinct from truncation and trailing garbage."
+  },
+  {
+    "id": "X009",
+    "intent": "Reject missing gzip size trailer and recover the decoder path",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "native gzip finish rejects a four-byte truncation"
+    ],
+    "trace": [
+      "Write the fixed gzip stream without its final four size bytes.",
+      "Hold it while another recipient completes fixture HMAC signing.",
+      "Close the truncated stream, assert both sides reject, then decode a new valid archive."
+    ],
+    "stress": "Truncation discovered only on finish may poison future native decoder allocation.",
+    "oracle": "Native finalization and reader reject Decompression failed; fresh valid decode exact; peer HMAC exact.",
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "implementation": "operations.js:X009",
+    "test_function": "X009",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-native-state-stress",
+    "promotion": true,
+    "status": "NOT_RUN",
+    "hold_label": "missing-size-trailer",
+    "peer_operation": "sign",
+    "distinctness": "EOF finalization failure distinct from X008 corrupted supplied trailer."
+  },
+  {
+    "id": "X010",
+    "intent": "Reject trailing bytes after a complete gzip member before close",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "pinned strict decoder rejects unconsumed trailing input"
+    ],
+    "trace": [
+      "Write the entire valid gzip member but keep its writable side open.",
+      "Hold completed-member native state while a raw exporter runs elsewhere.",
+      "Write three trailing fixture bytes and inspect the poisoned reader."
+    ],
+    "stress": "A decoder that reached member EOF may silently accept a later write or overwrite another stream ID.",
+    "oracle": "Actual trailing write and reader reject native Decompression failed; peer exporter exact.",
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "implementation": "operations.js:X010",
+    "test_function": "X010",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-native-state-stress",
+    "promotion": true,
+    "status": "NOT_RUN",
+    "hold_label": "eof-before-trailing-write",
+    "peer_operation": "raw",
+    "distinctness": "Post-member write boundary, not malformed header or corrupt trailer."
+  },
+  {
+    "id": "X011",
+    "intent": "Recover from a non-byte chunk after a valid exporter prefix",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "compression BufferSource validation errors both stream sides"
+    ],
+    "trace": [
+      "Accept a raw exporter prefix before holding its writer.",
+      "Complete a valid gzip decode on the other recipient.",
+      "Write an object, assert both stream sides reject TypeError, then run a new raw exporter."
+    ],
+    "stress": "JS validation failure around a native handle may contaminate future allocations or healthy peers.",
+    "oracle": "Both native-transform stream sides reject; fresh roundtrip exact; registry reclamation explicitly unobserved until external teardown.",
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "implementation": "operations.js:X011",
+    "test_function": "X011",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-native-state-stress",
+    "promotion": true,
+    "status": "NOT_RUN",
+    "hold_label": "typed-prefix-before-invalid-chunk",
+    "peer_operation": "decode",
+    "distinctness": "JS-to-native validation poison after established state, not generic codec serialization."
+  },
+  {
+    "id": "X012",
+    "intent": "Handoff a compressor writer lock without widening offset views",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "compression accepts DataView and typed-array byteOffset/byteLength"
+    ],
+    "trace": [
+      "Place archive bytes between ten sentinel bytes and write the first 100 through DataView.",
+      "Release the writer lock and hold while an independent pack digest finishes.",
+      "Acquire a new writer on the same transform, write the offset suffix, close and roundtrip."
+    ],
+    "stress": "Lock handoff may allocate fresh native state or include backing-buffer sentinels.",
+    "oracle": "Exact original archive with no sentinel prefix/suffix; successful lock reacquisition and peer digest.",
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "implementation": "operations.js:X012",
+    "test_function": "X012",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-boundary-recovery",
+    "promotion": true,
+    "status": "NOT_RUN",
+    "hold_label": "writer-lock-handoff",
+    "peer_operation": "digest",
+    "distinctness": "Same transform state across writer object lifetime, not algorithm/size vector expansion."
+  },
+  {
+    "id": "X013",
+    "intent": "Propagate AbortSignal through an open source-to-native pipe",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "pipeTo signal abort cancels source and aborts destination"
+    ],
+    "trace": [
+      "Start pipeTo through a public WritableStream sink that awaits the native gzip writer; observe its accepted-byte counter at 2060 before holding the open source.",
+      "Hold the active request while an independent decoder completes.",
+      "Abort the pipe signal and inspect source cancel callback, pipe rejection and encoder reader rejection."
+    ],
+    "stress": "Cancellation propagation may settle the outer promise but leave source or native destination live.",
+    "oracle": "Native writer completion confirms exactly 2060 accepted prefix bytes before held; exact reason observed at source cancel, pipe and reader; finite pulls and no native preemption claim.",
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "implementation": "operations.js:X013",
+    "test_function": "X013",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-native-state-stress",
+    "promotion": true,
+    "status": "NOT_RUN",
+    "hold_label": "pipe-source-open",
+    "peer_operation": "decode",
+    "distinctness": "Signal fanout through local pipeTo, distinct from HTTP abort and direct writer abort."
+  },
+  {
+    "id": "X014",
+    "intent": "Keep a decoded tee branch complete after cancelling its sibling",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "native decoded readable supports the pinned default-stream tee"
+    ],
+    "trace": [
+      "Tee a gzip decoder output, read a prefix from one branch, and collect the other.",
+      "Cancel only the first branch and hold before the gzip trailer while independent HMAC completes.",
+      "Write the valid trailer, close, and verify all bytes on the surviving branch."
+    ],
+    "stress": "Branch-local cancellation may prematurely drop native decoder state still needed by another reader.",
+    "oracle": "One branch cancelled; the survivor equals the entire archive; both native request receipts correlate.",
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "implementation": "operations.js:X014",
+    "test_function": "X014",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-native-state-stress",
+    "promotion": true,
+    "status": "NOT_RUN",
+    "hold_label": "tee-survivor-open",
+    "peer_operation": "sign",
+    "distinctness": "Native transform feeding local tee, distinct from H007 host HTTP registry tee."
+  },
+  {
+    "id": "X015",
+    "intent": "Drain decoded output only after an independent exporter finishes",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "small fixed decoded output is below explicit 256KiB cap"
+    ],
+    "trace": [
+      "Push gzip data excluding its trailer while deliberately not reading output.",
+      "Hold the consumer and native decoder while an independent raw exporter runs.",
+      "Supply trailer, close, then begin draining the bounded queued decoded output."
+    ],
+    "stress": "Delayed consumption may discard or cross-contaminate queued native decoder output.",
+    "oracle": "All archive bytes restored after delayed consumption; no queue-capacity or native-backpressure enforcement claim.",
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "implementation": "operations.js:X015",
+    "test_function": "X015",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-native-state-stress",
+    "promotion": true,
+    "status": "NOT_RUN",
+    "hold_label": "consumer-not-draining",
+    "peer_operation": "raw",
+    "distinctness": "Consumer delay versus X002 delayed input with an active collector."
+  },
+  {
+    "id": "X016",
+    "intent": "Poison one decoder while preserving a second live decoder in the same request",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "process-global zlib error path removes only the failing ID"
+    ],
+    "trace": [
+      "Keep a valid gzip decoder awaiting its trailer and allocate another decoder.",
+      "Hold both local handles while the other recipient completes pack hashing.",
+      "Feed a malformed header to the second decoder, inspect its errors, then finish the first."
+    ],
+    "stress": "Native error removal may erase the wrong process-global entry when two handles coexist.",
+    "oracle": "Both bad sides reject Decompression failed; good archive exact; no more than three simultaneous native operations.",
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "implementation": "operations.js:X016",
+    "test_function": "X016",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-native-state-stress",
+    "promotion": true,
+    "status": "NOT_RUN",
+    "hold_label": "good-and-bad-decoder-handles",
+    "peer_operation": "digest",
+    "distinctness": "Two handles coexist in one request during per-ID native table removal."
+  },
+  {
+    "id": "X018",
+    "intent": "Finish distinct DigestStream payloads in reverse request order",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "DigestStream buffers byte chunks and invokes native SHA1 at close"
+    ],
+    "trace": [
+      "Write only the twelve-byte pack header into the primary DigestStream.",
+      "Hold its chunk list while a secondary request writes and closes a distinct archive digest.",
+      "Append the primary body, close and inspect SHA1 and bytesWritten."
+    ],
+    "stress": "Digest chunk lists or close results may be shared across overlapping request lifetimes.",
+    "oracle": "Primary SHA1 matches the pack vector, secondary SHA1 matches the distinct archive vector, and their exact byte counts differ: 2060 and 5660.",
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "implementation": "operations.js:X018",
+    "test_function": "X018",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-native-state-stress",
+    "promotion": true,
+    "status": "NOT_RUN",
+    "hold_label": "pack-header-hashed-list",
+    "peer_operation": "archiveDigest",
+    "distinctness": "Streaming accumulator lifetime, not B023 one-shot digest fanout; no incremental native hashing claim."
+  },
+  {
+    "id": "X019",
+    "intent": "Abort a buffered pack digest and reuse the digest path",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "DigestStream abort clears chunks and rejects its digest promise"
+    ],
+    "trace": [
+      "Buffer 32 pack bytes and hold the unfinished DigestStream.",
+      "Finish a separate raw exporter while that digest remains pending.",
+      "Abort it, reject a later write, then hash a fresh complete pack."
+    ],
+    "stress": "Aborted digest state may remain pending or contaminate the next native hash.",
+    "oracle": "Exact planned Error at digest and later write; fresh pack SHA1 exact.",
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "implementation": "operations.js:X019",
+    "test_function": "X019",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-native-state-stress",
+    "promotion": true,
+    "status": "NOT_RUN",
+    "hold_label": "digest-abort-pending",
+    "peer_operation": "raw",
+    "distinctness": "Direct writable abort of a digest accumulator versus compression abort or upstream source error."
+  },
+  {
+    "id": "X020",
+    "intent": "Reject a pack digest after the accepted header source fails",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "DigestStream bytesWritten witnesses accepted pipeTo input"
+    ],
+    "trace": [
+      "Pipe a controlled source into DigestStream and enqueue the twelve-byte pack header.",
+      "Observe bytesWritten equal twelve before holding; complete a peer gzip decode.",
+      "Error the source and inspect pipe failure, digest rejection and retained accepted-byte counter."
+    ],
+    "stress": "A partially accepted failed pack source might yield a misleading successful native digest.",
+    "oracle": "Exact planned source Error on both promises and exactly twelve accepted bytes; no enqueue-only acceptance claim.",
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "implementation": "operations.js:X020",
+    "test_function": "X020",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-native-state-stress",
+    "promotion": true,
+    "status": "NOT_RUN",
+    "hold_label": "pack-body-source-failure",
+    "peer_operation": "decode",
+    "distinctness": "Source-to-digest failure after observed acceptance, distinct from direct abort."
+  },
+  {
+    "id": "X021",
+    "intent": "Close a buffered digest after a peer decoder poisons and recovers",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "native SHA1 close is independent of zlib error table cleanup"
+    ],
+    "trace": [
+      "Buffer a complete archive in a SHA1 DigestStream without closing it.",
+      "Hold it while the other request rejects a malformed gzip and then decodes a valid one.",
+      "Close the original digest and compare the independently computed archive SHA1."
+    ],
+    "stress": "Native zlib poison/recovery may interfere with a pending native digest close.",
+    "oracle": "Peer native rejection and valid recovery both asserted; original exact SHA1 only resolves on close.",
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "implementation": "operations.js:X021",
+    "test_function": "X021",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-native-state-stress",
+    "promotion": true,
+    "status": "NOT_RUN",
+    "hold_label": "digest-close-after-peer-poison",
+    "peer_operation": "badGzip",
+    "distinctness": "Cross-subsystem failure isolation versus X018 ordinary reverse completion."
+  },
+  {
+    "id": "X022",
+    "intent": "Dispose an unlocked buffered DigestStream while another digest closes",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "pinned DigestStream explicitly implements Symbol.dispose"
+    ],
+    "trace": [
+      "Write the pack and release its writer lock without closing.",
+      "Hold while a separate pack DigestStream fully closes.",
+      "Dispose the main stream, verify digest rejection, acquire a writer to reject another write, then dispose twice."
+    ],
+    "stress": "Explicit disposal may leave a buffered digest live or permit writes after its result is invalid.",
+    "oracle": "Disposed error from digest and subsequent write; double disposal is harmless; peer independent digest exact.",
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "implementation": "operations.js:X022",
+    "test_function": "X022",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-native-state-stress",
+    "promotion": true,
+    "status": "NOT_RUN",
+    "hold_label": "unlocked-digest-dispose",
+    "peer_operation": "digest",
+    "distinctness": "Explicit local DigestStream disposal, not stateless capability/Loader/WebSocket retirement."
+  },
+  {
+    "id": "X023",
+    "intent": "Keep an imported public HMAC key independent of caller-buffer mutation",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "raw HMAC import copies its BufferSource"
+    ],
+    "trace": [
+      "Import the public deterministic fixture HMAC key as non-extractable and overwrite the caller array.",
+      "Hold the imported key while a separate raw exporter creates and closes its native state.",
+      "Sign the fixed pack payload and compare to a Python-stdlib HMAC vector."
+    ],
+    "stress": "Imported key material can incorrectly alias mutable caller storage across request suspension.",
+    "oracle": "Exact deterministic HMAC, public fixture-only data; no authentication action or real secrets.",
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "implementation": "operations.js:X023",
+    "test_function": "X023",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-boundary-recovery",
+    "promotion": true,
+    "status": "NOT_RUN",
+    "hold_label": "imported-public-fixture-key",
+    "peer_operation": "raw",
+    "distinctness": "A cross-request key-copy boundary schedule, not a count of crypto algorithm vectors."
+  },
+  {
+    "id": "X024",
+    "intent": "Resume an encoder after separate crypto validation failures and recovery",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "subtle digest/sign validate algorithm and BufferSource before native dispatch"
+    ],
+    "trace": [
+      "Write the archive into gzip native state and hold before finalization.",
+      "On the peer request reject unsupported digest, non-byte digest input and unsupported signing; then produce valid HMAC and SHA256.",
+      "Resume the encoder, close and compare the reconstructed archive."
+    ],
+    "stress": "Crypto rejection handling can strand a separate native transform or contaminate later native results.",
+    "oracle": "Three precise peer rejections plus exact HMAC/SHA256 and primary gzip roundtrip; all request promises drain.",
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "implementation": "operations.js:X024",
+    "test_function": "X024",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-boundary-recovery",
+    "promotion": true,
+    "status": "NOT_RUN",
+    "hold_label": "encoder-survives-crypto-rejections",
+    "peer_operation": "cryptoErrors",
+    "distinctness": "Rejection isolation and healthy native recovery, not a promise-cancellation/preemption test."
+  }
+]

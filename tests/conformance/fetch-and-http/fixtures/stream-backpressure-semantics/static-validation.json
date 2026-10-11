@@ -1,0 +1,106 @@
+{
+  "status": "STATIC_ONLY",
+  "checks": [
+    {
+      "check": "json-parse",
+      "file": "manifest.json",
+      "status": "PASS"
+    },
+    {
+      "check": "json-parse",
+      "file": "normative-verification.json",
+      "status": "PASS"
+    },
+    {
+      "check": "json-parse",
+      "file": "overlap-audit.json",
+      "status": "PASS"
+    },
+    {
+      "check": "json-parse",
+      "file": "schedule.json",
+      "status": "PASS"
+    },
+    {
+      "check": "json-parse",
+      "file": "source-pins.json",
+      "status": "PASS"
+    },
+    {
+      "check": "json-parse",
+      "file": "wrangler.json",
+      "status": "PASS"
+    },
+    {
+      "check": "python-ast-only",
+      "file": "author_manifest.py",
+      "status": "PASS"
+    },
+    {
+      "check": "python-ast-only",
+      "file": "validate_static.py",
+      "status": "PASS"
+    },
+    {
+      "check": "case-manifest-correspondence-and-finite-traces",
+      "cases": 6,
+      "assertions": 84,
+      "status": "PASS"
+    },
+    {
+      "check": "serial-bounded-schedule-and-minimal-config",
+      "status": "PASS"
+    },
+    {
+      "check": "sha256-runtime_sources",
+      "files": 5,
+      "status": "PASS"
+    },
+    {
+      "check": "sha256-baseline_evidence",
+      "files": 17,
+      "status": "PASS"
+    },
+    {
+      "check": "sha256-campaign_evidence",
+      "files": 11,
+      "status": "PASS"
+    },
+    {
+      "check": "sha256-fixture_artifacts",
+      "files": 3,
+      "status": "PASS"
+    },
+    {
+      "check": "immutable-baseline-and-recovered-os-provenance",
+      "status": "PASS"
+    },
+    {
+      "check": "node-syntax-only",
+      "file": "cases.js",
+      "status": "PASS"
+    },
+    {
+      "check": "node-syntax-only",
+      "file": "fixture.js",
+      "status": "PASS"
+    },
+    {
+      "check": "static-real-globals-scope-settlement-and-cleanup-structure",
+      "status": "PASS"
+    }
+  ],
+  "authored_cases": 6,
+  "assertions": 84,
+  "source_predicted_gap_ids": [
+    "S304",
+    "S306"
+  ],
+  "runtime_status": "UNRUN",
+  "runtime_executions": 0,
+  "independent_review_claimed": false,
+  "limitations": [
+    "Syntax and structural checks do not execute JavaScript or establish runtime outcomes.",
+    "External exact-source deployment, request deadlines, process limits and teardown remain required."
+  ]
+}

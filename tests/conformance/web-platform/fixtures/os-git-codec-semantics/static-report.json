@@ -1,0 +1,27 @@
+{
+  "kind": "STATIC_ONLY",
+  "source_dependency_overlap_pins_verified": 42,
+  "production_module_byte_exact": true,
+  "module_sha256": "56814f3f0608c88e6e83ba08e43f5af87ed4fabf972554e696c390809e9e1538",
+  "case_functions": 6,
+  "direct_literal_assertion_call_sites": 32,
+  "shared_decoder_assertion_call_sites": 6,
+  "golden_object_oids_checked": 14,
+  "golden_pack_bytes": [
+    475,
+    367
+  ],
+  "manual_delta_target_bytes": 65561,
+  "javascript_syntax_only_files": 3,
+  "python_source_parses": 3,
+  "native_zlib_status": "source mapping/functions present; Z_BEST_SPEED/options compatibility caveat preserved; runtime unverified",
+  "pako_status": "exact historical3.0.2/integrity declared; package bytes/install unverified",
+  "downloaded_source_executed": false,
+  "downloaded_source_compiled": false,
+  "dependency_installs": 0,
+  "sut_launches": 0,
+  "runtime_executions": 0,
+  "runtime_passes": 0,
+  "independent_review": "pending",
+  "scope": "Actual immutable OS Git codec valid-format source fixtures only; no full OS/runtime pass, authorization, scheduler, capability, performance or durability claim."
+}

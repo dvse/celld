@@ -1,0 +1,61 @@
+{
+  "binary_sha256": "8d27f1d423e74dd582dd36d47cc61aef2017344da84720fd5bbe1ff7fbff105f",
+  "runtime_manifest": "/workspace/shared/celld-os-stress/pilots/http-h001-v4/provenance/runtime-manifest.json",
+  "upstream_commit": "9f247e0d5feae1f98ffcee5c9f44a0ded87bb334",
+  "sources": [
+    {
+      "path": "provenance/candidate/harness.js",
+      "sha256": "8d3be5ef1b78d302cb2da745c63f8d2e1222115c49a8d08f1096bca7d235c237",
+      "role": "candidate-direct",
+      "manifest_key": "celld/crates/celld/js/harness.js"
+    },
+    {
+      "path": "provenance/candidate/http_streams.rs",
+      "sha256": "6910e3e5c55e8030563802fab0bd3019611fc632cf04ca194c153ace6af9c5bf",
+      "role": "candidate-direct",
+      "manifest_key": "celld/crates/celld/http_streams.rs"
+    },
+    {
+      "path": "provenance/candidate/js.rs",
+      "sha256": "164b11bb2b0f7321d316bcd417b13fea3bf907b1eae335c97d8ebecaacb9ba17",
+      "role": "candidate-direct",
+      "manifest_key": "celld/crates/celld/js.rs"
+    },
+    {
+      "path": "provenance/candidate/main.rs",
+      "sha256": "6d661101df7c44142e7338c493560cf212438116b3d65c06186217ee3182e892",
+      "role": "candidate-direct",
+      "manifest_key": "celld/crates/celld/main.rs"
+    },
+    {
+      "path": "provenance/os/fetch.ts",
+      "sha256": "0d0c4909707667f6911d0e8bf6cb11e703112196fbee78a17432b40c62d756ab",
+      "role": "os-call-site-motivation",
+      "repo_path": "packages/mcp-shared/src/fetch.ts"
+    },
+    {
+      "path": "provenance/os/web-fetch.ts",
+      "sha256": "a3d46ff4148a4447f7c7c443102a4939f79177d3d507b4f2f22a7a097c9de4a5",
+      "role": "os-call-site-motivation",
+      "repo_path": "packages/workshop-backend/src/web-fetch.ts"
+    },
+    {
+      "path": "provenance/workerd/http.c++",
+      "sha256": "cc7726407d6b7830c9c50adc55e5aa114a4ff1549b9ef7c6443fee7c083ca05c",
+      "role": "upstream-primary-reference",
+      "commit": "9f247e0d5feae1f98ffcee5c9f44a0ded87bb334",
+      "repo_path": "src/workerd/api/http.c++"
+    },
+    {
+      "path": "provenance/workerd/http.h",
+      "sha256": "c9ac57e9f0561af26a95dc673fb5a388558379533b0e1c5e7e755b5c466a0e20",
+      "role": "upstream-primary-reference",
+      "commit": "9f247e0d5feae1f98ffcee5c9f44a0ded87bb334",
+      "repo_path": "src/workerd/api/http.h"
+    }
+  ],
+  "runtime_manifest_sha256": "e84f9ec275ce62bb67af53a5b97ddce90375016be136d49709d85dd9f52fcf8e",
+  "upstream_runtime_executed": false,
+  "os_runtime_executed": false,
+  "os_commit": "Unverified checkout commit; exact source-content snapshots pinned"
+}

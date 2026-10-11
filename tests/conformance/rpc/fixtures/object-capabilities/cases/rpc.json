@@ -1,0 +1,382 @@
+[
+  {
+    "id": "R001",
+    "intent": "Ordinary DO RPC must not expose an instance arrow field",
+    "preconditions": "Peer DO has public prototype control and side-effecting arrow own property",
+    "trace": [
+      "call positive control",
+      "capture arrow effect counter",
+      "attempt arrow call",
+      "read counter"
+    ],
+    "stress": "visibility boundary during ordinary dispatch",
+    "oracle": "control works; hidden call rejects; effect counter unchanged",
+    "cleanup": "dispose request-scoped calls; fixture process teardown"
+  },
+  {
+    "id": "R002",
+    "intent": "DO lifecycle handlers are not ordinary callable RPC methods",
+    "preconditions": "Peer defines alarm and websocket handlers with counters",
+    "trace": [
+      "call public control",
+      "capture lifecycle counters",
+      "attempt alarm and websocket calls",
+      "check unchanged counters"
+    ],
+    "stress": "system-event versus client-RPC dispatch boundary",
+    "oracle": "both ordinary calls reject and neither lifecycle effect runs",
+    "cleanup": "request completion; fixture teardown"
+  },
+  {
+    "id": "R003",
+    "intent": "Binding a prototype method onto an own field must not expose that field",
+    "preconditions": "Peer stores bound publicControl as own boundOnly",
+    "trace": [
+      "record recipient identity and public effect count",
+      "invoke public control and assert one increment",
+      "call boundOnly over RPC",
+      "read effect count",
+      "invoke post-operation public control and compare recipient identity"
+    ],
+    "stress": "bound-function own-property visibility",
+    "oracle": "positive control increments once; bound call rejects with specific remote TypeError visibility error; no bound-call effect; recipient remains live and unchanged",
+    "cleanup": "request completion; fixture teardown"
+  },
+  {
+    "id": "R004",
+    "intent": "Inherited application prototype methods remain callable",
+    "preconditions": "Returned DerivedSurface extends an application RpcTarget subclass",
+    "trace": [
+      "obtain target",
+      "invoke inherited and derived methods",
+      "invoke receiver-state method"
+    ],
+    "stress": "multi-level application inheritance",
+    "oracle": "inherited and derived values match; private-state receiver works",
+    "cleanup": "dispose returned target"
+  },
+  {
+    "id": "R005",
+    "intent": "Public DO prototype getter is available as asynchronous property",
+    "preconditions": "DO declares publicValue getter",
+    "trace": [
+      "await stub publicValue",
+      "compare result"
+    ],
+    "stress": "property-get dispatch rather than method-call dispatch",
+    "oracle": "exact public-getter string",
+    "cleanup": "request completion"
+  },
+  {
+    "id": "R006",
+    "intent": "Explicit getter grants access without exposing own instance data",
+    "preconditions": "RpcTarget owns instanceData and declares exposed getter",
+    "trace": [
+      "read exposed getter",
+      "attempt direct instanceData read"
+    ],
+    "stress": "getter-mediated versus direct instance state",
+    "oracle": "getter returns instance-only; direct own read rejected",
+    "cleanup": "dispose target"
+  },
+  {
+    "id": "R007",
+    "intent": "RpcTarget arrow fields stay hidden despite being callable values",
+    "preconditions": "RpcTarget has prototype method and side-effecting own arrow",
+    "trace": [
+      "call method control",
+      "capture arrow counter",
+      "attempt own arrow",
+      "verify counter"
+    ],
+    "stress": "RpcTarget own-method visibility",
+    "oracle": "prototype works; arrow rejected; no side effect",
+    "cleanup": "dispose target"
+  },
+  {
+    "id": "R008",
+    "intent": "Private slot does not collide with public method containing hash character",
+    "preconditions": "Target has private secret plus explicitly public method named #secret",
+    "trace": [
+      "call public accessor using true private slot",
+      "call string-named public method"
+    ],
+    "stress": "JavaScript private name versus string property distinction",
+    "oracle": "private accessor returns private-value; public spelling returns explicit-public-name",
+    "cleanup": "dispose target"
+  },
+  {
+    "id": "R009",
+    "intent": "RpcTarget constructor property is reserved and not granted as a capability",
+    "preconditions": "Returned RpcTarget has normal application constructor",
+    "trace": [
+      "call method control",
+      "attempt await constructor property"
+    ],
+    "stress": "constructor retrieval rather than constructor call",
+    "oracle": "constructor read rejects; method control remains usable",
+    "cleanup": "dispose target; request teardown disposes accidental result",
+    "gate": "characterization",
+    "contract_status": "Client-surface behavior pending: native RpcStub/Object.prototype names may resolve locally in pinned workerd; ordinary API only, no raw protocol workaround."
+  },
+  {
+    "id": "R010",
+    "intent": "Object.prototype methods are not exposed by inherited default",
+    "preconditions": "RpcTarget does not override hasOwnProperty or valueOf",
+    "trace": [
+      "call application method",
+      "attempt hasOwnProperty",
+      "attempt valueOf"
+    ],
+    "stress": "bottom-of-prototype-chain RPC visibility",
+    "oracle": "both Object.prototype calls reject",
+    "cleanup": "dispose target",
+    "gate": "characterization",
+    "contract_status": "Client-surface behavior pending: native RpcStub/Object.prototype names may resolve locally in pinned workerd; ordinary API only, no raw protocol workaround."
+  },
+  {
+    "id": "R011",
+    "intent": "Explicit application override of toString remains exposed",
+    "preconditions": "RpcTarget subclass defines its own prototype toString",
+    "trace": [
+      "obtain subclass target",
+      "call toString"
+    ],
+    "stress": "application override versus default Object.prototype exclusion",
+    "oracle": "exact explicit-string result",
+    "cleanup": "dispose target",
+    "gate": "characterization",
+    "contract_status": "Client-surface behavior pending: native RpcStub/Object.prototype names may resolve locally in pinned workerd; ordinary API only, no raw protocol workaround."
+  },
+  {
+    "id": "R012",
+    "intent": "RPC property handle stays lazy and refetches on each await",
+    "preconditions": "Getter increments counter on server",
+    "trace": [
+      "capture count",
+      "obtain property handle without awaiting",
+      "verify no effect",
+      "await same handle twice",
+      "inspect count"
+    ],
+    "stress": "lazy property fetch and repeated consumption",
+    "oracle": "no eager effect; equal values; two getter invocations under current upstream reference semantics",
+    "cleanup": "dispose target",
+    "contract_status": "Verified pinned workerd v1.20261001.1 JsRpcProperty::then lines1378\u20131383 refetches on every then; https://raw.githubusercontent.com/cloudflare/workerd/v1.20261001.1/src/workerd/api/worker-rpc.c%2B%2B"
+  },
+  {
+    "id": "R013",
+    "intent": "Getter exception crosses RPC once without duplicate evaluation",
+    "preconditions": "Getter increments counter then throws",
+    "trace": [
+      "capture count",
+      "await getter rejection",
+      "check error and count"
+    ],
+    "stress": "accessor exception serialization",
+    "oracle": "error contains getter-rejection; exactly one evaluation",
+    "cleanup": "dispose target"
+  },
+  {
+    "id": "R014",
+    "intent": "Pipelined getter path reaches only its granted nested child",
+    "preconditions": "Getter returns plain object with RpcTarget child",
+    "trace": [
+      "pipeline nested.child.identify",
+      "compare recipient root and child label"
+    ],
+    "stress": "getter/plain-object/capability path traversal",
+    "oracle": "root matches actual peer; label getter-child",
+    "cleanup": "dispose parent; request teardown releases pipeline result"
+  },
+  {
+    "id": "R015",
+    "intent": "Nested returned capability preserves recipient provenance inside arrays",
+    "preconditions": "Method returns array/object containing child capability",
+    "trace": [
+      "await returned structure",
+      "call nested child",
+      "compare owner and label"
+    ],
+    "stress": "capability lift through mixed nested containers",
+    "oracle": "child root matches peer and label method-child",
+    "cleanup": "dispose result container and parent"
+  },
+  {
+    "id": "R016",
+    "intent": "Pipelined function under a getter retains its intended receiver",
+    "preconditions": "Getter returns plain object containing closure",
+    "trace": [
+      "call functionBox.invoke pipeline",
+      "check owning root and private value"
+    ],
+    "stress": "getter/function binding across path walk",
+    "oracle": "result root matches peer; private-value retained",
+    "cleanup": "dispose target"
+  },
+  {
+    "id": "R017",
+    "intent": "Returned bound function retains private-field receiver",
+    "preconditions": "Target returns bound method as callable capability",
+    "trace": [
+      "obtain function result",
+      "invoke it",
+      "verify root and private state"
+    ],
+    "stress": "bound callable lift and invocation",
+    "oracle": "root matches peer; private-value returned without receiver error",
+    "cleanup": "dispose function and parent"
+  },
+  {
+    "id": "R018",
+    "intent": "Own function properties remain accessible on a callable RPC capability",
+    "preconditions": "Returned function has own label property",
+    "trace": [
+      "read function label",
+      "invoke function"
+    ],
+    "stress": "callable capability with own data property",
+    "oracle": "own-function-value and called:arg",
+    "cleanup": "dispose function and parent"
+  },
+  {
+    "id": "R019",
+    "intent": "Function.prototype helpers do not become callable grants",
+    "preconditions": "Returned callable has no own apply property",
+    "trace": [
+      "invoke positive control",
+      "attempt inherited apply call"
+    ],
+    "stress": "function-own versus function-prototype visibility",
+    "oracle": "direct call works; inherited apply denied",
+    "cleanup": "dispose function and parent",
+    "gate": "characterization",
+    "contract_status": "Client-surface behavior pending: native RpcStub/Object.prototype names may resolve locally in pinned workerd; ordinary API only, no raw protocol workaround."
+  },
+  {
+    "id": "R020",
+    "intent": "Proxy get trap can synthesize permitted RpcTarget method",
+    "preconditions": "Proxy wraps RpcTarget; get synthesizes method absent from has/prototype",
+    "trace": [
+      "obtain proxied target",
+      "call synthesized method",
+      "check actual owner"
+    ],
+    "stress": "get semantics without has-property preflight",
+    "oracle": "proxy-synthetic value and peer root",
+    "cleanup": "dispose target",
+    "gate": "characterization"
+  },
+  {
+    "id": "R021",
+    "intent": "Proxy cannot bypass own-property hiding via get trap",
+    "preconditions": "Proxied RpcTarget own field and counting get trap",
+    "trace": [
+      "capture trap counter",
+      "attempt own field read",
+      "verify trap not invoked"
+    ],
+    "stress": "visibility check before Proxy get",
+    "oracle": "read rejected; own-field get trap not run",
+    "cleanup": "dispose target",
+    "gate": "characterization"
+  },
+  {
+    "id": "R022",
+    "intent": "Throwing Proxy get trap fails exactly once without fallback dispatch",
+    "preconditions": "Proxy synthesized name throws on get and counts effects",
+    "trace": [
+      "capture trap count",
+      "attempt call",
+      "check error and count"
+    ],
+    "stress": "exception during method resolution",
+    "oracle": "proxy-trap-rejection preserved; exactly one trap call",
+    "cleanup": "dispose target",
+    "gate": "characterization"
+  },
+  {
+    "id": "R023",
+    "intent": "Server return thenable assimilates before result serialization",
+    "preconditions": "Peer returns ordinary thenable resolving plain data",
+    "trace": [
+      "invoke thenable-return method",
+      "await reply",
+      "compare value"
+    ],
+    "stress": "thenable promise assimilation at RPC return boundary",
+    "oracle": "plain value assimilated arrives",
+    "cleanup": "request completion",
+    "gate": "characterization"
+  },
+  {
+    "id": "R024",
+    "intent": "RpcTarget permits lifecycle names that DO reserves",
+    "preconditions": "Application RpcTarget declares alarm and websocket methods",
+    "trace": [
+      "obtain target",
+      "call both methods"
+    ],
+    "stress": "target-kind-dependent reserved names",
+    "oracle": "target-alarm and target-websocket both returned",
+    "cleanup": "dispose target"
+  },
+  {
+    "id": "R025",
+    "intent": "Non-RpcTarget class instance cannot silently clone private-looking fields",
+    "preconditions": "Peer constructs ordinary application class with own data",
+    "trace": [
+      "capture class-method entry count and recipient identity",
+      "request ordinary class instance",
+      "verify DataCloneError and exactly one method entry",
+      "check post-operation liveness and identity"
+    ],
+    "stress": "unsupported class return boundary",
+    "oracle": "intended DataCloneError after server method entry; no silent clone; recipient still live",
+    "cleanup": "request teardown"
+  },
+  {
+    "id": "R026",
+    "intent": "Plain result object is a detached by-value snapshot",
+    "preconditions": "Peer retains same returned object and supports later mutation",
+    "trace": [
+      "receive plain object",
+      "mutate server copy",
+      "inspect client copy"
+    ],
+    "stress": "mutation after RPC reply",
+    "oracle": "client retains snapshot and nested n1",
+    "cleanup": "fixture teardown"
+  },
+  {
+    "id": "R027",
+    "intent": "Transient capability cannot enter persistent storage",
+    "preconditions": "Live remote RpcTarget; disposable empty probe storage key",
+    "trace": [
+      "require probe key absent",
+      "roundtrip ordinary storage control",
+      "mint transient target and capture put-entry count",
+      "attempt storage.put",
+      "verify DataCloneError containing transient RPC and one put entry",
+      "assert probe absent",
+      "verify target and storage remain usable"
+    ],
+    "stress": "live capability versus durable provenance boundary",
+    "oracle": "specific transient-RPC persistence rejection after entered put; no row; control operations still work; dirty probe precondition classification pending outside pilot",
+    "cleanup": "delete probe key; dispose target"
+  },
+  {
+    "id": "R028",
+    "intent": "Restore parameters cannot replace owning DO provenance",
+    "preconditions": "Peer supports native ctx.restore returning Child",
+    "trace": [
+      "record actual peer owner",
+      "mint persistent handle with caller label",
+      "invoke identity"
+    ],
+    "stress": "caller-supplied restore metadata with server-owned identity",
+    "oracle": "same peer root/isolate; supplied label only changes label",
+    "cleanup": "dispose persistent handle",
+    "gate": "characterization"
+  }
+]

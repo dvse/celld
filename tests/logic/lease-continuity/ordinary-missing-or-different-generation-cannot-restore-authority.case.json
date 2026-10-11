@@ -1,0 +1,29 @@
+{
+  "id": "logic/lease-continuity/ordinary-missing-or-different-generation-cannot-restore-authority",
+  "layer": "logic",
+  "behaviour": "lease-continuity",
+  "title": "ordinary missing or different generation cannot restore authority",
+  "origins": [
+    {
+      "source": "tests/logic/lease-continuity/lease_continuity.rs",
+      "legacy_id": "logic/lease-continuity/ordinary_missing_or_different_generation_cannot_restore_authority"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-project/tests/lease-continuity/lease_continuity.rs",
+      "sha256": "9ba2368c5a34a6a1ef0a0b3cd42ca67a20c074e67f229b19f49c5dee58bf555b"
+    }
+  ],
+  "legacy_ids": [
+    "logic/lease-continuity/ordinary_missing_or_different_generation_cannot_restore_authority"
+  ],
+  "adapter": "native",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/logic/lease-continuity/lease_continuity.rs",
+  "source_sha256": "9ba2368c5a34a6a1ef0a0b3cd42ca67a20c074e67f229b19f49c5dee58bf555b",
+  "test_filter": "ordinary_missing_or_different_generation_cannot_restore_authority"
+}

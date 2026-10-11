@@ -1,0 +1,49 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "Shared codecCleanup releases retained peer Headers",
+    "intent": "Clone Headers with merged ordinary entries and separate Set-Cookie entries as a detached snapshot",
+    "oracle": "List is first, second; cookies remain a=1 and b=2 separately; peer mutation does not change caller",
+    "preconditions": "COMMON; Headers.getSetCookie available on received Headers or typed CodecPreconditionError produces BLOCKED",
+    "source_contracts": [
+      "SC-HOST",
+      "SC-REVIVE"
+    ],
+    "trace": [
+      "receive Headers with differently cased list fields and two cookies",
+      "check brand and exact list/cookie values",
+      "mutate peer original Headers",
+      "recheck caller snapshot"
+    ]
+  },
+  "corpus_id": "C015",
+  "corpus_wave": "rpc-codec",
+  "fixture": "tests/conformance/rpc/fixtures/value-codec",
+  "id": "conformance/rpc/clone-headers-with-merged-ordinary-entries-and-separate-set-cookie-entries-as-a-detached-snapshot",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/rpc-codec/C015"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/rpc-codec/C015",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec"
+    },
+    {
+      "sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "C015",
+  "source": "tests/conformance/rpc/fixtures/value-codec/entry.js",
+  "source_sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+  "title": "Clone Headers with merged ordinary entries and separate Set-Cookie entries as a detached snapshot"
+}

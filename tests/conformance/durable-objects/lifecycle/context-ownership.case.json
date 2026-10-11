@@ -1,0 +1,49 @@
+{
+  "id": "conformance/durable-objects/lifecycle/context-ownership",
+  "layer": "conformance",
+  "behaviour": "durable-objects/lifecycle",
+  "title": "context ownership",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/context-ownership",
+      "legacy_id": "hyperbob/context-ownership"
+    },
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/context-ownership/wrangler.json",
+      "sha256": "b632e742830eee7932f563ed2011e891509af8329a6354ca0de929e2ccdbb420"
+    }
+  ],
+  "legacy_ids": [
+    "hyperbob/context-ownership"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/durable-objects/lifecycle/fixtures/context-ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/park"
+    },
+    {
+      "path": "/release"
+    },
+    {
+      "delay_before": 1,
+      "path": "/result"
+    },
+    {
+      "path": "/dead-park"
+    },
+    {
+      "path": "/dead-release"
+    },
+    {
+      "path": "/dead-in-turn"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/durable-objects/lifecycle/fixtures/context-ownership/wrangler.json",
+  "source_sha256": "b632e742830eee7932f563ed2011e891509af8329a6354ca0de929e2ccdbb420"
+}

@@ -1,0 +1,28 @@
+{
+  "adapter": "example",
+  "behaviour": "durable-objects/alarms",
+  "fixture": "tests/conformance/durable-objects/alarms/fixtures/scheduled-counter",
+  "id": "conformance/durable-objects/alarms/alarm",
+  "layer": "conformance",
+  "legacy_ids": [
+    "examples/alarm"
+  ],
+  "origins": [
+    {
+      "legacy_id": "examples/alarm",
+      "source": "celld@9c0fca5/examples/alarm"
+    },
+    {
+      "sha256": "548727633f8770fdbbb1b9c45e17c86ffc54efd1aa652395b6aa69f4b38a7cb2",
+      "source": "celld@9c0fca5/examples/alarm/wrangler.jsonc"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/conformance/durable-objects/alarms/fixtures/scheduled-counter/wrangler.jsonc",
+  "source_sha256": "548727633f8770fdbbb1b9c45e17c86ffc54efd1aa652395b6aa69f4b38a7cb2",
+  "title": "alarm"
+}

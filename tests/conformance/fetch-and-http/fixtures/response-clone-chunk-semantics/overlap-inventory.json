@@ -1,0 +1,2641 @@
+{
+  "baseline": [
+    {
+      "path": "celld-os-project/tests/do-visibility/entrypoint-helper.mjs",
+      "sha256": "fa4ac904c2b214cd945dc6cbcad1bd827335961146bafd8272e4f4d09f36d89a",
+      "bytes": 1937
+    },
+    {
+      "path": "celld-os-project/tests/duplicate-names/account.js",
+      "sha256": "a801254fd6a06728fc217c236186f23d98d867dc77ad55a3feff9b7999b55c03",
+      "bytes": 1048
+    },
+    {
+      "path": "celld-os-project/tests/duplicate-names/router.js",
+      "sha256": "86936ac413b92b644a5427af5caa01f40c12b08a1b7be9262dc20925e01bb46a",
+      "bytes": 1113
+    },
+    {
+      "path": "celld-os-project/tests/duplicate-names/run_duplicates.py",
+      "sha256": "6e420b1beced5c4c632a8d9a3618644c30745164f35903d4fcd039e1a3aaa934",
+      "bytes": 4808
+    },
+    {
+      "path": "celld-os-project/tests/emulated-network/fixture/index.js",
+      "sha256": "eb23322f371538025f7f827db0d8a6342f2b0b79d2fbaf364896167b060e1c95",
+      "bytes": 30291
+    },
+    {
+      "path": "celld-os-project/tests/emulated-network/fixture/streams.js",
+      "sha256": "c137df38a6bcc19206446474ba87ef9682ac3a8375e9fc538378e2d379666aaf",
+      "bytes": 12515
+    },
+    {
+      "path": "celld-os-project/tests/emulated-network/publishable/source/acceptance-hook.py",
+      "sha256": "82a0d93eb4af566be91f7f40581490c1369f5ebf642b838a8cf62b2d1acfdbf1",
+      "bytes": 6584
+    },
+    {
+      "path": "celld-os-project/tests/emulated-network/publishable/source/broad-run.py",
+      "sha256": "cce4dfdc2a4c27037e035269b6a5243267504216c2090a4f6d87c3fe875b987e",
+      "bytes": 8992
+    },
+    {
+      "path": "celld-os-project/tests/emulated-network/publishable/source/corrected-delegation.py",
+      "sha256": "e8e777aa36c9e3653518384c360c04a26c56f5a4ebd1643a262e606477d8fb63",
+      "bytes": 1446
+    },
+    {
+      "path": "celld-os-project/tests/emulated-network/publishable/source/guest_helpers.py",
+      "sha256": "cdf74dfa5c3bc4f15018fe5daf600bb0830ed15850e76505acbe09450c73d6a3",
+      "bytes": 3927
+    },
+    {
+      "path": "celld-os-project/tests/emulated-network/publishable/source/run-recovery.py",
+      "sha256": "078123d9f4bd1b8679cf95cd868ede1a82a7045d808b0dfb3fd0dd951c8deca7",
+      "bytes": 4611
+    },
+    {
+      "path": "celld-os-project/tests/emulated-network/publishable/source/run-testbed.py",
+      "sha256": "7b08fb54697c530344afc79e4959886b6da74314bdede2a0230c1a0aba4261bd",
+      "bytes": 4598
+    },
+    {
+      "path": "celld-os-project/tests/emulated-network/publishable/source/test_guest_helpers.py",
+      "sha256": "e1578cb36d164496b45c2ceee6fad16d08c670c562897768908b96ff06b539f3",
+      "bytes": 1874
+    },
+    {
+      "path": "celld-os-project/tests/fixtures/distributed-rpc/index.js",
+      "sha256": "849f615ae5cef54fc6e983559ea116031c1f52068d9c17a739ccc71ec56f67d6",
+      "bytes": 29995
+    },
+    {
+      "path": "celld-os-project/tests/foreign-class/caller.js",
+      "sha256": "4ce2df105b589f6be27715213c5f826669910f4b4e974b59e27ac6fd2ba1d852",
+      "bytes": 1574
+    },
+    {
+      "path": "celld-os-project/tests/foreign-class/provider.js",
+      "sha256": "57f61f6a381881ef8442ffee08cb8d24cb386dc0c01bd4f457021acde5afd25e",
+      "bytes": 1103
+    },
+    {
+      "path": "celld-os-project/tests/foreign-class/run_foreign.py",
+      "sha256": "d112f795a651815471bc39d195cb7b1bc94e71b5042655f6a334b40aa0d88298",
+      "bytes": 2874
+    },
+    {
+      "path": "celld-os-project/tests/interop/build.py",
+      "sha256": "c60460dff0ca5db62958579ae400612da5e918bc7cf1ab6a5183e5f60f0e0952",
+      "bytes": 794
+    },
+    {
+      "path": "celld-os-project/tests/interop/client.mjs",
+      "sha256": "42f798f8479f1470382f6ce523f0bb2ad67acc949de83d02b0e17d63ce8c640e",
+      "bytes": 995
+    },
+    {
+      "path": "celld-os-project/tests/interop/run_interop.py",
+      "sha256": "6264092e0783641616e5c891aa5b326505e54911a9dfffd8923b394e9036563e",
+      "bytes": 1391
+    },
+    {
+      "path": "celld-os-project/tests/interop/worker.js",
+      "sha256": "8af85e8d4013204785865c9c13ba69873c4a351d465c3b4fb3b67ea23880fd25",
+      "bytes": 793
+    },
+    {
+      "path": "celld-os-project/tests/lease-continuity/guard_predicate.rs",
+      "sha256": "949f4a650cd174006392bd2a67ae667cff6ab341ba51b31030a6a7a936eb66b0",
+      "bytes": 2731
+    },
+    {
+      "path": "celld-os-project/tests/lease-continuity/lease_continuity.rs",
+      "sha256": "9ba2368c5a34a6a1ef0a0b3cd42ca67a20c074e67f229b19f49c5dee58bf555b",
+      "bytes": 14080
+    },
+    {
+      "path": "celld-os-project/tests/lease-continuity/run_offline.py",
+      "sha256": "bbf159d09304fb4b4a0cd8e06fed93eececd6bdcf2f2ec46625b8270c74c6b8e",
+      "bytes": 12410
+    },
+    {
+      "path": "celld-os-project/tests/lease-continuity/source-pins.json",
+      "sha256": "f60e821cc8dada53d1938127661a905af49db8edc97edb2c6ae6486ff07dda2b",
+      "bytes": 5013
+    },
+    {
+      "path": "celld-os-project/tests/local_adapter.py",
+      "sha256": "03606f79e5dd2e5ad22f3ef309d5878f025155159828f13c30701d3b07c9652c",
+      "bytes": 26000
+    },
+    {
+      "path": "celld-os-project/tests/retiring-capability/client.mjs",
+      "sha256": "ca53dd22f22f7fd4da15a90e791a058096e9fceb94777cd3609c157c9d14d245",
+      "bytes": 2693
+    },
+    {
+      "path": "celld-os-project/tests/retiring-capability/fixture/index.js",
+      "sha256": "c934dcc867a0f6127b5cdf44d787c975e84132c09bef5febc83606e081b3e2ba",
+      "bytes": 1271
+    },
+    {
+      "path": "celld-os-project/tests/retiring-capability/run.py",
+      "sha256": "02dd0036ea2b8f7642efbc6426b257dc7eede9e8ce843de0cb8f2c0d766fcfad",
+      "bytes": 4504
+    },
+    {
+      "path": "celld-os-project/tests/returned-capability/client.mjs",
+      "sha256": "baf610443ad698a9d1dc6671847ea5b108395557e9fc33c9882c6d60f7a1bf8c",
+      "bytes": 1174
+    },
+    {
+      "path": "celld-os-project/tests/returned-capability/fixture/factory.js",
+      "sha256": "0ba08812a1d952e6d5a78dac0576bf16348a4fe917aaee47435a867d3fe3677b",
+      "bytes": 306
+    },
+    {
+      "path": "celld-os-project/tests/returned-capability/fixture/index.js",
+      "sha256": "58ef6d8d5fcbb6e60df84ec02dd6239077b5b966e672dbe219ee92b810d4ff92",
+      "bytes": 836
+    },
+    {
+      "path": "celld-os-project/tests/returned-capability/run.py",
+      "sha256": "3257c850347a0879ef8cb8b11bf16631e73e173fb5fc48542c5538991a2054b0",
+      "bytes": 4017
+    },
+    {
+      "path": "celld-os-project/tests/run_distributed.py",
+      "sha256": "9c1185c0a7ce7547ec8efef53325dfb59d4efd0366191da4526ead8bf3be3296",
+      "bytes": 22388
+    },
+    {
+      "path": "celld-os-project/tests/run_fleet_witness.py",
+      "sha256": "5d35e4d23dec6f90d99fbce757f036cb11387161d2d8c434fcf0c1d6c7e38056",
+      "bytes": 1953
+    },
+    {
+      "path": "celld-os-project/tests/run_order.py",
+      "sha256": "08949805fa2d7655fddf93cec10fc96b20fae6cd7150e91db81839a977a8fd53",
+      "bytes": 2341
+    },
+    {
+      "path": "celld-os-project/tests/run_ownership.py",
+      "sha256": "f584d5a2b24ef46b9207f53898fe7bbe5ae029412a8dcb7c57e7719432488f9b",
+      "bytes": 4690
+    },
+    {
+      "path": "celld-os-project/tests/run_props_disposal.py",
+      "sha256": "ec453a6221dd2fc3e33850cd76766dc336db42e1d523b8422471d3c52a1ab4a8",
+      "bytes": 2565
+    },
+    {
+      "path": "celld-os-project/tests/run_proxy.py",
+      "sha256": "b33fd7388c4d9456413b35f0cc3d0fde0357cfcde5d97d737534e9d7eb0cfc39",
+      "bytes": 1376
+    },
+    {
+      "path": "celld-os-project/tests/run_reply_loss.py",
+      "sha256": "3169dc4a9dd46da26c7bbffcc5df01e4ad541387782dfe9663b0799a763988f6",
+      "bytes": 12259
+    },
+    {
+      "path": "celld-os-project/tests/run_retained.py",
+      "sha256": "6ec77d0dd857e1598076da1c74cbc33478c8321ab13734b2a202e74aaa9d005b",
+      "bytes": 4987
+    },
+    {
+      "path": "celld-os-project/tests/streams/fixture/index.js",
+      "sha256": "66215d1537212afeeac6a5f66f5ba913a163932f58b6269119ee4e2264c7c3f6",
+      "bytes": 12507
+    },
+    {
+      "path": "celld-os-project/tests/streams/run_streams.py",
+      "sha256": "f9bd3d60abc836a88245c787983ff80639b6414ad2f1be1fc9e3c1a0d310ff98",
+      "bytes": 6989
+    },
+    {
+      "path": "celld-os-project/tests/test_runner.py",
+      "sha256": "57436b3bb888e2c52c499efb1274b5c4216cd5539b9a2aec84cea26d67625549",
+      "bytes": 4153
+    },
+    {
+      "path": "celld-os-stress/COUNTS.json",
+      "sha256": "8221870307e3a6aa652f68df167a636d1235b2babd0573753809c94adde72be2",
+      "bytes": 20716
+    },
+    {
+      "path": "celld-os-stress/EXPORT-SHA256.json",
+      "sha256": "65e24c448ae9ff53992adf81d0a19b9858314bec2d9e6e4bcd0a122f571cc0ac",
+      "bytes": 20139
+    },
+    {
+      "path": "celld-os-stress/RUNNER-EXPORT-SHA256.json",
+      "sha256": "e3bb2afa97a484bf01e77f47a987ae324daf57171c3953e238c81bab1e194b6b",
+      "bytes": 9080
+    },
+    {
+      "path": "celld-os-stress/RUNNER-SOURCES.json",
+      "sha256": "bc3fd2d8d1aaf146732435cc434fd2aaf9e4550d012d295173a1b189e089e069",
+      "bytes": 21766
+    },
+    {
+      "path": "celld-os-stress/SOURCE-FILES.json",
+      "sha256": "eeab75b82b6ef052c9728b1b36cbd343ba656f655f4692ae693aff82e5d586bc",
+      "bytes": 37087
+    },
+    {
+      "path": "celld-os-stress/cases/rpc.json",
+      "sha256": "341c423b306548b1d8b92a828f037c16332d00d612c8e42e639817844e3002c2",
+      "bytes": 15053
+    },
+    {
+      "path": "celld-os-stress/cases/streams.json",
+      "sha256": "5229ce8e44ad3e541e7f96dc788ad946e7d2beade8f7c63aee02aed70b1a1684",
+      "bytes": 15183
+    },
+    {
+      "path": "celld-os-stress/fixture/index.js",
+      "sha256": "3e137fc03ca2b2e6ca40d538291aaf0e022bdfe491d3ddcdf4f8f9c4eb4c6b72",
+      "bytes": 14347
+    },
+    {
+      "path": "celld-os-stress/fixture/rpc.js",
+      "sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+      "bytes": 14684
+    },
+    {
+      "path": "celld-os-stress/revisions/r027-v2/rpc.js",
+      "sha256": "9072e9b02913a4e0b73721eaecc7f4fa62529638e358d186c0c38c6c9674e425",
+      "bytes": 14989
+    },
+    {
+      "path": "celld-os-stress/runners/run.py",
+      "sha256": "e63168e2456811faccaec0b86073d8579bf043c8c72c7862e732505a75692a58",
+      "bytes": 3215
+    },
+    {
+      "path": "celld-os-stress/runners/test_guest_command.py",
+      "sha256": "66c367371c5c89bd6a20c294354494a267f0e64fb62ead773bd6a0c61c03f9eb",
+      "bytes": 2623
+    },
+    {
+      "path": "celld-os-stress/waves/active-websocket-stress/author_manifest.py",
+      "sha256": "e3b4a53e861bdfc9e7aee049a87edf3b196126c7e5ce041335dfadd59cc5935c",
+      "bytes": 17478
+    },
+    {
+      "path": "celld-os-stress/waves/active-websocket-stress/cases.js",
+      "sha256": "1fb7fc64b31809ddee2f9e874026813f0fe38fc28df520047a3cd1c58dd03eab",
+      "bytes": 14393
+    },
+    {
+      "path": "celld-os-stress/waves/active-websocket-stress/common.js",
+      "sha256": "765fe3f7bf95c743888a6272bba70ca8783e740c21b98f49fd062ffc03dd65d7",
+      "bytes": 2310
+    },
+    {
+      "path": "celld-os-stress/waves/active-websocket-stress/fixture.js",
+      "sha256": "2ea74d4323d34e1121e93c9637f19d6f46349f17a06516a6e2d13d4a86187317",
+      "bytes": 8287
+    },
+    {
+      "path": "celld-os-stress/waves/active-websocket-stress/lab.js",
+      "sha256": "c06945df9ce35fae1b1af7051fd53b3def3d9c8e83765d5ec390ab348eb7c6fa",
+      "bytes": 10933
+    },
+    {
+      "path": "celld-os-stress/waves/active-websocket-stress/manifest.json",
+      "sha256": "b48994aa5d1dbdb02bb5fb7472d3ae0caa9f9710e246413bc6a413b78ea9e5e9",
+      "bytes": 63813
+    },
+    {
+      "path": "celld-os-stress/waves/active-websocket-stress/private_driver.py",
+      "sha256": "8ea718d17545775b2e0ef05b9f5181c1e7a6745c04725c0094c32d1e873d64fd",
+      "bytes": 14915
+    },
+    {
+      "path": "celld-os-stress/waves/active-websocket-stress/profile.json",
+      "sha256": "17dfc8a88d254f4ed463a139f8333f092e6946e16ba65c84582fe83b72fde774",
+      "bytes": 2075
+    },
+    {
+      "path": "celld-os-stress/waves/active-websocket-stress/source-pins.json",
+      "sha256": "db3ed9dc6c302391d802d3e2809763116987680753509a58964ef9d2011933b3",
+      "bytes": 3415
+    },
+    {
+      "path": "celld-os-stress/waves/active-websocket-stress/test_preflight.py",
+      "sha256": "05e489a9c7421cf23701c62319bcb3efee40cf14778ebdb305a45b9863bce72b",
+      "bytes": 1482
+    },
+    {
+      "path": "celld-os-stress/waves/active-websocket-stress/validate.py",
+      "sha256": "c88ddb753799d7a1c90ae07279fa38b2a63b2eaa92a59a8a676e82c36f01a2da",
+      "bytes": 3186
+    },
+    {
+      "path": "celld-os-stress/waves/alarm-event-stress/author_manifest.py",
+      "sha256": "55093f766e3d800740a3913a412c0336bbdba70ba6ac3fa6750da8e43f1bf245",
+      "bytes": 26137
+    },
+    {
+      "path": "celld-os-stress/waves/alarm-event-stress/bucket-profile.json",
+      "sha256": "ca302dc1fec9518e2df322499dcae4c65dd567a1a549aaf185cbb8cd0cd33845",
+      "bytes": 1773
+    },
+    {
+      "path": "celld-os-stress/waves/alarm-event-stress/cases.py",
+      "sha256": "3e22482c38c850a8103b374eb5ad7baa3df6364fe9a664e8944b6144ec70ecaa",
+      "bytes": 21613
+    },
+    {
+      "path": "celld-os-stress/waves/alarm-event-stress/driver.py",
+      "sha256": "eaeccfba059ca4785dd41533fe5f744842ad30107bd83837ab60a4f49593d828",
+      "bytes": 34099
+    },
+    {
+      "path": "celld-os-stress/waves/alarm-event-stress/fixture.js",
+      "sha256": "ccde8a8c9c8c7a4cfe02567f656fc149da1ee24fd78973455e64a8fe1c6ea3f3",
+      "bytes": 12448
+    },
+    {
+      "path": "celld-os-stress/waves/alarm-event-stress/http_jobs.py",
+      "sha256": "42da2dfd881bf1ceeffb4ac84689e939ece424909e91d43c237a9ee8eb99e7c6",
+      "bytes": 2147
+    },
+    {
+      "path": "celld-os-stress/waves/alarm-event-stress/manifest.json",
+      "sha256": "865ae3a9e5f61df64bded511650269e53e34a4d680a024d6dfcb57917c0548b8",
+      "bytes": 80418
+    },
+    {
+      "path": "celld-os-stress/waves/alarm-event-stress/source-pins.json",
+      "sha256": "45f2572751922c33ee9175d2577dea063f7ee260efbf75898e3b7738a091b5fe",
+      "bytes": 4604
+    },
+    {
+      "path": "celld-os-stress/waves/alarm-event-stress/test_preflight.py",
+      "sha256": "c9d7a53981e35f5115bb0d1563b7823c0a8e64e96de1ba993aefeb0b640a458f",
+      "bytes": 11120
+    },
+    {
+      "path": "celld-os-stress/waves/alarm-event-stress/validate.py",
+      "sha256": "6d24f835fc2376ee8984717e42770cfd9573c80099af52ccc32896906545ff23",
+      "bytes": 3218
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-load/author_manifest.py",
+      "sha256": "dd94f20b7bffa492bdf9e99af5a55eb66b855e7880f436e75f6ddcde444c283c",
+      "bytes": 27432
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-load/cases.js",
+      "sha256": "60c6f9a8ae72180a8f549405076efc48a14612d5686d7a38548db329db4a06cf",
+      "bytes": 28395
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-load/entry.js",
+      "sha256": "d45e8d319cc476a70976563100261ffd65f5e3b94245c2de009fcd5942903e23",
+      "bytes": 4575
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-load/fixture.js",
+      "sha256": "dcad2094078d264e222e44846b21d0919bcf9798645ee5e0792759afe48a295e",
+      "bytes": 17736
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-load/manifest.json",
+      "sha256": "3f5bd7c6edaeaff0d0e64f61f3057d470ff3797c9433705a02e007e2b9ab8138",
+      "bytes": 98229
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-load/run.py",
+      "sha256": "6fcb07a6ad83012e48cc704618e718970adecd15508e97c3b31a82c991001e8f",
+      "bytes": 9309
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-load/source-pins.json",
+      "sha256": "02b6de06eed33124802d9b22bc0c6b4aecf3da6a4b9f808d719b005ffa32756c",
+      "bytes": 3675
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-load/test_preflight.py",
+      "sha256": "f2d8d06d8446ddefa2d4050d72b83853c8306dbb52bd89904d3d2e4efe1967c2",
+      "bytes": 3099
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-load/validate.py",
+      "sha256": "bd02e74bcd91257eb2dba3d0f340580efbc8d98928a7710f67ffa7d69e3025d7",
+      "bytes": 4620
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-load/workers.js",
+      "sha256": "976773c60498ef981b1b3c1be5979c739db4831fcc506976be20cff019595fc7",
+      "bytes": 4118
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-resource/author_manifest.py",
+      "sha256": "151e51fef3fcbde098697705ccfe29cd9981e5f062144e5f08fe00475733a850",
+      "bytes": 16893
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-resource/cases.js",
+      "sha256": "7a808ee50d9cc12655886a6727e9faf6115af36f95f1a0125f49b0cbdfaafcc1",
+      "bytes": 7704
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-resource/entry.js",
+      "sha256": "f0ac664b435a5bbfd844d830d03447bb78bfbd1d5d2e31bc4beb6a2d299847b9",
+      "bytes": 2964
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-resource/fixture.js",
+      "sha256": "363d7485428a0171decc42c352d1817fab100d3e250818c6bd5952b35792f496",
+      "bytes": 4627
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-resource/manifest.json",
+      "sha256": "146a361928473370af035feab68842898b962535623b2e9e3e2d2d4fb2e668b2",
+      "bytes": 42242
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-resource/profile.json",
+      "sha256": "4b0b3cbaa5387dd5e95f388a0cc159260d6aac9d903eb19060aec449387d7528",
+      "bytes": 1176
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-resource/run.py",
+      "sha256": "2a19f98e0984211a11da80bbc37e698e9e9a574a7e851a320ddc5f6ff17709d8",
+      "bytes": 7510
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-resource/source-pins.json",
+      "sha256": "a6d82bf09516b2ee5767f23fdd824dbcc00e0a9986f1faa0be8e8194c9b8b7ed",
+      "bytes": 4211
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-resource/test_preflight.py",
+      "sha256": "74406477feab4964b95fe85e51c3027904519c3e6461c0358e305a9cfaca25a5",
+      "bytes": 2771
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-resource/validate.py",
+      "sha256": "8ec9401e99b833947d85b5c2a5f5ea3995e9abbaa0b38c2113fb805da26927fe",
+      "bytes": 3568
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-resource/workers.js",
+      "sha256": "e37f088cbdf7732244a2c592451f1177a13230bdedfd6a1b6b5f970f8d209f7e",
+      "bytes": 3466
+    },
+    {
+      "path": "celld-os-stress/waves/capability-order/cases.js",
+      "sha256": "b28c7dcccc3ec3d81c2db236494b94fe3285389ce9914479e31b91b6d64cd43e",
+      "bytes": 23545
+    },
+    {
+      "path": "celld-os-stress/waves/capability-order/cases.json",
+      "sha256": "0d43f72d1bf72550b1334811d9d1db725e499d2226b70ba4b7958a989be849a5",
+      "bytes": 55667
+    },
+    {
+      "path": "celld-os-stress/waves/capability-order/entry.js",
+      "sha256": "2dd846ea32e9b72b740619d977febe62cdc0aa8157e08c5261436c00e030e187",
+      "bytes": 4610
+    },
+    {
+      "path": "celld-os-stress/waves/capability-order/fixture.js",
+      "sha256": "9189a242e82445ff01d4a374fb919e70468e8a0c1902033ac51db7570bccaec0",
+      "bytes": 12696
+    },
+    {
+      "path": "celld-os-stress/waves/capability-order/run.py",
+      "sha256": "0e6c64824141f2e73a7e55fa5c9901f6af18ce4e82a116a9e8f50aabc8dceac5",
+      "bytes": 7413
+    },
+    {
+      "path": "celld-os-stress/waves/capability-order/test_preflight.py",
+      "sha256": "4df5065b6bebfcecc5c321784d4f77faf66a241d5da9a6c080c8474e4fd38385",
+      "bytes": 3553
+    },
+    {
+      "path": "celld-os-stress/waves/capability-order/validate.py",
+      "sha256": "3221dd04788c0298bf8a1c2b3ecdc679313b11b4c01c07e27e6f98d562cfe16d",
+      "bytes": 4442
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/assemble_fixtures.py",
+      "sha256": "ba7cdcef302e76e9ccb8a1a9b6d129a9362848b43002597d6447ab90cb0bb40b",
+      "bytes": 3147
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/author_manifest.py",
+      "sha256": "7b728d65e23e28f0017dd72f8d9a9e42ae3a6ad6600bfadb0085b439b30bb7da",
+      "bytes": 20329
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/bucket-profile.json",
+      "sha256": "3549368cf731cb90ebed082c7f7163a8725e68e6462a3c38a042cb529e4e0810",
+      "bytes": 1933
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/cases.py",
+      "sha256": "bf2422f0f26a3a8d07843a67372a587797a531704bc8d9cb81b8b992502a970d",
+      "bytes": 24271
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/deploy_job.py",
+      "sha256": "38980543dc81048c2222b1687086c0029ac09c976c263bd25de311316d2c6ffc",
+      "bytes": 3695
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/driver.py",
+      "sha256": "d4149aeb98b571ff9f79ecefa81106574a719b2ea810cfbc369be354969f3fc2",
+      "bytes": 43545
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/fixture-body.js",
+      "sha256": "98498f273a88f44d95e35ce3c19139113842985018aaac3e056ccab6b8398d6b",
+      "bytes": 10301
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/front.js",
+      "sha256": "f23feb07760fb3b6ebaef99ff55c90bb31da927355db4c8e4d80f073ca88331a",
+      "bytes": 570
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/http_jobs.py",
+      "sha256": "42da2dfd881bf1ceeffb4ac84689e939ece424909e91d43c237a9ee8eb99e7c6",
+      "bytes": 2147
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/manifest.json",
+      "sha256": "49de28e3fc01e79ef63ba813af9358e5f772ba9002e9ed7da8611dfc07d15a20",
+      "bytes": 159227
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/source-pins.json",
+      "sha256": "cb68cb1909e4f00d3424594a4dcde1fd4452f5c4213c41576e0e3dabc7995044",
+      "bytes": 3193
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/test_preflight.py",
+      "sha256": "014c6197418be342b9397f640d0f658a74098757a3a52e2478107ae38e2b90e3",
+      "bytes": 10866
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/validate.py",
+      "sha256": "7096b19445181ca8c86561bf8f578bc00a1fd2f737fff8aaee1bdda0e20bb44e",
+      "bytes": 4118
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/versions/bad-rename/fixture.js",
+      "sha256": "18ec6afc81275ed855d97e45bc0ddfc2ada13af7e1ab055c82cb16a66ac05371",
+      "bytes": 10342
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/versions/bad-syntax/fixture.js",
+      "sha256": "0bcc2bb510c4acfc32dc24cbe3e4d29c05a71fd4c82e1ed0ec1cc259412e0f92",
+      "bytes": 68
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/versions/front-missing/fixture.js",
+      "sha256": "f23feb07760fb3b6ebaef99ff55c90bb31da927355db4c8e4d80f073ca88331a",
+      "bytes": 570
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/versions/front-new/fixture.js",
+      "sha256": "f23feb07760fb3b6ebaef99ff55c90bb31da927355db4c8e4d80f073ca88331a",
+      "bytes": 570
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/versions/front-old/fixture.js",
+      "sha256": "f23feb07760fb3b6ebaef99ff55c90bb31da927355db4c8e4d80f073ca88331a",
+      "bytes": 570
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/versions/v1/fixture.js",
+      "sha256": "18ec6afc81275ed855d97e45bc0ddfc2ada13af7e1ab055c82cb16a66ac05371",
+      "bytes": 10342
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/versions/v2-abort/fixture.js",
+      "sha256": "e291575ad2bf7b26ccb0947014f1c661cf6efd9422f287609de98e47734a38b5",
+      "bytes": 10349
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/versions/v2-add/fixture.js",
+      "sha256": "c7266b17bba60e3ed738868a9415e3b0c704bf13a57618cf51b1e1b5efbbf64b",
+      "bytes": 10345
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/versions/v2-binding/fixture.js",
+      "sha256": "1199fc503a346ea4cca36c2ed20e0ce2edc87a3afd0fb198c7743437124a5800",
+      "bytes": 10350
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/versions/v2-code/fixture.js",
+      "sha256": "5938e572bab09a3f2cca5eb5b023d8fead27b4eee3f2a84692f6d49357a4076a",
+      "bytes": 10347
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/versions/v2-omitted/fixture.js",
+      "sha256": "12c09889bf8c4e69b470f2ba384d6b83e07082e85653b3aa00c54f1d52fdde94",
+      "bytes": 10350
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/versions/v2-rebuild/fixture.js",
+      "sha256": "b30037539d5b2fa08405d6e3adbf6a936997a6ab6143ab30620e18b43f8c3c5f",
+      "bytes": 10353
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/versions/v2-script/fixture.js",
+      "sha256": "22c85e67b3ccc085c02d07a974e7b1fe42df99e12b448559f108251a712d7729",
+      "bytes": 10349
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/versions/v2-sibling/fixture.js",
+      "sha256": "b5cd042aa20c392f2ea55db449c5f9d628049843a509baef9e5c27498fb515fe",
+      "bytes": 10350
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/versions/v2-unique/fixture.js",
+      "sha256": "e7f588221584d801a5d199daa728ee118a5e0fe6660324eb61893779bb4196ba",
+      "bytes": 10351
+    },
+    {
+      "path": "celld-os-stress/waves/do-visibility-regression/cases.json",
+      "sha256": "377cf1b2aa3c6d7d69c03c7a4870dfaf25d6b718ed3f3e6dc3aaff3d4ac3c1c7",
+      "bytes": 3231
+    },
+    {
+      "path": "celld-os-stress/waves/do-visibility-regression/index.js",
+      "sha256": "5eceb2b55d3b2db0cc2f4a5de052d35b8c3933ecd026958d37dc582fdcc53577",
+      "bytes": 4242
+    },
+    {
+      "path": "celld-os-stress/waves/do-visibility-regression/rpc.js",
+      "sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+      "bytes": 14684
+    },
+    {
+      "path": "celld-os-stress/waves/durable-recovery-stress/author_manifest.py",
+      "sha256": "a7e9a63ec0c7528396419d8499784ff0df0f6e6c0e37dbc62f0505f8e8185705",
+      "bytes": 18865
+    },
+    {
+      "path": "celld-os-stress/waves/durable-recovery-stress/bucket-profile.json",
+      "sha256": "f94ef25f013dab088d4c4caa2ad9911a8d00358db4b5732538858bc552ac5fce",
+      "bytes": 1539
+    },
+    {
+      "path": "celld-os-stress/waves/durable-recovery-stress/cases.py",
+      "sha256": "32cfd099c9b2757fd1cdf08eec23668b606e5bc030d537360264eab9b12d2b0d",
+      "bytes": 19338
+    },
+    {
+      "path": "celld-os-stress/waves/durable-recovery-stress/driver.py",
+      "sha256": "fc2d73e94c460f413f1a0fa905ddc17bf808dddd68d1097b86c36c994faff380",
+      "bytes": 30123
+    },
+    {
+      "path": "celld-os-stress/waves/durable-recovery-stress/fixture.js",
+      "sha256": "230ace803967738d3296f251b34db6418515449fb7c5e4147c7ddd2af9a7585a",
+      "bytes": 9352
+    },
+    {
+      "path": "celld-os-stress/waves/durable-recovery-stress/fleet-profile.json",
+      "sha256": "82f43ec347ff811f130e7946c88357eebd5f51a1aa85973be1455ef94633d4dc",
+      "bytes": 916
+    },
+    {
+      "path": "celld-os-stress/waves/durable-recovery-stress/http_jobs.py",
+      "sha256": "42da2dfd881bf1ceeffb4ac84689e939ece424909e91d43c237a9ee8eb99e7c6",
+      "bytes": 2147
+    },
+    {
+      "path": "celld-os-stress/waves/durable-recovery-stress/manifest.json",
+      "sha256": "8bfa3397e84966fa629d7adce3504e3674aeb3cdf5f5d56a4615703576ea52b1",
+      "bytes": 101023
+    },
+    {
+      "path": "celld-os-stress/waves/durable-recovery-stress/source-pins.json",
+      "sha256": "1e2948c222c6d4d6f477d7f935b7d478b55a4f3f6c2b60471991399748568392",
+      "bytes": 2488
+    },
+    {
+      "path": "celld-os-stress/waves/durable-recovery-stress/test_preflight.py",
+      "sha256": "ec4c17df8e5588b29023c075416b9eb33896c20ce2ffe87fd1d181198145cd9c",
+      "bytes": 6001
+    },
+    {
+      "path": "celld-os-stress/waves/durable-recovery-stress/validate.py",
+      "sha256": "c87161a0def5d1c3c7eb57f57d3bd3f9d6a3c5b14a3647584534f87ad0ab18a3",
+      "bytes": 3296
+    },
+    {
+      "path": "celld-os-stress/waves/fetch-redirect-stress/author_manifest.py",
+      "sha256": "e8f701eb3606e522906558a871460ff76d48180d50c917622c790631cfc104f4",
+      "bytes": 13785
+    },
+    {
+      "path": "celld-os-stress/waves/fetch-redirect-stress/cases.js",
+      "sha256": "7cfb44a2581651a842f833024f7a810c83944b70743ba3485bf0d1dff85e60d6",
+      "bytes": 12377
+    },
+    {
+      "path": "celld-os-stress/waves/fetch-redirect-stress/common.js",
+      "sha256": "3e78cfa5894e87eadf5e80133545b1fef4b1f3491a1e09949912831e53227aea",
+      "bytes": 2708
+    },
+    {
+      "path": "celld-os-stress/waves/fetch-redirect-stress/fixture.js",
+      "sha256": "bb8d09b77278bb557b9489a205adaa0a6663ce77aa02e13694fa29eeb15f2b8f",
+      "bytes": 9592
+    },
+    {
+      "path": "celld-os-stress/waves/fetch-redirect-stress/lab.js",
+      "sha256": "51d1365da5670610fb5065b434422c8f5707ad9d98db77710399af85b5d9e7ee",
+      "bytes": 10820
+    },
+    {
+      "path": "celld-os-stress/waves/fetch-redirect-stress/manifest.json",
+      "sha256": "ad3d52c7e21c4e1bb943bc7e5cf1c07a81f50329e342d2927905a2d5f9c29398",
+      "bytes": 46983
+    },
+    {
+      "path": "celld-os-stress/waves/fetch-redirect-stress/private_driver.py",
+      "sha256": "0fd8569c855f44e171a5abfda54ec336815e5b192773ef082fa5ebd40f0d5125",
+      "bytes": 14658
+    },
+    {
+      "path": "celld-os-stress/waves/fetch-redirect-stress/profile.json",
+      "sha256": "7a252fc1153df8a9f121422fcbfbb688189b64b576f1d193f12f0fad311eadcd",
+      "bytes": 2551
+    },
+    {
+      "path": "celld-os-stress/waves/fetch-redirect-stress/source-pins.json",
+      "sha256": "7c7608267eafda129414333aa40759a5f8c6ed676b32d7031c63a2eae81144ef",
+      "bytes": 2528
+    },
+    {
+      "path": "celld-os-stress/waves/fetch-redirect-stress/test_helpers.mjs",
+      "sha256": "74dd393abdf8eea43d9bf15ba464d3beb88560f122f61d9489120982075063bf",
+      "bytes": 3566
+    },
+    {
+      "path": "celld-os-stress/waves/fetch-redirect-stress/test_preflight.py",
+      "sha256": "db228e5bbd9462cebae3bdb85f1cf353d8ea955e6f7a72ab2d21eebe82984c88",
+      "bytes": 3090
+    },
+    {
+      "path": "celld-os-stress/waves/fetch-redirect-stress/validate.py",
+      "sha256": "f719335e552e8af7c51e1fe32ace0cacf95d7c4f50eec3e5aab165ebcd59eb12",
+      "bytes": 4987
+    },
+    {
+      "path": "celld-os-stress/waves/http-stream-stress/author_manifest.py",
+      "sha256": "4f6a69327bd346ffa8f3fb79fd76381823a751ec228810a173450c591c0647d9",
+      "bytes": 23293
+    },
+    {
+      "path": "celld-os-stress/waves/http-stream-stress/cases.js",
+      "sha256": "96fb832714b9437de94f48bb1c2fdb1fb5dc2eedb723901040c06cfb9bb305aa",
+      "bytes": 18310
+    },
+    {
+      "path": "celld-os-stress/waves/http-stream-stress/common.js",
+      "sha256": "41a9f52dfe2cb5fe110ead9a7c059d15ef00fd63b02752053e5b3fc3683d2fdb",
+      "bytes": 2732
+    },
+    {
+      "path": "celld-os-stress/waves/http-stream-stress/fixture.js",
+      "sha256": "bc36e6548386869fea496e7073ebc08ff4a068d89f1860e89f28a03515006e6b",
+      "bytes": 9559
+    },
+    {
+      "path": "celld-os-stress/waves/http-stream-stress/lab.js",
+      "sha256": "946eddee9d4a58d6bf586e75933fe8396185a1bd9013963e8b2b3e6d0ffa4270",
+      "bytes": 11804
+    },
+    {
+      "path": "celld-os-stress/waves/http-stream-stress/manifest.json",
+      "sha256": "089c5862ac6c145045dceb77b5e22106f7666e928074dadd27d55f2c81d68c00",
+      "bytes": 84278
+    },
+    {
+      "path": "celld-os-stress/waves/http-stream-stress/private_driver.py",
+      "sha256": "076dcd78953bef5ac7a6c0bb7b3dfb7e5df56065fba6997c227031e491dd9b72",
+      "bytes": 13105
+    },
+    {
+      "path": "celld-os-stress/waves/http-stream-stress/profile.json",
+      "sha256": "ea0a9035f4321fea0cd0d2780360e8aa3e736ba7f447ff259889b68d87f0f5a7",
+      "bytes": 2441
+    },
+    {
+      "path": "celld-os-stress/waves/http-stream-stress/source-pins.json",
+      "sha256": "dd937a04fe8b729b03c0a75ae421a77d057f58a1b9f4c9e1ca2799f540fd7d14",
+      "bytes": 3729
+    },
+    {
+      "path": "celld-os-stress/waves/http-stream-stress/test_oracle_helpers.mjs",
+      "sha256": "ee456e24904ecddca5156cb2be6b77829fb6f4eaf6e3f6a0b044c0a811bcde52",
+      "bytes": 2068
+    },
+    {
+      "path": "celld-os-stress/waves/http-stream-stress/test_preflight.py",
+      "sha256": "da982f0ed773937be0fb9583a3cc3e335c8821aceacd4a9898c9a8402a6e2334",
+      "bytes": 4005
+    },
+    {
+      "path": "celld-os-stress/waves/http-stream-stress/validate.py",
+      "sha256": "b0764716b66c7cf4b0ae1d38a0dddc1d6f06d9f2a4f9926e998a964b4d30cf0b",
+      "bytes": 4498
+    },
+    {
+      "path": "celld-os-stress/waves/loader-props/author_manifest.py",
+      "sha256": "1428a16c2250197e8681a37c862479d42ba07e74ee12483d18e84bb1044b1d9d",
+      "bytes": 19703
+    },
+    {
+      "path": "celld-os-stress/waves/loader-props/cases.js",
+      "sha256": "9a1e6136a123f902050ba5cba63179c5a0c2760f28e4a1bf7dea2c1419c700ef",
+      "bytes": 23629
+    },
+    {
+      "path": "celld-os-stress/waves/loader-props/index.js",
+      "sha256": "6bf5d0056b5a83052017c38c9141c1da4873c9969fb699ede26b93c5ff0613d9",
+      "bytes": 4250
+    },
+    {
+      "path": "celld-os-stress/waves/loader-props/manifest.json",
+      "sha256": "c8768ca53d71e6b6193c4732dac7dd7aa22f2faec8dd8e83f430d5a5c22fe083",
+      "bytes": 63297
+    },
+    {
+      "path": "celld-os-stress/waves/loader-props/run.py",
+      "sha256": "86971426940cd0df5023ca3dbf90d52988035fcf58ef6cf89426ab793015ad4b",
+      "bytes": 5460
+    },
+    {
+      "path": "celld-os-stress/waves/loader-props/sources.mjs",
+      "sha256": "22897ce5b7a6f5ede46a6d95a9cb217eaeeef7c6e60f9e0d034aad8964e18d81",
+      "bytes": 3721
+    },
+    {
+      "path": "celld-os-stress/waves/loader-props/validate.mjs",
+      "sha256": "534af4405b81c2d6bbb77aa990a7e91f3bdef6ccc7710471cce0ef10f9a40cbf",
+      "bytes": 1822
+    },
+    {
+      "path": "celld-os-stress/waves/log-recovery-logic/author_manifest.py",
+      "sha256": "45e590f299822de84e676e25f5e94869f1fe58e28828d1cfc75540e17ace636f",
+      "bytes": 27911
+    },
+    {
+      "path": "celld-os-stress/waves/log-recovery-logic/manifest.json",
+      "sha256": "731cc2389086c96d370eca18ce7bc1b62415bcb022ad6f75756e7aea74f74f90",
+      "bytes": 86458
+    },
+    {
+      "path": "celld-os-stress/waves/log-recovery-logic/profile.json",
+      "sha256": "7ab3eb5297f5311c7299369d245fcd1f53bb56045f023c00b3886466f94d99a9",
+      "bytes": 1659
+    },
+    {
+      "path": "celld-os-stress/waves/log-recovery-logic/source-pins.json",
+      "sha256": "9cd2e2f867ce2f17d09908b8738e4419cd0712164b2e9a888eb9bf8cb710dc5c",
+      "bytes": 4354
+    },
+    {
+      "path": "celld-os-stress/waves/log-recovery-logic/tests/log_recovery.rs",
+      "sha256": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c",
+      "bytes": 33540
+    },
+    {
+      "path": "celld-os-stress/waves/log-recovery-logic/trace-receipt-contract.json",
+      "sha256": "0029295116e47c59e08d67ed2e8238bb7816e747cf51dbc36efd08459c21d712",
+      "bytes": 1272
+    },
+    {
+      "path": "celld-os-stress/waves/log-recovery-logic/validate.py",
+      "sha256": "efe6273231e185458077d5ae2a6dece7e51e64fdf38533b8b91680539a9fb256",
+      "bytes": 8290
+    },
+    {
+      "path": "celld-os-stress/waves/module-graph-stress/author_manifest.py",
+      "sha256": "d75a2f4e78a19d7eb5b0754121474a86219182edee5421d316a9b609d95a9b4f",
+      "bytes": 12563
+    },
+    {
+      "path": "celld-os-stress/waves/module-graph-stress/cases.mjs",
+      "sha256": "9aed65f3bb4622a8a777fb142173e4d64986598c3744af261649ba77675bb8d8",
+      "bytes": 11100
+    },
+    {
+      "path": "celld-os-stress/waves/module-graph-stress/entry.mjs",
+      "sha256": "cb41805fe25218497663aac097837f9c40ed538608b5358a99a7fc4745a5726c",
+      "bytes": 2316
+    },
+    {
+      "path": "celld-os-stress/waves/module-graph-stress/fixture.mjs",
+      "sha256": "115853330ccf52bd8f58bcc3b065972100b524c8b5f07caf45e9b7775d7b8285",
+      "bytes": 6370
+    },
+    {
+      "path": "celld-os-stress/waves/module-graph-stress/graphs.mjs",
+      "sha256": "3d4d4dbee83c8529c24494cf735b9c05d2e94cdd792caa4b59db39745cbaa419",
+      "bytes": 11105
+    },
+    {
+      "path": "celld-os-stress/waves/module-graph-stress/manifest.json",
+      "sha256": "28a4b34caa2b858fa1da7066013e23bdf99339ba2c8a6f15ebd2e180ace1014b",
+      "bytes": 36773
+    },
+    {
+      "path": "celld-os-stress/waves/module-graph-stress/profile.json",
+      "sha256": "61cb8bb804a662eac46a37cb2ff77cf6d2d862dd12dc805e5abd2e43664263db",
+      "bytes": 829
+    },
+    {
+      "path": "celld-os-stress/waves/module-graph-stress/run.py",
+      "sha256": "8c6d8356d5eb12bdcf369a7e660720eb231eba336b4b46726406c890f7ae1c69",
+      "bytes": 8607
+    },
+    {
+      "path": "celld-os-stress/waves/module-graph-stress/source-pins.json",
+      "sha256": "6d59b93d0b7d6c711f567c0e42abfff4acfa94860d7cb8f6db1468de480703be",
+      "bytes": 2662
+    },
+    {
+      "path": "celld-os-stress/waves/module-graph-stress/test_cleanup.mjs",
+      "sha256": "30ec76c35ad66923eac5a3b2f58cbef176e3d6750f33c81bc33286a9c95073ac",
+      "bytes": 3594
+    },
+    {
+      "path": "celld-os-stress/waves/module-graph-stress/test_receipts.py",
+      "sha256": "73d20455aa560b85f859ae7b6dcb88b88acaec69dd86e1e2fcbc71cd1f1cff62",
+      "bytes": 1877
+    },
+    {
+      "path": "celld-os-stress/waves/module-graph-stress/validate.mjs",
+      "sha256": "4016e1a3f7972207b0ff627af4b4e6dddac8bb9754be1f20e4e8290a0c2112c6",
+      "bytes": 4223
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/author_manifest.py",
+      "sha256": "40f36813c778c3fe19ccd84b0f69ee6a2552e37d9b72333a3b4805b59e2141bb",
+      "bytes": 17966
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/common.js",
+      "sha256": "58b5cc7bf2a16a25f8dbdddc48ea4825bee03c0f79b898e4767e92b297c8d007",
+      "bytes": 2519
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/context.js",
+      "sha256": "845e39cdea794c74bea122c22f1005a62b70536f5ee688b3e06af6732552d091",
+      "bytes": 12817
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/entry.js",
+      "sha256": "1c4be2004e476ee286465674ad37b81dd9ea8cc33e0dda6ef66b66b5830346de",
+      "bytes": 1136
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/fixture.js",
+      "sha256": "e98721556a970c8d6acd6715a174741de9dc22751f734aac14df31a5e04b6a75",
+      "bytes": 12660
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/make_vectors.py",
+      "sha256": "df9d0f13438c126c594cecc740b5c07145fed1ab47d4166c4c805d17682374ac",
+      "bytes": 1358
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/manifest.json",
+      "sha256": "5cacd1bfe0e3c07d2f2eb469bbcaa19cfdfb140f81a3ad351a5356cada5f17e1",
+      "bytes": 43665
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/operations.js",
+      "sha256": "3c56ee242a504ad001125fec4ec2ba54d07c00ff4757b36be2826624f7e751c6",
+      "bytes": 14588
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/private_driver.py",
+      "sha256": "34ad4e2dafe6d54fc0abdeb203439e67c479cceb8906bc4dd27992d9a757980a",
+      "bytes": 18308
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/profile.json",
+      "sha256": "80f8bdb5f22931d0992a4643619334378ba879bc5c6276fc3c153393c25b02b5",
+      "bytes": 1767
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/source-pins.json",
+      "sha256": "22850dc72e870f4ae1a5f9e7a512534c8e11fed24ca93e56161613d8e3619987",
+      "bytes": 6269
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/test_helpers.mjs",
+      "sha256": "508e76498242bb4662ba34394c7448e35f4b79a1ae0232b47a408b819746d0fa",
+      "bytes": 1528
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/test_lifecycle_helpers.mjs",
+      "sha256": "d5aeebc67114f074a3d8871d376c37866ca06fb660047ec73271445831a713f7",
+      "bytes": 7012
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/test_preflight.py",
+      "sha256": "f741badfa841d0fd86e9b2a4f6863e589684009273ec46f40795a53074674b23",
+      "bytes": 7822
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/test_terminal_helpers.mjs",
+      "sha256": "79df9b292d032660be5dea6add1c178054aedd1a979c95e6070f9087bfd71f6c",
+      "bytes": 8482
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/validate.py",
+      "sha256": "75bb99ad4264d4f097b0accb231d0bdf8286f47ff707fcf2c022a7a772903e08",
+      "bytes": 3870
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/vectors.js",
+      "sha256": "93ed22b254652f7f269094b5dfa63ece18b782c52fe15d3923e3fd0c5c3d7380",
+      "bytes": 17794
+    },
+    {
+      "path": "celld-os-stress/waves/output-gate-logic/author_manifest.py",
+      "sha256": "6bb5bbafabf7fdc9df961dd663ef017a1c974c9520c4da39b32ba2b2fa89c9f1",
+      "bytes": 18726
+    },
+    {
+      "path": "celld-os-stress/waves/output-gate-logic/manifest.json",
+      "sha256": "84148f9f295e44ae68cb2fd33fab2bc0168ad34102ffc8e057a927a78b119a62",
+      "bytes": 100281
+    },
+    {
+      "path": "celld-os-stress/waves/output-gate-logic/profile-v2.json",
+      "sha256": "321d41357eda97690a5c649b4b39dde102d78d154a6354d974299b816b0fa74c",
+      "bytes": 1873
+    },
+    {
+      "path": "celld-os-stress/waves/output-gate-logic/profile.json",
+      "sha256": "4f915c7d7c0594677259e4eaab2216c179826484e12e0c764cc4d2454f0c9d82",
+      "bytes": 1510
+    },
+    {
+      "path": "celld-os-stress/waves/output-gate-logic/run_selected.py",
+      "sha256": "efe1bb7762d14105b76809567948de972f03d4c18e421238d795a80fdf624cdf",
+      "bytes": 8433
+    },
+    {
+      "path": "celld-os-stress/waves/output-gate-logic/source-pins.json",
+      "sha256": "2e06ae03480e8f4a36ea41fd7e0da83519b51a3334fbeea4c9ba6982596df2f1",
+      "bytes": 3285
+    },
+    {
+      "path": "celld-os-stress/waves/output-gate-logic/tests/output_gate.rs",
+      "sha256": "4111d744a514b64a36f285dbf4a8b51ca56ce3f3f128dbd5ea1cc188ebed88ba",
+      "bytes": 41334
+    },
+    {
+      "path": "celld-os-stress/waves/output-gate-logic/validate.py",
+      "sha256": "238b70d963cbc5318d2cf44b8ccae970cef9cab355d1242dcea915f563c2f812",
+      "bytes": 2910
+    },
+    {
+      "path": "celld-os-stress/waves/pressure-recovery-logic/author_manifest.py",
+      "sha256": "c6d274130577ddbdeca776b4747ccddca5f4ea32f2e4e95429f73479ed030870",
+      "bytes": 24345
+    },
+    {
+      "path": "celld-os-stress/waves/pressure-recovery-logic/manifest.json",
+      "sha256": "8c20b20d5f3848fbea5226c2c099cd0691a8ce21e6b7f4c46b8b78f5a1370141",
+      "bytes": 80399
+    },
+    {
+      "path": "celld-os-stress/waves/pressure-recovery-logic/profile.json",
+      "sha256": "fe1b78ba6dd4f01ccd142d573116b598681bd0bbd7bb112661c850b6567c0ddf",
+      "bytes": 1634
+    },
+    {
+      "path": "celld-os-stress/waves/pressure-recovery-logic/source-pins.json",
+      "sha256": "d6ed2a5474099eae900ee2a1f63081dc584fb1d99a4feb9e8881d6241a00469e",
+      "bytes": 4897
+    },
+    {
+      "path": "celld-os-stress/waves/pressure-recovery-logic/tests/pressure_recovery.rs",
+      "sha256": "ccb9c2001ec9d427c142017a426801dde5631b1252fae8b2e10ce0e12cc73e47",
+      "bytes": 27759
+    },
+    {
+      "path": "celld-os-stress/waves/pressure-recovery-logic/trace-receipt-contract.json",
+      "sha256": "2cf9ddcf5799b983fce2af660bc2f26e09718575be9548492e9cfd2c688a01fd",
+      "bytes": 2122
+    },
+    {
+      "path": "celld-os-stress/waves/pressure-recovery-logic/validate.py",
+      "sha256": "a7cbe2dc6840b71ce8b8d4a5b74cfe58ac548755c603236c6e930d5444cfb81b",
+      "bytes": 6320
+    },
+    {
+      "path": "celld-os-stress/waves/routing-acquisition-logic/author_manifest.py",
+      "sha256": "f17a8a4ee1c398d8379e9451e04918c59a3b29ed8e7a2bd87e66b35607e44f88",
+      "bytes": 24958
+    },
+    {
+      "path": "celld-os-stress/waves/routing-acquisition-logic/manifest.json",
+      "sha256": "f055a1b302e5f2546df23910f8713d3b39344fef98cfa2e30c946081ba2e1b66",
+      "bytes": 107853
+    },
+    {
+      "path": "celld-os-stress/waves/routing-acquisition-logic/profile.json",
+      "sha256": "a0f1d536b48c1fbcb8ad80e8d614b201273e38afbbe43c5c9de1670bdf361568",
+      "bytes": 5466
+    },
+    {
+      "path": "celld-os-stress/waves/routing-acquisition-logic/source-pins.json",
+      "sha256": "bd3559404928c86c8be903798b6fda5f678900a491919ef8953531848c97b397",
+      "bytes": 3877
+    },
+    {
+      "path": "celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+      "sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06",
+      "bytes": 42988
+    },
+    {
+      "path": "celld-os-stress/waves/routing-acquisition-logic/validate.py",
+      "sha256": "bcb44b274861c601e7252610f10b09c8c6f2aa1038c20f89c483c745f7ea1bbe",
+      "bytes": 6050
+    },
+    {
+      "path": "celld-os-stress/waves/rpc-codec/cases.json",
+      "sha256": "9d098e7bdd59330baf32f48a29bd22674b41a2bb99e0ffc451dfae1a329afc5f",
+      "bytes": 36343
+    },
+    {
+      "path": "celld-os-stress/waves/rpc-codec/codec.js",
+      "sha256": "bae54054482046c4b3daf0df871a5c7cd433e17b01bad7cb4804e25537a55f7a",
+      "bytes": 33545
+    },
+    {
+      "path": "celld-os-stress/waves/rpc-codec/entry.js",
+      "sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+      "bytes": 1937
+    },
+    {
+      "path": "celld-os-stress/waves/rpc-codec/validate.py",
+      "sha256": "1a8d7296ac402e0922e1071f1e4538880d3e3b059a520d729aae7db995d8504c",
+      "bytes": 4075
+    },
+    {
+      "path": "celld-os-stress/waves/sqlite-concurrency/author_manifest.py",
+      "sha256": "9937ecff41ff320d92eefaafdbf480bbb6ad86ee7be4365a67d3852959a8830f",
+      "bytes": 21400
+    },
+    {
+      "path": "celld-os-stress/waves/sqlite-concurrency/cases.js",
+      "sha256": "691eb28d4cee7679b56385040712298155124a272d15d5674e44088bede9080f",
+      "bytes": 2905
+    },
+    {
+      "path": "celld-os-stress/waves/sqlite-concurrency/cell-cases.js",
+      "sha256": "0e5116557fa02ad82edc28032c82d9cb7c96530e04880465fc6517acad7095d6",
+      "bytes": 16281
+    },
+    {
+      "path": "celld-os-stress/waves/sqlite-concurrency/common.js",
+      "sha256": "246be7908dcd178ec5621e2ea03a1784784a767823a9801e22454e0e519d4577",
+      "bytes": 1863
+    },
+    {
+      "path": "celld-os-stress/waves/sqlite-concurrency/entry.js",
+      "sha256": "b7ff8937b347e643e4c38ef96ba804d5725819a6e740e939f19977c5764c9b39",
+      "bytes": 3588
+    },
+    {
+      "path": "celld-os-stress/waves/sqlite-concurrency/fixture.js",
+      "sha256": "0bfc734b1e5b63b947972c226baedb0ed38c87c371a93b1406c79dce4329edc8",
+      "bytes": 16834
+    },
+    {
+      "path": "celld-os-stress/waves/sqlite-concurrency/manifest.json",
+      "sha256": "991cfa1edce682ba4dcfbb6b6070abedee80b43af45c6bcc300ba27666516bab",
+      "bytes": 74170
+    },
+    {
+      "path": "celld-os-stress/waves/sqlite-concurrency/private_driver.py",
+      "sha256": "822c3204e84c7df87c7891e4c8e6b17be0b57627b1f2075f075dbb3d56a9b663",
+      "bytes": 15220
+    },
+    {
+      "path": "celld-os-stress/waves/sqlite-concurrency/profile.json",
+      "sha256": "c9a7a79c8c3e0375a3f3d1d5dce3f814bd46f2217692590584bcad4f31861056",
+      "bytes": 1311
+    },
+    {
+      "path": "celld-os-stress/waves/sqlite-concurrency/source-pins.json",
+      "sha256": "24b0037a4fca2b354dcfdacd12561813cf8b369329257867243f95feed5500a6",
+      "bytes": 3208
+    },
+    {
+      "path": "celld-os-stress/waves/sqlite-concurrency/test_helpers.mjs",
+      "sha256": "222ebe350279022cf76cde53140e3038e2621ad4cf92a5f10ae8c87f4f67e964",
+      "bytes": 1688
+    },
+    {
+      "path": "celld-os-stress/waves/sqlite-concurrency/test_preflight.py",
+      "sha256": "93b0b2cf5b67778b8397e723255569e4515dabde2faaac19127e416c041c6bc0",
+      "bytes": 6097
+    },
+    {
+      "path": "celld-os-stress/waves/sqlite-concurrency/validate.py",
+      "sha256": "77059cbdb10d98df77f5502f2d8ebe8f09943e5bd278ccaa71a6d9d027d5150a",
+      "bytes": 3669
+    },
+    {
+      "path": "celld-os-stress/waves/wake-recovery-logic/author_manifest.py",
+      "sha256": "440b1e340fa27684d516758b3c5e0612c66a6cd807763e68504af596ef3dd934",
+      "bytes": 23875
+    },
+    {
+      "path": "celld-os-stress/waves/wake-recovery-logic/manifest.json",
+      "sha256": "1b97975b95f13eb02997fa304a74290761ac3c5b54d0709d71f9907f83269aab",
+      "bytes": 62614
+    },
+    {
+      "path": "celld-os-stress/waves/wake-recovery-logic/profile.json",
+      "sha256": "1359062cd0983f437eeb7762fd803721157acdac5dc7aebd17a4c5c9de2f278b",
+      "bytes": 1701
+    },
+    {
+      "path": "celld-os-stress/waves/wake-recovery-logic/source-pins.json",
+      "sha256": "4e72694ec181865fc290261cd142bc0e46b925817034c3f6842337f9833be6f5",
+      "bytes": 5956
+    },
+    {
+      "path": "celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+      "sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86",
+      "bytes": 39589
+    },
+    {
+      "path": "celld-os-stress/waves/wake-recovery-logic/trace-receipt-contract.json",
+      "sha256": "acb7febdefc9fbdbd853543793b2abc264aaaf0a36e21f5f60fd807ddb50f49a",
+      "bytes": 1194
+    },
+    {
+      "path": "celld-os-stress/waves/wake-recovery-logic/validate.py",
+      "sha256": "9e7ce4908f9d55cf4188e7cfc9d033d4bec9a4ea55b1970ab5586fabb4d5d620",
+      "bytes": 7460
+    }
+  ],
+  "campaign": [
+    {
+      "path": "DRIVER-PHASE-001.json",
+      "sha256": "1f097df342472ebb1ecb63a1f2a7b0eeee4f75396bfc498060e6f093c14688af",
+      "bytes": 3850
+    },
+    {
+      "path": "PAUSED-WORK-001.json",
+      "sha256": "b010a80e0587198d9342fe462d5b52259597684b2524fd0938be44571b1b4a68",
+      "bytes": 8669
+    },
+    {
+      "path": "TRANCHE-001-METADATA-R2.json",
+      "sha256": "48c932ad91d229e88112d505ad25f92fc84d01ed90415ae13ff5bb49e7ada491",
+      "bytes": 7382
+    },
+    {
+      "path": "TRANCHE-001.json",
+      "sha256": "7fb52559ebcadf5e1c148507316e20a1ed1b9c4e5eff50f9538f2c529224da3b",
+      "bytes": 6975
+    },
+    {
+      "path": "TRANCHE-002.json",
+      "sha256": "b20318879a6637fe4c6019c606ba029d9159cee96ebefb502fc455e992305cc9",
+      "bytes": 9314
+    },
+    {
+      "path": "TRANCHE-003.json",
+      "sha256": "766c96a3ab1e8992ac59591b168ea468bac74ae27c8a5c6fe0a8b7885654b7de",
+      "bytes": 8487
+    },
+    {
+      "path": "TRANCHE-004.json",
+      "sha256": "1baef982b90cdacf7c42aa461999acda83602816bcf019aad8f25a3969bd1077",
+      "bytes": 14491
+    },
+    {
+      "path": "TRANCHE-005.json",
+      "sha256": "c74e5ead122a6b79e925479d57999645ed3ddbf8944654b3cdc0bf04ddcbc755",
+      "bytes": 12544
+    },
+    {
+      "path": "TRANCHE-006.json",
+      "sha256": "4833c27875927954dbc27f82e1ff3718039920b9523ecc9f42352369c40fed68",
+      "bytes": 8464
+    },
+    {
+      "path": "assessments/direct-runtime-entrypoints-20261009.json",
+      "sha256": "b9dba49ffeba6c6582c28201d3d4e5144c5a75dc49c8994c06b5e92bf227b1d4",
+      "bytes": 80589
+    },
+    {
+      "path": "assessments/ordinary-os-horizon-20261009.json",
+      "sha256": "5db43d985fcc17b275f0c7c516e28810b16f29cf036679ec39bda447832925e6",
+      "bytes": 21142
+    },
+    {
+      "path": "assessments/os-repository-reference-search-20261009.json",
+      "sha256": "615e80f55e80ca5536dddc306d1759b37c59fe57ffcfd287823c16292def3ae4",
+      "bytes": 4934
+    },
+    {
+      "path": "assessments/owned-context-topology-paused-20261009.json",
+      "sha256": "34fdaecc6cd80bb5792066b3e3044305bfacc3de76360464127b1be05cdc2dfe",
+      "bytes": 7620
+    },
+    {
+      "path": "assessments/reviewed-source-predictions-index-20261009.json",
+      "sha256": "698f9410f5d48734c240915fd91d1bec70e05aa4afe72d9d8e4a1b9a77f7f654",
+      "bytes": 35976
+    },
+    {
+      "path": "assessments/scheduler-feasibility-20261009.json",
+      "sha256": "a8471b06093a5c3b9c70fc0c3d1eb515bff20a3918ccc90934079a651c83c0e2",
+      "bytes": 26731
+    },
+    {
+      "path": "assessments/stream-backpressure-gaps-20261009.json",
+      "sha256": "60cdffa42680edecb9d983a40acab53e844ef2580c9d61f9f24a7b8337de3071",
+      "bytes": 51510
+    },
+    {
+      "path": "atomic-accounting-semantics/author_manifest.py",
+      "sha256": "2adea51dffb261d59b08625d3cf13e6d4d0385c42b00eb44f6c555dd2c3593b2",
+      "bytes": 22428
+    },
+    {
+      "path": "atomic-accounting-semantics/cases.js",
+      "sha256": "b989812ac2fb83e206a9068aa18f77ea92833e76bbb620f6bf8cb024cbdf75e3",
+      "bytes": 23529
+    },
+    {
+      "path": "atomic-accounting-semantics/fixture.js",
+      "sha256": "686846d5a7b0fac00f11906a8c79c13ca1cb293244ef37fec33f1a6a90871f7e",
+      "bytes": 10867
+    },
+    {
+      "path": "atomic-accounting-semantics/manifest.json",
+      "sha256": "74ca24883b66b7505190af93acdb03199887fecbe09f5d377d344cfafb2cad69",
+      "bytes": 73564
+    },
+    {
+      "path": "atomic-accounting-semantics/overlap-audit.json",
+      "sha256": "a6e173ae53e61104a962539243d549350dd8a719c8b138ca67ca6e693cdc4d49",
+      "bytes": 9104
+    },
+    {
+      "path": "atomic-accounting-semantics/schedule.json",
+      "sha256": "5a597ac4135eb293cd6ed333971d889af2b742a6eb644f9dcf41640d01c49308",
+      "bytes": 5029
+    },
+    {
+      "path": "atomic-accounting-semantics/source-pins.json",
+      "sha256": "76ab3b134c2f5378b01211ede88c56662ea1c28c1fbe881787478a1c658bf019",
+      "bytes": 2749
+    },
+    {
+      "path": "atomic-accounting-semantics/static-validation.json",
+      "sha256": "d5bde329458415d386da9b81f477218a5114f364932bcccb91e5368654149318",
+      "bytes": 13301
+    },
+    {
+      "path": "atomic-accounting-semantics/validate_static.py",
+      "sha256": "6910225838486b1d53af29cc6547a6346463937360433f93a0e27288927710a5",
+      "bytes": 5198
+    },
+    {
+      "path": "body-form-semantics/author_manifest.py",
+      "sha256": "c529857e5d0c8584f133f48c553aa24b7f370324c32a38dff96c8ac480dbe77c",
+      "bytes": 29508
+    },
+    {
+      "path": "body-form-semantics/cases.js",
+      "sha256": "180471bf87e871d625acdc530f33d9829a3c6cd676a19747327f796894d4573d",
+      "bytes": 17359
+    },
+    {
+      "path": "body-form-semantics/fixture.js",
+      "sha256": "ab850551d9b005bc0636954aeb2151d46ac0c35d15580665aa157230dabe30a5",
+      "bytes": 8498
+    },
+    {
+      "path": "body-form-semantics/manifest.json",
+      "sha256": "e31598421948f8c190575ce14a8cccfe7a76930797c30c44985d05552d3c95d1",
+      "bytes": 97801
+    },
+    {
+      "path": "body-form-semantics/overlap-audit.json",
+      "sha256": "c5683224ae4738ac56f331be8dbac1d760320cd4284d3193a9c36c37d3918ee5",
+      "bytes": 11895
+    },
+    {
+      "path": "body-form-semantics/schedule.json",
+      "sha256": "363f24c8b5caba3cba816c1fb6b72f56bdf56abcb6df71e28cc3945a6bc23352",
+      "bytes": 5196
+    },
+    {
+      "path": "body-form-semantics/source-pins.json",
+      "sha256": "77d539f056c98d55c029a953d53d0e9022bc8da7aa513df9dad0ccabb20227ba",
+      "bytes": 7774
+    },
+    {
+      "path": "body-form-semantics/static-validation.json",
+      "sha256": "7bf862330b490dcbea41d267019a7e9be423e3bc7230f70029e9b134456f92f5",
+      "bytes": 1728
+    },
+    {
+      "path": "body-form-semantics/validate_static.py",
+      "sha256": "c1d272392639042042e2984ae7a2fc2445dce5cfc5a88915582fda29baa8e386",
+      "bytes": 4679
+    },
+    {
+      "path": "body-form-semantics/wrangler.json",
+      "sha256": "b7df0404d43d144186263a48409811dc97fc50df5e85d6584f99a3a54c93239d",
+      "bytes": 113
+    },
+    {
+      "path": "d1-semantics/author_manifest.py",
+      "sha256": "24d14e9df4344224c46a9ac592f34c42763424d7a525fd9e31c7bcd3891589c1",
+      "bytes": 27256
+    },
+    {
+      "path": "d1-semantics/manifest.json",
+      "sha256": "a710fc3341a0ac99cbe9b5dd5847e7fc9c7d355313bac1440415941d7b31780f",
+      "bytes": 144756
+    },
+    {
+      "path": "d1-semantics/overlap-audit.json",
+      "sha256": "e21f935cc5adf0e7d4f9a8939a4268481fd3c2e01c07af9d70a28ac89e53b665",
+      "bytes": 5651
+    },
+    {
+      "path": "d1-semantics/source-pins.json",
+      "sha256": "ec63ab80fe73a534e4b1c587ba534b4a9748947d6cea8c608d8eab083e680ee9",
+      "bytes": 3099
+    },
+    {
+      "path": "d1-semantics/static-validation.json",
+      "sha256": "0e3861af8504fe5357f3874e596188c92b5138ab376e5b732c6b891c648d584a",
+      "bytes": 15758
+    },
+    {
+      "path": "d1-semantics/validate_static.py",
+      "sha256": "ec61b8b2931be15ae54fb9c383d94508fe8f685c7b8e439766d29cdd3711418b",
+      "bytes": 5950
+    },
+    {
+      "path": "d1-semantics/worker.js",
+      "sha256": "4b946d92399b5493a1039165af98b4c2159f08296b211eec6a60ce9680c26525",
+      "bytes": 24547
+    },
+    {
+      "path": "driver/build_profiles.py",
+      "sha256": "78031c9a574f9f0d0acc056ca4282cefc796a225a64bf220ee061be4ad29c40c",
+      "bytes": 11257
+    },
+    {
+      "path": "driver/campaign.py",
+      "sha256": "15669162af10a00119341c928993ac711e44407682a1aac7116f4df06be37956",
+      "bytes": 9795
+    },
+    {
+      "path": "driver/example-plan.json",
+      "sha256": "115c1bd08a669b5e988d3b1eb1c7ef5edf3329acee2fcdf92c93528156123882",
+      "bytes": 4994
+    },
+    {
+      "path": "driver/implementation-handoff.json",
+      "sha256": "0fe63f5041a1eecfaf4cdc74c571fddcd0c3741cecd2f56af2004f80e166caab",
+      "bytes": 2029
+    },
+    {
+      "path": "driver/profile_source.py",
+      "sha256": "4a2b7509897348bf50c1c9ad8bc0aca6a380721b14393c9eacd3b5698547ad61",
+      "bytes": 8277
+    },
+    {
+      "path": "driver/profiles.json",
+      "sha256": "34b3257e19cdddc3dbe3f50b1a051fbdbeba8726ac57cec05db84159f0f89139",
+      "bytes": 289313
+    },
+    {
+      "path": "driver/receipts.py",
+      "sha256": "7a9b56d550380f33cc342f669ca0a9a7ff371d2294acad8551e92e267a5ca99f",
+      "bytes": 27571
+    },
+    {
+      "path": "driver/schemas/receipt.schema.json",
+      "sha256": "fe553fdc324509897d9df47a4ea323292e8fd2757caa0a4fdc4c6c9369bea3b4",
+      "bytes": 6904
+    },
+    {
+      "path": "driver/schemas/run-plan.schema.json",
+      "sha256": "aa83a04c398a04fd1baa2b482d40f8eb3534663f667d7d09beddb6dd816cf762",
+      "bytes": 20340
+    },
+    {
+      "path": "driver/static-selfcheck.json",
+      "sha256": "9b9d9bdc4a1bcaf53ef2cf9fd0d9522eee0e17784d8085793f213aa86bb9d3fe",
+      "bytes": 3958
+    },
+    {
+      "path": "driver/tests/__init__.py",
+      "sha256": "e4ff55975875b1e0734e0f7d9d24d99f6985f3c0d93dbdd780065ad905ac0466",
+      "bytes": 53
+    },
+    {
+      "path": "driver/tests/test_driver.py",
+      "sha256": "e7520ee2bec3d5e9d0dbd384012606c38fbeedd5283b588115c942b8bd27aed1",
+      "bytes": 26916
+    },
+    {
+      "path": "driver-r002/PREDECESSOR-example-plan.json",
+      "sha256": "115c1bd08a669b5e988d3b1eb1c7ef5edf3329acee2fcdf92c93528156123882",
+      "bytes": 4994
+    },
+    {
+      "path": "driver-r002/PREDECESSOR-implementation-handoff.json",
+      "sha256": "0fe63f5041a1eecfaf4cdc74c571fddcd0c3741cecd2f56af2004f80e166caab",
+      "bytes": 2029
+    },
+    {
+      "path": "driver-r002/PREDECESSOR-static-selfcheck.json",
+      "sha256": "9b9d9bdc4a1bcaf53ef2cf9fd0d9522eee0e17784d8085793f213aa86bb9d3fe",
+      "bytes": 3958
+    },
+    {
+      "path": "driver-r002/build_predecessor.py",
+      "sha256": "78031c9a574f9f0d0acc056ca4282cefc796a225a64bf220ee061be4ad29c40c",
+      "bytes": 11257
+    },
+    {
+      "path": "driver-r002/build_profiles.py",
+      "sha256": "eac7361cb8945dd08177e21ce41deef9521dd20f265e1d0de6887f64ed60531a",
+      "bytes": 10997
+    },
+    {
+      "path": "driver-r002/campaign.py",
+      "sha256": "d95df47222bcc4a24c35b2603614e1eadf7e0c9b0a48dc7604412be29dc7713a",
+      "bytes": 14702
+    },
+    {
+      "path": "driver-r002/design.json",
+      "sha256": "8d852d4951bb9f7ce2be1666d2621b17765d2c2123a77e7774aae615c6d249da",
+      "bytes": 2947
+    },
+    {
+      "path": "driver-r002/implementation-handoff.json",
+      "sha256": "cac6af7e53aaddf479ed1026088643026ce69be9e67174605ff1807fa3492851",
+      "bytes": 2936
+    },
+    {
+      "path": "driver-r002/new_profiles.py",
+      "sha256": "5373ff7a447208c71b10a8a48676fe9d3000ff25d69b7e19ba0ed9604dc3af3f",
+      "bytes": 10261
+    },
+    {
+      "path": "driver-r002/new_receipts.py",
+      "sha256": "0a9a5e58878089c384ca83256e818e0f368644e6a25814b6ff65aff7b68f4cf3",
+      "bytes": 11236
+    },
+    {
+      "path": "driver-r002/profile_source.py",
+      "sha256": "ef0cfbb5bbec011f5034b89d7224498d267e6a02e1cff3107a3a04c1dd8e622a",
+      "bytes": 8430
+    },
+    {
+      "path": "driver-r002/profiles.json",
+      "sha256": "9e4a3148afe224c1db87e97ea2f4ec999b3068a606e2572e0f3d1480c2393435",
+      "bytes": 820967
+    },
+    {
+      "path": "driver-r002/receipts.py",
+      "sha256": "cc509bdcf91826930043843b305c561bd700d18441dde27f76d0cbde1eba5abd",
+      "bytes": 28207
+    },
+    {
+      "path": "driver-r002/schemas/receipt.schema.json",
+      "sha256": "fe553fdc324509897d9df47a4ea323292e8fd2757caa0a4fdc4c6c9369bea3b4",
+      "bytes": 6904
+    },
+    {
+      "path": "driver-r002/schemas/run-plan.schema.json",
+      "sha256": "aa83a04c398a04fd1baa2b482d40f8eb3534663f667d7d09beddb6dd816cf762",
+      "bytes": 20340
+    },
+    {
+      "path": "driver-r002/tests/__init__.py",
+      "sha256": "e4ff55975875b1e0734e0f7d9d24d99f6985f3c0d93dbdd780065ad905ac0466",
+      "bytes": 53
+    },
+    {
+      "path": "driver-r002/tests/test_driver.py",
+      "sha256": "e7520ee2bec3d5e9d0dbd384012606c38fbeedd5283b588115c942b8bd27aed1",
+      "bytes": 26916
+    },
+    {
+      "path": "facet-root-semantics/author_manifest.py",
+      "sha256": "9b71388cf6c9919ed364a0a3a38d2dce2c83278e74b61c5e92e3d849fe4f2a59",
+      "bytes": 19868
+    },
+    {
+      "path": "facet-root-semantics/cases.js",
+      "sha256": "3e0d3a30c5c60b02f026d26d58012c6b3a244df8858e3a2fe40b2f3aa9aea359",
+      "bytes": 11832
+    },
+    {
+      "path": "facet-root-semantics/facets.js",
+      "sha256": "0c1e77551454e2f4ec65e266e0b4e9768e6bac296550e2960d1242d52c0c0e75",
+      "bytes": 6217
+    },
+    {
+      "path": "facet-root-semantics/fixture.js",
+      "sha256": "2843913af8aa84153e792b41e9367175b7e80a5dbf4f78eb18b07d91b58cb147",
+      "bytes": 6871
+    },
+    {
+      "path": "facet-root-semantics/manifest.json",
+      "sha256": "a1615598800adf714f1786dbf6db36365b035d4b9e54a4c56c12e5a427ed7e1f",
+      "bytes": 92170
+    },
+    {
+      "path": "facet-root-semantics/overlap-audit.json",
+      "sha256": "905bfdeee5563ef34bb7bd6c6589c99c92ea6b86edcf5f8482da107c078e9e1b",
+      "bytes": 6704
+    },
+    {
+      "path": "facet-root-semantics/schedule.json",
+      "sha256": "5bc678e591cf45bf9574f79876318a7aa468b552a12b7103b5809f5b22f34218",
+      "bytes": 20586
+    },
+    {
+      "path": "facet-root-semantics/source-pins.json",
+      "sha256": "b25bc6d9a28ffc8535d5d55157ecaad750423e71fa48e7bb81f6f292ba18d326",
+      "bytes": 5225
+    },
+    {
+      "path": "facet-root-semantics/sources.js",
+      "sha256": "809b26affa78b950c747d52b6cd4b350c42672f488ac66c7756a8210d38482d6",
+      "bytes": 6435
+    },
+    {
+      "path": "facet-root-semantics/static-validation.json",
+      "sha256": "88e937d3ae9b526c8a6bd350027d26fdd52d3cc1f0ffa3fc96f2c3fdb49ff8fe",
+      "bytes": 2062
+    },
+    {
+      "path": "facet-root-semantics/validate_static.py",
+      "sha256": "0cf9d87174ad676f3c54bc31296300b05d8163b5f234a6533c8f2671ad0b7e0d",
+      "bytes": 4685
+    },
+    {
+      "path": "facet-root-semantics/wrangler.json",
+      "sha256": "4f9dfe9709f2b270fd74401ad901104086c89b1f3659cdfb71e9d3135c887fe9",
+      "bytes": 372
+    },
+    {
+      "path": "headers-semantics/author_manifest.py",
+      "sha256": "193545c6e74db2b24ce2ae3f3d25594399ae7464acec6ffb8ab538ca0b042f01",
+      "bytes": 14696
+    },
+    {
+      "path": "headers-semantics/cases.js",
+      "sha256": "1bd1c82a6aee68e2558764043487db6a89105e5f4a402ef72190539fcc9d4a96",
+      "bytes": 10403
+    },
+    {
+      "path": "headers-semantics/fixture.js",
+      "sha256": "db81f86f93ee27f81864134f3323405a4410c1672f92531fbd0d780931fdafbf",
+      "bytes": 3425
+    },
+    {
+      "path": "headers-semantics/manifest.json",
+      "sha256": "7ab0ac34b1ab6bcd773176ff2225a2c246ca835b9487d18b774833a4fc3afd88",
+      "bytes": 51739
+    },
+    {
+      "path": "headers-semantics/source-pins.json",
+      "sha256": "33dabad7154ff8f5f39f9733281f1732e8e6bb9c2ebf786ae0b7443d17c45f32",
+      "bytes": 831
+    },
+    {
+      "path": "headers-semantics/static-report.json",
+      "sha256": "5fa775b31c14bdfbbdbf3e4987f8ee4501326b62b39a585c4113055626918e9e",
+      "bytes": 180
+    },
+    {
+      "path": "headers-semantics/validate.py",
+      "sha256": "64df9497d58b94534616b6965bb9704c553212ae3ed21259fb45235c37d12275",
+      "bytes": 1811
+    },
+    {
+      "path": "identity-admission-semantics/author_manifest.py",
+      "sha256": "cb0876ebef169104b822e6d46cd0d14aef6482ec17aff175f2ff49ebe637a8ab",
+      "bytes": 15277
+    },
+    {
+      "path": "identity-admission-semantics/cases.js",
+      "sha256": "7845a408e306d0e2d2b35b94de5b6857e2874220a1623edb23b7faf7107a6ba4",
+      "bytes": 6979
+    },
+    {
+      "path": "identity-admission-semantics/fixture.js",
+      "sha256": "eeb4d839f7c818b31988e205b843f6584c6cfc066b4723dcb8382d7ca8bf5e33",
+      "bytes": 10454
+    },
+    {
+      "path": "identity-admission-semantics/manifest.json",
+      "sha256": "e5eae8135cebe5822551cd30d5fad64d7273726f60d70a8899cd014f3500951e",
+      "bytes": 29656
+    },
+    {
+      "path": "identity-admission-semantics/overlap-audit.json",
+      "sha256": "3449d3f72b169da3637198ec95ac8b75700095227876749d1eae7435b2baf2fa",
+      "bytes": 5473
+    },
+    {
+      "path": "identity-admission-semantics/schedule.json",
+      "sha256": "1bea9576442c175db39a73d0c041d845fa3536a8fc18a29ccf887ccc5f1a330d",
+      "bytes": 2164
+    },
+    {
+      "path": "identity-admission-semantics/source-pins.json",
+      "sha256": "d6cfa6f0f05c36ec335ee32c3951529f5b7c2561a2ae52ea42071f47b80761b2",
+      "bytes": 3153
+    },
+    {
+      "path": "identity-admission-semantics/static-validation.json",
+      "sha256": "3bdc7e95d775f27e990629411a8203ffcfc9bc516f23b770d0ebf7e1b43bd446",
+      "bytes": 7141
+    },
+    {
+      "path": "identity-admission-semantics/validate_static.py",
+      "sha256": "c840c46318c04ee3d6bf6f51d279924a5841dc49de5cdc13b5f41a0693d34e41",
+      "bytes": 5680
+    },
+    {
+      "path": "kv-semantics/author_manifest.py",
+      "sha256": "d5816e1ebbf7e4dc40cb03345d01854b918d4451c0a23e9102ed40ad8f16c66b",
+      "bytes": 23756
+    },
+    {
+      "path": "kv-semantics/manifest.json",
+      "sha256": "f4906cd842457c8b9a75c0e069decbdcb702bfb3789ce06e6e1a55e2929069c9",
+      "bytes": 105818
+    },
+    {
+      "path": "kv-semantics/overlap-audit.json",
+      "sha256": "126330fc158cc1c1cf5106c7bdd3d2c4f58e33f911b1a700c62be9ff96f020f5",
+      "bytes": 2500
+    },
+    {
+      "path": "kv-semantics/source-pins.json",
+      "sha256": "aa075346b51da38f069e6c32150a4675754f47fa56f477fe08fab96803df4174",
+      "bytes": 2542
+    },
+    {
+      "path": "kv-semantics/static-validation.json",
+      "sha256": "e235cbc8bb5edc4f9f75290d37246018b835c1b57c2e552d4d1a98dc39c3db6f",
+      "bytes": 5998
+    },
+    {
+      "path": "kv-semantics/validate_static.py",
+      "sha256": "b627b98d29f5b60911b3aa248cf0ca47576a381cf35eef24f7cb434cf810b8bd",
+      "bytes": 3153
+    },
+    {
+      "path": "kv-semantics/worker.js",
+      "sha256": "87ce92492bd300bbf0763c43d37be1edddfffb41fe9cfb06ffbfe7c348b90ee3",
+      "bytes": 21572
+    },
+    {
+      "path": "os-action-file-store-semantics/author_manifest.py",
+      "sha256": "649672b56e17bfcef8de5877133ee1fd85d63e99f6e233adbb18ac2f1013a207",
+      "bytes": 18177
+    },
+    {
+      "path": "os-action-file-store-semantics/cases.js",
+      "sha256": "c4f467a71fa5a0acbf939fa223d01a13d2c5155b3936e9d5c2dc813b0e2fc238",
+      "bytes": 13878
+    },
+    {
+      "path": "os-action-file-store-semantics/fixture.js",
+      "sha256": "385a2d1bd59f84ec4144199d35f5a9118e8ccf960455528a438de55419b21bce",
+      "bytes": 6664
+    },
+    {
+      "path": "os-action-file-store-semantics/manifest.json",
+      "sha256": "a508a45f186dbca34d7b5cf31505f8a01848f29a9a610278f230b86dee971ed1",
+      "bytes": 40205
+    },
+    {
+      "path": "os-action-file-store-semantics/overlap-audit.json",
+      "sha256": "d1aa3ad157bcb2b1f37a1cd00895be9d14bdd2142952375484b7e0f6ca66e166",
+      "bytes": 5214
+    },
+    {
+      "path": "os-action-file-store-semantics/provenance.json",
+      "sha256": "e6a7177214f13c9bce84808741539db51530ee97e0289d35a5adb9d12d56d23e",
+      "bytes": 4550
+    },
+    {
+      "path": "os-action-file-store-semantics/schedule.json",
+      "sha256": "18776d825227891479707b40459e91ae9d829a917ed0f956993105893fc02437",
+      "bytes": 4481
+    },
+    {
+      "path": "os-action-file-store-semantics/source-pins.json",
+      "sha256": "2a923d48282c0ddb9c472f80fa357b63e6c96bfc08a9e85170196e64d689d959",
+      "bytes": 4461
+    },
+    {
+      "path": "os-action-file-store-semantics/static-report.json",
+      "sha256": "4427fb5750b4324d33cc34d0d061e96007aaadbe747e573d35dd3f0753f82e75",
+      "bytes": 843
+    },
+    {
+      "path": "os-action-file-store-semantics/validate_static.py",
+      "sha256": "8557e256aecc888ba8c3fb689099a8da143a3d3fc9bb478461afa918e741c8ef",
+      "bytes": 8001
+    },
+    {
+      "path": "os-blueprint-composition-semantics/author_vectors.py",
+      "sha256": "262bb1b97681799edefd4b3354e6e9082290ab902b8ea44c8b059c9d75b47792",
+      "bytes": 4335
+    },
+    {
+      "path": "os-blueprint-composition-semantics/cases.js",
+      "sha256": "182fba82b1b1102e3a91efaecd641d6c58b74ee16766b8530f4743e54c9552d4",
+      "bytes": 6773
+    },
+    {
+      "path": "os-blueprint-composition-semantics/draft-source-provenance.json",
+      "sha256": "541d32f100a655b435f887aa6b02bd9ee18a21deeb4bb24c3d7a9d5066e1fcf7",
+      "bytes": 5612
+    },
+    {
+      "path": "os-blueprint-composition-semantics/fixture.js",
+      "sha256": "1be0ff9e7307c1a9d100de2d504ca86678cd0813594a86d50ec91a80159b3969",
+      "bytes": 4320
+    },
+    {
+      "path": "os-blueprint-composition-semantics/golden-inputs.json",
+      "sha256": "11c54a84e6154f5cd2086f374804d6be64597a2ad357fbb5af6f06e7450270fb",
+      "bytes": 12931
+    },
+    {
+      "path": "os-blueprint-composition-semantics/package.json",
+      "sha256": "fab899630d1c161fd8f0a60a7691b1a002c431c92bcd3aadc4d8899b39bb1d97",
+      "bytes": 228
+    },
+    {
+      "path": "os-blueprint-composition-semantics/vectors.js",
+      "sha256": "6b0676002e5f0bf81ae4dc21f5129c876f3ad117d776438cd1c9a357f1c64f3b",
+      "bytes": 13028
+    },
+    {
+      "path": "os-blueprint-composition-semantics/vendor/cloudflare-os/packages/workshop-shared/package.json",
+      "sha256": "40ebcaa6fa117cd3facfe2490efc3a2084d12119f1752cc0c7f17260bc7f47e8",
+      "bytes": 1289
+    },
+    {
+      "path": "os-blueprint-composition-semantics/vendor/cloudflare-os/tsconfig.json",
+      "sha256": "b8e382dff87945f5265812dfdd1652f12067aa9c386bc61b6a52f760a63780b9",
+      "bytes": 707
+    },
+    {
+      "path": "os-git-codec-semantics/author_manifest.py",
+      "sha256": "632c3d2b8ebf6e35852961c7944c188e36161ab21c8e5a2bfa868b81fc6c393c",
+      "bytes": 15343
+    },
+    {
+      "path": "os-git-codec-semantics/author_vectors.py",
+      "sha256": "a86ca4198d27dfe1be0a11fcc562fa2429629d8d05cb61125b0d563b412dcbed",
+      "bytes": 5763
+    },
+    {
+      "path": "os-git-codec-semantics/cases.js",
+      "sha256": "e2e981c22115d5a2931ece9e0a2bef69f91b1c181aa3d9cba46ba71c1d3e0f61",
+      "bytes": 9834
+    },
+    {
+      "path": "os-git-codec-semantics/dependency-lock.json",
+      "sha256": "2a79c5921800b12ad40f5bad0340e48a7caf5af36477f32b9303e93e2b7cdfa2",
+      "bytes": 2018
+    },
+    {
+      "path": "os-git-codec-semantics/fixture.js",
+      "sha256": "1e9fe63ddb8a97a259b41a94a3d4c49335648de10577f3c2b4aff0bdb6e9688c",
+      "bytes": 4481
+    },
+    {
+      "path": "os-git-codec-semantics/golden-inputs.json",
+      "sha256": "c07a32329be83cc2be80ce562960e24a5e07f6f7547c7f94c398c1e2c705e6d6",
+      "bytes": 271635
+    },
+    {
+      "path": "os-git-codec-semantics/manifest.json",
+      "sha256": "30fa9826b963cb0b917bcda33e4167d5eaf4427eb0f4c6d3d5cd81394dba89b0",
+      "bytes": 29175
+    },
+    {
+      "path": "os-git-codec-semantics/overlap-audit.json",
+      "sha256": "8ed745baca336d889db2c77c3f5964575b26a5861b8effae55212e4cfc6d1b7b",
+      "bytes": 66615
+    },
+    {
+      "path": "os-git-codec-semantics/package.json",
+      "sha256": "d0b14e41fc327e9d4f582c79b60484c46631caee29e9f2857ead3a316ac3c8a6",
+      "bytes": 129
+    },
+    {
+      "path": "os-git-codec-semantics/provenance.json",
+      "sha256": "1574413c9c546df6be38b3f3354fe7b798a14b5d4f18e9638db2927d245545fb",
+      "bytes": 1268
+    },
+    {
+      "path": "os-git-codec-semantics/schedule.json",
+      "sha256": "b3836c01dd82fed69aa1b45c4b67e8bc4ce632093914bec130b2c4ab4300de14",
+      "bytes": 2984
+    },
+    {
+      "path": "os-git-codec-semantics/source-pins.json",
+      "sha256": "611ec575003f0540c2056ca0f30dd9a924d92fa2a0e4280fdebaaa04cb223ff9",
+      "bytes": 7930
+    },
+    {
+      "path": "os-git-codec-semantics/static-report.json",
+      "sha256": "ab62cdb2ab23332a1ca6522ac7e54a2a9a84a60ba69d131f120017282b6daa93",
+      "bytes": 1118
+    },
+    {
+      "path": "os-git-codec-semantics/validate_static.py",
+      "sha256": "aeb438ed355e44e7d6d9bab31a74d5daf852e13faaf4982800975323145a91d1",
+      "bytes": 8683
+    },
+    {
+      "path": "os-git-codec-semantics/vectors.js",
+      "sha256": "5cc1ef7e4733d99932ecd4edd0d7e31f74ce3922c35b66c95fe081a71f023a51",
+      "bytes": 271730
+    },
+    {
+      "path": "os-source-inventory/context-setup-4358072-r1/download-provenance.json",
+      "sha256": "7b07aba8c745d0b363360e70244fcf6883b8ed45c17f23ec8222abd8326c9517",
+      "bytes": 1887
+    },
+    {
+      "path": "os-source-inventory/context-setup-4358072-r1/raw/packages/gatekeeper-context/package.json",
+      "sha256": "06bf876ec4611491f1e949c3b7f363fab6f972356be50f2877c6cf6b7ff2223e",
+      "bytes": 2085
+    },
+    {
+      "path": "os-source-inventory/historical-4358072/INITIAL-FIVE-SOURCES.json",
+      "sha256": "1115dd8560a3987922cc97eb556d2d6c25cefeb59fa1ac41bab1b7d42b06e3ee",
+      "bytes": 2967
+    },
+    {
+      "path": "os-source-inventory/historical-4358072/SOURCE-MANIFEST.json",
+      "sha256": "fe3dc1ca7a3f717836d21eda731828376fce928fef9ef2246ec5b5f3df33d64e",
+      "bytes": 18337
+    },
+    {
+      "path": "os-source-inventory/historical-4358072/VERIFICATION.json",
+      "sha256": "55953c7f936fbf77bedce4a29452ca97044a306493f5cd10ac89129c9c5c94aa",
+      "bytes": 634
+    },
+    {
+      "path": "os-source-inventory/historical-4358072/download-provenance.json",
+      "sha256": "af303b5eece351dfa61af434c6cff21d6bd2a306d19ec0c0c1104a6152e32731",
+      "bytes": 10772
+    },
+    {
+      "path": "os-source-inventory/horizon-4358072-r1/download-provenance.json",
+      "sha256": "136783c0bcf0689c8a1c15a67c4ccacdb8f2379897e6e42053c74823c8d52b73",
+      "bytes": 4866
+    },
+    {
+      "path": "os-source-inventory/scheduler-4358072-r1/SOURCE-MANIFEST.json",
+      "sha256": "a1042f7ac2a05ce70efe7d868a122e575202213fe9f4dbc5a4fc3b9959914fb2",
+      "bytes": 10581
+    },
+    {
+      "path": "os-source-inventory/scheduler-4358072-r1/VERIFICATION.json",
+      "sha256": "b51320a4ff82f702e653899b7e20581d64caf2fa618c663491171a191578ec8d",
+      "bytes": 430
+    },
+    {
+      "path": "os-source-inventory/scheduler-4358072-r1/download-provenance.json",
+      "sha256": "22405e43bc9c0401ea35b81f460f4b9518837eba1f372a151296f8c35461f976",
+      "bytes": 9864
+    },
+    {
+      "path": "os-source-inventory/scheduler-4358072-r1/raw/packages/error-reporting/package.json",
+      "sha256": "522a536ca573dae935d9f5b4ce88ceb3fdf8f250485dfdfe23495986a7287ea5",
+      "bytes": 405
+    },
+    {
+      "path": "os-source-inventory/scheduler-4358072-r1/raw/packages/gatekeeper-scheduler/package.json",
+      "sha256": "b2b47c8d8db93ce7de77b551d0cf98baa1c6cca5c75b8371a4d0fd3107c67b39",
+      "bytes": 1531
+    },
+    {
+      "path": "os-source-inventory/scheduler-4358072-r1/raw/packages/observability/package.json",
+      "sha256": "5285c148358dbdafe76aae235dc04a2bf22c165c3df27f5de22087a8fe7c71ab",
+      "bytes": 1230
+    },
+    {
+      "path": "os-typed-storage-semantics/author_manifest.py",
+      "sha256": "82f43dbf5e5303bf5b518f4aee31054de5a0a5195b8738762b4fbea6938144eb",
+      "bytes": 17315
+    },
+    {
+      "path": "os-typed-storage-semantics/cases.js",
+      "sha256": "2b0a192f9bfdf32f3f0e064513c18b3aac1a915b67186ea073e3427c434adea2",
+      "bytes": 14208
+    },
+    {
+      "path": "os-typed-storage-semantics/fixture.js",
+      "sha256": "b90228c2292eafe5253598b111ccf2272743fc1f6f68485f6d8bd454e52cf50f",
+      "bytes": 5605
+    },
+    {
+      "path": "os-typed-storage-semantics/manifest.json",
+      "sha256": "70b236edc39a42d460392d283885be675f1626f589f517b458f667be81946fc7",
+      "bytes": 38944
+    },
+    {
+      "path": "os-typed-storage-semantics/overlap-audit.json",
+      "sha256": "88955f5fc0d6420c39d14f06d89c1d9ac5e225405af4f1cb503da6e1ee262a7f",
+      "bytes": 4222
+    },
+    {
+      "path": "os-typed-storage-semantics/provenance.json",
+      "sha256": "42fcb90c11005a2bdebb0cff20b50fd4db346e200febb5b9e6abb0693f7a4316",
+      "bytes": 1488
+    },
+    {
+      "path": "os-typed-storage-semantics/source-pins.json",
+      "sha256": "3e7611b9de6694a6e2fa1e66007badba6c14f2e936e997b236ab68410900e70d",
+      "bytes": 4849
+    },
+    {
+      "path": "os-typed-storage-semantics/static-report.json",
+      "sha256": "9b54eea29a461c44d6808965af54d67304305922dd9f71fb4438e25f18fdf1f8",
+      "bytes": 680
+    },
+    {
+      "path": "os-typed-storage-semantics/validate_static.py",
+      "sha256": "352b93a7dc56151fdce44c8e812b8ba98a35a33ee747613f6ec828186c5f5a01",
+      "bytes": 4917
+    },
+    {
+      "path": "pipe-cleanup-semantics/author_manifest.py",
+      "sha256": "400e917fb4712507cb3f6e5057910c6a4d0ea1abb3827ae7824723d69d21ab1f",
+      "bytes": 13587
+    },
+    {
+      "path": "pipe-cleanup-semantics/cases.js",
+      "sha256": "c854fc02b5d268af0d7ed55c58df23f3f67954ef36ce23d04b7a3cf21e78638e",
+      "bytes": 12235
+    },
+    {
+      "path": "pipe-cleanup-semantics/fixture.js",
+      "sha256": "9903a92f43f96b3b38046171b7575e99b84eac2ef8e626b2377fb621f5a821b5",
+      "bytes": 9395
+    },
+    {
+      "path": "pipe-cleanup-semantics/manifest.json",
+      "sha256": "02175a33442a86096c05300b11e15c978b58ea6b69a9bb57acaf53ac51dec730",
+      "bytes": 34462
+    },
+    {
+      "path": "pipe-cleanup-semantics/overlap-audit.json",
+      "sha256": "f40c27b7d11e47710ff9172dec25c2264fcf48c00789fc1ebdbb9bb52c6e871f",
+      "bytes": 22604
+    },
+    {
+      "path": "pipe-cleanup-semantics/schedule.json",
+      "sha256": "e867ef043b0e7b965b382c6f27197246428ac345d46c1907ae9bef83b33b9d9d",
+      "bytes": 3198
+    },
+    {
+      "path": "pipe-cleanup-semantics/source-pins.json",
+      "sha256": "35272889f5028c98f570f96ca8001b4e93b2e308c29b99910fe64bfd79bb59b9",
+      "bytes": 6261
+    },
+    {
+      "path": "pipe-cleanup-semantics/static-validation.json",
+      "sha256": "966a9a8145dc8f1f08b2a3394da2b1fbecd4390a4d6d7fb1136ec476ee71ae47",
+      "bytes": 1772
+    },
+    {
+      "path": "pipe-cleanup-semantics/validate_static.py",
+      "sha256": "d9b52ea0b727ad288b462e8f3295fdd597fd1393f8351e45b089b1708a7cfde3",
+      "bytes": 5017
+    },
+    {
+      "path": "pipe-cleanup-semantics/wrangler.json",
+      "sha256": "999ff4362bbaef67fc5f25cc150bea37064d930323074cfc1362c0d2b303196f",
+      "bytes": 116
+    },
+    {
+      "path": "queue-semantics/scope-audit.json",
+      "sha256": "d69162c45cceb43a5464df990ef94cfac27b28f8e988a0c89eef9abdc4113d08",
+      "bytes": 17713
+    },
+    {
+      "path": "queue-semantics/worker.js",
+      "sha256": "eee148fe1468c76e75a0ff48852bb0cb65d2ec34aaa2ea9e483c2993287486b1",
+      "bytes": 20539
+    },
+    {
+      "path": "r2-semantics/author_manifest.py",
+      "sha256": "34fcc69cca1b977bd6df86abcf18d64d9a729a585009ef6212742f0638712ba7",
+      "bytes": 16162
+    },
+    {
+      "path": "r2-semantics/cases.js",
+      "sha256": "c42593afe0ea2d40afcddd122e4a4b91dbcf3a1ae6ce8b70ec5ee208efcfcc54",
+      "bytes": 14668
+    },
+    {
+      "path": "r2-semantics/fixture.js",
+      "sha256": "15abdbedb54e6303b7751fe87bf34b7b6bfdeaad9f8e523f412157db5d61b793",
+      "bytes": 7601
+    },
+    {
+      "path": "r2-semantics/manifest.json",
+      "sha256": "729bd31ba60fb9c6ff47f4689b48d2a21d120ec10e54e5b484647ca6adbd2179",
+      "bytes": 72000
+    },
+    {
+      "path": "r2-semantics/source-pins.json",
+      "sha256": "78e71acb97bf11f7126b3b1f814345e4d14cc697110cb824e3541cdaabfbcb65",
+      "bytes": 928
+    },
+    {
+      "path": "r2-semantics/static-report.json",
+      "sha256": "c3e621e9bf34a46b721b3843ba0009ed05ed6f919dd1e83c4e0330fd965edd70",
+      "bytes": 213
+    },
+    {
+      "path": "r2-semantics/validate_static.py",
+      "sha256": "b52c95507ee71a8ef30156dd8a32549b1cbfcb4283a3591734dbb1c3e7592d4f",
+      "bytes": 1537
+    },
+    {
+      "path": "reviews/atomic-accounting-semantics-review.json",
+      "sha256": "ba79e6a940a0c497277bf34361f3b1ad34a6b1a4c9a638701793cacc4ebd10c8",
+      "bytes": 9371
+    },
+    {
+      "path": "reviews/baseline-inventory-review.json",
+      "sha256": "8ebb424c0bffbc0ba5d0bda9e669f094326bc338cb437c15507444a57025d9da",
+      "bytes": 145357
+    },
+    {
+      "path": "reviews/body-candidate-002-r002-independent-static-check.json",
+      "sha256": "7a002636f227a351b823ec821696770f64d4dea89942e226e4c44a1e163b2fc2",
+      "bytes": 2402
+    },
+    {
+      "path": "reviews/body-candidate-002-r002-source-review.json",
+      "sha256": "1d02eca3639b0a9be74f0e37fd7293b62ec1047eec7750488df79a26b99d111e",
+      "bytes": 11548
+    },
+    {
+      "path": "reviews/body-form-semantics-review.json",
+      "sha256": "1a3807ddb1b0f7c1d81bd25a56c38e0c61c953030da422d8a1d644bf833de35e",
+      "bytes": 10712
+    },
+    {
+      "path": "reviews/body-functional-batch-001-independent-inert-check.json",
+      "sha256": "fb43afb158a77644a22aac187fac2fa714fa3dcf70365dd2dcfcff005c3e496a",
+      "bytes": 4336
+    },
+    {
+      "path": "reviews/body-functional-batch-001-independent-result-check.json",
+      "sha256": "81daf41090a20e0fc5ab3e098bf9c8ed7bdbcc9fcfc3f4913e0a0918ee5154e0",
+      "bytes": 27874
+    },
+    {
+      "path": "reviews/body-functional-batch-001-plan-review.json",
+      "sha256": "af1bde87877db90c5a97f00b3dcef15888168f35f15abce524d90a0225a0b707",
+      "bytes": 4214
+    },
+    {
+      "path": "reviews/body-functional-batch-001-result-review.json",
+      "sha256": "c303c553d3797ec09d4ac5f1c2d428134c1add538264ca7a5caed00165f2e1bb",
+      "bytes": 33295
+    },
+    {
+      "path": "reviews/body-functional-batch-001-source-review.json",
+      "sha256": "ad3321d27f19380fc41bc7637a6e32e3e8762e030e8fc6645f80459a65c4f453",
+      "bytes": 7990
+    },
+    {
+      "path": "reviews/d1-semantics-independent-audit.json",
+      "sha256": "3a457f2c411e473fd000f636e69a081962d3ae352f48b02fd65b3c538d61569e",
+      "bytes": 16713
+    },
+    {
+      "path": "reviews/d1-semantics-review.json",
+      "sha256": "c6cdb7367eac8cb864520fba365e861793be03ddfd570b61e4a642030f662350",
+      "bytes": 9186
+    },
+    {
+      "path": "reviews/direct-runtime-driver-implementation-review.json",
+      "sha256": "35b26e7c9fc30355c2118979d3e36339f2f5e3a6d4b8f8060723e6407d90f82c",
+      "bytes": 7483
+    },
+    {
+      "path": "reviews/direct-runtime-driver-isolated-selfcheck-review.json",
+      "sha256": "904f733e04613576c860db49dfb2cd9b7b1cad8b52bcb5b22486eeaf827b32ac",
+      "bytes": 4620
+    },
+    {
+      "path": "reviews/direct-runtime-driver-plan-review.json",
+      "sha256": "ce9912d43f4d2fe717fa478013b7d3e5643095cf7ae76dc9d62a4ea82e930d3f",
+      "bytes": 4007
+    },
+    {
+      "path": "reviews/direct-runtime-driver-r002-receipt-profile-interim-review.json",
+      "sha256": "b2694e0331423127e2ec6117164186706c033693d26efc96155fb8d6fe2a5840",
+      "bytes": 5913
+    },
+    {
+      "path": "reviews/direct-runtime-driver-receipt-profile-review.json",
+      "sha256": "aa1f55edc686e763eb2a0c4ce7b569285b5b93895328634286dbaf79edc8d063",
+      "bytes": 13076
+    },
+    {
+      "path": "reviews/facet-root-semantics-independent-audit.json",
+      "sha256": "6f0da2d19e92e4871173d65d27c1f677aae65dc2c23200f279882693e2be89f7",
+      "bytes": 37667
+    },
+    {
+      "path": "reviews/facet-root-semantics-review.json",
+      "sha256": "f09c531798eae5ed346aac70a34d8ef6aeac408cc86cb205de7626f22060dca1",
+      "bytes": 9836
+    },
+    {
+      "path": "reviews/headers-semantics-review.json",
+      "sha256": "28eaaf318220793be282b62c84f95481f4b4a0a3a25e1b2b5e9bc18ac4432bff",
+      "bytes": 7254
+    },
+    {
+      "path": "reviews/identity-admission-semantics-review.json",
+      "sha256": "bf9e7422bb248a7b602faf4fc928e16eb392f783c71ac17275ec3f6a4c8356f2",
+      "bytes": 7833
+    },
+    {
+      "path": "reviews/kv-semantics-review.json",
+      "sha256": "f77b52015b1c1ed4d9395ec5c5971514a3fbdccdf34e02194f93cbbb0062c652",
+      "bytes": 8321
+    },
+    {
+      "path": "reviews/ordinary-os-horizon-review.json",
+      "sha256": "af1addcac35b4feadcd78aba8fa5080323cd60cedd49eec8a7043d8821938c43",
+      "bytes": 4637
+    },
+    {
+      "path": "reviews/os-action-file-store-semantics-campaign-review.json",
+      "sha256": "45847c75f52ec33fd11698b73c9f6fa145383ac3a68f3d021d514e3ddd54a9a7",
+      "bytes": 6052
+    },
+    {
+      "path": "reviews/os-action-file-store-semantics-review.json",
+      "sha256": "101175409def339572f6618f3c351ba0fee80b73b77f3b19819e333a7998a7f7",
+      "bytes": 12562
+    },
+    {
+      "path": "reviews/os-action-file-store-semantics-source-oracle-review.json",
+      "sha256": "4eb098bd6223308e1ab53a30093f9ad50344549d52378a2cd6e72faa512f2b13",
+      "bytes": 16376
+    },
+    {
+      "path": "reviews/os-git-codec-semantics-review.json",
+      "sha256": "c9f9a454519813ac2bcab8453ce7417f68a961c626d24ac22a6ad08352205547",
+      "bytes": 14070
+    },
+    {
+      "path": "reviews/os-git-codec-semantics-source-oracle-review.json",
+      "sha256": "b94bfec413f2a935c0e7d014d15f2ebc14051358095b7efa24040651b4d7b7ca",
+      "bytes": 19210
+    },
+    {
+      "path": "reviews/os-typed-storage-semantics-review.json",
+      "sha256": "14ca6bcc07b6adf1f146693850978c4f968e6cf46bac14a45b4be71bc037729e",
+      "bytes": 8611
+    },
+    {
+      "path": "reviews/pinned-os-source-inventory-review.json",
+      "sha256": "8517ebfa1f03082d7a51e612c24da102c622c4fdcf3ff8b2286b10a4aaeee930",
+      "bytes": 2026
+    },
+    {
+      "path": "reviews/pipe-cleanup-semantics-review.json",
+      "sha256": "2039d797506f5a0682e0abffc2a9d8c43f6f6d85e039412d3539dc3e8b27eb83",
+      "bytes": 6745
+    },
+    {
+      "path": "reviews/r2-semantics-review.json",
+      "sha256": "385d5eacbb19cd15c56a85552e2d698c8baaa658e7c83c162ce8e500c070b0ca",
+      "bytes": 9667
+    },
+    {
+      "path": "reviews/revisions/tranche-001-metadata-r2/kv-semantics-review.json",
+      "sha256": "df4408d44ad5f730a3700e4c1b101a1887eab8ea9040d8934e73f767ea7f652f",
+      "bytes": 8330
+    },
+    {
+      "path": "reviews/revisions/tranche-001-metadata-r2/url-semantics-review.json",
+      "sha256": "1828c3d466d1f98be30d6d39ffb4225783932c699cec2f0cb24dad5d376b7346",
+      "bytes": 9673
+    },
+    {
+      "path": "reviews/scheduler-source-integrity-review.json",
+      "sha256": "172c7f341212218375560c19a0410a5ce4f4a429a698b3d338928d782741120b",
+      "bytes": 4567
+    },
+    {
+      "path": "reviews/source-predictions-index-review.json",
+      "sha256": "85b64d7a8ead180a52a8d6bafe6c3f18c51f3f22b292154f910fc02f9ada50e8",
+      "bytes": 1718
+    },
+    {
+      "path": "reviews/storage-sql-semantics-review.json",
+      "sha256": "81dfb7cd7a743ccb87c93144b6fb21c2d227be2b50aea33b06729f19c14e49d5",
+      "bytes": 8406
+    },
+    {
+      "path": "reviews/stream-backpressure-semantics-review.json",
+      "sha256": "28f32477b60ad987cc5022d9566f46b6d679375e9e8667dc0ccd8d22b0a22551",
+      "bytes": 8648
+    },
+    {
+      "path": "reviews/u201-functional-pilot-attempt-001-review.json",
+      "sha256": "1f8da20b099689627bc7bed5cc173e6c6ded23ef0be86fc72711918bee0dc4b2",
+      "bytes": 2460
+    },
+    {
+      "path": "reviews/u201-functional-pilot-attempt-002-review.json",
+      "sha256": "f9319cf174973e3f5afb6b56964839fcfb5ac03a59dcee7b358bf1b30231c01e",
+      "bytes": 6075
+    },
+    {
+      "path": "reviews/u201-functional-pilot-build-input-review.json",
+      "sha256": "663432f65f52ea55dc0beaca7791cc40fae168ba844b75c8a0f2cee6127980d7",
+      "bytes": 3656
+    },
+    {
+      "path": "reviews/u201-functional-pilot-plan-r2-review.json",
+      "sha256": "7effde3952803e1ab5b22cd35527af957db497192a1bc079f2e75a942711fa66",
+      "bytes": 2995
+    },
+    {
+      "path": "reviews/u201-functional-pilot-supervisor-r2-review.json",
+      "sha256": "1f158a1e6ca3f36c72681dda68f1b995708231f7b1012db7d4cb8c734999154e",
+      "bytes": 2439
+    },
+    {
+      "path": "reviews/u201-functional-pilot-supervisor-review.json",
+      "sha256": "22081772eee52858548eb0b801d7981aa837a1865cd248b8f4a4b4cffd58009d",
+      "bytes": 4539
+    },
+    {
+      "path": "reviews/url-candidate-001-source-review.json",
+      "sha256": "d7094c3f069f71cf4aec2f65fdcfa9e249118b3c7e3274386a3099eeb3bf593b",
+      "bytes": 6824
+    },
+    {
+      "path": "reviews/url-headers-functional-batch-001-result-review.json",
+      "sha256": "9dea1476a253a4dada35f1054e940a6e5ddaf41880830d8bf89eca35d42a2d13",
+      "bytes": 14572
+    },
+    {
+      "path": "reviews/url-headers-functional-batch-002-recorder-revision-review.json",
+      "sha256": "679341540899a9eb4e302ee2f0bb236071fc56026362a1590924f6d381ee4da7",
+      "bytes": 4234
+    },
+    {
+      "path": "reviews/url-headers-functional-batch-002-result-review.json",
+      "sha256": "9ee976d142ae2057c4f5d5a3a844dfa1d48c3fe3915cde4eb01db6e5baefebee",
+      "bytes": 29636
+    },
+    {
+      "path": "reviews/url-headers-functional-batch-003-independent-inert-check.json",
+      "sha256": "04cb9b06d43b4a9f2aa0012e22c85ab89e661824756818589ed118aff34ae1dd",
+      "bytes": 1716
+    },
+    {
+      "path": "reviews/url-headers-functional-batch-003-independent-result-check.json",
+      "sha256": "6e4e373d2f3f6185a5ec61c3c6528d5be42c4a01954647d2c4f0342d7d62335d",
+      "bytes": 24570
+    },
+    {
+      "path": "reviews/url-headers-functional-batch-003-provenance-review.json",
+      "sha256": "5ff68fe2486bf7dc7b2bd601a9d765ae478616813259f8365481a73685ec0f9a",
+      "bytes": 6576
+    },
+    {
+      "path": "reviews/url-headers-functional-batch-003-result-review.json",
+      "sha256": "f07e1a0c4b3b1b24f2672a812d64216bdf357b62d489082f323d425f2da7b3e0",
+      "bytes": 29449
+    },
+    {
+      "path": "reviews/url-headers-functional-batch-plan-review.json",
+      "sha256": "955b79823a753a72526ebe03b7c0561db4007def07265dbc5bcc7f6d9b29dc08",
+      "bytes": 3401
+    },
+    {
+      "path": "reviews/url-headers-functional-batch-supervisor-review.json",
+      "sha256": "cf035bfb62814688104f4578e9410592f7552c9ef4c16155820fc8e03035d29d",
+      "bytes": 6137
+    },
+    {
+      "path": "reviews/url-semantics-review.json",
+      "sha256": "13b98102e846487ca6304032863d1edb29b691c8649ebdea0ad53161ac6da486",
+      "bytes": 9664
+    },
+    {
+      "path": "reviews/verify-batch003-result-readonly.py",
+      "sha256": "07e7445e0b241f99a10532b7cef8d80ff99b39d8fe81f9a3a1d031c666e7537b",
+      "bytes": 9647
+    },
+    {
+      "path": "reviews/verify-body-batch001-result-readonly.py",
+      "sha256": "a80c6c686de15999d274dde198a4089241658f68b8f652f94db7a2625778c779",
+      "bytes": 9201
+    },
+    {
+      "path": "storage-sql-semantics/author_manifest.py",
+      "sha256": "f7f0569495f064fd536f5823ad75ca49b0971ca7a18dd64083ea5a8e9efb8b6c",
+      "bytes": 16251
+    },
+    {
+      "path": "storage-sql-semantics/cases.js",
+      "sha256": "1dec37fd6a3caae833bbc95620f407a7d866836410275c1b4b7637ae468bb7f9",
+      "bytes": 12968
+    },
+    {
+      "path": "storage-sql-semantics/fixture.js",
+      "sha256": "88a9b8be2e40781bcf1502c79d632723b89fd9a5f1d6a44f5110cea11fe1bbc6",
+      "bytes": 5514
+    },
+    {
+      "path": "storage-sql-semantics/manifest.json",
+      "sha256": "25b49a3bc5158a1b8277be37a06ef424e24da72c8ada091d9bd57d2c68d8bb7c",
+      "bytes": 64972
+    },
+    {
+      "path": "storage-sql-semantics/source-pins.json",
+      "sha256": "ebdd87343bd3ce54a815516c5a8587bf9c6f96b098b5f8610e128fffe94f017c",
+      "bytes": 615
+    },
+    {
+      "path": "storage-sql-semantics/static-report.json",
+      "sha256": "7bf3fddbc840bc0cb4c854ab4758b320c7cf7c68183bee24d94a64f4f5031b90",
+      "bytes": 202
+    },
+    {
+      "path": "storage-sql-semantics/validate_static.py",
+      "sha256": "8b10dc5b9359f016c3ea40d68847faac8ea9869a57e554424a0f0aea978ac729",
+      "bytes": 1353
+    },
+    {
+      "path": "stream-backpressure-semantics/author_manifest.py",
+      "sha256": "d57ec5b17358cd2502388f75815f8468327e9fa1dbb825cc2a09fdb5e322b750",
+      "bytes": 12242
+    },
+    {
+      "path": "stream-backpressure-semantics/cases.js",
+      "sha256": "5b0602798844955748dc1edf1779e75aa09c9d1f08fb2c7252e5703e033f0964",
+      "bytes": 18930
+    },
+    {
+      "path": "stream-backpressure-semantics/fixture.js",
+      "sha256": "d3719b882f4c3725bd59187adce6cbb2b547da70949ed2b8ee9ec101a3138c6a",
+      "bytes": 8401
+    },
+    {
+      "path": "stream-backpressure-semantics/manifest.json",
+      "sha256": "e7b601830183b60736e3a17f47553c808674a7fcacd422e21694a98057158783",
+      "bytes": 43034
+    },
+    {
+      "path": "stream-backpressure-semantics/normative-verification.json",
+      "sha256": "190daf3b75a2adb68e7d2fe25e9051dfe37467d7b9728162931e98cb5633a0e7",
+      "bytes": 2260
+    },
+    {
+      "path": "stream-backpressure-semantics/overlap-audit.json",
+      "sha256": "3fe05c2f5a9e62539cd2c1465ea47fc5de1ab9bbc91fc1f384ba8610a90c995d",
+      "bytes": 29190
+    },
+    {
+      "path": "stream-backpressure-semantics/schedule.json",
+      "sha256": "e96c422213fdf31c7cce593944557ab1ec339c5426389d512b1f653a6412aa72",
+      "bytes": 4350
+    },
+    {
+      "path": "stream-backpressure-semantics/source-pins.json",
+      "sha256": "fb7f3a8082021306db0199f9947611ea84886d1996bdfd3036496f0400d5b16f",
+      "bytes": 10384
+    },
+    {
+      "path": "stream-backpressure-semantics/static-validation.json",
+      "sha256": "39b8e2c61622709cd52d3d046301e02cb5bd0308b572c453a2d8dd49900a83b5",
+      "bytes": 2315
+    },
+    {
+      "path": "stream-backpressure-semantics/validate_static.py",
+      "sha256": "f58e6959e46fb1610634863f421042b7847875626635fcd8d8c06095e14fe8d6",
+      "bytes": 8371
+    },
+    {
+      "path": "stream-backpressure-semantics/wrangler.json",
+      "sha256": "78f79258adf247aa77225c204efe4819c975cd601c255025900f66917596f54d",
+      "bytes": 123
+    },
+    {
+      "path": "url-semantics/author_manifest.py",
+      "sha256": "53a1aee514699bb65e446600a0879f27563c95b448b7ab1cda6883e01b6ad191",
+      "bytes": 31582
+    },
+    {
+      "path": "url-semantics/cases.js",
+      "sha256": "05079e449a0839cbe790f111ad63e5155a8482d16fcb66c71a7e111ffa4c2276",
+      "bytes": 16421
+    },
+    {
+      "path": "url-semantics/fixture.js",
+      "sha256": "ccbb1cf21c3f719aa06ed64b498fc396f00736cc96d7cbd2aea437f2cc221ca6",
+      "bytes": 2113
+    },
+    {
+      "path": "url-semantics/manifest.json",
+      "sha256": "d61fdb1b4d070ae5aff0ad1456c39d2842c341f9737a20b67c67c251f638ae91",
+      "bytes": 107854
+    },
+    {
+      "path": "url-semantics/overlap-audit.json",
+      "sha256": "3f0d128064bb3f76212378ce724a3a5037aaf781247bbb8c19bcae152640cb3f",
+      "bytes": 17388
+    },
+    {
+      "path": "url-semantics/schedule.json",
+      "sha256": "ed241045ee78c9efef4d8c6440119aa813929f802cf4eafcfedfc776db2f1ee1",
+      "bytes": 5403
+    },
+    {
+      "path": "url-semantics/source-pins.json",
+      "sha256": "2254e29189caf162853607947a47a2e8097302aa3992508bda758ce1d07da641",
+      "bytes": 8954
+    },
+    {
+      "path": "url-semantics/static-validation.json",
+      "sha256": "83227c6b6c8b21b7d23e78490e55d1a286d121fadb55530d0afb4ffffbf8de2c",
+      "bytes": 1631
+    },
+    {
+      "path": "url-semantics/validate_static.py",
+      "sha256": "007bac5bf1a54acfe0388aea1c4c859e2b6018169d7cb8fc3efb0f60298cab5f",
+      "bytes": 4631
+    },
+    {
+      "path": "url-semantics/wrangler.json",
+      "sha256": "8f5ef34ebe9550ac822ff9dd4589c4cf4a5ee9fd73e14e9d7b00cf1e47c91e61",
+      "bytes": 107
+    },
+    {
+      "path": "verify_campaign.py",
+      "sha256": "7b02216ad0f3cc5d5fb45713ac7ca71db3e2782c0e3051ce006e33e4ba368700",
+      "bytes": 4115
+    },
+    {
+      "path": "verify_tranche.py",
+      "sha256": "96dcbead6a91ab2e7636386e0b6dcf5aae015a0e63a096b9d4a0c627dba4ab64",
+      "bytes": 2322
+    }
+  ]
+}

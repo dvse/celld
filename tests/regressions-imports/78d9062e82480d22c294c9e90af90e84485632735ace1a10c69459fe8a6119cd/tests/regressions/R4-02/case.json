@@ -1,0 +1,1 @@
+{"id":"R4-02","description":"Authenticated pre-dispatch failure cannot replace a resolved live persistent capability","command":["node","run.mjs"],"runtimes":["celld"],"profiles":["quick","full"],"timeout_seconds":120,"expected_failure":null}

@@ -1,0 +1,54 @@
+{
+  "id": "logic/lease-acquisition/live-join-of-dormant-claim-waits-for-actual-capacity-release",
+  "layer": "logic",
+  "behaviour": "lease-acquisition",
+  "title": "Live join of dormant claim waits for actual capacity release",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic",
+      "legacy_id": "corpus/routing-acquisition-logic/N017"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+      "sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/routing-acquisition-logic/N017"
+  ],
+  "adapter": "native",
+  "corpus_id": "N017",
+  "corpus_wave": "routing-acquisition-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/lease-acquisition/fixtures/decision-cases/tests/routing_acquisition.rs",
+  "source_sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06",
+  "test_filter": "n017_live_join_of_dormant_claim_waits_for_actual_capacity_release",
+  "contract": {
+    "intent": "Live join of dormant claim waits for actual capacity release",
+    "preconditions": [
+      "Fresh test-owned State; only frozen production celld_logic::on_event mutates it.",
+      "a Resident1 active request1; full residency1; handoff b/2 has dormant CAS1.",
+      "All completion operation IDs and timers come from the exact emitted effects; late IDs are previously issued IDs, never fabricated authority.",
+      "All input storage/lease/proof replies are synthetic facts. No executor, network, runtime, or fleet service is simulated as empirical evidence.",
+      "Static source/pin check and independent review required; compiler, test and runtime have not been launched."
+    ],
+    "trace": [
+      "Join live b/3 while CAS pending",
+      "Apply CAS; assert WaitingCapacity and no Restore",
+      "Cancel handoff2 leaving live3",
+      "Finish a/1; prove eviction; assert occupancy1 and no completion3",
+      "Stop a runtime and capture b Restore without another CAS",
+      "Publish b epoch1; finish3"
+    ],
+    "oracle": "Joining live demand cannot exceed cap or repeat a successful claim",
+    "cleanup": "Finish every locally completed request and cancel each remaining ownership-only waiter as shown. H::done checks no pending requests, active cells, activation/capacity queues, activation/eviction/release/adoption permits, or nonterminal phases. Drop isolated in-memory State; no external resources created. Stored timer descriptors are never launched.",
+    "implementation": "tests/routing_acquisition.rs:n017_live_join_of_dormant_claim_waits_for_actual_capacity_release"
+  },
+  "selector": "N017"
+}

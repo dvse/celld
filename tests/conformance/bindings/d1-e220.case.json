@@ -1,0 +1,204 @@
+{
+  "adapter": "http",
+  "behaviour": "bindings",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "application_relevance": "Preserve a celld-only database identity when an application later introduces an explicit matching ID.",
+    "artifact": "worker.js",
+    "cleanup": {
+      "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+      "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+      "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+      "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+    },
+    "cross_wave_overlap": null,
+    "distinctness": "Fallback precedence and fallback-to-explicit identity convergence differ from E219 explicit-id aliasing. This is celld configuration behavior, not Cloudflare provisioning behavior.",
+    "entrypoint": "GET /case/E220",
+    "family": "d1-semantics",
+    "fixed_finite_trace": [
+      "Seed FALLBACK, whose database_id is omitted.",
+      "Read through a second omitted-id binding with the same database_name.",
+      "Write through EXPLICIT_NAME whose database_id equals that fallback name.",
+      "Read both original omitted-id bindings."
+    ],
+    "fixture_line_range": [
+      269,
+      278
+    ],
+    "fixture_slice_sha256": "5f2b6c91a8e1f186cdf09a871daf42533d3c15e775453c4211490c6e93d8eddc",
+    "id": "E220",
+    "intent": "Preserve a celld-only database identity when an application later introduces an explicit matching ID.",
+    "limits": {
+      "external_response_capture_bytes": 1048576,
+      "external_total_request_deadline_seconds": 30,
+      "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+      "maximum_application_tables": 1,
+      "maximum_batch_statements": 5,
+      "maximum_bound_parameters_per_statement": 5,
+      "maximum_bound_scalar_or_blob_bytes": 64,
+      "maximum_exec_statements": 4,
+      "maximum_rows_in_any_fixture_table": 4,
+      "no_internal_Promise_race_timeout": true,
+      "public_dispatches_per_phase_enforced": 32
+    },
+    "limits_of_evidence": [
+      "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+      "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+      "Successful batch dependencies do not establish concurrent-observer atomicity.",
+      "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+    ],
+    "oracle": {
+      "assertions": [
+        "two omitted-id declarations share their database_name identity",
+        "an explicit database_id equal to the fallback name addresses the same database",
+        "no-id aliases retain shared identity after explicit-id access"
+      ],
+      "claim": "fleet uses database_name only when database_id is absent; the resulting identity string equals an explicit id with the same bytes.",
+      "executable_assertion_source": [
+        "c.eq(await c.first(alias.prepare(`SELECT label FROM ${t} WHERE id=1`), \"same name no-id read\"), {label:\"by-name\"}, \"two omitted-id declarations share their database_name identity\");",
+        "c.eq(await c.first(db.prepare(`SELECT label FROM ${t} WHERE id=1`), \"fallback after explicit write\"), {label:\"explicit-id\"}, \"an explicit database_id equal to the fallback name addresses the same database\");",
+        "c.eq(await c.first(alias.prepare(`SELECT label FROM ${t} WHERE id=1`), \"fallback alias after explicit write\"), {label:\"explicit-id\"}, \"no-id aliases retain shared identity after explicit-id access\");"
+      ],
+      "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+      "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed.",
+      "successful_assertion_count": 3
+    },
+    "owned_resources": [
+      {
+        "binding": "FALLBACK",
+        "database_identity": "d1-next-name",
+        "table": "d1_next_e220"
+      }
+    ],
+    "review_accepted": false,
+    "runtime_execution_count": 0,
+    "schedule": {
+      "case_requests": 1,
+      "cleanup_binding_calls_exact_on_success": 2,
+      "faults": 0,
+      "main_phase_binding_calls_exact_on_success": 5,
+      "main_phase_dispatch_labels_in_order": [
+        "seed name identity",
+        "same name no-id read",
+        "explicit identity write",
+        "fallback after explicit write",
+        "fallback alias after explicit write"
+      ],
+      "maximum_in_flight_public_calls": 1,
+      "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+      "restarts": 0,
+      "retries": 0,
+      "setup_binding_calls_exact_on_success": 1
+    },
+    "source_refs": [
+      {
+        "key": "api",
+        "line_ranges": [
+          [
+            1,
+            87
+          ]
+        ],
+        "path": "celld-os-project/celld/docs/services/d1.md",
+        "slices_sha256": [
+          "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+        ]
+      },
+      {
+        "key": "deploy",
+        "line_ranges": [
+          [
+            1199,
+            1257
+          ],
+          [
+            1465,
+            1513
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/deploy.rs",
+        "slices_sha256": [
+          "f29b01425ed357183a89f8e9da84c1da67c2ce92b7eaaef3f8532731b6da6b65",
+          "d7fb23cdd9182ce8c999361bbb4790c441d55ee8b9e7c927dbd4c7da6de8920f"
+        ]
+      },
+      {
+        "key": "fleet",
+        "line_ranges": [
+          [
+            846,
+            861
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/fleet.rs",
+        "slices_sha256": [
+          "9da01647505e8dbfcc8445e3d28650a05b751c0dcee155162bf2a3c011a71683"
+        ]
+      },
+      {
+        "key": "bootstrap",
+        "line_ranges": [
+          [
+            659,
+            664
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/js/bootstrap.rs",
+        "slices_sha256": [
+          "393a8be47bda758c8fae0be1449c993fffbfccbf9b5700de4fa698a3506e3c85"
+        ]
+      },
+      {
+        "key": "database",
+        "line_ranges": [
+          [
+            8448,
+            8491
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/js/harness.js",
+        "slices_sha256": [
+          "d77cc49a62eb8dcae987ad5324e3d0831f91412d02bfdb0b5c3ac0992e263ecb"
+        ]
+      }
+    ],
+    "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+    "surface": "public env D1 binding APIs only",
+    "sut": "direct celld only",
+    "title": "Resolve omitted IDs through database names"
+  },
+  "corpus_id": "E220",
+  "corpus_wave": "d1-semantics",
+  "fixture": "tests/conformance/bindings/fixtures/d1-semantics",
+  "id": "conformance/bindings/d1-e220",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/d1-semantics/E220"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/d1-semantics/E220",
+      "manifest_sha256": "a710fc3341a0ac99cbe9b5dd5847e7fc9c7d355313bac1440415941d7b31780f",
+      "review_sha256": "c6cdb7367eac8cb864520fba365e861793be03ddfd570b61e4a642030f662350",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/d1-semantics",
+      "tranche": "002"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/E220",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "E220",
+  "source": "tests/conformance/bindings/fixtures/d1-semantics/worker.js",
+  "source_sha256": "4b946d92399b5493a1039165af98b4c2159f08296b211eec6a60ce9680c26525",
+  "title": "Resolve omitted IDs through database names"
+}

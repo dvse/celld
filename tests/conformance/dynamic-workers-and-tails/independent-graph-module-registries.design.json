@@ -1,0 +1,45 @@
+{
+  "id": "conformance/dynamic-workers-and-tails/independent-graph-module-registries",
+  "layer": "conformance",
+  "behaviour": "dynamic-workers-and-tails",
+  "title": "Independent graph module registries",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/module-graph-stress",
+      "legacy_id": "module-graph-stress/M014"
+    }
+  ],
+  "corpus_wave": "module-graph-stress",
+  "corpus_id": "M014",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "M014",
+    "intent": "Independent graph module registries",
+    "failure_hypothesis": "Same module names in separate workers can alias module state or initialization gates.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Initialize two separate main recipients with same module names and different state.",
+      "Start one lazy import in each and witness each active ID/gate.",
+      "Release right, read held left state, then release left and recheck right."
+    ],
+    "stress": "Two graphs, one held import each, identical module and gate names.",
+    "oracle": "Right resolves11 while left stays1/held; left later resolves2; right stays11.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M014",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request independent recipients; two receiver invocation witnesses",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  }
+}

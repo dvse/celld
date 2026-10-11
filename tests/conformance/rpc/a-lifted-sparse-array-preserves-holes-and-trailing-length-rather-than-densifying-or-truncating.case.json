@@ -1,0 +1,52 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "Dispose array result in finally and shared codecCleanup; fixture teardown if assertion fails before full revival",
+    "intent": "A lifted sparse array preserves holes and trailing length rather than densifying or truncating",
+    "oracle": "Length 8; keys exactly 2 and 4; indices 0 and 7 absent; target label sparse",
+    "preconditions": "COMMON; sparse array length 8 has only indices 2 and 4, the latter a target",
+    "source_contracts": [
+      "SC-CLONE",
+      "SC-PROJECT",
+      "SC-LIFT",
+      "SC-REVIVE"
+    ],
+    "trace": [
+      "receive sparse array with nested capability",
+      "compare length and exact enumerable index keys",
+      "verify holes at both ends",
+      "invoke index-4 target",
+      "dispose array result"
+    ]
+  },
+  "corpus_id": "C003",
+  "corpus_wave": "rpc-codec",
+  "fixture": "tests/conformance/rpc/fixtures/value-codec",
+  "id": "conformance/rpc/a-lifted-sparse-array-preserves-holes-and-trailing-length-rather-than-densifying-or-truncating",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/rpc-codec/C003"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/rpc-codec/C003",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec"
+    },
+    {
+      "sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "C003",
+  "source": "tests/conformance/rpc/fixtures/value-codec/entry.js",
+  "source_sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+  "title": "A lifted sparse array preserves holes and trailing length rather than densifying or truncating"
+}

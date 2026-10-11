@@ -1,0 +1,30 @@
+{
+  "id": "conformance/rpc/proxy-cannot-bypass-own-property-hiding-via-get-trap",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "Proxy cannot bypass own-property hiding via get trap",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/fixture",
+      "legacy_id": "base/R021"
+    }
+  ],
+  "corpus_wave": "base",
+  "corpus_id": "R021",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "R021",
+    "intent": "Proxy cannot bypass own-property hiding via get trap",
+    "preconditions": "Proxied RpcTarget own field and counting get trap",
+    "trace": [
+      "capture trap counter",
+      "attempt own field read",
+      "verify trap not invoked"
+    ],
+    "stress": "visibility check before Proxy get",
+    "oracle": "read rejected; own-field get trap not run",
+    "cleanup": "dispose target",
+    "gate": "characterization"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "unit/rpc/missing-owner-preflight-is-typed-not-executed",
+  "layer": "unit",
+  "behaviour": "rpc",
+  "title": "missing owner preflight is typed not executed",
+  "origins": [
+    {
+      "source": "crates/celld/capability.rs",
+      "legacy_id": "unit/celld/capability::not_executed_tests::missing_owner_preflight_is_typed_not_executed"
+    }
+  ],
+  "legacy_ids": [
+    "unit/celld/capability::not_executed_tests::missing_owner_preflight_is_typed_not_executed"
+  ],
+  "adapter": "cargo",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "crates/celld/capability.rs",
+  "source_sha256": "afc5c3de7a337dc27a7bf3dbd3b8996455fc2c0b19c943aac3fc4316151121c8",
+  "test_filter": "capability::not_executed_tests::missing_owner_preflight_is_typed_not_executed"
+}

@@ -1,0 +1,16 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"celld per-case test result",
+  "type":"object",
+  "required":["id","layer","runtime","status","reason","duration_ms","artifacts"],
+  "properties":{
+    "id":{"type":"string","minLength":1},
+    "layer":{"enum":["unit","logic","conformance","faults","regressions"]},
+    "runtime":{"enum":["celld","workerd"]},
+    "status":{"enum":["pass","fail","expected-fail","not-applicable"]},
+    "reason":{"type":"string","minLength":1},
+    "duration_ms":{"type":"number","minimum":0},
+    "artifacts":{"type":"array","items":{"type":"string"}}
+  },
+  "additionalProperties":false
+}

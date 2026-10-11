@@ -1,0 +1,55 @@
+{
+  "adapter": "topology",
+  "behaviour": "durable-objects/websockets",
+  "contract": {
+    "cleanup": "Every trace normal-closes its sockets; finally cleanup independently aborts control requests, accepts any already obtained pending upgrade for closure, closes every local endpoint, discards held echoes, closes recipient sockets, joins normalization and records unresolved resources. Separately owned supervisor must reap only owned processes/sockets and destroy fresh storage. Any incomplete cleanup or unknown entry is BLOCKED/FAIL, never PASS.",
+    "distinctness": "Public fetch-upgrade acceptance path distinct from constructor dialing used elsewhere.",
+    "intent": "Accept upgrades independently",
+    "oracle": "Both response.webSocket recipients match independently observed control-journal identities and exact respective messages",
+    "preconditions": [
+      "Exact candidate binary and pinned implementation/source/profile hashes; independently reviewed ordinary-WebSocket scope and case oracle",
+      "Fresh disposable caller and recipient DOs in separately observed owned processes with actual root/isolate/process identities",
+      "Already enforced external wall/memory/PID/CPU ceilings and exclusive parent run slot; no deployment or launch by adapter",
+      "Public WebSocket/WebSocketPair and ordinary valid private-network upgrades; preflight echo and clean-close control must complete before entry",
+      "Case-specific initial state and options are established by the explicit W022 trace; no state or socket is reused from another case."
+    ],
+    "source_contracts": [
+      "SC-UPGRADE"
+    ],
+    "trace": [
+      "Fetch and accept A then B; verify actual recipient root/isolate/run/socket journals",
+      "Send accepted markers and witness both at server",
+      "Release and close B before A",
+      "Release and close A"
+    ]
+  },
+  "corpus_id": "W022",
+  "corpus_wave": "active-websocket-stress",
+  "fixture": "tests/conformance/durable-objects/websockets/fixtures/event-traces",
+  "id": "conformance/durable-objects/websockets/accept-upgrades-independently",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/active-websocket-stress/W022"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/active-websocket-stress/W022",
+      "source": "guarded-source-archive/celld-os-stress/waves/active-websocket-stress"
+    },
+    {
+      "sha256": "2ea74d4323d34e1121e93c9637f19d6f46349f17a06516a6e2d13d4a86187317",
+      "source": "guarded-source-archive/celld-os-stress/waves/active-websocket-stress/fixture.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "W022",
+  "source": "tests/conformance/durable-objects/websockets/fixtures/event-traces/fixture.js",
+  "source_sha256": "2ea74d4323d34e1121e93c9637f19d6f46349f17a06516a6e2d13d4a86187317",
+  "title": "Accept upgrades independently"
+}

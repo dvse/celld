@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "historical_commit": "4358072f8cb1bc9ddfb6ee11122e194c76cd71e0",
+  "historical_lockfile": "/workspace/shared/celld-campaign-next/os-source-inventory/scheduler-4358072-r1/raw/pnpm-lock.yaml",
+  "historical_lockfile_sha256": "38bb0c960d93222de73b9baa678dc2ced092cc2241e469ffa053d512af20251f",
+  "historical_lockfile_url": "https://github.com/cloudflare/cloudflare-os/blob/4358072f8cb1bc9ddfb6ee11122e194c76cd71e0/pnpm-lock.yaml",
+  "importer": "packages/workshop-backend",
+  "direct_dependency": {
+    "name": "pako",
+    "specifier": "^3.0.2",
+    "version": "3.0.2",
+    "integrity": "sha512-uBv6IT2aT1A78iU6dpNEbf6+CyhlV/6g9JlJs9kpgjFGFhruIICVRysF/W0SLzXg5+hCl+KroH7e4YUyfEmgLg==",
+    "importer_lines": [
+      1106,
+      1108
+    ],
+    "package_lines": [
+      4931,
+      4932
+    ],
+    "snapshot_lines": [
+      9408,
+      9408
+    ]
+  },
+  "do_not_substitute": "Transitive isomorphic-git pako 1.0.11 is a different lockfile entry.",
+  "runtime_builtin": "node:zlib under nodejs_compat; native module mapping and function implementations source-pinned, runtime unverified",
+  "native_source_evidence": {
+    "mapping": "crates/celld/js/modules.rs:546",
+    "exports": "crates/celld/js/harness.js:11562-11578",
+    "compatibility_caveat": "constants.Z_BEST_SPEED is absent and sync compression options are ignored in the pinned harness. Valid format assertions do not certify requested compression level or performance. No shim, fallback or source patch is provided."
+  },
+  "type_only_erasure": [
+    "@gadgets/workshop-shared/gatekeeper",
+    "./worktree-binding"
+  ],
+  "installed_package_verified": false,
+  "dependency_installs": 0,
+  "status": "UNRUN_SETUP_PREREQUISITES",
+  "required_future_evidence": [
+    "Verified pako tarball integrity and package license/notices",
+    "Verified full installed dependency tree and trusted bundle identity",
+    "Faithful TypeScript type erasure and using/Symbol.dispose handling",
+    "Real native builtins; no mocks or replacement codec"
+  ]
+}

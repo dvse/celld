@@ -1,0 +1,67 @@
+{
+  "adapter": "topology",
+  "behaviour": "fetch-and-http",
+  "contract": {
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B009"
+    },
+    "intent": "Independently stalled download streams are cross-wired or coupled when completion order differs from creation order.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Four remote byte streams gate their producers before the second logical frame."
+    ],
+    "source_contracts": [
+      {
+        "contract": "GitCache accepts and returns native byte streams; fixture traffic is synthetic pack-like bytes, never a claim of valid Git parsing.",
+        "key": "git-streams",
+        "lines": "307-328, 1170-1203, 1368-1378",
+        "path": "os/packages/workshop-backend/src/git-cache.ts"
+      },
+      {
+        "contract": "Readable stream readers, cancellation, tee and piping terminal semantics.",
+        "key": "stream-runtime",
+        "lines": "106-182, 411-665",
+        "path": "deliverable/patch-check-final/crates/celld/js/streams.js"
+      }
+    ]
+  },
+  "corpus_id": "B009",
+  "corpus_wave": "bounded-load",
+  "fixture": "tests/conformance/limits-and-errors/fixtures/admission-and-progress",
+  "id": "conformance/fetch-and-http/independently-stalled-download-streams-are-cross-wired-or-coupled-when-completion-order-differs-from",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/bounded-load/B009"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/bounded-load/B009",
+      "source": "guarded-source-archive/celld-os-stress/waves/bounded-load"
+    },
+    {
+      "sha256": "d45e8d319cc476a70976563100261ffd65f5e3b94245c2de009fcd5942903e23",
+      "source": "guarded-source-archive/celld-os-stress/waves/bounded-load/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "B009",
+  "source": "tests/conformance/limits-and-errors/fixtures/admission-and-progress/entry.js",
+  "source_sha256": "d45e8d319cc476a70976563100261ffd65f5e3b94245c2de009fcd5942903e23",
+  "title": "Independently stalled download streams are cross-wired or coupled when completion order differs from creation order."
+}

@@ -1,0 +1,53 @@
+{
+  "id": "logic/wake-recovery/defer-an-already-due-restored-alarm-until-startup-publication",
+  "layer": "logic",
+  "behaviour": "wake-recovery",
+  "title": "Defer an already-due restored alarm until startup publication",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic",
+      "legacy_id": "corpus/wake-recovery-logic/K012"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+      "sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/wake-recovery-logic/K012"
+  ],
+  "adapter": "native",
+  "corpus_id": "K012",
+  "corpus_wave": "wake-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/wake-recovery/fixtures/decision-cases/tests/wake_recovery.rs",
+  "source_sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86",
+  "test_filter": "k012_due_alarm_defers_during_runtime_start_and_route_publication",
+  "contract": {
+    "intent": "Defer an already-due restored alarm until startup publication",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Drive Fleet read of existing self-owned epoch1 and apply CAS; assert RestoreSpec non-fresh epoch2, then restore already-due alarm.",
+      "Deliver emitted alarm timer at100 during Starting; assert its rearm deadline200 and unchanged generation.",
+      "Complete RuntimeStarted at100 before its deadline600; deliver captured alarm timer at200 during Publishing and assert rearm300 with no delivery.",
+      "Complete Published at200 before its deadline600; deliver captured alarm timer at300, capture exactly one FireAlarm, then settle a no-write completion at300 and assert exact alpha absent-alarm ReconcileWakeEntry with no FireAlarm or AwaitDurable."
+    ],
+    "oracle": [
+      "No FireAlarm before Resident; at most one dispatch in the trace.",
+      "After publication, the same timer dispatches; the synthetic no-write completion emits exactly the absent-alarm reconciliation without another fire or durability barrier."
+    ],
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k012_due_alarm_defers_during_runtime_start_and_route_publication"
+  },
+  "selector": "K012"
+}

@@ -1,0 +1,115 @@
+{
+  "adapter": "http",
+  "behaviour": "fetch-and-http",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "assertion_count": 7,
+    "classification": "ordinary-functional-stream-lifecycle",
+    "cleanup": "Open all finite gates even on assertion failure; signal-stop unfinished pipes; join original pipe and callback promises; release manual owners; prove readable/writable terminal states with closed promises; cancel/abort only still-open local resources; release probe owners. Owned supervisor teardown remains mandatory.",
+    "distinctness": "S207 covers zero identity, while this covers early-branch asynchronous join and ownership duration. S205 reaches shutdown after a held write; pre-abort is a different implementation branch.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/S208",
+      "request_body": null
+    },
+    "fixed_runtime_assertions": [
+      "t.equal(pipe.status, 'pending', 'pre-abort waits for both cleanup actions');",
+      "t.locked(source, sink, 'pre-abort keeps locks until cleanup joins');",
+      "t.equal(pipe.status, 'pending', 'sink abort completion is still required');",
+      "t.equal(result.status, 'rejected', 'pre-abort rejects after actions finish');",
+      "t.same(result.reason, reason, 'joined cleanup preserves signal error');",
+      "t.deep([writes, aborts, cancels, abortDone, cancelDone], [0, 1, 1, true, true], 'no transfer and both cleanup completions witnessed');",
+      "t.unlocked(source, sink, 'joined pre-abort releases locks');"
+    ],
+    "id": "S208",
+    "implementation": "cases.js:S208",
+    "independently_reviewed": false,
+    "intent": "Join pre-aborted asynchronous cleanup",
+    "mechanism": "pre-aborted-both-actions-join-before-release",
+    "oracle": "All literal assertions execute and pass; no pending promise or public lock remains after joined cleanup.",
+    "os_relevance": "Core OS supporting stream/cancellation primitive; preserved native-transform OS provenance provides context only. This is not a claim that OS callers set these flags, nor a new product service.",
+    "preconditions": [
+      "Exact guarded source and actual direct-celld build/deployment identity verified.",
+      "One active Worker.fetch; real built-in ReadableStream/WritableStream/AbortController.",
+      "Independent supervisor enforces all schedule deadlines and limits; no reference runtime substitution."
+    ],
+    "primary_candidate": true,
+    "primary_contract_refs": [
+      "https://streams.spec.whatwg.org/#readable-stream-pipe-to"
+    ],
+    "runtime_source_refs": [
+      {
+        "line_end": 663,
+        "line_start": 539,
+        "path": "celld-os-project/celld/crates/celld/js/streams.js"
+      },
+      {
+        "line_end": 454,
+        "line_start": 414,
+        "path": "celld-os-project/celld/crates/celld/js/streams.js"
+      },
+      {
+        "line_end": 527,
+        "line_start": 291,
+        "path": "celld-os-project/celld/crates/celld/js/writable_stream.js"
+      },
+      {
+        "line_end": 197,
+        "line_start": 168,
+        "path": "celld-os-project/celld/crates/celld/js/writable_stream.js"
+      },
+      {
+        "line_end": 10589,
+        "line_start": 10532,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "source_predicted_gap": {
+      "classification": "EXPECTED_FAILURE_CANDIDATE",
+      "intended_oracle": "Pipe and locks remain live until both asynchronous shutdown callbacks complete; no data transfer.",
+      "source_evidence": "streams.js:568-573 invokes cancellation and abort without joining their returned promises and returns an immediate rejection before acquiring pipe owners."
+    },
+    "status": "NOT_RUN",
+    "trace": [
+      "Use a pre-aborted real signal and queue one value.",
+      "Hold both source cancel and sink abort callbacks.",
+      "Release cancel first; require pipe and locks remain pending until sink abort is released."
+    ]
+  },
+  "corpus_id": "S208",
+  "corpus_wave": "pipe-cleanup-semantics",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/pipe-cleanup-semantics",
+  "id": "conformance/fetch-and-http/pipe-cleanup-s208",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/pipe-cleanup-semantics/S208"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/pipe-cleanup-semantics/S208",
+      "manifest_sha256": "02175a33442a86096c05300b11e15c978b58ea6b69a9bb57acaf53ac51dec730",
+      "review_sha256": "2039d797506f5a0682e0abffc2a9d8c43f6f6d85e039412d3539dc3e8b27eb83",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/pipe-cleanup-semantics",
+      "tranche": "003"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/S208",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "S208",
+  "source": "tests/conformance/fetch-and-http/fixtures/pipe-cleanup-semantics/fixture.js",
+  "source_sha256": "9903a92f43f96b3b38046171b7575e99b84eac2ef8e626b2377fb621f5a821b5",
+  "title": "Join pre-aborted asynchronous cleanup"
+}

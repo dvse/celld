@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "profile": "direct-celld-response-clone-chunk-semantics-v1",
+  "source_snapshot": "celld-direct-source-v0.6.2-8d27-guard-20261009 + candidate002 r002 overlay",
+  "authored_case_count": 1,
+  "reviewed_case_count": 0,
+  "runtime_executions": 0,
+  "runtime_status": "UNRUN",
+  "qualification": "One handwritten assertion-bearing candidate, source/static evidence only. Independent review receipt determines census credit. Runtime status stays NOT_RUN until separate observed execution.",
+  "oracle_policy": "All expected bytes/statuses are fixed literals; snapshots precede later mutation. Source implementation is never the expected-value oracle.",
+  "ordinary_input_scope": "One valid local four-byte default-stream Response. No native HTTP body, RPC, remote handle, capability, scheduler, malformed input or security/lifetime reproduction.",
+  "contract_sources_consulted_utc": "2026-10-09",
+  "cases": [
+    {
+      "id": "Y301",
+      "title": "Keep cloned raw body chunks independent after sibling mutation",
+      "mechanism": "Response body clone requests branch-two chunk storage copying before raw-reader mutation",
+      "hypothesis": "A streaming clone implemented with default tee() can return shared raw Uint8Array storage even when final arrayBuffer consumers each return copied bytes.",
+      "trace": [
+        "Enqueue one four-byte Uint8Array into an ordinary default ReadableStream and close.",
+        "Clone the local Response once and acquire both body readers.",
+        "Join both first reads and assert exact initial bytes.",
+        "Mutate the original raw chunk; assert its changed bytes, unchanged sibling bytes and distinct backing buffers.",
+        "Join both EOF reads, join cleanup cancellation operations and release explicit readers."
+      ],
+      "distinctness": "Y220 observes only final copied arrayBuffers; Y215 observes buffered clone output and metadata. This case observes live raw branch chunks after mutation, proving the tee-true selection has an observable effect. One mechanism only; no parameterized variants.",
+      "fixed_runtime_assertions": [
+        "t.deep(first.map(result => result.status), ['fulfilled', 'fulfilled'], 'both initial raw reads fulfill before mutation');",
+        "t.deep(first.map(result => result.value.done), [false, false], 'one deliberate source chunk reaches each branch');",
+        "t.deep(first.map(result => result.value.value instanceof Uint8Array), [true, true], 'both raw chunks are Uint8Array values');",
+        "t.deep([...left], [10, 20, 30, 40], 'original raw chunk has the fixed source bytes');",
+        "t.deep([...right], [10, 20, 30, 40], 'clone raw chunk has the fixed source bytes');",
+        "t.deep([...left], [99, 20, 30, 40], 'raw original chunk mutation takes effect locally');",
+        "t.deep([...right], [10, 20, 30, 40], 'raw clone chunk retains its bytes after sibling mutation');",
+        "t.equal(left.buffer === right.buffer, false, 'raw branch chunks use distinct ArrayBuffer storage');",
+        "t.deep(eof.map(result => result.status), ['fulfilled', 'fulfilled'], 'both EOF reads fulfill before cleanup');",
+        "t.deep(eof.map(result => result.value.done), [true, true], 'each branch reaches EOF immediately after its single chunk');",
+        "t.deep(eof.map(result => result.value.value === undefined), [true, true], 'both terminal reads contain no extra value');"
+      ],
+      "assertion_count": 11,
+      "implementation": {
+        "file": "cases.js",
+        "symbol": "Y301",
+        "start_line": 2,
+        "end_line": 31
+      },
+      "runtime_source_refs": [
+        {
+          "path": "/workspace/shared/celld-body-candidate-002/revisions/r002/source/crates/celld/js/harness.js",
+          "line_start": 371,
+          "line_end": 388
+        },
+        {
+          "path": "/workspace/shared/celld-build/candidate-001/source/crates/celld/js/streams.js",
+          "line_start": 105,
+          "line_end": 179
+        },
+        {
+          "path": "/workspace/shared/celld-build/candidate-001/source/crates/celld/js/streams.js",
+          "line_start": 456,
+          "line_end": 537
+        }
+      ],
+      "primary_contract_refs": [
+        "https://fetch.spec.whatwg.org/#concept-body-clone",
+        "https://streams.spec.whatwg.org/#readablestream-tee",
+        "https://streams.spec.whatwg.org/#readable-stream-default-tee"
+      ],
+      "application_relevance": "Worker code can inspect or transform one cloned local binary response body through raw readers without changing its sibling consumer data.",
+      "desired_behavior": "Initial chunks [10,20,30,40] on both branches; after left[0]=99, left [99,20,30,40], right [10,20,30,40], distinct backing ArrayBuffers, then EOF on both.",
+      "chunk_partition_contract": "A deliberately single default-stream chunk, not a byte stream/host body. Default tee forwards one chunk (or structured clone) to each branch, without arbitrary HTTP coalescing assumptions.",
+      "source_observation": "Candidate001 refuses the valid streaming clone. Candidate002 r002 calls existing tee(true), whose default-stream branch copies branch two with structuredClone. This is source evidence only.",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "prediction_is_runtime_evidence": false,
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/Y301",
+        "request_body": null
+      },
+      "layer": "direct-celld-worker-fetch-global-response-local-default-stream",
+      "preconditions": [
+        "Independent case/oracle review and separate exact candidate source/build/deployment review.",
+        "Real celld Response and ReadableStream globals; no imported/extracted SUT or reference runtime.",
+        "External five-second request and independent suite/cleanup deadlines plus owned teardown and resource controls are verified before entry."
+      ],
+      "schedule": {
+        "kind": "one finite in-request trace",
+        "ordinal": 1,
+        "request": "GET /case/Y301",
+        "depends_on": [],
+        "parallelism": "two branch reads joined at data and EOF phases; all cleanup cancellations started before their join"
+      },
+      "limits": {
+        "requests": 1,
+        "repetitions": 1,
+        "incoming_body_bytes": 0,
+        "source_chunks": 1,
+        "source_bytes": 4,
+        "response_clones": 1,
+        "tracked_streams": 3,
+        "explicit_readers": 2,
+        "max_reads_per_reader": 2,
+        "max_explicit_reader_reads": 4,
+        "max_cleanup_cancel_operations": 3,
+        "outer_case_seconds": 5,
+        "response_bytes": 65536,
+        "timers": 0,
+        "outbound_fetches": 0,
+        "durable_writes": 0
+      },
+      "cleanup": "Join all started reads before cleanup; initiate all reader and unlocked-stream cancels before awaiting; release both acquired readers; require terminal evidence for all tracked streams and both-descendant proof for retained source lock. Pending operation at external deadline => UNKNOWN and incomplete local cleanup. Verified external listener closure, whole proven-owned dev/bundler/runtime descendant-tree emptiness across PGIDs, and owned temporary/log/stage/store removal required for acceptance.",
+      "success_cleanup_expectations_for_pinned_source": {
+        "joinedReads": 4,
+        "joinedCancellations": 2,
+        "cancelledReaders": 2,
+        "cancelledUnlockedStreams": 0,
+        "releasedReaders": 2,
+        "tracked_streams": 3,
+        "retained_runtime_source_locks": 1,
+        "source_terminal_proof": "both-local-clone-descendants-settled"
+      },
+      "authored": true,
+      "independently_reviewed": false,
+      "review_status": "UNREVIEWED",
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "runtime_pass_claimed": false
+    }
+  ]
+}

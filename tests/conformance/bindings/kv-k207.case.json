@@ -1,0 +1,177 @@
+{
+  "adapter": "http",
+  "behaviour": "bindings",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "application_relevance": "Keep mutable application metadata objects separate from stored record annotations.",
+    "artifact": "worker.js",
+    "cleanup": {
+      "finally": "Attempt each owned-name delete independently, then bulk-get the exact owned names and require a Map containing only null values. This verifies logical row cleanup only.",
+      "literal_keys": [],
+      "on_cleanup_failure": "FAIL; record error and preserve adapter evidence. Do not report success.",
+      "on_external_timeout": "Adapter stops only its owned invocation/process group when necessary and discards its disposable store after collecting evidence; namespace state is indeterminate until then.",
+      "preflight": "Sequentially delete only statically declared owned names in the fresh disposable namespaces.",
+      "teardown": "After the wave, stop only the adapter-owned celld process group and discard its fresh disposable store. K219 can leave an armed expiration alarm because neither nonexpiring replacement nor delete calls _rearm; null bulk gets do not prove alarm disarm."
+    },
+    "distinctness": "Targets metadata serialization snapshots rather than K208 replacement or K209 field-presence semantics.",
+    "entrypoint": "GET /case/K207",
+    "family": "kv-semantics",
+    "fixed_finite_trace": [
+      "Call put with nested metadata and mutate the input before awaiting.",
+      "Get metadata and compare to original; mutate returned metadata.",
+      "Get metadata again and list the record."
+    ],
+    "fixture_line_range": [
+      122,
+      139
+    ],
+    "fixture_slice_sha256": "faeae26991ede86d1f0df0f0f428a0132288085648cb39a911b198ff9c5fe6ec",
+    "id": "K207",
+    "intent": "Keep mutable application metadata objects separate from stored record annotations.",
+    "limits": {
+      "max_key_utf8_bytes": 128,
+      "max_list_calls": 1,
+      "max_metadata_json_bytes": 256,
+      "max_public_calls_per_phase_enforced": 64,
+      "max_stream_chunks": 0,
+      "max_value_bytes": 256,
+      "maximum_continuation_chain_pages": 1,
+      "no_internal_timeout_race": true,
+      "per_request_external_wall_seconds": 30
+    },
+    "oracle": {
+      "assertions": [
+        "input mutation does not change stored metadata",
+        "read mutation does not change later metadata",
+        "list parses the original annotation"
+      ],
+      "claim": "put JSON.stringify runs before the awaited RPC; subsequent reads and list independently JSON.parse stored metadata.",
+      "freshness_qualification": "All read-after-write/delete results pin this exact source behavior. They are not a universal Cloudflare or future celld freshness promise; kv.js lines 8-13 deliberately promise weak consistency.",
+      "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+      "successful_assertion_count": 3
+    },
+    "overlap_audit": "overlap-audit.json; no runtime-credit or recovered-prior-KV attribution",
+    "review_accepted": false,
+    "runtime_execution_count": 0,
+    "schedule": {
+      "case_requests": 1,
+      "faults": 0,
+      "main_phase_binding_calls_exact_on_success": 4,
+      "maximum_in_flight_public_binding_calls": 1,
+      "maximum_owned_keys": 1,
+      "ordering": "Await every listed operation in order except K203/K207 local mutation before awaiting their single put, and K220 explicit Promise.all groups.",
+      "page_loops": 0,
+      "randomized_schedules": 0,
+      "restarts": 0,
+      "retries": 0
+    },
+    "source_refs": [
+      {
+        "key": "metadata",
+        "line_ranges": [
+          [
+            294,
+            298
+          ],
+          [
+            1008,
+            1016
+          ],
+          [
+            1030,
+            1046
+          ],
+          [
+            1058,
+            1070
+          ],
+          [
+            1090,
+            1099
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/js/services/kv.js"
+      },
+      {
+        "key": "write",
+        "line_ranges": [
+          [
+            370,
+            417
+          ],
+          [
+            1048,
+            1070
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/js/services/kv.js"
+      },
+      {
+        "key": "read",
+        "line_ranges": [
+          [
+            263,
+            300
+          ],
+          [
+            997,
+            1046
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/js/services/kv.js"
+      },
+      {
+        "key": "list",
+        "line_ranges": [
+          [
+            569,
+            622
+          ],
+          [
+            1086,
+            1104
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/js/services/kv.js"
+      }
+    ],
+    "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+    "surface": "env.KV_A/env.KV_B public Workers KV bindings",
+    "sut": "direct celld only",
+    "title": "Snapshot structured metadata on write and read"
+  },
+  "corpus_id": "K207",
+  "corpus_wave": "kv-semantics",
+  "fixture": "tests/conformance/bindings/fixtures/kv-semantics",
+  "id": "conformance/bindings/kv-k207",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/kv-semantics/K207"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/kv-semantics/K207",
+      "manifest_sha256": "f4906cd842457c8b9a75c0e069decbdcb702bfb3789ce06e6e1a55e2929069c9",
+      "review_sha256": "f77b52015b1c1ed4d9395ec5c5971514a3fbdccdf34e02194f93cbbb0062c652",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/kv-semantics",
+      "tranche": "001"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/K207",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "K207",
+  "source": "tests/conformance/bindings/fixtures/kv-semantics/worker.js",
+  "source_sha256": "87ce92492bd300bbf0763c43d37be1edddfffb41fe9cfb06ffbfe7c348b90ee3",
+  "title": "Snapshot structured metadata on write and read"
+}

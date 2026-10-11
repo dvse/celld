@@ -1,0 +1,35 @@
+{
+  "id": "conformance/web-platform/sab-structured-clone-transfer",
+  "layer": "conformance",
+  "behaviour": "web-platform",
+  "title": "Sab Structured Clone Transfer",
+  "origins": [
+    {
+      "source": "workerd@19b1657bd/src/workerd/api/tests/global-scope-test.js#SabStructuredCloneTransfer",
+      "legacy_id": "workerd/globals/SabStructuredCloneTransfer"
+    },
+    {
+      "source": "workerd@19b1657bd/src/workerd/api/tests/global-scope-test.js",
+      "sha256": "1be7707aee5c456bcdf50ae2f84478119f738fc301cda1209e5697175cdb4327"
+    }
+  ],
+  "legacy_ids": [
+    "workerd/globals/SabStructuredCloneTransfer"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/web-platform/fixtures/global-contracts",
+  "isolated": true,
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/SabStructuredCloneTransfer",
+      "timeout": 5
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/web-platform/fixtures/global-contracts/upstream.js",
+  "source_sha256": "1be7707aee5c456bcdf50ae2f84478119f738fc301cda1209e5697175cdb4327"
+}

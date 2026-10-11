@@ -1,0 +1,60 @@
+{
+  "id": "logic/pressure/characterize-a-late-sample-with-an-older-timestamp",
+  "layer": "logic",
+  "behaviour": "pressure",
+  "title": "Characterize a late sample with an older timestamp",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic",
+      "legacy_id": "pressure-recovery-logic/P010"
+    }
+  ],
+  "corpus_wave": "pressure-recovery-logic",
+  "corpus_id": "P010",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "P010",
+    "intent": "Characterize a late sample with an older timestamp",
+    "failure_hypothesis": "A reader could mistake monotonic clock clamping for rejection of stale load payloads",
+    "preconditions": [
+      "Fresh State::new(\"fixture\", config()) per case; only production on_event transitions; no direct State-field mutation",
+      "Each resident created by RequestAt -> absent OwnerRead -> Applied epoch1 CAS -> RestoreCompleted -> RuntimeStarted generation1 -> Published; exact operation IDs come from effects",
+      "Every transition invokes State::validate; occupied<=4, activating<=4, evicting<=2; local completions tracked exactly once",
+      "Default require_node_lease=false isolates admission from fleet authority; this does not exercise actual lease authorization",
+      "Pressure samples are synthetic byte-valued facts, not measured RSS, allocator, cgroup or container enforcement",
+      "The immutable source/runtime-manifest pins and exact implementation must pass preflight before any authorized future run"
+    ],
+    "initial_state": "empty node; high load arrives with monotonic timestamp120",
+    "trace": [
+      "deliver high100/150 timestamp120",
+      "queue a/request1",
+      "deliver low80/150 with older timestamp110",
+      "observe low payload clears shedding and emits a CAS",
+      "complete a and finish1"
+    ],
+    "stress": "Finite ordered schedule <=100 State events, <=4 occupied cells, <=4 activation permits, <=2 eviction/release permits; no randomness, seeds, size grid or repetition multiplier",
+    "safety_oracle": "Pinned source folds older payload and admits; this is not a freshness safety guarantee",
+    "liveness_oracle": "a completes Local on the captured CAS emitted by older payload",
+    "oracle": "Pinned source folds older payload and admits; this is not a freshness safety guarantee; a completes Local on the captured CAS emitted by older payload",
+    "terminal_witness": "TRACE_END P010 after exact outcomes, pending=0, no active requests or transition permits, and production validation",
+    "cleanup": "Finish every successful local request; settle all emitted stop/release/adoption effects shown by the trace; assert pending demand and activation/eviction/release/adoption counts empty. Drop owned in-memory State on return/unwind. No external resource created",
+    "implementation": "tests/pressure_recovery.rs:p010_late_sample_is_folded_without_freshness_rejection",
+    "test_function": "p010_late_sample_is_folded_without_freshness_rejection",
+    "contract_group": "late-sample-characterization",
+    "layer": "native-component",
+    "sublayer": "state-trace",
+    "classification": "characterization",
+    "promotion": false,
+    "qualification": "Source behavior only; four characterization cases cannot become general freshness/health/liveness guarantees",
+    "source_pins": "source-pins.json",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiled": false,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  }
+}

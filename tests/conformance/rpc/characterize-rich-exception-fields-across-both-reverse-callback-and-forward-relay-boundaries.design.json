@@ -1,0 +1,38 @@
+{
+  "id": "conformance/rpc/characterize-rich-exception-fields-across-both-reverse-callback-and-forward-relay-boundaries",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "Characterize rich exception fields across both reverse callback and forward relay boundaries",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec",
+      "legacy_id": "rpc-codec/C034"
+    }
+  ],
+  "corpus_wave": "rpc-codec",
+  "corpus_id": "C034",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "C034",
+    "intent": "Characterize rich exception fields across both reverse callback and forward relay boundaries",
+    "preconditions": "COMMON; caller callback throws an Error with cause/code; callee awaits and relays its rejection",
+    "trace": [
+      "send throwing caller callback to peer relay",
+      "catch twice-transported error",
+      "verify original callback ran exactly once",
+      "verify message/code/cause after second envelope",
+      "verify peer recovery"
+    ],
+    "stress": "Two exception serialization boundaries in one request and one callback",
+    "oracle": "One callback call; callback-origin, E_CALLBACK and callback-cause preserved; healthy control succeeds",
+    "cleanup": "Call-end releases callback stub; shared codecCleanup and request teardown",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-ERRORS",
+      "SC-ERROR-DOC",
+      "SC-ARG-DISPOSE"
+    ]
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "conformance/rpc/duplication-of-a-disposed-handle-must-fail-without-affecting-its-existing-sibling",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "Duplication of a disposed handle must fail without affecting its existing sibling",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/capability-order",
+      "legacy_id": "capability-order/O017"
+    }
+  ],
+  "corpus_wave": "capability-order",
+  "corpus_id": "O017",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "O017",
+    "intent": "Duplication of a disposed handle must fail without affecting its existing sibling",
+    "preconditions": [
+      "COMMON",
+      "Original and one live sibling duplicate"
+    ],
+    "trace": [
+      "Dispose original; capture provider state",
+      "Attempt original.dup and require disposed Error",
+      "Assert full provider state unchanged",
+      "Use sibling and release it; observe one final disposer"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Invalid local ownership operation with a surviving reference",
+    "oracle": "Failed dup neither creates a lease nor revokes sibling",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-DISPOSE",
+      "SC-ERROR"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O017 state transition; counts, repetitions and deployment placements do not create additional cases.",
+    "contract_scope": "Pinned celld-specific disposed-dup Error. Upstream workerd v1.20261001.1 JsRpcStub::dup reaches an assertion path for an already disposed transient handle; error parity is not established."
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "dispose target",
+    "intent": "Private slot does not collide with public method containing hash character",
+    "oracle": "private accessor returns private-value; public spelling returns explicit-public-name",
+    "preconditions": "Target has private secret plus explicitly public method named #secret",
+    "trace": [
+      "call public accessor using true private slot",
+      "call string-named public method"
+    ]
+  },
+  "corpus_id": "R008",
+  "corpus_wave": "base",
+  "fixture": "tests/conformance/rpc/fixtures/object-capabilities/fixture",
+  "id": "conformance/rpc/private-slot-does-not-collide-with-public-method-containing-hash-character",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/base/R008"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/base/R008",
+      "source": "guarded-source-archive/celld-os-stress/fixture"
+    },
+    {
+      "sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+      "source": "guarded-source-archive/celld-os-stress/fixture/rpc.js"
+    },
+    {
+      "sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+      "source": "guarded-source-archive/celld-os-stress/waves/do-visibility-regression/rpc.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "R008",
+  "source": "tests/conformance/rpc/fixtures/object-capabilities/fixture/rpc.js",
+  "source_sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+  "title": "Private slot does not collide with public method containing hash character"
+}

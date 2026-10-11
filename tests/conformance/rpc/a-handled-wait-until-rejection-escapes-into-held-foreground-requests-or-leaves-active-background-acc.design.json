@@ -1,0 +1,86 @@
+{
+  "id": "conformance/rpc/a-handled-wait-until-rejection-escapes-into-held-foreground-requests-or-leaves-active-background-acc",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "A handled waitUntil rejection escapes into held foreground requests or leaves active background accounting stranded.",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/bounded-load",
+      "legacy_id": "bounded-load/B022"
+    }
+  ],
+  "corpus_wave": "bounded-load",
+  "corpus_id": "B022",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "B022",
+    "title": "Background rejection leaves foreground intact",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "A handled waitUntil rejection escapes into held foreground requests or leaves active background accounting stranded.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Four loaded background jobs and four loaded foreground calls are held; tail1 audit deliberately fails after its effect."
+    ],
+    "ordered_trace": [
+      "Observe all eight audit entries and release only tail1.",
+      "Require one background-failed marker with its intended error while foreground effects stay zero.",
+      "Release three healthy background jobs and ping the worker that handled failure.",
+      "Release foreground calls and require all final audit effects and zero active work."
+    ],
+    "stress_dimension": "Four waitUntil jobs overlap four pending foreground loaded calls with one isolated rejection.",
+    "safety_oracle": [
+      "Only tail1 has background-failed with planned:work:tail1 and no background-ok.",
+      "Three good backgrounds and four foreground calls finish on correct module tokens; eight deliberate audit effects occur once."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 4,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Four waitUntil jobs overlap four pending foreground loaded calls with one isolated rejection."
+    },
+    "source_contracts": [
+      {
+        "key": "loader",
+        "path": "os/packages/workshop-backend/src/overseer.ts",
+        "lines": "4329-4360, 8182",
+        "contract": "OS dynamically loads worker code and obtains entrypoints; these tests use separate anonymous owned workers."
+      },
+      {
+        "key": "background",
+        "path": "os/packages/observability/src/error-reporting.ts",
+        "lines": "75-100",
+        "contract": "Dispatch is eager, waitUntil extends worker work; caught reporting failure must not disturb foreground work. DO waitUntil has no additional lifetime effect."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B022"
+    },
+    "qualification_gate": "pinned-native-characterization",
+    "identity_assumption": "Loaded worker token uniqueness/stability is a frozen-native characterization, not a universal Worker Loader replacement guarantee.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "Explicit owner overlap/authorization review required for possible overlap with separately restricted stateless-capability lifetime work; request adapter refuses B017-B024.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "id": "conformance/web-platform/webidl-accessors",
+  "layer": "conformance",
+  "behaviour": "web-platform",
+  "title": "webidl accessors",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/webidl-accessors",
+      "legacy_id": "hyperbob/webidl-accessors"
+    },
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/webidl-accessors/wrangler.json",
+      "sha256": "3d1ba59d8ab12ace383f45cda9eab0962550916c6ee622dad370c01df9d24a43"
+    }
+  ],
+  "legacy_ids": [
+    "hyperbob/webidl-accessors"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/web-platform/fixtures/abort-accessors",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/?v=suite"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/web-platform/fixtures/abort-accessors/wrangler.json",
+  "source_sha256": "3d1ba59d8ab12ace383f45cda9eab0962550916c6ee622dad370c01df9d24a43"
+}

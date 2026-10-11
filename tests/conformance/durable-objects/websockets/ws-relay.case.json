@@ -1,0 +1,33 @@
+{
+  "id": "conformance/durable-objects/websockets/ws-relay",
+  "layer": "conformance",
+  "behaviour": "durable-objects/websockets",
+  "title": "ws relay",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/ws-relay",
+      "legacy_id": "hyperbob/ws-relay"
+    },
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/ws-relay/wrangler.json",
+      "sha256": "ea5a74c6ab77d744b2556898131bc6bf39977889c55af13836f53e13f1671149"
+    }
+  ],
+  "legacy_ids": [
+    "hyperbob/ws-relay"
+  ],
+  "adapter": "example",
+  "fixture": "tests/conformance/durable-objects/websockets/fixtures/frame-relay",
+  "profiles": [
+    "full"
+  ],
+  "reason": "",
+  "requests": [
+    {
+      "path": "/?v=suite"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/durable-objects/websockets/fixtures/frame-relay/wrangler.json",
+  "source_sha256": "ea5a74c6ab77d744b2556898131bc6bf39977889c55af13836f53e13f1671149"
+}

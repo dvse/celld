@@ -1,0 +1,120 @@
+{
+  "adapter": "http",
+  "behaviour": "web-platform",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runs": 0,
+    "classification": "primary_candidate_static_only",
+    "cleanup": [
+      "All iterator next calls and the final trailer/EOF completion must settle. In a finally block call generator.return(), which invokes production PackReader using/dispose cancellation on early exit; clear the retained-base map.",
+      "Observe finite source terminal counters. Production privately owns BYOB reader and digest; fixture cannot release its reader lock or prove native reclamation and never reaches into private state.",
+      "In all outcomes externally terminate and reap the full proven-owned runtime/dev/bundler descendant domain across PGIDs, then remove only its staging/bundle/log/temp/private-store artifacts. Enforce five-second cleanup bound; preserve bounded evidence outside that domain.",
+      "Unsettled work, missing dependency/runtime/ownership evidence or unsuccessful reap remains BLOCKED and cannot qualify as PASS. Do not race in-process cleanup with an unsettled trace."
+    ],
+    "closest_existing_cases": [
+      "K213",
+      "C001",
+      "C016"
+    ],
+    "distinctness": "One compound actual Git tree mechanism: directory slash byte ordering plus all five serialized modes; no extra case credit for each mode.",
+    "failure_hypothesis": "A byte sorter that omits the virtual directory slash changes the tree OID; a mode mapper could collapse gitlink or symlink metadata.",
+    "id": "X202",
+    "implementation": "cases.js:X202",
+    "independent_oracle": "ORACLES.md#x202",
+    "independently_reviewed": false,
+    "limits": {
+      "descendant_supervision": "Entire proven-owned runtime/dev/bundler domain including descendants across PGIDs; no single-process-group assumption.",
+      "max_assertions": 64,
+      "max_case_payload_bytes": 70000,
+      "max_expected_live_decoded_payload_bytes": 300000,
+      "max_external_case_http_requests": 1,
+      "max_external_public_network_requests": 0,
+      "max_generator_next_calls": 10,
+      "max_object_bytes_in_pack": 1024,
+      "max_owned_domain_processes": 32,
+      "max_owned_writable_bytes": 134217728,
+      "max_pack_bytes": 4096,
+      "max_pack_objects": 4,
+      "max_readable_sources": 2,
+      "max_response_bytes": 16384,
+      "max_rpc_calls": 0,
+      "max_runtime_storage_calls": 0,
+      "max_source_pulls": 64,
+      "max_top_level_operations": 64,
+      "max_total_logical_payload_bytes": 300000,
+      "memory_accounting": "Decoded logical payload estimate only; no JS heap or native allocation measurement. Hex strings, temporary values, pako/native state and allocator overhead are bounded solely by the mandatory owned-domain RSS ceiling.",
+      "outer_case_process_deadline_seconds": 15,
+      "outer_cleanup_deadline_seconds": 5,
+      "outer_http_deadline_seconds": 10,
+      "outer_rss_bytes": 536870912,
+      "outer_wave_deadline_seconds": 150,
+      "trace_deadline_ms": 5000
+    },
+    "literal_assertion_call_sites": 6,
+    "oracle": "Literal canonical tree bytes, literal SHA-1, fixed parsed entries, raw entry byte names and expected referent types.",
+    "preconditions": [
+      "Exact byte-pinned production module and unmodified license; exact separately qualified direct-celld runtime and trusted bundle.",
+      "All unconditional imports must resolve: genuine node:zlib and exact pako3.0.2 with historical integrity, regardless of case function. No source evaluation occurs until separately authorized.",
+      "Fresh owned deployment/process with genuine crypto.subtle/DigestStream, native byte/BYOB streams and modern JS globals; external process/domain limits and full cleanup witness."
+    ],
+    "runtime_passes": 0,
+    "runtime_status": "NOT_RUN",
+    "schedule": "One GET /case/X202 in a fresh owned deployment/process; exact sequential operations in one active fetch request; no concurrency or external service.",
+    "scope": "actual-os-component-valid-format-semantics",
+    "shared_decoder_assertion_call_sites": 0,
+    "source_refs": [
+      {
+        "line_end": 140,
+        "line_start": 128,
+        "path": "raw/packages/workshop-backend/src/git-codec.ts",
+        "root": "os"
+      },
+      {
+        "line_end": 256,
+        "line_start": 163,
+        "path": "raw/packages/workshop-backend/src/git-codec.ts",
+        "root": "os"
+      }
+    ],
+    "title": "Order valid tree metadata",
+    "trace": [
+      "Encode shuffled valid five-mode entries",
+      "Check literal bytes and OID",
+      "Parse/scan fixed literal input and map each mode"
+    ]
+  },
+  "corpus_id": "X202",
+  "corpus_wave": "os-git-codec-semantics",
+  "fixture": "tests/conformance/web-platform/fixtures/os-git-codec-semantics",
+  "id": "conformance/web-platform/os-git-codec-x202",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/os-git-codec-semantics/X202"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/os-git-codec-semantics/X202",
+      "manifest_sha256": "30fa9826b963cb0b917bcda33e4167d5eaf4427eb0f4c6d3d5cd81394dba89b0",
+      "review_sha256": "c9f9a454519813ac2bcab8453ce7417f68a961c626d24ac22a6ad08352205547",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-git-codec-semantics",
+      "tranche": "006"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/X202",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "X202",
+  "source": "tests/conformance/web-platform/fixtures/os-git-codec-semantics/fixture.js",
+  "source_sha256": "1e9fe63ddb8a97a259b41a94a3d4c49335648de10577f3c2b4aff0bdb6e9688c",
+  "title": "Order valid tree metadata"
+}

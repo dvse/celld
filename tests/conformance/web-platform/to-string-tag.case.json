@@ -1,0 +1,35 @@
+{
+  "id": "conformance/web-platform/to-string-tag",
+  "layer": "conformance",
+  "behaviour": "web-platform",
+  "title": "to String Tag",
+  "origins": [
+    {
+      "source": "workerd@19b1657bd/src/workerd/api/tests/global-scope-test.js#toStringTag",
+      "legacy_id": "workerd/globals/toStringTag"
+    },
+    {
+      "source": "workerd@19b1657bd/src/workerd/api/tests/global-scope-test.js",
+      "sha256": "1be7707aee5c456bcdf50ae2f84478119f738fc301cda1209e5697175cdb4327"
+    }
+  ],
+  "legacy_ids": [
+    "workerd/globals/toStringTag"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/web-platform/fixtures/global-contracts",
+  "isolated": true,
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/toStringTag",
+      "timeout": 5
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/web-platform/fixtures/global-contracts/upstream.js",
+  "source_sha256": "1be7707aee5c456bcdf50ae2f84478119f738fc301cda1209e5697175cdb4327"
+}

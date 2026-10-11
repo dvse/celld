@@ -1,0 +1,53 @@
+{
+  "id": "logic/wake-recovery/retry-an-unknown-global-wake-put-without-changing-its-name",
+  "layer": "logic",
+  "behaviour": "wake-recovery",
+  "title": "Retry an unknown global wake PUT without changing its name",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic",
+      "legacy_id": "corpus/wake-recovery-logic/K001"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+      "sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/wake-recovery-logic/K001"
+  ],
+  "adapter": "native",
+  "corpus_id": "K001",
+  "corpus_wave": "wake-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/wake-recovery/fixtures/decision-cases/tests/wake_recovery.rs",
+  "source_sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86",
+  "test_filter": "k001_lost_put_reply_retries_identical_immutable_key",
+  "contract": {
+    "intent": "Retry an unknown global wake PUT without changing its name",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Request initial publication and retain its full key/snapshot.",
+      "Withhold confirmation to represent a lost store response; check uncovered.",
+      "Request a second publication and compare exact identity.",
+      "Confirm only the synthetic retry success; check coverage and absence of a third publication."
+    ],
+    "oracle": [
+      "Both attempts are exactly equal; no coverage before a confirmed success.",
+      "One later confirmed PUT makes the installation covered and suppresses subsequent work."
+    ],
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k001_lost_put_reply_retries_identical_immutable_key"
+  },
+  "selector": "K001"
+}

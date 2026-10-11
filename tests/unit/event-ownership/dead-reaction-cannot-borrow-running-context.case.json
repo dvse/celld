@@ -1,0 +1,24 @@
+{
+  "id": "unit/event-ownership/dead-reaction-cannot-borrow-running-context",
+  "layer": "unit",
+  "behaviour": "event-ownership",
+  "title": "dead reaction cannot borrow running context",
+  "origins": [
+    {
+      "source": "crates/celld/js/ownership_tests.rs",
+      "legacy_id": "unit/celld/js::ownership_tests::dead_reaction_cannot_borrow_running_context"
+    }
+  ],
+  "legacy_ids": [
+    "unit/celld/js::ownership_tests::dead_reaction_cannot_borrow_running_context"
+  ],
+  "adapter": "cargo",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "crates/celld/js/ownership_tests.rs",
+  "source_sha256": "6c20d4fcde25d6d71e873e01fe08dc0759be4d29c5114d900a7f2cca51ab1e6b",
+  "test_filter": "js::ownership_tests::dead_reaction_cannot_borrow_running_context"
+}

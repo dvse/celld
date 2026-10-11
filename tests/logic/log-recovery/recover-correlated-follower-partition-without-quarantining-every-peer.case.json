@@ -1,0 +1,54 @@
+{
+  "id": "logic/log-recovery/recover-correlated-follower-partition-without-quarantining-every-peer",
+  "layer": "logic",
+  "behaviour": "log-recovery",
+  "title": "Recover correlated follower partition without quarantining every peer",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic",
+      "legacy_id": "corpus/log-recovery-logic/J021"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic/tests/log_recovery.rs",
+      "sha256": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/log-recovery-logic/J021"
+  ],
+  "adapter": "native",
+  "corpus_id": "J021",
+  "corpus_wave": "log-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/log-recovery/fixtures/decision-cases/tests/log_recovery.rs",
+  "source_sha256": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c",
+  "test_filter": "j021_correlated_partition_recovers_without_excluding_all_peers",
+  "contract": {
+    "intent": "Recover correlated follower partition without quarantining every peer",
+    "preconditions": [
+      "Each test owns all in-memory values and directly calls public frozen production celld_logic components; no substitute decision implementation",
+      "Storage PUT/delete success, failure, CAS ordering, member confirmations and restore chains are explicit synthetic environmental facts; no disk, bucket, network, actor or VM is exercised",
+      "Every supplied finish_recovery certificate has a stipulated prior durable per-cell/bucket receipt; the pure finish function does not validate that I/O premise",
+      "GC chains are supplied from the stipulated production restore walk, oldest-first and ending at own epoch except the deliberate missing-opener schedules; no restore walk is reimplemented",
+      "GC listed vectors intentionally include base/own/off-chain epochs beyond the current executor scan.below input; these are public-component API robustness premises, not claimed live executor traces",
+      "Hash checks must match delivered runtime manifest lineage before future review/build/run; no compiler or SUT was launched while authoring"
+    ],
+    "trace": [
+      "At110 only a is old enough, require correlated_stall=false",
+      "At115 both exceed backstop, require correlated_stall=true",
+      "Require no reconfiguration without coverage; supply bucket coverage then allow",
+      "Supply executor park/reset without append_incapable calls; require no quarantined peers and no outstanding correlation",
+      "Supply fresh healed appends/completions and require both Healthy"
+    ],
+    "oracle": "Correlation requires both due followers; reset alone does not invent peer quarantine; Healed samples are accepted in fresh tracker and ordinary health returns",
+    "cleanup": "Drop only this test-owned records, maps, fragments, health tracker and ledger. No external resources exist; unwind also drops all owned values.",
+    "implementation": "tests/log_recovery.rs:j021_correlated_partition_recovers_without_excluding_all_peers"
+  },
+  "selector": "J021"
+}

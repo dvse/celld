@@ -1,0 +1,60 @@
+{
+  "adapter": "topology",
+  "behaviour": "fetch-and-http",
+  "contract": {
+    "cleanup": [
+      "Coordinator remains in active DO.fetch; close scope, abort pending owned fetches, cancel/release all owned readers and response bodies",
+      "Recipient marks operations stopped before releasing gates; joins all entered handlers and producer pulls; any fault or unresolved work BLOCKS cleanup",
+      "Join complete coordinator trace and every watched task; exact expected abort only; unobserved assertion failures cannot become successful cleanup",
+      "Matched recipient journal and zero active/readers/controllers/pulls plus zero caller response/request/task resources required",
+      "Independent supervisor must close/reap/destroy only owned sockets/processes/fresh storage and provide hash-matched teardown before runtime PASS"
+    ],
+    "distinctness": "H018 aborts initial held request; this requires native multi-hop cancellation handle to continue owning the changed destination",
+    "implementation": "cases.js:F009",
+    "intent": "Abort while intermediate redirect head is held",
+    "oracle": "Native fetch rejects with exact F009 planned intermediate abort reason object; first once, middle once/stopped, never0; peer graph exact; no rollback inference",
+    "preconditions": [
+      "First302 reaches middle; middle Location remains unavailable behind head gate; final never configured to run directly",
+      "Fresh already-running owned disposable candidate8d27 fleet, parent exclusive slot, independent exact-hash source/oracle review",
+      "External supervisor records actual process/boot/executable/DO/isolate identities and hard resource limits; no synthetic boolean substitutes for evidence",
+      "Distinct coordinator/recipient roots and isolates; recipient local to fixed owned192.168.77.1:18080 ingress; controls and every hop are independent recipient requests",
+      "Native public Fetch, ReadableStream, AbortController and SHA256 APIs; fresh recipient operation journal required before trace entry",
+      "All synthetic bodies and valid ordinary redirects stay in earlier-configured owned fixture endpoints; graph depth at most3, each operation enters at most once"
+    ],
+    "trace": [
+      "Start follow with unique AbortController",
+      "Witness first complete and middle entered/EOF while head withheld",
+      "Abort with exact planned Error and require identical native fetch rejection; explicitly stop middle",
+      "Complete separate peer redirect graph; prove final entered0 and middle settled"
+    ]
+  },
+  "corpus_id": "F009",
+  "corpus_wave": "fetch-redirect-stress",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/redirect-chains",
+  "id": "conformance/fetch-and-http/abort-while-intermediate-redirect-head-is-held",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/fetch-redirect-stress/F009"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/fetch-redirect-stress/F009",
+      "source": "guarded-source-archive/celld-os-stress/waves/fetch-redirect-stress"
+    },
+    {
+      "sha256": "bb8d09b77278bb557b9489a205adaa0a6663ce77aa02e13694fa29eeb15f2b8f",
+      "source": "guarded-source-archive/celld-os-stress/waves/fetch-redirect-stress/fixture.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "F009",
+  "source": "tests/conformance/fetch-and-http/fixtures/redirect-chains/fixture.js",
+  "source_sha256": "bb8d09b77278bb557b9489a205adaa0a6663ce77aa02e13694fa29eeb15f2b8f",
+  "title": "Abort while intermediate redirect head is held"
+}

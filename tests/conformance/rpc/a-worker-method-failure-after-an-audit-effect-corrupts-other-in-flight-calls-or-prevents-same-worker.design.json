@@ -1,0 +1,86 @@
+{
+  "id": "conformance/rpc/a-worker-method-failure-after-an-audit-effect-corrupts-other-in-flight-calls-or-prevents-same-worker",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "A worker method failure after an audit effect corrupts other in-flight calls or prevents same-worker recovery.",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/bounded-load",
+      "legacy_id": "bounded-load/B018"
+    }
+  ],
+  "corpus_wave": "bounded-load",
+  "corpus_id": "B018",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "B018",
+    "title": "Loaded method fails amid seven delegates",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "A worker method failure after an audit effect corrupts other in-flight calls or prevents same-worker recovery.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Four loaded workers serve two calls each; request2 throws in its worker after its gated audit call succeeds."
+    ],
+    "ordered_trace": [
+      "Observe eight audit entries and release only request2.",
+      "Require planned:loaded:request2 and one audit effect while seven jobs stay gated.",
+      "Complete two new calls in the same failed worker before releasing siblings.",
+      "Drain remaining originals and probe every original module token."
+    ],
+    "stress_dimension": "Eight loaded calls with a post-effect method rejection and same-instance recovery under ongoing load.",
+    "safety_oracle": [
+      "Failed request has exactly one deliberate pre-error audit effect; no sibling effects before their gates open.",
+      "Two recovery and seven sibling results preserve recipient identities; all original settlements occur once."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 4,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Eight loaded calls with a post-effect method rejection and same-instance recovery under ongoing load."
+    },
+    "source_contracts": [
+      {
+        "key": "loader",
+        "path": "os/packages/workshop-backend/src/overseer.ts",
+        "lines": "4329-4360, 8182",
+        "contract": "OS dynamically loads worker code and obtains entrypoints; these tests use separate anonymous owned workers."
+      },
+      {
+        "key": "subscribers",
+        "path": "os/packages/bundled-blueprints/libraries/sync/src/subscribers.ts",
+        "lines": "3-13, 73-103, 121-170",
+        "contract": "Native callback retention, concurrent unawaited broadcast, per-subscriber failure isolation and reentry."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B018"
+    },
+    "qualification_gate": "pinned-native-characterization",
+    "identity_assumption": "Loaded worker token uniqueness/stability is a frozen-native characterization, not a universal Worker Loader replacement guarantee.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "Explicit owner overlap/authorization review required for possible overlap with separately restricted stateless-capability lifetime work; request adapter refuses B017-B024.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  }
+}

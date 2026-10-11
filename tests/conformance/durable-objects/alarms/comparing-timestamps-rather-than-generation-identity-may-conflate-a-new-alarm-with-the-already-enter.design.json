@@ -1,0 +1,69 @@
+{
+  "id": "conformance/durable-objects/alarms/comparing-timestamps-rather-than-generation-identity-may-conflate-a-new-alarm-with-the-already-enter",
+  "layer": "conformance",
+  "behaviour": "durable-objects/alarms",
+  "title": "Comparing timestamps rather than generation identity may conflate a new alarm with the already-entered one.",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress",
+      "legacy_id": "alarm-event-stress/A019"
+    }
+  ],
+  "corpus_wave": "alarm-event-stress",
+  "corpus_id": "A019",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "A019",
+    "title": "Same-timestamp replacement has a distinct generation",
+    "classification": "concurrent-characterization",
+    "intent": "Comparing timestamps rather than generation identity may conflate a new alarm with the already-entered one.",
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "Old event is active at a gate. The runtime must admit a second same-time alarm and complete it while the first is held; absence of this overlap is BLOCKED, not an assumed API promise."
+    ],
+    "trace": [
+      "Arm aba-old and hold its native handler.",
+      "Ordinarily set aba-new to the exact already-fired timestamp.",
+      "Observe aba-new success while aba-old is still active.",
+      "Release aba-old and inspect the final event history."
+    ],
+    "stress": "Two bounded native invocations overlap on one root with identical scheduledTime but different alarm generations.",
+    "stress_dimension": "Two bounded native invocations overlap on one root with identical scheduledTime but different alarm generations.",
+    "oracle": [
+      "Both entries keep the same scheduled time and independent retry zero.",
+      "Each logical effect exists once and final alarm is null; no promotion claim is made for undocumented re-entrant scheduling."
+    ],
+    "oracles": [
+      "Both entries keep the same scheduled time and independent retry zero.",
+      "Each logical effect exists once and final alarm is null; no promotion claim is made for undocumented re-entrant scheduling."
+    ],
+    "cleanup": [
+      "Release the old gate and delete remaining alarms; if the overlap cannot be established, teardown still occurs and the case is BLOCKED.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A019",
+    "test_function": "A019",
+    "layer": "real-process-RPC plus native scheduled event",
+    "promotion_gate": false,
+    "bounds": {
+      "case_wall_seconds": 360,
+      "cleanup_wall_seconds": 40,
+      "max_concurrent_http_jobs": 16,
+      "max_roots": 2,
+      "max_native_alarm_entries": 16,
+      "max_application_gate_ms": 45000
+    },
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "status": "NOT_RUN",
+    "runtime_runs": 0,
+    "runtime_passes": 0,
+    "independent_review": "PENDING"
+  }
+}

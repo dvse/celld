@@ -1,0 +1,30 @@
+{
+  "id": "conformance/rpc/rpc-target-constructor-property-is-reserved-and-not-granted-as-a-capability",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "RpcTarget constructor property is reserved and not granted as a capability",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/fixture",
+      "legacy_id": "base/R009"
+    }
+  ],
+  "corpus_wave": "base",
+  "corpus_id": "R009",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "R009",
+    "intent": "RpcTarget constructor property is reserved and not granted as a capability",
+    "preconditions": "Returned RpcTarget has normal application constructor",
+    "trace": [
+      "call method control",
+      "attempt await constructor property"
+    ],
+    "stress": "constructor retrieval rather than constructor call",
+    "oracle": "constructor read rejects; method control remains usable",
+    "cleanup": "dispose target; request teardown disposes accidental result",
+    "gate": "characterization",
+    "contract_status": "Client-surface behavior pending: native RpcStub/Object.prototype names may resolve locally in pinned workerd; ordinary API only, no raw protocol workaround."
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "adapter": "recovery",
+  "behaviour": "durable-objects/alarms",
+  "contract": {
+    "cleanup": [
+      "Release the held gate, clear schedules on both roots, and close both transferred guests.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A024",
+    "intent": "A suspended event could stall unrelated durable objects or mix their state under a bounded simultaneous foreground cohort.",
+    "oracle": [
+      "Root2 independently completes markers one=2,two=3,three=5 with no alarm/effect.",
+      "Root1 has exactly held-event and no sibling markers."
+    ],
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "Two fresh roots initially owned on different guest nodes; held-root native event is active behind a45-second gate."
+    ],
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "trace": [
+      "Hold held-event on root1.",
+      "Dispatch three ordinary foreground writes concurrently on root2 and collect their native receiver receipts.",
+      "While the root1 event is still active, verify all root2 markers.",
+      "Release root1 and compare both roots independently."
+    ]
+  },
+  "corpus_id": "A024",
+  "corpus_wave": "alarm-event-stress",
+  "fixture": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces",
+  "id": "conformance/durable-objects/alarms/a-suspended-event-could-stall-unrelated-durable-objects-or-mix-their-state-under-a-bounded-simultane",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/alarm-event-stress/A024"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/alarm-event-stress/A024",
+      "source": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress"
+    },
+    {
+      "sha256": "ccde8a8c9c8c7a4cfe02567f656fc149da1ee24fd78973455e64a8fe1c6ea3f3",
+      "source": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress/fixture.js"
+    }
+  ],
+  "phase2_harness": "real process and bucket fault schedule",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "A024",
+  "source": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces/fixture.js",
+  "source_sha256": "ccde8a8c9c8c7a4cfe02567f656fc149da1ee24fd78973455e64a8fe1c6ea3f3",
+  "title": "A suspended event could stall unrelated durable objects or mix their state under a bounded simultaneous foreground cohort."
+}

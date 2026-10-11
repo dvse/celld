@@ -1,0 +1,551 @@
+{
+  "files": [
+    {
+      "path": "runners/run.py",
+      "sha256": "e63168e2456811faccaec0b86073d8579bf043c8c72c7862e732505a75692a58",
+      "bytes": 3215,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "runners/test_guest_command.py",
+      "sha256": "66c367371c5c89bd6a20c294354494a267f0e64fb62ead773bd6a0c61c03f9eb",
+      "bytes": 2623,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/active-websocket-stress/private_driver.py",
+      "sha256": "8ea718d17545775b2e0ef05b9f5181c1e7a6745c04725c0094c32d1e873d64fd",
+      "bytes": 14915,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/active-websocket-stress/source-pins.json",
+      "sha256": "db3ed9dc6c302391d802d3e2809763116987680753509a58964ef9d2011933b3",
+      "bytes": 3415,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/active-websocket-stress/test_preflight.py",
+      "sha256": "05e489a9c7421cf23701c62319bcb3efee40cf14778ebdb305a45b9863bce72b",
+      "bytes": 1482,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/active-websocket-stress/validate.py",
+      "sha256": "c88ddb753799d7a1c90ae07279fa38b2a63b2eaa92a59a8a676e82c36f01a2da",
+      "bytes": 3186,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/alarm-event-stress/driver.py",
+      "sha256": "eaeccfba059ca4785dd41533fe5f744842ad30107bd83837ab60a4f49593d828",
+      "bytes": 34099,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/alarm-event-stress/http_jobs.py",
+      "sha256": "42da2dfd881bf1ceeffb4ac84689e939ece424909e91d43c237a9ee8eb99e7c6",
+      "bytes": 2147,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/alarm-event-stress/source-pins.json",
+      "sha256": "45f2572751922c33ee9175d2577dea063f7ee260efbf75898e3b7738a091b5fe",
+      "bytes": 4604,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/alarm-event-stress/test_preflight.py",
+      "sha256": "c9d7a53981e35f5115bb0d1563b7823c0a8e64e96de1ba993aefeb0b640a458f",
+      "bytes": 11120,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/alarm-event-stress/validate.py",
+      "sha256": "6d24f835fc2376ee8984717e42770cfd9573c80099af52ccc32896906545ff23",
+      "bytes": 3218,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/bounded-load/run.py",
+      "sha256": "6fcb07a6ad83012e48cc704618e718970adecd15508e97c3b31a82c991001e8f",
+      "bytes": 9309,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/bounded-load/source-pins.json",
+      "sha256": "02b6de06eed33124802d9b22bc0c6b4aecf3da6a4b9f808d719b005ffa32756c",
+      "bytes": 3675,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/bounded-load/test_preflight.py",
+      "sha256": "f2d8d06d8446ddefa2d4050d72b83853c8306dbb52bd89904d3d2e4efe1967c2",
+      "bytes": 3099,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/bounded-load/validate.py",
+      "sha256": "bd02e74bcd91257eb2dba3d0f340580efbc8d98928a7710f67ffa7d69e3025d7",
+      "bytes": 4620,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/bounded-resource/run.py",
+      "sha256": "2a19f98e0984211a11da80bbc37e698e9e9a574a7e851a320ddc5f6ff17709d8",
+      "bytes": 7510,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/bounded-resource/source-pins.json",
+      "sha256": "a6d82bf09516b2ee5767f23fdd824dbcc00e0a9986f1faa0be8e8194c9b8b7ed",
+      "bytes": 4211,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/bounded-resource/test_preflight.py",
+      "sha256": "74406477feab4964b95fe85e51c3027904519c3e6461c0358e305a9cfaca25a5",
+      "bytes": 2771,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/bounded-resource/validate.py",
+      "sha256": "8ec9401e99b833947d85b5c2a5f5ea3995e9abbaa0b38c2113fb805da26927fe",
+      "bytes": 3568,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/capability-order/run.py",
+      "sha256": "0e6c64824141f2e73a7e55fa5c9901f6af18ce4e82a116a9e8f50aabc8dceac5",
+      "bytes": 7413,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/capability-order/test_preflight.py",
+      "sha256": "4df5065b6bebfcecc5c321784d4f77faf66a241d5da9a6c080c8474e4fd38385",
+      "bytes": 3553,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/capability-order/validate.py",
+      "sha256": "3221dd04788c0298bf8a1c2b3ecdc679313b11b4c01c07e27e6f98d562cfe16d",
+      "bytes": 4442,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/deploy_job.py",
+      "sha256": "38980543dc81048c2222b1687086c0029ac09c976c263bd25de311316d2c6ffc",
+      "bytes": 3695,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/driver.py",
+      "sha256": "d4149aeb98b571ff9f79ecefa81106574a719b2ea810cfbc369be354969f3fc2",
+      "bytes": 43545,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/http_jobs.py",
+      "sha256": "42da2dfd881bf1ceeffb4ac84689e939ece424909e91d43c237a9ee8eb99e7c6",
+      "bytes": 2147,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/source-pins.json",
+      "sha256": "cb68cb1909e4f00d3424594a4dcde1fd4452f5c4213c41576e0e3dabc7995044",
+      "bytes": 3193,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/test_preflight.py",
+      "sha256": "014c6197418be342b9397f640d0f658a74098757a3a52e2478107ae38e2b90e3",
+      "bytes": 10866,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/deployment-recovery/validate.py",
+      "sha256": "7096b19445181ca8c86561bf8f578bc00a1fd2f737fff8aaee1bdda0e20bb44e",
+      "bytes": 4118,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/durable-recovery-stress/driver.py",
+      "sha256": "fc2d73e94c460f413f1a0fa905ddc17bf808dddd68d1097b86c36c994faff380",
+      "bytes": 30123,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/durable-recovery-stress/http_jobs.py",
+      "sha256": "42da2dfd881bf1ceeffb4ac84689e939ece424909e91d43c237a9ee8eb99e7c6",
+      "bytes": 2147,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/durable-recovery-stress/source-pins.json",
+      "sha256": "1e2948c222c6d4d6f477d7f935b7d478b55a4f3f6c2b60471991399748568392",
+      "bytes": 2488,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/durable-recovery-stress/test_preflight.py",
+      "sha256": "ec4c17df8e5588b29023c075416b9eb33896c20ce2ffe87fd1d181198145cd9c",
+      "bytes": 6001,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/durable-recovery-stress/validate.py",
+      "sha256": "c87161a0def5d1c3c7eb57f57d3bd3f9d6a3c5b14a3647584534f87ad0ab18a3",
+      "bytes": 3296,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/fetch-redirect-stress/private_driver.py",
+      "sha256": "0fd8569c855f44e171a5abfda54ec336815e5b192773ef082fa5ebd40f0d5125",
+      "bytes": 14658,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/fetch-redirect-stress/source-pins.json",
+      "sha256": "7c7608267eafda129414333aa40759a5f8c6ed676b32d7031c63a2eae81144ef",
+      "bytes": 2528,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/fetch-redirect-stress/test_helpers.mjs",
+      "sha256": "74dd393abdf8eea43d9bf15ba464d3beb88560f122f61d9489120982075063bf",
+      "bytes": 3566,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/fetch-redirect-stress/test_preflight.py",
+      "sha256": "db228e5bbd9462cebae3bdb85f1cf353d8ea955e6f7a72ab2d21eebe82984c88",
+      "bytes": 3090,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/fetch-redirect-stress/validate.py",
+      "sha256": "f719335e552e8af7c51e1fe32ace0cacf95d7c4f50eec3e5aab165ebcd59eb12",
+      "bytes": 4987,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/http-stream-stress/private_driver.py",
+      "sha256": "076dcd78953bef5ac7a6c0bb7b3dfb7e5df56065fba6997c227031e491dd9b72",
+      "bytes": 13105,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/http-stream-stress/source-pins.json",
+      "sha256": "dd937a04fe8b729b03c0a75ae421a77d057f58a1b9f4c9e1ca2799f540fd7d14",
+      "bytes": 3729,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/http-stream-stress/test_oracle_helpers.mjs",
+      "sha256": "ee456e24904ecddca5156cb2be6b77829fb6f4eaf6e3f6a0b044c0a811bcde52",
+      "bytes": 2068,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/http-stream-stress/test_preflight.py",
+      "sha256": "da982f0ed773937be0fb9583a3cc3e335c8821aceacd4a9898c9a8402a6e2334",
+      "bytes": 4005,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/http-stream-stress/validate.py",
+      "sha256": "b0764716b66c7cf4b0ae1d38a0dddc1d6f06d9f2a4f9926e998a964b4d30cf0b",
+      "bytes": 4498,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/loader-props/run.py",
+      "sha256": "86971426940cd0df5023ca3dbf90d52988035fcf58ef6cf89426ab793015ad4b",
+      "bytes": 5460,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/loader-props/validate.mjs",
+      "sha256": "534af4405b81c2d6bbb77aa990a7e91f3bdef6ccc7710471cce0ef10f9a40cbf",
+      "bytes": 1822,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/log-recovery-logic/source-pins.json",
+      "sha256": "9cd2e2f867ce2f17d09908b8738e4419cd0712164b2e9a888eb9bf8cb710dc5c",
+      "bytes": 4354,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/log-recovery-logic/trace-receipt-contract.json",
+      "sha256": "0029295116e47c59e08d67ed2e8238bb7816e747cf51dbc36efd08459c21d712",
+      "bytes": 1272,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/log-recovery-logic/validate.py",
+      "sha256": "efe6273231e185458077d5ae2a6dece7e51e64fdf38533b8b91680539a9fb256",
+      "bytes": 8290,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/module-graph-stress/run.py",
+      "sha256": "8c6d8356d5eb12bdcf369a7e660720eb231eba336b4b46726406c890f7ae1c69",
+      "bytes": 8607,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/module-graph-stress/source-pins.json",
+      "sha256": "6d59b93d0b7d6c711f567c0e42abfff4acfa94860d7cb8f6db1468de480703be",
+      "bytes": 2662,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/module-graph-stress/test_cleanup.mjs",
+      "sha256": "30ec76c35ad66923eac5a3b2f58cbef176e3d6750f33c81bc33286a9c95073ac",
+      "bytes": 3594,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/module-graph-stress/test_receipts.py",
+      "sha256": "73d20455aa560b85f859ae7b6dcb88b88acaec69dd86e1e2fcbc71cd1f1cff62",
+      "bytes": 1877,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/module-graph-stress/validate.mjs",
+      "sha256": "4016e1a3f7972207b0ff627af4b4e6dddac8bb9754be1f20e4e8290a0c2112c6",
+      "bytes": 4223,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/native-transform-stress/private_driver.py",
+      "sha256": "34ad4e2dafe6d54fc0abdeb203439e67c479cceb8906bc4dd27992d9a757980a",
+      "bytes": 18308,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/native-transform-stress/source-pins.json",
+      "sha256": "22850dc72e870f4ae1a5f9e7a512534c8e11fed24ca93e56161613d8e3619987",
+      "bytes": 6269,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/native-transform-stress/test_helpers.mjs",
+      "sha256": "508e76498242bb4662ba34394c7448e35f4b79a1ae0232b47a408b819746d0fa",
+      "bytes": 1528,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/native-transform-stress/test_lifecycle_helpers.mjs",
+      "sha256": "d5aeebc67114f074a3d8871d376c37866ca06fb660047ec73271445831a713f7",
+      "bytes": 7012,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/native-transform-stress/test_preflight.py",
+      "sha256": "f741badfa841d0fd86e9b2a4f6863e589684009273ec46f40795a53074674b23",
+      "bytes": 7822,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/native-transform-stress/test_terminal_helpers.mjs",
+      "sha256": "79df9b292d032660be5dea6add1c178054aedd1a979c95e6070f9087bfd71f6c",
+      "bytes": 8482,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/native-transform-stress/validate.py",
+      "sha256": "75bb99ad4264d4f097b0accb231d0bdf8286f47ff707fcf2c022a7a772903e08",
+      "bytes": 3870,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/output-gate-logic/profile-v2.json",
+      "sha256": "321d41357eda97690a5c649b4b39dde102d78d154a6354d974299b816b0fa74c",
+      "bytes": 1873,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/output-gate-logic/run_selected.py",
+      "sha256": "efe1bb7762d14105b76809567948de972f03d4c18e421238d795a80fdf624cdf",
+      "bytes": 8440,
+      "source_bytes_unchanged": false,
+      "original_sha256": "121d08f47c1ee3aeec8267a559ad7a915cb201d063aaac32b23341525934af5d",
+      "transform": "Replace private scheduling wording in module docstring only; executable code unchanged."
+    },
+    {
+      "path": "waves/output-gate-logic/source-pins.json",
+      "sha256": "2e06ae03480e8f4a36ea41fd7e0da83519b51a3334fbeea4c9ba6982596df2f1",
+      "bytes": 3285,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/output-gate-logic/validate.py",
+      "sha256": "238b70d963cbc5318d2cf44b8ccae970cef9cab355d1242dcea915f563c2f812",
+      "bytes": 2910,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/pressure-recovery-logic/source-pins.json",
+      "sha256": "d6ed2a5474099eae900ee2a1f63081dc584fb1d99a4feb9e8881d6241a00469e",
+      "bytes": 4897,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/pressure-recovery-logic/trace-receipt-contract.json",
+      "sha256": "2cf9ddcf5799b983fce2af660bc2f26e09718575be9548492e9cfd2c688a01fd",
+      "bytes": 2122,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/pressure-recovery-logic/validate.py",
+      "sha256": "a7cbe2dc6840b71ce8b8d4a5b74cfe58ac548755c603236c6e930d5444cfb81b",
+      "bytes": 6320,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/routing-acquisition-logic/source-pins.json",
+      "sha256": "bd3559404928c86c8be903798b6fda5f678900a491919ef8953531848c97b397",
+      "bytes": 3877,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/routing-acquisition-logic/validate.py",
+      "sha256": "bcb44b274861c601e7252610f10b09c8c6f2aa1038c20f89c483c745f7ea1bbe",
+      "bytes": 6050,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/rpc-codec/validate.py",
+      "sha256": "1a8d7296ac402e0922e1071f1e4538880d3e3b059a520d729aae7db995d8504c",
+      "bytes": 4075,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/sqlite-concurrency/private_driver.py",
+      "sha256": "822c3204e84c7df87c7891e4c8e6b17be0b57627b1f2075f075dbb3d56a9b663",
+      "bytes": 15220,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/sqlite-concurrency/source-pins.json",
+      "sha256": "24b0037a4fca2b354dcfdacd12561813cf8b369329257867243f95feed5500a6",
+      "bytes": 3208,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/sqlite-concurrency/test_helpers.mjs",
+      "sha256": "222ebe350279022cf76cde53140e3038e2621ad4cf92a5f10ae8c87f4f67e964",
+      "bytes": 1688,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/sqlite-concurrency/test_preflight.py",
+      "sha256": "93b0b2cf5b67778b8397e723255569e4515dabde2faaac19127e416c041c6bc0",
+      "bytes": 6097,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/sqlite-concurrency/validate.py",
+      "sha256": "77059cbdb10d98df77f5502f2d8ebe8f09943e5bd278ccaa71a6d9d027d5150a",
+      "bytes": 3669,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/wake-recovery-logic/source-pins.json",
+      "sha256": "4e72694ec181865fc290261cd142bc0e46b925817034c3f6842337f9833be6f5",
+      "bytes": 5956,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/wake-recovery-logic/trace-receipt-contract.json",
+      "sha256": "acb7febdefc9fbdbd853543793b2abc264aaaf0a36e21f5f60fd807ddb50f49a",
+      "bytes": 1194,
+      "source_bytes_unchanged": true
+    },
+    {
+      "path": "waves/wake-recovery-logic/validate.py",
+      "sha256": "9e7ce4908f9d55cf4188e7cfc9d033d4bec9a4ea55b1970ab5586fabb4d5d620",
+      "bytes": 7460,
+      "source_bytes_unchanged": true
+    }
+  ],
+  "omitted_operational_files": [
+    {
+      "path": "waves/log-recovery-logic/prepared-run-v1/check_source_only.py",
+      "original_sha256": "85dc0e8c1db651e4fb909f789bcd4a1ae533bc87d7375d535fe8bdad569fcd7c",
+      "reason": "Operational qualification harness tied to unavailable private execution-control records; assertion sources remain included."
+    },
+    {
+      "path": "waves/log-recovery-logic/prepared-run-v1/pins.json",
+      "original_sha256": "9b3ef44abb993bd1f51b25a50d69e173b4cc63c02b4981370984f8f2aaed1b7f",
+      "reason": "Operational qualification harness tied to unavailable private execution-control records; assertion sources remain included."
+    },
+    {
+      "path": "waves/log-recovery-logic/prepared-run-v1/profile.json",
+      "original_sha256": "bec60601c1e3700618a762f4a84c5b8ebf82a9a7c564fb59b0c229652ad7578b",
+      "reason": "Operational qualification harness tied to unavailable private execution-control records; assertion sources remain included."
+    },
+    {
+      "path": "waves/log-recovery-logic/prepared-run-v1/run_native.py",
+      "original_sha256": "7d113b0139883ef2fa23edb4028ea9cefd9021e590f0c737f9970a70821d8342",
+      "reason": "Operational qualification harness tied to unavailable private execution-control records; assertion sources remain included."
+    },
+    {
+      "path": "waves/output-gate-logic/prepared-remaining34-v1/pins.json",
+      "original_sha256": "ec4c23ecb04e6c12fe32cc97f17853f003c2aced0153b9a362e3522f5e47bea5",
+      "reason": "Operational qualification harness tied to unavailable private execution-control records; assertion sources remain included."
+    },
+    {
+      "path": "waves/output-gate-logic/prepared-remaining34-v1/profile.json",
+      "original_sha256": "6704066f9ca44df424e9e47855921e87e77729f06deba9f41d1428c7cfabd83c",
+      "reason": "Operational qualification harness tied to unavailable private execution-control records; assertion sources remain included."
+    },
+    {
+      "path": "waves/output-gate-logic/prepared-remaining34-v1/run_remaining.py",
+      "original_sha256": "a7067f8c42f01cc6a0b3b6829bc3a97ba9749473203f7f6cb95ce9dcbe52b039",
+      "reason": "Operational qualification harness tied to unavailable private execution-control records; assertion sources remain included."
+    },
+    {
+      "path": "waves/pressure-recovery-logic/prepared-run-v1/check_source_only.py",
+      "original_sha256": "85dc0e8c1db651e4fb909f789bcd4a1ae533bc87d7375d535fe8bdad569fcd7c",
+      "reason": "Operational qualification harness tied to unavailable private execution-control records; assertion sources remain included."
+    },
+    {
+      "path": "waves/pressure-recovery-logic/prepared-run-v1/pins.json",
+      "original_sha256": "ef3f3b90d7aa2a7cbfdd7f9c55941c01ad7714cdb0fc9d5b7ea7e8e9d0f6dee3",
+      "reason": "Operational qualification harness tied to unavailable private execution-control records; assertion sources remain included."
+    },
+    {
+      "path": "waves/pressure-recovery-logic/prepared-run-v1/profile.json",
+      "original_sha256": "6e3cace45367125d0acecbf36c5d5bf4e45f47a6be64f5e07dc844885961af29",
+      "reason": "Operational qualification harness tied to unavailable private execution-control records; assertion sources remain included."
+    },
+    {
+      "path": "waves/pressure-recovery-logic/prepared-run-v1/run_native.py",
+      "original_sha256": "1080016396273af4c229418bb2d7181f31e4b31fe52cfb11004de18d28faa183",
+      "reason": "Operational qualification harness tied to unavailable private execution-control records; assertion sources remain included."
+    },
+    {
+      "path": "waves/routing-acquisition-logic/prepared-run-v1/check_source_only.py",
+      "original_sha256": "b0efc70c20232aeabf3cc755107a49688aee29b72279884f5068b3a18bcd7dbf",
+      "reason": "Operational qualification harness tied to unavailable private execution-control records; assertion sources remain included."
+    },
+    {
+      "path": "waves/routing-acquisition-logic/prepared-run-v1/pins.json",
+      "original_sha256": "f61a9e74ed8159e0f4e89ede1052c88a9e461c06fc898387690e415e88b815bc",
+      "reason": "Operational qualification harness tied to unavailable private execution-control records; assertion sources remain included."
+    },
+    {
+      "path": "waves/routing-acquisition-logic/prepared-run-v1/profile.json",
+      "original_sha256": "277b34623bc8a1e6731da7a24ec9d31c67bbbf872bd34884a17da76d3b2f9101",
+      "reason": "Operational qualification harness tied to unavailable private execution-control records; assertion sources remain included."
+    },
+    {
+      "path": "waves/routing-acquisition-logic/prepared-run-v1/run_native.py",
+      "original_sha256": "21a56dd9ed7539363f9c7641b95f2431b2970cf4dacd0144d9fa988ce42a706c",
+      "reason": "Operational qualification harness tied to unavailable private execution-control records; assertion sources remain included."
+    }
+  ]
+}

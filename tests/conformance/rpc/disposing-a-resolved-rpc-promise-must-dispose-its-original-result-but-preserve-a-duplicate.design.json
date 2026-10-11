@@ -1,0 +1,45 @@
+{
+  "id": "conformance/rpc/disposing-a-resolved-rpc-promise-must-dispose-its-original-result-but-preserve-a-duplicate",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "Disposing a resolved RPC promise must dispose its original result but preserve a duplicate",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/capability-order",
+      "legacy_id": "capability-order/O034"
+    }
+  ],
+  "corpus_wave": "capability-order",
+  "corpus_id": "O034",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "O034",
+    "intent": "Disposing a resolved RPC promise must dispose its original result but preserve a duplicate",
+    "preconditions": [
+      "COMMON",
+      "Native RpcPromise disposal preflight; child result resolved"
+    ],
+    "trace": [
+      "Duplicate child result from resolved RpcPromise",
+      "Dispose the original promise",
+      "Require disposed Error on original child and unchanged provider effects",
+      "Use surviving duplicate then release and check final disposer"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Resolved promise ownership group with explicit escaping duplicate",
+    "oracle": "Original result invalidated without invalidating duplicate; parent stays live",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-PROMISE",
+      "SC-DISPOSE",
+      "SC-ERROR"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O034 state transition; counts, repetitions and deployment placements do not create additional cases."
+  }
+}

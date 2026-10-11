@@ -1,0 +1,135 @@
+{
+  "adapter": "http",
+  "behaviour": "fetch-and-http",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "assertion_count": 10,
+    "classification": "ordinary-functional-stream-admission",
+    "cleanup": "Open all callback and milestone gates. Initiate readable cancellation and writable abortion on still-live owners before joining, so missing HWM0 demand cannot strand an in-flight write. Join original API/closed/ready promises and dynamically recorded callback results, then release owners and observe post-release promises. Require zero pending work, timers and public locks; separate owned-process teardown remains mandatory.",
+    "distinctness": "Successful asynchronous underlying-sink start is an independent callback-admission barrier; ready is not a start-completion promise.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/S302",
+      "request_body": null
+    },
+    "finite_normal_trace_limits": {
+      "closes": 1,
+      "gates": 1,
+      "payload_bytes": 2,
+      "reads": 0,
+      "task_fences": 1,
+      "writes": 2
+    },
+    "fixed_runtime_assertions": [
+      "t.deep([starts, initialReady.status, started.status], [1, 'fulfilled', 'pending'], 'initial ready fulfills while successful sink start is held');",
+      "t.equal(startGate.opened, false, 'initial readiness does not open sink start gate');",
+      "t.deep(events, ['start'], 'queued operations cannot enter callbacks before start completion');",
+      "t.deep([a.status, b.status, close.status, owner.closed.status], ['pending', 'pending', 'pending', 'pending'], 'all admitted requests await held initialization');",
+      "t.equal(closes, 0, 'underlying close has not entered during initialization');",
+      "t.deep(events, ['start', 'start-done', 'write-A', 'write-B', 'close'], 'successful start release admits exact FIFO writes and close');",
+      "t.deep([a.status, b.status, close.status, owner.closed.status], ['fulfilled', 'fulfilled', 'fulfilled', 'fulfilled'], 'queued promises all fulfill after initialization');",
+      "t.deep([starts, closes, aborts], [1, 1, 0], 'one start one close and no abort');",
+      "t.equal(writer.desiredSize, 0, 'successfully closed initialized writer has zero desired size');",
+      "t.equal(stream.locked, false, 'initialized writer lock released');"
+    ],
+    "id": "S302",
+    "implementation": "cases.js:S302",
+    "independently_reviewed": false,
+    "intended_oracle": [
+      "start called exactly once and before writes.",
+      "Initial ready fulfills before initialization finishes.",
+      "No write or close callback enters before start-gate release; both writes, close and closed remain pending.",
+      "After start release both writes and close fulfill; zero aborts, final desiredSize0 and unlocked."
+    ],
+    "intent": "Admit queued writes after successful start",
+    "mechanism": "successful-sink-start-admission",
+    "os_relevance": "Recovered historical blueprint-archive.ts:145-162 constructs an ordinary TransformStream and sequentially pipes archive prefix then content. The raw file was reread and matches the retained historical hash. This supports stream relevance without claiming those callers use custom weights or user flush callbacks, or that any OS workflow or distributed placement ran.",
+    "overlap_delta": {
+      "B006/B007": "Fixture-defined application lanes do not exercise WritableStream._started.",
+      "S020": "Delayed callbacks are already admitted; it does not hold sink initialization.",
+      "S206": "Holds an entered sink close through pipeTo, not successful start admission.",
+      "SBP3": "No claim about pressure-ready being lifted by queued close is credited in SBP2."
+    },
+    "preconditions": [
+      "Exact guarded source, fresh reviewed binary and deployed fixture/config identity verified.",
+      "Actual direct-celld Worker with its real global stream constructors and strategies.",
+      "Independent deadline/resource supervisor controls a proven-owned whole-descendant domain covering dev, bundlers and node despite separate PGIDs, plus one quota/cleanup domain for temporary bundles, logs and stores. No single-PGID fallback or substitute/reference execution."
+    ],
+    "primary_candidate": true,
+    "primary_contract_refs": [
+      "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#set-up-writable-stream-default-controller",
+      "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#writable-stream-default-controller-advance-queue-if-needed",
+      "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#set-up-writable-stream-default-writer"
+    ],
+    "runtime_source_refs": [
+      {
+        "line_end": 85,
+        "line_start": 81,
+        "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+        "purpose": "Initial ready and async start fulfillment"
+      },
+      {
+        "line_end": 270,
+        "line_start": 252,
+        "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+        "purpose": "Initial ready and async start fulfillment"
+      },
+      {
+        "line_end": 335,
+        "line_start": 291,
+        "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+        "purpose": "Queue admission waits for _started before write/close"
+      },
+      {
+        "line_end": 448,
+        "line_start": 436,
+        "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+        "purpose": "Queue admission waits for _started before write/close"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "source_predicted_gap": null,
+    "status": "NOT_RUN",
+    "trace": [
+      "Create an ordinary writable whose start returns a finite held gate; capture start entry.",
+      "Observe initial ready fulfillment while start remains held, then enqueue two fixed writes and close.",
+      "At a bounded event-loop fence, assert start-only callback trace and pending writes/close/closed.",
+      "Resolve start; join exact FIFO writes and one close, then release writer."
+    ]
+  },
+  "corpus_id": "S302",
+  "corpus_wave": "stream-backpressure-semantics",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/stream-backpressure-semantics",
+  "id": "conformance/fetch-and-http/stream-backpressure-s302",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/stream-backpressure-semantics/S302"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/stream-backpressure-semantics/S302",
+      "manifest_sha256": "e7b601830183b60736e3a17f47553c808674a7fcacd422e21694a98057158783",
+      "review_sha256": "28f32477b60ad987cc5022d9566f46b6d679375e9e8667dc0ccd8d22b0a22551",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/stream-backpressure-semantics",
+      "tranche": "004"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/S302",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "S302",
+  "source": "tests/conformance/fetch-and-http/fixtures/stream-backpressure-semantics/fixture.js",
+  "source_sha256": "d3719b882f4c3725bd59187adce6cbb2b547da70949ed2b8ee9ec101a3138c6a",
+  "title": "Admit queued writes after successful start"
+}

@@ -1,0 +1,33 @@
+{
+  "adapter": "example",
+  "behaviour": "durable-objects/persistent-stubs",
+  "fixture": "tests/conformance/durable-objects/persistent-stubs/fixtures/restore-disposal",
+  "id": "conformance/durable-objects/persistent-stubs/restore-disposer",
+  "layer": "conformance",
+  "legacy_ids": [
+    "hyperbob/restore-disposer"
+  ],
+  "origins": [
+    {
+      "legacy_id": "hyperbob/restore-disposer",
+      "source": "celld@9c0fca5/tests-hyperbob/restore-disposer"
+    },
+    {
+      "sha256": "ebf295d69e7b68371a22ff12ff7ef98295c498cd714fc78fd7cba422bc81c5a0",
+      "source": "celld@9c0fca5/tests-hyperbob/restore-disposer/wrangler.json"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/?v=suite"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/durable-objects/persistent-stubs/fixtures/restore-disposal/wrangler.json",
+  "source_sha256": "ebf295d69e7b68371a22ff12ff7ef98295c498cd714fc78fd7cba422bc81c5a0",
+  "title": "restore disposer"
+}

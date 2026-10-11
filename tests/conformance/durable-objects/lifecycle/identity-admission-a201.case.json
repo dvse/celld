@@ -1,0 +1,147 @@
+{
+  "adapter": "http",
+  "behaviour": "durable-objects/lifecycle",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "classification": "PRIMARY_DIRECT_PUBLIC_API_CANDIDATE",
+    "cleanup": [
+      "Release any owned Control wait normally; join all already dispatched requests before any data cleanup.",
+      "Delete only the three-or-fewer tracked fixture roots storage and verify empty KV; Control is cleaned last and must have zero waiters/timers.",
+      "An unsettled trace or cleanup requires bounded external owned-process reap and store removal; it never earns runtime credit.",
+      "External supervisor verifies final process/store teardown; fixture cleanup alone does not prove it."
+    ],
+    "distinct": "Existing identity coverage addresses class/script/binding separation and facet display identity. It never directly asserts valid namespace idFromString readdressing of durable state. No separate credit is assigned to same-name equality or getByName alone.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/A201"
+    },
+    "external_contract_refs": [
+      {
+        "checked_on": "2026-10-09",
+        "last_updated": "2026-05-27",
+        "url": "https://developers.cloudflare.com/durable-objects/api/id/"
+      }
+    ],
+    "fixed_assertions": [
+      "c.eq([named.equals(again),named.equals(parsed),parsed.equals(named)],[true,true,true],'valid named and parsed IDs compare equal');",
+      "c.eq([named.name,parsed.name],[name,undefined],'parsed address omits optional client name metadata');",
+      "c.eq([direct.id.toString(),shortcut.id.toString(),reopened.id.toString()],[named.toString(),named.toString(),named.toString()],'three public helper paths identify one object');",
+      "c.eq([first.value,second.value,third.value],['named-route','named-route','named-route'],'getByName and valid idFromString observe the named write');",
+      "c.eq((await c.send(direct,'read')).value,'parsed-route','write through parsed handle returns to original named address');"
+    ],
+    "id": "A201",
+    "implementation": "cases.js:A201",
+    "limits": {
+      "cleanup_deadline_ms": 3500,
+      "control_successful_fallback_ms": 2500,
+      "external_case_process_deadline_seconds": 20,
+      "external_http_deadline_seconds": 12,
+      "external_rss_limit_bytes": 1073741824,
+      "external_wave_deadline_seconds": 120,
+      "max_concurrent_supervisor_fetches": 3,
+      "max_control_entries": 2,
+      "max_control_poll_calls": 60,
+      "max_created_roots": 3,
+      "max_external_case_requests": 1,
+      "max_keys_per_root": 1,
+      "max_name_utf8_bytes": 1025,
+      "max_response_bytes": 65536,
+      "max_supervisor_do_fetches": 100,
+      "max_total_do_fetches_including_target_control": 110,
+      "max_total_name_bytes": 3074,
+      "max_value_characters": 32,
+      "poll_interval_ms": 15,
+      "trace_deadline_ms": 6000
+    },
+    "literal_assertion_call_sites": 5,
+    "mechanism": "named-helper-state-equivalence",
+    "nearest": [
+      "duplicate-names/account.js state/add/loopback",
+      "U014/U015/U017",
+      "Z201/Z202"
+    ],
+    "oracle": "The three valid helper routes reach exactly the same object and KV value in both write directions; client parsed ID omits the optional name. Server-side name retention after mixed addressing is not asserted.",
+    "oracle_limit": "Incidental live ctx.id.name retention was removed after review: current official ID documentation says idFromString access omits the server name. This case does not endorse the source retaining an activated name.",
+    "os_relevance": {
+      "actual_os_checkout_available": false,
+      "actual_os_execution_claimed": false,
+      "evidence": [
+        "celld-os-project/tests/ACCEPTANCE.md",
+        "celld-os-project/tests/duplicate-names/account.js",
+        "celld-os-project/tests/duplicate-names/router.js",
+        "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+      ],
+      "evidence_status": "INFERRED_COMPONENT_RELEVANCE_ONLY",
+      "label": "Supporting public address serialization for evidenced OS namespaces; specific OS idFromString use unverified"
+    },
+    "preconditions": [
+      "Exact reviewed celld source/build/executable identity with a fresh private disposable store and current live migrated DOs.",
+      "Finite external process/HTTP/RSS limits independently enforceable; no runtime or dependency substitution.",
+      "One external GET at a time; no process faults, reconfiguration, restart, foreign-ID operations or retained stateless handles."
+    ],
+    "primary_contract_refs": [
+      {
+        "line_end": 45,
+        "line_start": 19,
+        "path": "celld-os-project/celld/docs/services/durable-objects.md"
+      }
+    ],
+    "review_status": "PENDING_INDEPENDENT_REVIEW",
+    "runtime_passes": 0,
+    "runtime_source_refs": [
+      {
+        "line_end": 2026,
+        "line_start": 2012,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      },
+      {
+        "line_end": 5719,
+        "line_start": 5671,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "static_source_assessment": "NO_RUNTIME_PREDICTION_REQUIRED",
+    "title": "Readdress one named object through valid public helpers",
+    "trace": [
+      "Mint the same name twice and parse its authentic serialized ID.",
+      "Write through get(idFromName), read through getByName and get(idFromString).",
+      "Write through the parsed address and read again through the original handle."
+    ]
+  },
+  "corpus_id": "A201",
+  "corpus_wave": "identity-admission-semantics",
+  "fixture": "tests/conformance/durable-objects/lifecycle/fixtures/identity-admission-semantics",
+  "id": "conformance/durable-objects/lifecycle/identity-admission-a201",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/identity-admission-semantics/A201"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/identity-admission-semantics/A201",
+      "manifest_sha256": "e5eae8135cebe5822551cd30d5fad64d7273726f60d70a8899cd014f3500951e",
+      "review_sha256": "bf9e7422bb248a7b602faf4fc928e16eb392f783c71ac17275ec3f6a4c8356f2",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/identity-admission-semantics",
+      "tranche": "004"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/A201",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "A201",
+  "source": "tests/conformance/durable-objects/lifecycle/fixtures/identity-admission-semantics/fixture.js",
+  "source_sha256": "eeb4d839f7c818b31988e205b843f6584c6cfc066b4723dcb8382d7ca8bf5e33",
+  "title": "Readdress one named object through valid public helpers"
+}

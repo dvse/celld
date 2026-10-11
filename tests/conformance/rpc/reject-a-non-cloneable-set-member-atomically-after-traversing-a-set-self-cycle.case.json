@@ -1,0 +1,50 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "Drop local Set and shared codecCleanup",
+    "intent": "Reject a non-cloneable Set member atomically after traversing a Set self-cycle",
+    "oracle": "DataCloneError, zero receiver entries and successful later control",
+    "preconditions": "COMMON; Set contains itself followed by a Symbol value",
+    "source_contracts": [
+      "SC-PROJECT",
+      "SC-LIFT",
+      "SC-ENVELOPE"
+    ],
+    "trace": [
+      "build cyclic Set containing an unsupported symbol",
+      "submit as argument",
+      "require DataCloneError without receiver dispatch",
+      "make healthy control call"
+    ]
+  },
+  "corpus_id": "C009",
+  "corpus_wave": "rpc-codec",
+  "fixture": "tests/conformance/rpc/fixtures/value-codec",
+  "id": "conformance/rpc/reject-a-non-cloneable-set-member-atomically-after-traversing-a-set-self-cycle",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/rpc-codec/C009"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/rpc-codec/C009",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec"
+    },
+    {
+      "sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "C009",
+  "source": "tests/conformance/rpc/fixtures/value-codec/entry.js",
+  "source_sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+  "title": "Reject a non-cloneable Set member atomically after traversing a Set self-cycle"
+}

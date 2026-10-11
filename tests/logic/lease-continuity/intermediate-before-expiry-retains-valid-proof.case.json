@@ -1,0 +1,29 @@
+{
+  "id": "logic/lease-continuity/intermediate-before-expiry-retains-valid-proof",
+  "layer": "logic",
+  "behaviour": "lease-continuity",
+  "title": "intermediate before expiry retains valid proof",
+  "origins": [
+    {
+      "source": "tests/logic/lease-continuity/lease_continuity.rs",
+      "legacy_id": "logic/lease-continuity/intermediate_before_expiry_retains_valid_proof"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-project/tests/lease-continuity/lease_continuity.rs",
+      "sha256": "9ba2368c5a34a6a1ef0a0b3cd42ca67a20c074e67f229b19f49c5dee58bf555b"
+    }
+  ],
+  "legacy_ids": [
+    "logic/lease-continuity/intermediate_before_expiry_retains_valid_proof"
+  ],
+  "adapter": "native",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/logic/lease-continuity/lease_continuity.rs",
+  "source_sha256": "9ba2368c5a34a6a1ef0a0b3cd42ca67a20c074e67f229b19f49c5dee58bf555b",
+  "test_filter": "intermediate_before_expiry_retains_valid_proof"
+}

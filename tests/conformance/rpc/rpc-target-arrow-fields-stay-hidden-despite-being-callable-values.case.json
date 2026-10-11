@@ -1,0 +1,49 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "dispose target",
+    "intent": "RpcTarget arrow fields stay hidden despite being callable values",
+    "oracle": "prototype works; arrow rejected; no side effect",
+    "preconditions": "RpcTarget has prototype method and side-effecting own arrow",
+    "trace": [
+      "call method control",
+      "capture arrow counter",
+      "attempt own arrow",
+      "verify counter"
+    ]
+  },
+  "corpus_id": "R007",
+  "corpus_wave": "base",
+  "fixture": "tests/conformance/rpc/fixtures/object-capabilities/fixture",
+  "id": "conformance/rpc/rpc-target-arrow-fields-stay-hidden-despite-being-callable-values",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/base/R007"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/base/R007",
+      "source": "guarded-source-archive/celld-os-stress/fixture"
+    },
+    {
+      "sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+      "source": "guarded-source-archive/celld-os-stress/fixture/rpc.js"
+    },
+    {
+      "sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+      "source": "guarded-source-archive/celld-os-stress/waves/do-visibility-regression/rpc.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "R007",
+  "source": "tests/conformance/rpc/fixtures/object-capabilities/fixture/rpc.js",
+  "source_sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+  "title": "RpcTarget arrow fields stay hidden despite being callable values"
+}

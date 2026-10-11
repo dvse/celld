@@ -1,0 +1,49 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "Shared codecCleanup; no runtime capability created",
+    "intent": "Validate custom prototypes in Map keys as well as Map values before dispatch",
+    "oracle": "Whole call rejected before accepted counter changes; receiver remains healthy",
+    "preconditions": "COMMON; two-entry Map places ordinary object first and UnsupportedMapKey second",
+    "source_contracts": [
+      "SC-PROJECT",
+      "SC-CLONE"
+    ],
+    "trace": [
+      "construct Map with unsupported class only in key position",
+      "submit Map argument",
+      "require DataCloneError and no receiver side effect",
+      "verify recovery"
+    ]
+  },
+  "corpus_id": "C008",
+  "corpus_wave": "rpc-codec",
+  "fixture": "tests/conformance/rpc/fixtures/value-codec",
+  "id": "conformance/rpc/validate-custom-prototypes-in-map-keys-as-well-as-map-values-before-dispatch",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/rpc-codec/C008"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/rpc-codec/C008",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec"
+    },
+    {
+      "sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "C008",
+  "source": "tests/conformance/rpc/fixtures/value-codec/entry.js",
+  "source_sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+  "title": "Validate custom prototypes in Map keys as well as Map values before dispatch"
+}

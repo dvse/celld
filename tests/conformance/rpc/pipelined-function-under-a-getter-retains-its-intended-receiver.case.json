@@ -1,0 +1,47 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "dispose target",
+    "intent": "Pipelined function under a getter retains its intended receiver",
+    "oracle": "result root matches peer; private-value retained",
+    "preconditions": "Getter returns plain object containing closure",
+    "trace": [
+      "call functionBox.invoke pipeline",
+      "check owning root and private value"
+    ]
+  },
+  "corpus_id": "R016",
+  "corpus_wave": "base",
+  "fixture": "tests/conformance/rpc/fixtures/object-capabilities/fixture",
+  "id": "conformance/rpc/pipelined-function-under-a-getter-retains-its-intended-receiver",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/base/R016"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/base/R016",
+      "source": "guarded-source-archive/celld-os-stress/fixture"
+    },
+    {
+      "sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+      "source": "guarded-source-archive/celld-os-stress/fixture/rpc.js"
+    },
+    {
+      "sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+      "source": "guarded-source-archive/celld-os-stress/waves/do-visibility-regression/rpc.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "R016",
+  "source": "tests/conformance/rpc/fixtures/object-capabilities/fixture/rpc.js",
+  "source_sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+  "title": "Pipelined function under a getter retains its intended receiver"
+}

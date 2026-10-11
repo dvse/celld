@@ -1,0 +1,140 @@
+{
+  "adapter": "http",
+  "behaviour": "web-platform",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "application_relevance": "Workers build case-insensitive document routes while retaining user-supplied capture spelling.",
+    "assertion_count": 6,
+    "authored": true,
+    "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+    "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+    "desired_behavior": "Case-insensitive pattern matches, default does not; captures remain Guide and Read and unrelated fragment remains excluded.",
+    "distinctness": "One option-propagation mechanism with a within-case control; the two options do not count as two designs.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/U219",
+      "request_body": null
+    },
+    "fixed_runtime_assertions": [
+      "t.equal(insensitive.test(input), true, 'ignoreCase applies to pathname query and fragment components');",
+      "t.equal(sensitive.test(input), false, 'default pattern preserves case sensitivity outside canonicalized hostname');",
+      "t.equal(result.pathname.groups.page, 'Guide', 'case-insensitive matching preserves captured input spelling');",
+      "t.equal(result.search.groups.mode, 'Read', 'query capture preserves input case');",
+      "t.equal(result.hash.input, 'top', 'result stores actual canonicalized fragment input');",
+      "t.equal(insensitive.test('https://docs.example.test/docs/Guide?mode=Read#other'), false, 'case folding does not disable component constraints');"
+    ],
+    "hypothesis": "ignoreCase may apply only to a subset of components or normalize the text returned in captures.",
+    "id": "U219",
+    "implementation": {
+      "end_line": 245,
+      "file": "cases.js",
+      "start_line": 233,
+      "symbol": "U219"
+    },
+    "independently_reviewed": false,
+    "layer": "direct-celld-worker-fetch-global-web-api",
+    "limits": {
+      "case_assertion_max_count": 16,
+      "case_input_max_code_units": 1024,
+      "case_tuple_max_count": 16,
+      "concurrent_requests": 1,
+      "network_calls_from_fixture": 0,
+      "repetitions": 1,
+      "request_body_bytes": 0,
+      "request_outer_deadline_seconds": 5,
+      "requests_per_case": 1,
+      "response_max_bytes": 65536,
+      "storage_writes_from_fixture": 0,
+      "timers_from_fixture": 0
+    },
+    "mechanism": "URLPattern option propagation to compiled component regex flags",
+    "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+    "preconditions": [
+      "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+      "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+      "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+    ],
+    "prediction_is_runtime_evidence": false,
+    "primary_contract_refs": [
+      "https://urlpattern.spec.whatwg.org/"
+    ],
+    "review_status": "UNREVIEWED",
+    "runtime_pass_claimed": false,
+    "runtime_source_refs": [
+      {
+        "line_end": 59,
+        "line_start": 37,
+        "path": "celld-os-project/celld/crates/celld/js/url_pattern.js"
+      },
+      {
+        "line_end": 97,
+        "line_start": 71,
+        "path": "celld-os-project/celld/crates/celld/js/url_pattern.js"
+      },
+      {
+        "line_end": 10701,
+        "line_start": 10679,
+        "path": "celld-os-project/celld/crates/celld/js.rs"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "schedule": {
+      "depends_on": [],
+      "kind": "one synchronous finite trace",
+      "overlap": "none",
+      "path": "/case/U219",
+      "request_ordinal": 19,
+      "runtime_operations": [
+        "Construct the same multi-component pattern once with ignoreCase and once with the default option.",
+        "Match a single differently cased path/query/fragment input and assert opposite verdicts.",
+        "Assert original capture spelling and hash input.",
+        "Assert an unrelated fragment still does not match."
+      ]
+    },
+    "source_observation": "Pinned code passes ignoreCase to Rust compilation and chooses ui flags in JS. Both paths must agree.",
+    "static_prediction": "NO_FAILURE_PREDICTION",
+    "status": "NOT_RUN",
+    "title": "Apply URLPattern ignoreCase across components without changing captures",
+    "trace": [
+      "Construct the same multi-component pattern once with ignoreCase and once with the default option.",
+      "Match a single differently cased path/query/fragment input and assert opposite verdicts.",
+      "Assert original capture spelling and hash input.",
+      "Assert an unrelated fragment still does not match."
+    ]
+  },
+  "corpus_id": "U219",
+  "corpus_wave": "url-semantics",
+  "fixture": "tests/conformance/web-platform/fixtures/url-semantics",
+  "id": "conformance/web-platform/url-u219",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/url-semantics/U219"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/url-semantics/U219",
+      "manifest_sha256": "d61fdb1b4d070ae5aff0ad1456c39d2842c341f9737a20b67c67c251f638ae91",
+      "review_sha256": "13b98102e846487ca6304032863d1edb29b691c8649ebdea0ad53161ac6da486",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics",
+      "tranche": "001"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/U219",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "U219",
+  "source": "tests/conformance/web-platform/fixtures/url-semantics/fixture.js",
+  "source_sha256": "ccbb1cf21c3f719aa06ed64b498fc396f00736cc96d7cbd2aea437f2cc221ca6",
+  "title": "Apply URLPattern ignoreCase across components without changing captures"
+}

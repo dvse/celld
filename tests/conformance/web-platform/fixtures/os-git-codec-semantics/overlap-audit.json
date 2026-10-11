@@ -1,0 +1,1975 @@
+{
+  "schema": 1,
+  "scope": "Pre-body proposal sent to parent and independent reviewer; six provisionally distinct actual-module mechanisms, final review pending.",
+  "baseline_root": "/workspace/shared/celld-recovered/celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "baseline_design_index": [
+    {
+      "id": "S001",
+      "wave": "base",
+      "intent": "Empty remote readable terminates once and retains stable EOF",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S002",
+      "wave": "base",
+      "intent": "Cancellation before consumption reaches source exactly once",
+      "primary": false,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S003",
+      "wave": "base",
+      "intent": "Cancellation after EOF does not reopen or cancel completed source",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S004",
+      "wave": "base",
+      "intent": "Zero-length chunks do not truncate intervening binary data",
+      "primary": false,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S005",
+      "wave": "base",
+      "intent": "Subarray RPC transfer excludes backing-buffer sentinel bytes",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S006",
+      "wave": "base",
+      "intent": "Source exception before data remains an error on repeated reads",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S007",
+      "wave": "base",
+      "intent": "Source error preserves already delivered prefix without becoming EOF",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S008",
+      "wave": "base",
+      "intent": "Reader lock release and reacquisition preserve remaining remote data",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S009",
+      "wave": "base",
+      "intent": "Multiple pending reads resolve in FIFO order before EOF",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S010",
+      "wave": "base",
+      "intent": "Cancel resolves a pending read as done and reaches source",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S011",
+      "wave": "base",
+      "intent": "One-byte BYOB reads preserve residual data from a larger chunk",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S012",
+      "wave": "base",
+      "intent": "BYOB preserves caller view offset and returns only written bytes",
+      "primary": false,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S013",
+      "wave": "base",
+      "intent": "BYOB transitions between short source chunks without byte loss",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S014",
+      "wave": "base",
+      "intent": "Empty BYOB stream returns terminal zero-length view",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S015",
+      "wave": "base",
+      "intent": "pipeTo drains a remote readable into a local writable",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S016",
+      "wave": "base",
+      "intent": "Local pipeTo sink failure cancels remote source",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S017",
+      "wave": "base",
+      "intent": "Tee gives both concurrent consumers identical remote bytes",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S018",
+      "wave": "base",
+      "intent": "Canceling one tee branch preserves remaining consumer",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S019",
+      "wave": "base",
+      "intent": "Remote writable closes correctly without writes",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S020",
+      "wave": "base",
+      "intent": "Queued close cannot overtake delayed writes",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S021",
+      "wave": "base",
+      "intent": "Abort before writer acquisition reaches remote sink once",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S022",
+      "wave": "base",
+      "intent": "A failed first write prevents subsequent remote writes",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S023",
+      "wave": "base",
+      "intent": "Sink close failure rejects both close and writer.closed",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S024",
+      "wave": "base",
+      "intent": "Writer reacquisition preserves remote sink order",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "B001",
+      "wave": "bounded-load",
+      "intent": "One held callback incorrectly stalls five independent notifications and metadata RPC.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B002",
+      "wave": "bounded-load",
+      "intent": "A callback rejection contaminates five pending siblings or poisons the next broadcast.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B003",
+      "wave": "bounded-load",
+      "intent": "Three callback-to-owner reentries deadlock behind three unrelated slow subscribers.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B004",
+      "wave": "bounded-load",
+      "intent": "Returning a background dispatch loses borrowed callback authority or strands its outstanding jobs.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B005",
+      "wave": "bounded-load",
+      "intent": "One detached callback failure blocks unrelated foreground traffic or hides failed background work.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B006",
+      "wave": "bounded-load",
+      "intent": "Cancelling middle queued requests leaks an application admission slot or dispatches cancelled effects.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B007",
+      "wave": "bounded-load",
+      "intent": "A rejecting admitted callback prevents queued work from using its freed slot while another slot remains occupied.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B008",
+      "wave": "bounded-load",
+      "intent": "A saturated document lane wrongly causes head-of-line blocking for an independent Git lane.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B009",
+      "wave": "bounded-load",
+      "intent": "Independently stalled download streams are cross-wired or coupled when completion order differs from creation order.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B010",
+      "wave": "bounded-load",
+      "intent": "Six native stream arguments waiting in receivers starve unrelated metadata RPCs or corrupt their resumed bytes.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B011",
+      "wave": "bounded-load",
+      "intent": "Blocked download result streams prevent independent upload argument streams from completing on the same owner connection.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B012",
+      "wave": "bounded-load",
+      "intent": "Cancelling two pending readers leaks their producers, emits post-cancel frames, or cancels unrelated streams.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B013",
+      "wave": "bounded-load",
+      "intent": "A late error after an observed prefix is swallowed or poisons other pending streams and future transfers.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B014",
+      "wave": "bounded-load",
+      "intent": "An abandoned upload leaves its source live or propagates receiver failure into five sibling uploads.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B015",
+      "wave": "bounded-load",
+      "intent": "A returned WritableStream loses a remote failure at terminal close or conflates failure with three other saturated sinks.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B016",
+      "wave": "bounded-load",
+      "intent": "Three slow tee consumers prevent fast branches draining, or late branch cancellation incorrectly cancels already-completed sources.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B017",
+      "wave": "bounded-load",
+      "intent": "Two held method calls in one loaded worker stall six calls and recovery requests to other loaded workers.",
+      "primary": false,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B018",
+      "wave": "bounded-load",
+      "intent": "A worker method failure after an audit effect corrupts other in-flight calls or prevents same-worker recovery.",
+      "primary": false,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B019",
+      "wave": "bounded-load",
+      "intent": "A source failure during one of four loaded-worker uploads causes a false document effect or contaminates sibling consumers.",
+      "primary": false,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B020",
+      "wave": "bounded-load",
+      "intent": "A cancelled loaded-worker result stream keeps producing after its pending nested RPC resumes, or stalls independent notification callbacks.",
+      "primary": false,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B021",
+      "wave": "bounded-load",
+      "intent": "Returned loaded-worker background jobs are lost, block foreground traffic, or fail to drain after finite release.",
+      "primary": false,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B022",
+      "wave": "bounded-load",
+      "intent": "A handled waitUntil rejection escapes into held foreground requests or leaves active background accounting stranded.",
+      "primary": false,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B023",
+      "wave": "bounded-load",
+      "intent": "Concurrent native digest work loses data/results or blocks still-held work from later resuming across loaded workers.",
+      "primary": false,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B024",
+      "wave": "bounded-load",
+      "intent": "Finite synchronous native compression work corrupts restored bytes or requires unrelated held callbacks to drain before making progress.",
+      "primary": false,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "D001",
+      "wave": "durable-recovery-stress",
+      "intent": "A bucket-acknowledged subset of a concurrent unique-key cohort disappears after all runtime heaps/local directories are discarded.",
+      "primary": true,
+      "source": "celld-os-stress/waves/durable-recovery-stress/manifest.json"
+    },
+    {
+      "id": "D002",
+      "wave": "durable-recovery-stress",
+      "intent": "Concurrent SQL increments acknowledge individually but restore a counter smaller than the committed operation ledger.",
+      "primary": true,
+      "source": "celld-os-stress/waves/durable-recovery-stress/manifest.json"
+    },
+    {
+      "id": "D003",
+      "wave": "durable-recovery-stress",
+      "intent": "Readers or recovery observe only one side of a committed account transfer under contending writes.",
+      "primary": true,
+      "source": "celld-os-stress/waves/durable-recovery-stress/manifest.json"
+    },
+    {
+      "id": "D004",
+      "wave": "durable-recovery-stress",
+      "intent": "Concurrent requests with one application key each increment the counter or recovery forgets the dedup marker.",
+      "primary": true,
+      "source": "celld-os-stress/waves/durable-recovery-stress/manifest.json"
+    },
+    {
+      "id": "D005",
+      "wave": "durable-recovery-stress",
+      "intent": "Competing compare-and-swap transactions acknowledge multiple winners or restore a different winner than the acknowledged one.",
+      "primary": true,
+      "source": "celld-os-stress/waves/durable-recovery-stress/manifest.json"
+    },
+    {
+      "id": "D006",
+      "wave": "durable-recovery-stress",
+      "intent": "Recovery resurrects deleted documents or drops interleaved new documents when their acknowledgements overlap.",
+      "primary": true,
+      "source": "celld-os-stress/waves/durable-recovery-stress/manifest.json"
+    },
+    {
+      "id": "D007",
+      "wave": "durable-recovery-stress",
+      "intent": "An explicitly rolled-back transaction contaminates neighboring successful transactions or survives recovery.",
+      "primary": true,
+      "source": "celld-os-stress/waves/durable-recovery-stress/manifest.json"
+    },
+    {
+      "id": "D008",
+      "wave": "durable-recovery-stress",
+      "intent": "Rolling back an inner savepoint drops outer work or leaks inner updates into concurrent readers and recovered state.",
+      "primary": true,
+      "source": "celld-os-stress/waves/durable-recovery-stress/manifest.json"
+    },
+    {
+      "id": "D009",
+      "wave": "durable-recovery-stress",
+      "intent": "CHECK failure rolls back its own ledger but leaves a corrupted transaction state that breaks later sibling transfers.",
+      "primary": true,
+      "source": "celld-os-stress/waves/durable-recovery-stress/manifest.json"
+    },
+    {
+      "id": "D010",
+      "wave": "durable-recovery-stress",
+      "intent": "An overlapping reader exports local SQL before durable proof or sees a half-written pair/ledger transaction.",
+      "primary": true,
+      "source": "celld-os-stress/waves/durable-recovery-stress/manifest.json"
+    },
+    {
+      "id": "D011",
+      "wave": "durable-recovery-stress",
+      "intent": "Physical bucket persistence is mistaken for acknowledged proof and releases writers/readers while store acknowledgements are held.",
+      "primary": true,
+      "source": "celld-os-stress/waves/durable-recovery-stress/manifest.json"
+    },
+    {
+      "id": "D012",
+      "wave": "durable-recovery-stress",
+      "intent": "A bounded store500 failure allows an unproven success or leaves the root unable to make durable progress.",
+      "primary": true,
+      "source": "celld-os-stress/waves/durable-recovery-stress/manifest.json"
+    },
+    {
+      "id": "D013",
+      "wave": "durable-recovery-stress",
+      "intent": "A dirty root with failed proofs blocks unrelated clean-root reads or corrupts that root during later recovery.",
+      "primary": true,
+      "source": "celld-os-stress/waves/durable-recovery-stress/manifest.json"
+    },
+    {
+      "id": "D014",
+      "wave": "durable-recovery-stress",
+      "intent": "An already acknowledged cohort proof is incorrectly reused to release later dirty writer/read outputs.",
+      "primary": true,
+      "source": "celld-os-stress/waves/durable-recovery-stress/manifest.json"
+    },
+    {
+      "id": "D015",
+      "wave": "durable-recovery-stress",
+      "intent": "Owner dies after bucket persisted bytes but before acknowledgement; resubmission with stable application IDs double-applies effects.",
+      "primary": true,
+      "source": "celld-os-stress/waves/durable-recovery-stress/manifest.json"
+    },
+    {
+      "id": "D016",
+      "wave": "durable-recovery-stress",
+      "intent": "Killing all runtimes with new writes blocked before store persistence loses already acknowledged prefix or recovers torn/phantom transactions.",
+      "primary": true,
+      "source": "celld-os-stress/waves/durable-recovery-stress/manifest.json"
+    },
+    {
+      "id": "D017",
+      "wave": "durable-recovery-stress",
+      "intent": "Concurrent outbound effects become visible before their SQL is proven durable.",
+      "primary": true,
+      "source": "celld-os-stress/waves/durable-recovery-stress/manifest.json"
+    },
+    {
+      "id": "D018",
+      "wave": "durable-recovery-stress",
+      "intent": "Rolled-back SQL leaves a false dirty barrier that deadlocks concurrent clean outbound effects when object-store writes are held.",
+      "primary": true,
+      "source": "celld-os-stress/waves/durable-recovery-stress/manifest.json"
+    },
+    {
+      "id": "D019",
+      "wave": "durable-recovery-stress",
+      "intent": "A real scheduled alarm and foreground writes sharing a held durability proof lose each other or fail to recover together.",
+      "primary": true,
+      "source": "celld-os-stress/waves/durable-recovery-stress/manifest.json"
+    },
+    {
+      "id": "D020",
+      "wave": "durable-recovery-stress",
+      "intent": "Restart loses a persisted future alarm or firing overwrites previously acknowledged concurrent foreground SQL.",
+      "primary": true,
+      "source": "celld-os-stress/waves/durable-recovery-stress/manifest.json"
+    },
+    {
+      "id": "D021",
+      "wave": "durable-recovery-stress",
+      "intent": "Concurrent methods that entered but never passed their application gate mutate or acknowledge after owner loss.",
+      "primary": true,
+      "source": "celld-os-stress/waves/durable-recovery-stress/manifest.json"
+    },
+    {
+      "id": "D022",
+      "wave": "durable-recovery-stress",
+      "intent": "Two roots using identical operation IDs merge their recovered ledgers or rollback state across ownership changes.",
+      "primary": true,
+      "source": "celld-os-stress/waves/durable-recovery-stress/manifest.json"
+    },
+    {
+      "id": "X001",
+      "wave": "native-transform-stress",
+      "intent": "Resume a partially written native gzip encoder after a separate raw exporter finishes",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X002",
+      "wave": "native-transform-stress",
+      "intent": "Delay a valid gzip trailer while a pack digest finishes",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X003",
+      "wave": "native-transform-stress",
+      "intent": "Cancel a gzip decoder after a decoded prefix is observed",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X004",
+      "wave": "native-transform-stress",
+      "intent": "Reject a pending native compression read on consumer cancellation",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X005",
+      "wave": "native-transform-stress",
+      "intent": "Abort an unflushed raw exporter and immediately recover",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X006",
+      "wave": "native-transform-stress",
+      "intent": "Abort a native transform when its source fails before any bytes",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X007",
+      "wave": "native-transform-stress",
+      "intent": "Poison a decoder after independently observed prefix delivery",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X008",
+      "wave": "native-transform-stress",
+      "intent": "Isolate deferred gzip checksum corruption from a healthy native peer",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X009",
+      "wave": "native-transform-stress",
+      "intent": "Reject missing gzip size trailer and recover the decoder path",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X010",
+      "wave": "native-transform-stress",
+      "intent": "Reject trailing bytes after a complete gzip member before close",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X011",
+      "wave": "native-transform-stress",
+      "intent": "Recover from a non-byte chunk after a valid exporter prefix",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X012",
+      "wave": "native-transform-stress",
+      "intent": "Handoff a compressor writer lock without widening offset views",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X013",
+      "wave": "native-transform-stress",
+      "intent": "Propagate AbortSignal through an open source-to-native pipe",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X014",
+      "wave": "native-transform-stress",
+      "intent": "Keep a decoded tee branch complete after cancelling its sibling",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X015",
+      "wave": "native-transform-stress",
+      "intent": "Drain decoded output only after an independent exporter finishes",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X016",
+      "wave": "native-transform-stress",
+      "intent": "Poison one decoder while preserving a second live decoder in the same request",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X018",
+      "wave": "native-transform-stress",
+      "intent": "Finish distinct DigestStream payloads in reverse request order",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X019",
+      "wave": "native-transform-stress",
+      "intent": "Abort a buffered pack digest and reuse the digest path",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X020",
+      "wave": "native-transform-stress",
+      "intent": "Reject a pack digest after the accepted header source fails",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X021",
+      "wave": "native-transform-stress",
+      "intent": "Close a buffered digest after a peer decoder poisons and recovers",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X022",
+      "wave": "native-transform-stress",
+      "intent": "Dispose an unlocked buffered DigestStream while another digest closes",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X023",
+      "wave": "native-transform-stress",
+      "intent": "Keep an imported public HMAC key independent of caller-buffer mutation",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X024",
+      "wave": "native-transform-stress",
+      "intent": "Resume an encoder after separate crypto validation failures and recovery",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "C001",
+      "wave": "rpc-codec",
+      "intent": "Preserve cyclic by-value graph identity across object, array, Map keys and Set membership without sharing caller memory",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C002",
+      "wave": "rpc-codec",
+      "intent": "Keep cyclic mixed container topology intact when a returned RpcTarget forces the lifted envelope",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C003",
+      "wave": "rpc-codec",
+      "intent": "A lifted sparse array preserves holes and trailing length rather than densifying or truncating",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C004",
+      "wave": "rpc-codec",
+      "intent": "Ordinary own __proto__ data survives lifting without altering the cloned object's prototype",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C005",
+      "wave": "rpc-codec",
+      "intent": "Argument projection snapshots enumerable getters only once before fallback capability lifting",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C006",
+      "wave": "rpc-codec",
+      "intent": "A throwing argument getter aborts projection before later getters or receiver side effects",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C007",
+      "wave": "rpc-codec",
+      "intent": "Reject nested null-prototype objects before ordinary structured clone can erase their unsupported prototype",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C008",
+      "wave": "rpc-codec",
+      "intent": "Validate custom prototypes in Map keys as well as Map values before dispatch",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C009",
+      "wave": "rpc-codec",
+      "intent": "Reject a non-cloneable Set member atomically after traversing a Set self-cycle",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C010",
+      "wave": "rpc-codec",
+      "intent": "Characterize rollback of an unpublished result target when final graph encoding fails after target lift",
+      "primary": false,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C011",
+      "wave": "rpc-codec",
+      "intent": "Characterize rollback of the first readable argument when lifting a later already-locked readable fails",
+      "primary": false,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C012",
+      "wave": "rpc-codec",
+      "intent": "Characterize writable bridge cleanup when a result's final native encoding fails after acquiring its writer",
+      "primary": false,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C013",
+      "wave": "rpc-codec",
+      "intent": "Reject an unresolved RpcPromise embedded as argument data while preserving its original awaitability",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C014",
+      "wave": "rpc-codec",
+      "intent": "Reject a lazy RpcProperty embedded as data without consuming the property's later ordinary fetch",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C015",
+      "wave": "rpc-codec",
+      "intent": "Clone Headers with merged ordinary entries and separate Set-Cookie entries as a detached snapshot",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C016",
+      "wave": "rpc-codec",
+      "intent": "Blob serialization respects typed-array source view boundaries and pre-construction copying",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C017",
+      "wave": "rpc-codec",
+      "intent": "File revival keeps File subtype, Unicode name and an explicit zero lastModified",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C018",
+      "wave": "rpc-codec",
+      "intent": "Buffered Request transport preserves HTTP metadata and binary body when consumed only by the RPC recipient",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C019",
+      "wave": "rpc-codec",
+      "intent": "A bodyless Response keeps a null body through host marker revival rather than acquiring a stream",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C020",
+      "wave": "rpc-codec",
+      "intent": "Characterize transport of Response.error without ordinary status validation rejecting status zero",
+      "primary": false,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C021",
+      "wave": "rpc-codec",
+      "intent": "Characterize alias identity of a by-value host object used in ordinary paths and as Map key/value",
+      "primary": false,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C022",
+      "wave": "rpc-codec",
+      "intent": "Retain backing-buffer aliasing, view types and offsets when binary leaves share a result with a capability",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C023",
+      "wave": "rpc-codec",
+      "intent": "Ordinary RPC clones ArrayBuffer-backed arguments without detaching or sharing the caller's buffer",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C024",
+      "wave": "rpc-codec",
+      "intent": "Preserve non-JSON numeric representations and explicit undefined slots within a capability-bearing envelope",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C025",
+      "wave": "rpc-codec",
+      "intent": "Preserve Date/RegExp native clone behavior instead of traversing their properties during capability lift",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C026",
+      "wave": "rpc-codec",
+      "intent": "Characterize rich exception serialization including cause and cyclic custom own data under the pinned legacy profile",
+      "primary": false,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C027",
+      "wave": "rpc-codec",
+      "intent": "Characterize safe error-envelope fallback when a custom error property is an unserializable function",
+      "primary": false,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C028",
+      "wave": "rpc-codec",
+      "intent": "Characterize thrown non-Error object topology without silently converting it into an Error",
+      "primary": false,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C029",
+      "wave": "rpc-codec",
+      "intent": "Distinguish throw undefined from successful undefined return at the exception-envelope boundary",
+      "primary": false,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C030",
+      "wave": "rpc-codec",
+      "intent": "Propagate an asynchronous callee rejection after one completed reverse callback without replaying the callback",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C031",
+      "wave": "rpc-codec",
+      "intent": "Treat an Error nested in a successful result as data rather than a remote exception envelope",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C032",
+      "wave": "rpc-codec",
+      "intent": "Retain a thrown DOMException's semantic name instead of reducing every exception to Error",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C033",
+      "wave": "rpc-codec",
+      "intent": "Keep concurrent successful clone results and an exception attached to their own calls",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C034",
+      "wave": "rpc-codec",
+      "intent": "Characterize rich exception fields across both reverse callback and forward relay boundaries",
+      "primary": false,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C035",
+      "wave": "rpc-codec",
+      "intent": "Characterize effective non-enumerable Error name independent from enumerable custom property transport",
+      "primary": false,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C036",
+      "wave": "rpc-codec",
+      "intent": "Snapshot provider result getters once per call even when each result also mints a capability",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C037",
+      "wave": "rpc-codec",
+      "intent": "Ignore non-enumerable and symbol-keyed data during projection even when hidden fields would throw or fail cloning",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C038",
+      "wave": "rpc-codec",
+      "intent": "Characterize pinned celld plain-Proxy snapshot/access-count behavior, explicitly diverging from upstream Workers proxy-as-stub semantics",
+      "primary": false,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C039",
+      "wave": "rpc-codec",
+      "intent": "Characterize revival of a capability stored in an enumerable non-index array property",
+      "primary": false,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C040",
+      "wave": "rpc-codec",
+      "intent": "Reject native Promise values nested in arguments without treating them as top-level return thenables",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    }
+  ],
+  "baseline_source_files": [
+    {
+      "path": "celld-os-stress/cases/streams.json",
+      "sha256": "5229ce8e44ad3e541e7f96dc788ad946e7d2beade8f7c63aee02aed70b1a1684",
+      "bytes": 15183
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/manifest.json",
+      "sha256": "5cacd1bfe0e3c07d2f2eb469bbcaa19cfdfb140f81a3ad351a5356cada5f17e1",
+      "bytes": 43665
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/operations.js",
+      "sha256": "3c56ee242a504ad001125fec4ec2ba54d07c00ff4757b36be2826624f7e751c6",
+      "bytes": 14588
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-load/manifest.json",
+      "sha256": "3f5bd7c6edaeaff0d0e64f61f3057d470ff3797c9433705a02e007e2b9ab8138",
+      "bytes": 98229
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-load/cases.js",
+      "sha256": "60c6f9a8ae72180a8f549405076efc48a14612d5686d7a38548db329db4a06cf",
+      "bytes": 28395
+    },
+    {
+      "path": "celld-os-stress/waves/durable-recovery-stress/manifest.json",
+      "sha256": "8bfa3397e84966fa629d7adce3504e3674aeb3cdf5f5d56a4615703576ea52b1",
+      "bytes": 101023
+    },
+    {
+      "path": "celld-os-stress/waves/rpc-codec/cases.json",
+      "sha256": "9d098e7bdd59330baf32f48a29bd22674b41a2bb99e0ffc451dfae1a329afc5f",
+      "bytes": 36343
+    }
+  ],
+  "baseline_X_range_note": "X001\u2013X024 requested for audit; recovered manifest contains 23 designs and no X017. No missing design is invented.",
+  "supporting_waves": [
+    {
+      "wave": "atomic-accounting-semantics",
+      "path": "atomic-accounting-semantics/manifest.json",
+      "sha256": "74ca24883b66b7505190af93acdb03199887fecbe09f5d377d344cfafb2cad69",
+      "accepted_tranche": "TRANCHE-003.json",
+      "cases": [
+        {
+          "id": "T201",
+          "title": "Admit allocation through conditional SQL RETURNING"
+        },
+        {
+          "id": "T202",
+          "title": "Deduplicate payloads with UPSERT reference accounting"
+        },
+        {
+          "id": "T203",
+          "title": "Maintain folder totals through SQL triggers"
+        },
+        {
+          "id": "T204",
+          "title": "Cascade renamed document ownership into chunks"
+        },
+        {
+          "id": "T205",
+          "title": "Commit deferred head references with nested revisions"
+        },
+        {
+          "id": "T206",
+          "title": "Select active document through a partial unique index"
+        },
+        {
+          "id": "T207",
+          "title": "Extract bounded KV partitions into SQL accounting"
+        },
+        {
+          "id": "T208",
+          "title": "Rebuild bounded recursive ancestry accounting"
+        },
+        {
+          "id": "T209",
+          "title": "Prune revision partitions with window-ranked retention"
+        },
+        {
+          "id": "T210",
+          "title": "Merge overlapping writes across chunk boundaries"
+        },
+        {
+          "id": "T211",
+          "title": "Detect sparse extent gaps with native boundary windows"
+        },
+        {
+          "id": "T212",
+          "title": "Trim native BLOB ranges before boundary append"
+        },
+        {
+          "id": "T213",
+          "title": "Publish complete chunk manifest with conserved charge"
+        },
+        {
+          "id": "T214",
+          "title": "Index generated UTF-8 payload byte lengths"
+        },
+        {
+          "id": "T215",
+          "title": "Reconcile FTS postings with document byte totals"
+        }
+      ]
+    },
+    {
+      "wave": "body-form-semantics",
+      "path": "body-form-semantics/manifest.json",
+      "sha256": "e31598421948f8c190575ce14a8cccfe7a76930797c30c44985d05552d3c95d1",
+      "accepted_tranche": "TRANCHE-002.json",
+      "cases": [
+        {
+          "id": "Y201",
+          "title": "Snapshot mixed Blob parts with a visible DataView window"
+        },
+        {
+          "id": "Y202",
+          "title": "Keep Blob read-result buffers independent from immutable storage"
+        },
+        {
+          "id": "Y203",
+          "title": "Apply byte-relative Blob slicing without inheriting MIME type"
+        },
+        {
+          "id": "Y204",
+          "title": "Cancel one independently opened Blob stream while consuming another"
+        },
+        {
+          "id": "Y205",
+          "title": "Convert Blob and File form entries while preserving file metadata"
+        },
+        {
+          "id": "Y206",
+          "title": "Replace mixed duplicate form entries with one renamed binary File"
+        },
+        {
+          "id": "Y207",
+          "title": "Convert a consumed binary Response into a reusable typed Blob"
+        },
+        {
+          "id": "Y208",
+          "title": "Extract a coherent multipart request snapshot before later form edits"
+        },
+        {
+          "id": "Y209",
+          "title": "Parse binary multipart file parts without UTF-8 replacement"
+        },
+        {
+          "id": "Y210",
+          "title": "Preserve mid-line multipart boundary lookalikes in file content"
+        },
+        {
+          "id": "Y211",
+          "title": "Read multipart field names when filename parameter comes first"
+        },
+        {
+          "id": "Y212",
+          "title": "Normalize multiline form values on the multipart wire"
+        },
+        {
+          "id": "Y213",
+          "title": "Dispatch a URLSearchParams BodyInit through its inferred form media type"
+        },
+        {
+          "id": "Y214",
+          "title": "Transfer inherited Request bodies while leaving overridden sources unused"
+        },
+        {
+          "id": "Y215",
+          "title": "Preserve cloned Response metadata while isolating mutable consumer results"
+        },
+        {
+          "id": "Y216",
+          "title": "Snapshot JSON response data while retaining response initialization"
+        },
+        {
+          "id": "Y217",
+          "title": "Keep absent bodies distinct from empty streams and never disturbed"
+        },
+        {
+          "id": "Y218",
+          "title": "Reflect direct body-reader disturbance in Response.bodyUsed"
+        },
+        {
+          "id": "Y219",
+          "title": "Infer text BodyInit media types while preserving an explicit override"
+        },
+        {
+          "id": "Y220",
+          "title": "Clone a valid finite streaming Response and settle both bodies"
+        }
+      ]
+    },
+    {
+      "wave": "d1-semantics",
+      "path": "d1-semantics/manifest.json",
+      "sha256": "a710fc3341a0ac99cbe9b5dd5847e7fc9c7d355313bac1440415941d7b31780f",
+      "accepted_tranche": "TRANCHE-002.json",
+      "cases": [
+        {
+          "id": "E201",
+          "title": "Keep rebound prepared statements independent"
+        },
+        {
+          "id": "E202",
+          "title": "Address repeated numbered placeholders"
+        },
+        {
+          "id": "E203",
+          "title": "Round-trip application scalar settings"
+        },
+        {
+          "id": "E204",
+          "title": "Copy and encode binary bind sources"
+        },
+        {
+          "id": "E205",
+          "title": "Keep all and run result semantics aligned"
+        },
+        {
+          "id": "E206",
+          "title": "Distinguish first row scalar and absence"
+        },
+        {
+          "id": "E207",
+          "title": "Preserve export headings and column order"
+        },
+        {
+          "id": "E208",
+          "title": "Preserve own properties for special column labels"
+        },
+        {
+          "id": "E209",
+          "title": "Retain duplicate columns in raw projections"
+        },
+        {
+          "id": "E210",
+          "title": "Run successful schema and data dependencies in batch"
+        },
+        {
+          "id": "E211",
+          "title": "Snapshot mutation metadata per batch statement"
+        },
+        {
+          "id": "E212",
+          "title": "Parse exec statements without splitting SQL text"
+        },
+        {
+          "id": "E213",
+          "title": "Drain row-producing exec statements before return"
+        },
+        {
+          "id": "E214",
+          "title": "Reset readonly metadata after an acknowledged write"
+        },
+        {
+          "id": "E215",
+          "title": "Distinguish schema changes from no-op writes"
+        },
+        {
+          "id": "E216",
+          "title": "Complete mutations behind first RETURNING"
+        },
+        {
+          "id": "E217",
+          "title": "Advance and resume independent query sessions"
+        },
+        {
+          "id": "E218",
+          "title": "Advance a session after successful batch commit"
+        },
+        {
+          "id": "E219",
+          "title": "Share configured database aliases and isolate identities"
+        },
+        {
+          "id": "E220",
+          "title": "Resolve omitted IDs through database names"
+        }
+      ]
+    },
+    {
+      "wave": "facet-root-semantics",
+      "path": "facet-root-semantics/manifest.json",
+      "sha256": "a1615598800adf714f1786dbf6db36365b035d4b9e54a4c56c12e5a427ed7e1f",
+      "accepted_tranche": "TRANCHE-003.json",
+      "cases": [
+        {
+          "id": "Z201",
+          "title": "Inherit named IDs through nested facets"
+        },
+        {
+          "id": "Z202",
+          "title": "Preserve explicit identity kinds and overrides"
+        },
+        {
+          "id": "Z203",
+          "title": "Share one facet receiver across fetch and RPC"
+        },
+        {
+          "id": "Z204",
+          "title": "Dispatch a plain loaded facet class"
+        },
+        {
+          "id": "Z205",
+          "title": "Execute the supported four-level hierarchy"
+        },
+        {
+          "id": "Z206",
+          "title": "Partition repeated child names by parent path"
+        },
+        {
+          "id": "Z207",
+          "title": "Distinguish literal names from hierarchy paths"
+        },
+        {
+          "id": "Z208",
+          "title": "Keep independent SQLite schema catalogs"
+        },
+        {
+          "id": "Z209",
+          "title": "Retain mutable props on a facet receiver"
+        },
+        {
+          "id": "Z210",
+          "title": "Decode typed startup props before construction"
+        },
+        {
+          "id": "Z211",
+          "title": "Await persisted asynchronous startup options"
+        },
+        {
+          "id": "Z212",
+          "title": "Delegate HTTP through a nested facet"
+        },
+        {
+          "id": "Z213",
+          "title": "Keep facet commit across root rollback"
+        },
+        {
+          "id": "Z215",
+          "title": "Commit a parent decision after child rollback"
+        },
+        {
+          "id": "Z216",
+          "title": "Clear only one facet storage scope"
+        },
+        {
+          "id": "Z217",
+          "title": "Delete one nested facet selectively"
+        },
+        {
+          "id": "Z218",
+          "title": "Delete and recreate a facet subtree"
+        },
+        {
+          "id": "Z219",
+          "title": "Resolve nested classes in their module"
+        }
+      ]
+    },
+    {
+      "wave": "headers-semantics",
+      "path": "headers-semantics/manifest.json",
+      "sha256": "7ab0ac34b1ab6bcd773176ff2225a2c246ca835b9487d18b774833a4fc3afd88",
+      "accepted_tranche": "TRANCHE-001.json",
+      "cases": [
+        {
+          "id": "V201",
+          "title": "Enumerate header records in observable order"
+        },
+        {
+          "id": "V202",
+          "title": "Prefer custom iterable over header record fields"
+        },
+        {
+          "id": "V203",
+          "title": "Honor overridden iterator on Headers input"
+        },
+        {
+          "id": "V204",
+          "title": "Coerce ordinary header arguments in order"
+        },
+        {
+          "id": "V205",
+          "title": "Compact duplicate header values after cached iteration"
+        },
+        {
+          "id": "V206",
+          "title": "Delete repeated fields without losing empty survivors"
+        },
+        {
+          "id": "V207",
+          "title": "Keep iterator views aligned across split cookie fields"
+        },
+        {
+          "id": "V208",
+          "title": "Observe insertion after a live iterator cursor"
+        },
+        {
+          "id": "V209",
+          "title": "Apply deletion shifts to a live iterator"
+        },
+        {
+          "id": "V210",
+          "title": "Refresh an unvisited iterator value after mutations"
+        },
+        {
+          "id": "V211",
+          "title": "Preserve callback receiver during finite live traversal"
+        },
+        {
+          "id": "V212",
+          "title": "Detach returned iteration and cookie arrays"
+        },
+        {
+          "id": "V213",
+          "title": "Snapshot a reused iterable tuple at each yield"
+        },
+        {
+          "id": "V214",
+          "title": "Drain a finite response producer before cache put resolves"
+        },
+        {
+          "id": "V215",
+          "title": "Consume a cache clone while preserving its original body"
+        },
+        {
+          "id": "V216",
+          "title": "Maintain pinned always-miss cache behavior after put"
+        },
+        {
+          "id": "V217",
+          "title": "Preserve bodyless response state through cache put"
+        },
+        {
+          "id": "V218",
+          "title": "Complete independent named and default cache consumers"
+        }
+      ]
+    },
+    {
+      "wave": "identity-admission-semantics",
+      "path": "identity-admission-semantics/manifest.json",
+      "sha256": "e5eae8135cebe5822551cd30d5fad64d7273726f60d70a8899cd014f3500951e",
+      "accepted_tranche": "TRANCHE-004.json",
+      "cases": [
+        {
+          "id": "A201",
+          "title": "Readdress one named object through valid public helpers"
+        },
+        {
+          "id": "A202",
+          "title": "Reopen isolated unique IDs from serialized addresses"
+        },
+        {
+          "id": "A203",
+          "title": "Preserve full routing past the name metadata boundary"
+        },
+        {
+          "id": "A204",
+          "title": "Admit first requests after successful constructor initialization"
+        },
+        {
+          "id": "A205",
+          "title": "Gate one live root while its same-class peer progresses"
+        }
+      ]
+    },
+    {
+      "wave": "kv-semantics",
+      "path": "kv-semantics/manifest.json",
+      "sha256": "f4906cd842457c8b9a75c0e069decbdcb702bfb3789ce06e6e1a55e2929069c9",
+      "accepted_tranche": "TRANCHE-001.json",
+      "cases": [
+        {
+          "id": "K201",
+          "title": "Keep empty values distinct from missing keys"
+        },
+        {
+          "id": "K202",
+          "title": "Materialize independent JSON configuration reads"
+        },
+        {
+          "id": "K203",
+          "title": "Snapshot a sliced binary input before reuse"
+        },
+        {
+          "id": "K204",
+          "title": "Keep returned binary buffers detached from storage"
+        },
+        {
+          "id": "K205",
+          "title": "Assemble a finite chunked upload before decoding"
+        },
+        {
+          "id": "K206",
+          "title": "Preserve an active-request download snapshot"
+        },
+        {
+          "id": "K207",
+          "title": "Snapshot structured metadata on write and read"
+        },
+        {
+          "id": "K208",
+          "title": "Replace and clear record annotations"
+        },
+        {
+          "id": "K209",
+          "title": "Preserve null and falsy metadata presence"
+        },
+        {
+          "id": "K210",
+          "title": "Pair special key names in a bulk Map"
+        },
+        {
+          "id": "K211",
+          "title": "Pair bulk JSON values with their annotations"
+        },
+        {
+          "id": "K212",
+          "title": "Delete only the selected bulk subset"
+        },
+        {
+          "id": "K213",
+          "title": "Order an international catalog by UTF-8 bytes"
+        },
+        {
+          "id": "K214",
+          "title": "Match literal case-sensitive catalog prefixes"
+        },
+        {
+          "id": "K215",
+          "title": "Terminate an exactly full final page"
+        },
+        {
+          "id": "K216",
+          "title": "Resume keyset pagination after ordinary edits"
+        },
+        {
+          "id": "K217",
+          "title": "Paginate a supplementary-character prefix"
+        },
+        {
+          "id": "K218",
+          "title": "Isolate equal key names across namespaces"
+        },
+        {
+          "id": "K219",
+          "title": "Clear prior expiration on permanent replacement"
+        },
+        {
+          "id": "K220",
+          "title": "Join disjoint application result writes"
+        }
+      ]
+    },
+    {
+      "wave": "os-action-file-store-semantics",
+      "path": "os-action-file-store-semantics/manifest.json",
+      "sha256": "a508a45f186dbca34d7b5cf31505f8a01848f29a9a610278f230b86dee971ed1",
+      "accepted_tranche": null,
+      "cases": [
+        {
+          "id": "F201",
+          "title": "Snapshot capture input before awaiting digest"
+        },
+        {
+          "id": "F202",
+          "title": "Publish and reassemble real chunk boundaries"
+        },
+        {
+          "id": "F203",
+          "title": "Retain empty allocation without chunks"
+        },
+        {
+          "id": "F204",
+          "title": "Release genuine allocation only once"
+        },
+        {
+          "id": "F205",
+          "title": "Prune only eligible unreferenced captures"
+        },
+        {
+          "id": "F206",
+          "title": "Preserve captures through aggregate refusal"
+        }
+      ]
+    },
+    {
+      "wave": "os-typed-storage-semantics",
+      "path": "os-typed-storage-semantics/manifest.json",
+      "sha256": "70b236edc39a42d460392d283885be675f1626f589f517b458f667be81946fc7",
+      "accepted_tranche": "TRANCHE-004.json",
+      "cases": [
+        {
+          "id": "C201",
+          "title": "Traverse buffered nonunique index pages"
+        },
+        {
+          "id": "C202",
+          "title": "Roll back conflicting index subscriptions"
+        },
+        {
+          "id": "C203",
+          "title": "Transition nullable multikey memberships"
+        },
+        {
+          "id": "C204",
+          "title": "Rebuild newly declared storage indexes"
+        },
+        {
+          "id": "C205",
+          "title": "Delete buffered indexed groups safely"
+        },
+        {
+          "id": "C206",
+          "title": "Delete records through computed keys"
+        },
+        {
+          "id": "C207",
+          "title": "Preserve storage across schema renames"
+        }
+      ]
+    },
+    {
+      "wave": "pipe-cleanup-semantics",
+      "path": "pipe-cleanup-semantics/manifest.json",
+      "sha256": "02175a33442a86096c05300b11e15c978b58ea6b69a9bb57acaf53ac51dec730",
+      "accepted_tranche": "TRANCHE-003.json",
+      "cases": [
+        {
+          "id": "S201",
+          "title": "Keep sink writable after pipe EOF"
+        },
+        {
+          "id": "S202",
+          "title": "Reuse sink after source error"
+        },
+        {
+          "id": "S203",
+          "title": "Drain source after sink error"
+        },
+        {
+          "id": "S204",
+          "title": "Reuse both resources after signal shutdown"
+        },
+        {
+          "id": "S205",
+          "title": "Join write and both signal cleanup actions"
+        },
+        {
+          "id": "S206",
+          "title": "Hold pipe completion through sink close"
+        },
+        {
+          "id": "S207",
+          "title": "Preserve zero pre-abort reason without transfer"
+        },
+        {
+          "id": "S208",
+          "title": "Join pre-aborted asynchronous cleanup"
+        },
+        {
+          "id": "S209",
+          "title": "Surface cancellation failure after signal abort"
+        }
+      ]
+    },
+    {
+      "wave": "r2-semantics",
+      "path": "r2-semantics/manifest.json",
+      "sha256": "729bd31ba60fb9c6ff47f4689b48d2a21d120ec10e54e5b484647ca6adbd2179",
+      "accepted_tranche": "TRANCHE-002.json",
+      "cases": [
+        {
+          "id": "I201",
+          "title": "Round-trip a Unicode object with consistent head metadata"
+        },
+        {
+          "id": "I202",
+          "title": "Respect binary body view boundaries during R2 conversion"
+        },
+        {
+          "id": "I203",
+          "title": "Finish a finite streamed put across an empty chunk"
+        },
+        {
+          "id": "I204",
+          "title": "Round-trip metadata and write only its HTTP fields"
+        },
+        {
+          "id": "I205",
+          "title": "Replace body and metadata as one object revision"
+        },
+        {
+          "id": "I206",
+          "title": "Cancel one R2 reader without disturbing other readers"
+        },
+        {
+          "id": "I207",
+          "title": "Distinguish a conditional metadata-only read from a miss"
+        },
+        {
+          "id": "I208",
+          "title": "Preserve successful compare-and-set state after stale refusal"
+        },
+        {
+          "id": "I209",
+          "title": "Honor create-only writes across condition representations"
+        },
+        {
+          "id": "I210",
+          "title": "Translate structured and header byte ranges correctly"
+        },
+        {
+          "id": "I211",
+          "title": "Enumerate a finite R2 prefix through opaque cursors"
+        },
+        {
+          "id": "I212",
+          "title": "Roll up child directories without exposing their objects"
+        },
+        {
+          "id": "I213",
+          "title": "Project only requested listing metadata"
+        },
+        {
+          "id": "I214",
+          "title": "Keep identical logical keys isolated between buckets"
+        },
+        {
+          "id": "I215",
+          "title": "Delete an owned subset idempotently"
+        },
+        {
+          "id": "I216",
+          "title": "Preserve empty and Unicode path segments in object keys"
+        },
+        {
+          "id": "I217",
+          "title": "Retain verified checksum bytes and named JSON digests"
+        },
+        {
+          "id": "I218",
+          "title": "Publish a completed single-final-part multipart object"
+        },
+        {
+          "id": "I219",
+          "title": "Abort uncommitted replacement while keeping the prior object"
+        },
+        {
+          "id": "I220",
+          "title": "Resume an owned multipart upload within one live request"
+        }
+      ]
+    },
+    {
+      "wave": "storage-sql-semantics",
+      "path": "storage-sql-semantics/manifest.json",
+      "sha256": "25b49a3bc5158a1b8277be37a06ef424e24da72c8ada091d9bd57d2c68d8bb7c",
+      "accepted_tranche": "TRANCHE-002.json",
+      "cases": [
+        {
+          "id": "D201",
+          "title": "Snapshot an admitted cyclic storage graph"
+        },
+        {
+          "id": "D202",
+          "title": "Revive a typed structured-clone storage graph"
+        },
+        {
+          "id": "D203",
+          "title": "Isolate read snapshots until explicitly written"
+        },
+        {
+          "id": "D204",
+          "title": "Share state coherently across async and sync KV APIs"
+        },
+        {
+          "id": "D205",
+          "title": "Snapshot admitted bulk record and Map entries"
+        },
+        {
+          "id": "D206",
+          "title": "Return sparse ordered get-many results"
+        },
+        {
+          "id": "D207",
+          "title": "Intersect storage listing bounds before limiting"
+        },
+        {
+          "id": "D208",
+          "title": "Continue reverse storage pages with exclusive end"
+        },
+        {
+          "id": "D209",
+          "title": "Keep returned storage list detached from later edits"
+        },
+        {
+          "id": "D210",
+          "title": "Count only existing keys in successful deletion batches"
+        },
+        {
+          "id": "D211",
+          "title": "Reinitialize both storage surfaces after deleteAll"
+        },
+        {
+          "id": "D212",
+          "title": "Preserve mixed SQL types across native value conversion"
+        },
+        {
+          "id": "D213",
+          "title": "Retain positional duplicate SQL columns in raw results"
+        },
+        {
+          "id": "D214",
+          "title": "Complete SQL RETURNING receipts before later reads"
+        },
+        {
+          "id": "D215",
+          "title": "Capture prepared query text once and bind each invocation"
+        },
+        {
+          "id": "D216",
+          "title": "Report complete ingest batch effects accurately"
+        },
+        {
+          "id": "D217",
+          "title": "Respect quoted semicolons in complete SQL ingestion"
+        },
+        {
+          "id": "D218",
+          "title": "Keep complete trigger bodies inside one ingest statement"
+        },
+        {
+          "id": "D219",
+          "title": "Drain row-producing ingest statements before following writes"
+        },
+        {
+          "id": "D220",
+          "title": "Enroll ingestion in an application transaction boundary"
+        }
+      ]
+    },
+    {
+      "wave": "stream-backpressure-semantics",
+      "path": "stream-backpressure-semantics/manifest.json",
+      "sha256": "e7b601830183b60736e3a17f47553c808674a7fcacd422e21694a98057158783",
+      "accepted_tranche": "TRANCHE-004.json",
+      "cases": [
+        {
+          "id": "S301",
+          "title": "Renew weighted writer readiness epochs"
+        },
+        {
+          "id": "S302",
+          "title": "Admit queued writes after successful start"
+        },
+        {
+          "id": "S303",
+          "title": "Lift ready while close is queued"
+        },
+        {
+          "id": "S304",
+          "title": "Gate transforms on readable demand"
+        },
+        {
+          "id": "S305",
+          "title": "Own asynchronous flush tail through EOF"
+        },
+        {
+          "id": "S306",
+          "title": "Admit readable pulls by weighted capacity"
+        }
+      ]
+    },
+    {
+      "wave": "url-semantics",
+      "path": "url-semantics/manifest.json",
+      "sha256": "d61fdb1b4d070ae5aff0ad1456c39d2842c341f9737a20b67c67c251f638ae91",
+      "accepted_tranche": "TRANCHE-001.json",
+      "cases": [
+        {
+          "id": "U201",
+          "title": "Resolve relative asset URLs without mutating the base"
+        },
+        {
+          "id": "U202",
+          "title": "Encode pathname setter data without changing query or fragment"
+        },
+        {
+          "id": "U203",
+          "title": "Canonicalize internationalized hostname assignments"
+        },
+        {
+          "id": "U204",
+          "title": "Parse bracketed IPv6 host replacements and their ports"
+        },
+        {
+          "id": "U205",
+          "title": "Normalize numeric port strings before default-port comparison"
+        },
+        {
+          "id": "U206",
+          "title": "Keep a live query view across href replacement"
+        },
+        {
+          "id": "U207",
+          "title": "Preserve empty-present query and fragment delimiters"
+        },
+        {
+          "id": "U208",
+          "title": "Mutate blob URL query and fragment without adding authority slashes"
+        },
+        {
+          "id": "U209",
+          "title": "Decode form queries with plus, duplicate keys, and first-equals splitting"
+        },
+        {
+          "id": "U210",
+          "title": "Serialize form punctuation and Unicode with the form encode set"
+        },
+        {
+          "id": "U211",
+          "title": "Coalesce duplicate params in place when setting a value"
+        },
+        {
+          "id": "U212",
+          "title": "Apply value-selective has and delete across repeated tuples"
+        },
+        {
+          "id": "U213",
+          "title": "Sort query keys stably by UTF-16 and synchronize canonical form encoding"
+        },
+        {
+          "id": "U214",
+          "title": "Keep a live params iterator current across a temporary list end"
+        },
+        {
+          "id": "U215",
+          "title": "Return detached arrays from params entries"
+        },
+        {
+          "id": "U216",
+          "title": "Prefer iterable constructor input and copy its values eagerly"
+        },
+        {
+          "id": "U217",
+          "title": "Resolve URLPattern base inputs and preserve result input arguments"
+        },
+        {
+          "id": "U218",
+          "title": "Represent optional URLPattern captures and isolate exec result objects"
+        },
+        {
+          "id": "U219",
+          "title": "Apply URLPattern ignoreCase across components without changing captures"
+        },
+        {
+          "id": "U220",
+          "title": "Enforce custom regexp and all URLPattern component constraints"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "X201",
+      "closest_existing_cases": [
+        "B024",
+        "X001",
+        "X002"
+      ],
+      "distinctness": "Git whole-object header/OID/native zlib boundary from the actual OS codec; earlier cases cover generic native transform concurrency, not a valid loose-object format."
+    },
+    {
+      "id": "X202",
+      "closest_existing_cases": [
+        "K213",
+        "C001",
+        "C016"
+      ],
+      "distinctness": "One compound actual Git tree mechanism: directory slash byte ordering plus all five serialized modes; no extra case credit for each mode."
+    },
+    {
+      "id": "X203",
+      "closest_existing_cases": [
+        "C024",
+        "C025",
+        "Y212"
+      ],
+      "distinctness": "Actual Git ordered parent/custom-header/identity/message serialization and legal header continuation; no RPC numeric/date clone or multipart newline claim."
+    },
+    {
+      "id": "X204",
+      "closest_existing_cases": [],
+      "distinctness": "Actual Git delta instruction interpreter with one compound copy/insert trace; not an array-copy value grid, bounds-negative input, stream, or digest case."
+    },
+    {
+      "id": "X205",
+      "closest_existing_cases": [
+        "S011",
+        "S013",
+        "X018",
+        "B023",
+        "B009",
+        "B010",
+        "B011",
+        "S301",
+        "S304",
+        "S305"
+      ],
+      "distinctness": "Actual Git pack header/entry/zlib-boundary/OID/body-trailer integration with a complete four-type valid pack. Earlier B stream payloads expressly were not valid Git parsing; earlier digest/backpressure cases lack objects and entry framing."
+    },
+    {
+      "id": "X206",
+      "closest_existing_cases": [
+        "X205",
+        "S011",
+        "S013",
+        "X018"
+      ],
+      "distinctness": "Distinct actual object-base resolution: backward OFS boundary arithmetic and REF lookup of an already-yielded delta result. Not an extra chunking/digest case."
+    }
+  ],
+  "excluded_scope": [
+    "Malformed/hostile/truncated/corrupt packets",
+    "Invalid OIDs or signature forgery/replay/authentication",
+    "Git push authorization or cache authorization paths",
+    "Scheduler and capability lifetime/guarded-core work",
+    "Paused stateless setup",
+    "External Git service, storage API, or network fixture"
+  ],
+  "counting": "One primary candidate per compound mechanism. Primitive reuse, assertion count, modes and chunk slices earn no extra credit."
+}

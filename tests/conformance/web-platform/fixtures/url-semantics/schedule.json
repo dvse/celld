@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "profile": "direct-celld-url-semantics-v1",
+  "runtime_status": "UNRUN",
+  "suite_outer_deadline_seconds": 300,
+  "preflight_deadline_seconds": 30,
+  "startup_deadline_seconds": 120,
+  "cleanup_deadline_seconds": 20,
+  "request_count": 20,
+  "concurrency": 1,
+  "retries": 0,
+  "order": "ascending case ID; each trace independent",
+  "resource_envelope": {
+    "supervisor_enforced": true,
+    "runtime_process_group_memory_max_bytes": 1073741824,
+    "runtime_process_group_cpu_cores": 1,
+    "v8_heap_limit_mb": 128,
+    "request_response_max_bytes": 65536,
+    "owned_filesystem_max_bytes": 268435456
+  },
+  "preconditions": [
+    "Independently reviewed direct-celld binary and matching full source/build receipt",
+    "Trusted esbuild already installed; no download or build by this schedule",
+    "Fresh isolated loopback dev deployment and empty owned local store",
+    "External supervisor records actual runtime and deployment identity and enforces all bounds"
+  ],
+  "requests": [
+    {
+      "id": "U201",
+      "method": "GET",
+      "path": "/case/U201",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "U202",
+      "method": "GET",
+      "path": "/case/U202",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "U203",
+      "method": "GET",
+      "path": "/case/U203",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "U204",
+      "method": "GET",
+      "path": "/case/U204",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "U205",
+      "method": "GET",
+      "path": "/case/U205",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "U206",
+      "method": "GET",
+      "path": "/case/U206",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "U207",
+      "method": "GET",
+      "path": "/case/U207",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "U208",
+      "method": "GET",
+      "path": "/case/U208",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "U209",
+      "method": "GET",
+      "path": "/case/U209",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "U210",
+      "method": "GET",
+      "path": "/case/U210",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "U211",
+      "method": "GET",
+      "path": "/case/U211",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "U212",
+      "method": "GET",
+      "path": "/case/U212",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "U213",
+      "method": "GET",
+      "path": "/case/U213",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "U214",
+      "method": "GET",
+      "path": "/case/U214",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "U215",
+      "method": "GET",
+      "path": "/case/U215",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "U216",
+      "method": "GET",
+      "path": "/case/U216",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "U217",
+      "method": "GET",
+      "path": "/case/U217",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "U218",
+      "method": "GET",
+      "path": "/case/U218",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "U219",
+      "method": "GET",
+      "path": "/case/U219",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "U220",
+      "method": "GET",
+      "path": "/case/U220",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    }
+  ],
+  "stop_conditions": [
+    "Suite outer deadline or resource breach: stop owned process group and preserve pending outcomes as FAIL or UNKNOWN according to witness",
+    "Missing precondition before trace entry: BLOCKED; never substitute another runtime",
+    "After final response: bounded owned teardown; no further polling or repetitions"
+  ],
+  "cleanup": "Retain bounded receipts; stop and verify exit of only the recorded owned process group; remove only the fresh deployment/store directory. Incomplete teardown blocks acceptance."
+}

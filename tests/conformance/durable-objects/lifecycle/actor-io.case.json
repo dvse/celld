@@ -1,0 +1,33 @@
+{
+  "id": "conformance/durable-objects/lifecycle/actor-io",
+  "layer": "conformance",
+  "behaviour": "durable-objects/lifecycle",
+  "title": "actor io",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/actor-io",
+      "legacy_id": "hyperbob/actor-io"
+    },
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/actor-io/wrangler.json",
+      "sha256": "944b394b614ba3d690b1990ec56dfb2f7bb623b6b312d37279752cf3baf822e8"
+    }
+  ],
+  "legacy_ids": [
+    "hyperbob/actor-io"
+  ],
+  "adapter": "example",
+  "fixture": "tests/conformance/durable-objects/lifecycle/fixtures/actor-io",
+  "profiles": [
+    "full"
+  ],
+  "reason": "",
+  "requests": [
+    {
+      "path": "/?v=suite"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/durable-objects/lifecycle/fixtures/actor-io/wrangler.json",
+  "source_sha256": "944b394b614ba3d690b1990ec56dfb2f7bb623b6b312d37279752cf3baf822e8"
+}

@@ -1,0 +1,28 @@
+{
+  "adapter": "example",
+  "behaviour": "bindings",
+  "fixture": "tests/conformance/bindings/fixtures/d1-database",
+  "id": "conformance/bindings/d1",
+  "layer": "conformance",
+  "legacy_ids": [
+    "examples/d1"
+  ],
+  "origins": [
+    {
+      "legacy_id": "examples/d1",
+      "source": "celld@9c0fca5/examples/d1"
+    },
+    {
+      "sha256": "b1f086eb4f6f1526663429d085244333b1624d62a3f1cbbbd3fccba02ee5878f",
+      "source": "celld@9c0fca5/examples/d1/wrangler.jsonc"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/conformance/bindings/fixtures/d1-database/wrangler.jsonc",
+  "source_sha256": "b1f086eb4f6f1526663429d085244333b1624d62a3f1cbbbd3fccba02ee5878f",
+  "title": "d1"
+}

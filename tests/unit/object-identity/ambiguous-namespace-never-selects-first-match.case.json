@@ -1,0 +1,24 @@
+{
+  "id": "unit/object-identity/ambiguous-namespace-never-selects-first-match",
+  "layer": "unit",
+  "behaviour": "object-identity",
+  "title": "ambiguous namespace never selects first match",
+  "origins": [
+    {
+      "source": "crates/celld/generation.rs",
+      "legacy_id": "unit/celld/generation::namespace_collision_tests::ambiguous_namespace_never_selects_first_match"
+    }
+  ],
+  "legacy_ids": [
+    "unit/celld/generation::namespace_collision_tests::ambiguous_namespace_never_selects_first_match"
+  ],
+  "adapter": "cargo",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "crates/celld/generation.rs",
+  "source_sha256": "107651393b2508265762ada6e97a9b8ec621ce950a7c993e06357986c9cb44a9",
+  "test_filter": "generation::namespace_collision_tests::ambiguous_namespace_never_selects_first_match"
+}

@@ -1,0 +1,9 @@
+{
+  "kind": "STATIC_ONLY",
+  "source_pins_verified": 3,
+  "case_functions": 20,
+  "literal_assertion_call_sites": 69,
+  "syntax_files": 2,
+  "runtime_executions": 0,
+  "independent_review": "pending"
+}

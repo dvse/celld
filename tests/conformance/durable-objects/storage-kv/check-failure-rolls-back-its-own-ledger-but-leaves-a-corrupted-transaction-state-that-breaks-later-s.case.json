@@ -1,0 +1,62 @@
+{
+  "adapter": "recovery",
+  "behaviour": "durable-objects/storage-kv",
+  "contract": {
+    "cleanup": [
+      "Release store holds on all exits; original gate/client deadlines are finite.",
+      "Each case consumes its owned disposable fleet. Verify exact QEMU PID/start-ticks/executable/group, then send TERM to both before a shared10s grace; escalate only verified owned groups and reap with2s maximum per guest. A35s BaseException deadline enters a separately bounded forced-reap path.",
+      "Guest RAM storage/client processes disappear with these owned VMs; preserve bounded sanitized report/log/receipt evidence on host.",
+      "Any refused/failed cleanup prevents PASS qualification. Never touch another fleet, store root, credentials or host configuration."
+    ],
+    "implementation": {
+      "driver": "driver.py:run_case",
+      "file": "cases.py",
+      "fixture": "fixture.js",
+      "function": "D009"
+    },
+    "intent": "CHECK failure rolls back its own ledger but leaves a corrupted transaction state that breaks later sibling transfers.",
+    "oracle": "Constraint effects absent, successful transfers exact, post-relocation write/read state healthy. Every explicit barrier, release, cohort settlement, relocation and asserted recovery state completes within the absolute240-second case deadline; client HTTP90s and local gate20s bounds; teardown<=40s separately.",
+    "preconditions": [
+      "Exclusive parent run slot; exact independent review of source/manifest/profile hashes; already running owned disposable two-guest fleet.",
+      "Frozen executable digest62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e; bucket durability;30s emulation lease;2Tokio threads/2activations.",
+      "Each guest QEMU768MiB/1vCPU; inherited cgroup memory<=512MiB, pids<=128 and CPU<=2; no cgroup/security/network changes by this adapter.",
+      "Both initial nodes explicitly rebalance-paused; owner node/epoch reverified immediately before faults. Fresh run-specific bucket and RAM-backed store root on guest2; store guest survives all runtime faults. No store-guest power-loss durability claim.",
+      "Root IDs, process executable hashes/start ticks, owner records/epochs and actual deployment hashes captured before trace; unavailable required evidence is BLOCKED."
+    ],
+    "trace": [
+      "Release",
+      "verify four rolledBack receipts",
+      "final good ledger only and a980/b1020/count0",
+      "relocate after owner loss."
+    ]
+  },
+  "corpus_id": "D009",
+  "corpus_wave": "durable-recovery-stress",
+  "fixture": "tests/conformance/durable-objects/storage-kv/fixtures/durable-recovery",
+  "id": "conformance/durable-objects/storage-kv/check-failure-rolls-back-its-own-ledger-but-leaves-a-corrupted-transaction-state-that-breaks-later-s",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/durable-recovery-stress/D009"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/durable-recovery-stress/D009",
+      "source": "guarded-source-archive/celld-os-stress/waves/durable-recovery-stress"
+    },
+    {
+      "sha256": "230ace803967738d3296f251b34db6418515449fb7c5e4147c7ddd2af9a7585a",
+      "source": "guarded-source-archive/celld-os-stress/waves/durable-recovery-stress/fixture.js"
+    }
+  ],
+  "phase2_harness": "real process and bucket fault schedule",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "D009",
+  "source": "tests/conformance/durable-objects/storage-kv/fixtures/durable-recovery/fixture.js",
+  "source_sha256": "230ace803967738d3296f251b34db6418515449fb7c5e4147c7ddd2af9a7585a",
+  "title": "CHECK failure rolls back its own ledger but leaves a corrupted transaction state that breaks later sibling transfers."
+}

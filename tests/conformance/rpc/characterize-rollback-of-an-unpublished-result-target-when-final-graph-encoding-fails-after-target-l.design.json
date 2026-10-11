@@ -1,0 +1,39 @@
+{
+  "id": "conformance/rpc/characterize-rollback-of-an-unpublished-result-target-when-final-graph-encoding-fails-after-target-l",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "Characterize rollback of an unpublished result target when final graph encoding fails after target lift",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec",
+      "legacy_id": "rpc-codec/C010"
+    }
+  ],
+  "corpus_wave": "rpc-codec",
+  "corpus_id": "C010",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "C010",
+    "intent": "Characterize rollback of an unpublished result target when final graph encoding fails after target lift",
+    "preconditions": "COMMON; fresh owned fixture required; result insertion order is target then Symbol; disposer counted on peer",
+    "trace": [
+      "request result that lifts target before uncloneable Symbol",
+      "require DataCloneError",
+      "poll target disposer count before ending caller event",
+      "check target never called",
+      "verify healthy RPC"
+    ],
+    "stress": "One unpublished target; maximum 100 settlement checks at 10ms intervals",
+    "oracle": "Target disposer reaches exactly 1 within bounded settlement and calls stays zero; healthy control succeeds; lack of rollback is FAIL",
+    "cleanup": "Shared codecCleanup removes observations; always tear down owned fixture after this case because a leaked runtime entry has no public repair handle",
+    "isolation": "fresh-owned-fixture-required",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-LIFT",
+      "SC-ENVELOPE",
+      "SC-DISPOSE"
+    ]
+  }
+}

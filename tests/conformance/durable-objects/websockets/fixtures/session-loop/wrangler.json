@@ -1,0 +1,4 @@
+{"name": "ws-session-loop", "main": "index.js", "compatibility_date": "2026-08-14",
+ "migrations": [{"tag": "v1", "new_sqlite_classes": ["Session"]}],
+ "services": [{"binding": "SELF", "service": "ws-session-loop", "entrypoint": "Hello"}],
+ "kv_namespaces": [{"binding": "KV", "id": "ws-session-loop"}]}

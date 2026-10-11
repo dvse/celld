@@ -1,0 +1,10 @@
+{
+  "source_root": "/workspace/shared/celld-recovered/celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "source_cut": "2026-10-09T00:52:35.905873Z",
+  "source_snapshot": "celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "files": {
+    "celld-os-project/celld/crates/celld/js/harness.js": "8d3be5ef1b78d302cb2da745c63f8d2e1222115c49a8d08f1096bca7d235c237",
+    "celld-os-project/celld/crates/celld/js/storage_ops.rs": "33aae2a9d2c25dd46b5ef33e343a20a923e0bd90117e1cf67afe2137e2dcc010",
+    "celld-os-project/celld/crates/celld/storage.rs": "99ce80c6e273234787ca38367210ebca43baa9df49286dc911cd179f52b6dc2d"
+  }
+}

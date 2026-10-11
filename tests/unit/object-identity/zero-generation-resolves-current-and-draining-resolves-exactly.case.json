@@ -1,0 +1,24 @@
+{
+  "id": "unit/object-identity/zero-generation-resolves-current-and-draining-resolves-exactly",
+  "layer": "unit",
+  "behaviour": "object-identity",
+  "title": "zero generation resolves current and draining resolves exactly",
+  "origins": [
+    {
+      "source": "crates/celld/cell_runtime.rs",
+      "legacy_id": "unit/celld/cell_runtime::generation_dispatch_tests::zero_generation_resolves_current_and_draining_resolves_exactly"
+    }
+  ],
+  "legacy_ids": [
+    "unit/celld/cell_runtime::generation_dispatch_tests::zero_generation_resolves_current_and_draining_resolves_exactly"
+  ],
+  "adapter": "cargo",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "crates/celld/cell_runtime.rs",
+  "source_sha256": "6b7235d908dacc3bf1203ce08567bf32c931a97734945086e41ee4fbcaa851a0",
+  "test_filter": "cell_runtime::generation_dispatch_tests::zero_generation_resolves_current_and_draining_resolves_exactly"
+}

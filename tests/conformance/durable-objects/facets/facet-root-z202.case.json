@@ -1,0 +1,131 @@
+{
+  "adapter": "http",
+  "behaviour": "durable-objects/facets",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "assertion_count": 4,
+    "authored": true,
+    "classification": "ordinary-functional-regression-candidate",
+    "cleanup": [
+      "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+      "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+      "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+      "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+    ],
+    "distinctness": "L024 uses two identical visible strings to test storage partition; it does not test named ID transport or inherited versus overridden ID kinds.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/Z202",
+      "request_body": null
+    },
+    "failure_hypothesis": "An explicit display ID might be reinterpreted as a namespace ID or descendants might inherit the root instead of their immediate parent.",
+    "fixed_runtime_assertions": [
+      "t.deep(await a.identity(), { kind: 'DurableObjectId', value: String(named), name: 'display-only' }, 'explicit namespace ID retains named ID kind');",
+      "t.deep(await b.identity(), { kind: 'string', value: 'literal-display', name: null }, 'explicit string remains a string');",
+      "t.deep(await b.descendantIdentity('leaf'), { kind: 'string', value: 'literal-display', name: null }, 'nested omitted ID inherits overridden string rather than root ID');",
+      "t.deep(await a.descendantIdentity('leaf', 'child-display'), { kind: 'string', value: 'child-display', name: null }, 'child override replaces immediate parent display identity');"
+    ],
+    "id": "Z202",
+    "implementation": "cases.js:Z202",
+    "independently_reviewed": false,
+    "limits": {
+      "cleanup_deadline_ms": 3000,
+      "external_case_process_deadline_seconds": 20,
+      "external_http_deadline_seconds": 12,
+      "max_application_data_payload_bytes_excluding_loaded_source": 4096,
+      "max_application_keys_per_database": 5,
+      "max_created_do_roots": 1,
+      "max_external_case_http_requests": 1,
+      "max_external_response_capture_bytes": 65536,
+      "max_frontend_root_fetches": 1,
+      "max_internal_facet_method_or_fetch_calls_including_cleanup": 40,
+      "max_loaded_module_source_bytes": 16384,
+      "max_loaded_workers": 1,
+      "max_public_network_requests": 0,
+      "max_simultaneous_descendant_facets": 5,
+      "max_sql_rows_per_cursor": 16,
+      "max_top_level_facet_names": 3,
+      "max_total_facet_activations_including_cleanup": 12,
+      "max_user_tables_per_database": 1,
+      "precondition_deadline_ms": 1000,
+      "trace_deadline_ms": 6000
+    },
+    "mechanism": "explicit-identity-kind-and-parent-inheritance",
+    "oracle": "Named IDs keep their name, literal IDs remain strings, omitted child ID follows immediate parent, explicit child override wins.",
+    "os_relevance": {
+      "evidence": [
+        "celld-os-project/tests/ACCEPTANCE.md",
+        "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+      ],
+      "evidence_status": "Mechanism relevance inferred from preserved acceptance/fixtures; actual OS application source absent and unverified.",
+      "label": "OS supervisor identity and generated child context"
+    },
+    "preconditions": [
+      "Exact reviewed direct celld source and independent build/executable identity; no workerd/Node/mock substitution.",
+      "Fresh disposable private deployment, fresh randomly named root, real migrated SQLite Root, public facets and Worker Loader.",
+      "No actual OS checkout exists here. Component result cannot satisfy full-OS acceptance or establish process/placement/durability by itself."
+    ],
+    "primary_contract_refs": [
+      {
+        "kind": "preserved celld public contract",
+        "path": "celld-os-project/celld/docs/services/durable-object-facets.md"
+      }
+    ],
+    "review_status": "PENDING_INDEPENDENT_REVIEW",
+    "runtime_passes": 0,
+    "runtime_source_refs": [
+      {
+        "line_end": 2257,
+        "line_start": 2243,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      },
+      {
+        "line_end": 982,
+        "line_start": 975,
+        "path": "celld-os-project/celld/crates/celld/js/bootstrap.rs"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "schedule": "One external GET creates one fresh root; execute the written awaited dependency order entirely within its one fetch; no cross-request capability retention or timing polls.",
+    "title": "Preserve explicit identity kinds and overrides",
+    "trace": [
+      "Supply one named namespace ID and one literal string.",
+      "Read both kinds, inherit the string below its parent, and explicitly override another child."
+    ]
+  },
+  "corpus_id": "Z202",
+  "corpus_wave": "facet-root-semantics",
+  "fixture": "tests/conformance/durable-objects/facets/fixtures/facet-root-semantics",
+  "id": "conformance/durable-objects/facets/facet-root-z202",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/facet-root-semantics/Z202"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/facet-root-semantics/Z202",
+      "manifest_sha256": "a1615598800adf714f1786dbf6db36365b035d4b9e54a4c56c12e5a427ed7e1f",
+      "review_sha256": "f09c531798eae5ed346aac70a34d8ef6aeac408cc86cb205de7626f22060dca1",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/facet-root-semantics",
+      "tranche": "003"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/Z202",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "Z202",
+  "source": "tests/conformance/durable-objects/facets/fixtures/facet-root-semantics/fixture.js",
+  "source_sha256": "2843913af8aa84153e792b41e9367175b7e80a5dbf4f78eb18b07d91b58cb147",
+  "title": "Preserve explicit identity kinds and overrides"
+}

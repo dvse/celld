@@ -1,0 +1,9 @@
+{
+  "name": "celld-kv-semantics-next",
+  "main": "worker.js",
+  "compatibility_date": "2026-01-01",
+  "kv_namespaces": [
+    { "binding": "KV_A", "id": "celld-kv-semantics-next-a" },
+    { "binding": "KV_B", "id": "celld-kv-semantics-next-b" }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "id": "conformance/rpc/bindings",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "bindings",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/bindings",
+      "legacy_id": "hyperbob/bindings"
+    },
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/bindings/wrangler.json",
+      "sha256": "844504604a865619eba7bd07abbff739d8cb900384cc1cb313f3c0cf00af93cf"
+    }
+  ],
+  "legacy_ids": [
+    "hyperbob/bindings"
+  ],
+  "adapter": "example",
+  "fixture": "tests/conformance/rpc/fixtures/bound-context",
+  "profiles": [
+    "full"
+  ],
+  "reason": "",
+  "requests": [
+    {
+      "path": "/?v=suite"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/rpc/fixtures/bound-context/wrangler.json",
+  "source_sha256": "844504604a865619eba7bd07abbff739d8cb900384cc1cb313f3c0cf00af93cf"
+}

@@ -1,0 +1,47 @@
+{
+  "id": "conformance/dynamic-workers-and-tails/reload-same-unchanged-named-definition-after-explicit-worker-release",
+  "layer": "conformance",
+  "behaviour": "dynamic-workers-and-tails",
+  "title": "Reload same unchanged named definition after explicit worker release",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/loader-props",
+      "legacy_id": "loader-props/L033"
+    }
+  ],
+  "corpus_wave": "loader-props",
+  "corpus_id": "L033",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "L033",
+    "intent": "Reload same unchanged named definition after explicit worker release",
+    "failure_hypothesis": "Released named handle leaves stale isolate in cache",
+    "preconditions": [
+      "One successful named worker and unchanged factory",
+      "Disposable private fixture with fresh supervisor name, live LOADER, facets, restore flag, and positive Loader control",
+      "External reviewed adapter has exclusive run slot and enforces wall/memory/PID/load limits"
+    ],
+    "trace": [
+      "Verify first instance",
+      "Dispose worker",
+      "Get identical key and definition",
+      "Verify replacement"
+    ],
+    "stress": "2 loads at one key; 1 explicit release",
+    "oracle": "Replacement module token differs",
+    "cleanup": "Case-specific finally disposes restored handles and drains finite cancellation hold where used; common cleanup releases code gates, aborts every owned facet, disposes entrypoints and worker handles, removes only tracked fixture KV rows. Parent tears down disposable fleet/storage.",
+    "implementation": "cases.js:loaderCases.L033",
+    "contract_group": "release",
+    "qualification": "characterization",
+    "promotion": "NOT_PROMOTED: independent source/oracle review and recorded frozen-runtime run required",
+    "layer": "real-process-RPC",
+    "profile": "loader-props-2026-09-04",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  }
+}

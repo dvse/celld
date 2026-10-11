@@ -1,0 +1,10 @@
+{
+  "name": "ordinary-facet-root-v1",
+  "main": "fixture.js",
+  "compatibility_date": "2026-09-04",
+  "compatibility_flags": ["js_rpc"],
+  "vars": { "ORIGIN": "root-origin" },
+  "worker_loaders": [{ "binding": "LOADER" }],
+  "durable_objects": { "bindings": [{ "name": "ROOT", "class_name": "Root" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Root"] }]
+}

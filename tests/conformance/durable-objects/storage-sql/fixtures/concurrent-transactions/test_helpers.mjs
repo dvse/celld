@@ -1,0 +1,22 @@
+// Pure support assertions only. No fixture imports, SQL, celld, network or timers.
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const source=fs.readFileSync(new URL('./common.js',import.meta.url),'utf8');
+const {eq,ok,rejects,throws,rowRange,canonical,ScheduleBlocked,schedule,scheduleBounded}=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));
+eq({a:1,b:2},{b:2,a:1},'object property order is irrelevant');
+assert.throws(()=>eq(new Map([['a',1]]),new Map([['a',2]]),'Map values matter'));
+assert.throws(()=>eq([1,2],[2,1],'array ordering matters'));
+assert.throws(()=>eq({a:1},{a:2},'value matters'));
+assert.throws(()=>ok(false,'false condition'));
+assert.throws(()=>throws(()=>{},/failure/));
+throws(()=>{throw new Error('expected-failure');},/expected-failure/);
+await rejects(async()=>{throw new Error('planned');},/planned/);
+await assert.rejects(()=>rejects(async()=>{},/failure/));
+eq(rowRange(1,3),[{n:1,label:'v1'},{n:2,label:'v2'}],'fixed expected row helper');
+eq(new Uint8Array([1,2]).buffer,new Uint8Array([1,2]),'byte equality');
+assert.notEqual(canonical(new Uint8Array([1,2])),canonical(new Uint8Array([1,3])));
+const planned=new ScheduleBlocked('schedule missing');await assert.rejects(()=>rejects(async()=>{throw planned;},/anything/),e=>e===planned);
+assert.throws(()=>schedule(false,'unavailable'),ScheduleBlocked);
+const semantic=new Error('SCENARIO_BLOCKED: runtime detail');assert.equal(semantic instanceof ScheduleBlocked,false);
+await assert.rejects(()=>scheduleBounded(Promise.reject(semantic),100,'wait'),e=>e===semantic);
+console.log(JSON.stringify({support_checks:16,sut_runs:0,network_requests:0}));

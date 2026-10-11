@@ -1,0 +1,603 @@
+{
+  "schema_version": 1,
+  "evidence": "STATIC_SOURCE_INSPECTION_ONLY",
+  "baseline_designs_indexed": 575,
+  "baseline_file_count": 215,
+  "prevent_option_search": {
+    "preventClose": [],
+    "preventAbort": [],
+    "preventCancel": []
+  },
+  "neighboring_baseline_designs": [
+    {
+      "id": "R014",
+      "wave": "base",
+      "intent": "Pipelined getter path reaches only its granted nested child",
+      "primary": true,
+      "source": "celld-os-stress/cases/rpc.json"
+    },
+    {
+      "id": "R016",
+      "wave": "base",
+      "intent": "Pipelined function under a getter retains its intended receiver",
+      "primary": true,
+      "source": "celld-os-stress/cases/rpc.json"
+    },
+    {
+      "id": "S002",
+      "wave": "base",
+      "intent": "Cancellation before consumption reaches source exactly once",
+      "primary": false,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S003",
+      "wave": "base",
+      "intent": "Cancellation after EOF does not reopen or cancel completed source",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S010",
+      "wave": "base",
+      "intent": "Cancel resolves a pending read as done and reaches source",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S014",
+      "wave": "base",
+      "intent": "Empty BYOB stream returns terminal zero-length view",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S015",
+      "wave": "base",
+      "intent": "pipeTo drains a remote readable into a local writable",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S016",
+      "wave": "base",
+      "intent": "Local pipeTo sink failure cancels remote source",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S018",
+      "wave": "base",
+      "intent": "Canceling one tee branch preserves remaining consumer",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S019",
+      "wave": "base",
+      "intent": "Remote writable closes correctly without writes",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S020",
+      "wave": "base",
+      "intent": "Queued close cannot overtake delayed writes",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S021",
+      "wave": "base",
+      "intent": "Abort before writer acquisition reaches remote sink once",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "S023",
+      "wave": "base",
+      "intent": "Sink close failure rejects both close and writer.closed",
+      "primary": true,
+      "source": "celld-os-stress/cases/streams.json"
+    },
+    {
+      "id": "W009",
+      "wave": "active-websocket-stress",
+      "intent": "Drain client frames before clean close",
+      "primary": true,
+      "source": "celld-os-stress/waves/active-websocket-stress/manifest.json"
+    },
+    {
+      "id": "W010",
+      "wave": "active-websocket-stress",
+      "intent": "Drain server frames before clean close",
+      "primary": true,
+      "source": "celld-os-stress/waves/active-websocket-stress/manifest.json"
+    },
+    {
+      "id": "W011",
+      "wave": "active-websocket-stress",
+      "intent": "Preserve application close metadata",
+      "primary": true,
+      "source": "celld-os-stress/waves/active-websocket-stress/manifest.json"
+    },
+    {
+      "id": "W012",
+      "wave": "active-websocket-stress",
+      "intent": "Carry legal UTF-8 close boundary",
+      "primary": true,
+      "source": "celld-os-stress/waves/active-websocket-stress/manifest.json"
+    },
+    {
+      "id": "W013",
+      "wave": "active-websocket-stress",
+      "intent": "Settle competing normal close requests",
+      "primary": true,
+      "source": "celld-os-stress/waves/active-websocket-stress/manifest.json"
+    },
+    {
+      "id": "W014",
+      "wave": "active-websocket-stress",
+      "intent": "Close held application work locally",
+      "primary": true,
+      "source": "celld-os-stress/waves/active-websocket-stress/manifest.json"
+    },
+    {
+      "id": "W015",
+      "wave": "active-websocket-stress",
+      "intent": "Make repeated close calls idempotent",
+      "primary": true,
+      "source": "celld-os-stress/waves/active-websocket-stress/manifest.json"
+    },
+    {
+      "id": "W017",
+      "wave": "active-websocket-stress",
+      "intent": "Close in receiver message turn",
+      "primary": true,
+      "source": "celld-os-stress/waves/active-websocket-stress/manifest.json"
+    },
+    {
+      "id": "A020",
+      "wave": "alarm-event-stress",
+      "intent": "Deleting the schedule during a running handler could incorrectly cancel the event or let its later success recreate the deleted wake.",
+      "primary": true,
+      "source": "celld-os-stress/waves/alarm-event-stress/manifest.json"
+    },
+    {
+      "id": "B006",
+      "wave": "bounded-load",
+      "intent": "Cancelling middle queued requests leaks an application admission slot or dispatches cancelled effects.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B009",
+      "wave": "bounded-load",
+      "intent": "Independently stalled download streams are cross-wired or coupled when completion order differs from creation order.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B010",
+      "wave": "bounded-load",
+      "intent": "Six native stream arguments waiting in receivers starve unrelated metadata RPCs or corrupt their resumed bytes.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B011",
+      "wave": "bounded-load",
+      "intent": "Blocked download result streams prevent independent upload argument streams from completing on the same owner connection.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B012",
+      "wave": "bounded-load",
+      "intent": "Cancelling two pending readers leaks their producers, emits post-cancel frames, or cancels unrelated streams.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B013",
+      "wave": "bounded-load",
+      "intent": "A late error after an observed prefix is swallowed or poisons other pending streams and future transfers.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B015",
+      "wave": "bounded-load",
+      "intent": "A returned WritableStream loses a remote failure at terminal close or conflates failure with three other saturated sinks.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B016",
+      "wave": "bounded-load",
+      "intent": "Three slow tee consumers prevent fast branches draining, or late branch cancellation incorrectly cancels already-completed sources.",
+      "primary": true,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "B020",
+      "wave": "bounded-load",
+      "intent": "A cancelled loaded-worker result stream keeps producing after its pending nested RPC resumes, or stalls independent notification callbacks.",
+      "primary": false,
+      "source": "celld-os-stress/waves/bounded-load/manifest.json"
+    },
+    {
+      "id": "O026",
+      "wave": "capability-order",
+      "intent": "A callback may reenter its owner to unsubscribe itself without canceling its current result",
+      "primary": false,
+      "source": "celld-os-stress/waves/capability-order/cases.json"
+    },
+    {
+      "id": "O035",
+      "wave": "capability-order",
+      "intent": "Disposed pending promise must refuse new pipeline admission without target effects",
+      "primary": false,
+      "source": "celld-os-stress/waves/capability-order/cases.json"
+    },
+    {
+      "id": "O036",
+      "wave": "capability-order",
+      "intent": "A previously admitted pipeline call may finish after producer-promise disposal",
+      "primary": false,
+      "source": "celld-os-stress/waves/capability-order/cases.json"
+    },
+    {
+      "id": "U008",
+      "wave": "deployment-recovery",
+      "intent": "DDL migration abort rolls back copy and drop",
+      "primary": true,
+      "source": "celld-os-stress/waves/deployment-recovery/manifest.json"
+    },
+    {
+      "id": "U010",
+      "wave": "deployment-recovery",
+      "intent": "Replacement cancellation survives cold startup",
+      "primary": true,
+      "source": "celld-os-stress/waves/deployment-recovery/manifest.json"
+    },
+    {
+      "id": "F008",
+      "wave": "fetch-redirect-stress",
+      "intent": "Cancel manual body before explicit handoff",
+      "primary": true,
+      "source": "celld-os-stress/waves/fetch-redirect-stress/manifest.json"
+    },
+    {
+      "id": "F009",
+      "wave": "fetch-redirect-stress",
+      "intent": "Abort while intermediate redirect head is held",
+      "primary": true,
+      "source": "celld-os-stress/waves/fetch-redirect-stress/manifest.json"
+    },
+    {
+      "id": "F010",
+      "wave": "fetch-redirect-stress",
+      "intent": "Separate discarded redirect bodies from final stream",
+      "primary": true,
+      "source": "celld-os-stress/waves/fetch-redirect-stress/manifest.json"
+    },
+    {
+      "id": "H007",
+      "wave": "http-stream-stress",
+      "intent": "Cancel one host tee consumer before tail",
+      "primary": true,
+      "source": "celld-os-stress/waves/http-stream-stress/manifest.json"
+    },
+    {
+      "id": "H008",
+      "wave": "http-stream-stress",
+      "intent": "Clone streaming request into separately committed uploads",
+      "primary": true,
+      "source": "celld-os-stress/waves/http-stream-stress/manifest.json"
+    },
+    {
+      "id": "H012",
+      "wave": "http-stream-stress",
+      "intent": "Match buffered arrayBuffer with gated streamed body",
+      "primary": true,
+      "source": "celld-os-stress/waves/http-stream-stress/manifest.json"
+    },
+    {
+      "id": "H013",
+      "wave": "http-stream-stress",
+      "intent": "Preserve declared length through streamed response",
+      "primary": true,
+      "source": "celld-os-stress/waves/http-stream-stress/manifest.json"
+    },
+    {
+      "id": "H017",
+      "wave": "http-stream-stress",
+      "intent": "Abort before HTTP dispatch with live sibling",
+      "primary": true,
+      "source": "celld-os-stress/waves/http-stream-stress/manifest.json"
+    },
+    {
+      "id": "H018",
+      "wave": "http-stream-stress",
+      "intent": "Abort accepted request before response head",
+      "primary": true,
+      "source": "celld-os-stress/waves/http-stream-stress/manifest.json"
+    },
+    {
+      "id": "H019",
+      "wave": "http-stream-stress",
+      "intent": "Cancel one response reader and resume sibling",
+      "primary": true,
+      "source": "celld-os-stress/waves/http-stream-stress/manifest.json"
+    },
+    {
+      "id": "H022",
+      "wave": "http-stream-stress",
+      "intent": "Fail local stream fallback before dispatch",
+      "primary": false,
+      "source": "celld-os-stress/waves/http-stream-stress/manifest.json"
+    },
+    {
+      "id": "H025",
+      "wave": "http-stream-stress",
+      "intent": "Share abort controller across accepted requests",
+      "primary": true,
+      "source": "celld-os-stress/waves/http-stream-stress/manifest.json"
+    },
+    {
+      "id": "L026",
+      "wave": "loader-props",
+      "intent": "Abort and change facet class without losing storage or admitting stale stub",
+      "primary": true,
+      "source": "celld-os-stress/waves/loader-props/manifest.json"
+    },
+    {
+      "id": "L027",
+      "wave": "loader-props",
+      "intent": "Cancel an unused lazy facet before any startup callback executes",
+      "primary": false,
+      "source": "celld-os-stress/waves/loader-props/manifest.json"
+    },
+    {
+      "id": "L028",
+      "wave": "loader-props",
+      "intent": "Recover a cached startup-callback rejection using facet abort",
+      "primary": false,
+      "source": "celld-os-stress/waves/loader-props/manifest.json"
+    },
+    {
+      "id": "L031",
+      "wave": "loader-props",
+      "intent": "Reject pre-aborted loaded fetch before dispatch then reuse worker",
+      "primary": true,
+      "source": "celld-os-stress/waves/loader-props/manifest.json"
+    },
+    {
+      "id": "L032",
+      "wave": "loader-props",
+      "intent": "Cancel an observed in-flight loaded fetch and reuse entrypoint",
+      "primary": true,
+      "source": "celld-os-stress/waves/loader-props/manifest.json"
+    },
+    {
+      "id": "L038",
+      "wave": "loader-props",
+      "intent": "Reconstruct saved nested callback after ordinary facet abort",
+      "primary": false,
+      "source": "celld-os-stress/waves/loader-props/manifest.json"
+    },
+    {
+      "id": "J008",
+      "wave": "log-recovery-logic",
+      "intent": "Require per-cell tail and empty capture gap for graceful close",
+      "primary": true,
+      "source": "celld-os-stress/waves/log-recovery-logic/manifest.json"
+    },
+    {
+      "id": "X003",
+      "wave": "native-transform-stress",
+      "intent": "Cancel a gzip decoder after a decoded prefix is observed",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X004",
+      "wave": "native-transform-stress",
+      "intent": "Reject a pending native compression read on consumer cancellation",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X005",
+      "wave": "native-transform-stress",
+      "intent": "Abort an unflushed raw exporter and immediately recover",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X006",
+      "wave": "native-transform-stress",
+      "intent": "Abort a native transform when its source fails before any bytes",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X010",
+      "wave": "native-transform-stress",
+      "intent": "Reject trailing bytes after a complete gzip member before close",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X013",
+      "wave": "native-transform-stress",
+      "intent": "Propagate AbortSignal through an open source-to-native pipe",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X014",
+      "wave": "native-transform-stress",
+      "intent": "Keep a decoded tee branch complete after cancelling its sibling",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X018",
+      "wave": "native-transform-stress",
+      "intent": "Finish distinct DigestStream payloads in reverse request order",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X019",
+      "wave": "native-transform-stress",
+      "intent": "Abort a buffered pack digest and reuse the digest path",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X021",
+      "wave": "native-transform-stress",
+      "intent": "Close a buffered digest after a peer decoder poisons and recovers",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "X022",
+      "wave": "native-transform-stress",
+      "intent": "Dispose an unlocked buffered DigestStream while another digest closes",
+      "primary": true,
+      "source": "celld-os-stress/waves/native-transform-stress/manifest.json"
+    },
+    {
+      "id": "G011",
+      "wave": "output-gate-logic",
+      "intent": "Keep a cancelled writer pinned while its reader waits",
+      "primary": true,
+      "source": "celld-os-stress/waves/output-gate-logic/manifest.json"
+    },
+    {
+      "id": "G012",
+      "wave": "output-gate-logic",
+      "intent": "Keep a cancelled follower until shared bucket verification completes",
+      "primary": true,
+      "source": "celld-os-stress/waves/output-gate-logic/manifest.json"
+    },
+    {
+      "id": "N001",
+      "wave": "routing-acquisition-logic",
+      "intent": "Claim cohort survives initiator cancellation",
+      "primary": true,
+      "source": "celld-os-stress/waves/routing-acquisition-logic/manifest.json"
+    },
+    {
+      "id": "N011",
+      "wave": "routing-acquisition-logic",
+      "intent": "Cancelled queue generation cannot expire rejoined demand",
+      "primary": true,
+      "source": "celld-os-stress/waves/routing-acquisition-logic/manifest.json"
+    },
+    {
+      "id": "N012",
+      "wave": "routing-acquisition-logic",
+      "intent": "Partial cancellation retains one queued route",
+      "primary": true,
+      "source": "celld-os-stress/waves/routing-acquisition-logic/manifest.json"
+    },
+    {
+      "id": "N014",
+      "wave": "routing-acquisition-logic",
+      "intent": "Cancelled capacity claim yields freed residency to survivor",
+      "primary": true,
+      "source": "celld-os-stress/waves/routing-acquisition-logic/manifest.json"
+    },
+    {
+      "id": "N015",
+      "wave": "routing-acquisition-logic",
+      "intent": "Cancelled queued restore retains acquired epoch dormant",
+      "primary": true,
+      "source": "celld-os-stress/waves/routing-acquisition-logic/manifest.json"
+    },
+    {
+      "id": "N018",
+      "wave": "routing-acquisition-logic",
+      "intent": "Cancelled live join restores ownership-only landing",
+      "primary": true,
+      "source": "celld-os-stress/waves/routing-acquisition-logic/manifest.json"
+    },
+    {
+      "id": "N029",
+      "wave": "routing-acquisition-logic",
+      "intent": "Cancelled recovery backoff cannot resurrect demand",
+      "primary": true,
+      "source": "celld-os-stress/waves/routing-acquisition-logic/manifest.json"
+    },
+    {
+      "id": "N032",
+      "wave": "routing-acquisition-logic",
+      "intent": "Last owner-read waiter cancellation suppresses unnecessary claim",
+      "primary": true,
+      "source": "celld-os-stress/waves/routing-acquisition-logic/manifest.json"
+    },
+    {
+      "id": "C006",
+      "wave": "rpc-codec",
+      "intent": "A throwing argument getter aborts projection before later getters or receiver side effects",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C019",
+      "wave": "rpc-codec",
+      "intent": "A bodyless Response keeps a null body through host marker revival rather than acquiring a stream",
+      "primary": true,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "C038",
+      "wave": "rpc-codec",
+      "intent": "Characterize pinned celld plain-Proxy snapshot/access-count behavior, explicitly diverging from upstream Workers proxy-as-stub semantics",
+      "primary": false,
+      "source": "celld-os-stress/waves/rpc-codec/cases.json"
+    },
+    {
+      "id": "K009",
+      "wave": "wake-recovery-logic",
+      "intent": "Retain alarm demand after the last queued caller cancels",
+      "primary": true,
+      "source": "celld-os-stress/waves/wake-recovery-logic/manifest.json"
+    },
+    {
+      "id": "K010",
+      "wave": "wake-recovery-logic",
+      "intent": "Coalesce repeated Fleet hints through the whole cold pipeline",
+      "primary": true,
+      "source": "celld-os-stress/waves/wake-recovery-logic/manifest.json"
+    }
+  ],
+  "human_review_focus": [
+    "S001-S024 source and executable baseline",
+    "X001-X024 manifest (X017 absent in preserved baseline); X013 exact executable signal trace",
+    "H001-H026 HTTP transport lifecycle manifests",
+    "All baseline intent-index stream/cancel/close neighbors",
+    "Concurrent body/form Y201-Y220 uses Blob/Body/Request ownership, not pipe shutdown; facet/root and atomic accounting author lanes have separate mechanisms."
+  ],
+  "per_case_distinctness": {
+    "S201": "S015 drains with default close; S024 transfers writer ownership on a remote writable. This joins pipe EOF suppression with independently proven sink usability.",
+    "S202": "S006/S007 observe read errors and X006/X007/X020 propagate source failure into native transforms. This prevents forward abort and proves the surviving sink accepts new data.",
+    "S203": "S016 requires default source cancellation. This suppresses cancellation and demonstrates new post-pipe data remains readable, without relying on implementation read-ahead.",
+    "S204": "X013 fans an active signal into native transform/source shutdown. This preserves both ordinary resources after abort and proves both remain usable; not a flag permutation credited without a new lifecycle.",
+    "S205": "X013 has signal fanout but no independently held write, sink-abort acknowledgment and source-cancel acknowledgment. S020 covers queued writer close, not pipe shutdown fanout.",
+    "S206": "S015 covers transfer; S019/S020/S023 cover direct writers. No prior design holds ordinary pipeTo close acknowledgment and asserts the pipe promise and both lock lifetimes.",
+    "S207": "H017 concerns pre-dispatch HTTP abort; X013 is an already-running native pipe. This exercises the ordinary pipe pre-abort reason branch with a valid falsy reason, not malformed input.",
+    "S208": "S207 covers zero identity, while this covers early-branch asynchronous join and ownership duration. S205 reaches shutdown after a held write; pre-abort is a different implementation branch.",
+    "S209": "Neither S016 nor X013 tests shutdown action failure precedence. preventAbort deliberately isolates one failing action, so no simultaneous-rejection ordering is assumed."
+  },
+  "not_added": [
+    "No repeated default pipe success or default sink-error cancellation case.",
+    "No general flag/value matrix; zero tests reason identity in the distinct pre-abort branch.",
+    "No compression/HTTP-body transport/capability-lifetime/lease/draining or malformed-input expansion."
+  ]
+}

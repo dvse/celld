@@ -1,0 +1,31 @@
+{
+  "source_root": "/workspace/shared/celld-recovered/celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "source_identity": "celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "files": {
+    "celld-os-project/celld/docs/services/durable-objects.md": "14e11f9b530580b885b2ebb1368dd3a092b7203b9184506cf6e73f0dca8b7167",
+    "celld-os-project/celld/crates/celld/js/harness.js": "8d3be5ef1b78d302cb2da745c63f8d2e1222115c49a8d08f1096bca7d235c237",
+    "celld-os-project/tests/ACCEPTANCE.md": "225d224b02186c96adde8415069286f67b63da5b4bc8938a5c19bc29b4b46256",
+    "celld-os-project/tests/duplicate-names/account.js": "a801254fd6a06728fc217c236186f23d98d867dc77ad55a3feff9b7999b55c03",
+    "celld-os-project/tests/duplicate-names/router.js": "86936ac413b92b644a5427af5caa01f40c12b08a1b7be9262dc20925e01bb46a",
+    "celld-os-project/tests/duplicate-names/run_duplicates.py": "6e420b1beced5c4c632a8d9a3618644c30745164f35903d4fcd039e1a3aaa934",
+    "celld-os-project/tests/duplicate-names/wrangler.jsonc": "bcc17e7bd47a2bbb06999e032e09ec02bdc94a09e55af2c697c133c41ba187c4",
+    "celld-os-project/tests/foreign-class/provider.js": "57f61f6a381881ef8442ffee08cb8d24cb386dc0c01bd4f457021acde5afd25e",
+    "celld-os-project/tests/foreign-class/caller.js": "4ce2df105b589f6be27715213c5f826669910f4b4e974b59e27ac6fd2ba1d852",
+    "celld-os-project/tests/foreign-class/run_foreign.py": "d112f795a651815471bc39d195cb7b1bc94e71b5042655f6a334b40aa0d88298",
+    "celld-os-project/tests/fixtures/distributed-rpc/index.js": "849f615ae5cef54fc6e983559ea116031c1f52068d9c17a739ccc71ec56f67d6",
+    "celld-os-stress/waves/sqlite-concurrency/manifest.json": "991cfa1edce682ba4dcfbb6b6070abedee80b43af45c6bcc300ba27666516bab",
+    "celld-os-stress/waves/sqlite-concurrency/cases.js": "691eb28d4cee7679b56385040712298155124a272d15d5674e44088bede9080f",
+    "celld-os-stress/waves/sqlite-concurrency/cell-cases.js": "0e5116557fa02ad82edc28032c82d9cb7c96530e04880465fc6517acad7095d6",
+    "celld-os-stress/waves/loader-props/manifest.json": "c8768ca53d71e6b6193c4732dac7dd7aa22f2faec8dd8e83f430d5a5c22fe083",
+    "celld-os-stress/waves/module-graph-stress/manifest.json": "28a4b34caa2b858fa1da7066013e23bdf99339ba2c8a6f15ebd2e180ace1014b",
+    "celld-os-stress/waves/module-graph-stress/cases.mjs": "9aed65f3bb4622a8a777fb142173e4d64986598c3744af261649ba77675bb8d8",
+    "celld-os-stress/waves/module-graph-stress/graphs.mjs": "3d4d4dbee83c8529c24494cf735b9c05d2e94cdd792caa4b59db39745cbaa419",
+    "celld-os-stress/waves/deployment-recovery/manifest.json": "49de28e3fc01e79ef63ba813af9358e5f772ba9002e9ed7da8611dfc07d15a20",
+    "celld-os-stress/waves/deployment-recovery/cases.py": "bf2422f0f26a3a8d07843a67372a587797a531704bc8d9cb81b8b992502a970d",
+    "celld-os-stress/cases/rpc.json": "341c423b306548b1d8b92a828f037c16332d00d612c8e42e639817844e3002c2",
+    "BUILD_AND_TEST.md": "14d182794d90bed90ee488abde70a9cba2004112e21a946441e621666196ecb1",
+    "celld-os-project/celld/docs/testing.md": "dafe8638e0de082d104595d5e84cdb6b8feb9094496fef2e7a56b6d8b7f4c366"
+  },
+  "actual_os_checkout_available": false,
+  "hashes_prove": "Source identity only, never runtime or OS results."
+}

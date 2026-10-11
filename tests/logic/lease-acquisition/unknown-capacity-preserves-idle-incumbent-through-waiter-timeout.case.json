@@ -1,0 +1,54 @@
+{
+  "id": "logic/lease-acquisition/unknown-capacity-preserves-idle-incumbent-through-waiter-timeout",
+  "layer": "logic",
+  "behaviour": "lease-acquisition",
+  "title": "Unknown capacity preserves idle incumbent through waiter timeout",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic",
+      "legacy_id": "corpus/routing-acquisition-logic/N035"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+      "sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/routing-acquisition-logic/N035"
+  ],
+  "adapter": "native",
+  "corpus_id": "N035",
+  "corpus_wave": "routing-acquisition-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/lease-acquisition/fixtures/decision-cases/tests/routing_acquisition.rs",
+  "source_sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06",
+  "test_filter": "n035_unknown_capacity_preserves_idle_resident_until_waiter_deadline",
+  "contract": {
+    "intent": "Unknown capacity preserves idle incumbent through waiter timeout",
+    "preconditions": [
+      "Fresh test-owned State; only frozen production celld_logic::on_event mutates it.",
+      "Leased self; hot Resident1 idle; residency1, activations1; a/2 needs placement.",
+      "All completion operation IDs and timers come from the exact emitted effects; late IDs are previously issued IDs, never fabricated authority.",
+      "All input storage/lease/proof replies are synthetic facts. No executor, network, runtime, or fleet service is simulated as empirical evidence.",
+      "Static source/pin check and independent review required; compiler, test and runtime have not been launched."
+    ],
+    "trace": [
+      "a reads absent and captures capacity lookup",
+      "Capacity lookup Definite failure",
+      "Assert no hot eviction, no a CAS, hot Resident and a WaitingCapacity",
+      "Fire captured queue timer150; request2 CapacityExhausted",
+      "Deliver late successful old capacity result; ignored",
+      "Warm hot/3 Local and finish3"
+    ],
+    "oracle": "Unknown fleet capacity cannot evict healthy idle resident or leave unbounded waiter",
+    "cleanup": "Finish every locally completed request and cancel each remaining ownership-only waiter as shown. H::done checks no pending requests, active cells, activation/capacity queues, activation/eviction/release/adoption permits, or nonterminal phases. Drop isolated in-memory State; no external resources created. Stored timer descriptors are never launched.",
+    "implementation": "tests/routing_acquisition.rs:n035_unknown_capacity_preserves_idle_resident_until_waiter_deadline"
+  },
+  "selector": "N035"
+}

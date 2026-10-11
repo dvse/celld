@@ -1,0 +1,115 @@
+{
+  "runtime_manifest": "/workspace/shared/celld-os-project/deliverable/package/reports/final/runtime-manifest.json",
+  "runtime_manifest_sha256": "54da8304fb90c06694cd44c114e0917b8db89ecefa08920a913c99b286359f28",
+  "binary_sha256": "62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e",
+  "celld_commit": "90b43017241f81189453d326d05948f388b34652",
+  "os_commit": "4358072f8cb1bc9ddfb6ee11122e194c76cd71e0",
+  "sources": [
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/js/compression_streams.js",
+      "sha256": "be3c46f1d06d2909575024e97b5990745f88ac133b9ed7f1e01a8b89a312fbc8",
+      "manifest_key": "celld/crates/celld/js/compression_streams.js",
+      "lines": "15-63",
+      "purpose": "Compression/decompression native stream construction, BufferSource views, native drop, cancelled-read deviation",
+      "authority": "pinned-celld-implementation"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/js/zlib.rs",
+      "sha256": "aef6319ab2447cffab5b0d003e8d9c3ec72ecfb1b8ac21c8d0a1b671a80cc473",
+      "manifest_key": "celld/crates/celld/js/zlib.rs",
+      "lines": "69-259",
+      "purpose": "Six native stream states, 32KiB encoder emission threshold, strict trailing input, process-global IDs, poison/end/drop",
+      "authority": "pinned-celld-implementation"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/js/crypto.js",
+      "sha256": "bcd8e83a9ac832d8a375dd2358967ce76b5ca784b864f82a55ffc87b6a716684",
+      "manifest_key": "celld/crates/celld/js/crypto.js",
+      "lines": "220-255,583-620,779-854",
+      "purpose": "Digest/sign/raw-key copy and buffered DigestStream close/abort/dispose",
+      "authority": "pinned-celld-implementation"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/js/crypto.rs",
+      "sha256": "151130269b188fc715d310ed65e0e8143c21b1ed202185b52a0d889e6015d8cb",
+      "manifest_key": "celld/crates/celld/js/crypto.rs",
+      "lines": "1490-1585",
+      "purpose": "Native digest and HMAC typed-buffer host operations",
+      "authority": "pinned-celld-implementation"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/js/streams.js",
+      "sha256": "f77b1f59b2abdfeb73d770e0f12952df3a80a014c9fd9db1b277131b47cd054b",
+      "manifest_key": "celld/crates/celld/js/streams.js",
+      "lines": "156-167,414-540,543-691",
+      "purpose": "Reader cancel semantics, local tee, source error/signal propagation through pipeTo; public reader lock release/locked verification",
+      "authority": "pinned-celld-implementation"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/js/writable_stream.js",
+      "sha256": "6b871978c796ffdb6eca104358332e3834aa4945d16fd019754bb28c7b2a3584",
+      "manifest_key": "celld/crates/celld/js/writable_stream.js",
+      "lines": "168-193,534,573-699",
+      "purpose": "Transform two-sided error/abort/cancel/flush transitions; public writer lock release/locked verification",
+      "authority": "pinned-celld-implementation"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/js/harness.js",
+      "sha256": "9d31b01bd4d1a6b136cfbc02bcb26a47deba29f27066009fc3f3b9c6d8d9c407",
+      "manifest_key": "celld/crates/celld/js/harness.js",
+      "lines": "5952-6005",
+      "purpose": "Ordinary Durable Object active request dispatch and root identity",
+      "authority": "pinned-celld-implementation"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/js.rs",
+      "sha256": "164b11bb2b0f7321d316bcd417b13fea3bf907b1eae335c97d8ebecaacb9ba17",
+      "manifest_key": "celld/crates/celld/js.rs",
+      "lines": "6968-6971",
+      "purpose": "Streaming zlib host operations wired to native implementation",
+      "authority": "pinned-celld-implementation"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/os/packages/workshop-backend/src/blueprint-archive.ts",
+      "sha256": "3169045728d1eb6a9de86afa08b1eddf8c14766affda28e8e95f1d01a2a846c1",
+      "manifest_key": null,
+      "lines": "95-113",
+      "purpose": "OS gzip archive imports",
+      "authority": "OS-use-source-only-not-in-runtime-manifest"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/os/packages/bundled-blueprints/blueprints/workspace-sheets/files/lib/zip.ts",
+      "sha256": "9033a9d3db083296a96f59a13424e05d79aeb8c3ee04fbb7b5aa06f3ab1c248f",
+      "manifest_key": null,
+      "lines": "106-140",
+      "purpose": "OS raw-deflate streaming XLSX export",
+      "authority": "OS-use-source-only-not-in-runtime-manifest"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/os/packages/workshop-backend/src/git-codec.ts",
+      "sha256": "56814f3f0608c88e6e83ba08e43f5af87ed4fabf972554e696c390809e9e1538",
+      "manifest_key": null,
+      "lines": "616-735",
+      "purpose": "OS SHA1 DigestStream pack reader and close",
+      "authority": "OS-use-source-only-not-in-runtime-manifest"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/os/packages/gatekeeper-kit/src/action-files.ts",
+      "sha256": "e735cdd41333be3297a6e8d7114553483772b33f310edfb0844296650c855da0",
+      "manifest_key": null,
+      "lines": "250",
+      "purpose": "OS SHA256 attachment/content digest",
+      "authority": "OS-use-source-only-not-in-runtime-manifest"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/os/packages/workshop-backend/src/sharing.ts",
+      "sha256": "0e10443304ae850a008b3b8771d26d28e5fa1f6240c0091cc01516627c8672af",
+      "manifest_key": null,
+      "lines": "55-74",
+      "purpose": "OS public HMAC personalization; fixture uses its own public key bytes",
+      "authority": "OS-use-source-only-not-in-runtime-manifest"
+    }
+  ],
+  "candidate_policy": "The separate 8d27 visibility candidate is not this profile and is not silently substituted.",
+  "os_commit_provenance": "Runtime manifest declaration; exported OS snapshot has no local Git metadata. OS-use files are individually content-hashed."
+}

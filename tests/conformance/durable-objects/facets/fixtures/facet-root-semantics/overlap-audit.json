@@ -1,0 +1,132 @@
+{
+  "baseline_body_reads": [
+    "celld-os-project/tests/ACCEPTANCE.md",
+    "celld-os-project/tests/fixtures/distributed-rpc/index.js",
+    "celld-os-stress/waves/loader-props/cases.js",
+    "celld-os-project/celld/examples/facets/index.js",
+    "celld-os-project/celld/examples/facets/wrangler.jsonc",
+    "celld-os-project/tests/foreign-class/caller.js",
+    "celld-os-project/tests/foreign-class/provider.js",
+    "celld-os-stress/fixture/rpc.js",
+    "celld-os-stress/fixture/index.js",
+    "celld-os-stress/waves/rpc-codec/codec.js",
+    "celld-os-stress/waves/loader-props/sources.mjs",
+    "celld-os-stress/waves/sqlite-concurrency/cases.js"
+  ],
+  "all_loader_cases_read": "L001-L040",
+  "additional_nearby_campaign": [
+    "storage-sql-semantics D201-D220",
+    "base RPC R001-R028",
+    "base structured clone C001"
+  ],
+  "retired": [
+    {
+      "id": "Z214",
+      "counted": false,
+      "reason": "Root rollback to facet rollback changes location only; the same independent child-commit contract is already Z213. Body removed before review freeze."
+    }
+  ],
+  "case_audit": [
+    {
+      "id": "Z201",
+      "mechanism": "named-identity-inheritance",
+      "distinctness": "L024 only compares explicitly supplied equal strings; no named-ID inheritance chain is asserted."
+    },
+    {
+      "id": "Z202",
+      "mechanism": "explicit-identity-kind-and-parent-inheritance",
+      "distinctness": "L024 uses two identical visible strings to test storage partition; it does not test named ID transport or inherited versus overridden ID kinds."
+    },
+    {
+      "id": "Z203",
+      "mechanism": "facet-fetch-rpc-receiver-continuity",
+      "distinctness": "L012 selects a stateless object default and a distinct named class; L017 requires stateless receiver freshness. Neither asserts a single facet instance across fetch/RPC turns."
+    },
+    {
+      "id": "Z204",
+      "mechanism": "plain-loaded-facet-construction",
+      "distinctness": "L012 tests object WorkerEntrypoint dispatch, not a plain constructor(state,env) used as a durable facet. Foreign-class fixture uses a DurableObject subclass only."
+    },
+    {
+      "id": "Z205",
+      "mechanism": "positive-maximum-facet-depth",
+      "distinctness": "L001-L040 have no positive maximum-depth hierarchy. This is the supported depth, never an unsupported-depth negative."
+    },
+    {
+      "id": "Z206",
+      "mechanism": "nested-parent-path-storage",
+      "distinctness": "L024 distinguishes top-level names; this asserts descendant paths beneath two live parent managers, a separate addressing boundary. L037 tests callback restore provenance rather than nested facet storage."
+    },
+    {
+      "id": "Z207",
+      "mechanism": "facet-name-component-encoding",
+      "distinctness": "No L case covers facet path-component encoding; unlike malformed input, both names are ordinary supported strings."
+    },
+    {
+      "id": "Z208",
+      "mechanism": "root-child-grandchild-schema-scopes",
+      "distinctness": "L022 checks a single facet KV count does not appear on root; generic SQL cases do not create incompatible catalogs in a root/facet/grandchild relationship."
+    },
+    {
+      "id": "Z209",
+      "mechanism": "facet-props-instance-lifetime",
+      "distinctness": "L036 tests separate binding-time snapshots; L015 tests stateless entrypoint snapshots. This asserts mutable props lifetime inside a durable receiver versus the reusable startup template."
+    },
+    {
+      "id": "Z210",
+      "mechanism": "native-facet-startup-structured-clone",
+      "distinctness": "L036 uses scalar props; RPC C001 and storage D201/D202 test different codec boundaries. This specifically asserts native embedded startup decode before class construction, a documented bootstrap risk."
+    },
+    {
+      "id": "Z211",
+      "mechanism": "async-facet-options-to-constructor-sequencing",
+      "distinctness": "L025 and L027 use synchronous startup callbacks (or cancel before start). L002 waits for Worker Loader source, a separate path. Primary novelty is successful awaited facet startup options; laziness/caching are ancillary controls, not extra case credit."
+    },
+    {
+      "id": "Z212",
+      "mechanism": "nested-facet-fetch-delegation",
+      "distinctness": "Existing HTTP/body cases use their own transport boundaries; no loader case asserts nested facet fetch routing and descendant-only effect placement."
+    },
+    {
+      "id": "Z213",
+      "mechanism": "root-and-facet-independent-transaction-commit",
+      "distinctness": "Existing SQL transaction tests involve one database; L cases do not assert root/facet atomicity boundary. The docs explicitly state this behavior."
+    },
+    {
+      "id": "Z215",
+      "mechanism": "child-rollback-parent-commit",
+      "distinctness": "Z213 rolls back the root after a child commit. This asserts the opposite independent outcome with an application decision returned normally and persisted by the parent. Single-DB transaction cases cannot establish it."
+    },
+    {
+      "id": "Z216",
+      "mechanism": "facet-deleteAll-is-not-subtree-delete",
+      "distinctness": "D211 covers one-DO deleteAll; this distinguishes facet-local storage clearing from recursive facets.delete. L cleanup aborts facets instead."
+    },
+    {
+      "id": "Z217",
+      "mechanism": "leaf-delete-barrier-and-neighbor-preservation",
+      "distinctness": "L026/L027 abort and preserve data; no baseline tests successful public delete with adjacent descendants. No old stub is invoked and no active call is interrupted."
+    },
+    {
+      "id": "Z218",
+      "mechanism": "recursive-facet-database-deletion",
+      "distinctness": "Z217 removes one leaf; this separately requires recursive database removal at all supported descendant levels. L abort/restore cases preserve databases and do not exercise delete."
+    },
+    {
+      "id": "Z219",
+      "mechanism": "loaded-facet-module-local-export-resolution",
+      "distinctness": "L022 compares direct loaded class selection to parent Root; foreign-class checks imported provider ownership. This asserts nested ctx.exports resolution inside the active loaded facet and contrasts actual local/loaded module boundaries."
+    }
+  ],
+  "excluded": [
+    "stateless-worker cross-request retained capabilities",
+    "restore/retcap lifetime",
+    "live draining callback/lease continuity",
+    "guarded G/N/P/J122 paths",
+    "authentication/forgery/replay/malformed input",
+    "failure injection",
+    "unsupported depth negatives",
+    "active-call abort races"
+  ],
+  "counting_policy": "Only independent reviewer-accepted assertion-bearing mechanisms may receive credit; static checks are not acceptance or execution."
+}

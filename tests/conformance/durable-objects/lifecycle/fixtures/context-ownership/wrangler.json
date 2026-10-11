@@ -1,0 +1,1 @@
+{"name":"context-ownership","main":"index.js","compatibility_date":"2026-10-08","services":[{"binding":"API","service":"context-ownership","entrypoint":"Entry"}],"durable_objects":{"bindings":[{"name":"OBJ","class_name":"Obj"}]},"migrations":[{"tag":"v1","new_sqlite_classes":["Obj"]}]}

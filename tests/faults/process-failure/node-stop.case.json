@@ -1,0 +1,24 @@
+{
+  "id": "faults/process-failure/node-stop",
+  "layer": "faults",
+  "behaviour": "process-failure",
+  "title": "node stop",
+  "origins": [
+    {
+      "source": "tests/faults/fleet.py",
+      "legacy_id": "faults/node-stop"
+    }
+  ],
+  "legacy_ids": [
+    "faults/node-stop"
+  ],
+  "adapter": "fleet",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/lib/fleet.py",
+  "source_sha256": "907af393deda1d73694d504ba27223551986f33c912c2d10dfb0b417eb013154",
+  "selector": "node-stop"
+}

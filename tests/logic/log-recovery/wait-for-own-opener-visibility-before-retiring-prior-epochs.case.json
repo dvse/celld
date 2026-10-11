@@ -1,0 +1,54 @@
+{
+  "id": "logic/log-recovery/wait-for-own-opener-visibility-before-retiring-prior-epochs",
+  "layer": "logic",
+  "behaviour": "log-recovery",
+  "title": "Wait for own opener visibility before retiring prior epochs",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic",
+      "legacy_id": "corpus/log-recovery-logic/J012"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic/tests/log_recovery.rs",
+      "sha256": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/log-recovery-logic/J012"
+  ],
+  "adapter": "native",
+  "corpus_id": "J012",
+  "corpus_wave": "log-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/log-recovery/fixtures/decision-cases/tests/log_recovery.rs",
+  "source_sha256": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c",
+  "test_filter": "j012_missing_own_checkpoint_opener_blocks_gc_until_listing_catches_up",
+  "contract": {
+    "intent": "Wait for own opener visibility before retiring prior epochs",
+    "preconditions": [
+      "Each test owns all in-memory values and directly calls public frozen production celld_logic components; no substitute decision implementation",
+      "Storage PUT/delete success, failure, CAS ordering, member confirmations and restore chains are explicit synthetic environmental facts; no disk, bucket, network, actor or VM is exercised",
+      "Every supplied finish_recovery certificate has a stipulated prior durable per-cell/bucket receipt; the pure finish function does not validate that I/O premise",
+      "GC chains are supplied from the stipulated production restore walk, oldest-first and ending at own epoch except the deliberate missing-opener schedules; no restore walk is reimplemented",
+      "GC listed vectors intentionally include base/own/off-chain epochs beyond the current executor scan.below input; these are public-component API robustness premises, not claimed live executor traces",
+      "Hash checks must match delivered runtime manifest lineage before future review/build/run; no compiler or SUT was launched while authoring"
+    ],
+    "trace": [
+      "Require no GC plan while chain ends at 3 rather than own 5",
+      "Require absent retirement mark does not cover epoch 1",
+      "Supply consistent relisting containing own opener with chain [3,5]",
+      "Require retired_below=3 and exact deletes [1,2]",
+      "Persist mark 3 then replan; require record=false and same deletes, base 3 live"
+    ],
+    "oracle": "Missing own chain opener prevents predecessor collection; Fresh own opener permits exact plan and repeated pass no longer rewrites equal mark",
+    "cleanup": "Drop only this test-owned records, maps, fragments, health tracker and ledger. No external resources exist; unwind also drops all owned values.",
+    "implementation": "tests/log_recovery.rs:j012_missing_own_checkpoint_opener_blocks_gc_until_listing_catches_up"
+  },
+  "selector": "J012"
+}

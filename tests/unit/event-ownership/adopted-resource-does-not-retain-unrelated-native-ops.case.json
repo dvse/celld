@@ -1,0 +1,24 @@
+{
+  "id": "unit/event-ownership/adopted-resource-does-not-retain-unrelated-native-ops",
+  "layer": "unit",
+  "behaviour": "event-ownership",
+  "title": "adopted resource does not retain unrelated native ops",
+  "origins": [
+    {
+      "source": "crates/celld/js/ownership_tests.rs",
+      "legacy_id": "unit/celld/js::ownership_tests::adopted_resource_does_not_retain_unrelated_native_ops"
+    }
+  ],
+  "legacy_ids": [
+    "unit/celld/js::ownership_tests::adopted_resource_does_not_retain_unrelated_native_ops"
+  ],
+  "adapter": "cargo",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "crates/celld/js/ownership_tests.rs",
+  "source_sha256": "6c20d4fcde25d6d71e873e01fe08dc0759be4d29c5114d900a7f2cca51ab1e6b",
+  "test_filter": "js::ownership_tests::adopted_resource_does_not_retain_unrelated_native_ops"
+}

@@ -1,0 +1,65 @@
+{
+  "binary_sha256": "62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e",
+  "sources": [
+    {
+      "path": "deliverable/package/reports/final/runtime-manifest.json",
+      "sha256": "54da8304fb90c06694cd44c114e0917b8db89ecefa08920a913c99b286359f28",
+      "purpose": "Authoritative frozen binary/source relationship"
+    },
+    {
+      "path": "deliverable/patch-check-final/crates/celld/deploy.rs",
+      "sha256": "b9383268709233302082eb2dc08753499ac3a69a983a598f41ab9a9383dae7e2",
+      "purpose": "Native no_bundle CLI; ordered immutable/module/named/global publication; only new_sqlite_classes migrations"
+    },
+    {
+      "path": "deliverable/patch-check-final/crates/celld/main.rs",
+      "sha256": "6d661101df7c44142e7338c493560cf212438116b3d65c06186217ee3182e892",
+      "purpose": "Private POST /reload, failed generation leaves serving state intact"
+    },
+    {
+      "path": "deliverable/patch-check-final/crates/celld/generation.rs",
+      "sha256": "838dd36306dfed99a80de9ea0bf91d7c0f012b55102217869f92d485dc1f57c4",
+      "purpose": "Static service graph and named entrypoint; deployment poll/max-age profile"
+    },
+    {
+      "path": "deliverable/patch-check-final/crates/celld/runtime.rs",
+      "sha256": "6aaeccd97084cc4d9002d551e1246fd9fbc145c074978bee192549456775e068",
+      "purpose": "Existing generations drain and new calls use adopted generation"
+    },
+    {
+      "path": "deliverable/patch-check-final/crates/celld/protocol.rs",
+      "sha256": "8baad5b52e1b518778131f251ced3ac6c931439e1309e30cc2eca811c1d06e13",
+      "purpose": "Deployment version/manifest/pointer identity and module digests"
+    },
+    {
+      "path": "deliverable/patch-check-final/crates/celld/engine_api.rs",
+      "sha256": "e9874a4ad9809b7946761d4f9371921f138612e5997b6aa0d70f7cbce796805f",
+      "purpose": "Namespace includes script/class, not env binding name"
+    },
+    {
+      "path": "deliverable/patch-check-final/crates/celld/js/harness.js",
+      "sha256": "9d31b01bd4d1a6b136cfbc02bcb26a47deba29f27066009fc3f3b9c6d8d9c407",
+      "purpose": "DO SQL transactionSync/storage.sync/alarm and WorkerEntrypoint APIs"
+    },
+    {
+      "path": "tests/emulated-network/guest_helpers.py",
+      "sha256": "cdf74dfa5c3bc4f15018fe5daf600bb0830ed15850e76505acbe09450c73d6a3",
+      "purpose": "Existing concrete Guest command/readiness helpers"
+    },
+    {
+      "path": "tests/emulated-network/testbed/stage/native-durability/store.py",
+      "sha256": "994ad197a6da5f48886eaec57f0057ccad5ce93150cfea981b07852f834f5617",
+      "purpose": "Existing private conditional S3 PUT, observed hold/fail, bounded effects"
+    },
+    {
+      "path": "tests/emulated-network/full.py",
+      "sha256": "5a6cf8e038d9cfe92048ce0f730540f8f1458cb9f6c519b3c8988350ac1d75f6",
+      "purpose": "Existing process restart baseline reused as controls, never recounted"
+    },
+    {
+      "path": "deliverable/patch-check-final/crates/logic/lib.rs",
+      "sha256": "c42a7598a2eac11ddb5d8e81f24cab545314a7c0f7a7180125e6a771c12a246b",
+      "purpose": "Generation swap quiesces busy old cells; new release RPC would queue, so U024 uses already-entered private external gate"
+    }
+  ]
+}

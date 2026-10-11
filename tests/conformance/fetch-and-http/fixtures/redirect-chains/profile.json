@@ -1,0 +1,32 @@
+{
+  "id": "fetch-redirect-stress-candidate8d27-v1",
+  "binary_sha256": "8d27f1d423e74dd582dd36d47cc61aef2017344da84720fd5bbe1ff7fbff105f",
+  "compatibility_date": "2026-09-04",
+  "fixed_recipient_origin": "http://192.168.77.1:18080",
+  "placement": "Two already-running owned disposable celld processes. The recipient DO must be placed locally to the recipient HTTP ingress. External supervisor verifies caller and recipient process, boot, isolate, DO and placement identities. No cross-node incremental-upload guarantee is assumed.",
+  "limits": {
+    "case_wall_seconds": 30,
+    "memory_mib_per_guest": 1024,
+    "pids_per_guest": 128,
+    "vcpus_per_guest": 2,
+    "logical_payload_bytes_max": 4194304,
+    "simultaneous_http_requests_max": 8,
+    "coordinator_outbound_http_max": 6,
+    "outer_driver_http_max": 1,
+    "fixture_operations_max": 24,
+    "fixture_gate_timeout_ms": 16000,
+    "trace_timeout_ms": 19000,
+    "cleanup_timeout_ms": 4000,
+    "fixture_read_operations_per_body_max": 262144,
+    "coordinator_http_attempts_max": 160,
+    "outer_driver_requests_max": 6,
+    "fixture_evidence_wall_ms_max": 24000,
+    "total_fixture_http_requests_max": 190,
+    "recipient_http_requests_max": 184
+  },
+  "request_counting": "One active coordinator DO request owns a schedule. Each fixture control/hop/sibling is an independent recipient HTTP request, within a single fresh recipient DO. Each native follow graph has at most three edges and every endpoint enters at most once. Same coordinator does not mean same recipient request context.",
+  "scope": "Ordinary credential-free public Fetch redirect graphs between fixed owned private fixture endpoints; source-only correctness candidates. No OS end-to-end or tenant-security claim.",
+  "authority": "No execution through this profile until independently reviewed exact hashes, parent exclusive run slot, owned fleet, actual observed hard resource bounds and destructive owned-fleet cleanup plan are supplied. No runtime, guest, staging, build, network or fault action was performed during authoring.",
+  "exclusions": "No authentication, cookies, credentials, retained capabilities, Loader, raw protocol, public traffic, loops, quota exhaustion, or limit-boundary tests.",
+  "driver_contract": "Import-only request adapter used in a dedicated owned driver process with no pre-existing SIGALRM timer; never launches that process itself. Maximum six sequential outside HTTP requests; no redirects or DNS. A separate approved supervisor owns deployment, bounds, placement and teardown."
+}

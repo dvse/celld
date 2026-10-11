@@ -1,0 +1,159 @@
+{
+  "adapter": "http",
+  "behaviour": "fetch-and-http",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "assertion_count": 16,
+    "classification": "ordinary-functional-stream-admission",
+    "cleanup": "Open all callback and milestone gates. Initiate readable cancellation and writable abortion on still-live owners before joining, so missing HWM0 demand cannot strand an in-flight write. Join original API/closed/ready promises and dynamically recorded callback results, then release owners and observe post-release promises. Require zero pending work, timers and public locks; separate owned-process teardown remains mandatory.",
+    "distinctness": "ReadableStream pull admission and refill use strategy queueTotalSize rather than number of chunks.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/S306",
+      "request_body": null
+    },
+    "finite_normal_trace_limits": {
+      "closes": 1,
+      "gates": 4,
+      "payload_bytes": 8,
+      "reads": 4,
+      "task_fences": 1,
+      "writes": 0
+    },
+    "fixed_runtime_assertions": [
+      "t.equal(firstDesired, 0, 'one four-byte chunk exhausts weighted source capacity');",
+      "t.equal(firstSettlement.status, 'pending', 'first returned pull promise is genuinely held');",
+      "t.equal(firstSettlement.status, 'fulfilled', 'actual returned pull promise settles before admission observation');",
+      "t.equal(pulls, 1, 'settled full weighted queue admits no second pull before demand');",
+      "t.equal(controller.desiredSize, 0, 'full weighted queue retains zero desired size without demand');",
+      "t.deep(events, ['pull-1', 'first-pull-result-settled'], 'no refill entry before first dequeue');",
+      "t.deep({ value: [...first.value], done: first.done }, { value: [31, 32, 33, 34], done: false }, 'first read returns exact first four bytes');",
+      "t.equal(pulls, 2, 'dequeue admits exactly one weighted refill');",
+      "t.equal(controller.desiredSize, 4, 'dequeue restores four units before held refill enqueue');",
+      "t.equal(secondGate.opened, false, 'second refill remains independently held');",
+      "t.deep({ value: [...second.value], done: second.done }, { value: [35, 36, 37, 38], done: false }, 'refill returns exact second four bytes');",
+      "t.deep(await t.value(t.read(reader, 'weighted-source-eof')), { value: undefined, done: true }, 'finite weighted source reaches EOF');",
+      "t.deep(await t.value(t.read(reader, 'weighted-source-stable-eof')), { value: undefined, done: true }, 'weighted source EOF remains stable');",
+      "t.deep([pulls, closes, cancels, reader.closed.status], [2, 1, 0, 'fulfilled'], 'exact two pulls and one source close without cancellation');",
+      "t.deep(events, ['pull-1', 'first-pull-result-settled', 'pull-2', 'source-close'], 'weighted source has exact bounded callback order');",
+      "t.equal(stream.locked, false, 'weighted source reader lock released');"
+    ],
+    "id": "S306",
+    "implementation": "cases.js:S306",
+    "independently_reviewed": false,
+    "intended_oracle": [
+      "Filling weighted capacity with one chunk stops pull admission before consumer demand.",
+      "First dequeue returns fixed first bytes and permits exactly one refill.",
+      "Exactly two total pulls/chunks, exact combined literal bytes, one close, zero cancel, fulfilled reader.closed and unlocked."
+    ],
+    "intent": "Admit readable pulls by weighted capacity",
+    "mechanism": "weighted-readable-pull-admission",
+    "os_relevance": "Recovered historical blueprint-archive.ts:145-162 constructs an ordinary TransformStream and sequentially pipes archive prefix then content. The raw file was reread and matches the retained historical hash. This supports stream relevance without claiming those callers use custom weights or user flush callbacks, or that any OS workflow or distributed placement ran.",
+    "overlap_delta": {
+      "B009-B011": "Cohort/directional progress does not assert weighted capacity.",
+      "S009": "Pending-read FIFO does not exercise non-unit queue size or pull suspension.",
+      "SBP1": "Readable source-pull admission, rather than writable readiness; separate source branch is inconsistent.",
+      "tests/streams/fixture/index.js:134-142": "Remote bridge prefetch is unweighted at source HWM0 and tied to transport; no weighted ordinary-source admission."
+    },
+    "preconditions": [
+      "Exact guarded source, fresh reviewed binary and deployed fixture/config identity verified.",
+      "Actual direct-celld Worker with its real global stream constructors and strategies.",
+      "Independent deadline/resource supervisor controls a proven-owned whole-descendant domain covering dev, bundlers and node despite separate PGIDs, plus one quota/cleanup domain for temporary bundles, logs and stores. No single-PGID fallback or substitute/reference execution."
+    ],
+    "primary_candidate": true,
+    "primary_contract_refs": [
+      "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#readable-stream-default-controller-should-call-pull",
+      "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#readable-stream-default-controller-get-desired-size",
+      "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#readable-stream-default-controller-call-pull-if-needed",
+      "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#blqs-class"
+    ],
+    "runtime_source_refs": [
+      {
+        "line_end": 70,
+        "line_start": 37,
+        "path": "celld-os-project/celld/crates/celld/js/streams.js",
+        "purpose": "enqueue tracks total size and desiredSize uses it"
+      },
+      {
+        "line_end": 102,
+        "line_start": 98,
+        "path": "celld-os-project/celld/crates/celld/js/streams.js",
+        "purpose": "enqueue tracks total size and desiredSize uses it"
+      },
+      {
+        "line_end": 145,
+        "line_start": 138,
+        "path": "celld-os-project/celld/crates/celld/js/streams.js",
+        "purpose": "Reads decrement weighted size"
+      },
+      {
+        "line_end": 337,
+        "line_start": 329,
+        "path": "celld-os-project/celld/crates/celld/js/streams.js",
+        "purpose": "Reads decrement weighted size"
+      },
+      {
+        "line_end": 395,
+        "line_start": 366,
+        "path": "celld-os-project/celld/crates/celld/js/streams.js",
+        "purpose": "Pull admission computes HWM minus queue.length"
+      },
+      {
+        "line_end": 825,
+        "line_start": 819,
+        "path": "celld-os-project/celld/crates/celld/js/streams.js",
+        "purpose": "ByteLengthQueuingStrategy"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "source_predicted_gap": {
+      "classification": "EXPECTED_FAILURE_CANDIDATE",
+      "evidence_kind": "STATIC_SOURCE_INFERENCE_ONLY",
+      "intended_oracle_unchanged": true,
+      "observed_runtime_failure": false,
+      "source_evidence": "LIKELY_GAP_FROM_SOURCE_ONLY: _maybePull uses queue.length instead of _queueTotalSize, so one four-byte chunk at HWM4 can spuriously admit another pull. Finite two-chunk source bounds eventual failure."
+    },
+    "status": "NOT_RUN",
+    "trace": [
+      "Use one ByteLengthQueuingStrategy at HWM4 and a finite two-chunk source, each literal chunk four bytes.",
+      "First pull enqueues first chunk, records desiredSize0, and waits on a finite acknowledgment gate.",
+      "Release first pull without consumer demand; establish callback-promise settlement before a bounded fence, then require pull count1 and desiredSize0.",
+      "Read first chunk, require the one allowed refill to enter, finish the finite second chunk and close; drain exact bytes to stable EOF and release reader."
+    ]
+  },
+  "corpus_id": "S306",
+  "corpus_wave": "stream-backpressure-semantics",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/stream-backpressure-semantics",
+  "id": "conformance/fetch-and-http/stream-backpressure-s306",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/stream-backpressure-semantics/S306"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/stream-backpressure-semantics/S306",
+      "manifest_sha256": "e7b601830183b60736e3a17f47553c808674a7fcacd422e21694a98057158783",
+      "review_sha256": "28f32477b60ad987cc5022d9566f46b6d679375e9e8667dc0ccd8d22b0a22551",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/stream-backpressure-semantics",
+      "tranche": "004"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/S306",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "S306",
+  "source": "tests/conformance/fetch-and-http/fixtures/stream-backpressure-semantics/fixture.js",
+  "source_sha256": "d3719b882f4c3725bd59187adce6cbb2b547da70949ed2b8ee9ec101a3138c6a",
+  "title": "Admit readable pulls by weighted capacity"
+}

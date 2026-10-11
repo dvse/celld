@@ -1,0 +1,30 @@
+{
+  "id": "conformance/rpc/proxy-get-trap-can-synthesize-permitted-rpc-target-method",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "Proxy get trap can synthesize permitted RpcTarget method",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/fixture",
+      "legacy_id": "base/R020"
+    }
+  ],
+  "corpus_wave": "base",
+  "corpus_id": "R020",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "R020",
+    "intent": "Proxy get trap can synthesize permitted RpcTarget method",
+    "preconditions": "Proxy wraps RpcTarget; get synthesizes method absent from has/prototype",
+    "trace": [
+      "obtain proxied target",
+      "call synthesized method",
+      "check actual owner"
+    ],
+    "stress": "get semantics without has-property preflight",
+    "oracle": "proxy-synthetic value and peer root",
+    "cleanup": "dispose target",
+    "gate": "characterization"
+  }
+}

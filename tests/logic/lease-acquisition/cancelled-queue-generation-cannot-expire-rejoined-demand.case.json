@@ -1,0 +1,54 @@
+{
+  "id": "logic/lease-acquisition/cancelled-queue-generation-cannot-expire-rejoined-demand",
+  "layer": "logic",
+  "behaviour": "lease-acquisition",
+  "title": "Cancelled queue generation cannot expire rejoined demand",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic",
+      "legacy_id": "corpus/routing-acquisition-logic/N011"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+      "sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/routing-acquisition-logic/N011"
+  ],
+  "adapter": "native",
+  "corpus_id": "N011",
+  "corpus_wave": "routing-acquisition-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/lease-acquisition/fixtures/decision-cases/tests/routing_acquisition.rs",
+  "source_sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06",
+  "test_filter": "n011_cancelled_queue_generation_cannot_expire_rejoined_cell",
+  "contract": {
+    "intent": "Cancelled queue generation cannot expire rejoined demand",
+    "preconditions": [
+      "Fresh test-owned State; only frozen production celld_logic::on_event mutates it.",
+      "Empty State; residency2, activations1; a/1 holds owner read.",
+      "All completion operation IDs and timers come from the exact emitted effects; late IDs are previously issued IDs, never fabricated authority.",
+      "All input storage/lease/proof replies are synthetic facts. No executor, network, runtime, or fleet service is simulated as empirical evidence.",
+      "Static source/pin check and independent review required; compiler, test and runtime have not been launched."
+    ],
+    "trace": [
+      "Queue b/2 and capture queue timer",
+      "Cancel2, then queue b/3 and capture distinct generation",
+      "Fire old queue timer at150",
+      "Assert b remains WaitingActivation",
+      "Fail a read; b receives permit and activates",
+      "Finish3"
+    ],
+    "oracle": "Stale queued timer cannot cancel fresh request3",
+    "cleanup": "Finish every locally completed request and cancel each remaining ownership-only waiter as shown. H::done checks no pending requests, active cells, activation/capacity queues, activation/eviction/release/adoption permits, or nonterminal phases. Drop isolated in-memory State; no external resources created. Stored timer descriptors are never launched.",
+    "implementation": "tests/routing_acquisition.rs:n011_cancelled_queue_generation_cannot_expire_rejoined_cell"
+  },
+  "selector": "N011"
+}

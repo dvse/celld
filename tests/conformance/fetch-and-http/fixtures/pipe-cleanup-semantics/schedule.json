@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "profile": "direct-celld-pipe-cleanup-semantics-v1",
+  "runtime_status": "UNRUN",
+  "suite_outer_deadline_seconds": 180,
+  "preflight_deadline_seconds": 30,
+  "startup_deadline_seconds": 90,
+  "cleanup_deadline_seconds": 20,
+  "concurrency": 1,
+  "retries": 0,
+  "request_count": 9,
+  "resource_envelope": {
+    "supervisor_enforced": true,
+    "runtime_process_group_memory_max_bytes": 536870912,
+    "runtime_process_group_cpu_cores": 1,
+    "runtime_process_group_pid_max": 128,
+    "v8_heap_limit_mb": 128,
+    "request_response_max_bytes": 65536,
+    "owned_filesystem_max_bytes": 268435456
+  },
+  "requests": [
+    {
+      "id": "S201",
+      "method": "GET",
+      "path": "/case/S201",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "S202",
+      "method": "GET",
+      "path": "/case/S202",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "S203",
+      "method": "GET",
+      "path": "/case/S203",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "S204",
+      "method": "GET",
+      "path": "/case/S204",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "S205",
+      "method": "GET",
+      "path": "/case/S205",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "S206",
+      "method": "GET",
+      "path": "/case/S206",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "S207",
+      "method": "GET",
+      "path": "/case/S207",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "S208",
+      "method": "GET",
+      "path": "/case/S208",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    },
+    {
+      "id": "S209",
+      "method": "GET",
+      "path": "/case/S209",
+      "body": null,
+      "outer_deadline_seconds": 5,
+      "repeat": 1,
+      "response_max_bytes": 65536
+    }
+  ],
+  "completion_contract": [
+    "Every declared assertion executes and passes.",
+    "All original pipe, write, close, abort, cancel and read promises are joined; every finite gate opened.",
+    "Source and sink terminal closed promises observed; public locks and timers both zero.",
+    "Independent owned process-group exit and disposable store deletion verified before acceptance."
+  ],
+  "stop_conditions": [
+    "Missing binary/provenance/deadline supervisor before trace entry => BLOCKED/NOT_RUN.",
+    "Entered-case deadline or resource breach => FAIL, not PASS; ambiguous entry/outcome => UNKNOWN.",
+    "Timeout termination is owned-process supervision, not a test stimulus; kill only owned process group.",
+    "Finish after one request per case and verified teardown; no retries or stress multiplication."
+  ]
+}

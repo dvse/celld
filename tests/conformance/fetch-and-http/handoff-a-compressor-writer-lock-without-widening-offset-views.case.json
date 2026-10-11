@@ -1,0 +1,51 @@
+{
+  "adapter": "topology",
+  "behaviour": "fetch-and-http",
+  "contract": {
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "distinctness": "Same transform state across writer object lifetime, not algorithm/size vector expansion.",
+    "implementation": "operations.js:X012",
+    "intent": "Handoff a compressor writer lock without widening offset views",
+    "oracle": "Exact original archive with no sentinel prefix/suffix; successful lock reacquisition and peer digest.",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "compression accepts DataView and typed-array byteOffset/byteLength"
+    ],
+    "trace": [
+      "Place archive bytes between ten sentinel bytes and write the first 100 through DataView.",
+      "Release the writer lock and hold while an independent pack digest finishes.",
+      "Acquire a new writer on the same transform, write the offset suffix, close and roundtrip."
+    ]
+  },
+  "corpus_id": "X012",
+  "corpus_wave": "native-transform-stress",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/transform-streams",
+  "id": "conformance/fetch-and-http/handoff-a-compressor-writer-lock-without-widening-offset-views",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/native-transform-stress/X012"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/native-transform-stress/X012",
+      "source": "guarded-source-archive/celld-os-stress/waves/native-transform-stress"
+    },
+    {
+      "sha256": "1c4be2004e476ee286465674ad37b81dd9ea8cc33e0dda6ef66b66b5830346de",
+      "source": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "X012",
+  "source": "tests/conformance/fetch-and-http/fixtures/transform-streams/entry.js",
+  "source_sha256": "1c4be2004e476ee286465674ad37b81dd9ea8cc33e0dda6ef66b66b5830346de",
+  "title": "Handoff a compressor writer lock without widening offset views"
+}

@@ -1,0 +1,60 @@
+{
+  "adapter": "topology",
+  "behaviour": "fetch-and-http",
+  "contract": {
+    "cleanup": [
+      "Coordinator remains in active DO.fetch; close scope, abort pending owned fetches, cancel/release all owned readers and response bodies",
+      "Recipient marks operations stopped before releasing gates; joins all entered handlers and producer pulls; any fault or unresolved work BLOCKS cleanup",
+      "Join complete coordinator trace and every watched task; exact expected abort only; unobserved assertion failures cannot become successful cleanup",
+      "Matched recipient journal and zero active/readers/controllers/pulls plus zero caller response/request/task resources required",
+      "Independent supervisor must close/reap/destroy only owned sockets/processes/fresh storage and provide hash-matched teardown before runtime PASS"
+    ],
+    "distinctness": "M004/M016 resolve module referrers; this is native HTTP Location resolution, with recipient-observed path/query and no module work",
+    "implementation": "cases.js:F002",
+    "intent": "Resolve relative redirect chain by current URL",
+    "oracle": "Each endpoint enters once with configured path/query and GET/zero input; order exact; final path is branch/final rather than stale-base origin/final; final headers/root/isolate/body identify final; sibling effect1",
+    "preconditions": [
+      "Acyclic origin/start?phase=start -> branch/middle?phase=middle -> branch/final?phase=done; original-base resolution instead reaches unconfigured origin/final; final head held",
+      "Fresh already-running owned disposable candidate8d27 fleet, parent exclusive slot, independent exact-hash source/oracle review",
+      "External supervisor records actual process/boot/executable/DO/isolate identities and hard resource limits; no synthetic boolean substitutes for evidence",
+      "Distinct coordinator/recipient roots and isolates; recipient local to fixed owned192.168.77.1:18080 ingress; controls and every hop are independent recipient requests",
+      "Native public Fetch, ReadableStream, AbortController and SHA256 APIs; fresh recipient operation journal required before trace entry",
+      "All synthetic bodies and valid ordinary redirects stay in earlier-configured owned fixture endpoints; graph depth at most3, each operation enters at most once"
+    ],
+    "trace": [
+      "Start follow request at origin/start using ../branch/middle Location",
+      "Witness branch/final path/query behind the second relative final Location",
+      "Complete independent upload while final response head remains held",
+      "Release head and compare final payload; assert exact start,middle,final entry order and branch/final path"
+    ]
+  },
+  "corpus_id": "F002",
+  "corpus_wave": "fetch-redirect-stress",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/redirect-chains",
+  "id": "conformance/fetch-and-http/resolve-relative-redirect-chain-by-current-url",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/fetch-redirect-stress/F002"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/fetch-redirect-stress/F002",
+      "source": "guarded-source-archive/celld-os-stress/waves/fetch-redirect-stress"
+    },
+    {
+      "sha256": "bb8d09b77278bb557b9489a205adaa0a6663ce77aa02e13694fa29eeb15f2b8f",
+      "source": "guarded-source-archive/celld-os-stress/waves/fetch-redirect-stress/fixture.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "F002",
+  "source": "tests/conformance/fetch-and-http/fixtures/redirect-chains/fixture.js",
+  "source_sha256": "bb8d09b77278bb557b9489a205adaa0a6663ce77aa02e13694fa29eeb15f2b8f",
+  "title": "Resolve relative redirect chain by current URL"
+}

@@ -1,0 +1,30 @@
+{
+  "id": "http-stream-stress-frozen-v1",
+  "binary_sha256": "62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e",
+  "compatibility_date": "2026-09-04",
+  "fixed_recipient_origin": "http://192.168.77.1:18080",
+  "placement": "Two already-running owned disposable celld processes. The recipient DO must be placed locally to the recipient HTTP ingress. External supervisor verifies caller and recipient process, boot, isolate, DO and placement identities. No cross-node incremental-upload guarantee is assumed.",
+  "limits": {
+    "case_wall_seconds": 30,
+    "memory_mib_per_guest": 1024,
+    "pids_per_guest": 128,
+    "vcpus_per_guest": 2,
+    "logical_payload_bytes_max": 4194304,
+    "simultaneous_http_requests_max": 8,
+    "coordinator_outbound_http_max": 6,
+    "outer_driver_http_max": 1,
+    "fixture_operations_max": 24,
+    "fixture_gate_timeout_ms": 16000,
+    "trace_timeout_ms": 19000,
+    "cleanup_timeout_ms": 4000,
+    "fixture_read_operations_per_body_max": 262144,
+    "coordinator_http_attempts_max": 160,
+    "outer_driver_requests_max": 6,
+    "fixture_evidence_wall_ms_max": 24000
+  },
+  "request_counting": "At most six active coordinator HTTP requests plus its single outer driver HTTP request. The DO.fetch dispatch routes that same HTTP request locally; it is not a second network connection. No connection pool timing or HTTP chunk shape is an oracle.",
+  "scope": "Synthetic OS document/pack-like byte flows only. Pack bytes are not valid Git objects. Separate OS per untrusted user; these tests do not certify tenant isolation.",
+  "authority": "No execution through this profile until independently reviewed exact hashes, parent exclusive run slot, owned fleet, actual observed hard resource bounds and destructive owned-fleet cleanup plan are supplied. No runtime, guest, staging, build, network or fault action was performed during authoring.",
+  "exclusions": "No Loader, STATELESS capability lifetime work, retained RpcTarget, idle retirement, WebSocket, authentication, replay, forgery, request smuggling, public traffic, real credentials, real users or host security changes.",
+  "driver_contract": "Import-only request adapter used in a dedicated owned driver process with no pre-existing SIGALRM timer; never launches that process itself. Maximum six sequential outside HTTP requests; no redirects or DNS. A separate approved supervisor owns deployment, bounds, placement and teardown."
+}

@@ -1,0 +1,6 @@
+{
+  "name": "source-only-os-git-codec-semantics",
+  "private": true,
+  "type": "module",
+  "dependencies": { "pako": "3.0.2" }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "faults/process-failure/provider-host-stop",
+  "layer": "faults",
+  "behaviour": "process-failure",
+  "title": "provider host stop",
+  "origins": [
+    {
+      "source": "docs/testing.md",
+      "legacy_id": "faults/provider-host-stop"
+    }
+  ],
+  "legacy_ids": [
+    "faults/provider-host-stop"
+  ],
+  "adapter": "none",
+  "profiles": [
+    "full"
+  ],
+  "reason": "Provider-level VM power loss requires provider control; no-paid-cloud profile uses separately counted local node-stop, not a claim of whole-host failure.",
+  "runnable": false,
+  "source": "docs/testing.md",
+  "source_sha256": "dafe8638e0de082d104595d5e84cdb6b8feb9094496fef2e7a56b6d8b7f4c366"
+}

@@ -1,0 +1,240 @@
+{
+  "schema": 1,
+  "name": "routing-acquisition-source-only-v1",
+  "layer": "native-component",
+  "sublayer": "state-trace",
+  "node": "fixture",
+  "initial_event_clock_ms": 100,
+  "config": {
+    "max_evictions": 2,
+    "max_releases": 2,
+    "max_outbound_websockets": 2,
+    "ownership_on_evict": "Sticky",
+    "peer_protocol": 1,
+    "operation_deadline_ms": 50,
+    "owner_log_recovery_backoff_ms": 10,
+    "owner_log_recovery_attempts": 2,
+    "alarm_resident_ms": 0,
+    "idle_evict_ms": null,
+    "pressure": "PressureConfig::default()"
+  },
+  "case_admission_config": {
+    "N001": {
+      "max_resident": 2,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N002": {
+      "max_resident": 2,
+      "max_activations": 2,
+      "require_node_lease": false
+    },
+    "N003": {
+      "max_resident": 2,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N004": {
+      "max_resident": 2,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N005": {
+      "max_resident": 2,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N006": {
+      "max_resident": 2,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N007": {
+      "max_resident": 2,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N008": {
+      "max_resident": 1,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N009": {
+      "max_resident": 1,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N010": {
+      "max_resident": 1,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N011": {
+      "max_resident": 2,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N012": {
+      "max_resident": 2,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N013": {
+      "max_resident": 1,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N014": {
+      "max_resident": 1,
+      "max_activations": 3,
+      "require_node_lease": false
+    },
+    "N015": {
+      "max_resident": 1,
+      "max_activations": 2,
+      "require_node_lease": false
+    },
+    "N016": {
+      "max_resident": 1,
+      "max_activations": 2,
+      "require_node_lease": false
+    },
+    "N017": {
+      "max_resident": 1,
+      "max_activations": 2,
+      "require_node_lease": false
+    },
+    "N018": {
+      "max_resident": 1,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N019": {
+      "max_resident": 1,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N020": {
+      "max_resident": 1,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N021": {
+      "max_resident": 1,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N022": {
+      "max_resident": 1,
+      "max_activations": 1,
+      "require_node_lease": true
+    },
+    "N023": {
+      "max_resident": 1,
+      "max_activations": 2,
+      "require_node_lease": false
+    },
+    "N024": {
+      "max_resident": 1,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N025": {
+      "max_resident": 1,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N026": {
+      "max_resident": 2,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N027": {
+      "max_resident": 1,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N028": {
+      "max_resident": 1,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N029": {
+      "max_resident": 1,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N030": {
+      "max_resident": 1,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N031": {
+      "max_resident": 1,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N032": {
+      "max_resident": 1,
+      "max_activations": 1,
+      "require_node_lease": false
+    },
+    "N033": {
+      "max_resident": 1,
+      "max_activations": 2,
+      "require_node_lease": true
+    },
+    "N034": {
+      "max_resident": 1,
+      "max_activations": 2,
+      "require_node_lease": true
+    },
+    "N035": {
+      "max_resident": 1,
+      "max_activations": 1,
+      "require_node_lease": true
+    },
+    "N036": {
+      "max_resident": 1,
+      "max_activations": 1,
+      "require_node_lease": true
+    }
+  },
+  "leased_fixture": {
+    "node": "fixture",
+    "addr": "fixture.invalid:0",
+    "generation": "self-generation",
+    "resume_generation": null,
+    "ttl_ms": 10000,
+    "wall_ms": 100,
+    "monotonic_ms": 100,
+    "inventory": []
+  },
+  "event_cap_per_case": 120,
+  "build": {
+    "offline": true,
+    "jobs": 1,
+    "linker_threads": 1,
+    "rlimit_as_bytes": 1073741824,
+    "rlimit_cpu_seconds": 60,
+    "wall_seconds": 90,
+    "incremental": false,
+    "debug": 0,
+    "rustflags": "-C link-arg=-Wl,--threads=1"
+  },
+  "test": {
+    "threads": 1,
+    "rlimit_as_bytes": 1073741824,
+    "rlimit_cpu_seconds": 10,
+    "wall_seconds": 10,
+    "network": "none; production logic has no I/O dependencies"
+  },
+  "authorization": "NOT AUTHORIZED. Independent review and explicit parent run-slot approval required before any compiler/build/test/SUT launch.",
+  "counts": {
+    "authored": 36,
+    "run": 0,
+    "passed": 0,
+    "promotion_candidates": 34,
+    "nonpromoting_characterization": 2
+  }
+}

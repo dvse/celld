@@ -1,0 +1,26 @@
+{
+  "id": "logic/simulation/reject-compiled-protocol-with-omit-prior-expiry",
+  "layer": "logic",
+  "behaviour": "simulation",
+  "title": "Reject compiled protocol with omit prior expiry",
+  "origins": [
+    {
+      "source": "tests/logic/simulation/simulation.rs",
+      "legacy_id": "logic/simulation/broken-omit-prior-expiry"
+    }
+  ],
+  "legacy_ids": [
+    "logic/simulation/broken-omit-prior-expiry"
+  ],
+  "adapter": "native",
+  "mutation": "omit-prior-expiry",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/logic/simulation/simulation.rs",
+  "source_sha256": "a73ce91dfe4c048f1ac15876373636437bb6448ed3fc5ae0c46712c34197664d",
+  "test_filter": "sim_seeded_lease_store_clock_crash"
+}

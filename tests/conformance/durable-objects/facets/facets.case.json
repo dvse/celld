@@ -1,0 +1,28 @@
+{
+  "adapter": "example",
+  "behaviour": "durable-objects/facets",
+  "fixture": "tests/conformance/durable-objects/facets/fixtures/facet-counter",
+  "id": "conformance/durable-objects/facets/facets",
+  "layer": "conformance",
+  "legacy_ids": [
+    "examples/facets"
+  ],
+  "origins": [
+    {
+      "legacy_id": "examples/facets",
+      "source": "celld@9c0fca5/examples/facets"
+    },
+    {
+      "sha256": "b9f40f7044f97b138fcb5cacc4398d95190eb8bb12e4a6a4fe0ced641ee20e57",
+      "source": "celld@9c0fca5/examples/facets/wrangler.jsonc"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/conformance/durable-objects/facets/fixtures/facet-counter/wrangler.jsonc",
+  "source_sha256": "b9f40f7044f97b138fcb5cacc4398d95190eb8bb12e4a6a4fe0ced641ee20e57",
+  "title": "facets"
+}

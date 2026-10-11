@@ -1,0 +1,49 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "Receiver fully consumes body; shared codecCleanup and event teardown",
+    "intent": "Buffered Request transport preserves HTTP metadata and binary body when consumed only by the RPC recipient",
+    "oracle": "Expected URL, POST method, manual redirect, header and bytes; receiver bodyUsed true after read",
+    "preconditions": "COMMON; Request URL is inert codec.invalid data and must never be fetched",
+    "source_contracts": [
+      "SC-HOST",
+      "SC-REVIVE"
+    ],
+    "trace": [
+      "construct POST Request with manual redirect, header and three-byte body",
+      "pass Request to peer",
+      "peer verifies brand and consumes arrayBuffer",
+      "compare exact metadata, bytes and bodyUsed"
+    ]
+  },
+  "corpus_id": "C018",
+  "corpus_wave": "rpc-codec",
+  "fixture": "tests/conformance/rpc/fixtures/value-codec",
+  "id": "conformance/rpc/buffered-request-transport-preserves-http-metadata-and-binary-body-when-consumed-only-by-the-rpc-rec",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/rpc-codec/C018"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/rpc-codec/C018",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec"
+    },
+    {
+      "sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "C018",
+  "source": "tests/conformance/rpc/fixtures/value-codec/entry.js",
+  "source_sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+  "title": "Buffered Request transport preserves HTTP metadata and binary body when consumed only by the RPC recipient"
+}

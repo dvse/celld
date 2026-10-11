@@ -1,0 +1,56 @@
+{
+  "id": "logic/output-gates/drop-proof-cache-across-same-epoch-runtime-generation-swap",
+  "layer": "logic",
+  "behaviour": "output-gates",
+  "title": "Drop proof cache across same-epoch runtime generation swap",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/output-gate-logic",
+      "legacy_id": "corpus/output-gate-logic/G033"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/output-gate-logic/tests/output_gate.rs",
+      "sha256": "4111d744a514b64a36f285dbf4a8b51ca56ce3f3f128dbd5ea1cc188ebed88ba"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/output-gate-logic/G033"
+  ],
+  "adapter": "native",
+  "corpus_id": "G033",
+  "corpus_wave": "output-gate-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/output-gates/fixtures/decision-cases/tests/output_gate.rs",
+  "source_sha256": "4111d744a514b64a36f285dbf4a8b51ca56ce3f3f128dbd5ea1cc188ebed88ba",
+  "test_filter": "g033_same_epoch_generation_swap_forgets_previous_runtime_proof",
+  "contract": {
+    "intent": "Drop proof cache across same-epoch runtime generation swap",
+    "preconditions": [
+      "Fresh State::new(\"fixture\", config) in this test only; no direct State field mutation",
+      "Initial config is fully pinned in profile.json; actual celld-logic::on_event is the only transition",
+      "For each resident: RequestAt -> OwnerRead (absent or exact prior local epoch) -> OwnerCasCompleted Applied -> RestoreCompleted -> RuntimeStarted generation1 -> Published; expect Local and exact epoch",
+      "Every real completion operation ID is captured from an exact emitted effect; G017 deliberately supplies gate+1000 as an unknown-op negative control. Every transition calls State::validate",
+      "No actual clock, I/O, runtime, object store, host credentials, or external traffic; source/pin/toolchain preflight required"
+    ],
+    "trace": [
+      "prove100",
+      "finish1",
+      "GenerationChanged2",
+      "stop Swap/start2/publish at same epoch1",
+      "admit2",
+      "observe1",
+      "stale old proof100",
+      "new proof1"
+    ],
+    "oracle": "New runtime observation blocks despite same epoch; stale proof cannot release; new proof succeeds",
+    "cleanup": "Finish explicit request activities/reset/runtime transitions shown in test. Drop the test-owned State at return or unwind; all state is in-memory and isolated. No production resource is created. Runner reaps only its owned compiler/test process groups and preserves evidence.",
+    "implementation": "tests/output_gate.rs:g033_same_epoch_generation_swap_forgets_previous_runtime_proof"
+  },
+  "selector": "G033"
+}

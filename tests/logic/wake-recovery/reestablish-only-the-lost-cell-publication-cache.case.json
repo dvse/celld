@@ -1,0 +1,53 @@
+{
+  "id": "logic/wake-recovery/reestablish-only-the-lost-cell-publication-cache",
+  "layer": "logic",
+  "behaviour": "wake-recovery",
+  "title": "Reestablish only the lost cell publication cache",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic",
+      "legacy_id": "corpus/wake-recovery-logic/K005"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+      "sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/wake-recovery-logic/K005"
+  ],
+  "adapter": "native",
+  "corpus_id": "K005",
+  "corpus_wave": "wake-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/wake-recovery/fixtures/decision-cases/tests/wake_recovery.rs",
+  "source_sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86",
+  "test_filter": "k005_local_cache_loss_requires_republish_only_for_forgotten_cell",
+  "contract": {
+    "intent": "Reestablish only the lost cell publication cache",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Capture alpha key and confirm alpha plus beta.",
+      "Forget only alpha.",
+      "Check alpha uncovered and beta still covered.",
+      "Request alpha again with exactly the original key and confirm recovery success."
+    ],
+    "oracle": [
+      "Recovery does not borrow beta coverage or invent a new alpha key.",
+      "Successful alpha re-publication reestablishes its coverage."
+    ],
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k005_local_cache_loss_requires_republish_only_for_forgotten_cell"
+  },
+  "selector": "K005"
+}

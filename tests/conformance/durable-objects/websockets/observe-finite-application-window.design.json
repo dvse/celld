@@ -1,0 +1,62 @@
+{
+  "id": "conformance/durable-objects/websockets/observe-finite-application-window",
+  "layer": "conformance",
+  "behaviour": "durable-objects/websockets",
+  "title": "Observe finite application window",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/active-websocket-stress",
+      "legacy_id": "active-websocket-stress/W024"
+    }
+  ],
+  "corpus_wave": "active-websocket-stress",
+  "corpus_id": "W024",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "W024",
+    "intent": "Observe finite application window",
+    "failure_hypothesis": "A finite application credit hold is not proof of native send backpressure or a queue limit.",
+    "preconditions": [
+      "Exact candidate binary and pinned implementation/source/profile hashes; independently reviewed ordinary-WebSocket scope and case oracle",
+      "Fresh disposable caller and recipient DOs in separately observed owned processes with actual root/isolate/process identities",
+      "Already enforced external wall/memory/PID/CPU ceilings and exclusive parent run slot; no deployment or launch by adapter",
+      "Public WebSocket/WebSocketPair and ordinary valid private-network upgrades; preflight echo and clean-close control must complete before entry",
+      "Case-specific initial state and options are established by the explicit W024 trace; no state or socket is reused from another case."
+    ],
+    "trace": [
+      "Witness held application response",
+      "Send fixed three-frame binary burst",
+      "Complete independent peer and inspect held/server-send witnesses",
+      "Record optional bufferedAmount/delivery count without threshold assertion",
+      "Consume bytes, send credit, release and close"
+    ],
+    "stress": "Three16KiB server frames alongside one held echo and independent progress.",
+    "oracle": "Exact eventual bytes and normal closure; observed buffering cannot qualify resource protection",
+    "executable_assertions": "cases.js::W024 plus Lab.assertClosed/expect/assertReceived",
+    "cleanup": "Every trace normal-closes its sockets; finally cleanup independently aborts control requests, accepts any already obtained pending upgrade for closure, closes every local endpoint, discards held echoes, closes recipient sockets, joins normalization and records unresolved resources. Separately owned supervisor must reap only owned processes/sockets and destroy fresh storage. Any incomplete cleanup or unknown entry is BLOCKED/FAIL, never PASS.",
+    "distinctness": "Distinct from pre-accept observation W023: socket accepted throughout, application credit delayed.",
+    "source_contracts": [
+      "SC-CHAR"
+    ],
+    "layer": "real-process-WebSocket",
+    "gate": "characterization",
+    "counts": {
+      "authored": 1,
+      "reviewed": 0,
+      "executable_qualified": 0,
+      "run": 0,
+      "passed": 0
+    },
+    "status": "NOT_RUN",
+    "bounds": {
+      "live_websockets": 4,
+      "total_websockets_including_controls": 8,
+      "message_payload_max_bytes": 32768,
+      "wire_bytes_per_endpoint_max": 524288,
+      "data_frames_per_endpoint_max": 256,
+      "control_requests_max": 128,
+      "fixture_evidence_wall_ms_max": 24000
+    }
+  }
+}

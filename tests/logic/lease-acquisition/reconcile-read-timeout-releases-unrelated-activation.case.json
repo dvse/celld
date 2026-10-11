@@ -1,0 +1,54 @@
+{
+  "id": "logic/lease-acquisition/reconcile-read-timeout-releases-unrelated-activation",
+  "layer": "logic",
+  "behaviour": "lease-acquisition",
+  "title": "Reconcile-read timeout releases unrelated activation",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic",
+      "legacy_id": "corpus/routing-acquisition-logic/N010"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+      "sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/routing-acquisition-logic/N010"
+  ],
+  "adapter": "native",
+  "corpus_id": "N010",
+  "corpus_wave": "routing-acquisition-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/lease-acquisition/fixtures/decision-cases/tests/routing_acquisition.rs",
+  "source_sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06",
+  "test_filter": "n010_reconciliation_read_timeout_unblocks_unrelated_activation",
+  "contract": {
+    "intent": "Reconcile-read timeout releases unrelated activation",
+    "preconditions": [
+      "Fresh test-owned State; only frozen production celld_logic::on_event mutates it.",
+      "Empty State; residency1, activations1; uncertain a claim is reconciling.",
+      "All completion operation IDs and timers come from the exact emitted effects; late IDs are previously issued IDs, never fabricated authority.",
+      "All input storage/lease/proof replies are synthetic facts. No executor, network, runtime, or fleet service is simulated as empirical evidence.",
+      "Static source/pin check and independent review required; compiler, test and runtime have not been launched."
+    ],
+    "trace": [
+      "a CAS Ambiguous emits reconcile read/deadline",
+      "b/2 waits for activation permit",
+      "Fire reconcile deadline at150; assert request1 ResolveFailed",
+      "Capture b read emitted by timeout",
+      "Deliver old a reconcile result self1; it is ignored",
+      "Complete b absent-owner activation; finish2"
+    ],
+    "oracle": "Timed-out reconcile cannot leak residency or activation permit; late self result ignored",
+    "cleanup": "Finish every locally completed request and cancel each remaining ownership-only waiter as shown. H::done checks no pending requests, active cells, activation/capacity queues, activation/eviction/release/adoption permits, or nonterminal phases. Drop isolated in-memory State; no external resources created. Stored timer descriptors are never launched.",
+    "implementation": "tests/routing_acquisition.rs:n010_reconciliation_read_timeout_unblocks_unrelated_activation"
+  },
+  "selector": "N010"
+}

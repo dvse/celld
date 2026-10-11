@@ -1,0 +1,22 @@
+{
+  "kind": "STATIC_ONLY",
+  "source_and_overlap_pins_verified": 25,
+  "vendored_production_and_license_byte_exact": true,
+  "runtime_helper_hash_verified": true,
+  "type_helper_hash_verified": true,
+  "closed_import_graph": true,
+  "module_sha256": "e735cdd41333be3297a6e8d7114553483772b33f310edfb0844296650c855da0",
+  "case_functions": 6,
+  "literal_assertion_call_sites": 34,
+  "independent_digest_vectors_verified": 9,
+  "javascript_syntax_files": 2,
+  "python_source_parses": 2,
+  "downloaded_source_executed": false,
+  "downloaded_source_compiled": false,
+  "dependency_installs": 0,
+  "sut_launches": 0,
+  "runtime_executions": 0,
+  "runtime_passes": 0,
+  "independent_review": "pending",
+  "scope": "Actual pinned OS component source over native DO storage and real WebCrypto. No full OS, durability, performance or security claim."
+}

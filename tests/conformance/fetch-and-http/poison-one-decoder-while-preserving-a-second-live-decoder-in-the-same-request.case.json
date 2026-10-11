@@ -1,0 +1,51 @@
+{
+  "adapter": "topology",
+  "behaviour": "fetch-and-http",
+  "contract": {
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "distinctness": "Two handles coexist in one request during per-ID native table removal.",
+    "implementation": "operations.js:X016",
+    "intent": "Poison one decoder while preserving a second live decoder in the same request",
+    "oracle": "Both bad sides reject Decompression failed; good archive exact; no more than three simultaneous native operations.",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "process-global zlib error path removes only the failing ID"
+    ],
+    "trace": [
+      "Keep a valid gzip decoder awaiting its trailer and allocate another decoder.",
+      "Hold both local handles while the other recipient completes pack hashing.",
+      "Feed a malformed header to the second decoder, inspect its errors, then finish the first."
+    ]
+  },
+  "corpus_id": "X016",
+  "corpus_wave": "native-transform-stress",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/transform-streams",
+  "id": "conformance/fetch-and-http/poison-one-decoder-while-preserving-a-second-live-decoder-in-the-same-request",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/native-transform-stress/X016"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/native-transform-stress/X016",
+      "source": "guarded-source-archive/celld-os-stress/waves/native-transform-stress"
+    },
+    {
+      "sha256": "1c4be2004e476ee286465674ad37b81dd9ea8cc33e0dda6ef66b66b5830346de",
+      "source": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "X016",
+  "source": "tests/conformance/fetch-and-http/fixtures/transform-streams/entry.js",
+  "source_sha256": "1c4be2004e476ee286465674ad37b81dd9ea8cc33e0dda6ef66b66b5830346de",
+  "title": "Poison one decoder while preserving a second live decoder in the same request"
+}

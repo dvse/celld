@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "source_root": "/workspace/shared/celld-os-project/celld/crates/logic",
+  "production_files": {
+    "alarm.rs": "d6d85d890d0d0dceda5f8521a11dc215d36832833a0706a8269630014b2a7346",
+    "cache.rs": "8bdbf0b1f06edcb1e9d1fd6ccfe4493f860b9cca5a3435079dfaba861eb19830",
+    "cell.rs": "ea9d8ae877d4427ad45106db82528a333ad481169952f39b6a361e05223df445",
+    "cron.rs": "c4b5e5e240ba249da6228b4cdc0f7060d3e64213a236ba47247ee5fdd3d257b2",
+    "dead_node_reconciliation.rs": "1fee003cfd8152511ae6d2fa8df53832f96557eb34ecc94cf485d81c75ed0406",
+    "drain.rs": "4204ab321ffc43fcb939672ee6ad0f2c60ee593aca6cabe815ecdea97fa0e248",
+    "durability.rs": "4e471cd4f01141f8eac80979bcdab9d0c958ec6617691dead4fde6f900b1d931",
+    "epoch_gc.rs": "1f23ea074c1d3d3841b5ede564623c9861136fb852ae0db6917e8628b1bbe650",
+    "format.rs": "3c1fef73d45c0ed0ed104f9431eb3bdf33325e62b82492ec5d04d5805c597d5d",
+    "gate.rs": "889c88f05b1c068e10947fc7f7d76aad97a5aa9434889945cdc9657f133c13a7",
+    "http.rs": "082dfdf4ca7826224f317b41d6aaaf3306feeb2f98a78a33a0630a058ad21519",
+    "isolate.rs": "79272429d00bf825a7d33e09962ca399eb10077edceebf96ef2c87ced12e8b4b",
+    "kv.rs": "a6330ace5fbda162245c816cace4e65778db80a354f1f36232c96042f9531520",
+    "lib.rs": "c42a7598a2eac11ddb5d8e81f24cab545314a7c0f7a7180125e6a771c12a246b",
+    "log_evict.rs": "bf972b31cd2c0fba3bb8ff1e98c147778d77138329b7670cea3b8cf1d832ad8f",
+    "log_tier.rs": "e7f535798208bba95eb7b55f2ffefcf800b4a3a3b9c1eaec471d70d84de460f3",
+    "output_gate.rs": "c5d3a6f524bfe47de933fc66fa67158a19ddb1b0fd3fc371e4f04a722ebacef1",
+    "peer.rs": "e6ad44bc07045cf76c3c746a61e429cea185f1181650d95982a5735a777309cf",
+    "pressure.rs": "7e76009b45633de9d582960e72692116947021afd17652fc15c345510fd4e78c",
+    "queue.rs": "ac0135726b1b034d146af3b4cc976f28b5ee764a246310ef8752098763d36f06",
+    "rebalance.rs": "f827a062eb0de5fdfbdb6955908e16012f8ea4fec8e4268a0cfc6b80b6f998fc",
+    "restore.rs": "75c64cbc160edf6bd628152ad915ae4d6207a921ec81ebe0063b9eceacae3c4a",
+    "routing.rs": "845cec9deba52f4942a22a0b18cf298e9d30cdfa7927050f5a6de4ef27c3a810",
+    "schedule.rs": "09559042beecc2439c9b0aa6b49e82522f3456abdda2eae040c6d99095c344e3",
+    "sqlite.rs": "60480d89d9a8a5b40013450ae71ba06ea3ddd7662dbea12b7d7e51edeb29a019",
+    "sweep.rs": "6291b13e2fb28438aa442338cc56bdb95bf5e652d19b56da24597c1348b968ca",
+    "types.rs": "492ab0cbcbd9d00ea60bc01a04fd09c35811533a10e801db2a863f814f159400",
+    "wake.rs": "7d8b8a0518b12f67a0bd62f19dcbc7c4c047081ac6f5943bd1fd719ebf84c97e",
+    "Cargo.toml": "7beb337c73cf0688b8e3a0327933f48793c54fe46a77196dc5774460902d66ba"
+  },
+  "context_root": "/workspace/shared/celld-os-project",
+  "context_files": {
+    "celld/crates/celld/wake.rs": "e51326d1cd216c86ddc35c2346e0677ac2867c90a10cc35d23755b9a7a8bb813",
+    "celld/crates/celld/ltx_repl.rs": "55b02a3845bc295c9994053ff32c172907c02c971eecc8afe44d0378c005928e",
+    "celld/crates/celld/runtime.rs": "6aaeccd97084cc4d9002d551e1246fd9fbc145c074978bee192549456775e068",
+    "celld/crates/celld/cell_runtime.rs": "d838ab2ac226596e1f5c19d20f33ec13004327c2f27a25ec884e9f2f893073a2",
+    "celld/crates/celld/queue_policy.rs": "e8c31770a6d58478fbda5b7bfd724d3e456bd6f1923a352e9822720979198839",
+    "celld/crates/celld/js.rs": "164b11bb2b0f7321d316bcd417b13fea3bf907b1eae335c97d8ebecaacb9ba17",
+    "celld/crates/celld/kv_blob.rs": "ad91ee8ad74aade0828e29576ad6773823de8aa9481f0e2a8b1cb6763317ad6e",
+    "celld/docs/testing.md": "dafe8638e0de082d104595d5e84cdb6b8feb9094496fef2e7a56b6d8b7f4c366"
+  },
+  "runtime_manifest": {
+    "path": "/workspace/shared/celld-os-project/deliverable/package/reports/final/runtime-manifest.json",
+    "sha256": "54da8304fb90c06694cd44c114e0917b8db89ecefa08920a913c99b286359f28"
+  },
+  "delivered_runtime_sha256": "62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e",
+  "test_files": {
+    "Cargo.toml": "acc7fed0273915eec0ec9505c648faab248f1d88639fd64ac3b5055c873a1376",
+    "Cargo.lock": "6363931bcea4e72bd558202d160dafbe6f570bc2dad6ed4c74b3f53d223d9cdc",
+    "tests/wake_recovery.rs": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86"
+  },
+  "comparison_files": {
+    "alarm-event-stress": {
+      "manifest.json": "865ae3a9e5f61df64bded511650269e53e34a4d680a024d6dfcb57917c0548b8",
+      "cases.py": "3e22482c38c850a8103b374eb5ad7baa3df6364fe9a664e8944b6144ec70ecaa",
+      "fixture.js": "ccde8a8c9c8c7a4cfe02567f656fc149da1ee24fd78973455e64a8fe1c6ea3f3"
+    },
+    "bounded-load": {
+      "manifest.json": "3f5bd7c6edaeaff0d0e64f61f3057d470ff3797c9433705a02e007e2b9ab8138",
+      "cases.js": "60c6f9a8ae72180a8f549405076efc48a14612d5686d7a38548db329db4a06cf",
+      "fixture.js": "dcad2094078d264e222e44846b21d0919bcf9798645ee5e0792759afe48a295e"
+    },
+    "output-gate-logic": {
+      "manifest.json": "84148f9f295e44ae68cb2fd33fab2bc0168ad34102ffc8e057a927a78b119a62",
+      "tests/output_gate.rs": "4111d744a514b64a36f285dbf4a8b51ca56ce3f3f128dbd5ea1cc188ebed88ba"
+    },
+    "routing-acquisition-logic": {
+      "manifest.json": "f055a1b302e5f2546df23910f8713d3b39344fef98cfa2e30c946081ba2e1b66",
+      "tests/routing_acquisition.rs": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06"
+    },
+    "pressure-recovery-logic": {
+      "manifest.json": "8c20b20d5f3848fbea5226c2c099cd0691a8ce21e6b7f4c46b8b78f5a1370141",
+      "tests/pressure_recovery.rs": "ccb9c2001ec9d427c142017a426801dde5631b1252fae8b2e10ce0e12cc73e47"
+    },
+    "log-recovery-logic": {
+      "manifest.json": "731cc2389086c96d370eca18ce7bc1b62415bcb022ad6f75756e7aea74f74f90",
+      "tests/log_recovery.rs": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c"
+    }
+  },
+  "counting_policy": {
+    "path": "/workspace/shared/celld-os-stress/COUNTING-POLICY.md",
+    "sha256": "9dd0e1e052041734e11c04a51a91ddc1a1e7d1b4a50385cf43a27660d4822b13"
+  },
+  "limitation": "Frozen runtime is lineage only. No compiler or native executable was launched; run=0 passed=0."
+}

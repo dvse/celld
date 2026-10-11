@@ -1,0 +1,37 @@
+{
+  "id": "conformance/rpc/characterize-revival-of-a-capability-stored-in-an-enumerable-non-index-array-property",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "Characterize revival of a capability stored in an enumerable non-index array property",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec",
+      "legacy_id": "rpc-codec/C039"
+    }
+  ],
+  "corpus_wave": "rpc-codec",
+  "corpus_id": "C039",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "C039",
+    "intent": "Characterize revival of a capability stored in an enumerable non-index array property",
+    "preconditions": "COMMON; array has one numeric element and extra.token outside its indexed range",
+    "trace": [
+      "receive array with ordinary index and extra property",
+      "verify array length and indexed data",
+      "verify extra property is present",
+      "call its nested target"
+    ],
+    "stress": "One indexed array element, one non-index enumerable property and one target",
+    "oracle": "Length 1, indexed value 13, extra property retained and target array-extra callable",
+    "cleanup": "Dispose result tree in finally; fixture teardown releases any capability omitted by failed revival; shared codecCleanup",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-PROJECT",
+      "SC-LIFT",
+      "SC-REVIVE"
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "id": "conformance/rpc/characterize-rollback-of-the-first-readable-argument-when-lifting-a-later-already-locked-readable-fa",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "Characterize rollback of the first readable argument when lifting a later already-locked readable fails",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec",
+      "legacy_id": "rpc-codec/C011"
+    }
+  ],
+  "corpus_wave": "rpc-codec",
+  "corpus_id": "C011",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "C011",
+    "intent": "Characterize rollback of the first readable argument when lifting a later already-locked readable fails",
+    "preconditions": "COMMON; fresh owned fixture required; first stream unlocked, second stream held by caller reader",
+    "trace": [
+      "submit ordered object containing first stream then locked second stream",
+      "require locked-stream rejection",
+      "verify receiver was never called",
+      "poll first stream lock and cancel count",
+      "release second reader and clean up public handles"
+    ],
+    "stress": "Two streams, one held reader, at most 100 checks with 10ms spacing; no data production",
+    "oracle": "First origin unlocks and cancel executes once; receiver accepted zero; later RPC works; leaked lock is explicit FAIL/CLEANUP_BLOCKED",
+    "cleanup": "Cancel and release held reader in finally; cancel first stream only if unlocked; always owned fixture teardown, never hidden runtime table access",
+    "isolation": "fresh-owned-fixture-required",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-LIFT",
+      "SC-STREAM-LIFT",
+      "SC-ENVELOPE"
+    ]
+  }
+}

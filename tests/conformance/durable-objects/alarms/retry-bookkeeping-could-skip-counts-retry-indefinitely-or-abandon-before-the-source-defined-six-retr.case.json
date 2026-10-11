@@ -1,0 +1,62 @@
+{
+  "adapter": "recovery",
+  "behaviour": "durable-objects/alarms",
+  "contract": {
+    "cleanup": [
+      "Delete any remaining retry schedule and close the owned fleet; the outer360-second deadline remains independent.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A022",
+    "intent": "Retry bookkeeping could skip counts, retry indefinitely, or abandon before the source-defined six retries are exhausted.",
+    "oracle": [
+      "Exact retry sequence0 through6, with isRetry false only at0 and strictly advancing timestamps.",
+      "No effect, no eighth event in the observation window, and abandoned alarm is null."
+    ],
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "Always-throw mode has no explicit rearm/delete and a finite16-entry fixture cap. Original and candidate share the pinned celld retry policy."
+    ],
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "trace": [
+      "Arm always-fails and observe first failure.",
+      "Allow the real2/4/8/16/32/64-second retry progression within a170-second observation bound.",
+      "Wait for seven failed entries, no active handler, and null alarm.",
+      "Continue another five seconds."
+    ]
+  },
+  "corpus_id": "A022",
+  "corpus_wave": "alarm-event-stress",
+  "fixture": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces",
+  "id": "conformance/durable-objects/alarms/retry-bookkeeping-could-skip-counts-retry-indefinitely-or-abandon-before-the-source-defined-six-retr",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/alarm-event-stress/A022"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/alarm-event-stress/A022",
+      "source": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress"
+    },
+    {
+      "sha256": "ccde8a8c9c8c7a4cfe02567f656fc149da1ee24fd78973455e64a8fe1c6ea3f3",
+      "source": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress/fixture.js"
+    }
+  ],
+  "phase2_harness": "real process and bucket fault schedule",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "A022",
+  "source": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces/fixture.js",
+  "source_sha256": "ccde8a8c9c8c7a4cfe02567f656fc149da1ee24fd78973455e64a8fe1c6ea3f3",
+  "title": "Retry bookkeeping could skip counts, retry indefinitely, or abandon before the source-defined six retries are exhausted."
+}

@@ -1,0 +1,147 @@
+{
+  "adapter": "http",
+  "behaviour": "web-platform",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "application_relevance": "Workers build routers relative to a service base and need both captured route values and traceable original inputs.",
+    "assertion_count": 8,
+    "authored": true,
+    "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+    "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+    "desired_behavior": "Relative route is /catalog/items/:id; input canonicalizes to shop.example.test and empty port, captures 42, and retains both raw arguments.",
+    "distinctness": "Pattern constructor and exec base overload, input provenance, and canonical component mapping.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/U217",
+      "request_body": null
+    },
+    "fixed_runtime_assertions": [
+      "t.equal(pattern.pathname, '/catalog/items/:id', 'relative pattern resolves against base directory');",
+      "t.equal(result !== null, true, 'relative input matches after canonicalization');",
+      "t.deep(result.inputs, ['items/42', 'https://SHOP.example.test:443/catalog/'], 'result retains input and explicit base arguments');",
+      "t.equal(result.hostname.input, 'shop.example.test', 'input hostname canonicalized');",
+      "t.equal(result.port.input, '', 'default port canonicalized away');",
+      "t.equal(result.pathname.input, '/catalog/items/42', 'relative input path resolved');",
+      "t.equal(result.pathname.groups.id, '42', 'named capture from resolved input');",
+      "t.equal(pattern.test('https://shop.example.test/other/items/42'), false, 'valid URL outside base path is a nonmatch');"
+    ],
+    "hypothesis": "Pattern or input base resolution may disagree, or the result may confuse raw input arguments with canonicalized component inputs.",
+    "id": "U217",
+    "implementation": {
+      "end_line": 216,
+      "file": "cases.js",
+      "start_line": 205,
+      "symbol": "U217"
+    },
+    "independently_reviewed": false,
+    "layer": "direct-celld-worker-fetch-global-web-api",
+    "limits": {
+      "case_assertion_max_count": 16,
+      "case_input_max_code_units": 1024,
+      "case_tuple_max_count": 16,
+      "concurrent_requests": 1,
+      "network_calls_from_fixture": 0,
+      "repetitions": 1,
+      "request_body_bytes": 0,
+      "request_outer_deadline_seconds": 5,
+      "requests_per_case": 1,
+      "response_max_bytes": 65536,
+      "storage_writes_from_fixture": 0,
+      "timers_from_fixture": 0
+    },
+    "mechanism": "URLPattern string/base overload and canonicalized match-input host seam",
+    "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+    "preconditions": [
+      "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+      "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+      "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+    ],
+    "prediction_is_runtime_evidence": false,
+    "primary_contract_refs": [
+      "https://urlpattern.spec.whatwg.org/"
+    ],
+    "review_status": "UNREVIEWED",
+    "runtime_pass_claimed": false,
+    "runtime_source_refs": [
+      {
+        "line_end": 33,
+        "line_start": 19,
+        "path": "celld-os-project/celld/crates/celld/js/url_pattern.js"
+      },
+      {
+        "line_end": 59,
+        "line_start": 37,
+        "path": "celld-os-project/celld/crates/celld/js/url_pattern.js"
+      },
+      {
+        "line_end": 97,
+        "line_start": 79,
+        "path": "celld-os-project/celld/crates/celld/js/url_pattern.js"
+      },
+      {
+        "line_end": 10765,
+        "line_start": 10675,
+        "path": "celld-os-project/celld/crates/celld/js.rs"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "schedule": {
+      "depends_on": [],
+      "kind": "one synchronous finite trace",
+      "overlap": "none",
+      "path": "/case/U217",
+      "request_ordinal": 17,
+      "runtime_operations": [
+        "Construct a relative items/:id pattern against one base.",
+        "Match one relative input with an uppercase-host, explicit-default-port base.",
+        "Assert pattern path, nonnull result, raw inputs array, canonical host/port/path, and id capture.",
+        "Assert a valid URL under another path is a nonmatch."
+      ]
+    },
+    "source_observation": "Native ops canonicalize while JS constructs inputs separately. This verifies the seam rather than duplicating plain URL constructor behavior.",
+    "static_prediction": "NO_FAILURE_PREDICTION",
+    "status": "NOT_RUN",
+    "title": "Resolve URLPattern base inputs and preserve result input arguments",
+    "trace": [
+      "Construct a relative items/:id pattern against one base.",
+      "Match one relative input with an uppercase-host, explicit-default-port base.",
+      "Assert pattern path, nonnull result, raw inputs array, canonical host/port/path, and id capture.",
+      "Assert a valid URL under another path is a nonmatch."
+    ]
+  },
+  "corpus_id": "U217",
+  "corpus_wave": "url-semantics",
+  "fixture": "tests/conformance/web-platform/fixtures/url-semantics",
+  "id": "conformance/web-platform/url-u217",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/url-semantics/U217"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/url-semantics/U217",
+      "manifest_sha256": "d61fdb1b4d070ae5aff0ad1456c39d2842c341f9737a20b67c67c251f638ae91",
+      "review_sha256": "13b98102e846487ca6304032863d1edb29b691c8649ebdea0ad53161ac6da486",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics",
+      "tranche": "001"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/U217",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "U217",
+  "source": "tests/conformance/web-platform/fixtures/url-semantics/fixture.js",
+  "source_sha256": "ccbb1cf21c3f719aa06ed64b498fc396f00736cc96d7cbd2aea437f2cc221ca6",
+  "title": "Resolve URLPattern base inputs and preserve result input arguments"
+}

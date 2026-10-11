@@ -1,0 +1,218 @@
+[
+  {
+    "baseline_reason": "fixture FAIL: Error: lift lost sparse trailing length",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": "original finite trace and assertions completed; owned process evidence retained",
+    "id": "conformance/rpc/a-lifted-sparse-array-preserves-holes-and-trailing-length-rather-than-densifying-or-truncating",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": "fixture FAIL: Error: Cannot perform I/O on behalf of a different request. I/O objects (such as streams, request/response bodies, and others) created in the context of one request handler cannot be accessed from a different request's handler. This is a limitation of Cloudflare Workers which allows us to improve overall performance. (I/O type: Client)",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": "original finite trace and assertions completed; owned process evidence retained",
+    "id": "conformance/rpc/a-remote-retained-duplicate-of-a-result-child-must-survive-result-group-disposal",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": "original finite trace and assertions completed; owned process evidence retained",
+    "def239b": "pass",
+    "fixes": "fail",
+    "fixes_reason": "fixture FAIL: Error: document backlog remains: {\"actual\":[\"document4\",\"document2\",\"document3\",\"document5\"],\"expected\":[\"document2\",\"document3\",\"document4\",\"document5\"]}",
+    "id": "conformance/rpc/a-saturated-document-lane-wrongly-causes-head-of-line-blocking-for-an-independent-git-lane",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": "fixture FAIL: Error: aliased result disposal over-released duplicate: 1",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": "original finite trace and assertions completed; owned process evidence retained",
+    "id": "conformance/rpc/aliased-references-in-one-result-group-must-not-over-release-an-explicit-survivor-duplicate",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": "fixture FAIL: Error: ordinary own __proto__ data was erased",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": "original finite trace and assertions completed; owned process evidence retained",
+    "id": "conformance/rpc/ordinary-own-proto-data-survives-lifting-without-altering-the-cloned-object-s-prototype",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": "fixture FAIL: Error: RpcProperty repeated await must refetch",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": "original finite trace and assertions completed; owned process evidence retained",
+    "id": "conformance/rpc/rpc-property-handle-stays-lazy-and-refetches-on-each-await",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": "fixture FAIL: Error: Cannot perform I/O on behalf of a different request. I/O objects (such as streams, request/response bodies, and others) created in the context of one request handler cannot be accessed from a different request's handler. This is a limitation of Cloudflare Workers which allows us to improve overall performance. (I/O type: Client)",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": "original finite trace and assertions completed; owned process evidence retained",
+    "id": "conformance/rpc/taking-a-retained-callback-into-a-returned-result-must-transfer-its-surviving-lease",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": ".: fix-lane expected-output mismatch; see diff",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": ".: fix-lane exact expected-output assertion passed",
+    "id": "regressions/R4-01",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": "injected-failure: fix-lane assertion or command failed (exit 1); see run.log; http: fix-lane exact expected-output assertion passed",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": "injected-failure: regression command passed; http: fix-lane exact expected-output assertion passed",
+    "id": "regressions/R4-02",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": "fix-lane assertion or command failed (exit 1); see run.log",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": "regression command passed",
+    "id": "regressions/R4-03",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": "exact native alarm assertion failed (exit 101); see run.log",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": "exact native alarm assertion passed",
+    "id": "regressions/R4-04",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": ".: fix-lane expected-output mismatch; see diff",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": ".: fix-lane exact expected-output assertion passed",
+    "id": "regressions/R4-06",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": "fix-lane assertion or command failed (exit 1); see run.log",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": "regression command passed",
+    "id": "regressions/R4-07",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": "prototype: fix-lane expected-output mismatch; see diff; instance: fix-lane expected-output mismatch; see diff",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": "prototype: fix-lane exact expected-output assertion passed; instance: fix-lane exact expected-output assertion passed",
+    "id": "regressions/R4-08",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": "fix-lane assertion or command failed (exit 1); see run.log",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": "regression command passed",
+    "id": "regressions/R4-09",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": ".: fix-lane expected-output mismatch; see diff",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": ".: fix-lane exact expected-output assertion passed",
+    "id": "regressions/R4-11",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": ".: fix-lane expected-output mismatch; see diff",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": ".: fix-lane exact expected-output assertion passed",
+    "id": "regressions/R4-12",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": ".: fix-lane expected-output mismatch; see diff",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": ".: fix-lane exact expected-output assertion passed",
+    "id": "regressions/R4-13",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": ".: fix-lane expected-output mismatch; see diff",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": ".: fix-lane exact expected-output assertion passed",
+    "id": "regressions/R4-14",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": "fix-lane assertion or command failed (exit 1); see run.log",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": "regression command passed",
+    "id": "regressions/R4-15",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": ".: fix-lane expected-output mismatch; see diff",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": ".: fix-lane exact expected-output assertion passed",
+    "id": "regressions/R4-16",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": "snapshot: fix-lane expected-output mismatch; see diff; output-fault: original copy-failure response assertion failed",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": "snapshot: fix-lane exact expected-output assertion passed; output-fault: original copy-failure response assertion passed",
+    "id": "regressions/R5-03",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": ".: fix-lane expected-output mismatch; see diff",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": ".: fix-lane exact expected-output assertion passed",
+    "id": "regressions/R5-05",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": ".: fix-lane expected-output mismatch; see diff",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": ".: fix-lane exact expected-output assertion passed",
+    "id": "regressions/R5-06",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": ".: fix-lane expected-output mismatch; see diff",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": ".: fix-lane exact expected-output assertion passed",
+    "id": "regressions/R5-07",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": "fix-lane assertion or command failed (exit 1); see run.log",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": "regression command passed",
+    "id": "regressions/R5-08",
+    "runtime": "celld"
+  },
+  {
+    "baseline_reason": "prototype: fix-lane expected-output mismatch; see diff; instance: fix-lane expected-output mismatch; see diff",
+    "def239b": "fail",
+    "fixes": "pass",
+    "fixes_reason": "prototype: fix-lane exact expected-output assertion passed; instance: fix-lane exact expected-output assertion passed",
+    "id": "regressions/R5-09",
+    "runtime": "celld"
+  }
+]

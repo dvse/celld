@@ -1,0 +1,44 @@
+{
+  "adapter": "topology",
+  "behaviour": "fetch-and-http",
+  "contract": {
+    "cleanup": "drain; release reader; forget source",
+    "intent": "Subarray RPC transfer excludes backing-buffer sentinel bytes",
+    "oracle": "bytes exactly 0,255,7 with no 251 sentinel; unlocked",
+    "preconditions": "Source enqueues offset subarray in larger sentinel-filled buffer",
+    "trace": [
+      "obtain remote stream",
+      "drain bytes",
+      "inspect source"
+    ]
+  },
+  "corpus_id": "S005",
+  "corpus_wave": "base",
+  "fixture": "tests/conformance/rpc/fixtures/object-capabilities/fixture",
+  "id": "conformance/fetch-and-http/subarray-rpc-transfer-excludes-backing-buffer-sentinel-bytes",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/base/S005"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/base/S005",
+      "source": "guarded-source-archive/celld-os-stress/fixture"
+    },
+    {
+      "sha256": "3e137fc03ca2b2e6ca40d538291aaf0e022bdfe491d3ddcdf4f8f9c4eb4c6b72",
+      "source": "guarded-source-archive/celld-os-stress/fixture/index.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "S005",
+  "source": "tests/conformance/rpc/fixtures/object-capabilities/fixture/index.js",
+  "source_sha256": "3e137fc03ca2b2e6ca40d538291aaf0e022bdfe491d3ddcdf4f8f9c4eb4c6b72",
+  "title": "Subarray RPC transfer excludes backing-buffer sentinel bytes"
+}

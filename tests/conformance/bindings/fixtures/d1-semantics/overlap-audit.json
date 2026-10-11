@@ -1,0 +1,158 @@
+{
+  "status": "SOURCE_AUDIT_ONLY_NOT_INDEPENDENT_REVIEW",
+  "scanned_roots": [
+    "celld-os-stress",
+    "celld-os-project/tests"
+  ],
+  "scan_pattern": "\\bd1\\b|d1_databases|withSession|getBookmark",
+  "text_files_scanned": 319,
+  "scanned_path_list_sha256": "fc1e63049dfce2ba835dc33a849133dac67e5bff9cc9fd0e3af794a4e01f8773",
+  "public_D1_text_matches": [],
+  "actual_case_bodies_read": [
+    "celld-os-stress/waves/sqlite-concurrency/cell-cases.js",
+    "celld-os-project/celld/examples/d1/index.js"
+  ],
+  "nearest_existing_cases": [
+    {
+      "ids": [
+        "T011",
+        "T015",
+        "T018",
+        "T024"
+      ],
+      "path": "celld-os-stress/waves/sqlite-concurrency/cell-cases.js",
+      "lines": [
+        15,
+        19,
+        22,
+        28
+      ],
+      "relationship": "These are direct DO SQL prepared/cursor/transaction-view/schema-cache behaviors, not public D1 binding objects, wire row shapes, sessions or D1 metadata. Their substantive overlap is recorded per candidate; none are relabeled or recounted."
+    },
+    {
+      "ids": [
+        "T012",
+        "T013",
+        "T019",
+        "T020",
+        "T021"
+      ],
+      "path": "celld-os-stress/waves/sqlite-concurrency/cell-cases.js",
+      "relationship": "Raw cursor iteration, typed SQL cursor BLOB binds, direct root scope isolation and connection-delta characterization are nearby concepts; new cases use materially different public D1 request/result contracts and do not claim cursor/concurrency coverage."
+    }
+  ],
+  "source_example": "The source D1 guestbook uses ordinary exec/prepare/bind/run/first/all but has no assertion-bearing corpus case IDs. New cases are not copies of its GET/POST workflow.",
+  "limits": [
+    "Search only the restored available text corpus; private/omitted tests may exist.",
+    "No claim these are the first D1 tests globally; independent review must decide distinct accepted credit.",
+    "No restored corpus mutation or duplicate case credit."
+  ],
+  "new_candidate_ids": [
+    "E201",
+    "E202",
+    "E203",
+    "E204",
+    "E205",
+    "E206",
+    "E207",
+    "E208",
+    "E209",
+    "E210",
+    "E211",
+    "E212",
+    "E213",
+    "E214",
+    "E215",
+    "E216",
+    "E217",
+    "E218",
+    "E219",
+    "E220"
+  ],
+  "accepted_new_case_credit": 0,
+  "current_sibling_wave_audited": {
+    "family": "storage-sql-semantics",
+    "path": "../storage-sql-semantics/cases.js",
+    "sha256": "1dec37fd6a3caae833bbc95620f407a7d866836410275c1b4b7637ae468bb7f9",
+    "cases_read": [
+      "D212",
+      "D213",
+      "D214",
+      "D216",
+      "D217",
+      "D219"
+    ],
+    "source_lines": [
+      [
+        113,
+        121
+      ],
+      [
+        124,
+        128
+      ],
+      [
+        131,
+        137
+      ],
+      [
+        149,
+        152
+      ],
+      [
+        155,
+        160
+      ],
+      [
+        173,
+        177
+      ]
+    ],
+    "case_comparisons": {
+      "E203": {
+        "neighbors": [
+          "D212"
+        ],
+        "distinction": "D212 binds native SQL scalars and DataView and returns native ArrayBuffer; E203 exercises public D1 boolean normalization, JSON transport, SQL null and typed scalar persistence across batch/read dispatches."
+      },
+      "E204": {
+        "neighbors": [
+          "D212"
+        ],
+        "distinction": "D212 observes a native DataView byte window and ArrayBuffer output. E204 tests the independently implemented D1 bind serializer: Uint16Array/Int8Array element truncation and typed-source copying at bind, then JSON byte-array output. Those are different encoding rules, not a new byte sample."
+      },
+      "E205": {
+        "neighbors": [
+          "D214"
+        ],
+        "distinction": "D214 exhausts a native SQL RETURNING cursor and checks terminality. E205 compares public D1 run/all method aliases, success/result envelopes and RETURNING on both, with no exposed cursor."
+      },
+      "E209": {
+        "neighbors": [
+          "D213"
+        ],
+        "distinction": "D213 has the same outward last-duplicate versus positional contract on native SqlStorageCursor paths. E209 independently targets D1 __d1Shape/Object.fromEntries and public raw/first/all across engine JSON rows. This is the closest cross-wave semantic overlap; independent review must decide whether separate public-surface implementation coverage merits distinct credit."
+      },
+      "E212": {
+        "neighbors": [
+          "D216",
+          "D217"
+        ],
+        "distinction": "D216/D217 use sql.ingest with remainder/rowsWritten/statementCount. E212 targets the separate D1 SQLite tail walker, public count/duration-only envelope, comments and a complete final statement without semicolon, then post-return committed contents. It makes no ingest or streaming-suffix claim."
+      },
+      "E213": {
+        "neighbors": [
+          "D219"
+        ],
+        "distinction": "D219 drains read SELECT rows in sql.ingest before later writes. E213 uses public D1 exec(rows:false) with both multirow INSERT RETURNING and UPDATE RETURNING and checks all effects after its successful transaction-completing response plus no public results field."
+      },
+      "E216": {
+        "neighbors": [
+          "D214"
+        ],
+        "distinction": "D214 explicitly drains all native cursor receipts; E216 asks D1 first() to retain one receipt while the engine must still step the entire mutation. A native cursor completion test does not exercise that keep=1 boundary."
+      }
+    },
+    "credit_qualification": "Naming a separate public API is not by itself a distinctness proof; independent review decides accepted credit, especially E209/D213."
+  }
+}

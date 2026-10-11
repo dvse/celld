@@ -1,0 +1,51 @@
+{
+  "adapter": "topology",
+  "behaviour": "limits-and-errors",
+  "contract": {
+    "cleanup": "Release every foreground hold; settle all owned promises; dispose all entrypoints and Worker handles inside the active coordinator request; assert zero pending/unsettled holds; delete volatile audit book and close tag. Independently recorded owned guest/process/storage teardown is mandatory. No durable state is created by case logic.",
+    "implementation": "cases.js:cases.Q015",
+    "intent": "Recover native random API quota",
+    "oracle": "Both precise quota errors leave buffers untouched; legal-size call returns original 65536-byte array; no statistical randomness or entropy quality claim",
+    "preconditions": [
+      "One worker; two separate 65537-byte zero arrays and one 65536-byte recovery array",
+      "Fresh private owned disposable runtime/root name; native Worker Loader/WorkerEntrypoint and Audit loopback positive control",
+      "Verified immutable source/binary and configured 8192-byte code ceiling; independent scope review excludes restricted capability lifetime reproduction",
+      "Parent exclusive run slot; externally enforced wall/memory/PID limits and owned cleanup"
+    ],
+    "trace": [
+      "Attempt two over-quota fills and inspect every byte remains zero",
+      "Require QuotaExceededError each time",
+      "Fill one legal-size array and verify returned identity/length",
+      "Run fresh worker recovery"
+    ]
+  },
+  "corpus_id": "Q015",
+  "corpus_wave": "bounded-resource",
+  "fixture": "tests/conformance/limits-and-errors/fixtures/invocation-quotas",
+  "id": "conformance/limits-and-errors/recover-native-random-api-quota",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/bounded-resource/Q015"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/bounded-resource/Q015",
+      "source": "guarded-source-archive/celld-os-stress/waves/bounded-resource"
+    },
+    {
+      "sha256": "f0ac664b435a5bbfd844d830d03447bb78bfbd1d5d2e31bc4beb6a2d299847b9",
+      "source": "guarded-source-archive/celld-os-stress/waves/bounded-resource/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "Q015",
+  "source": "tests/conformance/limits-and-errors/fixtures/invocation-quotas/entry.js",
+  "source_sha256": "f0ac664b435a5bbfd844d830d03447bb78bfbd1d5d2e31bc4beb6a2d299847b9",
+  "title": "Recover native random API quota"
+}

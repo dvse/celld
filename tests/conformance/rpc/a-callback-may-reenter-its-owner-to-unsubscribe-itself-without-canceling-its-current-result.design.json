@@ -1,0 +1,45 @@
+{
+  "id": "conformance/rpc/a-callback-may-reenter-its-owner-to-unsubscribe-itself-without-canceling-its-current-result",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "A callback may reenter its owner to unsubscribe itself without canceling its current result",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/capability-order",
+      "legacy_id": "capability-order/O026"
+    }
+  ],
+  "corpus_wave": "capability-order",
+  "corpus_id": "O026",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "O026",
+    "intent": "A callback may reenter its owner to unsubscribe itself without canceling its current result",
+    "preconditions": [
+      "COMMON",
+      "Sole retained callback ownership; callback hook removes its own slot"
+    ],
+    "trace": [
+      "Register self-removing callback and release original",
+      "Emit once; callback performs reverse remove",
+      "Require current result and final disposal",
+      "Emit again and require absent with no second callback effect"
+    ],
+    "failure_schedule": "No time-based race or transport fault injection; failures occur only at the literal operation named in the trace",
+    "stress": "Three-leg callback/unsubscribe reentry during final release",
+    "oracle": "Self-removal completes once and future callbacks are excluded",
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-PARAM",
+      "SC-DISPOSE",
+      "SC-ORDER"
+    ],
+    "profile": "capability-order-modern-2026-09-04",
+    "max_parallel_calls": 3,
+    "outer_wall_seconds": 30,
+    "distinctness": "Literal O026 state transition; counts, repetitions and deployment placements do not create additional cases."
+  }
+}

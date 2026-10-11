@@ -1,0 +1,46 @@
+{
+  "id": "conformance/dynamic-workers-and-tails/mix-object-default-http-and-named-class-rpc-dispatch",
+  "layer": "conformance",
+  "behaviour": "dynamic-workers-and-tails",
+  "title": "Mix object-default HTTP and named-class RPC dispatch",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/loader-props",
+      "legacy_id": "loader-props/L012"
+    }
+  ],
+  "corpus_wave": "loader-props",
+  "corpus_id": "L012",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "L012",
+    "intent": "Mix object-default HTTP and named-class RPC dispatch",
+    "failure_hypothesis": "Object handler dispatch loses props or displaces a named class",
+    "preconditions": [
+      "Module exports an object default and WorkerEntrypoint Named",
+      "Disposable private fixture with fresh supervisor name, live LOADER, facets, restore flag, and positive Loader control",
+      "External reviewed adapter has exclusive run slot and enforces wall/memory/PID/load limits"
+    ],
+    "trace": [
+      "Fetch object default with lane props",
+      "Read full small JSON body",
+      "Invoke named verify"
+    ],
+    "stress": "1 worker; 1 local Loader fetch; 1 RPC call",
+    "oracle": "Exact object props and named-class RPC value",
+    "cleanup": "Case-specific finally disposes restored handles and drains finite cancellation hold where used; common cleanup releases code gates, aborts every owned facet, disposes entrypoints and worker handles, removes only tracked fixture KV rows. Parent tears down disposable fleet/storage.",
+    "implementation": "cases.js:loaderCases.L012",
+    "contract_group": "entrypoint",
+    "qualification": "characterization",
+    "promotion": "NOT_PROMOTED: independent source/oracle review and recorded frozen-runtime run required",
+    "layer": "real-process-RPC",
+    "profile": "loader-props-2026-09-04",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  }
+}

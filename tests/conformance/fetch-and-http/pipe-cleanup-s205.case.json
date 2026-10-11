@@ -1,0 +1,117 @@
+{
+  "adapter": "http",
+  "behaviour": "fetch-and-http",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "assertion_count": 13,
+    "classification": "ordinary-functional-stream-lifecycle",
+    "cleanup": "Open all finite gates even on assertion failure; signal-stop unfinished pipes; join original pipe and callback promises; release manual owners; prove readable/writable terminal states with closed promises; cancel/abort only still-open local resources; release probe owners. Owned supervisor teardown remains mandatory.",
+    "distinctness": "X013 has signal fanout but no independently held write, sink-abort acknowledgment and source-cancel acknowledgment. S020 covers queued writer close, not pipe shutdown fanout.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/S205",
+      "request_body": null
+    },
+    "fixed_runtime_assertions": [
+      "t.deep(events, ['write-enter:51'], 'cleanup cannot overtake held write');",
+      "t.equal(pipe.status, 'pending', 'pipe stays pending during held write');",
+      "t.before(events, 'write-done', 'abort-enter', 'write settles before sink abort');",
+      "t.before(events, 'write-done', 'cancel-enter', 'write settles before source cancel');",
+      "t.same(abortReason, reason, 'sink receives original signal reason');",
+      "t.same(cancelReason, reason, 'source receives original signal reason');",
+      "t.locked(source, sink, 'both locks retained during cleanup actions');",
+      "t.equal(pipe.status, 'pending', 'source cancel completion is still required');",
+      "t.equal(result.status, 'rejected', 'completed signal shutdown rejects pipe');",
+      "t.same(result.reason, reason, 'successful cleanup preserves signal reason');",
+      "t.deep([aborts, cancels], [1, 1], 'each cleanup action runs exactly once');",
+      "t.equal(events.includes('abort-done') && events.includes('cancel-done'), true, 'both asynchronous cleanup actions joined');",
+      "t.unlocked(source, sink, 'cleanup completion releases both locks');"
+    ],
+    "id": "S205",
+    "implementation": "cases.js:S205",
+    "independently_reviewed": false,
+    "intent": "Join write and both signal cleanup actions",
+    "mechanism": "inflight-write-then-async-abort-cancel-join",
+    "oracle": "All literal assertions execute and pass; no pending promise or public lock remains after joined cleanup.",
+    "os_relevance": "Core OS supporting stream/cancellation primitive; preserved native-transform OS provenance provides context only. This is not a claim that OS callers set these flags, nor a new product service.",
+    "preconditions": [
+      "Exact guarded source and actual direct-celld build/deployment identity verified.",
+      "One active Worker.fetch; real built-in ReadableStream/WritableStream/AbortController.",
+      "Independent supervisor enforces all schedule deadlines and limits; no reference runtime substitution."
+    ],
+    "primary_candidate": true,
+    "primary_contract_refs": [
+      "https://streams.spec.whatwg.org/#readable-stream-pipe-to"
+    ],
+    "runtime_source_refs": [
+      {
+        "line_end": 663,
+        "line_start": 539,
+        "path": "celld-os-project/celld/crates/celld/js/streams.js"
+      },
+      {
+        "line_end": 454,
+        "line_start": 414,
+        "path": "celld-os-project/celld/crates/celld/js/streams.js"
+      },
+      {
+        "line_end": 527,
+        "line_start": 291,
+        "path": "celld-os-project/celld/crates/celld/js/writable_stream.js"
+      },
+      {
+        "line_end": 197,
+        "line_start": 168,
+        "path": "celld-os-project/celld/crates/celld/js/writable_stream.js"
+      },
+      {
+        "line_end": 10589,
+        "line_start": 10532,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "source_predicted_gap": null,
+    "status": "NOT_RUN",
+    "trace": [
+      "Hold a single sink write and abort the active pipe.",
+      "Witness no cleanup entry before releasing that write.",
+      "Hold both abort and cancel callbacks, release abort first, and require pipe remain pending until cancel also finishes."
+    ]
+  },
+  "corpus_id": "S205",
+  "corpus_wave": "pipe-cleanup-semantics",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/pipe-cleanup-semantics",
+  "id": "conformance/fetch-and-http/pipe-cleanup-s205",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/pipe-cleanup-semantics/S205"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/pipe-cleanup-semantics/S205",
+      "manifest_sha256": "02175a33442a86096c05300b11e15c978b58ea6b69a9bb57acaf53ac51dec730",
+      "review_sha256": "2039d797506f5a0682e0abffc2a9d8c43f6f6d85e039412d3539dc3e8b27eb83",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/pipe-cleanup-semantics",
+      "tranche": "003"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/S205",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "S205",
+  "source": "tests/conformance/fetch-and-http/fixtures/pipe-cleanup-semantics/fixture.js",
+  "source_sha256": "9903a92f43f96b3b38046171b7575e99b84eac2ef8e626b2377fb621f5a821b5",
+  "title": "Join write and both signal cleanup actions"
+}

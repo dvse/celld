@@ -1,0 +1,197 @@
+{
+  "adapter": "http",
+  "behaviour": "bindings",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "application_relevance": "Bootstrap an application table and use its new data within one submitted batch.",
+    "artifact": "worker.js",
+    "cleanup": {
+      "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+      "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+      "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+      "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+    },
+    "cross_wave_overlap": null,
+    "distinctness": "Valid dependency and commit completeness only; this does not prove rollback or atomic visibility to a concurrent observer.",
+    "entrypoint": "GET /case/E210",
+    "family": "d1-semantics",
+    "fixed_finite_trace": [
+      "Batch create table, parameterized insert, read, parameterized update and read in that exact order.",
+      "Require five successful results and exact intermediate/final rows.",
+      "Read after batch return to verify the committed final value."
+    ],
+    "fixture_line_range": [
+      132,
+      148
+    ],
+    "fixture_slice_sha256": "45f43a402011b2f62b19a8614d662ce895a5b0bb5a1ea6a6f28b0b8631b9ed0a",
+    "id": "E210",
+    "intent": "Bootstrap an application table and use its new data within one submitted batch.",
+    "limits": {
+      "external_response_capture_bytes": 1048576,
+      "external_total_request_deadline_seconds": 30,
+      "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+      "maximum_application_tables": 1,
+      "maximum_batch_statements": 5,
+      "maximum_bound_parameters_per_statement": 5,
+      "maximum_bound_scalar_or_blob_bytes": 64,
+      "maximum_exec_statements": 4,
+      "maximum_rows_in_any_fixture_table": 4,
+      "no_internal_Promise_race_timeout": true,
+      "public_dispatches_per_phase_enforced": 32
+    },
+    "limits_of_evidence": [
+      "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+      "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+      "Successful batch dependencies do not establish concurrent-observer atomicity.",
+      "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+    ],
+    "oracle": {
+      "assertions": [
+        "batch returns one result per submitted statement",
+        "all successful batch statements retain success flags",
+        "batch statements see earlier schema and writes in submission order",
+        "successful batch final value is visible after return"
+      ],
+      "claim": "The engine prepares and steps statements sequentially on one connection and commits the successful batch before returning one result per statement.",
+      "executable_assertion_source": [
+        "c.eq(result.length, 5, \"batch returns one result per submitted statement\");",
+        "c.eq(result.map(item => item.success), [true,true,true,true,true], \"all successful batch statements retain success flags\");",
+        "c.eq(result.map(item => item.results), [[],[],[{quantity:4}],[],[{quantity:7}]], \"batch statements see earlier schema and writes in submission order\");",
+        "c.eq(await c.first(db.prepare(`SELECT quantity FROM ${t} WHERE id=1`), \"committed batch read\"), {quantity:7}, \"successful batch final value is visible after return\");"
+      ],
+      "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+      "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed.",
+      "successful_assertion_count": 4
+    },
+    "owned_resources": [
+      {
+        "binding": "DB",
+        "database_identity": "d1-next-id-a",
+        "table": "d1_next_e210"
+      }
+    ],
+    "review_accepted": false,
+    "runtime_execution_count": 0,
+    "schedule": {
+      "case_requests": 1,
+      "cleanup_binding_calls_exact_on_success": 2,
+      "faults": 0,
+      "main_phase_binding_calls_exact_on_success": 2,
+      "main_phase_dispatch_labels_in_order": [
+        "schema write read batch",
+        "committed batch read"
+      ],
+      "maximum_in_flight_public_calls": 1,
+      "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+      "restarts": 0,
+      "retries": 0,
+      "setup_binding_calls_exact_on_success": 1
+    },
+    "source_refs": [
+      {
+        "key": "api",
+        "line_ranges": [
+          [
+            1,
+            87
+          ]
+        ],
+        "path": "celld-os-project/celld/docs/services/d1.md",
+        "slices_sha256": [
+          "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+        ]
+      },
+      {
+        "key": "database",
+        "line_ranges": [
+          [
+            8448,
+            8491
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/js/harness.js",
+        "slices_sha256": [
+          "d77cc49a62eb8dcae987ad5324e3d0831f91412d02bfdb0b5c3ac0992e263ecb"
+        ]
+      },
+      {
+        "key": "server",
+        "line_ranges": [
+          [
+            8196,
+            8279
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/js/harness.js",
+        "slices_sha256": [
+          "f206828feb8e030d061e134c221b2bbf588b43812bac3fc95133810df9d254c4"
+        ]
+      },
+      {
+        "key": "batch_exec",
+        "line_ranges": [
+          [
+            2990,
+            3139
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/storage.rs",
+        "slices_sha256": [
+          "bb5351f92fc0531bed005334759738d8a13ae8a5e3c9bbd7b0012daa1e37a65d"
+        ]
+      },
+      {
+        "key": "metadata",
+        "line_ranges": [
+          [
+            2731,
+            2828
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/storage.rs",
+        "slices_sha256": [
+          "f4024aab42f6717e3e8a9588ee86a59a3e04694a9770871e2653cf4423e12c8e"
+        ]
+      }
+    ],
+    "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+    "surface": "public env D1 binding APIs only",
+    "sut": "direct celld only",
+    "title": "Run successful schema and data dependencies in batch"
+  },
+  "corpus_id": "E210",
+  "corpus_wave": "d1-semantics",
+  "fixture": "tests/conformance/bindings/fixtures/d1-semantics",
+  "id": "conformance/bindings/d1-e210",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/d1-semantics/E210"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/d1-semantics/E210",
+      "manifest_sha256": "a710fc3341a0ac99cbe9b5dd5847e7fc9c7d355313bac1440415941d7b31780f",
+      "review_sha256": "c6cdb7367eac8cb864520fba365e861793be03ddfd570b61e4a642030f662350",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/d1-semantics",
+      "tranche": "002"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/E210",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "E210",
+  "source": "tests/conformance/bindings/fixtures/d1-semantics/worker.js",
+  "source_sha256": "4b946d92399b5493a1039165af98b4c2159f08296b211eec6a60ce9680c26525",
+  "title": "Run successful schema and data dependencies in batch"
+}

@@ -1,0 +1,25 @@
+{
+  "id": "unit/input-gates/stale-release-cannot-release-new-holder",
+  "layer": "unit",
+  "behaviour": "input-gates",
+  "title": "stale release cannot release new holder",
+  "origins": [
+    {
+      "source": "tests/unit/input_gate.rs",
+      "legacy_id": "unit/input-gate/stale_release_cannot_release_new_holder"
+    }
+  ],
+  "legacy_ids": [
+    "unit/input-gate/stale_release_cannot_release_new_holder"
+  ],
+  "adapter": "native",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/unit/input-gates/input_gate.rs",
+  "source_sha256": "55f675467a77b00df646bb2d3409cb979fe90f4037b4b520f9a42fed6d4c1fec",
+  "test_filter": "stale_release_cannot_release_new_holder"
+}

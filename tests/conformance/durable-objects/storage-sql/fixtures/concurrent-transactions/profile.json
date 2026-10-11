@@ -1,0 +1,12 @@
+{
+ "profile":"sqlite-concurrency-frozen-v1",
+ "layer":"real-process-RPC",
+ "binary_sha256":"62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e",
+ "execution_state":"NOT_RUN",
+ "owner":"Direct-runtime test-harness supervisor; no implementation in this wave. Hybrid coordinates capacity only.",
+ "enforced_here":false,
+ "required_limits":{"case_wall_seconds":30,"memory_mib":512,"pids":128,"vcpus":1,"recipient_rpc_max":12,"sql_cursors_max":128,"native_join_pairs_max":4096,"receipt_bytes_max":1048576,"control_requests_max":5},
+ "fixture_bounds":{"durable_objects":3,"active_recipient_invocations_max":2,"hold_timeout_ms":8000,"event_wait_timeout_ms":8000,"cleanup_drain_timeout_ms":5000,"recipient_cleanup_timeout_ms":3000,"events_max":128,"seed_rows_per_recipient":9,"sql_result_rows_per_cursor_max":8,"fixture_controlled_bytes_max":1048576},
+ "forbidden":["Loader","returned stateless capability","detached jobs","waitUntil","external/public traffic","VM or runtime launch","builds","fault injection","host pressure","source mutation"],
+ "supervisor_required":["parent-owned exclusive run slot","fresh disposable roots","observed hard guest/process limits","exact frozen binary and source pins","independent reviewed implementation hashes","terminal process and owned-storage teardown proof"]
+}

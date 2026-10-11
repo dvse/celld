@@ -1,0 +1,37 @@
+{
+  "id": "conformance/durable-objects/storage-kv/persist-a-counter-across-named-object-fetches",
+  "layer": "conformance",
+  "behaviour": "durable-objects/storage-kv",
+  "title": "Persist a counter across named-object fetches",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/examples/counter",
+      "legacy_id": "examples/counter"
+    },
+    {
+      "source": "celld@9c0fca5/examples/counter/wrangler.jsonc",
+      "sha256": "6b431b363a84b9da425cb52fa70e5c78da99e91b5ad85d9e0314d4cee499966d"
+    }
+  ],
+  "legacy_ids": [
+    "examples/counter"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/durable-objects/storage-kv/fixtures/fetch-counter",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/suite"
+    },
+    {
+      "path": "/suite"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/durable-objects/storage-kv/fixtures/fetch-counter/wrangler.jsonc",
+  "source_sha256": "6b431b363a84b9da425cb52fa70e5c78da99e91b5ad85d9e0314d4cee499966d"
+}

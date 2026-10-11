@@ -1,0 +1,25 @@
+{
+  "id": "unit/input-gates/independent-event-waits-for-outermost-hold",
+  "layer": "unit",
+  "behaviour": "input-gates",
+  "title": "independent event waits for outermost hold",
+  "origins": [
+    {
+      "source": "tests/unit/input_gate.rs",
+      "legacy_id": "unit/input-gate/independent_event_waits_for_outermost_hold"
+    }
+  ],
+  "legacy_ids": [
+    "unit/input-gate/independent_event_waits_for_outermost_hold"
+  ],
+  "adapter": "native",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/unit/input-gates/input_gate.rs",
+  "source_sha256": "55f675467a77b00df646bb2d3409cb979fe90f4037b4b520f9a42fed6d4c1fec",
+  "test_filter": "independent_event_waits_for_outermost_hold"
+}

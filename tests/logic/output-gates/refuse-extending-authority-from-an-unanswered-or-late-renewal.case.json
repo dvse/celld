@@ -1,0 +1,53 @@
+{
+  "id": "logic/output-gates/refuse-extending-authority-from-an-unanswered-or-late-renewal",
+  "layer": "logic",
+  "behaviour": "output-gates",
+  "title": "Refuse extending authority from an unanswered or late renewal",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/output-gate-logic",
+      "legacy_id": "corpus/output-gate-logic/G023"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/output-gate-logic/tests/output_gate.rs",
+      "sha256": "4111d744a514b64a36f285dbf4a8b51ca56ce3f3f128dbd5ea1cc188ebed88ba"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/output-gate-logic/G023"
+  ],
+  "adapter": "native",
+  "corpus_id": "G023",
+  "corpus_wave": "output-gate-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/output-gates/fixtures/decision-cases/tests/output_gate.rs",
+  "source_sha256": "4111d744a514b64a36f285dbf4a8b51ca56ce3f3f128dbd5ea1cc188ebed88ba",
+  "test_filter": "g023_unanswered_renewal_cannot_extend_output_authority",
+  "contract": {
+    "intent": "Refuse extending authority from an unanswered or late renewal",
+    "preconditions": [
+      "Fresh State::new(\"fixture\", config) in this test only; no direct State field mutation",
+      "Initial config is fully pinned in profile.json; actual celld-logic::on_event is the only transition",
+      "For each resident: RequestAt -> OwnerRead (absent or exact prior local epoch) -> OwnerCasCompleted Applied -> RestoreCompleted -> RuntimeStarted generation1 -> Published; expect Local and exact epoch",
+      "Every real completion operation ID is captured from an exact emitted effect; G017 deliberately supplies gate+1000 as an unknown-op negative control. Every transition calls State::validate",
+      "No actual clock, I/O, runtime, object store, host credentials, or external traffic; source/pin/toolchain preflight required"
+    ],
+    "trace": [
+      "renew timer133 and retain CAS",
+      "write/prove Response10 at199",
+      "Fetch11 at200",
+      "return renewal Applied at200",
+      "fire old fence"
+    ],
+    "oracle": "199 proof succeeds;200 output fails NodeFenced; late CAS fences with NodeLeaseExpired; no renewed serving",
+    "cleanup": "Finish explicit request activities/reset/runtime transitions shown in test. Drop the test-owned State at return or unwind; all state is in-memory and isolated. No production resource is created. Runner reaps only its owned compiler/test process groups and preserves evidence.",
+    "implementation": "tests/output_gate.rs:g023_unanswered_renewal_cannot_extend_output_authority"
+  },
+  "selector": "G023"
+}

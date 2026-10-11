@@ -1,0 +1,60 @@
+{
+  "id": "logic/lease-acquisition/delayed-live-lease-snapshot-routes-once-then-refreshes-generation",
+  "layer": "logic",
+  "behaviour": "lease-acquisition",
+  "title": "Delayed live lease snapshot routes once then refreshes generation",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic",
+      "legacy_id": "routing-acquisition-logic/N020"
+    }
+  ],
+  "corpus_wave": "routing-acquisition-logic",
+  "corpus_id": "N020",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "N020",
+    "intent": "Delayed live lease snapshot routes once then refreshes generation",
+    "failure_hypothesis": "Characterize source-pinned initial routing versus cache-reuse distinction; never infer takeover from delay would be violated by the interleaving.",
+    "preconditions": [
+      "Fresh test-owned State; only frozen production celld_logic::on_event mutates it.",
+      "Empty State; a/1 reads peer epoch3 at wall/mono100; lease read remains outstanding.",
+      "All completion operation IDs and timers come from the exact emitted effects; late IDs are previously issued IDs, never fabricated authority.",
+      "All input storage/lease/proof replies are synthetic facts. No executor, network, runtime, or fleet service is simulated as empirical evidence.",
+      "Static source/pin check and independent review required; compiler, test and runtime have not been launched."
+    ],
+    "initial_state": "Empty State; a/1 reads peer epoch3 at wall/mono100; lease read remains outstanding.",
+    "trace": [
+      "At mono200 join request2",
+      "Return lease snapshot expiring150, old-generation/old.invalid:1",
+      "Assert both cohort routes Remote and no takeover CAS",
+      "Next request3 captures new owner read because old lease is not reusable",
+      "Return same ownership epoch with fresh generation and new.invalid:2 expires600",
+      "Assert request3 uses new address and one remote refresh"
+    ],
+    "stress": "Transport-delayed snapshot crosses expiry between read invocation and response; <=120 events, <=3 cells in any schedule, <=3 activation permits; no size/seed matrix.",
+    "oracle": "Characterize source-pinned initial routing versus cache-reuse distinction; never infer takeover from delay",
+    "safety_oracle": "Characterize source-pinned initial routing versus cache-reuse distinction; never infer takeover from delay",
+    "liveness_oracle": "request3 resolves current generation; all three requests terminate",
+    "terminal_witness": "request3 resolves current generation; all three requests terminate",
+    "cleanup": "Finish every locally completed request and cancel each remaining ownership-only waiter as shown. H::done checks no pending requests, active cells, activation/capacity queues, activation/eviction/release/adoption permits, or nonterminal phases. Drop isolated in-memory State; no external resources created. Stored timer descriptors are never launched.",
+    "implementation": "tests/routing_acquisition.rs:n020_delayed_live_snapshot_routes_once_then_refreshes_generation",
+    "test_function": "n020_delayed_live_snapshot_routes_once_then_refreshes_generation",
+    "layer": "native-component",
+    "sublayer": "state-trace",
+    "classification": "characterization",
+    "qualification": "characterization",
+    "promotion": false,
+    "promotion_gate": "Nonpromoting characterization of source-pinned behavior; no policy verdict inferred.",
+    "source_pins": "source-pins.json",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "execution_readiness": "Complete standalone Rust test body; syntax checked, not compiled or linked.",
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  }
+}

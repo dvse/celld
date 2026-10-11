@@ -1,0 +1,33 @@
+{
+  "id": "conformance/rpc/do-property",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "do property",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/do-property",
+      "legacy_id": "hyperbob/do-property"
+    },
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/do-property/wrangler.json",
+      "sha256": "7e44763149f64f63759b603227b668fc78bd553c84906463e53291adbff081e3"
+    }
+  ],
+  "legacy_ids": [
+    "hyperbob/do-property"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/rpc/fixtures/object-properties",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/?v=suite"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/rpc/fixtures/object-properties/wrangler.json",
+  "source_sha256": "7e44763149f64f63759b603227b668fc78bd553c84906463e53291adbff081e3"
+}

@@ -1,0 +1,56 @@
+{
+  "adapter": "topology",
+  "behaviour": "durable-objects/websockets",
+  "contract": {
+    "cleanup": "Every trace normal-closes its sockets; finally cleanup independently aborts control requests, accepts any already obtained pending upgrade for closure, closes every local endpoint, discards held echoes, closes recipient sockets, joins normalization and records unresolved resources. Separately owned supervisor must reap only owned processes/sockets and destroy fresh storage. Any incomplete cleanup or unknown entry is BLOCKED/FAIL, never PASS.",
+    "distinctness": "Close in native incoming-event callback differs from HTTP control-initiated close W010.",
+    "intent": "Close in receiver message turn",
+    "oracle": "Exact last echo before one normal close",
+    "preconditions": [
+      "Exact candidate binary and pinned implementation/source/profile hashes; independently reviewed ordinary-WebSocket scope and case oracle",
+      "Fresh disposable caller and recipient DOs in separately observed owned processes with actual root/isolate/process identities",
+      "Already enforced external wall/memory/PID/CPU ceilings and exclusive parent run slot; no deployment or launch by adapter",
+      "Public WebSocket/WebSocketPair and ordinary valid private-network upgrades; preflight echo and clean-close control must complete before entry",
+      "Case-specific initial state and options are established by the explicit W017 trace; no state or socket is reused from another case."
+    ],
+    "source_contracts": [
+      "SC-EVENT"
+    ],
+    "trace": [
+      "Witness held neighbor",
+      "Send first then last",
+      "Recipient callback echoes last then closes4030",
+      "Require first,last before handler-finished close",
+      "Release and close neighbor"
+    ]
+  },
+  "corpus_id": "W017",
+  "corpus_wave": "active-websocket-stress",
+  "fixture": "tests/conformance/durable-objects/websockets/fixtures/event-traces",
+  "id": "conformance/durable-objects/websockets/close-in-receiver-message-turn",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/active-websocket-stress/W017"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/active-websocket-stress/W017",
+      "source": "guarded-source-archive/celld-os-stress/waves/active-websocket-stress"
+    },
+    {
+      "sha256": "2ea74d4323d34e1121e93c9637f19d6f46349f17a06516a6e2d13d4a86187317",
+      "source": "guarded-source-archive/celld-os-stress/waves/active-websocket-stress/fixture.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "W017",
+  "source": "tests/conformance/durable-objects/websockets/fixtures/event-traces/fixture.js",
+  "source_sha256": "2ea74d4323d34e1121e93c9637f19d6f46349f17a06516a6e2d13d4a86187317",
+  "title": "Close in receiver message turn"
+}

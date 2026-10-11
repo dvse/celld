@@ -1,0 +1,49 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "allSettled observes every result; shared codecCleanup",
+    "intent": "Keep concurrent successful clone results and an exception attached to their own calls",
+    "oracle": "No sibling contamination, correct response association and exact invocation counts",
+    "preconditions": "COMMON; three calls share peer and tag but return distinct left/error/right values",
+    "source_contracts": [
+      "SC-ENVELOPE",
+      "SC-ERRORS"
+    ],
+    "trace": [
+      "launch fixed three-call allSettled fanout",
+      "assert fulfilled/rejected/fulfilled in request order",
+      "check left array, middle exception and right Map exact data",
+      "check two accepts and one throw"
+    ]
+  },
+  "corpus_id": "C033",
+  "corpus_wave": "rpc-codec",
+  "fixture": "tests/conformance/rpc/fixtures/value-codec",
+  "id": "conformance/rpc/keep-concurrent-successful-clone-results-and-an-exception-attached-to-their-own-calls",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/rpc-codec/C033"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/rpc-codec/C033",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec"
+    },
+    {
+      "sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "C033",
+  "source": "tests/conformance/rpc/fixtures/value-codec/entry.js",
+  "source_sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+  "title": "Keep concurrent successful clone results and an exception attached to their own calls"
+}

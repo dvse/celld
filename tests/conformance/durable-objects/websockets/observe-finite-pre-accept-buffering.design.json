@@ -1,0 +1,62 @@
+{
+  "id": "conformance/durable-objects/websockets/observe-finite-pre-accept-buffering",
+  "layer": "conformance",
+  "behaviour": "durable-objects/websockets",
+  "title": "Observe finite pre-accept buffering",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/active-websocket-stress",
+      "legacy_id": "active-websocket-stress/W023"
+    }
+  ],
+  "corpus_wave": "active-websocket-stress",
+  "corpus_id": "W023",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "W023",
+    "intent": "Observe finite pre-accept buffering",
+    "failure_hypothesis": "Finite peer sends before caller accept may buffer; this observation cannot establish a capacity or backpressure contract.",
+    "preconditions": [
+      "Exact candidate binary and pinned implementation/source/profile hashes; independently reviewed ordinary-WebSocket scope and case oracle",
+      "Fresh disposable caller and recipient DOs in separately observed owned processes with actual root/isolate/process identities",
+      "Already enforced external wall/memory/PID/CPU ceilings and exclusive parent run slot; no deployment or launch by adapter",
+      "Public WebSocket/WebSocketPair and ordinary valid private-network upgrades; preflight echo and clean-close control must complete before entry",
+      "Case-specific initial state and options are established by the explicit W023 trace; no state or socket is reused from another case."
+    ],
+    "trace": [
+      "Obtain but do not accept upgraded socket",
+      "Server sends16384-byte binary and text tail",
+      "Complete independent socket and witness server send calls before accept",
+      "Record any visible bufferedAmount and delivered count without asserting values",
+      "Accept, verify finite exact delivery, clean-close both"
+    ],
+    "stress": "One fetch-upgrade remains unaccepted while two server frames are queued and independent peer completes.",
+    "oracle": "Exact eventual data/close is checked; queue amount and before-accept event behavior are nonpromoting observations",
+    "executable_assertions": "cases.js::W023 plus Lab.assertClosed/expect/assertReceived",
+    "cleanup": "Every trace normal-closes its sockets; finally cleanup independently aborts control requests, accepts any already obtained pending upgrade for closure, closes every local endpoint, discards held echoes, closes recipient sockets, joins normalization and records unresolved resources. Separately owned supervisor must reap only owned processes/sockets and destroy fresh storage. Any incomplete cleanup or unknown entry is BLOCKED/FAIL, never PASS.",
+    "distinctness": "Characterization of accept gating; no OOM, indefinite producer or TCP pause.",
+    "source_contracts": [
+      "SC-CHAR"
+    ],
+    "layer": "real-process-WebSocket",
+    "gate": "characterization",
+    "counts": {
+      "authored": 1,
+      "reviewed": 0,
+      "executable_qualified": 0,
+      "run": 0,
+      "passed": 0
+    },
+    "status": "NOT_RUN",
+    "bounds": {
+      "live_websockets": 4,
+      "total_websockets_including_controls": 8,
+      "message_payload_max_bytes": 32768,
+      "wire_bytes_per_endpoint_max": 524288,
+      "data_frames_per_endpoint_max": 256,
+      "control_requests_max": 128,
+      "fixture_evidence_wall_ms_max": 24000
+    }
+  }
+}

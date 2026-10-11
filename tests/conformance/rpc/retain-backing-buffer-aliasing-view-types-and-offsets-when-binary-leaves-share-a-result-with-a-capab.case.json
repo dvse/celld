@@ -1,0 +1,51 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "Dispose result tree in finally; shared codecCleanup",
+    "intent": "Retain backing-buffer aliasing, view types and offsets when binary leaves share a result with a capability",
+    "oracle": "Both views share returned buffer; offsets 1 and 2; exact view bytes; cross-view mutation 61 visible; target views callable",
+    "preconditions": "COMMON; peer creates one buffer with overlapping Uint8Array and DataView plus RpcTarget",
+    "source_contracts": [
+      "SC-CLONE",
+      "SC-LIFT",
+      "SC-REVIVE"
+    ],
+    "trace": [
+      "receive mixed binary/capability graph",
+      "compare buffer identity and view offsets/lengths",
+      "compare view bytes against sentinels",
+      "mutate overlap and read through DataView",
+      "invoke capability"
+    ]
+  },
+  "corpus_id": "C022",
+  "corpus_wave": "rpc-codec",
+  "fixture": "tests/conformance/rpc/fixtures/value-codec",
+  "id": "conformance/rpc/retain-backing-buffer-aliasing-view-types-and-offsets-when-binary-leaves-share-a-result-with-a-capab",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/rpc-codec/C022"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/rpc-codec/C022",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec"
+    },
+    {
+      "sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "C022",
+  "source": "tests/conformance/rpc/fixtures/value-codec/entry.js",
+  "source_sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+  "title": "Retain backing-buffer aliasing, view types and offsets when binary leaves share a result with a capability"
+}

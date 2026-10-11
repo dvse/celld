@@ -1,0 +1,13 @@
+{
+  "name": "upgrade-front",
+  "main": "fixture.js",
+  "no_bundle": true,
+  "compatibility_date": "2026-01-01",
+  "services": [
+    {
+      "binding": "BACKEND",
+      "service": "upgrade-missing",
+      "entrypoint": "NewAPI"
+    }
+  ]
+}
