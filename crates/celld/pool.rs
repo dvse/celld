@@ -103,8 +103,20 @@ impl TurnScheduler {
         };
         if let Some(receive) = receive {
             // Cancellation leaves a closed sender in this lane. `release`
-            // skips it, so a dropped waiter cannot strand the active token.
-            let _ = receive.await;
+            // skips it, so a waiter dropped before its grant cannot strand
+            // the active token; `TurnWaiter` covers one dropped after it.
+            let mut waiting = TurnWaiter {
+                scheduler: self,
+                receive: Some(receive),
+            };
+            let _ = waiting
+                .receive
+                .as_mut()
+                .expect("a queued turn waits on its grant")
+                .await;
+            // Granted: the permit below owns the turn from here on, with no
+            // suspension point between the two.
+            waiting.receive = None;
         }
         TurnPermit(self)
     }
@@ -147,6 +159,34 @@ impl TurnScheduler {
 impl Drop for TurnPermit<'_> {
     fn drop(&mut self) {
         self.0.release();
+    }
+}
+
+/// A queued turn that has not yet observed its grant.
+///
+/// `release` makes a lane current when its send succeeds, and that send only
+/// needs the receiver to exist. A waiter dropped after the send but before it
+/// ran — its task aborted, its op cleared, its select branch lost — held the
+/// isolate with nothing left to release it, and every later turn on the
+/// isolate queued forever. Workerd's waiter passes the lock on when it goes:
+/// `~AsyncLockWaiter` fulfills the next waiter if it was at the front
+/// (io/async-lock-scheduler.h:197-224). Closing the receiver first decides the
+/// race: a send that lands before the close is a grant this drop releases, and
+/// one after it fails, so `release` moves on to the next lane itself.
+struct TurnWaiter<'a> {
+    scheduler: &'a TurnScheduler,
+    receive: Option<tokio::sync::oneshot::Receiver<()>>,
+}
+
+impl Drop for TurnWaiter<'_> {
+    fn drop(&mut self) {
+        let Some(mut receive) = self.receive.take() else {
+            return;
+        };
+        receive.close();
+        if receive.try_recv().is_ok() {
+            self.scheduler.release();
+        }
     }
 }
 
@@ -1079,6 +1119,75 @@ mod capability_drain_tests {
                     "a late placement in a retired pool stays invalidated"
                 );
                 pool.free_drained();
+            });
+    }
+}
+
+#[cfg(test)]
+mod turn_scheduler_tests {
+    use super::*;
+    use std::future::Future;
+    use std::task::Context;
+    use std::task::Poll;
+
+    fn poll_once<F: Future>(future: std::pin::Pin<&mut F>) -> Poll<F::Output> {
+        future.poll(&mut Context::from_waker(std::task::Waker::noop()))
+    }
+
+    /// A queued turn granted and then dropped before it ran — an aborted
+    /// capability drive, a cleared op — must hand the isolate on, as
+    /// workerd's `~AsyncLockWaiter` does. Before, the grant made its lane
+    /// current with no permit to release it, and the next turn on the
+    /// isolate waited forever (Tunez Celld 4: planet-2 froze with 134
+    /// queued turns and no thread in JavaScript).
+    #[test]
+    fn a_granted_waiter_dropped_before_it_runs_passes_the_turn_on() {
+        tokio::runtime::Builder::new_current_thread()
+            .enable_time()
+            .build()
+            .unwrap()
+            .block_on(async {
+                let scheduler = TurnScheduler::default();
+                let holder = scheduler.acquire(TurnLane::Stateless).await;
+                let mut granted = Box::pin(scheduler.acquire(TurnLane::Cell("cell".into())));
+                assert!(
+                    poll_once(granted.as_mut()).is_pending(),
+                    "queued behind the holder"
+                );
+                // The holder leaves: `release` sends the grant to the queued
+                // waiter, which has not been polled since.
+                drop(holder);
+                drop(granted);
+                let next = tokio::time::timeout(
+                    std::time::Duration::from_secs(1),
+                    scheduler.acquire(TurnLane::Stateless),
+                )
+                .await
+                .expect("a dropped grant strands the isolate");
+                drop(next);
+            });
+    }
+
+    /// The same for a waiter dropped before its grant: `release` skips its
+    /// closed sender and grants the next lane.
+    #[test]
+    fn a_waiter_dropped_before_its_grant_is_skipped() {
+        tokio::runtime::Builder::new_current_thread()
+            .enable_time()
+            .build()
+            .unwrap()
+            .block_on(async {
+                let scheduler = TurnScheduler::default();
+                let holder = scheduler.acquire(TurnLane::Stateless).await;
+                let mut dropped = Box::pin(scheduler.acquire(TurnLane::Cell("a".into())));
+                assert!(poll_once(dropped.as_mut()).is_pending());
+                let mut waiting = Box::pin(scheduler.acquire(TurnLane::Cell("b".into())));
+                assert!(poll_once(waiting.as_mut()).is_pending());
+                drop(dropped);
+                drop(holder);
+                tokio::time::timeout(std::time::Duration::from_secs(1), waiting)
+                    .await
+                    .expect("the next lane is granted");
             });
     }
 }

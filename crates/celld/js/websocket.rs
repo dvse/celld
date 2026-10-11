@@ -197,10 +197,14 @@ pub(super) fn ws_capture_flush_touched(tc: &mut v8::PinScope, runtime_state: &Ac
 /// cell A that runs inside another event's checkpoint is captured by and
 /// gated against A, not the checkpoint's owner.
 fn ws_emit(context: &Arc<IoContext>, id: u64, out: WsOut) {
-    let mut capture = context.ws_capture.lock().unwrap();
+    ws_emit_with_capture(context, context, id, out);
+}
+
+fn ws_emit_with_capture(context: &Arc<IoContext>, event: &Arc<IoContext>, id: u64, out: WsOut) {
+    let mut capture = event.ws_capture.lock().unwrap();
     if !capture.is_empty() && ws_channel(id) == celld_logic::Channel::WsHibernatable {
         capture.last_mut().unwrap().frames.capture(id, out);
-        let runtime_state = context
+        let runtime_state = event
             .continuation
             .as_ref()
             .and_then(|(_, runtime_state)| runtime_state.upgrade())
@@ -209,9 +213,9 @@ fn ws_emit(context: &Arc<IoContext>, id: u64, out: WsOut) {
         if !touched.iter().any(|candidate| {
             candidate
                 .upgrade()
-                .is_some_and(|candidate| Arc::ptr_eq(&candidate, context))
+                .is_some_and(|candidate| Arc::ptr_eq(&candidate, event))
         }) {
-            touched.push(Arc::downgrade(context));
+            touched.push(Arc::downgrade(event));
         }
         return;
     }
@@ -253,6 +257,16 @@ fn ws_emit(context: &Arc<IoContext>, id: u64, out: WsOut) {
     });
 }
 
+fn ws_emit_from_reaction(scope: &mut v8::PinScope, id: u64, out: WsOut) {
+    let resource = require_event_context!(scope);
+    // Captures belong to the message event, while egress authority belongs
+    // to its actor. A foreign actor's checkpoint cannot lend its capture.
+    let event = operation_driver_context(scope)
+        .filter(|driver| driver.cell() == resource.cell())
+        .unwrap_or_else(|| resource.clone());
+    ws_emit_with_capture(&resource, &event, id, out);
+}
+
 pub(super) fn op_ws_send(
     scope: &mut v8::PinScope,
     args: v8::FunctionCallbackArguments,
@@ -264,7 +278,7 @@ pub(super) fn op_ws_send(
         .map(|n| n.value() as u64)
         .unwrap_or(0);
     let data = args.get(1).to_rust_string_lossy(scope);
-    ws_emit(&event_context(scope), id, WsOut::Text(data));
+    ws_emit_from_reaction(scope, id, WsOut::Text(data));
 }
 pub(super) fn op_ws_send_binary(
     scope: &mut v8::PinScope,
@@ -277,7 +291,7 @@ pub(super) fn op_ws_send_binary(
         .map(|n| n.value() as u64)
         .unwrap_or(0);
     let data = view_bytes(args.get(1)).unwrap_or_default();
-    ws_emit(&event_context(scope), id, WsOut::Binary(data));
+    ws_emit_from_reaction(scope, id, WsOut::Binary(data));
 }
 pub(super) fn op_ws_close(
     scope: &mut v8::PinScope,
@@ -291,7 +305,7 @@ pub(super) fn op_ws_close(
         .unwrap_or(0);
     let code = args.get(1).uint32_value(scope).unwrap_or(1000) as u16;
     let reason = args.get(2).to_rust_string_lossy(scope);
-    ws_emit(&event_context(scope), id, WsOut::Close(code, reason));
+    ws_emit_from_reaction(scope, id, WsOut::Close(code, reason));
 }
 pub(super) fn op_ws_alloc(
     scope: &mut v8::PinScope,
@@ -330,7 +344,7 @@ fn dialing_facet(scope: &mut v8::PinScope, cell: &str) -> Result<Option<FacetSoc
         storage,
         root: Some(root),
         ..
-    }) = current_cell_event(&event_context(scope))
+    }) = current_cell_event(&*event_context(scope).ok_or_else(|| DEAD_IO_CONTEXT.to_string())?)
     else {
         return Ok(None);
     };

@@ -265,7 +265,7 @@ pub(super) fn op_storage_sync(
         throw_storage_error(scope, "sync", "this process has no output-gate channel");
         return;
     }
-    let context = event_context(scope);
+    let context = require_event_context!(scope);
     let Some(frame) = current_cell_event(&context) else {
         throw_storage_error(scope, "sync", format!("{cell} has no running cell event"));
         return;
@@ -740,7 +740,7 @@ pub(super) fn op_storage_transaction_control(
         Err(error) => throw_storage_error(scope, "transaction", error),
         // An outermost commit published a dirty alarm: register its
         // wake-entry PUT against the current event's output gate.
-        Ok(Some(at)) if at >= 0 => spawn_arm_gate(&cell, at, current_reaction_io_context(scope)),
+        Ok(Some(at)) if at >= 0 => spawn_arm_gate(&cell, at, operation_driver_context(scope)),
         Ok(_) => {}
     }
 }
