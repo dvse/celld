@@ -1,0 +1,1 @@
+{"id": "R9-05", "description": "Routed AbortSignal propagation across two/three processes", "command": ["python3", "run.py"], "runtimes": ["celld", "workerd"], "profiles": ["quick", "full"], "timeout_seconds": 150, "expected_failure": null}

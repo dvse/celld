@@ -1,0 +1,3 @@
+{"name": "c7-01-router", "main": "index.js", "compatibility_date": "2026-08-14",
+ "services": [{"binding": "PUB", "service": "c7-01-gatekeeper"}],
+ "durable_objects": {"bindings": [{"name": "ROUTES", "class_name": "Routes", "script_name": "c7-01-gatekeeper"}]}}

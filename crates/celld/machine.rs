@@ -98,6 +98,36 @@ pub const DEFAULT_LOCAL_CACHE_MAX_BYTES: u64 = 2 * 1024 * 1024 * 1024;
 /// request for the kernel's own connect timeout.
 pub const PEER_CONNECT_TIMEOUT: std::time::Duration = std::time::Duration::from_secs(3);
 
+/// How long a celld HTTP/1 server waits for a request head, including the
+/// idle wait for the next request on a kept-alive connection.
+pub const SERVER_HEADER_READ_TIMEOUT: std::time::Duration = std::time::Duration::from_secs(30);
+
+/// Idle lifetime of a pooled client connection. hyper-util evicts idle
+/// connections on an interval equal to this timeout
+/// (client/legacy/pool.rs spawn_idle_interval), so one can stay idle for up
+/// to twice it. Twice this must stay below [`SERVER_HEADER_READ_TIMEOUT`]:
+/// otherwise the server closes the idle connection first and records a
+/// "read header from client timeout" failure for every one of them, and a
+/// request sent on such a connection as it closes fails ambiguously
+/// (Tunez Celld 6, 2026-10-10: 23,900 edge failures, 324 planet-to-edge
+/// connections).
+pub const CLIENT_POOL_IDLE: std::time::Duration = std::time::Duration::from_secs(10);
+
+/// Idle connections a client keeps per peer. Busy periods still open as many
+/// as their concurrency needs; afterwards only this many stay pooled.
+pub const CLIENT_POOL_MAX_IDLE_PER_HOST: usize = 16;
+
+/// Apply the shared keep-alive policy to a client that reuses connections.
+pub fn pooled_client(builder: reqwest::ClientBuilder) -> reqwest::ClientBuilder {
+    const _: () = assert!(
+        2 * CLIENT_POOL_IDLE.as_secs() < SERVER_HEADER_READ_TIMEOUT.as_secs(),
+        "client idle eviction must precede the server's idle timeout"
+    );
+    builder
+        .pool_idle_timeout(CLIENT_POOL_IDLE)
+        .pool_max_idle_per_host(CLIENT_POOL_MAX_IDLE_PER_HOST)
+}
+
 pub fn lease_ttl_ms_from_environment() -> u64 {
     crate::env_vars::positive_or("CELLD_TTL_MS", 10_000).expect("validated CELLD_TTL_MS")
 }

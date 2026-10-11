@@ -1,0 +1,1 @@
+{"id":"R4-13","description":"Live handles reject cross-session calls and duplication before side effects","command":["python3","../http_case.py"],"runtimes":["celld","workerd"],"profiles":["quick","full"],"timeout_seconds":120,"expected_failure":null}

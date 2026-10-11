@@ -1,0 +1,1 @@
+{"id":"R4-09","description":"Saved pipeline methods reject after disposal; underlying root promise remains awaitable","command":["node","run.mjs"],"runtimes":["celld"],"profiles":["quick","full"],"timeout_seconds":120,"expected_failure":null}

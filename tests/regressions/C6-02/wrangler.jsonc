@@ -1,0 +1,1 @@
+{"name": "lab-ordering", "main": "index.js", "compatibility_date": "2026-08-01", "durable_objects": {"bindings": [{"name": "SINK", "class_name": "Sink"}]}, "migrations": [{"tag": "v1", "new_sqlite_classes": ["Sink"]}]}

@@ -1,0 +1,1 @@
+{"id": "OR2-02", "description": "An export after generation retirement or condemnation neither pins nor un-retires the heap (native)", "command": ["cargo", "test", "--locked", "-p", "celld", "--lib", "or2_02", "--", "--test-threads=1"], "runtimes": ["celld"], "profiles": ["quick", "full"], "timeout_seconds": 900, "expected_failure": null}

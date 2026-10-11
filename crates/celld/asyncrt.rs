@@ -447,6 +447,7 @@ pub fn interval_at(start_ms: u64, period: Duration) -> Interval {
 pub enum OpOut {
     Str(String),
     Bytes(Vec<u8>),
+    RpcBytes(bytes::Bytes),
 }
 
 impl From<String> for OpOut {
@@ -458,6 +459,12 @@ impl From<String> for OpOut {
 impl From<Vec<u8>> for OpOut {
     fn from(value: Vec<u8>) -> Self {
         Self::Bytes(value)
+    }
+}
+
+impl From<bytes::Bytes> for OpOut {
+    fn from(value: bytes::Bytes) -> Self {
+        Self::RpcBytes(value)
     }
 }
 

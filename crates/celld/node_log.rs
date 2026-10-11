@@ -2472,7 +2472,7 @@ struct SignedPeerTransport {
 impl SignedPeerTransport {
     fn new(auth: Arc<PeerAuth>) -> Self {
         Self {
-            http: reqwest::Client::builder()
+            http: crate::machine::pooled_client(reqwest::Client::builder())
                 .timeout(std::time::Duration::from_secs(10))
                 .tcp_nodelay(true)
                 .build()

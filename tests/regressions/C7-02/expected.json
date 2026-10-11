@@ -1,0 +1,70 @@
+{
+ "/sync-exports": [
+  200,
+  "e0;e1;e2;"
+ ],
+ "/sync-target-promise": [
+  200,
+  "t0;t1;t2;"
+ ],
+ "/sync-pipelined": [
+  200,
+  "t0;t1;t2;"
+ ],
+ "/sync-rpc-stream": [
+  200,
+  "s0;s1;s2;"
+ ],
+ "/async-target": [
+  200,
+  "t0;t1;t2;"
+ ],
+ "/wait-target": [
+  200,
+  "t0;t1;t2;"
+ ],
+ "/inline-target": [
+  200,
+  "t0;t1;t2;"
+ ],
+ "/async-rpc-stream": [
+  200,
+  "s0;s1;s2;"
+ ],
+ "/buffered-rpc-stream": [
+  200,
+  "s0;s1;s2;"
+ ],
+ "/use": [
+  200,
+  "{\"target\":\"refused:cross-request\",\"stream\":\"refused:cross-request\"}"
+ ],
+ "/ep-sync": [
+  200,
+  "t0;t1;t2;"
+ ],
+ "/ep-async": [
+  200,
+  "t0;t1;t2;"
+ ],
+ "/ep-rpcstream": [
+  200,
+  "s0;s1;s2;"
+ ],
+ "/ws-sync": [
+  "ws",
+  [
+   "t0;",
+   "t1;",
+   "t2;"
+  ]
+ ],
+ "/ws-async": [
+  "ws",
+  [
+   "t0;",
+   "t1;",
+   "t2;"
+  ]
+ ]
+}

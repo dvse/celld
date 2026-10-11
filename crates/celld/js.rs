@@ -732,13 +732,16 @@ impl CellJob {
 thread_local! {
     // One outbound HTTP client per JS thread — building it per fetch rebuilds
     // the TLS stack every call (async-op-hazards.md).
-    static HTTP: reqwest::Client = reqwest::Client::new();
-    static HTTP_MANUAL: reqwest::Client = reqwest::Client::builder()
+    // Subrequests often target another celld surface (an edge's public
+    // listener), so they share the peer keep-alive policy.
+    static HTTP: reqwest::Client =
+        crate::machine::pooled_client(reqwest::Client::builder()).build().unwrap();
+    static HTTP_MANUAL: reqwest::Client = crate::machine::pooled_client(reqwest::Client::builder())
         .redirect(reqwest::redirect::Policy::none()).build().unwrap();
     // A separate policy stops an `error` request before reqwest can replay it
     // at the destination. Inspecting the final response would be too late:
     // the method, body, and credentials could already have left the process.
-    static HTTP_ERROR: reqwest::Client = reqwest::Client::builder()
+    static HTTP_ERROR: reqwest::Client = crate::machine::pooled_client(reqwest::Client::builder())
         .redirect(reqwest::redirect::Policy::custom(|attempt| {
             attempt.error("fetch redirect mode is error")
         })).build().unwrap();
@@ -1432,6 +1435,10 @@ fn resolve_res(tc: &mut v8::PinScope, id: u64, res: Result<asyncrt::OpOut, Strin
             let v = bytes_value(tc, b);
             r.resolve(tc, v);
         }
+        Ok(asyncrt::OpOut::RpcBytes(b)) => {
+            let v = rpc_bytes_value(tc, b);
+            r.resolve(tc, v);
+        }
         Err(e) => {
             let s = v8::String::new(tc, &e).unwrap();
             let ex = v8::Exception::error(tc, s);
@@ -1440,6 +1447,22 @@ fn resolve_res(tc: &mut v8::PinScope, id: u64, res: Result<asyncrt::OpOut, Strin
     }
 }
 
+fn rpc_bytes_value<'s>(
+    scope: &mut v8::PinScope<'s, '_>,
+    bytes: bytes::Bytes,
+) -> v8::Local<'s, v8::Value> {
+    let buffer = crate::capability_packet::buffer(bytes.to_vec()).expect("owned RPC bytes");
+    rpc_buffer_value(scope, buffer)
+}
+fn rpc_buffer_value<'s>(
+    scope: &mut v8::PinScope<'s, '_>,
+    bytes: crate::capability_packet::Buffer,
+) -> v8::Local<'s, v8::Value> {
+    let len = bytes.as_ref().len();
+    let store = v8::ArrayBuffer::new_backing_store_from_bytes(Box::new(bytes)).make_shared();
+    let buffer = v8::ArrayBuffer::with_backing_store(scope, &store);
+    v8::Uint8Array::new(scope, buffer, 0, len).unwrap().into()
+}
 /// Move `bytes` into a `Uint8Array` without copying.
 fn bytes_value<'s>(scope: &mut v8::PinScope<'s, '_>, bytes: Vec<u8>) -> v8::Local<'s, v8::Value> {
     #[cfg(celld_internal_tests)]
@@ -3093,7 +3116,7 @@ impl Drop for WorkerIsolate {
 /// copies of `drive`.
 pub enum Answer {
     Fetch(tokio::sync::oneshot::Sender<Result<HttpResponse>>),
-    Rpc(tokio::sync::oneshot::Sender<Result<Vec<u8>>>),
+    Rpc(tokio::sync::oneshot::Sender<Result<bytes::Bytes>>),
     Queue(tokio::sync::oneshot::Sender<Result<QueueDispatchResult>>),
     /// A DO method call, which answers a value rather than a response.
     CellRpc(tokio::sync::oneshot::Sender<Result<RpcOutcome>>),
@@ -3566,8 +3589,9 @@ impl InFlight {
                         let _ = record.call(tc, recv, &[value]);
                     }
                 }
-                let read =
-                    view_bytes(value).ok_or_else(|| anyhow!("entrypoint RPC answered non-bytes"));
+                let read = view_bytes(value)
+                    .ok_or_else(|| anyhow!("entrypoint RPC answered non-bytes"))
+                    .and_then(crate::capability_packet::owned);
                 if let (Some(report), Err(error)) = (&mut self.tail_report, &read) {
                     report.record_failure(format!("{error:#}"));
                 }
@@ -5161,11 +5185,14 @@ fn begin_entrypoint_rpc(
     tc: &mut v8::PinScope,
     entrypoint: &str,
     operation: crate::WorkerRpcOperation,
-    props: Vec<u8>,
+    props: bytes::Bytes,
     invocation_limits: Option<ResourceLimits>,
     tail_report: Option<tokio::sync::oneshot::Sender<String>>,
-    reply: tokio::sync::oneshot::Sender<Result<Vec<u8>>>,
+    reply: tokio::sync::oneshot::Sender<Result<bytes::Bytes>>,
 ) -> Begun {
+    if entrypoint == crate::capability::CANCEL_ENTRYPOINT {
+        return capability_ops::cancel(tc, props, reply);
+    }
     if entrypoint == crate::capability::ENTRYPOINT
         || entrypoint == crate::capability::RELEASE_ENTRYPOINT
     {
@@ -5208,7 +5235,7 @@ fn begin_entrypoint_rpc(
         let entrypoint = v8::String::new(tc, entrypoint).unwrap();
         let (path, args) = match operation {
             crate::WorkerRpcOperation::Get { path } => (path, v8::null(tc).into()),
-            crate::WorkerRpcOperation::Call { path, args } => (path, bytes_value(tc, args)),
+            crate::WorkerRpcOperation::Call { path, args } => (path, rpc_bytes_value(tc, args)),
         };
         let path = path
             .iter()
@@ -5218,7 +5245,7 @@ fn begin_entrypoint_rpc(
         // The caller's props, structured-clone bytes like `args`. `local` stays
         // false: the call crossed an isolate boundary.
         let local = v8::Boolean::new(tc, false);
-        let props = bytes_value(tc, props);
+        let props = rpc_bytes_value(tc, props);
         let recv = v8::undefined(tc).into();
         begin_event_context(tc)?;
         let ret = f
@@ -5533,14 +5560,16 @@ fn begin_queue(
 fn rpc_data_value<'s>(scope: &mut v8::PinScope<'s, '_>, data: RpcData) -> v8::Local<'s, v8::Value> {
     match data {
         RpcData::Json(json) => v8::String::new(scope, &json).unwrap().into(),
-        RpcData::V8(bytes) => bytes_value(scope, bytes.into()),
+        RpcData::V8(bytes) => rpc_bytes_value(scope, bytes),
     }
 }
 
 /// The inverse: `__dispatchRpc` answers in the flavor it was asked in.
 fn rpc_data_ret(scope: &mut v8::PinScope, ret: v8::Local<v8::Value>) -> RpcData {
     match view_bytes(ret) {
-        Some(bytes) => RpcData::V8(bytes.into()),
+        Some(bytes) => {
+            RpcData::V8(crate::capability_packet::owned(bytes).expect("native RPC packet"))
+        }
         None => RpcData::Json(ret.to_rust_string_lossy(scope)),
     }
 }
@@ -6719,6 +6748,23 @@ impl Worker {
         Ok(observe_alarm(cell, alarm))
     }
 
+    /// Native packet forks retain an existing reference without running user JS.
+    pub(crate) fn retain_capability(&mut self, route: &crate::capability::Route) -> Result<()> {
+        let (mut locker, _cells) = self.lock();
+        let token = crate::capability::validate(route)?;
+        v8::scope!(let hs, &mut *locker);
+        let realm = self.realm(hs);
+        let cs = &mut v8::ContextScope::new(hs, realm.context);
+        let tc = std::pin::pin!(v8::TryCatch::new(cs));
+        let tc = &mut tc.init();
+        let f = internal_function(tc, "__retainCapability")?;
+        let token = v8::String::new(tc, &token).unwrap();
+        let recv = v8::undefined(tc).into();
+        f.call(tc, recv, &[token.into()])
+            .context("capability retention failed")?;
+        Ok(())
+    }
+
     /// Collect objects left by cell adoption after an isolate becomes full.
     /// The pool calls this when completed adoptions reach the resident limit,
     /// because collecting after every adoption slows activation.
@@ -7388,7 +7434,15 @@ ops! { OP_NAMES, install_op_functions,
         "__static_class_reference" => static_class::reference,
         "__loadStaticClass" => static_class::load,
         "__capability_export" => capability_ops::export,
+        "__capability_packet" => capability_ops::packet,
+        "__capability_packet_adopt" => capability_ops::packet_adopt,
+        "__capability_packet_inspect" => capability_ops::packet_inspect,
+        "__capability_packet_take" => capability_ops::packet_take,
+        "__capability_packet_cancel" => capability_ops::packet_cancel,
+        "__capability_packet_loader" => capability_ops::packet_loader,
         "__capability_call" => capability_ops::call,
+        "__capability_signal_wait" => capability_ops::signal_wait,
+        "__capability_signal_active" => capability_ops::signal_active,
         "__capability_release" => capability_ops::release,
         "__capability_revoke" => capability_ops::revoke,
         "__capability_started" => capability_ops::started,
@@ -7669,10 +7723,12 @@ fn op_svc_rpc(
     } else {
         crate::WorkerRpcOperation::Call {
             path,
-            args: view_bytes(call_args).unwrap_or_default(),
+            args: crate::capability_packet::owned(view_bytes(call_args).unwrap_or_default())
+                .expect("native RPC arguments"),
         }
     };
-    let props = view_bytes(args.get(4)).unwrap_or_default();
+    let props = crate::capability_packet::owned(view_bytes(args.get(4)).unwrap_or_default())
+        .expect("native RPC props");
     let (tx, rx) = tokio::sync::oneshot::channel();
     let gate = egress_gate_request(
         &*require_event_context!(scope),
@@ -8496,10 +8552,15 @@ fn op_loader_rpc(
     let id = args.get(0).integer_value(scope).unwrap_or(0).max(0) as u64;
     let entrypoint = args.get(1).to_rust_string_lossy(scope);
     let method = args.get(2).to_rust_string_lossy(scope);
-    let call_args = view_bytes(args.get(3)).unwrap_or_default();
+    let call_args = crate::capability_packet::owned(view_bytes(args.get(3)).unwrap_or_default())
+        .expect("native RPC arguments");
     let props = match loader_props_bytes(args.get(4)) {
         Ok(props) => props,
         Err(error) => return loader_throw(scope, &error),
+    };
+    let props = match crate::capability_packet::owned(props) {
+        Ok(props) => props,
+        Err(error) => return loader_throw(scope, &format!("invalid loader props: {error}")),
     };
     let invocation_limits = match loader_invocation_limits(scope, args.get(5)) {
         Ok(limits) => limits,
@@ -9024,7 +9085,8 @@ fn op_facet_rpc(
         Err(error) => return loader_throw(scope, &error),
     };
     let method = args.get(7).to_rust_string_lossy(scope);
-    let call_args = view_bytes(args.get(8)).unwrap_or_default();
+    let call_args = crate::capability_packet::owned(view_bytes(args.get(8)).unwrap_or_default())
+        .expect("native RPC arguments");
     let parent = match storage::storage_identity(&parent_scope) {
         Ok(Some(parent)) => parent,
         Ok(None) => {
@@ -9057,7 +9119,7 @@ fn op_facet_rpc(
             scope: facet.scope.clone(),
             name: None,
             method,
-            args: RpcData::V8(call_args.into()),
+            args: RpcData::V8(call_args),
             reply,
         };
         let driving = tokio::spawn(crate::runtime::drive_cell(
@@ -9074,7 +9136,7 @@ fn op_facet_rpc(
             Ok(Ok(outcome)) => match outcome.data {
                 RpcData::V8(bytes) => {
                     facet.gate_reply().await?;
-                    Ok(Vec::<u8>::from(bytes))
+                    Ok(bytes)
                 }
                 RpcData::Json(_) => Err("facet RPC answered JSON".to_string()),
             },
@@ -9580,7 +9642,7 @@ fn op_rpc_signal_wait(
                 None
             }
             Some(RpcSignalState::Aborted(reason)) => Some(Some(reason.clone())),
-            None => Some(None),
+            None => return loader_throw(scope, "RPC AbortSignal source is no longer live"),
         }
     };
     // The subscription must receive aborts while the handler or `waitUntil`
@@ -9618,7 +9680,10 @@ fn op_rpc_call(
     let name_value = args.get(1);
     let name = (!name_value.is_null_or_undefined()).then(|| name_value.to_rust_string_lossy(scope));
     let method = args.get(2).to_rust_string_lossy(scope);
-    let args = RpcData::V8(view_bytes(args.get(3)).unwrap_or_default().into());
+    let args = RpcData::V8(
+        crate::capability_packet::owned(view_bytes(args.get(3)).unwrap_or_default())
+            .expect("native RPC arguments"),
+    );
     let (tx, rx) = tokio::sync::oneshot::channel();
     let gate = egress_gate_request(
         &*require_event_context!(scope),
@@ -9634,7 +9699,7 @@ fn op_rpc_call(
     let id = asyncrt::enqueue(async move {
         gated_channel_send(gate, &RPC_CALL_TX, request, "no RPC channel").await?;
         match rx.await {
-            Ok(Ok(RpcData::V8(bytes))) => Ok(Vec::<u8>::from(bytes)),
+            Ok(Ok(RpcData::V8(bytes))) => Ok(bytes),
             Ok(Ok(RpcData::Json(_))) => Err("RPC answered JSON to a structured-clone call".into()),
             Ok(Err(e)) => Err(format!("{e}")),
             Err(e) => Err(format!("RPC proxy dropped: {e}")),
@@ -11889,7 +11954,7 @@ impl IoContext {
         self.redirect_client
             .get_or_init(|| {
                 let context = Arc::downgrade(self);
-                reqwest::Client::builder()
+                crate::machine::pooled_client(reqwest::Client::builder())
                     .redirect(reqwest::redirect::Policy::custom(move |attempt| {
                         if attempt.previous().len() >= 10 {
                             return attempt.error("too many redirects");

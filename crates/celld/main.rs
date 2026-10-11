@@ -1410,7 +1410,7 @@ async fn dispatch_do_call(app: AppHandle, call: DoCallReq) {
 async fn dispatch_capability(
     app: AppHandle,
     call: celld::capability::Request,
-) -> anyhow::Result<Vec<u8>> {
+) -> anyhow::Result<bytes::Bytes> {
     celld::capability::preflight(&call.route)?;
     let Some(scope) = call.route.owner_scope.clone() else {
         return celld::capability::invoke_local(call).await;
@@ -1430,14 +1430,14 @@ async fn dispatch_capability(
             // The isolate already gated successful live-capability bytes through
             // the actor/facet egress proof. Errors carry normal FailedInTurn tickets.
             Ok(celld::js::RpcOutcome {
-                data: celld::js::RpcData::V8(bytes::Bytes::from(data)),
+                data: celld::js::RpcData::V8(data),
                 write_position: None,
                 observed_position: None,
             })
         })
         .await;
     match completed.result.map_err(local_request_error)?.data {
-        celld::js::RpcData::V8(bytes) => Ok(bytes.to_vec()),
+        celld::js::RpcData::V8(bytes) => Ok(bytes),
         _ => unreachable!("capability replies are structured clone"),
     }
 }
@@ -1472,7 +1472,75 @@ async fn internal_capability(request: Request<Incoming>, app: AppHandle) -> Http
             ));
         }
     };
-    match dispatch_capability(app, call).await {
+    let session = match call.session.as_deref().and_then(|id| {
+        parts
+            .headers
+            .get("x-cells-peer-source")
+            .and_then(|v| v.to_str().ok())
+            .and_then(|peer| celld::capability_session::Session::authenticated(id, peer).ok())
+    }) {
+        Some(session) => session,
+        None => return peer_response(response(StatusCode::GONE, "RPC session disconnected")),
+    };
+    // Resolve this request's sequence slot however the handler ends, keyed by
+    // the authenticated session. Every answer from here on carries the
+    // resolution header; earlier rejections leave it to the caller's skip.
+    let slot = celld::capability::OrderSlot::new(
+        &call.route,
+        if call.release {
+            None
+        } else {
+            call.order.as_ref()
+        },
+        Some(&session.id),
+    );
+    let mut answer = capability_after_guard(app, call, session).await;
+    drop(slot);
+    answer.headers_mut().insert(
+        hyper::header::HeaderName::from_static(celld::capability::ORDER_RESOLVED_HEADER),
+        hyper::header::HeaderValue::from_static("1"),
+    );
+    answer
+}
+
+async fn capability_after_guard(
+    app: AppHandle,
+    mut call: celld::capability::Request,
+    session: std::sync::Arc<celld::capability_session::Session>,
+) -> HttpReply {
+    if call.release {
+        if !session.release(&call.route) {
+            return peer_response(response(StatusCode::OK, Bytes::new()));
+        }
+        // Once consumed, cleanup belongs to the host even if the request dies.
+        let task = tokio::spawn(dispatch_capability(app, call));
+        return match task.await {
+            Ok(Ok(bytes)) => peer_response(response(StatusCode::OK, bytes)),
+            _ => peer_response(response(StatusCode::GONE, "release failed")),
+        };
+    }
+    let transfer = call.transfer.clone().unwrap_or_default();
+    if session.accept_call(&transfer).is_err() {
+        return peer_response(response(StatusCode::GONE, "RPC transfer closed"));
+    }
+    if !session.contains(&call.route) {
+        return peer_response(response(
+            StatusCode::GONE,
+            "capability is not owned by session",
+        ));
+    }
+    if let Some(args) = call.args.take() {
+        match celld::capability_packet::receive(args.to_vec(), &session, &transfer) {
+            Ok(args) => call.args = Some(args),
+            Err(error) => {
+                return peer_response(response(StatusCode::BAD_REQUEST, format!("{error:#}")))
+            }
+        }
+    }
+    let result = celld::asyncrt::select! {result=dispatch_capability(app,call)=>result, _=session.call_closed(&transfer)=>Err(anyhow::anyhow!("RPC caller disconnected"))};
+    let result =
+        result.and_then(|bytes| celld::capability_packet::bind(&bytes, &session, &transfer));
+    match result {
         Ok(bytes) => peer_response(response(StatusCode::OK, bytes)),
         Err(error) => {
             let not_run = celld::capability::was_not_executed(&error);
@@ -1486,6 +1554,15 @@ async fn internal_capability(request: Request<Incoming>, app: AppHandle) -> Http
             response
         }
     }
+}
+
+async fn fork_rpc_args(args: &celld::js::RpcData) -> anyhow::Result<celld::js::RpcData> {
+    Ok(match args {
+        celld::js::RpcData::V8(bytes) => {
+            celld::js::RpcData::V8(celld::capability_packet::fork(bytes).await?)
+        }
+        celld::js::RpcData::Json(json) => celld::js::RpcData::Json(json.clone()),
+    })
 }
 
 async fn dispatch_rpc_call(app: AppHandle, call: RpcCallReq) {
@@ -1509,6 +1586,7 @@ async fn dispatch_rpc_call(app: AppHandle, call: RpcCallReq) {
                 .map_err(|error| anyhow::anyhow!("route RPC {scope}: {error:?}"))?;
             let (node, addr, epoch, peer_protocol) = match route {
                 Route::Local => {
+                    let args = fork_rpc_args(&args).await?;
                     let local_request_id = local_dispatch_request_id(None);
                     let completed = app
                         .local_request(request, scope.clone(), local_request_id, "local")
@@ -1547,6 +1625,7 @@ async fn dispatch_rpc_call(app: AppHandle, call: RpcCallReq) {
             );
             let expects_structured_response = matches!(args, celld::js::RpcData::V8(_));
             {
+                let attempt_args = fork_rpc_args(&args).await?;
                 let response = peer_tunnel::rpc(
                     &peer_tunnel::Peer {
                         http: &app.peer_http,
@@ -1557,7 +1636,7 @@ async fn dispatch_rpc_call(app: AppHandle, call: RpcCallReq) {
                     &scope,
                     name.as_deref(),
                     &method,
-                    &args,
+                    &attempt_args,
                 )
                 .await;
                 // Classify failures before response decoding. An explicit stale
@@ -1604,6 +1683,11 @@ async fn dispatch_rpc_call(app: AppHandle, call: RpcCallReq) {
                     "remote RPC failed with {}",
                     response.status()
                 );
+                let transfer = response
+                    .extensions()
+                    .get::<celld::capability_session::Call>()
+                    .cloned()
+                    .context("RPC reply transfer missing")?;
                 let body = response
                     .into_body()
                     .collect()
@@ -1611,7 +1695,11 @@ async fn dispatch_rpc_call(app: AppHandle, call: RpcCallReq) {
                     .map_err(|error| anyhow::anyhow!("remote RPC body: {error}"))?
                     .to_bytes();
                 return Ok(if expects_structured_response {
-                    celld::js::RpcData::V8(body)
+                    celld::js::RpcData::V8(celld::capability_packet::receive(
+                        body.to_vec(),
+                        transfer.session(),
+                        transfer.id(),
+                    )?)
                 } else {
                     celld::js::RpcData::Json(String::from_utf8_lossy(&body).into_owned())
                 });
@@ -2337,6 +2425,7 @@ pub(crate) async fn dispatch_forwarded_rpc(
     name: Option<String>,
     rpc_method: String,
     args: celld::js::RpcData,
+    session: Option<(std::sync::Arc<celld::capability_session::Session>, String)>,
 ) -> HttpReply {
     let result = match app.request(scope.clone()).await {
         Ok(Routed {
@@ -2352,7 +2441,13 @@ pub(crate) async fn dispatch_forwarded_rpc(
                 .run(runtime.rpc(scope, name, rpc_method, args, local_request_id))
                 .await;
             match completed.result {
-                Ok(outcome) => Ok(outcome.data),
+                Ok(outcome) => match (outcome.data, session.as_ref()) {
+                    (celld::js::RpcData::V8(bytes), Some((session, transfer))) => {
+                        celld::capability_packet::bind(&bytes, session, transfer)
+                            .map(celld::js::RpcData::V8)
+                    }
+                    (data, _) => Ok(data),
+                },
                 Err(LocalRequestFailure::Handler(error)) => Err(error),
                 Err(LocalRequestFailure::OutputGate { verdict, handler }) => {
                     return peer_gate_failure(verdict, handler.as_ref());
@@ -2403,6 +2498,8 @@ pub(crate) async fn dispatch_forwarded_rpc(
     }
 }
 
+#[path = "main/capability_session.rs"]
+mod capability_session;
 #[path = "main/peer_tunnel.rs"]
 mod peer_tunnel;
 #[path = "main/websocket.rs"]
@@ -2969,6 +3066,7 @@ async fn handle_internal(
     let cell_scope = path.strip_prefix("/cell/");
     let evict_scope = path.strip_prefix("/evict/");
     let result = match path.as_str() {
+        celld::capability_session::PATH => capability_session::accept(request, app).await,
         celld::capability::PATH => internal_capability(request, app).await,
         "/peer/probe" => internal_probe(request, app).await,
         "/peer/handoff" => internal_handoff(request, app).await,
@@ -3387,7 +3485,7 @@ fn serve_http_connection(
                 // head. The timeout also bounds an idle keep-alive waiting
                 // for its next request.
                 .timer(hyper_util::rt::TokioTimer::new())
-                .header_read_timeout(std::time::Duration::from_secs(30))
+                .header_read_timeout(celld::machine::SERVER_HEADER_READ_TIMEOUT)
                 .serve_connection(TokioIo::new(stream), service)
                 .with_upgrades();
             tokio::pin!(connection);
@@ -4233,8 +4331,14 @@ async fn async_main(telemetry_config: Option<celld::telemetry::Config>) -> anyho
     let peer_auth = Arc::new(PeerAuth::new(peer_key, node.clone())?);
     // Connect-only timeout: a peer request may legitimately run through a
     // restore, but a handshake that never completes provably ran nothing.
-    let peer_http = reqwest::Client::builder()
+    // The peer server closes a keep-alive connection idle for
+    // SERVER_HEADER_READ_TIMEOUT; reusing one at that instant fails a POST
+    // that cannot be retried, so the pool drops idle connections first.
+    let peer_http = celld::machine::pooled_client(reqwest::Client::builder())
         .connect_timeout(PEER_CONNECT_TIMEOUT)
+        // Live-capability calls have no duration bound, so a peer host that
+        // vanishes without closing its sockets is found by keepalive probes.
+        .tcp_keepalive(std::time::Duration::from_secs(15))
         // Nagle against delayed ACKs costs tens of milliseconds on every
         // multi-segment peer body. Peer requests are latency-bound, so the
         // socket must write eagerly.

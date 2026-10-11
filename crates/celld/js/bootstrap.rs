@@ -599,6 +599,11 @@ pub(super) fn inject_compatibility_flags(scope: &mut v8::PinScope, compat: Compa
         !compat.fetcher_get_put_delete,
     );
     let cloudflare = v8::Object::new(scope);
+    set_flag(
+        scope,
+        "enable_abortsignal_rpc",
+        compat.enable_abortsignal_rpc,
+    );
     let key = v8::String::new(scope, "compatibilityFlags").unwrap();
     cloudflare.set(scope, key.into(), flags.into());
     let key = v8::String::new(scope, "Cloudflare").unwrap();
@@ -997,17 +1002,10 @@ pub(super) fn adopt_embedded_cell(
         storage_ops::deserialize_storage_value(tc, storage::StoredValue::V8(startup.id_sc))
             .ok_or_else(|| anyhow!("decode facet identity"))?;
     config.set(tc, id_key.into(), id_value);
-    let props = if startup.props_sc.is_empty() {
-        v8::undefined(tc).into()
-    } else {
-        let decode = internal_function(tc, "__decodeRpcProps")?;
-        let bytes = super::bytes_value(tc, startup.props_sc);
-        let receiver = v8::undefined(tc).into();
-        decode
-            .call(tc, receiver, &[bytes])
-            .ok_or_else(|| anyhow!("decode facet RPC props"))?
-    };
-    let props_key = v8::String::new(tc, "props").unwrap();
+    // Retain channel bytes through bootstrap. The actor's DurableObjectState
+    // revives props only after its native resource context has been installed.
+    let props_key = v8::String::new(tc, "propsSc").unwrap();
+    let props = super::bytes_value(tc, startup.props_sc);
     config.set(tc, props_key.into(), props);
     let depth_key = v8::String::new(tc, "depth").unwrap();
     let depth_value = v8::Integer::new(tc, depth as i32);

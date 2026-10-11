@@ -1,0 +1,1 @@
+{"name":"or1-05","main":"index.js","compatibility_date":"2026-08-01","durable_objects":{"bindings":[{"name":"D","class_name":"D"}]},"migrations":[{"tag":"v1","new_sqlite_classes":["D"]}]}

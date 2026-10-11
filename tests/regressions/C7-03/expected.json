@@ -1,0 +1,147 @@
+{
+ "/own": [
+  200,
+  {
+   "props": "ok:props:{\"user\":\"alice\"}",
+   "propsFetch": "ok:204",
+   "ys": "ok:y-props:{\"user\":\"alice\"}",
+   "ldStub": "ok:ld-props:{}",
+   "ldEp": "ok:ld-props:{\"user\":\"alice\"}",
+   "ldEpFetch": "ok:ld-fetch:{\"user\":\"alice\"}",
+   "ysFetch": "ok:204",
+   "doStub": "ok:d-ok",
+   "doFetch": "ok:204",
+   "rpcDo": "ok:d-ok",
+   "svc": "ok:props:{}",
+   "exports": "ok:props:{}",
+   "ns": "ok:d-ok",
+   "viaExports": "ok:props:{\"user\":\"alice\"}",
+   "viaSelf": "ok:props:{\"user\":\"alice\"}",
+   "viaObject": "ok:props:{\"user\":\"alice\"}",
+   "stashed": "ok:props:{\"user\":\"alice\"}",
+   "nested": "ok:props:{\"user\":\"alice\"}",
+   "cls": "ok:d-props:{\"user\":\"alice\"}",
+   "clsViaExports": "ok:d-props:{\"user\":\"alice\"}",
+   "yCls": "ok:yd-props:{\"user\":\"alice\"}",
+   "yBag": "ok:yd-props:{\"user\":\"alice\"}",
+   "yClsViaExports": "ok:yd-props:{\"user\":\"alice\"}",
+   "ysViaExports": "ok:y-props:{\"user\":\"alice\"}",
+   "ysViaY": "ok:y-props:{\"user\":\"alice\"}",
+   "doViaExports": "ok:d-ok",
+   "doViaObject": "ok:d-ok",
+   "doInMap": "ok:d-ok"
+  }
+ ],
+ "/use": [
+  200,
+  {
+   "props": "refused:cross-request",
+   "propsFetch": "refused:cross-request",
+   "ys": "refused:cross-request",
+   "ldStub": "refused:cross-request",
+   "ldEp": "refused:cross-request",
+   "ldEpFetch": "refused:cross-request",
+   "ysFetch": "refused:cross-request",
+   "doStub": "refused:cross-request",
+   "doFetch": "refused:cross-request",
+   "rpcDo": "refused:cross-request",
+   "svc": "ok:props:{}",
+   "exports": "ok:props:{}",
+   "ns": "ok:d-ok",
+   "viaExports": "refused:cross-request",
+   "viaSelf": "refused:cross-request",
+   "viaObject": "refused:cross-request",
+   "stashed": "refused:cross-request",
+   "nested": "refused:cross-request",
+   "cls": "refused:cross-request",
+   "clsViaExports": "refused:cross-request",
+   "yCls": "refused:cross-request",
+   "yBag": "refused:cross-request",
+   "yClsViaExports": "refused:cross-request",
+   "ldEpViaExports": "refused:cross-request",
+   "ysViaExports": "refused:cross-request",
+   "ysViaY": "refused:cross-request",
+   "doViaExports": "refused:cross-request",
+   "doViaObject": "refused:cross-request",
+   "doInMap": "refused:cross-request"
+  }
+ ],
+ "/hold": [
+  200,
+  "held"
+ ],
+ "/later": [
+  200,
+  {
+   "props": "refused:cross-request",
+   "propsFetch": "refused:cross-request",
+   "ys": "refused:cross-request",
+   "ldStub": "refused:cross-request",
+   "ldEp": "refused:cross-request",
+   "ldEpFetch": "refused:cross-request",
+   "ysFetch": "refused:cross-request",
+   "doStub": "refused:cross-request",
+   "doFetch": "refused:cross-request",
+   "rpcDo": "refused:cross-request",
+   "svc": "ok:props:{}",
+   "exports": "ok:props:{}",
+   "ns": "ok:d-ok",
+   "viaExports": "refused:cross-request",
+   "viaSelf": "refused:cross-request",
+   "viaObject": "refused:cross-request",
+   "stashed": "refused:cross-request",
+   "nested": "refused:cross-request",
+   "cls": "refused:cross-request",
+   "clsViaExports": "refused:cross-request",
+   "yCls": "refused:cross-request",
+   "yBag": "refused:cross-request",
+   "yClsViaExports": "refused:cross-request",
+   "ldEpViaExports": "refused:cross-request",
+   "ysViaExports": "refused:cross-request",
+   "ysViaY": "refused:cross-request",
+   "doViaExports": "refused:cross-request",
+   "doViaObject": "refused:cross-request",
+   "doInMap": "refused:cross-request"
+  }
+ ],
+ "/keep": [
+  200,
+  "d-ok,d-ok"
+ ],
+ "/actors": [
+  200,
+  {
+   "direct": "refused:cross-object",
+   "storage": "refused:cross-object",
+   "echo": "refused:cross-object"
+  }
+ ],
+ "/handles": [
+  200,
+  {
+   "same": {
+    "ep": "ok:ld-props:{\"user\":\"h1\"}",
+    "facet": "ok:d-props:{\"user\":\"facet-owner\"}"
+   },
+   "other": {
+    "ep": "refused:cross-object",
+    "facet": "refused:cross-object"
+   }
+  }
+ ],
+ "/park": [
+  200,
+  "parked"
+ ],
+ "/wake": [
+  200,
+  "woken"
+ ],
+ "/late": [
+  200,
+  {
+   "props": "unusable",
+   "d": "unusable"
+  }
+ ]
+}
