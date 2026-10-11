@@ -4091,6 +4091,20 @@ const __actorBreak = (scope, reason) => {
     if (entry.scope === scope)
       __ctxAbort(entry.ctx, new __ActorAbort(reason));
 };
+// Host alarm wall-time termination: a later event constructs a new instance,
+// while every capability exported by the old incarnation remains broken.
+__celld.__alarmTimedOut = (scope) => {
+  const reason = new Error("Alarm exceeded its allowed execution time");
+  const state = __cell.instances[scope]?.__celldState;
+  if (state) {
+    state._aborted = true;
+    state.facets?._release();
+    delete __cell.instances[scope];
+  }
+  for (const entry of __stubEntries.values()) {
+    if (entry.scope === scope) __ctxAbort(entry.ctx, new __ActorAbort(reason));
+  }
+};
 // Everything this isolate holds for one cell scope that belongs to the
 // cell's residency rather than to the isolate, so a fresh instance
 // inherits none of it. `adopt_cell` calls this on both edges: the

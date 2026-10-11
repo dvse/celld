@@ -49,6 +49,7 @@ fn with_entry(test: impl FnOnce(&mut v8::PinScope, &mut InFlight)) {
         cancel_own_ops: false,
         unrefed_ops: HashSet::new(),
         alarm: None,
+        alarm_timed_out: false,
         started: Instant::now(),
         trace: None,
         failure: None,
@@ -297,3 +298,4 @@ fn critical_section_cannot_borrow_driver_after_retirement() {
     });
 }
 
+include!("../../../tests/regressions/R4-04/native.rs");

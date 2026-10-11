@@ -239,6 +239,7 @@ pub(super) fn begin(
                 cancel_own_ops: false,
                 unrefed_ops: HashSet::new(),
                 alarm: None,
+                alarm_timed_out: false,
                 started: Instant::now(),
                 trace: None,
                 failure: None,
