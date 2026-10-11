@@ -1320,6 +1320,10 @@ fn wake_gate_waiters(cell: &str, outcome: Result<(), String>) {
     }
 }
 
+/// Workerd's wall-time limit on an alarm handler (`getAlarmLimit`,
+/// server/server.c++:4796-4798). No other event has one.
+pub(crate) const ALARM_WALL_LIMIT: Duration = Duration::from_secs(15 * 60);
+
 const ABANDONED_INPUT_GATE: &str = "the cell's critical section ended without releasing";
 const RETIRED_INPUT_GATE: &str = "the cell event ended before it could acquire an input gate";
 
@@ -2635,6 +2639,27 @@ impl ActorRuntimeState {
         }
     }
 
+    fn abort_actor_context(&self, cell: &str, reason: &str) {
+        let contexts = self
+            .io_contexts
+            .lock()
+            .unwrap()
+            .values()
+            .filter_map(Weak::upgrade)
+            .collect::<Vec<_>>();
+        // Invalidate all event drivers as well as the shared resource owner.
+        // Otherwise a concurrent request can still deliver an already-ready
+        // native operation into the timed-out incarnation.
+        for context in contexts {
+            if context.cell().as_deref() == Some(cell) {
+                let _ = context.abort_reason.set(reason.to_string());
+                context.force_retire_cross_entry_gates();
+                context.handed_wake.notify_one();
+            }
+        }
+        self.release_actor_context(cell);
+    }
+
     fn wake_drivers(&self) {
         let contexts = self
             .io_contexts
@@ -3460,6 +3485,7 @@ pub struct InFlight {
     unrefed_ops: std::collections::HashSet<u64>,
     /// The alarm bookkeeping this entry still owes, if it is one.
     alarm: Option<AlarmClaim>,
+    alarm_timed_out: bool,
     started: Instant,
     /// The propagation context for this entry. A rejected foreign context
     /// stays here with `sampled` clear, so continuations can forward it
@@ -3874,7 +3900,68 @@ impl InFlight {
 
     /// Give up on a handler that will not settle.
     pub fn time_out(&mut self, budget: Duration) {
+        if self.alarm.is_some() && self.started.elapsed() >= ALARM_WALL_LIMIT {
+            self.alarm_timed_out = true;
+            let reason = "__CELLD_ACTOR_ABORT__:Alarm exceeded its allowed execution time";
+            if let Some(cell) = &self.scope {
+                self.runtime_state.abort_actor_context(cell, reason);
+            }
+            self.cancel_own_ops = true;
+            self.completed_cell_event = false;
+            self.background = None;
+            self.context.seal_wait_until();
+            self.fail(anyhow!(reason));
+            return;
+        }
         self.fail(anyhow!("handler exceeded {}s budget", budget.as_secs()));
+    }
+
+    /// The wall-clock time this event has left while it awaits I/O, or `None`
+    /// when it has no limit.
+    ///
+    /// Workerd limits only an alarm handler's wall time: 15 minutes
+    /// (`getAlarmLimit`, server/server.c++:4796-4798), raced against the
+    /// handler in `ServiceWorkerGlobalScope::runAlarm`
+    /// (api/global-scope.c++:702-731; io/worker-entrypoint.c++:1019-1029).
+    /// Workerd then also aborts the actor's context (:724); celld fails the
+    /// alarm event, which retries as workerd's does (:729-731).
+    /// A fetch, an RPC call or a socket event that awaits I/O runs as long as
+    /// its client stays: the request limit enforcer workerd runs with enforces
+    /// no CPU or wall-clock limit at all (server/server.c++:4779-4817, "No
+    /// limits are enforced"). The handler budget therefore stops being a
+    /// wall-clock limit on such an event; it stays only as the verdict on an
+    /// event that waits on nothing (`stuck`), workerd's hung-request check.
+    pub(crate) fn wall_limit_left(&self) -> Option<Duration> {
+        self.alarm
+            .as_ref()
+            .filter(|_| !self.alarm_timed_out)
+            .map(|_| ALARM_WALL_LIMIT.saturating_sub(self.started.elapsed()))
+    }
+
+    /// Whether another event of this event's Durable Object is still in
+    /// flight in this isolate, and so could still settle what this one awaits.
+    ///
+    /// Workerd keeps one `IoContext` per actor (io/io-context.h:257-259): a
+    /// request awaiting a promise that only a later event resolves is not
+    /// hung while the actor has other work. Only a stateless event, or an
+    /// object with nothing else running, is waiting on nothing.
+    pub(crate) fn object_has_other_events(&self) -> bool {
+        let Some(cell) = self.context.cell() else {
+            return false;
+        };
+        let contexts: Vec<Arc<IoContext>> = self
+            .runtime_state
+            .io_contexts
+            .lock()
+            .unwrap()
+            .values()
+            .filter_map(std::sync::Weak::upgrade)
+            .collect();
+        contexts.iter().any(|context| {
+            !Arc::ptr_eq(context, &self.context)
+                && context.accepts_handed_ops()
+                && context.cell().as_deref() == Some(cell.as_str())
+        })
     }
 
     /// Nothing this request awaits can move it, so it will never settle on
@@ -4636,6 +4723,28 @@ impl Worker {
         self.turn_retire_input_gate_context(entry);
     }
 
+    pub(crate) fn turn_time_out(&mut self, entry: &mut InFlight, budget: Duration) {
+        let Some(inner) = self.inner.as_mut() else {
+            return;
+        };
+        let (mut locker, _cells) = inner.lock();
+        v8::scope!(let hs, &mut *locker);
+        let realm = inner.realm(hs);
+        let cs = &mut v8::ContextScope::new(hs, realm.context);
+        entry.time_out(budget);
+        if entry.alarm_timed_out {
+            if let (Some(cell), Ok(function)) = (
+                entry.scope.as_deref(),
+                internal_function(cs, "__alarmTimedOut"),
+            ) {
+                let cell = v8::String::new(cs, cell).unwrap();
+                let receiver = v8::undefined(cs).into();
+                let _ = function.call(cs, receiver, &[cell.into()]);
+            }
+        }
+        finish_retired_input_gate_context(cs, &entry.context);
+    }
+
     /// Enforce the host-side invariant when an ordinarily completed event
     /// drops its final owner. The JavaScript `finally` normally released every
     /// gate, so entering the isolate is necessary only when a hold remains.
@@ -4730,6 +4839,9 @@ impl Worker {
 /// turn, and the spawn and its classification drain together. Such an op
 /// does not defer retirement: see `retired`.
 fn finish_turn(tc: &mut v8::PinScope, entry: &mut InFlight) -> Vec<Op> {
+    if entry.fail_aborted_context() {
+        return Vec::new();
+    }
     if let Err(error) = finish_cpu_turn(tc, entry) {
         let error = take_execution_termination_in_context(tc, Some(&entry.context))
             .unwrap_or_else(|| anyhow!(error));
@@ -5012,6 +5124,7 @@ fn begin<'s>(
                 cancel_own_ops: false,
                 unrefed_ops: std::collections::HashSet::new(),
                 alarm: None,
+                alarm_timed_out: false,
                 started: Instant::now(),
                 trace: None,
                 failure: None,
@@ -5142,6 +5255,7 @@ fn begin_entrypoint_rpc(
                 cancel_own_ops: false,
                 unrefed_ops: std::collections::HashSet::new(),
                 alarm: None,
+                alarm_timed_out: false,
                 started: event_started,
                 trace: None,
                 failure: None,
@@ -5391,6 +5505,7 @@ fn begin_queue(
                 cancel_own_ops: false,
                 unrefed_ops: std::collections::HashSet::new(),
                 alarm: None,
+                alarm_timed_out: false,
                 started: Instant::now(),
                 trace: None,
                 failure: None,
@@ -5587,6 +5702,7 @@ fn start_cell_event<'s>(
                 cancel_own_ops: false,
                 unrefed_ops: std::collections::HashSet::new(),
                 alarm: None,
+                alarm_timed_out: false,
                 started: event_started,
                 trace: None,
                 failure: None,
@@ -5644,6 +5760,7 @@ fn start_cell_event<'s>(
                     cancel_own_ops: false,
                     unrefed_ops: std::collections::HashSet::new(),
                     alarm: None,
+                    alarm_timed_out: false,
                     started: event_started,
                     trace: None,
                     failure: Some(failure),
@@ -6020,6 +6137,9 @@ fn deliver(
     op: u64,
     res: Result<asyncrt::OpOut, String>,
 ) {
+    if entry.fail_aborted_context() {
+        return;
+    }
     entry.ops.remove(&op);
     entry.io_context_ops.remove(&op);
     entry.unrefed_ops.remove(&op);
@@ -6865,7 +6985,7 @@ impl Worker {
             return Ok(None);
         };
         let (_locker, _cells) = inner.lock();
-        entry.settle_alarm(false, false);
+        entry.settle_alarm(false, entry.alarm_timed_out);
         entry.write_delta()
     }
 }
