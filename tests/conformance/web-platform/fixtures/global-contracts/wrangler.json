@@ -1,0 +1,12 @@
+{
+  "name": "ported-globals",
+  "main": "index.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": [
+    "nodejs_compat",
+    "enable_ctx_exports",
+    "global_navigator",
+    "rpc",
+    "set_tostring_tag"
+  ]
+}

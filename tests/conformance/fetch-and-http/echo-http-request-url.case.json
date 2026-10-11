@@ -1,0 +1,34 @@
+{
+  "id": "conformance/fetch-and-http/echo-http-request-url",
+  "layer": "conformance",
+  "behaviour": "fetch-and-http",
+  "title": "Echo HTTP request URL",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/examples/hello",
+      "legacy_id": "examples/hello"
+    },
+    {
+      "source": "celld@9c0fca5/examples/hello/wrangler.jsonc",
+      "sha256": "ad2814a5cc1ca44e2ead19cb0b85e5562fd309a4e48cadc9e45fe33778f3cc92"
+    }
+  ],
+  "legacy_ids": [
+    "examples/hello"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/request-echo",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/hello?x=1"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/fetch-and-http/fixtures/request-echo/wrangler.jsonc",
+  "source_sha256": "ad2814a5cc1ca44e2ead19cb0b85e5562fd309a4e48cadc9e45fe33778f3cc92"
+}

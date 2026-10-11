@@ -1,0 +1,86 @@
+{
+  "archive": "/workspace/shared/celld-recovered/celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "purpose": "Immutable source and actual overlap inputs; hashes establish byte identity, never execution.",
+  "pins": [
+    {
+      "path": "BUILD_AND_TEST.md",
+      "sha256": "14d182794d90bed90ee488abde70a9cba2004112e21a946441e621666196ecb1",
+      "bytes": 11861
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/deploy.rs",
+      "sha256": "b9383268709233302082eb2dc08753499ac3a69a983a598f41ab9a9383dae7e2",
+      "bytes": 123934
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/engine_api.rs",
+      "sha256": "e9874a4ad9809b7946761d4f9371921f138612e5997b6aa0d70f7cbce796805f",
+      "bytes": 32513
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/fleet.rs",
+      "sha256": "07dc5c50299635ea10d6d97c92875c89465abdd0713cfb2c55dfc8c8081d3559",
+      "bytes": 36934
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js/bootstrap.rs",
+      "sha256": "0210c1f17ec80959aa071724e1a612b181f72715d20afcbd29226674636d6d05",
+      "bytes": 45950
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js/harness.js",
+      "sha256": "8d3be5ef1b78d302cb2da745c63f8d2e1222115c49a8d08f1096bca7d235c237",
+      "bytes": 491759
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/storage.rs",
+      "sha256": "99ce80c6e273234787ca38367210ebca43baa9df49286dc911cd179f52b6dc2d",
+      "bytes": 174442
+    },
+    {
+      "path": "celld-os-project/celld/docs/services/d1.md",
+      "sha256": "4ca9e8b85d2db123efbe450e2150b4be3b956d0abf0ac16b250357835cec2ca1",
+      "bytes": 4251
+    },
+    {
+      "path": "celld-os-project/celld/docs/testing.md",
+      "sha256": "dafe8638e0de082d104595d5e84cdb6b8feb9094496fef2e7a56b6d8b7f4c366",
+      "bytes": 7557
+    },
+    {
+      "path": "celld-os-project/celld/examples/d1/index.js",
+      "sha256": "fc53391840ad9c3a7b3722d06297896ce42462ae7fbe2efc1af51d5246889424",
+      "bytes": 1150
+    },
+    {
+      "path": "celld-os-project/celld/examples/d1/wrangler.jsonc",
+      "sha256": "b1f086eb4f6f1526663429d085244333b1624d62a3f1cbbbd3fccba02ee5878f",
+      "bytes": 235
+    },
+    {
+      "path": "celld-os-stress/COUNTS.json",
+      "sha256": "8221870307e3a6aa652f68df167a636d1235b2babd0573753809c94adde72be2",
+      "bytes": 20716
+    },
+    {
+      "path": "celld-os-stress/SOURCE-FILES.json",
+      "sha256": "eeab75b82b6ef052c9728b1b36cbd343ba656f655f4692ae693aff82e5d586bc",
+      "bytes": 37087
+    },
+    {
+      "path": "celld-os-stress/waves/sqlite-concurrency/author_manifest.py",
+      "sha256": "9937ecff41ff320d92eefaafdbf480bbb6ad86ee7be4365a67d3852959a8830f",
+      "bytes": 21400
+    },
+    {
+      "path": "celld-os-stress/waves/sqlite-concurrency/cell-cases.js",
+      "sha256": "0e5116557fa02ad82edc28032c82d9cb7c96530e04880465fc6517acad7095d6",
+      "bytes": 16281
+    },
+    {
+      "path": "celld-os-stress/waves/sqlite-concurrency/manifest.json",
+      "sha256": "991cfa1edce682ba4dcfbb6b6070abedee80b43af45c6bcc300ba27666516bab",
+      "bytes": 74170
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "id": "logic/wake-recovery/characterize-the-caller-owned-queue-scan-bound",
+  "layer": "logic",
+  "behaviour": "wake-recovery",
+  "title": "Characterize the caller-owned Queue scan bound",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic",
+      "legacy_id": "wake-recovery-logic/K024"
+    }
+  ],
+  "corpus_wave": "wake-recovery-logic",
+  "corpus_id": "K024",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "K024",
+    "title": "Characterize the caller-owned Queue scan bound",
+    "intent": "Characterize the caller-owned Queue scan bound",
+    "failure_hypothesis": "An executor mistakes max_batch_size for a bound on rows examined by the public planner",
+    "initial_state": "256 delayed rows followed by one ready row; output batch limit1; BATCH_ROWS is the exported sweep input bound.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Plan exactly first256 rows and obtain no leases.",
+      "Plan all257 with max_batch_size1 and observe ready row256 selected.",
+      "Supply next_sweep=now to request another turn.",
+      "Plan explicit one-row tail page and require the same ready lease."
+    ],
+    "stress": "One 257-row scan frontier demonstrates input/output bounds separately; repeated rows are not extra cases.",
+    "safety_oracle": "Batch output remains capped1, but no claim that batch_plan enforces the scan bound is made.",
+    "liveness_oracle": "Only an explicitly supplied next page/turn reaches the ready frontier; SQL pagination is not exercised.",
+    "oracle": [
+      "Batch output remains capped1, but no claim that batch_plan enforces the scan bound is made.",
+      "Only an explicitly supplied next page/turn reaches the ready frontier; SQL pagination is not exercised."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K024 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k024_sweep_row_bound_is_callers_input_bound_not_batch_output_limit",
+    "test_function": "k024_sweep_row_bound_is_callers_input_bound_not_batch_output_limit",
+    "source_contract": [
+      "sweep.rs:BATCH_ROWS",
+      "queue.rs:batch_plan",
+      "queue.rs:rearm"
+    ],
+    "layer": "native-component",
+    "sublayer": "public-component-model-trace",
+    "classification": "characterization",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  }
+}

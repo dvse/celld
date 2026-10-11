@@ -1,0 +1,111 @@
+{
+  "adapter": "http",
+  "behaviour": "bindings",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runs": 0,
+    "application_relevance": "Preview consumers may cancel while another request still needs the stored body.",
+    "authored": true,
+    "classification": "functional-regression-candidate",
+    "cleanup": [
+      "After settled trace, finish/cancel every owned response body and finite input.",
+      "Abort any owned unfinished multipart upload before deleting keys; an active-request upload ID is never exported to another service.",
+      "Delete only registered synthetic keys; list both owned prefixes and require empty/nontruncated.",
+      "On unjoined trace or inaccessible reader, require external owned process/store teardown; never race cleanup against pending write."
+    ],
+    "distinctness": "R2 host-object read/cancellation isolation; no network-fault injection or fairness claim.",
+    "failure_hypothesis": "Cancelling a body may consume a separate read or mutate the stored object.",
+    "id": "I206",
+    "implementation": "cases.js:I206",
+    "independently_reviewed": false,
+    "intent": "Cancel one R2 reader without disturbing other readers",
+    "limits": {
+      "cleanup_ms": 3000,
+      "max_case_http_requests": 1,
+      "max_keys_per_bucket": 8,
+      "max_listing_limit": 20,
+      "max_listing_pages": 6,
+      "max_multipart_uploads": 1,
+      "max_parts_per_upload": 1,
+      "max_payload_bytes": 4096,
+      "max_private_bucket_bindings": 2,
+      "max_tracked_api_calls": 80,
+      "outer_http_seconds": 15,
+      "outer_process_seconds": 20,
+      "precondition_ms": 2000,
+      "trace_ms": 8000
+    },
+    "literal_assertion_call_sites": 5,
+    "normative_references": [
+      "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+    ],
+    "oracle": "Both initially unused; second remains unused after peer cancellation; both subsequent complete texts equal independent-reader-content.",
+    "preconditions": [
+      "Exact reviewed direct celld source/build and fixture identities; no hybrid/mock execution.",
+      "Fresh owned private fleet-bucket backend supporting ordinary conditional writes and multipart; no real user bucket or cloud credentials entered here.",
+      "Two distinct R2 bindings in supplied config; per-case random key prefix independently witnessed empty; external limits and owned teardown mandatory."
+    ],
+    "promotion_candidate": true,
+    "runtime_passes": 0,
+    "runtime_status": "NOT_RUN",
+    "schedule": "One active GET /case/I206; sequential awaited operations as written; all multipart handles and body readers stay inside this active request. I211 has at most six pages.",
+    "source_note": "Source-specific exceptions in docs/services/r2.md are respected: no distinct-version guarantee, UTF-8 listing order, cross-node multipart or large-stream condition claim.",
+    "source_refs": [
+      {
+        "line_end": 1001,
+        "line_start": 993,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      },
+      {
+        "line_end": 1147,
+        "line_start": 1129,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      },
+      {
+        "line_end": 122,
+        "line_start": 79,
+        "path": "celld-os-project/celld/crates/celld/js/r2_ops.rs"
+      }
+    ],
+    "title": "Cancel one R2 reader without disturbing other readers",
+    "trace": [
+      "Open two independent gets of one finite object.",
+      "Read one chunk from first, cancel and release its reader.",
+      "Read second and a fresh third get exactly."
+    ]
+  },
+  "corpus_id": "I206",
+  "corpus_wave": "r2-semantics",
+  "fixture": "tests/conformance/bindings/fixtures/r2-semantics",
+  "id": "conformance/bindings/r2-i206",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/r2-semantics/I206"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/r2-semantics/I206",
+      "manifest_sha256": "729bd31ba60fb9c6ff47f4689b48d2a21d120ec10e54e5b484647ca6adbd2179",
+      "review_sha256": "385d5eacbb19cd15c56a85552e2d698c8baaa658e7c83c162ce8e500c070b0ca",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/r2-semantics",
+      "tranche": "002"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/I206",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "I206",
+  "source": "tests/conformance/bindings/fixtures/r2-semantics/fixture.js",
+  "source_sha256": "15abdbedb54e6303b7751fe87bf34b7b6bfdeaad9f8e523f412157db5d61b793",
+  "title": "Cancel one R2 reader without disturbing other readers"
+}

@@ -1,0 +1,24 @@
+{
+  "name": "distributed-stream-acceptance",
+  "main": "index.js",
+  "compatibility_date": "2026-01-01",
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "ROOT",
+        "class_name": "Root"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "Root"
+      ]
+    }
+  ],
+  "compatibility_flags": [
+    "allow_irrevocable_stub_storage"
+  ]
+}

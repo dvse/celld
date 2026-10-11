@@ -1,0 +1,12 @@
+{
+  "name": "fleet",
+  "durability": "fleet",
+  "status": "BLOCKED",
+  "executable_case_ids": [],
+  "counted_case_ids": [],
+  "required_failure_model": "Terminate only owner while preserving and serving every recorded replica witness and its original local directories",
+  "missing_verified_hook": "A per-cell, per-acknowledged-position live witness receipt tied to the bounded cohort, plus verified surviving replica-directory ownership",
+  "why_existing_log_is_insufficient": "Generic log_append_serve lines establish some persisted follower append, not coverage of each acknowledged operation in this stress cohort",
+  "prohibited_inference": "Never run bucket-profile all-runtime fresh-directory loss in fleet mode or treat RAM-backed store as store-guest power-loss durable",
+  "next_step": "Separate reviewed witness adapter and distinct fleet cases; do not clone bucket rows to increase the authored count"
+}

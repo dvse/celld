@@ -1,0 +1,29 @@
+{
+  "id": "logic/lease-continuity/initial-expired-candidate-never-gets-authority",
+  "layer": "logic",
+  "behaviour": "lease-continuity",
+  "title": "initial expired candidate never gets authority",
+  "origins": [
+    {
+      "source": "tests/logic/lease-continuity/lease_continuity.rs",
+      "legacy_id": "logic/lease-continuity/initial_expired_candidate_never_gets_authority"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-project/tests/lease-continuity/lease_continuity.rs",
+      "sha256": "9ba2368c5a34a6a1ef0a0b3cd42ca67a20c074e67f229b19f49c5dee58bf555b"
+    }
+  ],
+  "legacy_ids": [
+    "logic/lease-continuity/initial_expired_candidate_never_gets_authority"
+  ],
+  "adapter": "native",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/logic/lease-continuity/lease_continuity.rs",
+  "source_sha256": "9ba2368c5a34a6a1ef0a0b3cd42ca67a20c074e67f229b19f49c5dee58bf555b",
+  "test_filter": "initial_expired_candidate_never_gets_authority"
+}

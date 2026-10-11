@@ -1,0 +1,29 @@
+{
+  "id": "conformance/bindings/sandbox",
+  "layer": "conformance",
+  "behaviour": "bindings",
+  "title": "sandbox",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/examples/sandbox",
+      "legacy_id": "examples/sandbox"
+    },
+    {
+      "source": "celld@9c0fca5/examples/sandbox/wrangler.jsonc",
+      "sha256": "8bbcda4b608cfc9b22be3a4420f329fc4ee614de1ae95bbc7ce9be39f080e700"
+    }
+  ],
+  "legacy_ids": [
+    "examples/sandbox"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/bindings/fixtures/container-sandbox",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": "The sandbox uses the same privileged Docker bridge fence as container plus an externally supplied Sandbox OCI image. No isolated Docker daemon/image is supplied within the authorized owned VM environment; using the shared host daemon would alter networking outside this lane.",
+  "runnable": false,
+  "source": "tests/conformance/bindings/fixtures/container-sandbox/wrangler.jsonc",
+  "source_sha256": "8bbcda4b608cfc9b22be3a4420f329fc4ee614de1ae95bbc7ce9be39f080e700"
+}

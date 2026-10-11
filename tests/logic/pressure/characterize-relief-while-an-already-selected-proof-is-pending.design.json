@@ -1,0 +1,60 @@
+{
+  "id": "logic/pressure/characterize-relief-while-an-already-selected-proof-is-pending",
+  "layer": "logic",
+  "behaviour": "pressure",
+  "title": "Characterize relief while an already selected proof is pending",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic",
+      "legacy_id": "pressure-recovery-logic/P021"
+    }
+  ],
+  "corpus_wave": "pressure-recovery-logic",
+  "corpus_id": "P021",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "P021",
+    "intent": "Characterize relief while an already selected proof is pending",
+    "failure_hypothesis": "A consumer might assume relief withdraws an existing eviction effect",
+    "preconditions": [
+      "Fresh State::new(\"fixture\", config()) per case; only production on_event transitions; no direct State-field mutation",
+      "Each resident created by RequestAt -> absent OwnerRead -> Applied epoch1 CAS -> RestoreCompleted -> RuntimeStarted generation1 -> Published; exact operation IDs come from effects",
+      "Every transition invokes State::validate; occupied<=4, activating<=4, evicting<=2; local completions tracked exactly once",
+      "Default require_node_lease=false isolates admission from fleet authority; this does not exercise actual lease authorization",
+      "Pressure samples are synthetic byte-valued facts, not measured RSS, allocator, cgroup or container enforcement",
+      "The immutable source/runtime-manifest pins and exact implementation must pass preflight before any authorized future run"
+    ],
+    "initial_state": "a and b idle Resident1; a selected by pressure",
+    "trace": [
+      "sample120 and retain a EnsureDurable op",
+      "sample80 reports relief but leaves a EnsuringDurability",
+      "complete captured proof and bounded stop",
+      "require a Dormant and no next victim",
+      "request b/3 Local; finish3"
+    ],
+    "stress": "Finite ordered schedule <=100 State events, <=4 occupied cells, <=4 activation permits, <=2 eviction/release permits; no randomness, seeds, size grid or repetition multiplier",
+    "safety_oracle": "Relief does not itself revoke a outstanding cut; b remains serving",
+    "liveness_oracle": "issued cut completes and surviving b serves new demand",
+    "oracle": "Relief does not itself revoke a outstanding cut; b remains serving; issued cut completes and surviving b serves new demand",
+    "terminal_witness": "TRACE_END P021 after exact outcomes, pending=0, no active requests or transition permits, and production validation",
+    "cleanup": "Finish every successful local request; settle all emitted stop/release/adoption effects shown by the trace; assert pending demand and activation/eviction/release/adoption counts empty. Drop owned in-memory State on return/unwind. No external resource created",
+    "implementation": "tests/pressure_recovery.rs:p021_relief_during_proof_does_not_revoke_already_nominated_cut",
+    "test_function": "p021_relief_during_proof_does_not_revoke_already_nominated_cut",
+    "contract_group": "pending-cut-characterization",
+    "layer": "native-component",
+    "sublayer": "state-trace",
+    "classification": "characterization",
+    "promotion": false,
+    "qualification": "Source behavior only; four characterization cases cannot become general freshness/health/liveness guarantees",
+    "source_pins": "source-pins.json",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiled": false,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  }
+}

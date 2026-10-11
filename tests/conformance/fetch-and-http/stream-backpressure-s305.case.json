@@ -1,0 +1,140 @@
+{
+  "adapter": "http",
+  "behaviour": "fetch-and-http",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "assertion_count": 12,
+    "classification": "ordinary-functional-stream-admission",
+    "cleanup": "Open all callback and milestone gates. Initiate readable cancellation and writable abortion on still-live owners before joining, so missing HWM0 demand cannot strand an in-flight write. Join original API/closed/ready promises and dynamically recorded callback results, then release owners and observe post-release promises. Require zero pending work, timers and public locks; separate owned-process teardown remains mandatory.",
+    "distinctness": "Successful transformer.flush completion owns final readable output/closure and is joined by writable close and writer.closed.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/S305",
+      "request_body": null
+    },
+    "finite_normal_trace_limits": {
+      "closes": 1,
+      "gates": 2,
+      "payload_bytes": 22,
+      "reads": 4,
+      "task_fences": 1,
+      "writes": 1
+    },
+    "fixed_runtime_assertions": [
+      "t.deep(prefix, { value: 'prefix:fixed', done: false }, 'prefix is consumed with compatible HWM0 demand');",
+      "t.equal(transforms, 1, 'exactly one ordinary transform precedes flush');",
+      "t.deep([transforms, flushes, cancels], [1, 1, 0], 'successful close enters one held flush');",
+      "t.equal(flushGate.opened, false, 'flush tail gate is still closed during pending observations');",
+      "t.deep([tailRead.status, close.status, reader.closed.status, writer.closed.status], ['pending', 'pending', 'pending', 'pending'], 'held flush owns tail read and both terminal states');",
+      "t.deep(events, ['transform-fixed', 'flush-enter'], 'no tail or terminal event precedes flush release');",
+      "t.deep(await t.value(tailRead), { value: 'tail!', done: false }, 'released flush emits fixed tail before EOF');",
+      "t.deep(await t.value(t.read(reader, 'flush-eof')), { value: undefined, done: true }, 'flush tail is followed by EOF');",
+      "t.deep(await t.value(t.read(reader, 'flush-stable-eof')), { value: undefined, done: true }, 'flush EOF stays stable without duplicate tail');",
+      "t.deep(events, ['transform-fixed', 'flush-enter', 'tail-enqueued'], 'exact successful transform and flush output trace');",
+      "t.deep([transforms, flushes, cancels, close.status, reader.closed.status, writer.closed.status], [1, 1, 0, 'fulfilled', 'fulfilled', 'fulfilled'], 'flush and both sides complete once without cancellation');",
+      "t.deep([stream.readable.locked, stream.writable.locked], [false, false], 'flush trace releases both public locks');"
+    ],
+    "id": "S305",
+    "implementation": "cases.js:S305",
+    "independently_reviewed": false,
+    "intended_oracle": [
+      "Exactly one normal transform and one flush; zero cancellation callbacks.",
+      "Held flush cannot cause premature EOF or writable close acknowledgment.",
+      "The tail appears exactly once before EOF; all terminal promises fulfill; both public locks released."
+    ],
+    "intent": "Own asynchronous flush tail through EOF",
+    "mechanism": "async-transform-flush-tail-ownership",
+    "os_relevance": "Recovered historical blueprint-archive.ts:145-162 constructs an ordinary TransformStream and sequentially pipes archive prefix then content. The raw file was reread and matches the retained historical hash. This supports stream relevance without claiming those callers use custom weights or user flush callbacks, or that any OS workflow or distributed placement ran.",
+    "overlap_delta": {
+      "S206": "An ordinary sink-close join lacks a readable output tail and cannot prove cross-side EOF ownership.",
+      "X001/X002/X021": "Native encoder/decoder/digest finalization does not hold a successful user flush callback with a concurrent ordinary pending read.",
+      "Y220": "Finite eager Response clone owns two body consumers, not TransformStream flush completion."
+    },
+    "preconditions": [
+      "Exact guarded source, fresh reviewed binary and deployed fixture/config identity verified.",
+      "Actual direct-celld Worker with its real global stream constructors and strategies.",
+      "Independent deadline/resource supervisor controls a proven-owned whole-descendant domain covering dev, bundlers and node despite separate PGIDs, plus one quota/cleanup domain for temporary bundles, logs and stores. No single-PGID fallback or substitute/reference execution."
+    ],
+    "primary_candidate": true,
+    "primary_contract_refs": [
+      "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#transform-stream-default-sink-close-algorithm",
+      "https://streams.spec.whatwg.org/commit-snapshots/b9ba9f49d95b4280be0dc2372377a006c3a91c18/#readable-stream-default-controller-close"
+    ],
+    "runtime_source_refs": [
+      {
+        "line_end": 678,
+        "line_start": 653,
+        "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+        "purpose": "flush awaited before readable close"
+      },
+      {
+        "line_end": 515,
+        "line_start": 485,
+        "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+        "purpose": "Writable close joins sink close promise"
+      },
+      {
+        "line_end": 81,
+        "line_start": 72,
+        "path": "celld-os-project/celld/crates/celld/js/streams.js",
+        "purpose": "Readable close drains queued tail before terminal EOF/closed"
+      },
+      {
+        "line_end": 147,
+        "line_start": 138,
+        "path": "celld-os-project/celld/crates/celld/js/streams.js",
+        "purpose": "Readable close drains queued tail before terminal EOF/closed"
+      },
+      {
+        "line_end": 355,
+        "line_start": 329,
+        "path": "celld-os-project/celld/crates/celld/js/streams.js",
+        "purpose": "Readable close drains queued tail before terminal EOF/closed"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "source_predicted_gap": null,
+    "status": "NOT_RUN",
+    "trace": [
+      "Initiate the prefix read before awaiting its write, so setup terminates under correct default-HWM0 backpressure; join the fixed transformed prefix.",
+      "Call writer.close; witness flush entry, where flush waits on an owned finite gate before enqueueing its fixed tail.",
+      "Issue next read; at a bounded fence require read, close, writer.closed and reader.closed still pending.",
+      "Release flush; enqueue one fixed tail and resolve flush. Join close/closed, read tail then stable EOF, release owners."
+    ]
+  },
+  "corpus_id": "S305",
+  "corpus_wave": "stream-backpressure-semantics",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/stream-backpressure-semantics",
+  "id": "conformance/fetch-and-http/stream-backpressure-s305",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/stream-backpressure-semantics/S305"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/stream-backpressure-semantics/S305",
+      "manifest_sha256": "e7b601830183b60736e3a17f47553c808674a7fcacd422e21694a98057158783",
+      "review_sha256": "28f32477b60ad987cc5022d9566f46b6d679375e9e8667dc0ccd8d22b0a22551",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/stream-backpressure-semantics",
+      "tranche": "004"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/S305",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "S305",
+  "source": "tests/conformance/fetch-and-http/fixtures/stream-backpressure-semantics/fixture.js",
+  "source_sha256": "d3719b882f4c3725bd59187adce6cbb2b547da70949ed2b8ee9ec101a3138c6a",
+  "title": "Own asynchronous flush tail through EOF"
+}

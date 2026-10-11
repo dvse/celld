@@ -1,0 +1,39 @@
+{
+  "id": "conformance/rpc/characterize-writable-bridge-cleanup-when-a-result-s-final-native-encoding-fails-after-acquiring-its",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "Characterize writable bridge cleanup when a result's final native encoding fails after acquiring its writer",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec",
+      "legacy_id": "rpc-codec/C012"
+    }
+  ],
+  "corpus_wave": "rpc-codec",
+  "corpus_id": "C012",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "C012",
+    "intent": "Characterize writable bridge cleanup when a result's final native encoding fails after acquiring its writer",
+    "preconditions": "COMMON; fresh owned fixture required; peer retains writable origin for lock/abort observation",
+    "trace": [
+      "request writable followed by Symbol in result",
+      "require DataCloneError",
+      "poll peer origin lock and abort count",
+      "verify healthy control",
+      "audit public cleanup"
+    ],
+    "stress": "One writable with zero writes and at most 100 settlement checks at 10ms intervals",
+    "oracle": "Origin becomes unlocked and abort count exactly 1; leaked writer blocks cleanup and is never called a pass",
+    "cleanup": "Shared cleanup aborts only an unlocked writable; locked origin reports CLEANUP_BLOCKED; always owned fixture teardown",
+    "isolation": "fresh-owned-fixture-required",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-STREAM-LIFT",
+      "SC-LIFT",
+      "SC-ENVELOPE"
+    ]
+  }
+}

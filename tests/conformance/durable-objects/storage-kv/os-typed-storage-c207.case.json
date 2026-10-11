@@ -1,0 +1,134 @@
+{
+  "adapter": "http",
+  "behaviour": "durable-objects/storage-kv",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runs": 0,
+    "application_callsite_refs": [
+      {
+        "line_end": 1148,
+        "line_start": 1148,
+        "path": "raw/packages/workshop-backend/src/storage-schema/overseer-storage.ts",
+        "root": "os"
+      }
+    ],
+    "authored": true,
+    "classification": "functional-regression-candidate",
+    "cleanup": [
+      "Application subscriptions removed in finally where present.",
+      "Trace must settle before cleanup; unsettled trace requires external owned-process teardown only.",
+      "Open and fully exhaust one public sync-KV list to replace any abandoned native list for this scope; never next() after done.",
+      "DeleteAll only this fresh owned DO; assert native KV empty. External supervisor must verify termination of the complete proven-owned dev/bundler/runtime descendant tree across PGIDs, then remove only its owned staging/bundle/log/temp/store files; a single process-group cleanup is insufficient."
+    ],
+    "closest_existing_cases": [
+      "Z206",
+      "Z208",
+      "D204"
+    ],
+    "coverage_class": "actual-pinned-os-module-over-direct-celld-native-storage",
+    "distinctness": "Z206/Z208 test distinct facet scopes and D204 sync/async API coherence. This tests explicit same-storage migration aliases on one native DO with sequential schemas only. The actual singleton alias call site establishes relevance; storageName uses the documented module contract, with no concrete application caller claimed.",
+    "expected_exception_scope": "Only ordinary valid uniqueness conflicts in C202; no malformed inputs, corruption, authentication, forgery, replay, capability lifetime or injected faults.",
+    "failure_hypothesis": "Renaming schema properties could accidentally create new physical main/index/singleton keys or fail to discover original persisted locations despite explicit storage aliases.",
+    "id": "C207",
+    "implementation": "cases.js:C207",
+    "independently_reviewed": false,
+    "limits": {
+      "cleanup_deadline_ms": 2000,
+      "descendant_supervision": "All proven-owned dev, trusted bundler and runtime descendants across PGIDs; prefer one enforceable cgroup/ownership domain; no single-process-group cleanup assumption",
+      "max_application_remove_callbacks": 3,
+      "max_created_do_roots": 1,
+      "max_external_case_http_requests": 1,
+      "max_frontend_do_fetches": 1,
+      "max_native_list_calls": 64,
+      "max_native_storage_entries": 32,
+      "max_outbound_public_network_requests": 0,
+      "max_owned_domain_processes": 32,
+      "max_owned_writable_bytes": 134217728,
+      "max_record_payload_bytes": 1024,
+      "max_rows_per_fully_consumed_iterator": 64,
+      "max_schema_instances": 3,
+      "max_sync_transaction_depth": 3,
+      "max_total_logical_payload_bytes": 8192,
+      "outer_case_process_deadline_seconds": 15,
+      "outer_http_deadline_seconds": 10,
+      "outer_rss_bytes": 1073741824,
+      "outer_wave_deadline_seconds": 120,
+      "precondition_deadline_ms": 1000,
+      "trace_deadline_ms": 5000,
+      "writable_quota_scope": "All generated bundles, staging config, logs, temporary files and private store; externally supplied read-only binaries/source are not copied into the writable domain"
+    },
+    "literal_assertion_call_sites": 3,
+    "oracle": "Renamed read sees saved record and revision4. Update leaves only items.slug:two=a, items:a with edited record and revision5; no documents/generation shadow keys. Fresh schema instance sees edited record and5.",
+    "preconditions": [
+      "Exact reviewed OS source, Apache-2.0 license and guarded direct-celld source/build/bundle pins.",
+      "Fresh disposable SQLite-backed DO with native kv and transactionSync; no user data.",
+      "Externally enforceable resource and ownership domain includes the complete proven-owned dev/bundler/runtime descendant tree across PGIDs and all generated writable artifacts.",
+      "Trusted future bundler must preserve imported production semantics; no mocked storage or runtime fallback."
+    ],
+    "promotion_candidate": true,
+    "runtime_passes": 0,
+    "runtime_status": "NOT_RUN",
+    "schedule": "One exact GET /case/C207; one fresh named DO and one ordinary same-deployment DO.fetch; all operations synchronous in written dependency order inside that active request.",
+    "source_refs": [
+      {
+        "line_end": 216,
+        "line_start": 197,
+        "path": "raw/packages/typed-storage/src/index.ts",
+        "root": "os"
+      },
+      {
+        "line_end": 239,
+        "line_start": 236,
+        "path": "raw/packages/typed-storage/src/index.ts",
+        "root": "os"
+      },
+      {
+        "line_end": 801,
+        "line_start": 758,
+        "path": "raw/packages/typed-storage/src/index.ts",
+        "root": "os"
+      }
+    ],
+    "title": "Preserve storage across schema renames",
+    "trace": [
+      "Persist items:a, its slug index and revision singleton under original neutral names.",
+      "Stop using original schema, then declare documents with storageName items and generation with storageKey revision.",
+      "Read original records, update through renamed code in a typed transaction, and compare exact physical keys.",
+      "Recreate the renamed schema object and re-read committed values."
+    ]
+  },
+  "corpus_id": "C207",
+  "corpus_wave": "os-typed-storage-semantics",
+  "fixture": "tests/conformance/durable-objects/storage-kv/fixtures/os-typed-storage-semantics",
+  "id": "conformance/durable-objects/storage-kv/os-typed-storage-c207",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/os-typed-storage-semantics/C207"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/os-typed-storage-semantics/C207",
+      "manifest_sha256": "70b236edc39a42d460392d283885be675f1626f589f517b458f667be81946fc7",
+      "review_sha256": "14ca6bcc07b6adf1f146693850978c4f968e6cf46bac14a45b4be71bc037729e",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-typed-storage-semantics",
+      "tranche": "004"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/C207",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "C207",
+  "source": "tests/conformance/durable-objects/storage-kv/fixtures/os-typed-storage-semantics/fixture.js",
+  "source_sha256": "b90228c2292eafe5253598b111ccf2272743fc1f6f68485f6d8bd454e52cf50f",
+  "title": "Preserve storage across schema renames"
+}

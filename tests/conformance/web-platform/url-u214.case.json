@@ -1,0 +1,137 @@
+{
+  "adapter": "http",
+  "behaviour": "web-platform",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "application_relevance": "Workers may adjust query fields while performing one bounded traversal.",
+    "assertion_count": 7,
+    "authored": true,
+    "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+    "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+    "desired_behavior": "Existing iterator yields a,c,updated d, reports done, then yields e after append and reports done again. Web IDL pair iterators do not latch a completed state.",
+    "distinctness": "Iterator state across direct list mutation; U206 instead replaces an owning URL record.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/U214",
+      "request_body": null
+    },
+    "fixed_runtime_assertions": [
+      "t.deep(cursor.next(), { value: ['a', '1'], done: false }, 'first iterator yield');",
+      "t.deep(cursor.next(), { value: ['c', '3'], done: false }, 'iterator reads current list after removal of unseen entry');",
+      "t.deep(cursor.next(), { value: ['d', 'updated'], done: false }, 'iterator sees value changed before yield');",
+      "t.equal(cursor.next().done, true, 'iterator completes at current end');",
+      "t.deep(cursor.next(), { value: ['e', '5'], done: false }, 'pair iterator rechecks the list after previously reporting done');",
+      "t.equal(cursor.next().done, true, 'iterator reports done again at the new end');",
+      "t.deep([...params.keys()], ['a', 'c', 'd', 'e'], 'fresh iterator sees final list');"
+    ],
+    "hypothesis": "An iterator may snapshot the initial list, retain a deleted tuple, miss an updated value, or latch completion instead of rechecking the list.",
+    "id": "U214",
+    "implementation": {
+      "end_line": 167,
+      "file": "cases.js",
+      "start_line": 153,
+      "symbol": "U214"
+    },
+    "independently_reviewed": false,
+    "layer": "direct-celld-worker-fetch-global-web-api",
+    "limits": {
+      "case_assertion_max_count": 16,
+      "case_input_max_code_units": 1024,
+      "case_tuple_max_count": 16,
+      "concurrent_requests": 1,
+      "network_calls_from_fixture": 0,
+      "repetitions": 1,
+      "request_body_bytes": 0,
+      "request_outer_deadline_seconds": 5,
+      "requests_per_case": 1,
+      "response_max_bytes": 65536,
+      "storage_writes_from_fixture": 0,
+      "timers_from_fixture": 0
+    },
+    "mechanism": "Web IDL pair-iterator liveness and list-length rechecking",
+    "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+    "preconditions": [
+      "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+      "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+      "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+    ],
+    "prediction_is_runtime_evidence": false,
+    "primary_contract_refs": [
+      "https://url.spec.whatwg.org/#urlsearchparams",
+      "https://webidl.spec.whatwg.org/#es-iterable-iterator-prototype-object"
+    ],
+    "review_status": "UNREVIEWED",
+    "runtime_pass_claimed": false,
+    "runtime_source_refs": [
+      {
+        "line_end": 212,
+        "line_start": 175,
+        "path": "celld-os-project/celld/crates/celld/js/url_search_params.js"
+      },
+      {
+        "line_end": 239,
+        "line_start": 227,
+        "path": "celld-os-project/celld/crates/celld/js/url_search_params.js"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "schedule": {
+      "depends_on": [],
+      "kind": "one synchronous finite trace",
+      "overlap": "none",
+      "path": "/case/U214",
+      "request_ordinal": 14,
+      "runtime_operations": [
+        "Create params a,b,c and consume one tuple.",
+        "Delete unseen b and append d; assert next tuple c.",
+        "Update unseen d and assert updated tuple.",
+        "Observe done, append e, assert the same iterator yields e and then reports done again; verify fresh iterator final keys."
+      ]
+    },
+    "source_observation": "Pinned generator uses dynamic length during traversal but latches completion when its body ends; Web IDL pair next instead rechecks the target list on every call. Source discrepancy hypothesis only.",
+    "static_prediction": "EXPECTED_FAILURE_CANDIDATE",
+    "status": "NOT_RUN",
+    "title": "Keep a live params iterator current across a temporary list end",
+    "trace": [
+      "Create params a,b,c and consume one tuple.",
+      "Delete unseen b and append d; assert next tuple c.",
+      "Update unseen d and assert updated tuple.",
+      "Observe done, append e, assert the same iterator yields e and then reports done again; verify fresh iterator final keys."
+    ]
+  },
+  "corpus_id": "U214",
+  "corpus_wave": "url-semantics",
+  "fixture": "tests/conformance/web-platform/fixtures/url-semantics",
+  "id": "conformance/web-platform/url-u214",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/url-semantics/U214"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/url-semantics/U214",
+      "manifest_sha256": "d61fdb1b4d070ae5aff0ad1456c39d2842c341f9737a20b67c67c251f638ae91",
+      "review_sha256": "13b98102e846487ca6304032863d1edb29b691c8649ebdea0ad53161ac6da486",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics",
+      "tranche": "001"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/U214",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "U214",
+  "source": "tests/conformance/web-platform/fixtures/url-semantics/fixture.js",
+  "source_sha256": "ccbb1cf21c3f719aa06ed64b498fc396f00736cc96d7cbd2aea437f2cc221ca6",
+  "title": "Keep a live params iterator current across a temporary list end"
+}

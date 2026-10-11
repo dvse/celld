@@ -1,0 +1,29 @@
+{
+  "id": "logic/lease-continuity/applied-before-expiry-is-accepted",
+  "layer": "logic",
+  "behaviour": "lease-continuity",
+  "title": "applied before expiry is accepted",
+  "origins": [
+    {
+      "source": "tests/logic/lease-continuity/lease_continuity.rs",
+      "legacy_id": "logic/lease-continuity/applied_before_expiry_is_accepted"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-project/tests/lease-continuity/lease_continuity.rs",
+      "sha256": "9ba2368c5a34a6a1ef0a0b3cd42ca67a20c074e67f229b19f49c5dee58bf555b"
+    }
+  ],
+  "legacy_ids": [
+    "logic/lease-continuity/applied_before_expiry_is_accepted"
+  ],
+  "adapter": "native",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/logic/lease-continuity/lease_continuity.rs",
+  "source_sha256": "9ba2368c5a34a6a1ef0a0b3cd42ca67a20c074e67f229b19f49c5dee58bf555b",
+  "test_filter": "applied_before_expiry_is_accepted"
+}

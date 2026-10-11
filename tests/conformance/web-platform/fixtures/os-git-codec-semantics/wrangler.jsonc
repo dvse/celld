@@ -1,0 +1,6 @@
+{
+  "name": "direct-pinned-os-git-codec-v1",
+  "main": "fixture.js",
+  "compatibility_date": "2026-09-04",
+  "compatibility_flags": ["nodejs_compat"]
+}

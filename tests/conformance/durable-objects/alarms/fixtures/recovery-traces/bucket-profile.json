@@ -1,0 +1,42 @@
+{
+  "name": "bucket",
+  "scope": "One disposable OS instance/fleet for one test principal; direct DO durable SQL and real process recovery, not hostile tenant certification",
+  "durability": "bucket",
+  "case_wall_seconds": 360,
+  "cleanup_wall_seconds": 40,
+  "qemu_guests": 2,
+  "guest_memory_mib": 768,
+  "guest_vcpus": 1,
+  "inherited_guest_cgroup_memory_max_bytes": 536870912,
+  "inherited_guest_cgroup_pids_max": 128,
+  "guest_cpu_quota_cores_max": 2,
+  "max_concurrent_http_jobs": 16,
+  "max_cohorts_active": 4,
+  "max_case_http_jobs": 128,
+  "max_fixture_roots": 2,
+  "max_logical_payload_bytes": 1048576,
+  "max_client_response_bytes": 1048576,
+  "max_control_response_bytes": 2097152,
+  "max_durable_rows": 96,
+  "max_gate_wait_ms": 45000,
+  "lease_ttl_ms": 30000,
+  "lease_expiry_observation_seconds": 35,
+  "production_default_ttl_qualified": false,
+  "store": "Existing trusted test-only S3 fixture, root /tmp/aes-<run_id>-bucket, guest 2 RAM filesystem",
+  "store_guest_must_survive": true,
+  "store_guest_power_loss_claim": false,
+  "network": "Private 192.168.77.1/2 only; no redirects, no public traffic, fixture-only credentials",
+  "faults": [
+    "verified owned runtime pidfd SIGKILL",
+    "bounded application handler failure",
+    "bounded transaction rollback"
+  ],
+  "prerequisite": "Already-running reviewed disposable fleet with pre-provisioned inherited cgroup limits; this wave never creates guests or modifies cgroups/security/network settings",
+  "runtime_binary_sha256": {
+    "original": "62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e",
+    "candidate": "8d27f1d423e74dd582dd36d47cc61aef2017344da84720fd5bbe1ff7fbff105f"
+  },
+  "max_case_control_calls": 1200,
+  "max_alarm_invocations": 16,
+  "max_client_processes": 4
+}

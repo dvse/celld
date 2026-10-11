@@ -1,0 +1,33 @@
+{
+  "adapter": "example",
+  "behaviour": "durable-objects/facets",
+  "fixture": "tests/conformance/durable-objects/facets/fixtures/turn-queue",
+  "id": "conformance/durable-objects/facets/turn-queue-facet",
+  "layer": "conformance",
+  "legacy_ids": [
+    "hyperbob/turn-queue-facet"
+  ],
+  "origins": [
+    {
+      "legacy_id": "hyperbob/turn-queue-facet",
+      "source": "celld@9c0fca5/tests-hyperbob/turn-queue-facet"
+    },
+    {
+      "sha256": "7ebbcfcdcce5452d46498ff21bbf0f53522318335086e8b4fb33315b8fe77024",
+      "source": "celld@9c0fca5/tests-hyperbob/turn-queue-facet/wrangler.json"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/?v=suite"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/durable-objects/facets/fixtures/turn-queue/wrangler.json",
+  "source_sha256": "7ebbcfcdcce5452d46498ff21bbf0f53522318335086e8b4fb33315b8fe77024",
+  "title": "turn queue facet"
+}

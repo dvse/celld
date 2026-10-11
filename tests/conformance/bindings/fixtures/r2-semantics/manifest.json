@@ -1,0 +1,1435 @@
+{
+  "schema": 1,
+  "wave": "r2-semantics",
+  "authored": 20,
+  "independently_reviewed": 0,
+  "runtime_executions": 0,
+  "runtime_passes": 0,
+  "cases": [
+    {
+      "id": "I201",
+      "title": "Round-trip a Unicode object with consistent head metadata",
+      "intent": "Round-trip a Unicode object with consistent head metadata",
+      "failure_hypothesis": "Object size may count characters or head/get may describe different accepted revisions.",
+      "trace": [
+        "Put five UTF-8 bytes spelling héλ.",
+        "Compare put key/size, upload Date and quoted HTTP etag.",
+        "Head and get the same key, checking metadata-only head and complete text."
+      ],
+      "oracle": "size5, exact logical key, usable Date, quoted etag; head matches stored etag without body; text héλ.",
+      "distinctness": "Full R2 record/body boundary; not an ordinary Response clone or env KV get.",
+      "application_relevance": "Object-serving handlers depend on byte size and consistent metadata.",
+      "implementation": "cases.js:I201",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 955,
+          "line_end": 1001
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1126,
+          "line_end": 1159
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/r2_store.rs",
+          "line_start": 175,
+          "line_end": 199
+        }
+      ],
+      "literal_assertion_call_sites": 6,
+      "normative_references": [
+        "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+      ],
+      "source_note": "Source-specific exceptions in docs/services/r2.md are respected: no distinct-version guarantee, UTF-8 listing order, cross-node multipart or large-stream condition claim.",
+      "preconditions": [
+        "Exact reviewed direct celld source/build and fixture identities; no hybrid/mock execution.",
+        "Fresh owned private fleet-bucket backend supporting ordinary conditional writes and multipart; no real user bucket or cloud credentials entered here.",
+        "Two distinct R2 bindings in supplied config; per-case random key prefix independently witnessed empty; external limits and owned teardown mandatory."
+      ],
+      "schedule": "One active GET /case/I201; sequential awaited operations as written; all multipart handles and body readers stay inside this active request. I211 has at most six pages.",
+      "limits": {
+        "max_case_http_requests": 1,
+        "max_tracked_api_calls": 80,
+        "max_private_bucket_bindings": 2,
+        "max_keys_per_bucket": 8,
+        "max_payload_bytes": 4096,
+        "max_multipart_uploads": 1,
+        "max_parts_per_upload": 1,
+        "max_listing_pages": 6,
+        "max_listing_limit": 20,
+        "precondition_ms": 2000,
+        "trace_ms": 8000,
+        "cleanup_ms": 3000,
+        "outer_http_seconds": 15,
+        "outer_process_seconds": 20
+      },
+      "cleanup": [
+        "After settled trace, finish/cancel every owned response body and finite input.",
+        "Abort any owned unfinished multipart upload before deleting keys; an active-request upload ID is never exported to another service.",
+        "Delete only registered synthetic keys; list both owned prefixes and require empty/nontruncated.",
+        "On unjoined trace or inaccessible reader, require external owned process/store teardown; never race cleanup against pending write."
+      ],
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "I202",
+      "title": "Respect binary body view boundaries during R2 conversion",
+      "intent": "Respect binary body view boundaries during R2 conversion",
+      "failure_hypothesis": "A sliced DataView may upload its full backing store or Blob parts may convert incorrectly.",
+      "trace": [
+        "Put a three-byte DataView inside a five-byte backing buffer, then reuse buffer after put resolves.",
+        "Read exact stored bytes.",
+        "Put a small mixed Blob and compare its flattened bytes."
+      ],
+      "oracle": "View stores [10,20,30]; Blob stores [4,5,90].",
+      "distinctness": "One composite typed-body conversion test; variants are assertions within one case, not count expansion.",
+      "application_relevance": "Binary application values often occupy windows in pooled buffers.",
+      "implementation": "cases.js:I202",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1051,
+          "line_end": 1065
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/r2_store.rs",
+          "line_start": 528,
+          "line_end": 554
+        }
+      ],
+      "literal_assertion_call_sites": 2,
+      "normative_references": [
+        "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+      ],
+      "source_note": "Source-specific exceptions in docs/services/r2.md are respected: no distinct-version guarantee, UTF-8 listing order, cross-node multipart or large-stream condition claim.",
+      "preconditions": [
+        "Exact reviewed direct celld source/build and fixture identities; no hybrid/mock execution.",
+        "Fresh owned private fleet-bucket backend supporting ordinary conditional writes and multipart; no real user bucket or cloud credentials entered here.",
+        "Two distinct R2 bindings in supplied config; per-case random key prefix independently witnessed empty; external limits and owned teardown mandatory."
+      ],
+      "schedule": "One active GET /case/I202; sequential awaited operations as written; all multipart handles and body readers stay inside this active request. I211 has at most six pages.",
+      "limits": {
+        "max_case_http_requests": 1,
+        "max_tracked_api_calls": 80,
+        "max_private_bucket_bindings": 2,
+        "max_keys_per_bucket": 8,
+        "max_payload_bytes": 4096,
+        "max_multipart_uploads": 1,
+        "max_parts_per_upload": 1,
+        "max_listing_pages": 6,
+        "max_listing_limit": 20,
+        "precondition_ms": 2000,
+        "trace_ms": 8000,
+        "cleanup_ms": 3000,
+        "outer_http_seconds": 15,
+        "outer_process_seconds": 20
+      },
+      "cleanup": [
+        "After settled trace, finish/cancel every owned response body and finite input.",
+        "Abort any owned unfinished multipart upload before deleting keys; an active-request upload ID is never exported to another service.",
+        "Delete only registered synthetic keys; list both owned prefixes and require empty/nontruncated.",
+        "On unjoined trace or inaccessible reader, require external owned process/store teardown; never race cleanup against pending write."
+      ],
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "I203",
+      "title": "Finish a finite streamed put across an empty chunk",
+      "intent": "Finish a finite streamed put across an empty chunk",
+      "failure_hypothesis": "Stream upload loop may mistake an empty chunk for EOF or omit final bytes.",
+      "trace": [
+        "Supply three bounded chunks including an empty middle chunk followed by close.",
+        "Await streamed put and compare producer completion and stored size.",
+        "Read back exact five bytes."
+      ],
+      "oracle": "Three chunks offered, closure witnessed, size5 and bytes[1,2,3,4,5].",
+      "distinctness": "R2 host begin/chunk/end upload path, separate from HTTP streaming and KV stream buffering.",
+      "application_relevance": "Streaming uploads should not terminate at a valid empty chunk.",
+      "implementation": "cases.js:I203",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1070,
+          "line_end": 1095
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/r2_store.rs",
+          "line_start": 562,
+          "line_end": 677
+        }
+      ],
+      "literal_assertion_call_sites": 2,
+      "normative_references": [
+        "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+      ],
+      "source_note": "Source-specific exceptions in docs/services/r2.md are respected: no distinct-version guarantee, UTF-8 listing order, cross-node multipart or large-stream condition claim.",
+      "preconditions": [
+        "Exact reviewed direct celld source/build and fixture identities; no hybrid/mock execution.",
+        "Fresh owned private fleet-bucket backend supporting ordinary conditional writes and multipart; no real user bucket or cloud credentials entered here.",
+        "Two distinct R2 bindings in supplied config; per-case random key prefix independently witnessed empty; external limits and owned teardown mandatory."
+      ],
+      "schedule": "One active GET /case/I203; sequential awaited operations as written; all multipart handles and body readers stay inside this active request. I211 has at most six pages.",
+      "limits": {
+        "max_case_http_requests": 1,
+        "max_tracked_api_calls": 80,
+        "max_private_bucket_bindings": 2,
+        "max_keys_per_bucket": 8,
+        "max_payload_bytes": 4096,
+        "max_multipart_uploads": 1,
+        "max_parts_per_upload": 1,
+        "max_listing_pages": 6,
+        "max_listing_limit": 20,
+        "precondition_ms": 2000,
+        "trace_ms": 8000,
+        "cleanup_ms": 3000,
+        "outer_http_seconds": 15,
+        "outer_process_seconds": 20
+      },
+      "cleanup": [
+        "After settled trace, finish/cancel every owned response body and finite input.",
+        "Abort any owned unfinished multipart upload before deleting keys; an active-request upload ID is never exported to another service.",
+        "Delete only registered synthetic keys; list both owned prefixes and require empty/nontruncated.",
+        "On unjoined trace or inaccessible reader, require external owned process/store teardown; never race cleanup against pending write."
+      ],
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "I204",
+      "title": "Round-trip metadata and write only its HTTP fields",
+      "intent": "Round-trip metadata and write only its HTTP fields",
+      "failure_hypothesis": "Metadata envelope or header reconstruction may lose Unicode/case, expiry types or unrelated response headers.",
+      "trace": [
+        "Put ordinary HTTP fields, fixed expiry Date and Unicode custom metadata.",
+        "Head object and write metadata onto headers with an unrelated field.",
+        "Check exact fields and revived expiry Date."
+      ],
+      "oracle": "text/plain, en, max-age60, fixed UTC expiry; x-keep unchanged; custom Project=demo,label=café.",
+      "distinctness": "R2 metadata persistence/envelope/header projection, not local Headers mutation alone.",
+      "application_relevance": "Serving stored objects must preserve upload metadata and unrelated handler headers.",
+      "implementation": "cases.js:I204",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 863,
+          "line_end": 885
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 955,
+          "line_end": 990
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/r2_store.rs",
+          "line_start": 63,
+          "line_end": 173
+        }
+      ],
+      "literal_assertion_call_sites": 3,
+      "normative_references": [
+        "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+      ],
+      "source_note": "Source-specific exceptions in docs/services/r2.md are respected: no distinct-version guarantee, UTF-8 listing order, cross-node multipart or large-stream condition claim.",
+      "preconditions": [
+        "Exact reviewed direct celld source/build and fixture identities; no hybrid/mock execution.",
+        "Fresh owned private fleet-bucket backend supporting ordinary conditional writes and multipart; no real user bucket or cloud credentials entered here.",
+        "Two distinct R2 bindings in supplied config; per-case random key prefix independently witnessed empty; external limits and owned teardown mandatory."
+      ],
+      "schedule": "One active GET /case/I204; sequential awaited operations as written; all multipart handles and body readers stay inside this active request. I211 has at most six pages.",
+      "limits": {
+        "max_case_http_requests": 1,
+        "max_tracked_api_calls": 80,
+        "max_private_bucket_bindings": 2,
+        "max_keys_per_bucket": 8,
+        "max_payload_bytes": 4096,
+        "max_multipart_uploads": 1,
+        "max_parts_per_upload": 1,
+        "max_listing_pages": 6,
+        "max_listing_limit": 20,
+        "precondition_ms": 2000,
+        "trace_ms": 8000,
+        "cleanup_ms": 3000,
+        "outer_http_seconds": 15,
+        "outer_process_seconds": 20
+      },
+      "cleanup": [
+        "After settled trace, finish/cancel every owned response body and finite input.",
+        "Abort any owned unfinished multipart upload before deleting keys; an active-request upload ID is never exported to another service.",
+        "Delete only registered synthetic keys; list both owned prefixes and require empty/nontruncated.",
+        "On unjoined trace or inaccessible reader, require external owned process/store teardown; never race cleanup against pending write."
+      ],
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "I205",
+      "title": "Replace body and metadata as one object revision",
+      "intent": "Replace body and metadata as one object revision",
+      "failure_hypothesis": "Overwrite may merge omitted old metadata into the new object.",
+      "trace": [
+        "Seed body plus HTTP Headers metadata and custom stale entry.",
+        "Overwrite with new body, language and current custom entry.",
+        "Head/get and check removed fields plus complete replacement."
+      ],
+      "oracle": "Only current=keep custom entry remains; prior contentType/cacheControl absent; languagefr; textnew.",
+      "distinctness": "Successful replacement semantics, distinct from initial metadata round-trip.",
+      "application_relevance": "Object revisions must not inherit removed cache/content settings.",
+      "implementation": "cases.js:I205",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1004,
+          "line_end": 1048
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1148,
+          "line_end": 1159
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/r2_store.rs",
+          "line_start": 531,
+          "line_end": 558
+        }
+      ],
+      "literal_assertion_call_sites": 3,
+      "normative_references": [
+        "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+      ],
+      "source_note": "Source-specific exceptions in docs/services/r2.md are respected: no distinct-version guarantee, UTF-8 listing order, cross-node multipart or large-stream condition claim.",
+      "preconditions": [
+        "Exact reviewed direct celld source/build and fixture identities; no hybrid/mock execution.",
+        "Fresh owned private fleet-bucket backend supporting ordinary conditional writes and multipart; no real user bucket or cloud credentials entered here.",
+        "Two distinct R2 bindings in supplied config; per-case random key prefix independently witnessed empty; external limits and owned teardown mandatory."
+      ],
+      "schedule": "One active GET /case/I205; sequential awaited operations as written; all multipart handles and body readers stay inside this active request. I211 has at most six pages.",
+      "limits": {
+        "max_case_http_requests": 1,
+        "max_tracked_api_calls": 80,
+        "max_private_bucket_bindings": 2,
+        "max_keys_per_bucket": 8,
+        "max_payload_bytes": 4096,
+        "max_multipart_uploads": 1,
+        "max_parts_per_upload": 1,
+        "max_listing_pages": 6,
+        "max_listing_limit": 20,
+        "precondition_ms": 2000,
+        "trace_ms": 8000,
+        "cleanup_ms": 3000,
+        "outer_http_seconds": 15,
+        "outer_process_seconds": 20
+      },
+      "cleanup": [
+        "After settled trace, finish/cancel every owned response body and finite input.",
+        "Abort any owned unfinished multipart upload before deleting keys; an active-request upload ID is never exported to another service.",
+        "Delete only registered synthetic keys; list both owned prefixes and require empty/nontruncated.",
+        "On unjoined trace or inaccessible reader, require external owned process/store teardown; never race cleanup against pending write."
+      ],
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "I206",
+      "title": "Cancel one R2 reader without disturbing other readers",
+      "intent": "Cancel one R2 reader without disturbing other readers",
+      "failure_hypothesis": "Cancelling a body may consume a separate read or mutate the stored object.",
+      "trace": [
+        "Open two independent gets of one finite object.",
+        "Read one chunk from first, cancel and release its reader.",
+        "Read second and a fresh third get exactly."
+      ],
+      "oracle": "Both initially unused; second remains unused after peer cancellation; both subsequent complete texts equal independent-reader-content.",
+      "distinctness": "R2 host-object read/cancellation isolation; no network-fault injection or fairness claim.",
+      "application_relevance": "Preview consumers may cancel while another request still needs the stored body.",
+      "implementation": "cases.js:I206",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 993,
+          "line_end": 1001
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1129,
+          "line_end": 1147
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/r2_ops.rs",
+          "line_start": 79,
+          "line_end": 122
+        }
+      ],
+      "literal_assertion_call_sites": 5,
+      "normative_references": [
+        "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+      ],
+      "source_note": "Source-specific exceptions in docs/services/r2.md are respected: no distinct-version guarantee, UTF-8 listing order, cross-node multipart or large-stream condition claim.",
+      "preconditions": [
+        "Exact reviewed direct celld source/build and fixture identities; no hybrid/mock execution.",
+        "Fresh owned private fleet-bucket backend supporting ordinary conditional writes and multipart; no real user bucket or cloud credentials entered here.",
+        "Two distinct R2 bindings in supplied config; per-case random key prefix independently witnessed empty; external limits and owned teardown mandatory."
+      ],
+      "schedule": "One active GET /case/I206; sequential awaited operations as written; all multipart handles and body readers stay inside this active request. I211 has at most six pages.",
+      "limits": {
+        "max_case_http_requests": 1,
+        "max_tracked_api_calls": 80,
+        "max_private_bucket_bindings": 2,
+        "max_keys_per_bucket": 8,
+        "max_payload_bytes": 4096,
+        "max_multipart_uploads": 1,
+        "max_parts_per_upload": 1,
+        "max_listing_pages": 6,
+        "max_listing_limit": 20,
+        "precondition_ms": 2000,
+        "trace_ms": 8000,
+        "cleanup_ms": 3000,
+        "outer_http_seconds": 15,
+        "outer_process_seconds": 20
+      },
+      "cleanup": [
+        "After settled trace, finish/cancel every owned response body and finite input.",
+        "Abort any owned unfinished multipart upload before deleting keys; an active-request upload ID is never exported to another service.",
+        "Delete only registered synthetic keys; list both owned prefixes and require empty/nontruncated.",
+        "On unjoined trace or inaccessible reader, require external owned process/store teardown; never race cleanup against pending write."
+      ],
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "I207",
+      "title": "Distinguish a conditional metadata-only read from a miss",
+      "intent": "Distinguish a conditional metadata-only read from a miss",
+      "failure_hypothesis": "Failed read condition may be confused with nonexistent key, or matching header condition may wrongly suppress body.",
+      "trace": [
+        "Capture accepted etag from put.",
+        "Get with etagDoesNotMatch using that current etag.",
+        "Read with quoted If-Match header; separately get an absent key."
+      ],
+      "oracle": "Unmet condition returns object/current metadata but undefined body; matching condition reads payload; missing returns null.",
+      "distinctness": "Three semantically different conditional read outcomes at R2 boundary.",
+      "application_relevance": "HTTP conditional serving must distinguish not-modified from not-found.",
+      "implementation": "cases.js:I207",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 890,
+          "line_end": 915
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1131,
+          "line_end": 1147
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/r2_ops.rs",
+          "line_start": 79,
+          "line_end": 122
+        }
+      ],
+      "literal_assertion_call_sites": 5,
+      "normative_references": [
+        "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+      ],
+      "source_note": "Source-specific exceptions in docs/services/r2.md are respected: no distinct-version guarantee, UTF-8 listing order, cross-node multipart or large-stream condition claim.",
+      "preconditions": [
+        "Exact reviewed direct celld source/build and fixture identities; no hybrid/mock execution.",
+        "Fresh owned private fleet-bucket backend supporting ordinary conditional writes and multipart; no real user bucket or cloud credentials entered here.",
+        "Two distinct R2 bindings in supplied config; per-case random key prefix independently witnessed empty; external limits and owned teardown mandatory."
+      ],
+      "schedule": "One active GET /case/I207; sequential awaited operations as written; all multipart handles and body readers stay inside this active request. I211 has at most six pages.",
+      "limits": {
+        "max_case_http_requests": 1,
+        "max_tracked_api_calls": 80,
+        "max_private_bucket_bindings": 2,
+        "max_keys_per_bucket": 8,
+        "max_payload_bytes": 4096,
+        "max_multipart_uploads": 1,
+        "max_parts_per_upload": 1,
+        "max_listing_pages": 6,
+        "max_listing_limit": 20,
+        "precondition_ms": 2000,
+        "trace_ms": 8000,
+        "cleanup_ms": 3000,
+        "outer_http_seconds": 15,
+        "outer_process_seconds": 20
+      },
+      "cleanup": [
+        "After settled trace, finish/cancel every owned response body and finite input.",
+        "Abort any owned unfinished multipart upload before deleting keys; an active-request upload ID is never exported to another service.",
+        "Delete only registered synthetic keys; list both owned prefixes and require empty/nontruncated.",
+        "On unjoined trace or inaccessible reader, require external owned process/store teardown; never race cleanup against pending write."
+      ],
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "I208",
+      "title": "Preserve successful compare-and-set state after stale refusal",
+      "intent": "Preserve successful compare-and-set state after stale refusal",
+      "failure_hypothesis": "Conditional put may accept an obsolete etag or change content when returning null.",
+      "trace": [
+        "Write first version.",
+        "Put second using first etag as matching precondition.",
+        "Try different replacement using stale first etag, then get/head current state."
+      ],
+      "oracle": "First conditional replacement succeeds; stale write returns null; bodysecond and metadata from accepted replacement persist.",
+      "distinctness": "Successful and refused normal storage preconditions, never auth forgery or network replay.",
+      "application_relevance": "Editors use etag compare-and-set to avoid overwriting newer object revisions.",
+      "implementation": "cases.js:I208",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1148,
+          "line_end": 1159
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/r2_store.rs",
+          "line_start": 204,
+          "line_end": 223
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/r2_store.rs",
+          "line_start": 531,
+          "line_end": 558
+        }
+      ],
+      "literal_assertion_call_sites": 4,
+      "normative_references": [
+        "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+      ],
+      "source_note": "Source-specific exceptions in docs/services/r2.md are respected: no distinct-version guarantee, UTF-8 listing order, cross-node multipart or large-stream condition claim.",
+      "preconditions": [
+        "Exact reviewed direct celld source/build and fixture identities; no hybrid/mock execution.",
+        "Fresh owned private fleet-bucket backend supporting ordinary conditional writes and multipart; no real user bucket or cloud credentials entered here.",
+        "Two distinct R2 bindings in supplied config; per-case random key prefix independently witnessed empty; external limits and owned teardown mandatory."
+      ],
+      "schedule": "One active GET /case/I208; sequential awaited operations as written; all multipart handles and body readers stay inside this active request. I211 has at most six pages.",
+      "limits": {
+        "max_case_http_requests": 1,
+        "max_tracked_api_calls": 80,
+        "max_private_bucket_bindings": 2,
+        "max_keys_per_bucket": 8,
+        "max_payload_bytes": 4096,
+        "max_multipart_uploads": 1,
+        "max_parts_per_upload": 1,
+        "max_listing_pages": 6,
+        "max_listing_limit": 20,
+        "precondition_ms": 2000,
+        "trace_ms": 8000,
+        "cleanup_ms": 3000,
+        "outer_http_seconds": 15,
+        "outer_process_seconds": 20
+      },
+      "cleanup": [
+        "After settled trace, finish/cancel every owned response body and finite input.",
+        "Abort any owned unfinished multipart upload before deleting keys; an active-request upload ID is never exported to another service.",
+        "Delete only registered synthetic keys; list both owned prefixes and require empty/nontruncated.",
+        "On unjoined trace or inaccessible reader, require external owned process/store teardown; never race cleanup against pending write."
+      ],
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "I209",
+      "title": "Honor create-only writes across condition representations",
+      "intent": "Honor create-only writes across condition representations",
+      "failure_hypothesis": "If-None-Match star may be dropped during Headers/object normalization.",
+      "trace": [
+        "Create absent key with If-None-Match:* Headers.",
+        "Attempt replacement with etagDoesNotMatch:* object condition.",
+        "Read existing content."
+      ],
+      "oracle": "Creation succeeds; replacement returns null; content remainscreated.",
+      "distinctness": "Existence wildcard condition, not an etag-value permutation of compare-and-set.",
+      "application_relevance": "Create-once object publication needs an atomic absence condition.",
+      "implementation": "cases.js:I209",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 890,
+          "line_end": 915
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1148,
+          "line_end": 1159
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/r2_store.rs",
+          "line_start": 204,
+          "line_end": 223
+        }
+      ],
+      "literal_assertion_call_sites": 3,
+      "normative_references": [
+        "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+      ],
+      "source_note": "Source-specific exceptions in docs/services/r2.md are respected: no distinct-version guarantee, UTF-8 listing order, cross-node multipart or large-stream condition claim.",
+      "preconditions": [
+        "Exact reviewed direct celld source/build and fixture identities; no hybrid/mock execution.",
+        "Fresh owned private fleet-bucket backend supporting ordinary conditional writes and multipart; no real user bucket or cloud credentials entered here.",
+        "Two distinct R2 bindings in supplied config; per-case random key prefix independently witnessed empty; external limits and owned teardown mandatory."
+      ],
+      "schedule": "One active GET /case/I209; sequential awaited operations as written; all multipart handles and body readers stay inside this active request. I211 has at most six pages.",
+      "limits": {
+        "max_case_http_requests": 1,
+        "max_tracked_api_calls": 80,
+        "max_private_bucket_bindings": 2,
+        "max_keys_per_bucket": 8,
+        "max_payload_bytes": 4096,
+        "max_multipart_uploads": 1,
+        "max_parts_per_upload": 1,
+        "max_listing_pages": 6,
+        "max_listing_limit": 20,
+        "precondition_ms": 2000,
+        "trace_ms": 8000,
+        "cleanup_ms": 3000,
+        "outer_http_seconds": 15,
+        "outer_process_seconds": 20
+      },
+      "cleanup": [
+        "After settled trace, finish/cancel every owned response body and finite input.",
+        "Abort any owned unfinished multipart upload before deleting keys; an active-request upload ID is never exported to another service.",
+        "Delete only registered synthetic keys; list both owned prefixes and require empty/nontruncated.",
+        "On unjoined trace or inaccessible reader, require external owned process/store teardown; never race cleanup against pending write."
+      ],
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "I210",
+      "title": "Translate structured and header byte ranges correctly",
+      "intent": "Translate structured and header byte ranges correctly",
+      "failure_hypothesis": "Range normalization may shift inclusive endpoints or confuse full size with returned length.",
+      "trace": [
+        "Store ten ASCII bytes.",
+        "Get offset2,length4 and inspect full size/actual range.",
+        "Get bytes=-3 header suffix and finally whole object."
+      ],
+      "oracle": "Full size10, window2/4 body2345; suffix789; later whole0123456789.",
+      "distinctness": "A single multi-form range mechanism case; no separate credit per parameter value.",
+      "application_relevance": "Download handlers expose partial reads while retaining full object metadata.",
+      "implementation": "cases.js:I210",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 917,
+          "line_end": 951
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/r2_store.rs",
+          "line_start": 227,
+          "line_end": 247
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/r2_store.rs",
+          "line_start": 175,
+          "line_end": 199
+        }
+      ],
+      "literal_assertion_call_sites": 4,
+      "normative_references": [
+        "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+      ],
+      "source_note": "Source-specific exceptions in docs/services/r2.md are respected: no distinct-version guarantee, UTF-8 listing order, cross-node multipart or large-stream condition claim.",
+      "preconditions": [
+        "Exact reviewed direct celld source/build and fixture identities; no hybrid/mock execution.",
+        "Fresh owned private fleet-bucket backend supporting ordinary conditional writes and multipart; no real user bucket or cloud credentials entered here.",
+        "Two distinct R2 bindings in supplied config; per-case random key prefix independently witnessed empty; external limits and owned teardown mandatory."
+      ],
+      "schedule": "One active GET /case/I210; sequential awaited operations as written; all multipart handles and body readers stay inside this active request. I211 has at most six pages.",
+      "limits": {
+        "max_case_http_requests": 1,
+        "max_tracked_api_calls": 80,
+        "max_private_bucket_bindings": 2,
+        "max_keys_per_bucket": 8,
+        "max_payload_bytes": 4096,
+        "max_multipart_uploads": 1,
+        "max_parts_per_upload": 1,
+        "max_listing_pages": 6,
+        "max_listing_limit": 20,
+        "precondition_ms": 2000,
+        "trace_ms": 8000,
+        "cleanup_ms": 3000,
+        "outer_http_seconds": 15,
+        "outer_process_seconds": 20
+      },
+      "cleanup": [
+        "After settled trace, finish/cancel every owned response body and finite input.",
+        "Abort any owned unfinished multipart upload before deleting keys; an active-request upload ID is never exported to another service.",
+        "Delete only registered synthetic keys; list both owned prefixes and require empty/nontruncated.",
+        "On unjoined trace or inaccessible reader, require external owned process/store teardown; never race cleanup against pending write."
+      ],
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "I211",
+      "title": "Enumerate a finite R2 prefix through opaque cursors",
+      "intent": "Enumerate a finite R2 prefix through opaque cursors",
+      "failure_hypothesis": "Pagination may repeat/drop keys, expose cursor on a complete page or stall cursor progress.",
+      "trace": [
+        "Write three ASCII keys out of order.",
+        "Read pages limited to2, carrying each returned cursor, bounded at6 pages.",
+        "Compare full ordered key list and terminal cursor omission."
+      ],
+      "oracle": "Every page has at most2 objects, cursor advances when truncated, terminal page omits cursor, collected keys a,b,c exactly.",
+      "distinctness": "R2 object-list continuation, not KV hex cursors or DO range lists.",
+      "application_relevance": "Object browsers must enumerate without deriving continuation from page size.",
+      "implementation": "cases.js:I211",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1169,
+          "line_end": 1203
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/r2_store.rs",
+          "line_start": 441,
+          "line_end": 525
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/bucket.rs",
+          "line_start": 1476,
+          "line_end": 1549
+        }
+      ],
+      "literal_assertion_call_sites": 5,
+      "normative_references": [
+        "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+      ],
+      "source_note": "Source-specific exceptions in docs/services/r2.md are respected: no distinct-version guarantee, UTF-8 listing order, cross-node multipart or large-stream condition claim.",
+      "preconditions": [
+        "Exact reviewed direct celld source/build and fixture identities; no hybrid/mock execution.",
+        "Fresh owned private fleet-bucket backend supporting ordinary conditional writes and multipart; no real user bucket or cloud credentials entered here.",
+        "Two distinct R2 bindings in supplied config; per-case random key prefix independently witnessed empty; external limits and owned teardown mandatory."
+      ],
+      "schedule": "One active GET /case/I211; sequential awaited operations as written; all multipart handles and body readers stay inside this active request. I211 has at most six pages.",
+      "limits": {
+        "max_case_http_requests": 1,
+        "max_tracked_api_calls": 80,
+        "max_private_bucket_bindings": 2,
+        "max_keys_per_bucket": 8,
+        "max_payload_bytes": 4096,
+        "max_multipart_uploads": 1,
+        "max_parts_per_upload": 1,
+        "max_listing_pages": 6,
+        "max_listing_limit": 20,
+        "precondition_ms": 2000,
+        "trace_ms": 8000,
+        "cleanup_ms": 3000,
+        "outer_http_seconds": 15,
+        "outer_process_seconds": 20
+      },
+      "cleanup": [
+        "After settled trace, finish/cancel every owned response body and finite input.",
+        "Abort any owned unfinished multipart upload before deleting keys; an active-request upload ID is never exported to another service.",
+        "Delete only registered synthetic keys; list both owned prefixes and require empty/nontruncated.",
+        "On unjoined trace or inaccessible reader, require external owned process/store teardown; never race cleanup against pending write."
+      ],
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "I212",
+      "title": "Roll up child directories without exposing their objects",
+      "intent": "Roll up child directories without exposing their objects",
+      "failure_hypothesis": "Delimiter processing may duplicate rolled-up prefixes or also return nested objects.",
+      "trace": [
+        "Write one direct child and three nested objects across two subdirectories.",
+        "List with prefix/delimiter/limit10.",
+        "Compare direct object and locally sorted set of distinct child prefixes."
+      ],
+      "oracle": "Only tree/root.txt object; other/ and sub/ prefixes once each; not truncated.",
+      "distinctness": "R2 delimiter grouping is separate from flat prefix pagination.",
+      "application_relevance": "File-browser directory views need unique grouped children.",
+      "implementation": "cases.js:I212",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1169,
+          "line_end": 1203
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/r2_store.rs",
+          "line_start": 441,
+          "line_end": 525
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/bucket.rs",
+          "line_start": 1498,
+          "line_end": 1547
+        }
+      ],
+      "literal_assertion_call_sites": 3,
+      "normative_references": [
+        "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+      ],
+      "source_note": "Source-specific exceptions in docs/services/r2.md are respected: no distinct-version guarantee, UTF-8 listing order, cross-node multipart or large-stream condition claim.",
+      "preconditions": [
+        "Exact reviewed direct celld source/build and fixture identities; no hybrid/mock execution.",
+        "Fresh owned private fleet-bucket backend supporting ordinary conditional writes and multipart; no real user bucket or cloud credentials entered here.",
+        "Two distinct R2 bindings in supplied config; per-case random key prefix independently witnessed empty; external limits and owned teardown mandatory."
+      ],
+      "schedule": "One active GET /case/I212; sequential awaited operations as written; all multipart handles and body readers stay inside this active request. I211 has at most six pages.",
+      "limits": {
+        "max_case_http_requests": 1,
+        "max_tracked_api_calls": 80,
+        "max_private_bucket_bindings": 2,
+        "max_keys_per_bucket": 8,
+        "max_payload_bytes": 4096,
+        "max_multipart_uploads": 1,
+        "max_parts_per_upload": 1,
+        "max_listing_pages": 6,
+        "max_listing_limit": 20,
+        "precondition_ms": 2000,
+        "trace_ms": 8000,
+        "cleanup_ms": 3000,
+        "outer_http_seconds": 15,
+        "outer_process_seconds": 20
+      },
+      "cleanup": [
+        "After settled trace, finish/cancel every owned response body and finite input.",
+        "Abort any owned unfinished multipart upload before deleting keys; an active-request upload ID is never exported to another service.",
+        "Delete only registered synthetic keys; list both owned prefixes and require empty/nontruncated.",
+        "On unjoined trace or inaccessible reader, require external owned process/store teardown; never race cleanup against pending write."
+      ],
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "I213",
+      "title": "Project only requested listing metadata",
+      "intent": "Project only requested listing metadata",
+      "failure_hypothesis": "Selective include may leak unrequested metadata or omit requested metadata while preserving keys.",
+      "trace": [
+        "Write one metadata-bearing object.",
+        "List without extras, with only httpMetadata and only customMetadata.",
+        "Compare single-object identity and exact metadata projections."
+      ],
+      "oracle": "One object in each page; plain extras empty; http-only has text/plain and empty custom; custom-only has labelvisible and empty HTTP.",
+      "distinctness": "Native metadata-head augmentation plus JS selective projection; celld shapes unrequested extras as empty maps, explicitly source-cut representation rather than universal omission shape.",
+      "application_relevance": "Callers opt into metadata costs and rely on predictable projections.",
+      "implementation": "cases.js:I213",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1169,
+          "line_end": 1203
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/r2_store.rs",
+          "line_start": 474,
+          "line_end": 519
+        }
+      ],
+      "literal_assertion_call_sites": 4,
+      "normative_references": [
+        "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+      ],
+      "source_note": "Source-specific exceptions in docs/services/r2.md are respected: no distinct-version guarantee, UTF-8 listing order, cross-node multipart or large-stream condition claim.",
+      "preconditions": [
+        "Exact reviewed direct celld source/build and fixture identities; no hybrid/mock execution.",
+        "Fresh owned private fleet-bucket backend supporting ordinary conditional writes and multipart; no real user bucket or cloud credentials entered here.",
+        "Two distinct R2 bindings in supplied config; per-case random key prefix independently witnessed empty; external limits and owned teardown mandatory."
+      ],
+      "schedule": "One active GET /case/I213; sequential awaited operations as written; all multipart handles and body readers stay inside this active request. I211 has at most six pages.",
+      "limits": {
+        "max_case_http_requests": 1,
+        "max_tracked_api_calls": 80,
+        "max_private_bucket_bindings": 2,
+        "max_keys_per_bucket": 8,
+        "max_payload_bytes": 4096,
+        "max_multipart_uploads": 1,
+        "max_parts_per_upload": 1,
+        "max_listing_pages": 6,
+        "max_listing_limit": 20,
+        "precondition_ms": 2000,
+        "trace_ms": 8000,
+        "cleanup_ms": 3000,
+        "outer_http_seconds": 15,
+        "outer_process_seconds": 20
+      },
+      "cleanup": [
+        "After settled trace, finish/cancel every owned response body and finite input.",
+        "Abort any owned unfinished multipart upload before deleting keys; an active-request upload ID is never exported to another service.",
+        "Delete only registered synthetic keys; list both owned prefixes and require empty/nontruncated.",
+        "On unjoined trace or inaccessible reader, require external owned process/store teardown; never race cleanup against pending write."
+      ],
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "I214",
+      "title": "Keep identical logical keys isolated between buckets",
+      "intent": "Keep identical logical keys isolated between buckets",
+      "failure_hypothesis": "Binding scoping may collide same-name objects or delete another binding’s data.",
+      "trace": [
+        "Write same logical suffix through A and B with distinct bodies.",
+        "Read both then delete only A.",
+        "Assert A absent and B unchanged."
+      ],
+      "oracle": "A first-bucket; B second-bucket; A deletion leaves B readable.",
+      "distinctness": "R2 bucket-name storage prefix isolation; unlike DO roots or env KV namespaces.",
+      "application_relevance": "Applications separate object datasets with multiple bindings.",
+      "implementation": "cases.js:I214",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1126,
+          "line_end": 1168
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/r2_store.rs",
+          "line_start": 45,
+          "line_end": 48
+        }
+      ],
+      "literal_assertion_call_sites": 4,
+      "normative_references": [
+        "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+      ],
+      "source_note": "Source-specific exceptions in docs/services/r2.md are respected: no distinct-version guarantee, UTF-8 listing order, cross-node multipart or large-stream condition claim.",
+      "preconditions": [
+        "Exact reviewed direct celld source/build and fixture identities; no hybrid/mock execution.",
+        "Fresh owned private fleet-bucket backend supporting ordinary conditional writes and multipart; no real user bucket or cloud credentials entered here.",
+        "Two distinct R2 bindings in supplied config; per-case random key prefix independently witnessed empty; external limits and owned teardown mandatory."
+      ],
+      "schedule": "One active GET /case/I214; sequential awaited operations as written; all multipart handles and body readers stay inside this active request. I211 has at most six pages.",
+      "limits": {
+        "max_case_http_requests": 1,
+        "max_tracked_api_calls": 80,
+        "max_private_bucket_bindings": 2,
+        "max_keys_per_bucket": 8,
+        "max_payload_bytes": 4096,
+        "max_multipart_uploads": 1,
+        "max_parts_per_upload": 1,
+        "max_listing_pages": 6,
+        "max_listing_limit": 20,
+        "precondition_ms": 2000,
+        "trace_ms": 8000,
+        "cleanup_ms": 3000,
+        "outer_http_seconds": 15,
+        "outer_process_seconds": 20
+      },
+      "cleanup": [
+        "After settled trace, finish/cancel every owned response body and finite input.",
+        "Abort any owned unfinished multipart upload before deleting keys; an active-request upload ID is never exported to another service.",
+        "Delete only registered synthetic keys; list both owned prefixes and require empty/nontruncated.",
+        "On unjoined trace or inaccessible reader, require external owned process/store teardown; never race cleanup against pending write."
+      ],
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "I215",
+      "title": "Delete an owned subset idempotently",
+      "intent": "Delete an owned subset idempotently",
+      "failure_hypothesis": "Batch delete may affect an unrequested neighbor or treat already absent owned keys as failed effects.",
+      "trace": [
+        "Write three neighboring keys.",
+        "Delete two and inspect each miss and remaining body.",
+        "Delete the same now-absent keys and list exact survivor."
+      ],
+      "oracle": "a/c missing; b bodyB; second absent deletion succeeds; listing onlyb.",
+      "distinctness": "R2 batch physical deletion and miss semantics, not storage Map deletion counts.",
+      "application_relevance": "Object cleanup can safely revisit already removed owned keys.",
+      "implementation": "cases.js:I215",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1160,
+          "line_end": 1168
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/r2_store.rs",
+          "line_start": 415,
+          "line_end": 431
+        }
+      ],
+      "literal_assertion_call_sites": 4,
+      "normative_references": [
+        "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+      ],
+      "source_note": "Source-specific exceptions in docs/services/r2.md are respected: no distinct-version guarantee, UTF-8 listing order, cross-node multipart or large-stream condition claim.",
+      "preconditions": [
+        "Exact reviewed direct celld source/build and fixture identities; no hybrid/mock execution.",
+        "Fresh owned private fleet-bucket backend supporting ordinary conditional writes and multipart; no real user bucket or cloud credentials entered here.",
+        "Two distinct R2 bindings in supplied config; per-case random key prefix independently witnessed empty; external limits and owned teardown mandatory."
+      ],
+      "schedule": "One active GET /case/I215; sequential awaited operations as written; all multipart handles and body readers stay inside this active request. I211 has at most six pages.",
+      "limits": {
+        "max_case_http_requests": 1,
+        "max_tracked_api_calls": 80,
+        "max_private_bucket_bindings": 2,
+        "max_keys_per_bucket": 8,
+        "max_payload_bytes": 4096,
+        "max_multipart_uploads": 1,
+        "max_parts_per_upload": 1,
+        "max_listing_pages": 6,
+        "max_listing_limit": 20,
+        "precondition_ms": 2000,
+        "trace_ms": 8000,
+        "cleanup_ms": 3000,
+        "outer_http_seconds": 15,
+        "outer_process_seconds": 20
+      },
+      "cleanup": [
+        "After settled trace, finish/cancel every owned response body and finite input.",
+        "Abort any owned unfinished multipart upload before deleting keys; an active-request upload ID is never exported to another service.",
+        "Delete only registered synthetic keys; list both owned prefixes and require empty/nontruncated.",
+        "On unjoined trace or inaccessible reader, require external owned process/store teardown; never race cleanup against pending write."
+      ],
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "I216",
+      "title": "Preserve empty and Unicode path segments in object keys",
+      "intent": "Preserve empty and Unicode path segments in object keys",
+      "failure_hypothesis": "Fleet bucket key encoding may collapse distinct logical object names.",
+      "trace": [
+        "Write plain path, empty-middle path, trailing-empty path and Unicode path.",
+        "Read three distinct payloads.",
+        "Compare decoded listing set without imposing backend-specific Unicode order."
+      ],
+      "oracle": "All four logical keys remain distinct and decoded; plain/middle-empty/trailing-empty bodies exact.",
+      "distinctness": "Logical key encoding round-trip; deliberately no Cloudflare UTF-8 ordering claim on celld encoded ordering.",
+      "application_relevance": "Names from user files can include repeated separators and non-ASCII characters.",
+      "implementation": "cases.js:I216",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/docs/services/r2.md",
+          "line_start": 27,
+          "line_end": 45
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/bucket.rs",
+          "line_start": 1476,
+          "line_end": 1549
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/r2_store.rs",
+          "line_start": 45,
+          "line_end": 48
+        }
+      ],
+      "literal_assertion_call_sites": 4,
+      "normative_references": [
+        "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+      ],
+      "source_note": "Source-specific exceptions in docs/services/r2.md are respected: no distinct-version guarantee, UTF-8 listing order, cross-node multipart or large-stream condition claim.",
+      "preconditions": [
+        "Exact reviewed direct celld source/build and fixture identities; no hybrid/mock execution.",
+        "Fresh owned private fleet-bucket backend supporting ordinary conditional writes and multipart; no real user bucket or cloud credentials entered here.",
+        "Two distinct R2 bindings in supplied config; per-case random key prefix independently witnessed empty; external limits and owned teardown mandatory."
+      ],
+      "schedule": "One active GET /case/I216; sequential awaited operations as written; all multipart handles and body readers stay inside this active request. I211 has at most six pages.",
+      "limits": {
+        "max_case_http_requests": 1,
+        "max_tracked_api_calls": 80,
+        "max_private_bucket_bindings": 2,
+        "max_keys_per_bucket": 8,
+        "max_payload_bytes": 4096,
+        "max_multipart_uploads": 1,
+        "max_parts_per_upload": 1,
+        "max_listing_pages": 6,
+        "max_listing_limit": 20,
+        "precondition_ms": 2000,
+        "trace_ms": 8000,
+        "cleanup_ms": 3000,
+        "outer_http_seconds": 15,
+        "outer_process_seconds": 20
+      },
+      "cleanup": [
+        "After settled trace, finish/cancel every owned response body and finite input.",
+        "Abort any owned unfinished multipart upload before deleting keys; an active-request upload ID is never exported to another service.",
+        "Delete only registered synthetic keys; list both owned prefixes and require empty/nontruncated.",
+        "On unjoined trace or inaccessible reader, require external owned process/store teardown; never race cleanup against pending write."
+      ],
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "I217",
+      "title": "Retain verified checksum bytes and named JSON digests",
+      "intent": "Retain verified checksum bytes and named JSON digests",
+      "failure_hypothesis": "Checksum validation or metadata encoding may drop algorithms or return wrong byte representation.",
+      "trace": [
+        "Put abc with fixed correct SHA256.",
+        "Compare returned SHA256 and default MD5 bytes against fixed known literals.",
+        "Head and compare checksum JSON."
+      ],
+      "oracle": "SHA256 ba7816…15ad and MD5 900150…7f72 represented exactly and retained on head.",
+      "distinctness": "Correct integrity-metadata pipeline only; no invalid digest, auth or forgery input.",
+      "application_relevance": "Clients verify stored-object integrity using algorithm-specific checksums.",
+      "implementation": "cases.js:I217",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 826,
+          "line_end": 847
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 939,
+          "line_end": 953
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1017,
+          "line_end": 1030
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/r2_store.rs",
+          "line_start": 283,
+          "line_end": 389
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/r2_store.rs",
+          "line_start": 531,
+          "line_end": 546
+        }
+      ],
+      "literal_assertion_call_sites": 3,
+      "normative_references": [
+        "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+      ],
+      "source_note": "Source-specific exceptions in docs/services/r2.md are respected: no distinct-version guarantee, UTF-8 listing order, cross-node multipart or large-stream condition claim.",
+      "preconditions": [
+        "Exact reviewed direct celld source/build and fixture identities; no hybrid/mock execution.",
+        "Fresh owned private fleet-bucket backend supporting ordinary conditional writes and multipart; no real user bucket or cloud credentials entered here.",
+        "Two distinct R2 bindings in supplied config; per-case random key prefix independently witnessed empty; external limits and owned teardown mandatory."
+      ],
+      "schedule": "One active GET /case/I217; sequential awaited operations as written; all multipart handles and body readers stay inside this active request. I211 has at most six pages.",
+      "limits": {
+        "max_case_http_requests": 1,
+        "max_tracked_api_calls": 80,
+        "max_private_bucket_bindings": 2,
+        "max_keys_per_bucket": 8,
+        "max_payload_bytes": 4096,
+        "max_multipart_uploads": 1,
+        "max_parts_per_upload": 1,
+        "max_listing_pages": 6,
+        "max_listing_limit": 20,
+        "precondition_ms": 2000,
+        "trace_ms": 8000,
+        "cleanup_ms": 3000,
+        "outer_http_seconds": 15,
+        "outer_process_seconds": 20
+      },
+      "cleanup": [
+        "After settled trace, finish/cancel every owned response body and finite input.",
+        "Abort any owned unfinished multipart upload before deleting keys; an active-request upload ID is never exported to another service.",
+        "Delete only registered synthetic keys; list both owned prefixes and require empty/nontruncated.",
+        "On unjoined trace or inaccessible reader, require external owned process/store teardown; never race cleanup against pending write."
+      ],
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "I218",
+      "title": "Publish a completed single-final-part multipart object",
+      "intent": "Publish a completed single-final-part multipart object",
+      "failure_hypothesis": "Completing an upload may omit bytes or creation metadata.",
+      "trace": [
+        "Create upload with custom metadata.",
+        "Upload one14-byte final part and inspect receipt part number.",
+        "Complete with returned receipt and read object."
+      ],
+      "oracle": "partNumber1; size14; workflowcomplete; textone-final-part.",
+      "distinctness": "Multipart finalization pipeline; one final part is valid and avoids large-part resource requirements.",
+      "application_relevance": "Small multipart control flows need correct completion receipts and metadata.",
+      "implementation": "cases.js:I218",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1098,
+          "line_end": 1125
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1204,
+          "line_end": 1225
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/r2_ops.rs",
+          "line_start": 556,
+          "line_end": 630
+        }
+      ],
+      "literal_assertion_call_sites": 3,
+      "normative_references": [
+        "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+      ],
+      "source_note": "Source-specific exceptions in docs/services/r2.md are respected: no distinct-version guarantee, UTF-8 listing order, cross-node multipart or large-stream condition claim.",
+      "preconditions": [
+        "Exact reviewed direct celld source/build and fixture identities; no hybrid/mock execution.",
+        "Fresh owned private fleet-bucket backend supporting ordinary conditional writes and multipart; no real user bucket or cloud credentials entered here.",
+        "Two distinct R2 bindings in supplied config; per-case random key prefix independently witnessed empty; external limits and owned teardown mandatory."
+      ],
+      "schedule": "One active GET /case/I218; sequential awaited operations as written; all multipart handles and body readers stay inside this active request. I211 has at most six pages.",
+      "limits": {
+        "max_case_http_requests": 1,
+        "max_tracked_api_calls": 80,
+        "max_private_bucket_bindings": 2,
+        "max_keys_per_bucket": 8,
+        "max_payload_bytes": 4096,
+        "max_multipart_uploads": 1,
+        "max_parts_per_upload": 1,
+        "max_listing_pages": 6,
+        "max_listing_limit": 20,
+        "precondition_ms": 2000,
+        "trace_ms": 8000,
+        "cleanup_ms": 3000,
+        "outer_http_seconds": 15,
+        "outer_process_seconds": 20
+      },
+      "cleanup": [
+        "After settled trace, finish/cancel every owned response body and finite input.",
+        "Abort any owned unfinished multipart upload before deleting keys; an active-request upload ID is never exported to another service.",
+        "Delete only registered synthetic keys; list both owned prefixes and require empty/nontruncated.",
+        "On unjoined trace or inaccessible reader, require external owned process/store teardown; never race cleanup against pending write."
+      ],
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "I219",
+      "title": "Abort uncommitted replacement while keeping the prior object",
+      "intent": "Abort uncommitted replacement while keeping the prior object",
+      "failure_hypothesis": "Opening/uploading/aborting a multipart replacement may prematurely change committed object visibility.",
+      "trace": [
+        "Seed existing prior-object.",
+        "Open replacement upload and submit one part without completing.",
+        "Read before abort, abort and read/head again."
+      ],
+      "oracle": "Existing prior-object remains before/after abort; committed size12.",
+      "distinctness": "Multipart nonpublication and explicit abort lifecycle, distinct from successful completion.",
+      "application_relevance": "Cancelled uploads must preserve the last committed object.",
+      "implementation": "cases.js:I219",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1098,
+          "line_end": 1125
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/r2_ops.rs",
+          "line_start": 401,
+          "line_end": 442
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/r2_ops.rs",
+          "line_start": 635,
+          "line_end": 663
+        }
+      ],
+      "literal_assertion_call_sites": 3,
+      "normative_references": [
+        "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+      ],
+      "source_note": "Source-specific exceptions in docs/services/r2.md are respected: no distinct-version guarantee, UTF-8 listing order, cross-node multipart or large-stream condition claim.",
+      "preconditions": [
+        "Exact reviewed direct celld source/build and fixture identities; no hybrid/mock execution.",
+        "Fresh owned private fleet-bucket backend supporting ordinary conditional writes and multipart; no real user bucket or cloud credentials entered here.",
+        "Two distinct R2 bindings in supplied config; per-case random key prefix independently witnessed empty; external limits and owned teardown mandatory."
+      ],
+      "schedule": "One active GET /case/I219; sequential awaited operations as written; all multipart handles and body readers stay inside this active request. I211 has at most six pages.",
+      "limits": {
+        "max_case_http_requests": 1,
+        "max_tracked_api_calls": 80,
+        "max_private_bucket_bindings": 2,
+        "max_keys_per_bucket": 8,
+        "max_payload_bytes": 4096,
+        "max_multipart_uploads": 1,
+        "max_parts_per_upload": 1,
+        "max_listing_pages": 6,
+        "max_listing_limit": 20,
+        "precondition_ms": 2000,
+        "trace_ms": 8000,
+        "cleanup_ms": 3000,
+        "outer_http_seconds": 15,
+        "outer_process_seconds": 20
+      },
+      "cleanup": [
+        "After settled trace, finish/cancel every owned response body and finite input.",
+        "Abort any owned unfinished multipart upload before deleting keys; an active-request upload ID is never exported to another service.",
+        "Delete only registered synthetic keys; list both owned prefixes and require empty/nontruncated.",
+        "On unjoined trace or inaccessible reader, require external owned process/store teardown; never race cleanup against pending write."
+      ],
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "I220",
+      "title": "Resume an owned multipart upload within one live request",
+      "intent": "Resume an owned multipart upload within one live request",
+      "failure_hypothesis": "Same-node handle resumption may reference a different upload or lose original staged state.",
+      "trace": [
+        "Create upload, retain its owned ID only inside this active request.",
+        "Resume using same binding/key/ID and upload final part.",
+        "Complete through resumed handle and read/head object."
+      ],
+      "oracle": "Resumed key/ID equal original; textresumed-final; size13.",
+      "distinctness": "Documented same-node multipart upload-ID lookup, not any retained stateless RPC capability or restart recovery.",
+      "application_relevance": "Upload handlers may resume a local active upload by its ordinary public upload ID.",
+      "implementation": "cases.js:I220",
+      "source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1098,
+          "line_end": 1125
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 1227,
+          "line_end": 1238
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/r2_ops.rs",
+          "line_start": 444,
+          "line_end": 481
+        }
+      ],
+      "literal_assertion_call_sites": 3,
+      "normative_references": [
+        "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/"
+      ],
+      "source_note": "Source-specific exceptions in docs/services/r2.md are respected: no distinct-version guarantee, UTF-8 listing order, cross-node multipart or large-stream condition claim.",
+      "preconditions": [
+        "Exact reviewed direct celld source/build and fixture identities; no hybrid/mock execution.",
+        "Fresh owned private fleet-bucket backend supporting ordinary conditional writes and multipart; no real user bucket or cloud credentials entered here.",
+        "Two distinct R2 bindings in supplied config; per-case random key prefix independently witnessed empty; external limits and owned teardown mandatory."
+      ],
+      "schedule": "One active GET /case/I220; sequential awaited operations as written; all multipart handles and body readers stay inside this active request. I211 has at most six pages.",
+      "limits": {
+        "max_case_http_requests": 1,
+        "max_tracked_api_calls": 80,
+        "max_private_bucket_bindings": 2,
+        "max_keys_per_bucket": 8,
+        "max_payload_bytes": 4096,
+        "max_multipart_uploads": 1,
+        "max_parts_per_upload": 1,
+        "max_listing_pages": 6,
+        "max_listing_limit": 20,
+        "precondition_ms": 2000,
+        "trace_ms": 8000,
+        "cleanup_ms": 3000,
+        "outer_http_seconds": 15,
+        "outer_process_seconds": 20
+      },
+      "cleanup": [
+        "After settled trace, finish/cancel every owned response body and finite input.",
+        "Abort any owned unfinished multipart upload before deleting keys; an active-request upload ID is never exported to another service.",
+        "Delete only registered synthetic keys; list both owned prefixes and require empty/nontruncated.",
+        "On unjoined trace or inaccessible reader, require external owned process/store teardown; never race cleanup against pending write."
+      ],
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    }
+  ]
+}

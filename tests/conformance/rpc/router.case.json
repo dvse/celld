@@ -1,0 +1,29 @@
+{
+  "id": "conformance/rpc/router",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "router",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/examples/router",
+      "legacy_id": "examples/router"
+    },
+    {
+      "source": "celld@9c0fca5/examples/router/wrangler.jsonc",
+      "sha256": "3df69133e79a3cb71d97e18f26bdf59a07ea51b6ea58fcf4cea959daeae5da9f"
+    }
+  ],
+  "legacy_ids": [
+    "examples/router"
+  ],
+  "adapter": "example",
+  "fixture": "tests/conformance/rpc/fixtures/service-router",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": "",
+  "runnable": true,
+  "source": "tests/conformance/rpc/fixtures/service-router/wrangler.jsonc",
+  "source_sha256": "3df69133e79a3cb71d97e18f26bdf59a07ea51b6ea58fcf4cea959daeae5da9f"
+}

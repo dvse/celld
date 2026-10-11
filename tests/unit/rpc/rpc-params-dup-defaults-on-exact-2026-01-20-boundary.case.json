@@ -1,0 +1,24 @@
+{
+  "id": "unit/rpc/rpc-params-dup-defaults-on-exact-2026-01-20-boundary",
+  "layer": "unit",
+  "behaviour": "rpc",
+  "title": "rpc params dup defaults on exact 2026 01 20 boundary",
+  "origins": [
+    {
+      "source": "crates/celld/lib.rs",
+      "legacy_id": "unit/celld/rpc_params_compat_tests::rpc_params_dup_defaults_on_exact_2026_01_20_boundary"
+    }
+  ],
+  "legacy_ids": [
+    "unit/celld/rpc_params_compat_tests::rpc_params_dup_defaults_on_exact_2026_01_20_boundary"
+  ],
+  "adapter": "cargo",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "crates/celld/lib.rs",
+  "source_sha256": "24efebb359d84402f4996adebdb80f5fe963044657fbaa47f450e15e99637faf",
+  "test_filter": "rpc_params_compat_tests::rpc_params_dup_defaults_on_exact_2026_01_20_boundary"
+}

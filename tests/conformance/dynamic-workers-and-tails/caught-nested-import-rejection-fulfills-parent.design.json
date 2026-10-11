@@ -1,0 +1,45 @@
+{
+  "id": "conformance/dynamic-workers-and-tails/caught-nested-import-rejection-fulfills-parent",
+  "layer": "conformance",
+  "behaviour": "dynamic-workers-and-tails",
+  "title": "Caught nested import rejection fulfills parent",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/module-graph-stress",
+      "legacy_id": "module-graph-stress/M017"
+    }
+  ],
+  "corpus_wave": "module-graph-stress",
+  "corpus_id": "M017",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "M017",
+    "intent": "Caught nested import rejection fulfills parent",
+    "failure_hypothesis": "A handled child-module rejection can leak through the outer evaluation promise or evaluate recovery twice.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Start two imports of recoverer.",
+      "Witness both IDs waiting while its nested bad import is gated.",
+      "Release bad module; recoverer catches planned error and exports fallback."
+    ],
+    "stress": "Two outer waiters, nested dynamic rejection, handled recovery.",
+    "oracle": "Both return fallback; one bad-throw and one caught event.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M017",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request overlap of two actual loaded-worker invocations",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "id": "conformance/dynamic-workers-and-tails/explicit-reexport-resolves-star-collision",
+  "layer": "conformance",
+  "behaviour": "dynamic-workers-and-tails",
+  "title": "Explicit reexport resolves star collision",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/module-graph-stress",
+      "legacy_id": "module-graph-stress/M020"
+    }
+  ],
+  "corpus_wave": "module-graph-stress",
+  "corpus_id": "M020",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "M020",
+    "intent": "Explicit reexport resolves star collision",
+    "failure_hypothesis": "An explicit reexport can lose precedence to conflicting star exports or cease to be live.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Initialize consumer through explicit right export plus two conflicting stars.",
+      "Read chosen8.",
+      "Mutate right to12 and issue two consumer reads."
+    ],
+    "stress": "Explicit reexport precedence with live update.",
+    "oracle": "8->12; both final consumers12.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M020",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request concurrent dispatch after selected export mutation",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  }
+}

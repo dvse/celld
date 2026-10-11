@@ -1,0 +1,236 @@
+{
+  "schema_version": 1,
+  "reviewed_at_utc": "2026-10-09T08:15:09.494909+00:00",
+  "reviewer": "/root/review_celld_test_additions",
+  "wave": "os-git-codec-semantics",
+  "verdict": "ACCEPTED_PRIMARY_STATIC",
+  "counts": {
+    "authored": 6,
+    "accepted_primary_static": 6,
+    "accepted_characterization": 0,
+    "case_static_assertion_call_sites": 32,
+    "shared_decoder_assertion_call_sites": 6,
+    "expected_successful_emitted_assertions": 74,
+    "runtime_executions": 0,
+    "runtime_passes": 0
+  },
+  "accepted_primary_ids": [
+    "X201",
+    "X202",
+    "X203",
+    "X204",
+    "X205",
+    "X206"
+  ],
+  "accepted_characterization_ids": [],
+  "case_verdicts": [
+    {
+      "id": "X201",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "expected_successful_emitted_assertions": 5,
+      "reason": "Canonical Git loose header and SHA-1 identity combine with genuine native zlib encode/decode and a fixed valid stored-block input. Encoded compressed bytes are not fixed."
+    },
+    {
+      "id": "X202",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "expected_successful_emitted_assertions": 6,
+      "reason": "Compound five-mode tree encoding uses Git directory-aware byte ordering, exact literal bytes/OID, caller order preservation, parsed modes/names and referent kinds."
+    },
+    {
+      "id": "X203",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "expected_successful_emitted_assertions": 6,
+      "reason": "Canonical commit parent order, author/committer time offsets, repeated custom headers and module-defined message normalization agree with literal bytes/OID; continued headers preserve exactly one of two leading spaces."
+    },
+    {
+      "id": "X204",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "expected_successful_emitted_assertions": 4,
+      "reason": "One valid delta mixes literal insertion, the legal omitted-size 65,536-byte copy, a nonzero-offset copy and final insertion; exact output, digest and unchanged base are fixed."
+    },
+    {
+      "id": "X205",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "expected_successful_emitted_assertions": 37,
+      "reason": "Complete four-type pack building is checked through joined fixed header/trailer and full decoding to literal objects, separately from an independent complete golden pack. No exact output chunk partition is required."
+    },
+    {
+      "id": "X206",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "expected_successful_emitted_assertions": 16,
+      "reason": "A complete base-to-OFS-to-REF chain exercises the two-byte backward offset and caller-retained intermediate resolution in documented pack order, with exact objects and final trailer completion."
+    }
+  ],
+  "reviewed_artifacts_sha256": {
+    "os-git-codec-semantics/ORACLES.md": "63d86cad5fb7d6e3c369fe6ccb520e3340b5f12da65876e7f5e8ad8ea87ce85a",
+    "os-git-codec-semantics/README.md": "6b5f1dc7f0cf4bfeb8ee889596202a192559c16d8c49a8604e4fa043ceb6ff6c",
+    "os-git-codec-semantics/THIRD-PARTY.md": "8f35f3d70609def492b12d8c0236fff102fdd7f12fa264c3aaf3f473ab7cecf1",
+    "os-git-codec-semantics/author_manifest.py": "632c3d2b8ebf6e35852961c7944c188e36161ab21c8e5a2bfa868b81fc6c393c",
+    "os-git-codec-semantics/author_vectors.py": "a86ca4198d27dfe1be0a11fcc562fa2429629d8d05cb61125b0d563b412dcbed",
+    "os-git-codec-semantics/cases.js": "e2e981c22115d5a2931ece9e0a2bef69f91b1c181aa3d9cba46ba71c1d3e0f61",
+    "os-git-codec-semantics/dependency-lock.json": "2a79c5921800b12ad40f5bad0340e48a7caf5af36477f32b9303e93e2b7cdfa2",
+    "os-git-codec-semantics/fixture.js": "1e9fe63ddb8a97a259b41a94a3d4c49335648de10577f3c2b4aff0bdb6e9688c",
+    "os-git-codec-semantics/golden-inputs.json": "c07a32329be83cc2be80ce562960e24a5e07f6f7547c7f94c398c1e2c705e6d6",
+    "os-git-codec-semantics/manifest.json": "30fa9826b963cb0b917bcda33e4167d5eaf4427eb0f4c6d3d5cd81394dba89b0",
+    "os-git-codec-semantics/overlap-audit.json": "8ed745baca336d889db2c77c3f5964575b26a5861b8effae55212e4cfc6d1b7b",
+    "os-git-codec-semantics/package.json": "d0b14e41fc327e9d4f582c79b60484c46631caee29e9f2857ead3a316ac3c8a6",
+    "os-git-codec-semantics/provenance.json": "1574413c9c546df6be38b3f3354fe7b798a14b5d4f18e9638db2927d245545fb",
+    "os-git-codec-semantics/schedule.json": "b3836c01dd82fed69aa1b45c4b67e8bc4ce632093914bec130b2c4ab4300de14",
+    "os-git-codec-semantics/source-pins.json": "611ec575003f0540c2056ca0f30dd9a924d92fa2a0e4280fdebaaa04cb223ff9",
+    "os-git-codec-semantics/static-report.json": "ab62cdb2ab23332a1ca6522ac7e54a2a9a84a60ba69d131f120017282b6daa93",
+    "os-git-codec-semantics/validate_static.py": "aeb438ed355e44e7d6d9bab31a74d5daf852e13faaf4982800975323145a91d1",
+    "os-git-codec-semantics/vectors.js": "5cc1ef7e4733d99932ecd4edd0d7e31f74ce3922c35b66c95fe081a71f023a51",
+    "os-git-codec-semantics/vendor/cloudflare-os/LICENSE": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+    "os-git-codec-semantics/vendor/cloudflare-os/packages/workshop-backend/src/git-codec.ts": "56814f3f0608c88e6e83ba08e43f5af87ed4fabf972554e696c390809e9e1538",
+    "os-git-codec-semantics/wrangler.jsonc": "62ee60c326705c91c9baa88cf14cb312780e7c0f5af0aa4cf7be318cebdaf695",
+    "os-git-codec-semantics/SHA256SUMS": "8d7a05013fb4d504fd19b5f7b7326e3069c03049707b7c585fb00c94f6eef92d"
+  },
+  "independent_source_oracle_review": {
+    "path": "reviews/os-git-codec-semantics-source-oracle-review.json",
+    "sha256": "b94bfec413f2a935c0e7d014d15f2ebc14051358095b7efa24040651b4d7b7ca"
+  },
+  "production_module": {
+    "repository": "https://github.com/cloudflare/cloudflare-os",
+    "commit": "4358072f8cb1bc9ddfb6ee11122e194c76cd71e0",
+    "source_path": "packages/workshop-backend/src/git-codec.ts",
+    "sha256": "56814f3f0608c88e6e83ba08e43f5af87ed4fabf972554e696c390809e9e1538",
+    "byte_exact_unchanged_import": true,
+    "apache_license_preserved": true,
+    "runtime_imports": [
+      "node:zlib",
+      "pako"
+    ],
+    "pako_historical_locked_version": "3.0.2",
+    "pako_package_bytes_installed_or_verified": false,
+    "type_only_imports_erased_by_future_trusted_bundler": [
+      "@gadgets/workshop-shared/gatekeeper",
+      "./worktree-binding"
+    ],
+    "OS_scope": "Actual pinned component source. No full OS, storage workflow, security, performance or durability claim."
+  },
+  "intended_contract_sources": [
+    {
+      "url": "https://git-scm.com/book/en/v2/Git-Internals-Git-Objects",
+      "supports": "Loose-object header/hash construction and commit tree/parents/identity/message format; fixed short book blob vector."
+    },
+    {
+      "url": "https://git-scm.com/docs/git-fast-import",
+      "supports": "Five ordinary tree entry modes and their file, symlink, directory and gitlink meanings."
+    },
+    {
+      "url": "https://git-scm.com/docs/gitformat-signature",
+      "supports": "Only the ordinary multi-line object-header layout: continuation prefix and preservation of an originally empty value line. No signing or verification behavior is tested."
+    },
+    {
+      "url": "https://git-scm.com/docs/gitformat-pack",
+      "supports": "Version-two pack header/count, object type/size encoding, SHA-1 trailer for this traditional-hash codec, copy/insert delta instructions, omitted zero copy size meaning 65536, and OFS backward-offset arithmetic."
+    },
+    {
+      "source": "Unchanged production module documentation and source",
+      "supports": "Canonical tree ordering, module-defined commit normalization, caller-supplied base retention and one-pass pack order. Source alone does not justify incidental encoder chunk boundaries."
+    }
+  ],
+  "golden_validation": {
+    "method": "Independent fixed-byte arithmetic and hashing, with no fixture, decoder, Git or JS/TS execution by reviewers. Golden JSON and JS literal module agree.",
+    "object_oids": 14,
+    "stored_deflate_wrappers_LEN_NLEN_Adler": 8,
+    "pack_total_bytes": [
+      475,
+      367
+    ],
+    "pack_body_bytes": [
+      455,
+      347
+    ],
+    "manual_delta_instruction_sequences": 3,
+    "direct_delta_target_bytes": 65561,
+    "chain_entry_offsets": [
+      12,
+      281,
+      309
+    ],
+    "OFS_distance": 269,
+    "continued_commit_input_bytes": 288
+  },
+  "distinctness": "Compared actual baseline S/X/B/C/D and new K/Y/F bodies. Native compression, SHA, BYOB, stream chunking, cloning, storage conversion and reused cleanup are supporting mechanisms only. Six credits correspond to Git-specific loose/tree/commit/delta/pack/base-resolution contracts, not a mode/size/chunk grid.",
+  "fixture_resource_review": [
+    "An ordinary direct-celld fetch handler admits exactly one case per fresh owned deployment/process; no DO, RPC, service binding, storage, capability or external network path is used.",
+    "Fixed owned valid bytes, literal lengths and finite loop/read/source/assertion/operation caps constrain all cases. Real native builtins and the exact imported module are required; no substitute codec or altered production source is supplied.",
+    "Each yielded base is retained before the next generator request. Success requires the extra final next() to finish exact object count and trailer/EOF verification. A finally block calls return() and clears retained bases.",
+    "Normal finite byte sources must close once with their exact full byte count. Private production BYOB/digest ownership is not exposed or rewritten; generator completion and source closure are observations, not proof of lock/native reclamation.",
+    "The original trace promise must settle; an unsettled trace cannot trigger racing in-process cleanup. Every result still requires independently bounded teardown of all proven-owned runtime/dev/bundler descendants across PGIDs and their staging/temp/log/bundle/store files.",
+    "A logical decoded-payload estimate is explicitly not a JS heap measurement. The full domain requires an enforced 512 MiB aggregate RSS bound; receipts are capped at16 KiB and contain no large byte arrays."
+  ],
+  "limits": {
+    "max_external_case_http_requests": 1,
+    "max_external_public_network_requests": 0,
+    "max_runtime_storage_calls": 0,
+    "max_rpc_calls": 0,
+    "max_case_payload_bytes": 70000,
+    "max_total_logical_payload_bytes": 300000,
+    "max_pack_bytes": 4096,
+    "max_pack_objects": 4,
+    "max_object_bytes_in_pack": 1024,
+    "max_readable_sources": 2,
+    "max_source_pulls": 64,
+    "max_generator_next_calls": 10,
+    "max_top_level_operations": 64,
+    "max_assertions": 64,
+    "max_response_bytes": 16384,
+    "max_expected_live_decoded_payload_bytes": 300000,
+    "memory_accounting": "Decoded logical payload estimate only; no JS heap or native allocation measurement. Hex strings, temporary values, pako/native state and allocator overhead are bounded solely by the mandatory owned-domain RSS ceiling.",
+    "trace_deadline_ms": 5000,
+    "outer_http_deadline_seconds": 10,
+    "outer_case_process_deadline_seconds": 15,
+    "outer_cleanup_deadline_seconds": 5,
+    "outer_wave_deadline_seconds": 150,
+    "outer_rss_bytes": 536870912,
+    "max_owned_domain_processes": 32,
+    "max_owned_writable_bytes": 134217728,
+    "descendant_supervision": "Entire proven-owned runtime/dev/bundler domain including descendants across PGIDs; no single-process-group assumption."
+  },
+  "review_findings_resolved": [
+    "Removed X205 exact 10-chunk encoder topology and fixed output indexing, replacing them with joined format/trailer checks and both built/golden full decoding.",
+    "Strengthened the valid X203 continuation to two leading spaces so removal of exactly one is discriminating.",
+    "Replaced the unsupported 1 MiB heap-vector claim with a scoped logical-payload estimate and simplified unhex to one bounded typed-array loop."
+  ],
+  "source_compatibility_caveat": {
+    "evidence": "crates/celld/js/modules.rs:546 and harness.js:11562\u201311578; pinned native zlib backing is present",
+    "finding": "The harness lacks constants.Z_BEST_SPEED and ignores sync compression options. These tests retain valid-format oracles but cannot establish the OS encoder's requested fastest compression level or performance. No shim, fallback, source fix or expected-failure exemption is introduced."
+  },
+  "independent_static_verification": {
+    "delivered_files_including_checksum_manifest": 22,
+    "checksum_entries": 21,
+    "source_dependency_overlap_pins": 42,
+    "authored_JS_syntax_only_checks": 3,
+    "Python_AST_parses": 3,
+    "author_validator_executed_by_reviewer": false,
+    "author_validator_note": "Reviewed as source only because it includes Python zlib.decompress on fixture vectors; reviewers instead checked literal wrapper arithmetic/hashes and ran their own hash/AST/Node --check-only checks. No reference decoder executed by reviewers.",
+    "downloaded_or_vendored_source_imported_compiled_or_executed": false,
+    "SUT_launches": 0,
+    "reference_runtime_runs": 0,
+    "builds_installs_downloads": 0,
+    "author_or_frozen_file_edits": 0
+  },
+  "remaining_runtime_prerequisites": [
+    "Separately authorized trusted exact binary/build and bundler/config/module identity.",
+    "Exact integrity-verified pako3.0.2 package, license/notices and full installed graph; package declaration/lock text alone is not package-byte verification.",
+    "Faithful TS type erasure/using disposal and genuine celld nodejs_compat/native modules.",
+    "Complete enforced budgets, owned-domain identity and independently recorded successful teardown."
+  ],
+  "unresolved_static_acceptance_blockers": [],
+  "qualification": "All six designs remain UNRUN. Static vector/syntax/integrity review does not establish actual module execution, runtime success, full OS behavior or production readiness.",
+  "resulting_campaign_census_if_added_to_next_checkpoint": {
+    "designs": 785,
+    "primary": 670,
+    "characterization": 115,
+    "primary_target": 2000,
+    "primary_remaining": 1330
+  }
+}

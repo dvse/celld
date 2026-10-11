@@ -1,0 +1,24 @@
+{
+  "id": "unit/object-identity/migrated-bound-class-is-registered-once",
+  "layer": "unit",
+  "behaviour": "object-identity",
+  "title": "migrated bound class is registered once",
+  "origins": [
+    {
+      "source": "crates/celld/deploy.rs",
+      "legacy_id": "unit/celld/deploy::migrated_namespace_tests::migrated_bound_class_is_registered_once"
+    }
+  ],
+  "legacy_ids": [
+    "unit/celld/deploy::migrated_namespace_tests::migrated_bound_class_is_registered_once"
+  ],
+  "adapter": "cargo",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "crates/celld/deploy.rs",
+  "source_sha256": "53bcb00d4ef521ba22f3da04594190202f56ae71342ae9cbf2e3ef5e848435bf",
+  "test_filter": "deploy::migrated_namespace_tests::migrated_bound_class_is_registered_once"
+}

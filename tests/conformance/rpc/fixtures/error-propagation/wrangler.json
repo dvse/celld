@@ -1,0 +1,2 @@
+{"name": "rpc-errors", "main": "index.js", "compatibility_date": "2026-08-14",
+ "services": [{"binding": "THROWER", "service": "rpc-errors", "entrypoint": "Thrower"}]}

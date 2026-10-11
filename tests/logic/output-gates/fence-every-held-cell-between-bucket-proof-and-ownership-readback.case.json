@@ -1,0 +1,55 @@
+{
+  "id": "logic/output-gates/fence-every-held-cell-between-bucket-proof-and-ownership-readback",
+  "layer": "logic",
+  "behaviour": "output-gates",
+  "title": "Fence every held cell between bucket proof and ownership readback",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/output-gate-logic",
+      "legacy_id": "corpus/output-gate-logic/G019"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/output-gate-logic/tests/output_gate.rs",
+      "sha256": "4111d744a514b64a36f285dbf4a8b51ca56ce3f3f128dbd5ea1cc188ebed88ba"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/output-gate-logic/G019"
+  ],
+  "adapter": "native",
+  "corpus_id": "G019",
+  "corpus_wave": "output-gate-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/output-gates/fixtures/decision-cases/tests/output_gate.rs",
+  "source_sha256": "4111d744a514b64a36f285dbf4a8b51ca56ce3f3f128dbd5ea1cc188ebed88ba",
+  "test_filter": "g019_fence_between_bucket_proof_and_ownership_refuses_every_cell",
+  "contract": {
+    "intent": "Fence every held cell between bucket proof and ownership readback",
+    "preconditions": [
+      "Fresh State::new(\"fixture\", config) in this test only; no direct State field mutation",
+      "Initial config is fully pinned in profile.json; actual celld-logic::on_event is the only transition",
+      "For each resident: RequestAt -> OwnerRead (absent or exact prior local epoch) -> OwnerCasCompleted Applied -> RestoreCompleted -> RuntimeStarted generation1 -> Published; expect Local and exact epoch",
+      "Every real completion operation ID is captured from an exact emitted effect; G017 deliberately supplies gate+1000 as an unknown-op negative control. Every transition calls State::validate",
+      "No actual clock, I/O, runtime, object store, host credentials, or external traffic; source/pin/toolchain preflight required"
+    ],
+    "trace": [
+      "a Response10",
+      "b Fetch20",
+      "a bucket proof",
+      "NodeFenced",
+      "late a ownership success",
+      "late b fleet success",
+      "new request3"
+    ],
+    "oracle": "Both held outputs fail NodeFenced once; no late releases; node no longer ready and request3 fails NodeFenced",
+    "cleanup": "Finish explicit request activities/reset/runtime transitions shown in test. Drop the test-owned State at return or unwind; all state is in-memory and isolated. No production resource is created. Runner reaps only its owned compiler/test process groups and preserves evidence.",
+    "implementation": "tests/output_gate.rs:g019_fence_between_bucket_proof_and_ownership_refuses_every_cell"
+  },
+  "selector": "G019"
+}

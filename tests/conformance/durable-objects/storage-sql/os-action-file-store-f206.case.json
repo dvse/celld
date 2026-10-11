@@ -1,0 +1,164 @@
+{
+  "adapter": "http",
+  "behaviour": "durable-objects/storage-sql",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runs": 0,
+    "application_callsite_refs": [
+      {
+        "line_end": 33,
+        "line_start": 19,
+        "path": "raw/packages/gatekeeper-google/src/gmail-state.ts",
+        "root": "os"
+      },
+      {
+        "line_end": 293,
+        "line_start": 278,
+        "path": "raw/packages/gatekeeper-google/src/gmail.ts",
+        "root": "os"
+      },
+      {
+        "line_end": 766,
+        "line_start": 752,
+        "path": "raw/packages/gatekeeper-google/src/gmail.ts",
+        "root": "os"
+      }
+    ],
+    "authored": true,
+    "body_line_end": 175,
+    "body_line_start": 147,
+    "classification": "functional-regression-candidate",
+    "cleanup": [
+      "Await every capture/read and its digest before marking original trace settled; no streams exist.",
+      "If original trace remains unsettled, do not race in-object teardown; external supervisor reaps the entire owned domain.",
+      "After settlement open and completely drain one public native sync-KV iterator to replace any abandoned cursor; never call next after done.",
+      "DeleteAll only this fresh owned DO and verify KV empty; cleanup failures are typed blockers.",
+      "Independently terminate and verify every proven-owned dev/bundler/runtime descendant across PGIDs and remove only owned staging/bundles/logs/temp/private store, regardless of fixture outcome."
+    ],
+    "closest_existing_cases": [
+      "T201",
+      "T213",
+      "C202",
+      "I208"
+    ],
+    "coverage_class": "actual-pinned-os-module-over-direct-celld-native-storage-and-webcrypto",
+    "distinctness": "T201 refuses a conditional SQL reservation, T213 reduces synthetic chunk completeness, C202 rolls back typed-index uniqueness changes, and I208 refuses an R2 revision condition. Actual ActionFileStore must refuse a valid payload after hashing but before publishing allocation/chunks and remain usable. No malformed limit or corruption path is tested.",
+    "expected_exception_scope": "Only F206 ordinary valid aggregate-limit refusal. F205 missing genuine time separation is BLOCKED_WITNESS.",
+    "failure_hypothesis": "An ordinary aggregate refusal could publish orphan rows or perturb earlier captures/accounting, or prevent a later valid exact-capacity capture.",
+    "id": "F206",
+    "implementation": "cases.js:F206",
+    "independently_reviewed": false,
+    "limits": {
+      "actual_max_native_entries": 10,
+      "byte_buffer_estimate_scope": "Conservative visible-JS payload-view estimate only, not a total memory cap. Native serialization, WebCrypto transient copies, runtime heaps and allocator retention remain covered by the independently enforced aggregate RSS ceiling.",
+      "cleanup_deadline_ms": 2000,
+      "clock_wait_interval_ms": 5,
+      "descendant_supervision": "Entire proven-owned dev, trusted-bundler and runtime descendant tree across PGIDs; prefer one enforceable cgroup and ownership domain. A single PGID or parent PID is insufficient.",
+      "max_clock_waits": 32,
+      "max_created_do_roots": 1,
+      "max_external_case_http_requests": 1,
+      "max_external_receipt_bytes": 32768,
+      "max_frontend_do_fetches": 1,
+      "max_native_kv_point_operations": 256,
+      "max_native_list_calls": 64,
+      "max_native_storage_entries": 16,
+      "max_native_transactions": 16,
+      "max_outbound_public_network_requests": 0,
+      "max_owned_domain_processes": 32,
+      "max_owned_writable_bytes": 134217728,
+      "max_public_module_calls": 12,
+      "max_rows_per_fully_consumed_iterator": 64,
+      "max_streams": 0,
+      "max_total_retained_payload_bytes": 2097169,
+      "max_webcrypto_digest_calls": 8,
+      "outer_case_process_deadline_seconds": 15,
+      "outer_http_deadline_seconds": 10,
+      "outer_rss_bytes": 1073741824,
+      "outer_wave_deadline_seconds": 120,
+      "precondition_deadline_ms": 1000,
+      "trace_deadline_ms": 5000,
+      "visible_js_byte_buffer_estimate_bytes": 16777216,
+      "writable_quota_scope": "All generated bundles, staging config, logs, temporary files and private store. Do not copy externally supplied read-only source/binaries into the writable domain."
+    },
+    "literal_assertion_call_sites": 9,
+    "operation_counts": {
+      "capture_attempts": 4,
+      "explicit_deletes": 1,
+      "maximum_retained_native_entries": 7,
+      "maximum_retained_payload_bytes": 8,
+      "prune_calls": 0,
+      "reads": 4
+    },
+    "oracle": "Before refusal total7; normal five-byte refusal leaves all seven native keys/values unchanged. After deleting four bytes and admitting five, exact total8 with two genuine complete captures.",
+    "preconditions": [
+      "Exact unmodified module, closed helper import graph, Apache license and guarded direct-celld source/build/bundle identities.",
+      "Fresh disposable migrated SQLite-backed DO with genuine storage.kv, transactionSync and WebCrypto; only synthetic data.",
+      "External supervisor witnesses complete process ownership, loopback ingress, bounded resource domain and whole-descendant teardown across PGIDs.",
+      "Trusted future bundler with TypeScript erasure only; missing build/runtime prerequisites are BLOCKED, not substituted."
+    ],
+    "promotion_candidate": true,
+    "runtime_passes": 0,
+    "runtime_status": "NOT_RUN",
+    "schedule": "One exact GET /case/F206; one fresh migrated DO and one ordinary same-deployment DO.fetch; all operations remain in that live request in written order.",
+    "shared_assertion_helpers": [
+      "retained",
+      "smallBytes",
+      "absent"
+    ],
+    "source_refs": [
+      {
+        "line_end": 123,
+        "line_start": 88,
+        "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/action-files.ts",
+        "root": "wave"
+      },
+      {
+        "line_end": 219,
+        "line_start": 204,
+        "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/action-files.ts",
+        "root": "wave"
+      }
+    ],
+    "title": "Preserve captures through aggregate refusal",
+    "trace": [
+      "Capture four and three bytes under per-file8 and aggregate8 limits.",
+      "Attempt a valid five-byte third capture and require the exact aggregate-limit Error.",
+      "Compare complete preexisting native key/value snapshot, independently established metadata/keys, and both original literal public reads.",
+      "Delete the first capture and repeat the valid five-byte payload; require exact surviving three-plus-five bytes and complete keys at counter8."
+    ]
+  },
+  "corpus_id": "F206",
+  "corpus_wave": "os-action-file-store-semantics",
+  "fixture": "tests/conformance/durable-objects/storage-sql/fixtures/os-action-file-store-semantics",
+  "id": "conformance/durable-objects/storage-sql/os-action-file-store-f206",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/os-action-file-store-semantics/F206"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/os-action-file-store-semantics/F206",
+      "manifest_sha256": "a508a45f186dbca34d7b5cf31505f8a01848f29a9a610278f230b86dee971ed1",
+      "review_sha256": "45847c75f52ec33fd11698b73c9f6fa145383ac3a68f3d021d514e3ddd54a9a7",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-action-file-store-semantics",
+      "tranche": "005"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/F206",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "F206",
+  "source": "tests/conformance/durable-objects/storage-sql/fixtures/os-action-file-store-semantics/fixture.js",
+  "source_sha256": "385a2d1bd59f84ec4144199d35f5a9118e8ccf960455528a438de55419b21bce",
+  "title": "Preserve captures through aggregate refusal"
+}

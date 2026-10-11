@@ -1,0 +1,155 @@
+{
+  "adapter": "http",
+  "behaviour": "fetch-and-http",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "application_relevance": "Worker code can inspect or transform one cloned local binary response body through raw readers without changing its sibling consumer data.",
+    "assertion_count": 11,
+    "authored": true,
+    "chunk_partition_contract": "A deliberately single default-stream chunk, not a byte stream/host body. Default tee forwards one chunk (or structured clone) to each branch, without arbitrary HTTP coalescing assumptions.",
+    "cleanup": "Join all started reads before cleanup; initiate all reader and unlocked-stream cancels before awaiting; release both acquired readers; require terminal evidence for all tracked streams and both-descendant proof for retained source lock. Pending operation at external deadline => UNKNOWN and incomplete local cleanup. Verified external listener closure, whole proven-owned dev/bundler/runtime descendant-tree emptiness across PGIDs, and owned temporary/log/stage/store removal required for acceptance.",
+    "desired_behavior": "Initial chunks [10,20,30,40] on both branches; after left[0]=99, left [99,20,30,40], right [10,20,30,40], distinct backing ArrayBuffers, then EOF on both.",
+    "distinctness": "Y220 observes only final copied arrayBuffers; Y215 observes buffered clone output and metadata. This case observes live raw branch chunks after mutation, proving the tee-true selection has an observable effect. One mechanism only; no parameterized variants.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/Y301",
+      "request_body": null
+    },
+    "fixed_runtime_assertions": [
+      "t.deep(first.map(result => result.status), ['fulfilled', 'fulfilled'], 'both initial raw reads fulfill before mutation');",
+      "t.deep(first.map(result => result.value.done), [false, false], 'one deliberate source chunk reaches each branch');",
+      "t.deep(first.map(result => result.value.value instanceof Uint8Array), [true, true], 'both raw chunks are Uint8Array values');",
+      "t.deep([...left], [10, 20, 30, 40], 'original raw chunk has the fixed source bytes');",
+      "t.deep([...right], [10, 20, 30, 40], 'clone raw chunk has the fixed source bytes');",
+      "t.deep([...left], [99, 20, 30, 40], 'raw original chunk mutation takes effect locally');",
+      "t.deep([...right], [10, 20, 30, 40], 'raw clone chunk retains its bytes after sibling mutation');",
+      "t.equal(left.buffer === right.buffer, false, 'raw branch chunks use distinct ArrayBuffer storage');",
+      "t.deep(eof.map(result => result.status), ['fulfilled', 'fulfilled'], 'both EOF reads fulfill before cleanup');",
+      "t.deep(eof.map(result => result.value.done), [true, true], 'each branch reaches EOF immediately after its single chunk');",
+      "t.deep(eof.map(result => result.value.value === undefined), [true, true], 'both terminal reads contain no extra value');"
+    ],
+    "hypothesis": "A streaming clone implemented with default tee() can return shared raw Uint8Array storage even when final arrayBuffer consumers each return copied bytes.",
+    "id": "Y301",
+    "implementation": {
+      "end_line": 31,
+      "file": "cases.js",
+      "start_line": 2,
+      "symbol": "Y301"
+    },
+    "independently_reviewed": false,
+    "layer": "direct-celld-worker-fetch-global-response-local-default-stream",
+    "limits": {
+      "durable_writes": 0,
+      "explicit_readers": 2,
+      "incoming_body_bytes": 0,
+      "max_cleanup_cancel_operations": 3,
+      "max_explicit_reader_reads": 4,
+      "max_reads_per_reader": 2,
+      "outbound_fetches": 0,
+      "outer_case_seconds": 5,
+      "repetitions": 1,
+      "requests": 1,
+      "response_bytes": 65536,
+      "response_clones": 1,
+      "source_bytes": 4,
+      "source_chunks": 1,
+      "timers": 0,
+      "tracked_streams": 3
+    },
+    "mechanism": "Response body clone requests branch-two chunk storage copying before raw-reader mutation",
+    "preconditions": [
+      "Independent case/oracle review and separate exact candidate source/build/deployment review.",
+      "Real celld Response and ReadableStream globals; no imported/extracted SUT or reference runtime.",
+      "External five-second request and independent suite/cleanup deadlines plus owned teardown and resource controls are verified before entry."
+    ],
+    "prediction_is_runtime_evidence": false,
+    "primary_contract_refs": [
+      "https://fetch.spec.whatwg.org/#concept-body-clone",
+      "https://streams.spec.whatwg.org/#readablestream-tee",
+      "https://streams.spec.whatwg.org/#readable-stream-default-tee"
+    ],
+    "review_status": "UNREVIEWED",
+    "runtime_pass_claimed": false,
+    "runtime_source_refs": [
+      {
+        "line_end": 388,
+        "line_start": 371,
+        "path": "/workspace/shared/celld-body-candidate-002/revisions/r002/source/crates/celld/js/harness.js"
+      },
+      {
+        "line_end": 179,
+        "line_start": 105,
+        "path": "/workspace/shared/celld-build/candidate-001/source/crates/celld/js/streams.js"
+      },
+      {
+        "line_end": 537,
+        "line_start": 456,
+        "path": "/workspace/shared/celld-build/candidate-001/source/crates/celld/js/streams.js"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "schedule": {
+      "depends_on": [],
+      "kind": "one finite in-request trace",
+      "ordinal": 1,
+      "parallelism": "two branch reads joined at data and EOF phases; all cleanup cancellations started before their join",
+      "request": "GET /case/Y301"
+    },
+    "source_observation": "Candidate001 refuses the valid streaming clone. Candidate002 r002 calls existing tee(true), whose default-stream branch copies branch two with structuredClone. This is source evidence only.",
+    "static_prediction": "NO_FAILURE_PREDICTION",
+    "status": "NOT_RUN",
+    "success_cleanup_expectations_for_pinned_source": {
+      "cancelledReaders": 2,
+      "cancelledUnlockedStreams": 0,
+      "joinedCancellations": 2,
+      "joinedReads": 4,
+      "releasedReaders": 2,
+      "retained_runtime_source_locks": 1,
+      "source_terminal_proof": "both-local-clone-descendants-settled",
+      "tracked_streams": 3
+    },
+    "title": "Keep cloned raw body chunks independent after sibling mutation",
+    "trace": [
+      "Enqueue one four-byte Uint8Array into an ordinary default ReadableStream and close.",
+      "Clone the local Response once and acquire both body readers.",
+      "Join both first reads and assert exact initial bytes.",
+      "Mutate the original raw chunk; assert its changed bytes, unchanged sibling bytes and distinct backing buffers.",
+      "Join both EOF reads, join cleanup cancellation operations and release explicit readers."
+    ]
+  },
+  "corpus_id": "Y301",
+  "corpus_wave": "response-clone-chunk-semantics",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/response-clone-chunk-semantics",
+  "id": "conformance/fetch-and-http/response-clone-chunk-y301",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/response-clone-chunk-semantics/Y301"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/response-clone-chunk-semantics/Y301",
+      "manifest_sha256": "048b55c13a991eeedb8c7cd39d89644ac278c740fb7d24e9eb4ba4d5608e26b9",
+      "review_sha256": "e7989bc28fcfa618e27fd5f23d7e9c4baf755e66e95bc90e8f0a00cd010e7520",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/response-clone-chunk-semantics",
+      "tranche": "007"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/Y301",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "Y301",
+  "source": "tests/conformance/fetch-and-http/fixtures/response-clone-chunk-semantics/fixture.js",
+  "source_sha256": "744bc0261c9cdcb63ecb972ac3185eaad51d7115ee07100dd88d77ca283fb3a7",
+  "title": "Keep cloned raw body chunks independent after sibling mutation"
+}

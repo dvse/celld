@@ -1,0 +1,50 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "Dispose result tree in finally, then shared codecCleanup; fixture teardown releases any failed-revival capability",
+    "intent": "Keep cyclic mixed container topology intact when a returned RpcTarget forces the lifted envelope",
+    "oracle": "All graph identity relations remain exact; target returns mixed",
+    "preconditions": "COMMON; peer implements codecMixedGraph and CodecToken",
+    "source_contracts": [
+      "SC-PROJECT",
+      "SC-LIFT",
+      "SC-REVIVE"
+    ],
+    "trace": [
+      "request cyclic mixed graph with one live target",
+      "verify self/back edges and shared Map/Set identities",
+      "invoke nested target",
+      "dispose result tree"
+    ]
+  },
+  "corpus_id": "C002",
+  "corpus_wave": "rpc-codec",
+  "fixture": "tests/conformance/rpc/fixtures/value-codec",
+  "id": "conformance/rpc/keep-cyclic-mixed-container-topology-intact-when-a-returned-rpc-target-forces-the-lifted-envelope",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/rpc-codec/C002"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/rpc-codec/C002",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec"
+    },
+    {
+      "sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "C002",
+  "source": "tests/conformance/rpc/fixtures/value-codec/entry.js",
+  "source_sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+  "title": "Keep cyclic mixed container topology intact when a returned RpcTarget forces the lifted envelope"
+}

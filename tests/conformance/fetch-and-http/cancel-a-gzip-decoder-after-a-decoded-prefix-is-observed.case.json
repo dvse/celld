@@ -1,0 +1,51 @@
+{
+  "adapter": "topology",
+  "behaviour": "fetch-and-http",
+  "contract": {
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "distinctness": "Partial output cancellation of native decompression, not H019 HTTP body-reader cancellation.",
+    "implementation": "operations.js:X003",
+    "intent": "Cancel a gzip decoder after a decoded prefix is observed",
+    "oracle": "Observed prefix matches owned bytes; later write rejects with the exact cancel Error; peer remains healthy.",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "decoder emits a finite prefix before trailer"
+    ],
+    "trace": [
+      "Push the gzip prefix and read one nonempty correctly matched decoded prefix.",
+      "Hold that reader while the independent recipient fully decodes its own archive.",
+      "Cancel the main reader and attempt the withheld trailer write."
+    ]
+  },
+  "corpus_id": "X003",
+  "corpus_wave": "native-transform-stress",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/transform-streams",
+  "id": "conformance/fetch-and-http/cancel-a-gzip-decoder-after-a-decoded-prefix-is-observed",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/native-transform-stress/X003"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/native-transform-stress/X003",
+      "source": "guarded-source-archive/celld-os-stress/waves/native-transform-stress"
+    },
+    {
+      "sha256": "1c4be2004e476ee286465674ad37b81dd9ea8cc33e0dda6ef66b66b5830346de",
+      "source": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "X003",
+  "source": "tests/conformance/fetch-and-http/fixtures/transform-streams/entry.js",
+  "source_sha256": "1c4be2004e476ee286465674ad37b81dd9ea8cc33e0dda6ef66b66b5830346de",
+  "title": "Cancel a gzip decoder after a decoded prefix is observed"
+}

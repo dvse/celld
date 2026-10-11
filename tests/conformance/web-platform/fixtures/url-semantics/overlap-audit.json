@@ -1,0 +1,318 @@
+{
+  "schema_version": 1,
+  "evidence": "STATIC_SOURCE_INSPECTION_ONLY",
+  "corpus": "celld-os-stress",
+  "audited_file_count": 215,
+  "extensions": [
+    ".js",
+    ".mjs",
+    ".json",
+    ".py",
+    ".rs"
+  ],
+  "token_search": {
+    "URLSearchParams": {
+      "matching_lines": 0,
+      "matches": []
+    },
+    "URLPattern": {
+      "matching_lines": 0,
+      "matches": []
+    },
+    "searchParams": {
+      "matching_lines": 1,
+      "matches": [
+        {
+          "path": "celld-os-stress/waves/active-websocket-stress/fixture.js",
+          "line": 41,
+          "excerpt": "      check(request.headers.get('upgrade')?.toLowerCase()==='websocket','ordinary upgrade required');check(url.searchParams.get('run')===this.run&&!this.stopping,'active recipient run');"
+        }
+      ]
+    },
+    "new URL(": {
+      "matching_lines": 51,
+      "matches": [
+        {
+          "path": "celld-os-stress/fixture/index.js",
+          "line": 187,
+          "excerpt": "    input=await request.json();const root=env.ROOT.getByName(input.root);const path=new URL(request.url).pathname;"
+        },
+        {
+          "path": "celld-os-stress/waves/active-websocket-stress/fixture.js",
+          "line": 37,
+          "excerpt": "    const url=new URL(request.url),parts=url.pathname.split('/').filter(Boolean),action=parts[2];"
+        },
+        {
+          "path": "celld-os-stress/waves/active-websocket-stress/fixture.js",
+          "line": 59,
+          "excerpt": "export default {fetch(request,env){const path=new URL(request.url).pathname.split('/').filter(Boolean);if(path[0]==='health')return Response.json({profile:PROFILE,binary:BINARY,caseIds:CASE_IDS});check(path[0]==='root'&&path[1],'root path');return env.ROOT.get(env.ROOT.idFromName(ident(path[1]))).fetch(request);}};"
+        },
+        {
+          "path": "celld-os-stress/waves/alarm-event-stress/fixture.js",
+          "line": 150,
+          "excerpt": "    const path=new URL(request.url).pathname;"
+        },
+        {
+          "path": "celld-os-stress/waves/bounded-load/entry.js",
+          "line": 32,
+          "excerpt": "  async fetch(request,env){let input;try{const path=new URL(request.url).pathname;if(path==='/health')return Response.json({profile:PROFILE,caseIds:Object.keys(cases),compatibilityDate:'2026-09-04',rpcParamsDupStubs:globalThis.Cloudflare?.compatibilityFlags?.rpc_params_dup_stubs===true});input=await request.json();if(typeof input.root!=='string'||!input.root)throw new Error('root required');const root=env.ROOT.getByName(input.root);if(path==='/identity')return Response.json(await root.inspect());if(path!=='/run'||typeof input.requestId!=='string'||!/^[-a-zA-Z0-9]{16,80}$/.test(input.requestId))throw new Error('dispatch contract');return Response.json(await root.run(input.id,input.peer,input."
+        },
+        {
+          "path": "celld-os-stress/waves/bounded-resource/entry.js",
+          "line": 7,
+          "excerpt": " async fetch(request){const label=new URL(request.url).pathname.slice(1);return Response.json(await this.note(label));}"
+        },
+        {
+          "path": "celld-os-stress/waves/bounded-resource/entry.js",
+          "line": 12,
+          "excerpt": "export default {async fetch(request,env){let value;try{const path=new URL(request.url).pathname;if(path==='/health')return Response.json({profile:PROFILE,caseIds:Object.keys(cases)});value=await request.json();ok(typeof value.root==='string'&&value.root.length>0,'root required');if(path==='/identity')return Response.json(await env.ROOT.getByName(value.root).inspect());ok(path==='/run'&&typeof value.requestId==='string'&&/^[-a-zA-Z0-9]{16,80}$/.test(value.requestId),'dispatch contract');return Response.json(await env.ROOT.getByName(value.root).run(value.id,value.root,value.requestId));}catch(error){return Response.json({id:value?.id,requestId:value?.requestId,status:'BLOCKED',traceEntered:fal"
+        },
+        {
+          "path": "celld-os-stress/waves/capability-order/entry.js",
+          "line": 56,
+          "excerpt": "      const path = new URL(request.url).pathname;"
+        },
+        {
+          "path": "celld-os-stress/waves/deployment-recovery/fixture-body.js",
+          "line": 102,
+          "excerpt": "  if(new URL(request.url).pathname==='/health')return Response.json({profile:'deployment-recovery',build:BUILD});"
+        },
+        {
+          "path": "celld-os-stress/waves/deployment-recovery/front.js",
+          "line": 3,
+          "excerpt": " if(new URL(request.url).pathname==='/health')return Response.json({profile:'deployment-recovery',build:'front'});"
+        },
+        {
+          "path": "celld-os-stress/waves/deployment-recovery/versions/bad-rename/fixture.js",
+          "line": 103,
+          "excerpt": "  if(new URL(request.url).pathname==='/health')return Response.json({profile:'deployment-recovery',build:BUILD});"
+        },
+        {
+          "path": "celld-os-stress/waves/deployment-recovery/versions/front-missing/fixture.js",
+          "line": 3,
+          "excerpt": " if(new URL(request.url).pathname==='/health')return Response.json({profile:'deployment-recovery',build:'front'});"
+        },
+        {
+          "path": "celld-os-stress/waves/deployment-recovery/versions/front-new/fixture.js",
+          "line": 3,
+          "excerpt": " if(new URL(request.url).pathname==='/health')return Response.json({profile:'deployment-recovery',build:'front'});"
+        },
+        {
+          "path": "celld-os-stress/waves/deployment-recovery/versions/front-old/fixture.js",
+          "line": 3,
+          "excerpt": " if(new URL(request.url).pathname==='/health')return Response.json({profile:'deployment-recovery',build:'front'});"
+        },
+        {
+          "path": "celld-os-stress/waves/deployment-recovery/versions/v1/fixture.js",
+          "line": 103,
+          "excerpt": "  if(new URL(request.url).pathname==='/health')return Response.json({profile:'deployment-recovery',build:BUILD});"
+        },
+        {
+          "path": "celld-os-stress/waves/deployment-recovery/versions/v2-abort/fixture.js",
+          "line": 103,
+          "excerpt": "  if(new URL(request.url).pathname==='/health')return Response.json({profile:'deployment-recovery',build:BUILD});"
+        },
+        {
+          "path": "celld-os-stress/waves/deployment-recovery/versions/v2-add/fixture.js",
+          "line": 103,
+          "excerpt": "  if(new URL(request.url).pathname==='/health')return Response.json({profile:'deployment-recovery',build:BUILD});"
+        },
+        {
+          "path": "celld-os-stress/waves/deployment-recovery/versions/v2-binding/fixture.js",
+          "line": 103,
+          "excerpt": "  if(new URL(request.url).pathname==='/health')return Response.json({profile:'deployment-recovery',build:BUILD});"
+        },
+        {
+          "path": "celld-os-stress/waves/deployment-recovery/versions/v2-code/fixture.js",
+          "line": 103,
+          "excerpt": "  if(new URL(request.url).pathname==='/health')return Response.json({profile:'deployment-recovery',build:BUILD});"
+        },
+        {
+          "path": "celld-os-stress/waves/deployment-recovery/versions/v2-omitted/fixture.js",
+          "line": 103,
+          "excerpt": "  if(new URL(request.url).pathname==='/health')return Response.json({profile:'deployment-recovery',build:BUILD});"
+        },
+        {
+          "path": "celld-os-stress/waves/deployment-recovery/versions/v2-rebuild/fixture.js",
+          "line": 103,
+          "excerpt": "  if(new URL(request.url).pathname==='/health')return Response.json({profile:'deployment-recovery',build:BUILD});"
+        },
+        {
+          "path": "celld-os-stress/waves/deployment-recovery/versions/v2-script/fixture.js",
+          "line": 103,
+          "excerpt": "  if(new URL(request.url).pathname==='/health')return Response.json({profile:'deployment-recovery',build:BUILD});"
+        },
+        {
+          "path": "celld-os-stress/waves/deployment-recovery/versions/v2-sibling/fixture.js",
+          "line": 103,
+          "excerpt": "  if(new URL(request.url).pathname==='/health')return Response.json({profile:'deployment-recovery',build:BUILD});"
+        },
+        {
+          "path": "celld-os-stress/waves/deployment-recovery/versions/v2-unique/fixture.js",
+          "line": 103,
+          "excerpt": "  if(new URL(request.url).pathname==='/health')return Response.json({profile:'deployment-recovery',build:BUILD});"
+        },
+        {
+          "path": "celld-os-stress/waves/durable-recovery-stress/fixture.js",
+          "line": 130,
+          "excerpt": "    if (new URL(request.url).pathname === '/health') return Response.json({ profile: 'durable-recovery-stress-v1', operations: ['prepare','identity','status','release','read','snapshot','apply','arm','cleanup'] });"
+        },
+        {
+          "path": "celld-os-stress/waves/fetch-redirect-stress/common.js",
+          "line": 7,
+          "excerpt": "export function privateOrigin(value){const u=new URL(value);check(u.origin==='http://192.168.77.1:18080'&&u.pathname==='/'&&!u.username&&!u.password&&!u.search&&!u.hash,'fixed private fixture origin required');return u.origin;}"
+        },
+        {
+          "path": "celld-os-stress/waves/fetch-redirect-stress/common.js",
+          "line": 10,
+          "excerpt": "  const u=new URL(location,base),prefix='/root/'+ident(root)+'/op/';"
+        },
+        {
+          "path": "celld-os-stress/waves/fetch-redirect-stress/fixture.js",
+          "line": 47,
+          "excerpt": "    r.method=request.method;r.path=new URL(request.url).pathname;r.query=new URL(request.url).search;r.contentType=request.headers.get('content-type');"
+        },
+        {
+          "path": "celld-os-stress/waves/fetch-redirect-stress/fixture.js",
+          "line": 82,
+          "excerpt": "    const path=new URL(request.url).pathname.split('/').filter(Boolean);const action=path[2];this.rootName=ident(path[1]);"
+        },
+        {
+          "path": "celld-os-stress/waves/fetch-redirect-stress/fixture.js",
+          "line": 89,
+          "excerpt": "export default {async fetch(request,env){const path=new URL(request.url).pathname.split('/').filter(Boolean);if(path[0]==='health')return Response.json({profile:PROFILE,caseIds:CASE_IDS,limits:LIMITS});check(path[0]==='root'&&path.length>=3,'fixture route');return env.ROOT.getByName(ident(path[1])).fetch(request);}};"
+        },
+        {
+          "path": "celld-os-stress/waves/fetch-redirect-stress/test_helpers.mjs",
+          "line": 25,
+          "excerpt": "  assert.equal(new URL('final?phase=done',original).href,prefix+'origin/final?phase=done');"
+        },
+        {
+          "path": "celld-os-stress/waves/http-stream-stress/common.js",
+          "line": 8,
+          "excerpt": "  const u = new URL(value); const parts = u.hostname.split('.').map(Number);"
+        },
+        {
+          "path": "celld-os-stress/waves/http-stream-stress/fixture.js",
+          "line": 87,
+          "excerpt": "    const u=new URL(request.url),path=u.pathname.split('/').filter(Boolean),action=path[2];"
+        },
+        {
+          "path": "celld-os-stress/waves/http-stream-stress/fixture.js",
+          "line": 109,
+          "excerpt": "  const u=new URL(request.url);if(u.pathname==='/health')return Response.json({profile:PROFILE,caseIds:CASE_IDS,limits:LIMITS});"
+        },
+        {
+          "path": "celld-os-stress/waves/http-stream-stress/test_oracle_helpers.mjs",
+          "line": 4,
+          "excerpt": "const base=new URL('./',import.meta.url);"
+        },
+        {
+          "path": "celld-os-stress/waves/http-stream-stress/test_oracle_helpers.mjs",
+          "line": 5,
+          "excerpt": "const common=await readFile(new URL('common.js',base),'utf8');"
+        },
+        {
+          "path": "celld-os-stress/waves/http-stream-stress/test_oracle_helpers.mjs",
+          "line": 7,
+          "excerpt": "const labSource=(await readFile(new URL('lab.js',base),'utf8')).replace(\"'./common.js'\",JSON.stringify(commonUrl));"
+        },
+        {
+          "path": "celld-os-stress/waves/loader-props/index.js",
+          "line": 47,
+          "excerpt": "    const path=new URL(request.url).pathname;"
+        },
+        {
+          "path": "celld-os-stress/waves/loader-props/sources.mjs",
+          "line": 12,
+          "excerpt": "    const path=new URL(request.url).pathname;"
+        },
+        {
+          "path": "celld-os-stress/waves/loader-props/validate.mjs",
+          "line": 7,
+          "excerpt": "const here=path.dirname(new URL(import.meta.url).pathname);"
+        },
+        {
+          "path": "celld-os-stress/waves/module-graph-stress/entry.mjs",
+          "line": 22,
+          "excerpt": " const path=new URL(request.url).pathname;"
+        },
+        {
+          "path": "celld-os-stress/waves/module-graph-stress/validate.mjs",
+          "line": 4,
+          "excerpt": "const here=path.dirname(new URL(import.meta.url).pathname),manifest=JSON.parse(fs.readFileSync(path.join(here,'manifest.json'))),cases=fs.readFileSync(path.join(here,'cases.mjs'),'utf8');"
+        },
+        {
+          "path": "celld-os-stress/waves/native-transform-stress/entry.js",
+          "line": 4,
+          "excerpt": "export default {async fetch(request,env){let body;try{const path=new URL(request.url).pathname;if(path==='/health')return Response.json({profile:PROFILE,caseIds:Object.keys(schedules)});body=await request.json();ok(typeof body.name==='string'&&/^[A-Za-z0-9_-]{1,100}$/.test(body.name),'bounded fresh root');if(path==='/identity'){ok(['caller','recipient'].includes(body.role),'identity role');return Response.json(await (body.role==='caller'?env.ROOT:env.CELLS).getByName(body.name).identity());}ok(path==='/run'&&/^[a-f0-9]{16}$/.test(body.run),'run route contract');for(const f of ['primary','secondary'])ok(typeof body[f]==='string'&&/^[A-Za-z0-9_-]{1,100}$/.test(body[f]),'bounded recipient');ret"
+        },
+        {
+          "path": "celld-os-stress/waves/native-transform-stress/test_helpers.mjs",
+          "line": 4,
+          "excerpt": "const common=await import('data:text/javascript;base64,'+Buffer.from(fs.readFileSync(new URL('./common.js',import.meta.url))).toString('base64'));"
+        },
+        {
+          "path": "celld-os-stress/waves/native-transform-stress/test_lifecycle_helpers.mjs",
+          "line": 5,
+          "excerpt": "const here=new URL('.',import.meta.url);"
+        },
+        {
+          "path": "celld-os-stress/waves/native-transform-stress/test_lifecycle_helpers.mjs",
+          "line": 6,
+          "excerpt": "const common=await import('data:text/javascript;base64,'+Buffer.from(fs.readFileSync(new URL('./common.js',here))).toString('base64'));"
+        },
+        {
+          "path": "celld-os-stress/waves/native-transform-stress/test_lifecycle_helpers.mjs",
+          "line": 7,
+          "excerpt": "const contextCode=fs.readFileSync(new URL('./context.js',here),'utf8').replace(/^import .*;\\n/gm,'').replace(/^export /gm,'');"
+        },
+        {
+          "path": "celld-os-stress/waves/native-transform-stress/test_lifecycle_helpers.mjs",
+          "line": 8,
+          "excerpt": "const fixtureCode=fs.readFileSync(new URL('./fixture.js',here),'utf8').replace(/^import .*;\\n/gm,'').replace(/^export /gm,'');"
+        },
+        {
+          "path": "celld-os-stress/waves/native-transform-stress/test_terminal_helpers.mjs",
+          "line": 4,
+          "excerpt": "const here=new URL('.',import.meta.url),read=name=>fs.readFileSync(new URL(name,here),'utf8');"
+        },
+        {
+          "path": "celld-os-stress/waves/sqlite-concurrency/entry.js",
+          "line": 20,
+          "excerpt": "export default {async fetch(request,env){let body;try{const path=new URL(request.url).pathname;if(path==='/health')return Response.json({profile:PROFILE,caseIds:Object.keys(cases)});body=await request.json();ok(typeof body.name==='string'&&/^[A-Za-z0-9_-]{1,100}$/.test(body.name),'bounded root name required');if(path==='/identity'){ok(['caller','recipient'].includes(body.role),'identity role required');return Response.json(await (body.role==='caller'?env.ROOT:env.CELLS).getByName(body.name).identity());}ok(path==='/run'&&typeof body.run==='string'&&/^[a-f0-9]{16}$/.test(body.run),'run dispatch contract');for(const field of ['primary','secondary'])ok(typeof body[field]==='string'&&/^[A-Za-z0-"
+        },
+        {
+          "path": "celld-os-stress/waves/sqlite-concurrency/test_helpers.mjs",
+          "line": 4,
+          "excerpt": "const source=fs.readFileSync(new URL('./common.js',import.meta.url),'utf8');"
+        }
+      ]
+    }
+  },
+  "semantic_overlap_assessment": "No dedicated URLSearchParams or URLPattern cases are present in the preserved handcrafted files. URL and searchParams uses are routing and incidental helper behavior, not competing fixed semantic assertions. Baseline tests and examples/webapi were additionally inspected. This is not a claim about absent private upstream conformance/WPT sources.",
+  "case_distinctness_review_status": "AUTHOR_ASSESSMENT; independent review pending",
+  "new_case_ids": [
+    "U201",
+    "U202",
+    "U203",
+    "U204",
+    "U205",
+    "U206",
+    "U207",
+    "U208",
+    "U209",
+    "U210",
+    "U211",
+    "U212",
+    "U213",
+    "U214",
+    "U215",
+    "U216",
+    "U217",
+    "U218",
+    "U219",
+    "U220"
+  ],
+  "baseline_ids_conflict": []
+}

@@ -1,0 +1,54 @@
+{
+  "id": "logic/pressure/recover-a-failed-bounded-stop-on-the-same-epoch",
+  "layer": "logic",
+  "behaviour": "pressure",
+  "title": "Recover a failed bounded stop on the same epoch",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic",
+      "legacy_id": "corpus/pressure-recovery-logic/P020"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic/tests/pressure_recovery.rs",
+      "sha256": "ccb9c2001ec9d427c142017a426801dde5631b1252fae8b2e10ce0e12cc73e47"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/pressure-recovery-logic/P020"
+  ],
+  "adapter": "native",
+  "corpus_id": "P020",
+  "corpus_wave": "pressure-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/pressure/fixtures/decision-cases/tests/pressure_recovery.rs",
+  "source_sha256": "ccb9c2001ec9d427c142017a426801dde5631b1252fae8b2e10ce0e12cc73e47",
+  "test_filter": "p020_failed_bounded_stop_restarts_same_epoch_and_serves_again",
+  "contract": {
+    "intent": "Recover a failed bounded stop on the same epoch",
+    "preconditions": [
+      "Fresh State::new(\"fixture\", config()) per case; only production on_event transitions; no direct State-field mutation",
+      "Each resident created by RequestAt -> absent OwnerRead -> Applied epoch1 CAS -> RestoreCompleted -> RuntimeStarted generation1 -> Published; exact operation IDs come from effects",
+      "Every transition invokes State::validate; occupied<=4, activating<=4, evicting<=2; local completions tracked exactly once",
+      "Default require_node_lease=false isolates admission from fleet authority; this does not exercise actual lease authorization",
+      "Pressure samples are synthetic byte-valued facts, not measured RSS, allocator, cgroup or container enforcement",
+      "The immutable source/runtime-manifest pins and exact implementation must pass preflight before any authorized future run"
+    ],
+    "trace": [
+      "sample120 and complete a EnsureDurable",
+      "capture bounded StopRuntime at epoch1",
+      "deliver RuntimeStopFailed and capture StartRuntime",
+      "require no Restore or CasOwner; sample80; complete start and publish",
+      "request a/2 returns Local; finish2"
+    ],
+    "oracle": "Restart uses same epoch1 and no restore/claim; no permit leaks; replacement runtime publishes and serves request2",
+    "cleanup": "Finish every successful local request; settle all emitted stop/release/adoption effects shown by the trace; assert pending demand and activation/eviction/release/adoption counts empty. Drop owned in-memory State on return/unwind. No external resource created",
+    "implementation": "tests/pressure_recovery.rs:p020_failed_bounded_stop_restarts_same_epoch_and_serves_again"
+  },
+  "selector": "P020"
+}

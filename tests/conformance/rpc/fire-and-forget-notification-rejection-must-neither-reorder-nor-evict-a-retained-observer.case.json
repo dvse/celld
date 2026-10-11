@@ -1,0 +1,55 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "distinctness": "Literal O008 state transition; counts, repetitions and deployment placements do not create additional cases.",
+    "intent": "Fire-and-forget notification rejection must neither reorder nor evict a retained observer",
+    "oracle": "Callback entries first/bad/last are exact; error captured; later emit succeeds; one final disposal",
+    "preconditions": [
+      "COMMON",
+      "Observer throws only for bad; three notification messages plus one liveness call"
+    ],
+    "source_contracts": [
+      "SC-ORDER",
+      "SC-PARAM",
+      "SC-DISPOSE",
+      "SC-ERROR"
+    ],
+    "trace": [
+      "Retain observer; send first, bad and last without awaiting their callback results",
+      "Observe completion receipts and exactly one planned:notification failure",
+      "Compare callback invocation order",
+      "Use the retained callback again, remove it and release original"
+    ]
+  },
+  "corpus_id": "O008",
+  "corpus_wave": "capability-order",
+  "fixture": "tests/conformance/rpc/fixtures/ordering-and-lifetime",
+  "id": "conformance/rpc/fire-and-forget-notification-rejection-must-neither-reorder-nor-evict-a-retained-observer",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/capability-order/O008"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/capability-order/O008",
+      "source": "guarded-source-archive/celld-os-stress/waves/capability-order"
+    },
+    {
+      "sha256": "2dd846ea32e9b72b740619d977febe62cdc0aa8157e08c5261436c00e030e187",
+      "source": "guarded-source-archive/celld-os-stress/waves/capability-order/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "O008",
+  "source": "tests/conformance/rpc/fixtures/ordering-and-lifetime/entry.js",
+  "source_sha256": "2dd846ea32e9b72b740619d977febe62cdc0aa8157e08c5261436c00e030e187",
+  "title": "Fire-and-forget notification rejection must neither reorder nor evict a retained observer"
+}

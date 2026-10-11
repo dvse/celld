@@ -1,0 +1,57 @@
+{
+  "runtime_manifest": "/workspace/shared/celld-os-project/deliverable/package/reports/final/runtime-manifest.json",
+  "runtime_manifest_sha256": "54da8304fb90c06694cd44c114e0917b8db89ecefa08920a913c99b286359f28",
+  "binary_sha256": "62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e",
+  "sources": [
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/ltx/src/db.rs",
+      "sha256": "d6a9659a965969a1feeaab6f9902cdf7820555c48229820bcd11bdd73bcff3e4",
+      "manifest_key": "celld/crates/ltx/src/db.rs",
+      "purpose": "Exact two internal replication-control tables excluded from fresh-user-schema probe",
+      "authority": "pinned-celld-implementation"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/js/harness.js",
+      "sha256": "9d31b01bd4d1a6b136cfbc02bcb26a47deba29f27066009fc3f3b9c6d8d9c407",
+      "manifest_key": "celld/crates/celld/js/harness.js",
+      "purpose": "SQL cursor APIs, pending put flush, transaction root/view lifetime, queue and input-gate wrappers",
+      "authority": "pinned-celld-implementation"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/storage.rs",
+      "sha256": "99ce80c6e273234787ca38367210ebca43baa9df49286dc911cd179f52b6dc2d",
+      "manifest_key": "celld/crates/celld/storage.rs",
+      "purpose": "Native SQL statement cache ownership, typed binds, SQLite cursor stepping and total_changes delta",
+      "authority": "pinned-celld-implementation"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/js/storage_ops.rs",
+      "sha256": "33aae2a9d2c25dd46b5ef33e343a20a923e0bd90117e1cf67afe2137e2dcc010",
+      "manifest_key": "celld/crates/celld/js/storage_ops.rs",
+      "purpose": "Typed storage and SQL op conversions",
+      "authority": "pinned-celld-implementation"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/js.rs",
+      "sha256": "164b11bb2b0f7321d316bcd417b13fea3bf907b1eae335c97d8ebecaacb9ba17",
+      "manifest_key": "celld/crates/celld/js.rs",
+      "purpose": "Promise continuation identity and native operation adoption; T031 local-promise path",
+      "authority": "pinned-celld-implementation"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/os/packages/typed-storage/src/index.ts",
+      "sha256": "561111a1a0787d5158ddfa9df5c1910285b156906d874f5f58719a901e004c12",
+      "manifest_key": null,
+      "purpose": "OS transaction and indexed KV collection iteration usage",
+      "authority": "OS-context-only"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/os/packages/gatekeeper-kit/src/action-files.ts",
+      "sha256": "e735cdd41333be3297a6e8d7114553483772b33f310edfb0844296650c855da0",
+      "manifest_key": null,
+      "purpose": "OS synchronous atomic file accounting transactions",
+      "authority": "OS-context-only"
+    }
+  ],
+  "official_documentation_status": "Not fetched in this no-network authoring task; official reference links are provided without elevating source comments into official guarantees."
+}

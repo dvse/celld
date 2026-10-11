@@ -1,0 +1,347 @@
+{
+  "runtime_status": "UNRUN",
+  "launches_runtime": false,
+  "max_parallel_case_requests": 1,
+  "suite_outer_deadline_seconds": 420,
+  "owned_runtime_rss_limit_bytes": 1073741824,
+  "requests": [
+    {
+      "id": "Z201",
+      "method": "GET",
+      "path": "/case/Z201",
+      "outer_deadline_seconds": 12,
+      "process_deadline_seconds": 20,
+      "fresh_random_root": true,
+      "trace": [
+        "Create a loopback facet without an ID.",
+        "Read direct and nested descendant identity."
+      ],
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ]
+    },
+    {
+      "id": "Z202",
+      "method": "GET",
+      "path": "/case/Z202",
+      "outer_deadline_seconds": 12,
+      "process_deadline_seconds": 20,
+      "fresh_random_root": true,
+      "trace": [
+        "Supply one named namespace ID and one literal string.",
+        "Read both kinds, inherit the string below its parent, and explicitly override another child."
+      ],
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ]
+    },
+    {
+      "id": "Z203",
+      "method": "GET",
+      "path": "/case/Z203",
+      "outer_deadline_seconds": 12,
+      "process_deadline_seconds": 20,
+      "fresh_random_root": true,
+      "trace": [
+        "Fetch once, call one ordinary method, then fetch again.",
+        "Compare heap counters, durable counters and constructor birth token."
+      ],
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ]
+    },
+    {
+      "id": "Z204",
+      "method": "GET",
+      "path": "/case/Z204",
+      "outer_deadline_seconds": 12,
+      "process_deadline_seconds": 20,
+      "fresh_random_root": true,
+      "trace": [
+        "Load the actual source with js_rpc.",
+        "Start Plain through getDurableObjectClass, fetch, then invoke increment."
+      ],
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ]
+    },
+    {
+      "id": "Z205",
+      "method": "GET",
+      "path": "/case/Z205",
+      "outer_deadline_seconds": 12,
+      "process_deadline_seconds": 20,
+      "fresh_random_root": true,
+      "trace": [
+        "Set root level=100.",
+        "Write one branch containing exactly three facets with levels 10,20,30.",
+        "Read the entire branch and root."
+      ],
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ]
+    },
+    {
+      "id": "Z206",
+      "method": "GET",
+      "path": "/case/Z206",
+      "outer_deadline_seconds": 12,
+      "process_deadline_seconds": 20,
+      "fresh_random_root": true,
+      "trace": [
+        "Create left/settings and right/settings.",
+        "Write and read different values under the same key.",
+        "Compare inherited display identities."
+      ],
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ]
+    },
+    {
+      "id": "Z207",
+      "method": "GET",
+      "path": "/case/Z207",
+      "outer_deadline_seconds": 12,
+      "process_deadline_seconds": 20,
+      "fresh_random_root": true,
+      "trace": [
+        "Create literal workspace/tools.",
+        "Create nested workspace then tools.",
+        "Write and read distinct values."
+      ],
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ]
+    },
+    {
+      "id": "Z208",
+      "method": "GET",
+      "path": "/case/Z208",
+      "outer_deadline_seconds": 12,
+      "process_deadline_seconds": 20,
+      "fresh_random_root": true,
+      "trace": [
+        "Create root shared(number INTEGER).",
+        "Create facet shared(label TEXT).",
+        "Create descendant shared(payload BLOB), then re-read parent and root."
+      ],
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ]
+    },
+    {
+      "id": "Z209",
+      "method": "GET",
+      "path": "/case/Z209",
+      "outer_deadline_seconds": 12,
+      "process_deadline_seconds": 20,
+      "fresh_random_root": true,
+      "trace": [
+        "Specialize one class handle.",
+        "Mutate first facet props on two complete turns.",
+        "Start a second facet from the same handle and read its props."
+      ],
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ]
+    },
+    {
+      "id": "Z210",
+      "method": "GET",
+      "path": "/case/Z210",
+      "outer_deadline_seconds": 12,
+      "process_deadline_seconds": 20,
+      "fresh_random_root": true,
+      "trace": [
+        "Prepare Date, BigInt, typed array, Map, Set, shared child and self-cycle.",
+        "Bind a loaded facet class.",
+        "Read only the summary captured by its constructor."
+      ],
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ]
+    },
+    {
+      "id": "Z211",
+      "method": "GET",
+      "path": "/case/Z211",
+      "outer_deadline_seconds": 12,
+      "process_deadline_seconds": 20,
+      "fresh_random_root": true,
+      "trace": [
+        "Persist supervisor config and create a lazy facet with an async storage-reading startup callback.",
+        "Update config before first invocation.",
+        "Invoke propsState and then edit supervisor config once more."
+      ],
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ]
+    },
+    {
+      "id": "Z212",
+      "method": "GET",
+      "path": "/case/Z212",
+      "outer_deadline_seconds": 12,
+      "process_deadline_seconds": 20,
+      "fresh_random_root": true,
+      "trace": [
+        "Parent facet forwards one bounded POST to child facet.",
+        "Child saves payload and returns a202 JSON response.",
+        "Parent adds one header; root inspects response and both storage scopes."
+      ],
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ]
+    },
+    {
+      "id": "Z213",
+      "method": "GET",
+      "path": "/case/Z213",
+      "outer_deadline_seconds": 12,
+      "process_deadline_seconds": 20,
+      "fresh_random_root": true,
+      "trace": [
+        "Start ordinary root storage.transaction.",
+        "Write tentative root row and await completed facet put.",
+        "Call tx.rollback and read both scopes."
+      ],
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ]
+    },
+    {
+      "id": "Z215",
+      "method": "GET",
+      "path": "/case/Z215",
+      "outer_deadline_seconds": 12,
+      "process_deadline_seconds": 20,
+      "fresh_random_root": true,
+      "trace": [
+        "Open facet parent transaction and write parent row.",
+        "Child rolls back its own tentative row and returns declined.",
+        "Parent records decision and commits; read all rows."
+      ],
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ]
+    },
+    {
+      "id": "Z216",
+      "method": "GET",
+      "path": "/case/Z216",
+      "outer_deadline_seconds": 12,
+      "process_deadline_seconds": 20,
+      "fresh_random_root": true,
+      "trace": [
+        "Write root marker, parent facet row and child facet row.",
+        "Call parent storage.deleteAll.",
+        "Read empty parent list and preserved root/child rows."
+      ],
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ]
+    },
+    {
+      "id": "Z217",
+      "method": "GET",
+      "path": "/case/Z217",
+      "outer_deadline_seconds": 12,
+      "process_deadline_seconds": 20,
+      "fresh_random_root": true,
+      "trace": [
+        "Write parent and two child rows.",
+        "Publicly delete one child, then immediately read via fresh same-name stub.",
+        "Read untouched parent/sibling and write recreated leaf."
+      ],
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ]
+    },
+    {
+      "id": "Z218",
+      "method": "GET",
+      "path": "/case/Z218",
+      "outer_deadline_seconds": 12,
+      "process_deadline_seconds": 20,
+      "fresh_random_root": true,
+      "trace": [
+        "Write a three-facet subtree and sibling/root markers.",
+        "Publicly delete top-level parent with all calls settled.",
+        "Read recreated full subtree, verify neighbors, then write new levels."
+      ],
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ]
+    },
+    {
+      "id": "Z219",
+      "method": "GET",
+      "path": "/case/Z219",
+      "outer_deadline_seconds": 12,
+      "process_deadline_seconds": 20,
+      "fresh_random_root": true,
+      "trace": [
+        "Start local and loaded Facet from identical source with distinct environments.",
+        "Compare module tokens against root.",
+        "Each facet starts its own ctx.exports.Leaf and reads origin."
+      ],
+      "cleanup": [
+        "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+        "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+        "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+        "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+      ]
+    }
+  ]
+}

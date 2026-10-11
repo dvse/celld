@@ -1,0 +1,24 @@
+{
+  "id": "logic/specification/coordination-protocol-model-coverage",
+  "layer": "logic",
+  "behaviour": "specification",
+  "title": "Coordination protocol model coverage",
+  "origins": [
+    {
+      "source": "docs/testing.md",
+      "legacy_id": "logic/specification/upstream-tla"
+    }
+  ],
+  "legacy_ids": [
+    "logic/specification/upstream-tla"
+  ],
+  "adapter": "none",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": "Upstream describes TLA+ models and pinned counterexamples but publishes no .tla/.cfg specifications in this checkout or supplied archive.",
+  "runnable": false,
+  "source": "docs/testing.md",
+  "source_sha256": "dafe8638e0de082d104595d5e84cdb6b8feb9094496fef2e7a56b6d8b7f4c366"
+}

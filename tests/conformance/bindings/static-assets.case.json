@@ -1,0 +1,29 @@
+{
+  "id": "conformance/bindings/static-assets",
+  "layer": "conformance",
+  "behaviour": "bindings",
+  "title": "static assets",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/examples/static-assets",
+      "legacy_id": "examples/static-assets"
+    },
+    {
+      "source": "celld@9c0fca5/examples/static-assets/wrangler.jsonc",
+      "sha256": "5b47802c8b2cf38117817af9d303e2fa8d88f3899723140c7ab8fc482a26513e"
+    }
+  ],
+  "legacy_ids": [
+    "examples/static-assets"
+  ],
+  "adapter": "example",
+  "fixture": "tests/conformance/bindings/fixtures/static-assets",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": "",
+  "runnable": true,
+  "source": "tests/conformance/bindings/fixtures/static-assets/wrangler.jsonc",
+  "source_sha256": "5b47802c8b2cf38117817af9d303e2fa8d88f3899723140c7ab8fc482a26513e"
+}

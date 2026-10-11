@@ -1,0 +1,140 @@
+{
+  "reviewed_at_utc": "2026-10-09T06:59:44.868978+00:00",
+  "reviewer": "review_celld_test_additions",
+  "wave": "pipe-cleanup-semantics",
+  "verdict": "ACCEPTED_PRIMARY_STATIC",
+  "counts": {
+    "authored": 9,
+    "accepted_primary_static": 9,
+    "accepted_characterization": 0,
+    "static_assertion_call_sites": 73,
+    "expected_failure_candidates": 3,
+    "runtime_executions": 0,
+    "runtime_passes": 0
+  },
+  "scope": "Independent all-body/fixture/source and normative contract review, baseline 575 plus accepted 156 campaign designs compared; no case/reference/SUT evaluation.",
+  "normative_contract": "https://streams.spec.whatwg.org/#readable-stream-pipe-to",
+  "oracle_verdict": "Correct intended oracles retained. Underlying source/sink application callback errors and normal AbortSignal cancellation are ordinary public outcomes, not malformed input, network/process fault injection or guarded internals. Numeric chunks are legal non-byte stream values.",
+  "source_gap_candidates": [
+    {
+      "id": "S207",
+      "observation": "streams.js pre-abort uses signal.reason || default, replacing zero.",
+      "runtime_observation": "NONE_UNRUN"
+    },
+    {
+      "id": "S208",
+      "observation": "Pre-abort returns an immediate rejection without reader/writer acquisition or awaiting cleanup actions.",
+      "runtime_observation": "NONE_UNRUN"
+    },
+    {
+      "id": "S209",
+      "observation": "Active shutdown catches and discards reader.cancel rejection rather than using that new error.",
+      "runtime_observation": "NONE_UNRUN"
+    }
+  ],
+  "duplicate_review": "No duplicate accepted. Actual baseline S015 transfers by default, S016 cancels after sink failure, X013 fans signal through native transform, and S020 waits for remote writes before close. New cases target independent forward/backward/EOF preservation, active versus pre-aborted action joining, lock ownership, reason-value and cancellation-failure precedence. No per-value or boolean matrix inflation; all nine bodies have separate mechanisms.",
+  "static_checks": {
+    "runtime_sources_pins": 3,
+    "baseline_evidence_pins": 9,
+    "campaign_evidence_pins": 2,
+    "fixture_artifacts_pins": 3,
+    "fixed_assertion_declarations": 73,
+    "source_ranges_validated": 45,
+    "JavaScript_syntax_files": 2,
+    "case_manifest_schedule_bijection": 9,
+    "SHA256SUMS_entries": 11,
+    "python_AST_JSON_only": true,
+    "no_author_validator_or_SUT_execution": true
+  },
+  "execution_contract": {
+    "fixture": "Standalone Worker invokes real public ReadableStream/WritableStream/AbortController. Helpers record callbacks/promises and expose explicit gates; no stream replacement or outgoing IO.",
+    "requests_per_case": 1,
+    "concurrency": 1,
+    "retries": 0,
+    "outer_request_seconds": 5,
+    "suite_seconds": 180,
+    "external_cleanup_seconds": 20,
+    "max_initial_chunks": 2,
+    "max_manual_reader_reads": 4,
+    "max_RSS_bytes": 536870912,
+    "max_PIDs": 128,
+    "cleanup": "Open every gate independently, abort only unfinished pipes, join pipes and callback promises, release manual owners, stop remaining open resources, witness terminal closed promises, verify zero public locks/pending observations/timers. A rejected closed promise witnesses an errored terminal resource; rejection of a new cleanup action instead marks INCOMPLETE.",
+    "outer_deadline_and_owned_teardown_required": true,
+    "runtime_status": "UNRUN"
+  },
+  "os_relevance": {
+    "priority": "supporting-core-streams",
+    "basis": "Retained archive/attachment-stream provenance only. Actual OS checkout absent; exact prevent* callsite usage is not established.",
+    "separate_count": false
+  },
+  "case_verdicts": [
+    {
+      "id": "S201",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "EOF preservation leaves the destination reusable when close propagation is disabled."
+    },
+    {
+      "id": "S202",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Source-error forward suppression preserves a destination for later writes."
+    },
+    {
+      "id": "S203",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Sink-error backward suppression leaves the source independently drainable."
+    },
+    {
+      "id": "S204",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Active signal shutdown waits for a held write while preserving both resources."
+    },
+    {
+      "id": "S205",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "A held write precedes two independently held cleanup actions; pipe ownership persists until both finish."
+    },
+    {
+      "id": "S206",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "EOF completion waits for asynchronous sink close before releasing pipe ownership."
+    },
+    {
+      "id": "S207",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Pre-aborted falsy reason keeps exact value across pipe rejection and both cleanup callbacks."
+    },
+    {
+      "id": "S208",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Pre-aborted fast path joins asynchronous actions before settling or releasing locks."
+    },
+    {
+      "id": "S209",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Source-cancel callback rejection supersedes signal reason while destination remains usable."
+    }
+  ],
+  "reviewed_artifact_sha256": {
+    "README.md": "87499a912b06fd2f7295d24a8e3994f725606efcab55d420921b99fff7919450",
+    "SHA256SUMS": "9313490ac7f94c5c6ffd30b59f0380258901e3b3f6c42d657e06de52b8a5f56e",
+    "author_manifest.py": "400e917fb4712507cb3f6e5057910c6a4d0ea1abb3827ae7824723d69d21ab1f",
+    "cases.js": "c854fc02b5d268af0d7ed55c58df23f3f67954ef36ce23d04b7a3cf21e78638e",
+    "fixture.js": "9903a92f43f96b3b38046171b7575e99b84eac2ef8e626b2377fb621f5a821b5",
+    "manifest.json": "02175a33442a86096c05300b11e15c978b58ea6b69a9bb57acaf53ac51dec730",
+    "overlap-audit.json": "f40c27b7d11e47710ff9172dec25c2264fcf48c00789fc1ebdbb9bb52c6e871f",
+    "schedule.json": "e867ef043b0e7b965b382c6f27197246428ac345d46c1907ae9bef83b33b9d9d",
+    "source-pins.json": "35272889f5028c98f570f96ca8001b4e93b2e308c29b99910fe64bfd79bb59b9",
+    "static-validation.json": "966a9a8145dc8f1f08b2a3394da2b1fbecd4390a4d6d7fb1136ec476ee71ae47",
+    "validate_static.py": "d9b52ea0b727ad288b462e8f3295fdd597fd1393f8351e45b089b1708a7cfde3",
+    "wrangler.json": "999ff4362bbaef67fc5f25cc150bea37064d930323074cfc1362c0d2b303196f"
+  }
+}

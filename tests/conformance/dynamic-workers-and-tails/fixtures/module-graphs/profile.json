@@ -1,0 +1,23 @@
+{
+  "profile": "module-graph-candidate8d27-v1",
+  "compatibility_date": "2026-09-04",
+  "binary_sha256": "8d27f1d423e74dd582dd36d47cc61aef2017344da84720fd5bbe1ff7fbff105f",
+  "case_wall_seconds": 24,
+  "setup_wall_ms": 3000,
+  "trace_wall_ms": 18000,
+  "cleanup_wall_ms": 2200,
+  "gate_fuse_ms": 3000,
+  "held_observation_polls": 80,
+  "held_poll_delay_ms": 10,
+  "loaded_workers_max": 4,
+  "modules_per_graph_max": 9,
+  "utf8_code_bytes_per_graph_max": 24576,
+  "trace_rpc_attempts_max": 512,
+  "live_foreground_requests_max": 12,
+  "events_per_graph_max": 48,
+  "gates_per_graph_max": 2,
+  "external_traffic": false,
+  "caller_boundary": "one supervisor HTTP request; named receiver invocation IDs; independent loaded recipients only where explicitly recorded",
+  "semantic_invocations_max": 32,
+  "semantic_inflight_max": 8
+}

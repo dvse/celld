@@ -1,0 +1,14 @@
+{
+  "id": "active-websocket-candidate-v1",
+  "binary_sha256": "8d27f1d423e74dd582dd36d47cc61aef2017344da84720fd5bbe1ff7fbff105f",
+  "compatibility_date": "2026-09-04",
+  "fixed_recipient_origin": "http://192.168.77.1:18080",
+  "limits": {"case_wall_seconds": 30, "memory_mib_per_guest": 1024, "pids_per_guest": 128, "vcpus_per_guest": 2, "live_websockets_max": 4, "total_websockets_max": 8, "data_frames_per_endpoint_max": 256, "messages_per_peer_direction_max": 64, "message_payload_max_bytes": 32768, "wire_bytes_per_endpoint_max": 524288, "fixture_logical_bytes_allowance": 4194304, "control_requests_max": 128, "outer_driver_requests_max": 4, "simultaneous_control_requests_max": 8, "preflight_timeout_ms": 3000, "trace_timeout_ms": 16000, "cleanup_timeout_ms": 4000, "fixture_evidence_wall_ms_max": 24000},
+  "limits_state": "PLANNED, NOT APPLIED. A separate reviewed supervisor must enforce and record actual host limits and high-water observations before this adapter is eligible.",
+  "layer": "real-process-WebSocket; two separately observed runtime processes, no required cross-VM placement",
+  "scope": "Ordinary credential-free public JS WebSocket API in active coordinator fetch and regular nonhibernating upgraded connections; fixed owned private peer only.",
+  "excluded": "No retained stateless capability, pool retirement/lifetime reproduction, hibernation, malformed wire frames, raw frame injection, authentication, forgery, replay, abrupt process/network faults, unbounded producer, public destination, deployment, runtime launch or build.",
+  "os_relevance": "Cloudflare OS uses Cap'n Web over WebSockets. These synthetic application messages exercise the native transport beneath that use; they do not exercise Cap'n Web RPC semantics or an unchanged OS workflow.",
+  "runner": "private_driver.py is import-only and request-only; no command-line execution, provisioning, deployment, kill, memory tuning or fault injection. Missing review/ownership/limits/placement/cleanup evidence blocks before network.",
+  "characterization_cases": ["W023", "W024"]
+}

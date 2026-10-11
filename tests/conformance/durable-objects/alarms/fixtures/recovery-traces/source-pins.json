@@ -1,0 +1,105 @@
+{
+  "sources": [
+    {
+      "path": "tests/emulated-network/guest_helpers.py",
+      "sha256": "cdf74dfa5c3bc4f15018fe5daf600bb0830ed15850e76505acbe09450c73d6a3",
+      "purpose": "Concrete guest command/readiness/owned-QEMU teardown helpers"
+    },
+    {
+      "path": "tests/emulated-network/full.py",
+      "sha256": "5a6cf8e038d9cfe92048ce0f730540f8f1458cb9f6c519b3c8988350ac1d75f6",
+      "purpose": "Prior one-write recovery checks: reused controls only, not recounted tests"
+    },
+    {
+      "path": "tests/emulated-network/hook.py",
+      "sha256": "0c97ea35bbf8e3c7f98d247451e8119ad48d707072505edb478a142e9b74cfd0",
+      "purpose": "Trusted private endpoints, runtime launch arguments and real owner-record location"
+    },
+    {
+      "path": "tests/emulated-network/testbed/stage/native-durability/store.py",
+      "sha256": "994ad197a6da5f48886eaec57f0057ccad5ce93150cfea981b07852f834f5617",
+      "purpose": "Real S3 fixture hold_write/hold_ack/fail/release controls and RAM-backed store limit"
+    },
+    {
+      "path": "tests/DURABILITY-NOTE.md",
+      "sha256": "cd57ec813e3ee4ed82fb7ef087a0d66b5705de272580341c1b775e542af9afab",
+      "purpose": "Bucket loss boundary versus surviving fleet witness guarantee"
+    },
+    {
+      "path": "os/packages/typed-storage/src/index.ts",
+      "sha256": "561111a1a0787d5158ddfa9df5c1910285b156906d874f5f58719a901e004c12",
+      "purpose": "OS storage transaction and subscriber ordering primitives"
+    },
+    {
+      "path": "os/packages/gatekeeper-kit/src/action-files.ts",
+      "sha256": "e735cdd41333be3297a6e8d7114553483772b33f310edfb0844296650c855da0",
+      "purpose": "OS atomic allocation/chunk/accounting transactions"
+    },
+    {
+      "path": "os/packages/mcp-shared/src/account.ts",
+      "sha256": "9d4c17638202fb73677455e658c84e1bc7119c1db4ab0b0f62fc6c1e580be5ae",
+      "purpose": "OS alarm-backed foreground lifecycle"
+    }
+  ],
+  "runtimes": {
+    "original": {
+      "manifest": "artifacts/final-runtime/manifest.json",
+      "manifest_sha256": "54da8304fb90c06694cd44c114e0917b8db89ecefa08920a913c99b286359f28",
+      "binary_sha256": "62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e",
+      "contracts": [
+        {
+          "path": "deliverable/patch-check-final/crates/celld/js/harness.js",
+          "key": "celld/crates/celld/js/harness.js",
+          "sha256": "9d31b01bd4d1a6b136cfbc02bcb26a47deba29f27066009fc3f3b9c6d8d9c407"
+        },
+        {
+          "path": "deliverable/patch-check-final/crates/celld/js.rs",
+          "key": "celld/crates/celld/js.rs",
+          "sha256": "164b11bb2b0f7321d316bcd417b13fea3bf907b1eae335c97d8ebecaacb9ba17"
+        },
+        {
+          "path": "deliverable/patch-check-final/crates/celld/storage.rs",
+          "key": "celld/crates/celld/storage.rs",
+          "sha256": "99ce80c6e273234787ca38367210ebca43baa9df49286dc911cd179f52b6dc2d"
+        },
+        {
+          "path": "deliverable/patch-check-final/crates/logic/alarm.rs",
+          "key": "celld/crates/logic/alarm.rs",
+          "sha256": "d6d85d890d0d0dceda5f8521a11dc215d36832833a0706a8269630014b2a7346"
+        }
+      ]
+    },
+    "candidate": {
+      "manifest": "artifacts/do-visibility-candidate/build-manifest.json",
+      "manifest_sha256": "e84f9ec275ce62bb67af53a5b97ddce90375016be136d49709d85dd9f52fcf8e",
+      "binary_sha256": "8d27f1d423e74dd582dd36d47cc61aef2017344da84720fd5bbe1ff7fbff105f",
+      "contracts": [
+        {
+          "path": "celld/crates/celld/js/harness.js",
+          "key": "celld/crates/celld/js/harness.js",
+          "sha256": "8d3be5ef1b78d302cb2da745c63f8d2e1222115c49a8d08f1096bca7d235c237"
+        },
+        {
+          "path": "celld/crates/celld/js.rs",
+          "key": "celld/crates/celld/js.rs",
+          "sha256": "164b11bb2b0f7321d316bcd417b13fea3bf907b1eae335c97d8ebecaacb9ba17"
+        },
+        {
+          "path": "celld/crates/celld/storage.rs",
+          "key": "celld/crates/celld/storage.rs",
+          "sha256": "99ce80c6e273234787ca38367210ebca43baa9df49286dc911cd179f52b6dc2d"
+        },
+        {
+          "path": "celld/crates/logic/alarm.rs",
+          "key": "celld/crates/logic/alarm.rs",
+          "sha256": "d6d85d890d0d0dceda5f8521a11dc215d36832833a0706a8269630014b2a7346"
+        }
+      ]
+    }
+  },
+  "control_reuse": {
+    "path": "../durable-recovery-stress/driver.py",
+    "sha256_at_derivation": "fc2d73e94c460f413f1a0fa905ddc17bf808dddd68d1097b86c36c994faff380",
+    "meaning": "Copied concrete bounded Guest controls, adapted fixture receipts and selectable exact binary. No legacy cases counted."
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "id": "conformance/bindings/cron",
+  "layer": "conformance",
+  "behaviour": "bindings",
+  "title": "cron",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/examples/cron",
+      "legacy_id": "examples/cron"
+    },
+    {
+      "source": "celld@9c0fca5/examples/cron/wrangler.jsonc",
+      "sha256": "8f5eaa236ee7d38f52fc3f79e8ed714925f982426883a0d14e3875e3ccc9a197"
+    }
+  ],
+  "legacy_ids": [
+    "examples/cron"
+  ],
+  "adapter": "example",
+  "fixture": "tests/conformance/bindings/fixtures/scheduled-events",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": "",
+  "runnable": true,
+  "source": "tests/conformance/bindings/fixtures/scheduled-events/wrangler.jsonc",
+  "source_sha256": "8f5eaa236ee7d38f52fc3f79e8ed714925f982426883a0d14e3875e3ccc9a197"
+}

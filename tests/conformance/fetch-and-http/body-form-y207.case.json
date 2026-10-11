@@ -1,0 +1,126 @@
+{
+  "adapter": "http",
+  "behaviour": "fetch-and-http",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "application_relevance": "Workers materialize binary responses into reusable file-like values.",
+    "assertion_count": 6,
+    "authored": true,
+    "cleanup": "Every case is awaited before cleanup. Track explicit readers and body streams; cancel/release readers, initiate all unlocked-stream cancellations before joining them, and retain no request-local objects. Buffered body producers may be lazy; explicit JS stream producers are finite and close synchronously. Cleanup records runtime-retained locks with awaited consumer/descendant proof, and any unverified lock blocks acceptance. No open producer gates, external handles or timers are used. Await both Y220 consumers with allSettled. If a body method or cleanup does not settle within the external deadline, supervisor terminates only the owned process group and records failure/unknown plus incomplete cleanup. It never reports a pass.",
+    "desired_behavior": "Blob contains [0,255,128,65] and type application/octet-stream; Response is consumed but Blob reads are repeatable.",
+    "distinctness": "One-shot Body to reusable Blob conversion, independent of Y202 Blob-to-buffer result ownership.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/Y207",
+      "request_body": null
+    },
+    "fixed_runtime_assertions": [
+      "t.equal(blob instanceof Blob, true, 'Response.blob returns a Blob value');",
+      "t.equal(blob.type, 'application/octet-stream', 'body MIME type becomes normalized Blob type');",
+      "t.equal(blob.size, 4, 'body-to-Blob conversion keeps exact byte length');",
+      "t.deep([...new Uint8Array(await blob.arrayBuffer())], [0, 255, 128, 65], 'binary response bytes do not pass through text decoding');",
+      "t.equal(response.bodyUsed, true, 'Response.blob consumes the response body');",
+      "t.deep([...new Uint8Array(await blob.arrayBuffer())], [0, 255, 128, 65], 'resulting Blob remains independently readable');"
+    ],
+    "hypothesis": "Body.blob may text-decode binary input, lose its MIME type, or fail to mark the one-shot Body consumed while returning an independently readable value.",
+    "id": "Y207",
+    "implementation": {
+      "end_line": 94,
+      "file": "cases.js",
+      "start_line": 85,
+      "symbol": "Y207"
+    },
+    "independently_reviewed": false,
+    "layer": "direct-celld-worker-fetch-global-body-form-api",
+    "limits": {
+      "durable_writes": 0,
+      "fixture_logical_byte_cap": 16384,
+      "incoming_body_bytes": 0,
+      "max_explicit_reader_reads": 16,
+      "max_form_entries": 8,
+      "outbound_fetches": 0,
+      "outer_case_seconds": 5,
+      "repetitions": 1,
+      "requests": 1,
+      "response_bytes": 65536,
+      "timers": 0
+    },
+    "mechanism": "Body.blob byte materialization and MIME-to-Blob conversion",
+    "preconditions": [
+      "Reviewed exact direct-celld source/build/deployment pins and fresh isolated local store.",
+      "Native celld Blob, File, FormData, Request, Response, and ReadableStream globals; no mocks or implementation extraction.",
+      "External five-second case deadline plus independent 300-second suite deadline and owned cleanup are active."
+    ],
+    "prediction_is_runtime_evidence": false,
+    "primary_contract_refs": [
+      "https://fetch.spec.whatwg.org/#dom-body-blob",
+      "https://w3c.github.io/FileAPI/"
+    ],
+    "review_status": "UNREVIEWED",
+    "runtime_pass_claimed": false,
+    "runtime_source_refs": [
+      {
+        "line_end": 359,
+        "line_start": 330,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      },
+      {
+        "line_end": 10652,
+        "line_start": 10596,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "schedule": {
+      "depends_on": [],
+      "kind": "one finite in-request trace",
+      "ordinal": 7,
+      "parallelism": "two local body consumers joined with allSettled only in Y220; otherwise sequential",
+      "request": "GET /case/Y207"
+    },
+    "source_observation": "Pinned blob() uses arrayBuffer(), then Blob construction, without text decoding.",
+    "static_prediction": "NO_FAILURE_PREDICTION",
+    "status": "NOT_RUN",
+    "title": "Convert a consumed binary Response into a reusable typed Blob",
+    "trace": [
+      "Construct a four-byte response with uppercase octet-stream media type.",
+      "Consume it through blob().",
+      "Assert Blob class, normalized type, exact bytes/size, Response bodyUsed, and repeatable Blob read."
+    ]
+  },
+  "corpus_id": "Y207",
+  "corpus_wave": "body-form-semantics",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/body-form-semantics",
+  "id": "conformance/fetch-and-http/body-form-y207",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/body-form-semantics/Y207"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/body-form-semantics/Y207",
+      "manifest_sha256": "e31598421948f8c190575ce14a8cccfe7a76930797c30c44985d05552d3c95d1",
+      "review_sha256": "1a3807ddb1b0f7c1d81bd25a56c38e0c61c953030da422d8a1d644bf833de35e",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/body-form-semantics",
+      "tranche": "002"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/Y207",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "Y207",
+  "source": "tests/conformance/fetch-and-http/fixtures/body-form-semantics/fixture.js",
+  "source_sha256": "ab850551d9b005bc0636954aeb2151d46ac0c35d15580665aa157230dabe30a5",
+  "title": "Convert a consumed binary Response into a reusable typed Blob"
+}

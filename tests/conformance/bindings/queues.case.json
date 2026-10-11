@@ -1,0 +1,29 @@
+{
+  "id": "conformance/bindings/queues",
+  "layer": "conformance",
+  "behaviour": "bindings",
+  "title": "queues",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/examples/queues",
+      "legacy_id": "examples/queues"
+    },
+    {
+      "source": "celld@9c0fca5/examples/queues/wrangler.jsonc",
+      "sha256": "b9f7db6822a23464534b888acd0d68cccf1e356b67cf74129371c6942afffa4a"
+    }
+  ],
+  "legacy_ids": [
+    "examples/queues"
+  ],
+  "adapter": "example",
+  "fixture": "tests/conformance/bindings/fixtures/queue-consumer",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": "",
+  "runnable": true,
+  "source": "tests/conformance/bindings/fixtures/queue-consumer/wrangler.jsonc",
+  "source_sha256": "b9f7db6822a23464534b888acd0d68cccf1e356b67cf74129371c6942afffa4a"
+}

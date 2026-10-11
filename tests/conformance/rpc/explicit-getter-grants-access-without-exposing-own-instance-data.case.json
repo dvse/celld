@@ -1,0 +1,47 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "dispose target",
+    "intent": "Explicit getter grants access without exposing own instance data",
+    "oracle": "getter returns instance-only; direct own read rejected",
+    "preconditions": "RpcTarget owns instanceData and declares exposed getter",
+    "trace": [
+      "read exposed getter",
+      "attempt direct instanceData read"
+    ]
+  },
+  "corpus_id": "R006",
+  "corpus_wave": "base",
+  "fixture": "tests/conformance/rpc/fixtures/object-capabilities/fixture",
+  "id": "conformance/rpc/explicit-getter-grants-access-without-exposing-own-instance-data",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/base/R006"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/base/R006",
+      "source": "guarded-source-archive/celld-os-stress/fixture"
+    },
+    {
+      "sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+      "source": "guarded-source-archive/celld-os-stress/fixture/rpc.js"
+    },
+    {
+      "sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+      "source": "guarded-source-archive/celld-os-stress/waves/do-visibility-regression/rpc.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "R006",
+  "source": "tests/conformance/rpc/fixtures/object-capabilities/fixture/rpc.js",
+  "source_sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+  "title": "Explicit getter grants access without exposing own instance data"
+}

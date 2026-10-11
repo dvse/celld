@@ -1,0 +1,287 @@
+{
+  "schema_version": 1,
+  "evidence": "STATIC_SOURCE_INSPECTION_ONLY",
+  "baseline_file_count": 215,
+  "baseline_extensions": [
+    ".js",
+    ".mjs",
+    ".json",
+    ".py",
+    ".rs"
+  ],
+  "token_search": {
+    "FormData": {
+      "matching_lines": 0,
+      "matches": []
+    },
+    "new Blob": {
+      "matching_lines": 1,
+      "matches": [
+        {
+          "path": "celld-os-stress/waves/rpc-codec/codec.js",
+          "line": 270,
+          "excerpt": "    const backing = Uint8Array.of(99, 0, 128, 255, 88), blob = new Blob([backing.subarray(1, 4)], { type: 'APPLICATION/X-CODEC' });"
+        }
+      ]
+    },
+    "new File": {
+      "matching_lines": 1,
+      "matches": [
+        {
+          "path": "celld-os-stress/waves/rpc-codec/codec.js",
+          "line": 72,
+          "excerpt": "  codecFile(tag) { requireApi(typeof File === 'function', 'provider File constructor available'); this.codecStateFor(tag); return { file: new File([Uint8Array.of(0, 128, 255)], 'r\u00e9sum\u00e9.bin', { type: 'APPLICATION/X-CODEC', lastModified: 0 }) }; }"
+        }
+      ]
+    },
+    "formData(": {
+      "matching_lines": 0,
+      "matches": []
+    },
+    ".clone(": {
+      "matching_lines": 27,
+      "matches": [
+        {
+          "path": "celld-os-stress/waves/http-stream-stress/cases.js",
+          "line": 42,
+          "excerpt": "  const source=await t.open('source'),request=new Request(t.origin+'/root/'+t.root+'/op/left',{method:'POST',body:source.body}),copy=request.clone();"
+        },
+        {
+          "path": "celld-os-stress/waves/log-recovery-logic/tests/log_recovery.rs",
+          "line": 49,
+          "excerpt": "        ensemble: record.ensemble.clone(),"
+        },
+        {
+          "path": "celld-os-stress/waves/log-recovery-logic/tests/log_recovery.rs",
+          "line": 713,
+          "excerpt": "        objects.clone()"
+        },
+        {
+          "path": "celld-os-stress/waves/output-gate-logic/tests/output_gate.rs",
+          "line": 307,
+          "excerpt": "                    | (\"alarm\", Timer::CellAlarm { .. }) => Some(timer.clone()),"
+        },
+        {
+          "path": "celld-os-stress/waves/pressure-recovery-logic/tests/pressure_recovery.rs",
+          "line": 63,
+          "excerpt": "            self.cells.insert(cell.clone());"
+        },
+        {
+          "path": "celld-os-stress/waves/pressure-recovery-logic/tests/pressure_recovery.rs",
+          "line": 78,
+          "excerpt": "                assert!(self.completed.insert(*request, result.clone()).is_none());"
+        },
+        {
+          "path": "celld-os-stress/waves/pressure-recovery-logic/tests/pressure_recovery.rs",
+          "line": 300,
+          "excerpt": "                Some(t.clone())"
+        },
+        {
+          "path": "celld-os-stress/waves/pressure-recovery-logic/tests/pressure_recovery.rs",
+          "line": 306,
+          "excerpt": "    found[0].clone()"
+        },
+        {
+          "path": "celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+          "line": 95,
+          "excerpt": "                self.cells.insert(cell.clone());"
+        },
+        {
+          "path": "celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+          "line": 122,
+          "excerpt": "                    self.completed.insert(*request, result.clone()).is_none(),"
+        },
+        {
+          "path": "celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+          "line": 346,
+          "excerpt": "            } if wanted == \"queue\" && c == cell => Some(t.clone()),"
+        },
+        {
+          "path": "celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+          "line": 350,
+          "excerpt": "            } if wanted == \"recovery\" && c == cell => Some(t.clone()),"
+        },
+        {
+          "path": "celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+          "line": 355,
+          "excerpt": "    timers[0].clone()"
+        },
+        {
+          "path": "celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+          "line": 366,
+          "excerpt": "                (c == cell).then_some(spec.clone())"
+        },
+        {
+          "path": "celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+          "line": 386,
+          "excerpt": "            } if *p == op => Some(t.clone()),"
+        },
+        {
+          "path": "celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+          "line": 1103,
+          "excerpt": "    let e = h.fire(retry.clone(), 110);"
+        },
+        {
+          "path": "celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+          "line": 94,
+          "excerpt": "        self.effects.extend(effects.clone());"
+        },
+        {
+          "path": "celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+          "line": 196,
+          "excerpt": "            } => Some((t.clone(), *at_mono_ms)),"
+        },
+        {
+          "path": "celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+          "line": 201,
+          "excerpt": "    found[0].clone()"
+        },
+        {
+          "path": "celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+          "line": 608,
+          "excerpt": "        timer: timer.clone(),"
+        },
+        {
+          "path": "celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+          "line": 1016,
+          "excerpt": "            &[impossible.clone(), minute],"
+        },
+        {
+          "path": "celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+          "line": 1029,
+          "excerpt": "            &[impossible.clone()],"
+        },
+        {
+          "path": "celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+          "line": 1041,
+          "excerpt": "            &[impossible.clone()],"
+        },
+        {
+          "path": "celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+          "line": 1053,
+          "excerpt": "            &[impossible.clone()],"
+        },
+        {
+          "path": "celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+          "line": 1065,
+          "excerpt": "            &[impossible.clone()],"
+        },
+        {
+          "path": "celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+          "line": 1077,
+          "excerpt": "            &[impossible.clone()],"
+        },
+        {
+          "path": "celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+          "line": 1089,
+          "excerpt": "            &[impossible.clone()],"
+        }
+      ]
+    },
+    "bodyUsed": {
+      "matching_lines": 8,
+      "matches": [
+        {
+          "path": "celld-os-stress/waves/http-stream-stress/author_manifest.py",
+          "line": 61,
+          "excerpt": " ['Dispatch text response and observe entry','Drain binary control before text headers released','Release text headers','Consume Response.text and inspect bodyUsed'],"
+        },
+        {
+          "path": "celld-os-stress/waves/http-stream-stress/author_manifest.py",
+          "line": 63,
+          "excerpt": " 'Binary exact16391 bytes; text equals TextDecoder replacement decoding of same bytes; bodyUsed true',"
+        },
+        {
+          "path": "celld-os-stress/waves/http-stream-stress/cases.js",
+          "line": 58,
+          "excerpt": "  const response=await t.success(pending);try{const value=await response.text();check(value===new TextDecoder().decode(bytes('invalidutf8',16391)),'HTTP text decoding mismatch');check(response.bodyUsed,'text bodyUsed');}finally{t.finish(response);}"
+        },
+        {
+          "path": "celld-os-stress/waves/http-stream-stress/manifest.json",
+          "line": 522,
+          "excerpt": "      \"Consume Response.text and inspect bodyUsed\""
+        },
+        {
+          "path": "celld-os-stress/waves/http-stream-stress/manifest.json",
+          "line": 533,
+          "excerpt": "    \"oracle\": \"Binary exact16391 bytes; text equals TextDecoder replacement decoding of same bytes; bodyUsed true\","
+        },
+        {
+          "path": "celld-os-stress/waves/rpc-codec/cases.json",
+          "line": 371,
+          "excerpt": "      \"compare exact metadata, bytes and bodyUsed\""
+        },
+        {
+          "path": "celld-os-stress/waves/rpc-codec/cases.json",
+          "line": 374,
+          "excerpt": "    \"oracle\": \"Expected URL, POST method, manual redirect, header and bytes; receiver bodyUsed true after read\","
+        },
+        {
+          "path": "celld-os-stress/waves/rpc-codec/codec.js",
+          "line": 75,
+          "excerpt": "    return { isRequest: request instanceof Request, url: request.url, method: request.method, header: request.headers.get('x-codec'), redirect: request.redirect, bytes: Array.from(new Uint8Array(await request.arrayBuffer())), used: request.bodyUsed };"
+        }
+      ]
+    }
+  },
+  "nearby_case_boundaries": [
+    {
+      "id": "C016",
+      "shared": "Blob view bounds, input copy, type normalization",
+      "new_boundary": "Y201 credit is only heterogeneous ordered composition of scalar UTF-8 + DataView + nested Blob + trailing scalar; shared primitives get no additional credit."
+    },
+    {
+      "id": "C017",
+      "shared": "File bytes/name/lastModified",
+      "new_boundary": "C017 revives File through RPC. Y205 uses direct FormData entry conversion with same-identity versus explicit rename; RPC revival earns no credit here."
+    },
+    {
+      "id": "S001-S024",
+      "shared": "ReadableStream payload and cancellation primitives",
+      "new_boundary": "No remote capability/bridge/BYOB/pending-read/writable schedules are repeated. Y204 uses independent Blob streams rather than shared tee; Y218 tests Body disturbance coupling."
+    },
+    {
+      "id": "H001-H026",
+      "shared": "Request/Response and byte consumers",
+      "new_boundary": "No host HTTP relay/upload/retained reader or network failure schedule. Y220 targets Response.clone source support; H008 tests Request.clone and independent committed host uploads."
+    },
+    {
+      "id": "X001-X024",
+      "shared": "local stream mechanics",
+      "new_boundary": "No native compression, decoder corruption, digest, HMAC, output gates, or transform disposal."
+    },
+    {
+      "id": "V215",
+      "shared": "a consumed clone leaves source readable",
+      "new_boundary": "Y215 earns credit for status/statusText/header-list independence and returned-byte mutation ownership; Cache.put consumption subcheck is not new credit."
+    },
+    {
+      "id": "U209-U216",
+      "shared": "query values and ordered multimap notions",
+      "new_boundary": "Y206 requires mixed File/string conversion; Y213 tests typed BodyInit MIME/parser dispatch with plain values, not percent-decoding/sort algorithms."
+    }
+  ],
+  "sibling_sources": [
+    {
+      "path": "headers-semantics/cases.js",
+      "sha256": "1bd1c82a6aee68e2558764043487db6a89105e5f4a402ef72190539fcc9d4a96",
+      "bytes": 10403
+    },
+    {
+      "path": "headers-semantics/manifest.json",
+      "sha256": "7ab0ac34b1ab6bcd773176ff2225a2c246ca835b9487d18b774833a4fc3afd88",
+      "bytes": 51739
+    },
+    {
+      "path": "url-semantics/cases.js",
+      "sha256": "05079e449a0839cbe790f111ad63e5155a8482d16fcb66c71a7e111ffa4c2276",
+      "bytes": 16421
+    },
+    {
+      "path": "url-semantics/manifest.json",
+      "sha256": "d61fdb1b4d070ae5aff0ad1456c39d2842c341f9737a20b67c67c251f638ae91",
+      "bytes": 107854
+    }
+  ],
+  "claim": "Author-assessed mechanism distinctness pending independent review; no template parameter variations and no copied case bodies. Static validator infrastructure is reused without any testcase source."
+}

@@ -1,0 +1,29 @@
+{
+  "id": "conformance/bindings/pi",
+  "layer": "conformance",
+  "behaviour": "bindings",
+  "title": "pi",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/examples/pi",
+      "legacy_id": "examples/pi"
+    },
+    {
+      "source": "celld@9c0fca5/examples/pi/wrangler.jsonc",
+      "sha256": "20e496a55f80b8688d832186d53af545cca32822b265fdc563daa3b094435837"
+    }
+  ],
+  "legacy_ids": [
+    "examples/pi"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/bindings/fixtures/agent-model-client",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": "Requires external model service credentials and provider calls; excluded from no-paid-cloud profile.",
+  "runnable": false,
+  "source": "tests/conformance/bindings/fixtures/agent-model-client/wrangler.jsonc",
+  "source_sha256": "20e496a55f80b8688d832186d53af545cca32822b265fdc563daa3b094435837"
+}

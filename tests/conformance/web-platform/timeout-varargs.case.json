@@ -1,0 +1,36 @@
+{
+  "id": "conformance/web-platform/timeout-varargs",
+  "layer": "conformance",
+  "behaviour": "web-platform",
+  "title": "timeout Varargs",
+  "origins": [
+    {
+      "source": "workerd@19b1657bd/src/workerd/api/tests/global-scope-test.js#timeoutVarargs",
+      "legacy_id": "workerd/globals/timeoutVarargs"
+    },
+    {
+      "source": "workerd@19b1657bd/src/workerd/api/tests/global-scope-test.js",
+      "sha256": "1be7707aee5c456bcdf50ae2f84478119f738fc301cda1209e5697175cdb4327"
+    }
+  ],
+  "legacy_ids": [
+    "workerd/globals/timeoutVarargs"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/web-platform/fixtures/global-contracts",
+  "isolated": true,
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/timeoutVarargs",
+      "timeout": 5
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/web-platform/fixtures/global-contracts/upstream.js",
+  "source_sha256": "1be7707aee5c456bcdf50ae2f84478119f738fc301cda1209e5697175cdb4327"
+}

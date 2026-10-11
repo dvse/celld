@@ -1,0 +1,51 @@
+{
+  "adapter": "topology",
+  "behaviour": "fetch-and-http",
+  "contract": {
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "distinctness": "A cross-request key-copy boundary schedule, not a count of crypto algorithm vectors.",
+    "implementation": "operations.js:X023",
+    "intent": "Keep an imported public HMAC key independent of caller-buffer mutation",
+    "oracle": "Exact deterministic HMAC, public fixture-only data; no authentication action or real secrets.",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "raw HMAC import copies its BufferSource"
+    ],
+    "trace": [
+      "Import the public deterministic fixture HMAC key as non-extractable and overwrite the caller array.",
+      "Hold the imported key while a separate raw exporter creates and closes its native state.",
+      "Sign the fixed pack payload and compare to a Python-stdlib HMAC vector."
+    ]
+  },
+  "corpus_id": "X023",
+  "corpus_wave": "native-transform-stress",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/transform-streams",
+  "id": "conformance/fetch-and-http/keep-an-imported-public-hmac-key-independent-of-caller-buffer-mutation",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/native-transform-stress/X023"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/native-transform-stress/X023",
+      "source": "guarded-source-archive/celld-os-stress/waves/native-transform-stress"
+    },
+    {
+      "sha256": "1c4be2004e476ee286465674ad37b81dd9ea8cc33e0dda6ef66b66b5830346de",
+      "source": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "X023",
+  "source": "tests/conformance/fetch-and-http/fixtures/transform-streams/entry.js",
+  "source_sha256": "1c4be2004e476ee286465674ad37b81dd9ea8cc33e0dda6ef66b66b5830346de",
+  "title": "Keep an imported public HMAC key independent of caller-buffer mutation"
+}

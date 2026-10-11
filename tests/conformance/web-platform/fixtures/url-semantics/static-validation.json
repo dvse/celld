@@ -1,0 +1,78 @@
+{
+  "status": "STATIC_ONLY",
+  "checks": [
+    {
+      "check": "json-parse",
+      "file": "manifest.json",
+      "status": "PASS"
+    },
+    {
+      "check": "json-parse",
+      "file": "overlap-audit.json",
+      "status": "PASS"
+    },
+    {
+      "check": "json-parse",
+      "file": "schedule.json",
+      "status": "PASS"
+    },
+    {
+      "check": "json-parse",
+      "file": "source-pins.json",
+      "status": "PASS"
+    },
+    {
+      "check": "json-parse",
+      "file": "wrangler.json",
+      "status": "PASS"
+    },
+    {
+      "check": "python-ast-only",
+      "file": "author_manifest.py",
+      "status": "PASS"
+    },
+    {
+      "check": "python-ast-only",
+      "file": "validate_static.py",
+      "status": "PASS"
+    },
+    {
+      "check": "case-manifest-correspondence",
+      "cases": 20,
+      "assertions": 114,
+      "status": "PASS"
+    },
+    {
+      "check": "sha256-runtime_sources",
+      "files": 8,
+      "status": "PASS"
+    },
+    {
+      "check": "sha256-baseline_evidence",
+      "files": 30,
+      "status": "PASS"
+    },
+    {
+      "check": "sha256-fixture_artifacts",
+      "files": 9,
+      "status": "PASS"
+    },
+    {
+      "check": "node-syntax-only",
+      "file": "cases.js",
+      "command": "node --input-type=module --check < cases.js",
+      "status": "PASS"
+    },
+    {
+      "check": "node-syntax-only",
+      "file": "fixture.js",
+      "command": "node --input-type=module --check < fixture.js",
+      "status": "PASS"
+    }
+  ],
+  "authored_cases": 20,
+  "assertions": 114,
+  "runtime_status": "UNRUN",
+  "runtime_executions": 0,
+  "independent_review_claimed": false
+}

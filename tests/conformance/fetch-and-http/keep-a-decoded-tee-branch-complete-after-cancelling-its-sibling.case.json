@@ -1,0 +1,51 @@
+{
+  "adapter": "topology",
+  "behaviour": "fetch-and-http",
+  "contract": {
+    "cleanup": "Release rendezvous independently; attempt every shutdown/release/drain; track original body and native promises past deadlines, verify public lock release and both recipients inactive, and retain all errors/residuals. Native registry reclamation and terminal process/storage cleanup require independent owned-supervisor evidence before PASS.",
+    "distinctness": "Native transform feeding local tee, distinct from H007 host HTTP registry tee.",
+    "implementation": "operations.js:X014",
+    "intent": "Keep a decoded tee branch complete after cancelling its sibling",
+    "oracle": "One branch cancelled; the survivor equals the entire archive; both native request receipts correlate.",
+    "preconditions": [
+      "Exact frozen runtime/source pins and independently reviewed implementation hashes; unsupported/missing property is BLOCKED.",
+      "Fresh owned three-root fixture in one observed celld process; two separate recipient identities; no retained stateless capability or storage gate.",
+      "Externally enforced 512MiB / 128 PID / 1 vCPU / 30s owned guest limits, exclusive parent slot, independent teardown plan.",
+      "native decoded readable supports the pinned default-stream tee"
+    ],
+    "trace": [
+      "Tee a gzip decoder output, read a prefix from one branch, and collect the other.",
+      "Cancel only the first branch and hold before the gzip trailer while independent HMAC completes.",
+      "Write the valid trailer, close, and verify all bytes on the surviving branch."
+    ]
+  },
+  "corpus_id": "X014",
+  "corpus_wave": "native-transform-stress",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/transform-streams",
+  "id": "conformance/fetch-and-http/keep-a-decoded-tee-branch-complete-after-cancelling-its-sibling",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/native-transform-stress/X014"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/native-transform-stress/X014",
+      "source": "guarded-source-archive/celld-os-stress/waves/native-transform-stress"
+    },
+    {
+      "sha256": "1c4be2004e476ee286465674ad37b81dd9ea8cc33e0dda6ef66b66b5830346de",
+      "source": "guarded-source-archive/celld-os-stress/waves/native-transform-stress/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "X014",
+  "source": "tests/conformance/fetch-and-http/fixtures/transform-streams/entry.js",
+  "source_sha256": "1c4be2004e476ee286465674ad37b81dd9ea8cc33e0dda6ef66b66b5830346de",
+  "title": "Keep a decoded tee branch complete after cancelling its sibling"
+}

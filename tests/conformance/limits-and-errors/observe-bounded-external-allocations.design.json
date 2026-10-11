@@ -1,0 +1,57 @@
+{
+  "id": "conformance/limits-and-errors/observe-bounded-external-allocations",
+  "layer": "conformance",
+  "behaviour": "limits-and-errors",
+  "title": "Observe bounded external allocations",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/bounded-resource",
+      "legacy_id": "bounded-resource/Q018"
+    }
+  ],
+  "corpus_wave": "bounded-resource",
+  "corpus_id": "Q018",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "Q018",
+    "title": "Observe bounded external allocations",
+    "intent": "Observe bounded external allocations",
+    "failure_hypothesis": "Successful bounded ArrayBuffers can be mistaken for hard heap/RSS admission proof",
+    "preconditions": [
+      "Two active loaded calls each own exactly 1MiB filled buffer; two finite service holds; no buffers/capabilities returned",
+      "Fresh private owned disposable runtime/root name; native Worker Loader/WorkerEntrypoint and Audit loopback positive control",
+      "Verified immutable source/binary and configured 8192-byte code ceiling; independent scope review excludes restricted capability lifetime reproduction",
+      "Parent exclusive run slot; externally enforced wall/memory/PID limits and owned cleanup"
+    ],
+    "trace": [
+      "Start left/right allocations and witness both Audit holds",
+      "Release left and check exact sum while right remains pending",
+      "Release right and check exact sum",
+      "Run recovery; block hard-resource qualification"
+    ],
+    "stress": {
+      "rpc_attempts": 7,
+      "loaded_workers": 2,
+      "foreground_max": 2,
+      "payload_bytes": 8388608
+    },
+    "wall_seconds_max": 30,
+    "oracle": "Left sum=17825792, right=30408704, exact lengths/effects and foreground drain; hard heap/RSS protection always BLOCKED",
+    "cleanup": "Release every foreground hold; settle all owned promises; dispose all entrypoints and Worker handles inside the active coordinator request; assert zero pending/unsettled holds; delete volatile audit book and close tag. Independently recorded owned guest/process/storage teardown is mandatory. No durable state is created by case logic.",
+    "implementation": "cases.js:cases.Q018",
+    "layer": "real-process-RPC",
+    "layer_limits": "Native runtime process and RPC/Loader execution, not necessarily cross-process, cross-VM, real-OS workflow, hard boundary or tenant certification.",
+    "classification": "nonpromoting-source-gap-observation",
+    "execution_blocker": "Unsupported protection observation requires separately reviewed scope/profile; ordinary adapter and entry refuse before trace",
+    "qualification": "characterization",
+    "promotion": "BLOCKED_UNSUPPORTED_PROTECTION",
+    "profile": "bounded-resource-frozen-v1",
+    "authored": true,
+    "reviewed": false,
+    "executable": false,
+    "run": false,
+    "passed": false,
+    "status": "BLOCKED"
+  }
+}

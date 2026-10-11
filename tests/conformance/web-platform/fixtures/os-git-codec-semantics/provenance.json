@@ -1,0 +1,23 @@
+{
+  "repository": "https://github.com/cloudflare/cloudflare-os",
+  "commit": "4358072f8cb1bc9ddfb6ee11122e194c76cd71e0",
+  "source_url": "https://github.com/cloudflare/cloudflare-os/blob/4358072f8cb1bc9ddfb6ee11122e194c76cd71e0/packages/workshop-backend/src/git-codec.ts",
+  "source_sha256": "56814f3f0608c88e6e83ba08e43f5af87ed4fabf972554e696c390809e9e1538",
+  "local_original": "/workspace/shared/celld-campaign-next/os-source-inventory/historical-4358072/raw/packages/workshop-backend/src/git-codec.ts",
+  "vendor_path": "vendor/cloudflare-os/packages/workshop-backend/src/git-codec.ts",
+  "source_modified": false,
+  "license": {
+    "type": "Apache-2.0",
+    "path": "vendor/cloudflare-os/LICENSE",
+    "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+    "source_url": "https://github.com/cloudflare/cloudflare-os/blob/4358072f8cb1bc9ddfb6ee11122e194c76cd71e0/LICENSE"
+  },
+  "retrieval": "Byte-for-byte copy of existing immutable official source inventory; no new source or dependency downloads. Lockfile read from existing official historical supplement only.",
+  "runtime_dependencies": [
+    "node:zlib",
+    "pako@3.0.2"
+  ],
+  "downloaded_code_executed": false,
+  "downloaded_code_compiled": false,
+  "runtime_executions": 0
+}

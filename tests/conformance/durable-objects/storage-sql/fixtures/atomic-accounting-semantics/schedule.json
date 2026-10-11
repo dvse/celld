@@ -1,0 +1,55 @@
+{
+  "name": "preentered-two-request-fifo",
+  "runtime_status": "NOT_RUN",
+  "scheduler_credit": "Reuses baseline T031 pre-entered distinct-owner queue scaffolding. The scheduler is not a new case/mechanism and earns zero additional credit.",
+  "entry": "One serial external GET /case/<id>. The frontend creates one random fresh CASE root, then performs setup, left/right cohort, finish.",
+  "placement_requirements": [
+    "Use the reviewed exact direct celld executable built from the pinned recovered source; no workerd, hybrid, Node, mocked state, or in-memory SQLite stand-in.",
+    "AccountingCase is a real SQLite-backed Durable Object exported by this deployment and bound as CASE in wrangler.jsonc.",
+    "The two real ordinary DO.fetch invocations address the same object ID and stable activation. They must pre-enter distinct incoming request contexts on its actual owner before the left transaction closes the input gate.",
+    "No cross-machine distribution is claimed or required. Keep this one recipient on one stable owner; no owner migration, draining lease, process restart or fault injection belongs to this schedule.",
+    "An independent supervisor must correlate the generated rootName/objectId and activation receipts with actual direct-celld process, deployment binding and store ownership. Fixture UUIDs do not establish engine or placement provenance.",
+    "A fresh private deployment/store and fresh randomly named root are mandatory. Do not aim these fixtures at a production or shared user root."
+  ],
+  "gates": [
+    {"order": 1, "witness": "setup READY, matching objectId/activation, empty KV and no application SQL tables", "placement": "separate setup fetch finishes before cohort begins"},
+    {"order": 2, "witness": "admitted(left), admitted(right), admission-open", "placement": "per-activation local Promise barrier, both incoming handlers active before any trace transaction"},
+    {"order": 3, "witness": "transaction-enter(left), left-hold", "placement": "left case body reaches its literal c.pause() inside real storage.transaction after the case-specific mutation"},
+    {"order": 4, "witness": "transaction-call(right), right-queued", "placement": "right request already entered; it issues real storage.transaction and then resolves the local queue notification without awaiting its result"},
+    {"order": 5, "witness": "left-release, body-complete(left), transaction-enter(right)", "placement": "left wait resolves only on right's issued call; right must not enter before release"},
+    {"order": 6, "witness": "both transaction promises and both handler responses settled", "placement": "frontend Promise.allSettled plus recipient active/pending-transaction/timer counters"},
+    {"order": 7, "witness": "case fixed oracle, schedule exact relative order, cleanup COMPLETE", "placement": "separate finish fetch after cohort settlement"}
+  ],
+  "limits": {
+    "external_case_requests": 1,
+    "internal_do_fetches": 4,
+    "recipient_roots": 1,
+    "simultaneous_operation_handlers": 2,
+    "public_network_requests": 0,
+    "retries": 0,
+    "gate_timeout_ms_each": 1500,
+    "frontend_setup_timeout_ms": 2000,
+    "frontend_cohort_timeout_ms": 6000,
+    "frontend_finish_timeout_ms": 3000,
+    "external_http_timeout_seconds": 12,
+    "external_owned_process_per_case_timeout_seconds": 15,
+    "external_whole_wave_timeout_seconds": 240,
+    "external_RSS_bytes": 1073741824,
+    "public_storage_calls": 400,
+    "native_sql_cursors": 240,
+    "rows_per_cursor": 64,
+    "local_events": 40,
+    "application_kv_keys": 16,
+    "logical_payload_bytes": 4096,
+    "recursive_CTE_depth": 8,
+    "maximum_case_chunk_write_input_bytes": 3
+  },
+  "cleanup": [
+    "Native SQL rows are drained immediately through public cursor.next with a 64-row cap; cursor references are held only inside the activation for bounded final cleanup.",
+    "Both handler responses must settle; recipient active handlers, active callbacks, pending transaction promises, and local gate timers must all be zero before data cleanup.",
+    "A missing gate is BLOCKED_SCHEDULE. An unsettled cohort/deadline is BLOCKED_UNSETTLED with EXTERNAL_REAP_REQUIRED. No timeout or omitted schedule may count as a successful case.",
+    "deleteAll runs only on this fresh correlated owned root; verify public KV empty and user SQL schema absent. A final bounded drain/cleanup failure remains non-passing.",
+    "Timers cannot interrupt wedged native code. Independent supervisor must enforce process/RSS deadlines and reap only its owned processes/store, record teardown, and stop rather than silently enlarge limits."
+  ],
+  "acceptance": "HTTP 200 and outer/finished ASSERTIONS_SATISFIED; READY setup; both SETTLED role-correlated receipts; one matching activation/objectId throughout; all nonempty assertions true; complete schedule; cleanup COMPLETE; independent exact executable/source/placement/fresh-store/limit/teardown evidence. No self-issued fixture status is a runtime PASS without these external witnesses."
+}

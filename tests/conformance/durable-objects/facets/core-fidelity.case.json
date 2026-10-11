@@ -1,0 +1,33 @@
+{
+  "id": "conformance/durable-objects/facets/core-fidelity",
+  "layer": "conformance",
+  "behaviour": "durable-objects/facets",
+  "title": "core fidelity",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/core-fidelity",
+      "legacy_id": "hyperbob/core-fidelity"
+    },
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/core-fidelity/wrangler.json",
+      "sha256": "fb181ef54edb5a9e3e92eabc2ee27720fc93066801aff6b11b72f5837c77a20d"
+    }
+  ],
+  "legacy_ids": [
+    "hyperbob/core-fidelity"
+  ],
+  "adapter": "example",
+  "fixture": "tests/conformance/durable-objects/facets/fixtures/binding-fidelity",
+  "profiles": [
+    "full"
+  ],
+  "reason": "",
+  "requests": [
+    {
+      "path": "/?v=suite"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/durable-objects/facets/fixtures/binding-fidelity/wrangler.json",
+  "source_sha256": "fb181ef54edb5a9e3e92eabc2ee27720fc93066801aff6b11b72f5837c77a20d"
+}

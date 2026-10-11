@@ -1,0 +1,24 @@
+{
+  "id": "unit/object-identity/colliding-class-rejects-unsigned-tampered-and-foreign-ids",
+  "layer": "unit",
+  "behaviour": "object-identity",
+  "title": "colliding class rejects unsigned tampered and foreign ids",
+  "origins": [
+    {
+      "source": "crates/celld/generation.rs",
+      "legacy_id": "unit/celld/generation::namespace_collision_tests::colliding_class_rejects_unsigned_tampered_and_foreign_ids"
+    }
+  ],
+  "legacy_ids": [
+    "unit/celld/generation::namespace_collision_tests::colliding_class_rejects_unsigned_tampered_and_foreign_ids"
+  ],
+  "adapter": "cargo",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "crates/celld/generation.rs",
+  "source_sha256": "107651393b2508265762ada6e97a9b8ec621ce950a7c993e06357986c9cb44a9",
+  "test_filter": "generation::namespace_collision_tests::colliding_class_rejects_unsigned_tampered_and_foreign_ids"
+}

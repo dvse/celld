@@ -1,0 +1,89 @@
+{
+  "status": "STATIC_ONLY",
+  "checks": [
+    {
+      "check": "json-parse",
+      "file": "manifest.json",
+      "status": "PASS"
+    },
+    {
+      "check": "json-parse",
+      "file": "overlap-audit.json",
+      "status": "PASS"
+    },
+    {
+      "check": "json-parse",
+      "file": "schedule.json",
+      "status": "PASS"
+    },
+    {
+      "check": "json-parse",
+      "file": "source-pins.json",
+      "status": "PASS"
+    },
+    {
+      "check": "json-parse",
+      "file": "wrangler.json",
+      "status": "PASS"
+    },
+    {
+      "check": "python-ast-only",
+      "file": "author_manifest.py",
+      "status": "PASS"
+    },
+    {
+      "check": "python-ast-only",
+      "file": "validate_static.py",
+      "status": "PASS"
+    },
+    {
+      "check": "case-manifest-correspondence",
+      "cases": 9,
+      "assertions": 73,
+      "status": "PASS"
+    },
+    {
+      "check": "bounded-request-schedule-and-config",
+      "status": "PASS"
+    },
+    {
+      "check": "sha256-runtime_sources",
+      "files": 3,
+      "status": "PASS"
+    },
+    {
+      "check": "sha256-baseline_evidence",
+      "files": 9,
+      "status": "PASS"
+    },
+    {
+      "check": "sha256-campaign_evidence",
+      "files": 2,
+      "status": "PASS"
+    },
+    {
+      "check": "sha256-fixture_artifacts",
+      "files": 3,
+      "status": "PASS"
+    },
+    {
+      "check": "node-syntax-only",
+      "file": "cases.js",
+      "status": "PASS"
+    },
+    {
+      "check": "node-syntax-only",
+      "file": "fixture.js",
+      "status": "PASS"
+    },
+    {
+      "check": "static-scope-and-cleanup-structure",
+      "status": "PASS"
+    }
+  ],
+  "authored_cases": 9,
+  "assertions": 73,
+  "runtime_status": "UNRUN",
+  "runtime_executions": 0,
+  "independent_review_claimed": false
+}

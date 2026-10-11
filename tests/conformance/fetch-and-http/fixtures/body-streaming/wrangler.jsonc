@@ -1,0 +1,8 @@
+{
+  "name": "http-stream-stress",
+  "main": "fixture.js",
+  "compatibility_date": "2026-09-04",
+  "vars": {"PRIVATE_ORIGIN": "http://192.168.77.1:18080"},
+  "durable_objects": {"bindings": [{"name":"ROOT","class_name":"HttpRoot"}]},
+  "migrations": [{"tag":"v1","new_sqlite_classes":["HttpRoot"]}]
+}

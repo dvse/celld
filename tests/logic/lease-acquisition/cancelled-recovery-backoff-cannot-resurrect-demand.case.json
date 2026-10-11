@@ -1,0 +1,54 @@
+{
+  "id": "logic/lease-acquisition/cancelled-recovery-backoff-cannot-resurrect-demand",
+  "layer": "logic",
+  "behaviour": "lease-acquisition",
+  "title": "Cancelled recovery backoff cannot resurrect demand",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic",
+      "legacy_id": "corpus/routing-acquisition-logic/N029"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+      "sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/routing-acquisition-logic/N029"
+  ],
+  "adapter": "native",
+  "corpus_id": "N029",
+  "corpus_wave": "routing-acquisition-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/lease-acquisition/fixtures/decision-cases/tests/routing_acquisition.rs",
+  "source_sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06",
+  "test_filter": "n029_cancelled_recovery_backoff_does_not_resurrect_demand",
+  "contract": {
+    "intent": "Cancelled recovery backoff cannot resurrect demand",
+    "preconditions": [
+      "Fresh test-owned State; only frozen production celld_logic::on_event mutates it.",
+      "Empty State; residency1, activations1; a/1 has expired dead4 Open-log recovery.",
+      "All completion operation IDs and timers come from the exact emitted effects; late IDs are previously issued IDs, never fabricated authority.",
+      "All input storage/lease/proof replies are synthetic facts. No executor, network, runtime, or fleet service is simulated as empirical evidence.",
+      "Static source/pin check and independent review required; compiler, test and runtime have not been launched."
+    ],
+    "trace": [
+      "Recovery Ambiguous schedules retry",
+      "Cancel1 during backoff",
+      "Activate independent b/2 and finish2",
+      "Fire a retry110; assert Inactive and no owner read",
+      "Deliver old recovery success",
+      "Fire duplicate old retry120"
+    ],
+    "oracle": "Neither stale retry nor retired recovery can recreate cancelled a demand",
+    "cleanup": "Finish every locally completed request and cancel each remaining ownership-only waiter as shown. H::done checks no pending requests, active cells, activation/capacity queues, activation/eviction/release/adoption permits, or nonterminal phases. Drop isolated in-memory State; no external resources created. Stored timer descriptors are never launched.",
+    "implementation": "tests/routing_acquisition.rs:n029_cancelled_recovery_backoff_does_not_resurrect_demand"
+  },
+  "selector": "N029"
+}

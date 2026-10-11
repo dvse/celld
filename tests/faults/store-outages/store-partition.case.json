@@ -1,0 +1,24 @@
+{
+  "id": "faults/store-outages/store-partition",
+  "layer": "faults",
+  "behaviour": "store-outages",
+  "title": "store partition",
+  "origins": [
+    {
+      "source": "tests/faults/fleet.py",
+      "legacy_id": "faults/store-partition"
+    }
+  ],
+  "legacy_ids": [
+    "faults/store-partition"
+  ],
+  "adapter": "fleet",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/lib/fleet.py",
+  "source_sha256": "907af393deda1d73694d504ba27223551986f33c912c2d10dfb0b417eb013154",
+  "selector": "store-partition"
+}

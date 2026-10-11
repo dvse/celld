@@ -1,0 +1,53 @@
+{
+  "id": "logic/wake-recovery/let-an-elected-hint-revisit-a-cached-remote-route",
+  "layer": "logic",
+  "behaviour": "wake-recovery",
+  "title": "Let an elected hint revisit a cached remote route",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic",
+      "legacy_id": "corpus/wake-recovery-logic/K008"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+      "sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/wake-recovery-logic/K008"
+  ],
+  "adapter": "native",
+  "corpus_id": "K008",
+  "corpus_wave": "wake-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/wake-recovery/fixtures/decision-cases/tests/wake_recovery.rs",
+  "source_sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86",
+  "test_filter": "k008_elected_hint_reprobes_cached_remote_but_owned_hint_does_not",
+  "contract": {
+    "intent": "Let an elected hint revisit a cached remote route",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Fleet hint resolves alpha into Remote via captured owner and lease reads.",
+      "Owned hint emits no work for that Remote cell.",
+      "Later Fleet hint emits a fresh owner read.",
+      "Synthetic read now says released epoch4; apply epoch5 CAS and finish restore/start/publication."
+    ],
+    "oracle": [
+      "Owned hint does no work on Remote; claim reflects the newly supplied record.",
+      "Fleet reprobe reaches local epoch5 residency."
+    ],
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k008_elected_hint_reprobes_cached_remote_but_owned_hint_does_not"
+  },
+  "selector": "K008"
+}

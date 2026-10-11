@@ -1,0 +1,135 @@
+{
+  "adapter": "http",
+  "behaviour": "durable-objects/storage-kv",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runs": 0,
+    "application_callsite_refs": [
+      {
+        "line_end": 5179,
+        "line_start": 5173,
+        "path": "raw/packages/workshop-backend/src/overseer.ts",
+        "root": "os"
+      }
+    ],
+    "authored": true,
+    "classification": "functional-regression-candidate",
+    "cleanup": [
+      "Application subscriptions removed in finally where present.",
+      "Trace must settle before cleanup; unsettled trace requires external owned-process teardown only.",
+      "Open and fully exhaust one public sync-KV list to replace any abandoned native list for this scope; never next() after done.",
+      "DeleteAll only this fresh owned DO; assert native KV empty. External supervisor must verify termination of the complete proven-owned dev/bundler/runtime descendant tree across PGIDs, then remove only its owned staging/bundle/log/temp/store files; a single process-group cleanup is insufficient."
+    ],
+    "closest_existing_cases": [
+      "T029",
+      "T027",
+      "D210",
+      "T207"
+    ],
+    "coverage_class": "actual-pinned-os-module-over-direct-celld-native-storage",
+    "distinctness": "T029 triggers raw iterator invalidation, D210 is raw batch deletion, T027 restores a raw delete and T207 extracts a synthetic partition. This executes production nonunique delete buffering across real index-subscriber native list calls plus an ordinary read-and-audit callback. No callback timing oracle is asserted.",
+    "expected_exception_scope": "Only ordinary valid uniqueness conflicts in C202; no malformed inputs, corruption, authentication, forgery, replay, capability lifetime or injected faults.",
+    "failure_hypothesis": "Deleting a nonunique group while index subscribers and application callbacks open native list cursors could invalidate the unbuffered member traversal, skip selected records, or leave secondary postings.",
+    "id": "C205",
+    "implementation": "cases.js:C205",
+    "independently_reviewed": false,
+    "limits": {
+      "cleanup_deadline_ms": 2000,
+      "descendant_supervision": "All proven-owned dev, trusted bundler and runtime descendants across PGIDs; prefer one enforceable cgroup/ownership domain; no single-process-group cleanup assumption",
+      "max_application_remove_callbacks": 3,
+      "max_created_do_roots": 1,
+      "max_external_case_http_requests": 1,
+      "max_frontend_do_fetches": 1,
+      "max_native_list_calls": 64,
+      "max_native_storage_entries": 32,
+      "max_outbound_public_network_requests": 0,
+      "max_owned_domain_processes": 32,
+      "max_owned_writable_bytes": 134217728,
+      "max_record_payload_bytes": 1024,
+      "max_rows_per_fully_consumed_iterator": 64,
+      "max_schema_instances": 3,
+      "max_sync_transaction_depth": 3,
+      "max_total_logical_payload_bytes": 8192,
+      "outer_case_process_deadline_seconds": 15,
+      "outer_http_deadline_seconds": 10,
+      "outer_rss_bytes": 1073741824,
+      "outer_wave_deadline_seconds": 120,
+      "precondition_deadline_ms": 1000,
+      "trace_deadline_ms": 5000,
+      "writable_quota_scope": "All generated bundles, staging config, logs, temporary files and private store; externally supplied read-only binaries/source are not copied into the writable domain"
+    },
+    "literal_assertion_call_sites": 4,
+    "oracle": "Delete receipts3 then0; only d/four/[blue,shared] survives; audits a/one,b/two,c/three. Only slug four and blue2/shared1 child d remain; group counter3 persists.",
+    "preconditions": [
+      "Exact reviewed OS source, Apache-2.0 license and guarded direct-celld source/build/bundle pins.",
+      "Fresh disposable SQLite-backed DO with native kv and transactionSync; no user data.",
+      "Externally enforceable resource and ownership domain includes the complete proven-owned dev/bundler/runtime descendant tree across PGIDs and all generated writable artifacts.",
+      "Trusted future bundler must preserve imported production semantics; no mocked storage or runtime fallback."
+    ],
+    "promotion_candidate": true,
+    "runtime_passes": 0,
+    "runtime_status": "NOT_RUN",
+    "schedule": "One exact GET /case/C205; one fresh named DO and one ordinary same-deployment DO.fetch; all operations synchronous in written dependency order inside that active request.",
+    "source_refs": [
+      {
+        "line_end": 456,
+        "line_start": 442,
+        "path": "raw/packages/typed-storage/src/index.ts",
+        "root": "os"
+      },
+      {
+        "line_end": 649,
+        "line_start": 638,
+        "path": "raw/packages/typed-storage/src/index.ts",
+        "root": "os"
+      },
+      {
+        "line_end": 703,
+        "line_start": 687,
+        "path": "raw/packages/typed-storage/src/index.ts",
+        "root": "os"
+      }
+    ],
+    "title": "Delete buffered indexed groups safely",
+    "trace": [
+      "Seed four records, red a,b,c and overlapping shared a,c,d; d is blue.",
+      "Subscribe an application remove callback that fully reads the shared index and stores an audit row.",
+      "Invoke production tags.delete(red); unsubscribe in finally.",
+      "Compare deletion receipts, surviving full record, full audit rows and complete secondary native keyspace."
+    ]
+  },
+  "corpus_id": "C205",
+  "corpus_wave": "os-typed-storage-semantics",
+  "fixture": "tests/conformance/durable-objects/storage-kv/fixtures/os-typed-storage-semantics",
+  "id": "conformance/durable-objects/storage-kv/os-typed-storage-c205",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/os-typed-storage-semantics/C205"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/os-typed-storage-semantics/C205",
+      "manifest_sha256": "70b236edc39a42d460392d283885be675f1626f589f517b458f667be81946fc7",
+      "review_sha256": "14ca6bcc07b6adf1f146693850978c4f968e6cf46bac14a45b4be71bc037729e",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/os-typed-storage-semantics",
+      "tranche": "004"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/C205",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "C205",
+  "source": "tests/conformance/durable-objects/storage-kv/fixtures/os-typed-storage-semantics/fixture.js",
+  "source_sha256": "b90228c2292eafe5253598b111ccf2272743fc1f6f68485f6d8bd454e52cf50f",
+  "title": "Delete buffered indexed groups safely"
+}

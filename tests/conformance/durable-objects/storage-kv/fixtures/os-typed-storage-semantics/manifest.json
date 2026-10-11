@@ -1,0 +1,726 @@
+{
+  "schema": 1,
+  "wave": "os-typed-storage-semantics",
+  "authored": 7,
+  "independently_reviewed": 0,
+  "accepted_primary_static": 0,
+  "runtime_executions": 0,
+  "runtime_passes": 0,
+  "cases": [
+    {
+      "id": "C201",
+      "title": "Traverse buffered nonunique index pages",
+      "failure_hypothesis": "Failure to buffer the outer native index cursor could invalidate it when child-group iteration starts; applying a record limit to the outer list would truncate a complete index-key group.",
+      "trace": [
+        "Seed four records spanning blue, green and red with overlapping memberships.",
+        "Fully consume limit-one and continuation reads, then dedupe and reverse reads.",
+        "Read two bounded reverse primary-key pages within blue."
+      ],
+      "oracle": "First blue page a,b; next green page a,c; first two keys deduped a,b,c. Reverse two keys d,c,c,a; deduped d,c,a. Blue get pages b then a. Full records are literal expectations.",
+      "implementation": "cases.js:C201",
+      "source_refs": [
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 10,
+          "line_end": 56
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 74,
+          "line_end": 81
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 654,
+          "line_end": 684
+        }
+      ],
+      "application_callsite_refs": [
+        {
+          "root": "os",
+          "path": "raw/packages/workshop-backend/src/overseer.ts",
+          "line_start": 10641,
+          "line_end": 10660
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/workshop-backend/src/storage-schema/overseer-storage.ts",
+          "line_start": 1246,
+          "line_end": 1268
+        }
+      ],
+      "closest_existing_cases": [
+        "T029",
+        "D207",
+        "D208",
+        "K215",
+        "K216"
+      ],
+      "distinctness": "T029 characterizes raw native iterator invalidation; D207/D208/K215/K216 cover low-level listing. This case exercises the actual OS module nested index traversal and documented key-count versus record-count semantics, with option permutations combined into one case.",
+      "literal_assertion_call_sites": 3,
+      "preconditions": [
+        "Exact reviewed OS source, Apache-2.0 license and guarded direct-celld source/build/bundle pins.",
+        "Fresh disposable SQLite-backed DO with native kv and transactionSync; no user data.",
+        "Externally enforceable resource and ownership domain includes the complete proven-owned dev/bundler/runtime descendant tree across PGIDs and all generated writable artifacts.",
+        "Trusted future bundler must preserve imported production semantics; no mocked storage or runtime fallback."
+      ],
+      "schedule": "One exact GET /case/C201; one fresh named DO and one ordinary same-deployment DO.fetch; all operations synchronous in written dependency order inside that active request.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_native_storage_entries": 32,
+        "max_rows_per_fully_consumed_iterator": 64,
+        "max_native_list_calls": 64,
+        "max_record_payload_bytes": 1024,
+        "max_total_logical_payload_bytes": 8192,
+        "max_schema_instances": 3,
+        "max_sync_transaction_depth": 3,
+        "max_application_remove_callbacks": 3,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15,
+        "outer_wave_deadline_seconds": 120,
+        "outer_rss_bytes": 1073741824,
+        "max_owned_domain_processes": 32,
+        "max_owned_writable_bytes": 134217728,
+        "descendant_supervision": "All proven-owned dev, trusted bundler and runtime descendants across PGIDs; prefer one enforceable cgroup/ownership domain; no single-process-group cleanup assumption",
+        "writable_quota_scope": "All generated bundles, staging config, logs, temporary files and private store; externally supplied read-only binaries/source are not copied into the writable domain"
+      },
+      "cleanup": [
+        "Application subscriptions removed in finally where present.",
+        "Trace must settle before cleanup; unsettled trace requires external owned-process teardown only.",
+        "Open and fully exhaust one public sync-KV list to replace any abandoned native list for this scope; never next() after done.",
+        "DeleteAll only this fresh owned DO; assert native KV empty. External supervisor must verify termination of the complete proven-owned dev/bundler/runtime descendant tree across PGIDs, then remove only its owned staging/bundle/log/temp/store files; a single process-group cleanup is insufficient."
+      ],
+      "expected_exception_scope": "Only ordinary valid uniqueness conflicts in C202; no malformed inputs, corruption, authentication, forgery, replay, capability lifetime or injected faults.",
+      "coverage_class": "actual-pinned-os-module-over-direct-celld-native-storage",
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "C202",
+      "title": "Roll back conflicting index subscriptions",
+      "failure_hypothesis": "A conflict in the second unique subscriber could retain writes made by the first subscriber, damage the old registration, or poison a later successful indexed replacement.",
+      "trace": [
+        "Seed two valid indexed registrations.",
+        "Attempt one ordinary conflicting replacement and one conflicting insertion using another existing mail key.",
+        "Compare exact entire native keyspace to original literal state.",
+        "Perform a valid replacement and compare exact native rows/indexes and reconstructed group records."
+      ],
+      "oracle": "Both legal conflicts identify existing b; a,b and original unique/nonunique keys survive unchanged. Valid a becomes slug gamma/mail c/team blue/revision3; old alpha/a-mail/red keys absent, team counter2 unchanged, blue group has a,b.",
+      "implementation": "cases.js:C202",
+      "source_refs": [
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 419,
+          "line_end": 436
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 480,
+          "line_end": 558
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 563,
+          "line_end": 580
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 627,
+          "line_end": 649
+        }
+      ],
+      "application_callsite_refs": [
+        {
+          "root": "os",
+          "path": "raw/packages/workshop-backend/src/storage-schema/overseer-storage.ts",
+          "line_start": 1217,
+          "line_end": 1229
+        }
+      ],
+      "closest_existing_cases": [
+        "T016",
+        "T008",
+        "D220",
+        "T206"
+      ],
+      "distinctness": "T016 is native SQL conflict with a held reader; T008/D220 are generic rollback APIs; T206 is a SQL partial-index UPSERT. Here byte-exact OS subscribers execute several real sync-KV index changes inside their own transaction and a later subscriber rejects a valid business uniqueness conflict.",
+      "literal_assertion_call_sites": 4,
+      "preconditions": [
+        "Exact reviewed OS source, Apache-2.0 license and guarded direct-celld source/build/bundle pins.",
+        "Fresh disposable SQLite-backed DO with native kv and transactionSync; no user data.",
+        "Externally enforceable resource and ownership domain includes the complete proven-owned dev/bundler/runtime descendant tree across PGIDs and all generated writable artifacts.",
+        "Trusted future bundler must preserve imported production semantics; no mocked storage or runtime fallback."
+      ],
+      "schedule": "One exact GET /case/C202; one fresh named DO and one ordinary same-deployment DO.fetch; all operations synchronous in written dependency order inside that active request.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_native_storage_entries": 32,
+        "max_rows_per_fully_consumed_iterator": 64,
+        "max_native_list_calls": 64,
+        "max_record_payload_bytes": 1024,
+        "max_total_logical_payload_bytes": 8192,
+        "max_schema_instances": 3,
+        "max_sync_transaction_depth": 3,
+        "max_application_remove_callbacks": 3,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15,
+        "outer_wave_deadline_seconds": 120,
+        "outer_rss_bytes": 1073741824,
+        "max_owned_domain_processes": 32,
+        "max_owned_writable_bytes": 134217728,
+        "descendant_supervision": "All proven-owned dev, trusted bundler and runtime descendants across PGIDs; prefer one enforceable cgroup/ownership domain; no single-process-group cleanup assumption",
+        "writable_quota_scope": "All generated bundles, staging config, logs, temporary files and private store; externally supplied read-only binaries/source are not copied into the writable domain"
+      },
+      "cleanup": [
+        "Application subscriptions removed in finally where present.",
+        "Trace must settle before cleanup; unsettled trace requires external owned-process teardown only.",
+        "Open and fully exhaust one public sync-KV list to replace any abandoned native list for this scope; never next() after done.",
+        "DeleteAll only this fresh owned DO; assert native KV empty. External supervisor must verify termination of the complete proven-owned dev/bundler/runtime descendant tree across PGIDs, then remove only its owned staging/bundle/log/temp/store files; a single process-group cleanup is insufficient."
+      ],
+      "expected_exception_scope": "Only ordinary valid uniqueness conflicts in C202; no malformed inputs, corruption, authentication, forgery, replay, capability lifetime or injected faults.",
+      "coverage_class": "actual-pinned-os-module-over-direct-celld-native-storage",
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "C203",
+      "title": "Transition nullable multikey memberships",
+      "failure_hypothesis": "Scalar, array and null membership transitions could remove retained intersections, leak last-member group rows, retain nullable unique aliases, or reuse retired group IDs.",
+      "trace": [
+        "Seed two pending draft records, one with no unique alias.",
+        "Move a to scalar draft and check shared group retention.",
+        "Move a through scalar-to-array-to-null and b to scalar; check reclaimed groups.",
+        "Recreate a array and alias memberships; verify the literal complete native keyspace."
+      ],
+      "oracle": "Draft group1 is retained. First pending group0 and final group2 are reclaimed; counter remains3. Recreated a memberships allocate pending3/final4, counter5; b remains draft1 and beta; a regains alpha.",
+      "implementation": "cases.js:C203",
+      "source_refs": [
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 487,
+          "line_end": 553
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 563,
+          "line_end": 580
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 627,
+          "line_end": 649
+        }
+      ],
+      "application_callsite_refs": [
+        {
+          "root": "os",
+          "path": "raw/packages/workshop-backend/src/storage-schema/overseer-storage.ts",
+          "line_start": 1196,
+          "line_end": 1205
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/workshop-backend/src/storage-schema/overseer-storage.ts",
+          "line_start": 1217,
+          "line_end": 1229
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/workshop-backend/src/storage-schema/overseer-storage.ts",
+          "line_start": 1256,
+          "line_end": 1268
+        }
+      ],
+      "closest_existing_cases": [
+        "T203",
+        "T206",
+        "T215"
+      ],
+      "distinctness": "Those cases maintain SQL triggers, partial SQL indexes or FTS postings. This case executes the actual OS addIndexSubscriber array/scalar/null delta algorithm and nonunique child reclamation; actual action history schema returns both scalar and array index keys.",
+      "literal_assertion_call_sites": 4,
+      "preconditions": [
+        "Exact reviewed OS source, Apache-2.0 license and guarded direct-celld source/build/bundle pins.",
+        "Fresh disposable SQLite-backed DO with native kv and transactionSync; no user data.",
+        "Externally enforceable resource and ownership domain includes the complete proven-owned dev/bundler/runtime descendant tree across PGIDs and all generated writable artifacts.",
+        "Trusted future bundler must preserve imported production semantics; no mocked storage or runtime fallback."
+      ],
+      "schedule": "One exact GET /case/C203; one fresh named DO and one ordinary same-deployment DO.fetch; all operations synchronous in written dependency order inside that active request.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_native_storage_entries": 32,
+        "max_rows_per_fully_consumed_iterator": 64,
+        "max_native_list_calls": 64,
+        "max_record_payload_bytes": 1024,
+        "max_total_logical_payload_bytes": 8192,
+        "max_schema_instances": 3,
+        "max_sync_transaction_depth": 3,
+        "max_application_remove_callbacks": 3,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15,
+        "outer_wave_deadline_seconds": 120,
+        "outer_rss_bytes": 1073741824,
+        "max_owned_domain_processes": 32,
+        "max_owned_writable_bytes": 134217728,
+        "descendant_supervision": "All proven-owned dev, trusted bundler and runtime descendants across PGIDs; prefer one enforceable cgroup/ownership domain; no single-process-group cleanup assumption",
+        "writable_quota_scope": "All generated bundles, staging config, logs, temporary files and private store; externally supplied read-only binaries/source are not copied into the writable domain"
+      },
+      "cleanup": [
+        "Application subscriptions removed in finally where present.",
+        "Trace must settle before cleanup; unsettled trace requires external owned-process teardown only.",
+        "Open and fully exhaust one public sync-KV list to replace any abandoned native list for this scope; never next() after done.",
+        "DeleteAll only this fresh owned DO; assert native KV empty. External supervisor must verify termination of the complete proven-owned dev/bundler/runtime descendant tree across PGIDs, then remove only its owned staging/bundle/log/temp/store files; a single process-group cleanup is insufficient."
+      ],
+      "expected_exception_scope": "Only ordinary valid uniqueness conflicts in C202; no malformed inputs, corruption, authentication, forgery, replay, capability lifetime or injected faults.",
+      "coverage_class": "actual-pinned-os-module-over-direct-celld-native-storage",
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "C204",
+      "title": "Rebuild newly declared storage indexes",
+      "failure_hypothesis": "A late index migration could omit old records, leave stale child rows on repeated rebuild, reset the persistent allocation counter, or make the next indexed edit inconsistent.",
+      "trace": [
+        "Persist two records under an unindexed schema; stop using that schema.",
+        "Declare unique slug and nonunique tags and observe empty new indexes before writes.",
+        "Invoke both production rebuild methods and version stamp inside one typed transaction.",
+        "Rebuild again, checking counter and fresh child IDs.",
+        "Perform a post-migration indexed edit and compare literal complete storage."
+      ],
+      "oracle": "First rebuild returns migration-v2 with version2/counter2 and blue a,b/red b. Second rebuild has counter4 and groups blue2/red3, no old children. Edit b yields slug second-v2/tags green4, counter5; a stays blue2 and version2 persists.",
+      "implementation": "cases.js:C204",
+      "source_refs": [
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 65,
+          "line_end": 71
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 85,
+          "line_end": 90
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 373,
+          "line_end": 385
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 606,
+          "line_end": 615
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 705,
+          "line_end": 714
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 740,
+          "line_end": 743
+        }
+      ],
+      "application_callsite_refs": [
+        {
+          "root": "os",
+          "path": "raw/packages/workshop-backend/src/storage-schema/overseer-migrations.ts",
+          "line_start": 231,
+          "line_end": 246
+        }
+      ],
+      "closest_existing_cases": [
+        "T208",
+        "T008",
+        "D211"
+      ],
+      "distinctness": "T208 explicitly rebuilds a synthetic SQL ancestry relation; D211 clears raw storage; T008 nests raw transactions. This is the production module migration API, including its physical child sweep and intentionally retained allocation counter.",
+      "literal_assertion_call_sites": 5,
+      "preconditions": [
+        "Exact reviewed OS source, Apache-2.0 license and guarded direct-celld source/build/bundle pins.",
+        "Fresh disposable SQLite-backed DO with native kv and transactionSync; no user data.",
+        "Externally enforceable resource and ownership domain includes the complete proven-owned dev/bundler/runtime descendant tree across PGIDs and all generated writable artifacts.",
+        "Trusted future bundler must preserve imported production semantics; no mocked storage or runtime fallback."
+      ],
+      "schedule": "One exact GET /case/C204; one fresh named DO and one ordinary same-deployment DO.fetch; all operations synchronous in written dependency order inside that active request.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_native_storage_entries": 32,
+        "max_rows_per_fully_consumed_iterator": 64,
+        "max_native_list_calls": 64,
+        "max_record_payload_bytes": 1024,
+        "max_total_logical_payload_bytes": 8192,
+        "max_schema_instances": 3,
+        "max_sync_transaction_depth": 3,
+        "max_application_remove_callbacks": 3,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15,
+        "outer_wave_deadline_seconds": 120,
+        "outer_rss_bytes": 1073741824,
+        "max_owned_domain_processes": 32,
+        "max_owned_writable_bytes": 134217728,
+        "descendant_supervision": "All proven-owned dev, trusted bundler and runtime descendants across PGIDs; prefer one enforceable cgroup/ownership domain; no single-process-group cleanup assumption",
+        "writable_quota_scope": "All generated bundles, staging config, logs, temporary files and private store; externally supplied read-only binaries/source are not copied into the writable domain"
+      },
+      "cleanup": [
+        "Application subscriptions removed in finally where present.",
+        "Trace must settle before cleanup; unsettled trace requires external owned-process teardown only.",
+        "Open and fully exhaust one public sync-KV list to replace any abandoned native list for this scope; never next() after done.",
+        "DeleteAll only this fresh owned DO; assert native KV empty. External supervisor must verify termination of the complete proven-owned dev/bundler/runtime descendant tree across PGIDs, then remove only its owned staging/bundle/log/temp/store files; a single process-group cleanup is insufficient."
+      ],
+      "expected_exception_scope": "Only ordinary valid uniqueness conflicts in C202; no malformed inputs, corruption, authentication, forgery, replay, capability lifetime or injected faults.",
+      "coverage_class": "actual-pinned-os-module-over-direct-celld-native-storage",
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "C205",
+      "title": "Delete buffered indexed groups safely",
+      "failure_hypothesis": "Deleting a nonunique group while index subscribers and application callbacks open native list cursors could invalidate the unbuffered member traversal, skip selected records, or leave secondary postings.",
+      "trace": [
+        "Seed four records, red a,b,c and overlapping shared a,c,d; d is blue.",
+        "Subscribe an application remove callback that fully reads the shared index and stores an audit row.",
+        "Invoke production tags.delete(red); unsubscribe in finally.",
+        "Compare deletion receipts, surviving full record, full audit rows and complete secondary native keyspace."
+      ],
+      "oracle": "Delete receipts3 then0; only d/four/[blue,shared] survives; audits a/one,b/two,c/three. Only slug four and blue2/shared1 child d remain; group counter3 persists.",
+      "implementation": "cases.js:C205",
+      "source_refs": [
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 442,
+          "line_end": 456
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 638,
+          "line_end": 649
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 687,
+          "line_end": 703
+        }
+      ],
+      "application_callsite_refs": [
+        {
+          "root": "os",
+          "path": "raw/packages/workshop-backend/src/overseer.ts",
+          "line_start": 5173,
+          "line_end": 5179
+        }
+      ],
+      "closest_existing_cases": [
+        "T029",
+        "T027",
+        "D210",
+        "T207"
+      ],
+      "distinctness": "T029 triggers raw iterator invalidation, D210 is raw batch deletion, T027 restores a raw delete and T207 extracts a synthetic partition. This executes production nonunique delete buffering across real index-subscriber native list calls plus an ordinary read-and-audit callback. No callback timing oracle is asserted.",
+      "literal_assertion_call_sites": 4,
+      "preconditions": [
+        "Exact reviewed OS source, Apache-2.0 license and guarded direct-celld source/build/bundle pins.",
+        "Fresh disposable SQLite-backed DO with native kv and transactionSync; no user data.",
+        "Externally enforceable resource and ownership domain includes the complete proven-owned dev/bundler/runtime descendant tree across PGIDs and all generated writable artifacts.",
+        "Trusted future bundler must preserve imported production semantics; no mocked storage or runtime fallback."
+      ],
+      "schedule": "One exact GET /case/C205; one fresh named DO and one ordinary same-deployment DO.fetch; all operations synchronous in written dependency order inside that active request.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_native_storage_entries": 32,
+        "max_rows_per_fully_consumed_iterator": 64,
+        "max_native_list_calls": 64,
+        "max_record_payload_bytes": 1024,
+        "max_total_logical_payload_bytes": 8192,
+        "max_schema_instances": 3,
+        "max_sync_transaction_depth": 3,
+        "max_application_remove_callbacks": 3,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15,
+        "outer_wave_deadline_seconds": 120,
+        "outer_rss_bytes": 1073741824,
+        "max_owned_domain_processes": 32,
+        "max_owned_writable_bytes": 134217728,
+        "descendant_supervision": "All proven-owned dev, trusted bundler and runtime descendants across PGIDs; prefer one enforceable cgroup/ownership domain; no single-process-group cleanup assumption",
+        "writable_quota_scope": "All generated bundles, staging config, logs, temporary files and private store; externally supplied read-only binaries/source are not copied into the writable domain"
+      },
+      "cleanup": [
+        "Application subscriptions removed in finally where present.",
+        "Trace must settle before cleanup; unsettled trace requires external owned-process teardown only.",
+        "Open and fully exhaust one public sync-KV list to replace any abandoned native list for this scope; never next() after done.",
+        "DeleteAll only this fresh owned DO; assert native KV empty. External supervisor must verify termination of the complete proven-owned dev/bundler/runtime descendant tree across PGIDs, then remove only its owned staging/bundle/log/temp/store files; a single process-group cleanup is insufficient."
+      ],
+      "expected_exception_scope": "Only ordinary valid uniqueness conflicts in C202; no malformed inputs, corruption, authentication, forgery, replay, capability lifetime or injected faults.",
+      "coverage_class": "actual-pinned-os-module-over-direct-celld-native-storage",
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "C206",
+      "title": "Delete records through computed keys",
+      "failure_hypothesis": "deleteRecord could derive the wrong computed key or remove indexes using stale caller fields instead of the actual stored old record.",
+      "trace": [
+        "Persist two revisions keyed by document/revision with unique label and nonunique document indexes.",
+        "Delete revision1 using a caller record with the same key fields but obsolete label/bytes.",
+        "Repeat deletion and compare complete surviving record and native main/index keyspace."
+      ],
+      "oracle": "Receipts true,false; only memo/2 label final bytes7 survives. Draft posting and memo/1 child absent; document group0/counter1 and final posting remain exactly.",
+      "implementation": "cases.js:C206",
+      "source_refs": [
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 128,
+          "line_end": 135
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 403,
+          "line_end": 409
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 442,
+          "line_end": 460
+        }
+      ],
+      "application_callsite_refs": [
+        {
+          "root": "os",
+          "path": "raw/packages/workshop-backend/src/overseer.ts",
+          "line_start": 2341,
+          "line_end": 2355
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/workshop-backend/src/storage-schema/overseer-storage.ts",
+          "line_start": 1350,
+          "line_end": 1362
+        }
+      ],
+      "closest_existing_cases": [
+        "D210",
+        "C205"
+      ],
+      "distinctness": "D210 takes raw keys; C205 deletes every member of an index group. This documented helper must read only computed primary-key fields from a caller record while removing actual stored index data, including when non-key fields are stale.",
+      "literal_assertion_call_sites": 3,
+      "preconditions": [
+        "Exact reviewed OS source, Apache-2.0 license and guarded direct-celld source/build/bundle pins.",
+        "Fresh disposable SQLite-backed DO with native kv and transactionSync; no user data.",
+        "Externally enforceable resource and ownership domain includes the complete proven-owned dev/bundler/runtime descendant tree across PGIDs and all generated writable artifacts.",
+        "Trusted future bundler must preserve imported production semantics; no mocked storage or runtime fallback."
+      ],
+      "schedule": "One exact GET /case/C206; one fresh named DO and one ordinary same-deployment DO.fetch; all operations synchronous in written dependency order inside that active request.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_native_storage_entries": 32,
+        "max_rows_per_fully_consumed_iterator": 64,
+        "max_native_list_calls": 64,
+        "max_record_payload_bytes": 1024,
+        "max_total_logical_payload_bytes": 8192,
+        "max_schema_instances": 3,
+        "max_sync_transaction_depth": 3,
+        "max_application_remove_callbacks": 3,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15,
+        "outer_wave_deadline_seconds": 120,
+        "outer_rss_bytes": 1073741824,
+        "max_owned_domain_processes": 32,
+        "max_owned_writable_bytes": 134217728,
+        "descendant_supervision": "All proven-owned dev, trusted bundler and runtime descendants across PGIDs; prefer one enforceable cgroup/ownership domain; no single-process-group cleanup assumption",
+        "writable_quota_scope": "All generated bundles, staging config, logs, temporary files and private store; externally supplied read-only binaries/source are not copied into the writable domain"
+      },
+      "cleanup": [
+        "Application subscriptions removed in finally where present.",
+        "Trace must settle before cleanup; unsettled trace requires external owned-process teardown only.",
+        "Open and fully exhaust one public sync-KV list to replace any abandoned native list for this scope; never next() after done.",
+        "DeleteAll only this fresh owned DO; assert native KV empty. External supervisor must verify termination of the complete proven-owned dev/bundler/runtime descendant tree across PGIDs, then remove only its owned staging/bundle/log/temp/store files; a single process-group cleanup is insufficient."
+      ],
+      "expected_exception_scope": "Only ordinary valid uniqueness conflicts in C202; no malformed inputs, corruption, authentication, forgery, replay, capability lifetime or injected faults.",
+      "coverage_class": "actual-pinned-os-module-over-direct-celld-native-storage",
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    },
+    {
+      "id": "C207",
+      "title": "Preserve storage across schema renames",
+      "failure_hypothesis": "Renaming schema properties could accidentally create new physical main/index/singleton keys or fail to discover original persisted locations despite explicit storage aliases.",
+      "trace": [
+        "Persist items:a, its slug index and revision singleton under original neutral names.",
+        "Stop using original schema, then declare documents with storageName items and generation with storageKey revision.",
+        "Read original records, update through renamed code in a typed transaction, and compare exact physical keys.",
+        "Recreate the renamed schema object and re-read committed values."
+      ],
+      "oracle": "Renamed read sees saved record and revision4. Update leaves only items.slug:two=a, items:a with edited record and revision5; no documents/generation shadow keys. Fresh schema instance sees edited record and5.",
+      "implementation": "cases.js:C207",
+      "source_refs": [
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 197,
+          "line_end": 216
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 236,
+          "line_end": 239
+        },
+        {
+          "root": "os",
+          "path": "raw/packages/typed-storage/src/index.ts",
+          "line_start": 758,
+          "line_end": 801
+        }
+      ],
+      "application_callsite_refs": [
+        {
+          "root": "os",
+          "path": "raw/packages/workshop-backend/src/storage-schema/overseer-storage.ts",
+          "line_start": 1148,
+          "line_end": 1148
+        }
+      ],
+      "closest_existing_cases": [
+        "Z206",
+        "Z208",
+        "D204"
+      ],
+      "distinctness": "Z206/Z208 test distinct facet scopes and D204 sync/async API coherence. This tests explicit same-storage migration aliases on one native DO with sequential schemas only. The actual singleton alias call site establishes relevance; storageName uses the documented module contract, with no concrete application caller claimed.",
+      "literal_assertion_call_sites": 3,
+      "preconditions": [
+        "Exact reviewed OS source, Apache-2.0 license and guarded direct-celld source/build/bundle pins.",
+        "Fresh disposable SQLite-backed DO with native kv and transactionSync; no user data.",
+        "Externally enforceable resource and ownership domain includes the complete proven-owned dev/bundler/runtime descendant tree across PGIDs and all generated writable artifacts.",
+        "Trusted future bundler must preserve imported production semantics; no mocked storage or runtime fallback."
+      ],
+      "schedule": "One exact GET /case/C207; one fresh named DO and one ordinary same-deployment DO.fetch; all operations synchronous in written dependency order inside that active request.",
+      "limits": {
+        "max_external_case_http_requests": 1,
+        "max_frontend_do_fetches": 1,
+        "max_created_do_roots": 1,
+        "max_outbound_public_network_requests": 0,
+        "max_native_storage_entries": 32,
+        "max_rows_per_fully_consumed_iterator": 64,
+        "max_native_list_calls": 64,
+        "max_record_payload_bytes": 1024,
+        "max_total_logical_payload_bytes": 8192,
+        "max_schema_instances": 3,
+        "max_sync_transaction_depth": 3,
+        "max_application_remove_callbacks": 3,
+        "precondition_deadline_ms": 1000,
+        "trace_deadline_ms": 5000,
+        "cleanup_deadline_ms": 2000,
+        "outer_http_deadline_seconds": 10,
+        "outer_case_process_deadline_seconds": 15,
+        "outer_wave_deadline_seconds": 120,
+        "outer_rss_bytes": 1073741824,
+        "max_owned_domain_processes": 32,
+        "max_owned_writable_bytes": 134217728,
+        "descendant_supervision": "All proven-owned dev, trusted bundler and runtime descendants across PGIDs; prefer one enforceable cgroup/ownership domain; no single-process-group cleanup assumption",
+        "writable_quota_scope": "All generated bundles, staging config, logs, temporary files and private store; externally supplied read-only binaries/source are not copied into the writable domain"
+      },
+      "cleanup": [
+        "Application subscriptions removed in finally where present.",
+        "Trace must settle before cleanup; unsettled trace requires external owned-process teardown only.",
+        "Open and fully exhaust one public sync-KV list to replace any abandoned native list for this scope; never next() after done.",
+        "DeleteAll only this fresh owned DO; assert native KV empty. External supervisor must verify termination of the complete proven-owned dev/bundler/runtime descendant tree across PGIDs, then remove only its owned staging/bundle/log/temp/store files; a single process-group cleanup is insufficient."
+      ],
+      "expected_exception_scope": "Only ordinary valid uniqueness conflicts in C202; no malformed inputs, corruption, authentication, forgery, replay, capability lifetime or injected faults.",
+      "coverage_class": "actual-pinned-os-module-over-direct-celld-native-storage",
+      "classification": "functional-regression-candidate",
+      "promotion_candidate": true,
+      "authored": true,
+      "independently_reviewed": false,
+      "runtime_status": "NOT_RUN",
+      "actual_runs": 0,
+      "runtime_passes": 0
+    }
+  ]
+}

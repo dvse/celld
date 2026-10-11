@@ -1,0 +1,49 @@
+{
+  "id": "conformance/durable-objects/storage-sql/characterize-sync-kv-single-iterator-invalidation-without-incorrectly-invalidating-an-independent-li",
+  "layer": "conformance",
+  "behaviour": "durable-objects/storage-sql",
+  "title": "Characterize sync KV single-iterator invalidation without incorrectly invalidating an independent live SQL cursor.",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/sqlite-concurrency",
+      "legacy_id": "sqlite-concurrency/T029"
+    }
+  ],
+  "corpus_wave": "sqlite-concurrency",
+  "corpus_id": "T029",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "T029",
+    "intent": "Characterize sync KV single-iterator invalidation without incorrectly invalidating an independent live SQL cursor.",
+    "preconditions": [
+      "Exact frozen source/binary and reviewed implementation hashes.",
+      "Direct-runtime test-harness-owned disposable runtime, 512MiB memory / 128 PIDs / 1vCPU maximum, absolute 30s per-case wall bound.",
+      "Fresh independently identified caller and two SQLite DO recipients; required storage APIs and clean namespaces.",
+      "Request-only private endpoint and five external control requests maximum; no execution approval inferred from artifact existence.",
+      "Scenario overlap witness required; absent schedule is typed BLOCKED and never a pass."
+    ],
+    "trace": [
+      "Primary consumes one sync KV pair then opens SQL cursor.",
+      "Hold primary while peer starts and exhausts reverse kv.list.",
+      "Resume old iterator and match invalidated-generation error.",
+      "Drain unaffected SQL cursor."
+    ],
+    "stress": "Cross-request KV iterator generation replacement plus live SQL reader; pinned characterization.",
+    "oracle": "Peer reverse pairs exact; old KV iterator invalidates; SQL delivers all four original rows.",
+    "cleanup": [
+      "Release all existing coordinator holds before draining foreground calls.",
+      "Drain tracked SQL cursors within 258 next calls each, verify zero active requests and release timers.",
+      "Independently attempt both recipients, cursor drains, owned KV deletion, each table drop and sync; record every failure and remaining resource.",
+      "The direct-runtime test-harness supervisor must reap only owned process/guest and remove owned storage; external terminal evidence required to count PASS."
+    ],
+    "implementation": "cell-cases.js#T029; cases.js#T029; fixture.js; entry.js; private_driver.py",
+    "test_function": "T029",
+    "layer": "real-process-RPC",
+    "classification": "cross-request-concurrency-stress",
+    "promotion": "characterization-only; never promotion eligible",
+    "characterization": true,
+    "cloudflare_claim": "No official Cloudflare compatibility or cross-tenant security guarantee is inferred from this pinned celld oracle.",
+    "status": "NOT_RUN"
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "adapter": "http",
+  "behaviour": "durable-objects/facets",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "assertion_count": 3,
+    "authored": true,
+    "classification": "ordinary-functional-regression-candidate",
+    "cleanup": [
+      "Only after the trace settles: publicly delete each tracked owned top-level facet name; await fresh same-name CleanupProbe.empty() behind the public delete barrier.",
+      "Verify empty KV and absence of owned shared table; release loaded worker handles after deletion barriers; root deleteAll and explicit empty checks.",
+      "Empty probe facets remain resident intentionally. External supervisor must reap only owned processes and remove the fresh store, verify no survivors, and retain evidence before any runtime PASS classification.",
+      "On timeout or unsettled trace do not race storage cleanup. Require bounded external process-group/store teardown and classify BLOCKED until verified."
+    ],
+    "distinctness": "L024 distinguishes top-level names; this asserts descendant paths beneath two live parent managers, a separate addressing boundary. L037 tests callback restore provenance rather than nested facet storage.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/Z206",
+      "request_body": null
+    },
+    "failure_hypothesis": "The registry may key descendants by their leaf name or visible ID rather than the full root-relative path.",
+    "fixed_runtime_assertions": [
+      "t.same(await left.childRead('settings', 'value'), 'left-settings', 'left parent path selects left settings');",
+      "t.same(await right.childRead('settings', 'value'), 'right-settings', 'right parent path selects right settings');",
+      "t.deep(await left.descendantIdentity('settings'), await right.descendantIdentity('settings'), 'equal inherited display IDs do not collapse nested storage paths');"
+    ],
+    "id": "Z206",
+    "implementation": "cases.js:Z206",
+    "independently_reviewed": false,
+    "limits": {
+      "cleanup_deadline_ms": 3000,
+      "external_case_process_deadline_seconds": 20,
+      "external_http_deadline_seconds": 12,
+      "max_application_data_payload_bytes_excluding_loaded_source": 4096,
+      "max_application_keys_per_database": 5,
+      "max_created_do_roots": 1,
+      "max_external_case_http_requests": 1,
+      "max_external_response_capture_bytes": 65536,
+      "max_frontend_root_fetches": 1,
+      "max_internal_facet_method_or_fetch_calls_including_cleanup": 40,
+      "max_loaded_module_source_bytes": 16384,
+      "max_loaded_workers": 1,
+      "max_public_network_requests": 0,
+      "max_simultaneous_descendant_facets": 5,
+      "max_sql_rows_per_cursor": 16,
+      "max_top_level_facet_names": 3,
+      "max_total_facet_activations_including_cleanup": 12,
+      "max_user_tables_per_database": 1,
+      "precondition_deadline_ms": 1000,
+      "trace_deadline_ms": 6000
+    },
+    "mechanism": "nested-parent-path-storage",
+    "oracle": "Equal visible IDs and identical leaf names coexist with distinct left/right values.",
+    "os_relevance": {
+      "evidence": [
+        "celld-os-project/tests/ACCEPTANCE.md",
+        "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+      ],
+      "evidence_status": "Mechanism relevance inferred from preserved acceptance/fixtures; actual OS application source absent and unverified.",
+      "label": "OS per-workspace nested settings scopes"
+    },
+    "preconditions": [
+      "Exact reviewed direct celld source and independent build/executable identity; no workerd/Node/mock substitution.",
+      "Fresh disposable private deployment, fresh randomly named root, real migrated SQLite Root, public facets and Worker Loader.",
+      "No actual OS checkout exists here. Component result cannot satisfy full-OS acceptance or establish process/placement/durability by itself."
+    ],
+    "primary_contract_refs": [
+      {
+        "kind": "preserved celld public contract",
+        "path": "celld-os-project/celld/docs/services/durable-object-facets.md"
+      }
+    ],
+    "review_status": "PENDING_INDEPENDENT_REVIEW",
+    "runtime_passes": 0,
+    "runtime_source_refs": [
+      {
+        "line_end": 863,
+        "line_start": 842,
+        "path": "celld-os-project/celld/crates/celld/engine_api.rs"
+      },
+      {
+        "line_end": 1149,
+        "line_start": 1090,
+        "path": "celld-os-project/celld/crates/celld/storage.rs"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "schedule": "One external GET creates one fresh root; execute the written awaited dependency order entirely within its one fetch; no cross-request capability retention or timing polls.",
+    "title": "Partition repeated child names by parent path",
+    "trace": [
+      "Create left/settings and right/settings.",
+      "Write and read different values under the same key.",
+      "Compare inherited display identities."
+    ]
+  },
+  "corpus_id": "Z206",
+  "corpus_wave": "facet-root-semantics",
+  "fixture": "tests/conformance/durable-objects/facets/fixtures/facet-root-semantics",
+  "id": "conformance/durable-objects/facets/facet-root-z206",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/facet-root-semantics/Z206"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/facet-root-semantics/Z206",
+      "manifest_sha256": "a1615598800adf714f1786dbf6db36365b035d4b9e54a4c56c12e5a427ed7e1f",
+      "review_sha256": "f09c531798eae5ed346aac70a34d8ef6aeac408cc86cb205de7626f22060dca1",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/facet-root-semantics",
+      "tranche": "003"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/Z206",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "Z206",
+  "source": "tests/conformance/durable-objects/facets/fixtures/facet-root-semantics/fixture.js",
+  "source_sha256": "2843913af8aa84153e792b41e9367175b7e80a5dbf4f78eb18b07d91b58cb147",
+  "title": "Partition repeated child names by parent path"
+}

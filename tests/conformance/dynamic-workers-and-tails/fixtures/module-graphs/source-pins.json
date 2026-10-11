@@ -1,0 +1,61 @@
+{
+  "binary_sha256": "8d27f1d423e74dd582dd36d47cc61aef2017344da84720fd5bbe1ff7fbff105f",
+  "runtime_manifest": "/workspace/shared/celld-os-stress/pilots/http-h001-v4/provenance/runtime-manifest.json",
+  "runtime_manifest_sha256": "e84f9ec275ce62bb67af53a5b97ddce90375016be136d49709d85dd9f52fcf8e",
+  "sources": [
+    {
+      "role": "candidate-direct",
+      "path": "provenance/crates/celld/js/harness.js",
+      "sha256": "8d3be5ef1b78d302cb2da745c63f8d2e1222115c49a8d08f1096bca7d235c237",
+      "manifest_key": "celld/crates/celld/js/harness.js"
+    },
+    {
+      "role": "candidate-direct",
+      "path": "provenance/crates/celld/js.rs",
+      "sha256": "164b11bb2b0f7321d316bcd417b13fea3bf907b1eae335c97d8ebecaacb9ba17",
+      "manifest_key": "celld/crates/celld/js.rs"
+    },
+    {
+      "role": "candidate-direct",
+      "path": "provenance/crates/celld/js/modules.rs",
+      "sha256": "9a16938eb5b2b50d32df41957507245dbbd59b63c28f906c825230cb19315e32",
+      "manifest_key": "celld/crates/celld/js/modules.rs"
+    },
+    {
+      "role": "upstream-reference-only",
+      "path": "provenance/workerd/src/workerd/api/worker-loader.h",
+      "sha256": "aecf8da725a4cf761eb883686f82a76d38934634da82799bc2e16b79c62fb898",
+      "commit": "9f247e0d5feae1f98ffcee5c9f44a0ded87bb334",
+      "repo_path": "src/workerd/api/worker-loader.h"
+    },
+    {
+      "role": "upstream-reference-only",
+      "path": "provenance/workerd/src/workerd/api/worker-loader.c++",
+      "sha256": "8860cd391909a74e83da906fefc2cd1dc506526ca9a9a9c171a3c8cf24a4b580",
+      "commit": "9f247e0d5feae1f98ffcee5c9f44a0ded87bb334",
+      "repo_path": "src/workerd/api/worker-loader.c++"
+    },
+    {
+      "role": "upstream-reference-only",
+      "path": "provenance/workerd/src/workerd/jsg/modules.c++",
+      "sha256": "1134031509bcf4e7f78fe7556cdf72cd0754b83599b4d20b0c03feb912f1885e",
+      "commit": "9f247e0d5feae1f98ffcee5c9f44a0ded87bb334",
+      "repo_path": "src/workerd/jsg/modules.c++"
+    },
+    {
+      "role": "upstream-reference-only",
+      "path": "provenance/workerd/src/workerd/io/compatibility-date.capnp",
+      "sha256": "7e40443eaa49903597cf1866d2657cf354ed6397c37598f6371a8bb83514c0e7",
+      "commit": "9f247e0d5feae1f98ffcee5c9f44a0ded87bb334",
+      "repo_path": "src/workerd/io/compatibility-date.capnp"
+    },
+    {
+      "role": "os-motivation-only",
+      "path": "provenance/os/overseer.ts",
+      "sha256": "835e7c1ce74a99ae9e54f00537f7e89937ce500255c1c21f6fa7fc93dc0a67bc",
+      "commit": "4358072f8cb1bc9ddfb6ee11122e194c76cd71e0",
+      "repository_path": "packages/workshop-backend/src/overseer.ts"
+    }
+  ],
+  "upstream_runtime_executed": false
+}

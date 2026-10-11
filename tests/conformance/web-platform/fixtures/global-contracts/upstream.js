@@ -1,0 +1,1 @@
+../reference-contracts/global-scope-test.js

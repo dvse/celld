@@ -1,0 +1,197 @@
+{
+  "adapter": "http",
+  "behaviour": "bindings",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "application_relevance": "Persist booleans, optional nulls, Unicode text, empty text and finite numbers without silent coercion to NULL.",
+    "artifact": "worker.js",
+    "cleanup": {
+      "finally": "For every claimed resource independently, DROP TABLE IF EXISTS and read sqlite_schema by exact name; require null and no cleanup errors. Deduplicate alias identities by owning only the canonical binding.",
+      "on_stall": "The separately reviewed adapter must enforce the total request deadline, stop only the owned invocation and, if request cancellation cannot be proved, the owned celld process group; preserve evidence then discard only its disposable store. No cleanup success may be inferred after timeout.",
+      "preflight": "For each declared physical identity/table, SELECT sqlite_schema by exact bound name and require absence before claiming ownership. Refuse pre-existing objects and never drop them. A fresh isolated store and serial runner remain mandatory.",
+      "wave_end": "Stop the owned celld group and discard its disposable store even if every finally check succeeds."
+    },
+    "cross_wave_overlap": {
+      "distinction": "D212 binds native SQL scalars and DataView and returns native ArrayBuffer; E203 exercises public D1 boolean normalization, JSON transport, SQL null and typed scalar persistence across batch/read dispatches.",
+      "neighbors": [
+        "D212"
+      ]
+    },
+    "distinctness": "One scalar codec case with discriminating types, not separate credit for each input value. Cross-wave: D212 binds native SQL scalars and DataView and returns native ArrayBuffer; E203 exercises public D1 boolean normalization, JSON transport, SQL null and typed scalar persistence across batch/read dispatches.",
+    "entrypoint": "GET /case/E203",
+    "family": "d1-semantics",
+    "fixed_finite_trace": [
+      "Create an affinity-free settings table.",
+      "Batch two fixed rows with true/false flags, null, Unicode/newline/empty text, and finite numbers.",
+      "Read values and SQL types in id order and compare exact rows."
+    ],
+    "fixture_line_range": [
+      37,
+      47
+    ],
+    "fixture_slice_sha256": "e93966fc39ee6a0b3185e2b509b4ab3d18140c6cbe75da095f8ee59e936c7124",
+    "id": "E203",
+    "intent": "Persist booleans, optional nulls, Unicode text, empty text and finite numbers without silent coercion to NULL.",
+    "limits": {
+      "external_response_capture_bytes": 1048576,
+      "external_total_request_deadline_seconds": 30,
+      "maximum_SQL_UTF8_bytes_per_dispatch": 1024,
+      "maximum_application_tables": 1,
+      "maximum_batch_statements": 5,
+      "maximum_bound_parameters_per_statement": 5,
+      "maximum_bound_scalar_or_blob_bytes": 64,
+      "maximum_exec_statements": 4,
+      "maximum_rows_in_any_fixture_table": 4,
+      "no_internal_Promise_race_timeout": true,
+      "public_dispatches_per_phase_enforced": 32
+    },
+    "limits_of_evidence": [
+      "Source-backed assertion candidate only; zero execution, zero review acceptance.",
+      "No cross-node, restart, durability-loss, fault, rollback, malformed-input, authorization or guarded G/N/P/J122 claim.",
+      "Successful batch dependencies do not establish concurrent-observer atomicity.",
+      "Finite source traces do not substitute for an independently enforced outer deadline and owned teardown."
+    ],
+    "oracle": {
+      "assertions": [
+        "boolean null text and finite number binds keep their intended SQL types and values"
+      ],
+      "claim": "The public client converts booleans to 1/0, preserves finite numbers/text/null, and the engine maps those JSON values to corresponding SQLite values.",
+      "executable_assertion_source": [
+        "c.eq(result.results, [{id:1,enabled:1,optional:null,note:\"caf\u00e9\\nready\",amount:2.5,flag_type:\"integer\",optional_type:\"null\",note_type:\"text\"},{id:2,enabled:0,optional:null,note:\"\",amount:0,flag_type:\"integer\",optional_type:\"null\",note_type:\"text\"}], \"boolean null text and finite number binds keep their intended SQL types and values\");"
+      ],
+      "kind": "PINNED_DIRECT_CELLD_SOURCE_CONTRACT",
+      "qualification": "All expectations are against the exact pinned direct celld source. Metadata resets, primary service markers, stable bookmark, exec counts and database-name fallback are deliberately not universal Cloudflare claims. No runtime or workerd comparison was performed.",
+      "successful_assertion_count": 1
+    },
+    "owned_resources": [
+      {
+        "binding": "DB",
+        "database_identity": "d1-next-id-a",
+        "table": "d1_next_e203"
+      }
+    ],
+    "review_accepted": false,
+    "runtime_execution_count": 0,
+    "schedule": {
+      "case_requests": 1,
+      "cleanup_binding_calls_exact_on_success": 2,
+      "faults": 0,
+      "main_phase_binding_calls_exact_on_success": 3,
+      "main_phase_dispatch_labels_in_order": [
+        "create settings",
+        "save settings",
+        "load settings"
+      ],
+      "maximum_in_flight_public_calls": 1,
+      "ordering": "Every public dispatch is awaited before the next; no overlapping requests, timers, retries or random schedules. prepare/bind/session constructors/bookmark access are synchronous local operations.",
+      "restarts": 0,
+      "retries": 0,
+      "setup_binding_calls_exact_on_success": 1
+    },
+    "source_refs": [
+      {
+        "key": "api",
+        "line_ranges": [
+          [
+            1,
+            87
+          ]
+        ],
+        "path": "celld-os-project/celld/docs/services/d1.md",
+        "slices_sha256": [
+          "c2e31a7e09853ffc52533535a93b9053d8395fe8798ed86d9e4cfadd1ac0a50d"
+        ]
+      },
+      {
+        "key": "bind",
+        "line_ranges": [
+          [
+            8283,
+            8326
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/js/harness.js",
+        "slices_sha256": [
+          "58eaf450858b0f680fb34f22a628c58caef70fb864bdc8bfeacf5a9d4a0b84cf"
+        ]
+      },
+      {
+        "key": "bind_engine",
+        "line_ranges": [
+          [
+            2343,
+            2385
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/storage.rs",
+        "slices_sha256": [
+          "258caf08cb43b1e2c4a0a51595c54f3baac18f26c8aa4179249d09428f24f439"
+        ]
+      },
+      {
+        "key": "row_codec",
+        "line_ranges": [
+          [
+            2395,
+            2478
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/storage.rs",
+        "slices_sha256": [
+          "6f96a199a642643db9a5cde84a2d79da532c19a71fadfe585c3367fc3c1fe5e2"
+        ]
+      },
+      {
+        "key": "database",
+        "line_ranges": [
+          [
+            8448,
+            8491
+          ]
+        ],
+        "path": "celld-os-project/celld/crates/celld/js/harness.js",
+        "slices_sha256": [
+          "d77cc49a62eb8dcae987ad5324e3d0831f91412d02bfdb0b5c3ac0992e263ecb"
+        ]
+      }
+    ],
+    "status": "NEWLY_AUTHORED_UNREVIEWED_NOT_RUN",
+    "surface": "public env D1 binding APIs only",
+    "sut": "direct celld only",
+    "title": "Round-trip application scalar settings"
+  },
+  "corpus_id": "E203",
+  "corpus_wave": "d1-semantics",
+  "fixture": "tests/conformance/bindings/fixtures/d1-semantics",
+  "id": "conformance/bindings/d1-e203",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/d1-semantics/E203"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/d1-semantics/E203",
+      "manifest_sha256": "a710fc3341a0ac99cbe9b5dd5847e7fc9c7d355313bac1440415941d7b31780f",
+      "review_sha256": "c6cdb7367eac8cb864520fba365e861793be03ddfd570b61e4a642030f662350",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/d1-semantics",
+      "tranche": "002"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/E203",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "E203",
+  "source": "tests/conformance/bindings/fixtures/d1-semantics/worker.js",
+  "source_sha256": "4b946d92399b5493a1039165af98b4c2159f08296b211eec6a60ce9680c26525",
+  "title": "Round-trip application scalar settings"
+}

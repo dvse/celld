@@ -1,0 +1,683 @@
+{
+  "schema_version": 1,
+  "profile": "direct-celld-pipe-cleanup-semantics-v1",
+  "authored_case_count": 9,
+  "runtime_status": "UNRUN",
+  "runtime_executions": 0,
+  "reviewed_credit": 0,
+  "review_receipt_required": true,
+  "fixture": "fixture.js",
+  "config": "wrangler.json",
+  "cases": [
+    {
+      "id": "S201",
+      "intent": "Keep sink writable after pipe EOF",
+      "mechanism": "prevent-close-and-writer-reuse",
+      "implementation": "cases.js:S201",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/S201",
+        "request_body": null
+      },
+      "classification": "ordinary-functional-stream-lifecycle",
+      "primary_candidate": true,
+      "independently_reviewed": false,
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "preconditions": [
+        "Exact guarded source and actual direct-celld build/deployment identity verified.",
+        "One active Worker.fetch; real built-in ReadableStream/WritableStream/AbortController.",
+        "Independent supervisor enforces all schedule deadlines and limits; no reference runtime substitution."
+      ],
+      "trace": [
+        "Pipe two fixed values with preventClose.",
+        "Witness fulfillment and lock release without sink close.",
+        "Acquire a new writer, write one value, close and release."
+      ],
+      "fixed_runtime_assertions": [
+        "t.equal(result.status, 'fulfilled', 'pipe fulfills at source EOF');",
+        "t.deep(writes, [11, 12], 'pipe transfers fixed prefix');",
+        "t.equal(closes, 0, 'preventClose omits sink close');",
+        "t.equal(aborts, 0, 'successful pipe does not abort sink');",
+        "t.unlocked(source, sink, 'pipe releases both locks');",
+        "t.deep(writes, [11, 12, 13], 'new writer reuses preserved sink');",
+        "t.equal(closes, 1, 'explicit final close occurs once');",
+        "t.unlocked(source, sink, 'reuse releases both locks');"
+      ],
+      "assertion_count": 8,
+      "oracle": "All literal assertions execute and pass; no pending promise or public lock remains after joined cleanup.",
+      "cleanup": "Open all finite gates even on assertion failure; signal-stop unfinished pipes; join original pipe and callback promises; release manual owners; prove readable/writable terminal states with closed promises; cancel/abort only still-open local resources; release probe owners. Owned supervisor teardown remains mandatory.",
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 539,
+          "line_end": 663
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 414,
+          "line_end": 454
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 291,
+          "line_end": 527
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 168,
+          "line_end": 197
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 10532,
+          "line_end": 10589
+        }
+      ],
+      "primary_contract_refs": [
+        "https://streams.spec.whatwg.org/#readable-stream-pipe-to"
+      ],
+      "distinctness": "S015 drains with default close; S024 transfers writer ownership on a remote writable. This joins pipe EOF suppression with independently proven sink usability.",
+      "source_predicted_gap": null,
+      "os_relevance": "Core OS supporting stream/cancellation primitive; preserved native-transform OS provenance provides context only. This is not a claim that OS callers set these flags, nor a new product service."
+    },
+    {
+      "id": "S202",
+      "intent": "Reuse sink after source error",
+      "mechanism": "prevent-abort-forward-error-isolation",
+      "implementation": "cases.js:S202",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/S202",
+        "request_body": null
+      },
+      "classification": "ordinary-functional-stream-lifecycle",
+      "primary_candidate": true,
+      "independently_reviewed": false,
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "preconditions": [
+        "Exact guarded source and actual direct-celld build/deployment identity verified.",
+        "One active Worker.fetch; real built-in ReadableStream/WritableStream/AbortController.",
+        "Independent supervisor enforces all schedule deadlines and limits; no reference runtime substitution."
+      ],
+      "trace": [
+        "Witness one sink callback.",
+        "Error the ordinary source controller with a specific Error.",
+        "Join rejected pipe, then independently write and close the preserved sink."
+      ],
+      "fixed_runtime_assertions": [
+        "t.equal(result.status, 'rejected', 'source error rejects pipe');",
+        "t.same(result.reason, reason, 'source error identity reaches pipe');",
+        "t.equal(aborts, 0, 'preventAbort suppresses sink abort');",
+        "t.unlocked(source, sink, 'errored pipe releases locks');",
+        "t.deep(writes, [21, 22], 'sink accepts later independent write');",
+        "t.equal(closes, 1, 'preserved sink closes once');",
+        "t.unlocked(source, sink, 'reuse has no public locks');"
+      ],
+      "assertion_count": 7,
+      "oracle": "All literal assertions execute and pass; no pending promise or public lock remains after joined cleanup.",
+      "cleanup": "Open all finite gates even on assertion failure; signal-stop unfinished pipes; join original pipe and callback promises; release manual owners; prove readable/writable terminal states with closed promises; cancel/abort only still-open local resources; release probe owners. Owned supervisor teardown remains mandatory.",
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 539,
+          "line_end": 663
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 414,
+          "line_end": 454
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 291,
+          "line_end": 527
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 168,
+          "line_end": 197
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 10532,
+          "line_end": 10589
+        }
+      ],
+      "primary_contract_refs": [
+        "https://streams.spec.whatwg.org/#readable-stream-pipe-to"
+      ],
+      "distinctness": "S006/S007 observe read errors and X006/X007/X020 propagate source failure into native transforms. This prevents forward abort and proves the surviving sink accepts new data.",
+      "source_predicted_gap": null,
+      "os_relevance": "Core OS supporting stream/cancellation primitive; preserved native-transform OS provenance provides context only. This is not a claim that OS callers set these flags, nor a new product service."
+    },
+    {
+      "id": "S203",
+      "intent": "Drain source after sink error",
+      "mechanism": "prevent-cancel-backward-error-isolation",
+      "implementation": "cases.js:S203",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/S203",
+        "request_body": null
+      },
+      "classification": "ordinary-functional-stream-lifecycle",
+      "primary_candidate": true,
+      "independently_reviewed": false,
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "preconditions": [
+        "Exact guarded source and actual direct-celld build/deployment identity verified.",
+        "One active Worker.fetch; real built-in ReadableStream/WritableStream/AbortController.",
+        "Independent supervisor enforces all schedule deadlines and limits; no reference runtime substitution."
+      ],
+      "trace": [
+        "Offer one fixed value to an ordinary throwing sink.",
+        "Join pipe rejection with preventCancel.",
+        "Enqueue a new source value only after pipe termination, close source, then read it to EOF."
+      ],
+      "fixed_runtime_assertions": [
+        "t.equal(result.status, 'rejected', 'sink error rejects pipe');",
+        "t.same(result.reason, reason, 'sink error identity reaches pipe');",
+        "t.equal(cancels, 0, 'preventCancel suppresses source cancellation');",
+        "t.deep(writes, [31], 'only offered prefix reaches failed sink');",
+        "t.unlocked(source, sink, 'failed pipe releases both locks');",
+        "t.deep(await t.drain(source), [32], 'source remains readable after failed pipe');",
+        "t.equal(cancels, 0, 'source completes naturally without cancellation');",
+        "t.unlocked(source, sink, 'manual drain releases source lock');"
+      ],
+      "assertion_count": 8,
+      "oracle": "All literal assertions execute and pass; no pending promise or public lock remains after joined cleanup.",
+      "cleanup": "Open all finite gates even on assertion failure; signal-stop unfinished pipes; join original pipe and callback promises; release manual owners; prove readable/writable terminal states with closed promises; cancel/abort only still-open local resources; release probe owners. Owned supervisor teardown remains mandatory.",
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 539,
+          "line_end": 663
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 414,
+          "line_end": 454
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 291,
+          "line_end": 527
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 168,
+          "line_end": 197
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 10532,
+          "line_end": 10589
+        }
+      ],
+      "primary_contract_refs": [
+        "https://streams.spec.whatwg.org/#readable-stream-pipe-to"
+      ],
+      "distinctness": "S016 requires default source cancellation. This suppresses cancellation and demonstrates new post-pipe data remains readable, without relying on implementation read-ahead.",
+      "source_predicted_gap": null,
+      "os_relevance": "Core OS supporting stream/cancellation primitive; preserved native-transform OS provenance provides context only. This is not a claim that OS callers set these flags, nor a new product service."
+    },
+    {
+      "id": "S204",
+      "intent": "Reuse both resources after signal shutdown",
+      "mechanism": "prevent-both-inflight-write-shutdown",
+      "implementation": "cases.js:S204",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/S204",
+        "request_body": null
+      },
+      "classification": "ordinary-functional-stream-lifecycle",
+      "primary_candidate": true,
+      "independently_reviewed": false,
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "preconditions": [
+        "Exact guarded source and actual direct-celld build/deployment identity verified.",
+        "One active Worker.fetch; real built-in ReadableStream/WritableStream/AbortController.",
+        "Independent supervisor enforces all schedule deadlines and limits; no reference runtime substitution."
+      ],
+      "trace": [
+        "Hold a single sink write with an explicit gate.",
+        "Abort with preventAbort and preventCancel, and witness pending pipe.",
+        "Release write, join rejection, independently drain source and write/close sink."
+      ],
+      "fixed_runtime_assertions": [
+        "t.equal(pipe.status, 'pending', 'signal shutdown waits for held write');",
+        "t.equal(result.status, 'rejected', 'signal stops pipe');",
+        "t.same(result.reason, reason, 'signal identity survives prevented cleanup');",
+        "t.deep([aborts, cancels, closes], [0, 0, 0], 'both resources preserved at pipe settlement');",
+        "t.unlocked(source, sink, 'aborted pipe releases both locks');",
+        "t.deep(await t.drain(source), [42], 'source is independently drainable');",
+        "t.deep(writes, [41, 43], 'sink is independently reusable');",
+        "t.deep([aborts, cancels, closes], [0, 0, 1], 'only explicit sink close terminates preserved resources');",
+        "t.unlocked(source, sink, 'reused resources end unlocked');"
+      ],
+      "assertion_count": 9,
+      "oracle": "All literal assertions execute and pass; no pending promise or public lock remains after joined cleanup.",
+      "cleanup": "Open all finite gates even on assertion failure; signal-stop unfinished pipes; join original pipe and callback promises; release manual owners; prove readable/writable terminal states with closed promises; cancel/abort only still-open local resources; release probe owners. Owned supervisor teardown remains mandatory.",
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 539,
+          "line_end": 663
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 414,
+          "line_end": 454
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 291,
+          "line_end": 527
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 168,
+          "line_end": 197
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 10532,
+          "line_end": 10589
+        }
+      ],
+      "primary_contract_refs": [
+        "https://streams.spec.whatwg.org/#readable-stream-pipe-to"
+      ],
+      "distinctness": "X013 fans an active signal into native transform/source shutdown. This preserves both ordinary resources after abort and proves both remain usable; not a flag permutation credited without a new lifecycle.",
+      "source_predicted_gap": null,
+      "os_relevance": "Core OS supporting stream/cancellation primitive; preserved native-transform OS provenance provides context only. This is not a claim that OS callers set these flags, nor a new product service."
+    },
+    {
+      "id": "S205",
+      "intent": "Join write and both signal cleanup actions",
+      "mechanism": "inflight-write-then-async-abort-cancel-join",
+      "implementation": "cases.js:S205",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/S205",
+        "request_body": null
+      },
+      "classification": "ordinary-functional-stream-lifecycle",
+      "primary_candidate": true,
+      "independently_reviewed": false,
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "preconditions": [
+        "Exact guarded source and actual direct-celld build/deployment identity verified.",
+        "One active Worker.fetch; real built-in ReadableStream/WritableStream/AbortController.",
+        "Independent supervisor enforces all schedule deadlines and limits; no reference runtime substitution."
+      ],
+      "trace": [
+        "Hold a single sink write and abort the active pipe.",
+        "Witness no cleanup entry before releasing that write.",
+        "Hold both abort and cancel callbacks, release abort first, and require pipe remain pending until cancel also finishes."
+      ],
+      "fixed_runtime_assertions": [
+        "t.deep(events, ['write-enter:51'], 'cleanup cannot overtake held write');",
+        "t.equal(pipe.status, 'pending', 'pipe stays pending during held write');",
+        "t.before(events, 'write-done', 'abort-enter', 'write settles before sink abort');",
+        "t.before(events, 'write-done', 'cancel-enter', 'write settles before source cancel');",
+        "t.same(abortReason, reason, 'sink receives original signal reason');",
+        "t.same(cancelReason, reason, 'source receives original signal reason');",
+        "t.locked(source, sink, 'both locks retained during cleanup actions');",
+        "t.equal(pipe.status, 'pending', 'source cancel completion is still required');",
+        "t.equal(result.status, 'rejected', 'completed signal shutdown rejects pipe');",
+        "t.same(result.reason, reason, 'successful cleanup preserves signal reason');",
+        "t.deep([aborts, cancels], [1, 1], 'each cleanup action runs exactly once');",
+        "t.equal(events.includes('abort-done') && events.includes('cancel-done'), true, 'both asynchronous cleanup actions joined');",
+        "t.unlocked(source, sink, 'cleanup completion releases both locks');"
+      ],
+      "assertion_count": 13,
+      "oracle": "All literal assertions execute and pass; no pending promise or public lock remains after joined cleanup.",
+      "cleanup": "Open all finite gates even on assertion failure; signal-stop unfinished pipes; join original pipe and callback promises; release manual owners; prove readable/writable terminal states with closed promises; cancel/abort only still-open local resources; release probe owners. Owned supervisor teardown remains mandatory.",
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 539,
+          "line_end": 663
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 414,
+          "line_end": 454
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 291,
+          "line_end": 527
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 168,
+          "line_end": 197
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 10532,
+          "line_end": 10589
+        }
+      ],
+      "primary_contract_refs": [
+        "https://streams.spec.whatwg.org/#readable-stream-pipe-to"
+      ],
+      "distinctness": "X013 has signal fanout but no independently held write, sink-abort acknowledgment and source-cancel acknowledgment. S020 covers queued writer close, not pipe shutdown fanout.",
+      "source_predicted_gap": null,
+      "os_relevance": "Core OS supporting stream/cancellation primitive; preserved native-transform OS provenance provides context only. This is not a claim that OS callers set these flags, nor a new product service."
+    },
+    {
+      "id": "S206",
+      "intent": "Hold pipe completion through sink close",
+      "mechanism": "eof-async-close-join-and-lock-lifetime",
+      "implementation": "cases.js:S206",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/S206",
+        "request_body": null
+      },
+      "classification": "ordinary-functional-stream-lifecycle",
+      "primary_candidate": true,
+      "independently_reviewed": false,
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "preconditions": [
+        "Exact guarded source and actual direct-celld build/deployment identity verified.",
+        "One active Worker.fetch; real built-in ReadableStream/WritableStream/AbortController.",
+        "Independent supervisor enforces all schedule deadlines and limits; no reference runtime substitution."
+      ],
+      "trace": [
+        "Pipe one value and close source.",
+        "Hold underlying sink close and witness pending pipe with both locks.",
+        "Acknowledge sink close and join fulfilled pipe with released locks."
+      ],
+      "fixed_runtime_assertions": [
+        "t.deep(writes, [61], 'EOF follows completed data write');",
+        "t.equal(pipe.status, 'pending', 'EOF pipe waits for sink close acknowledgment');",
+        "t.locked(source, sink, 'locks remain while sink close is held');",
+        "t.equal(result.status, 'fulfilled', 'sink close acknowledgment fulfills pipe');",
+        "t.equal(closes, 1, 'sink close called exactly once');",
+        "t.unlocked(source, sink, 'fulfilled pipe releases both locks');"
+      ],
+      "assertion_count": 6,
+      "oracle": "All literal assertions execute and pass; no pending promise or public lock remains after joined cleanup.",
+      "cleanup": "Open all finite gates even on assertion failure; signal-stop unfinished pipes; join original pipe and callback promises; release manual owners; prove readable/writable terminal states with closed promises; cancel/abort only still-open local resources; release probe owners. Owned supervisor teardown remains mandatory.",
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 539,
+          "line_end": 663
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 414,
+          "line_end": 454
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 291,
+          "line_end": 527
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 168,
+          "line_end": 197
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 10532,
+          "line_end": 10589
+        }
+      ],
+      "primary_contract_refs": [
+        "https://streams.spec.whatwg.org/#readable-stream-pipe-to"
+      ],
+      "distinctness": "S015 covers transfer; S019/S020/S023 cover direct writers. No prior design holds ordinary pipeTo close acknowledgment and asserts the pipe promise and both lock lifetimes.",
+      "source_predicted_gap": null,
+      "os_relevance": "Core OS supporting stream/cancellation primitive; preserved native-transform OS provenance provides context only. This is not a claim that OS callers set these flags, nor a new product service."
+    },
+    {
+      "id": "S207",
+      "intent": "Preserve zero pre-abort reason without transfer",
+      "mechanism": "pre-aborted-falsy-reason-identity",
+      "implementation": "cases.js:S207",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/S207",
+        "request_body": null
+      },
+      "classification": "ordinary-functional-stream-lifecycle",
+      "primary_candidate": true,
+      "independently_reviewed": false,
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "preconditions": [
+        "Exact guarded source and actual direct-celld build/deployment identity verified.",
+        "One active Worker.fetch; real built-in ReadableStream/WritableStream/AbortController.",
+        "Independent supervisor enforces all schedule deadlines and limits; no reference runtime substitution."
+      ],
+      "trace": [
+        "Abort the real controller with numeric zero.",
+        "Pipe one queued source value to an unwritten sink.",
+        "Require exact zero reason at pipe rejection and both cleanup callbacks, with zero writes."
+      ],
+      "fixed_runtime_assertions": [
+        "t.equal(result.status, 'rejected', 'pre-aborted pipe rejects');",
+        "t.same(result.reason, 0, 'falsy signal reason is preserved exactly');",
+        "t.same(cancelReason, 0, 'source cancellation receives falsy reason');",
+        "t.same(abortReason, 0, 'sink abort receives falsy reason');",
+        "t.deep([writes, cancels, aborts], [0, 1, 1], 'pre-abort transfers nothing and cleans both once');",
+        "t.unlocked(source, sink, 'pre-abort leaves no pipe locks');"
+      ],
+      "assertion_count": 6,
+      "oracle": "All literal assertions execute and pass; no pending promise or public lock remains after joined cleanup.",
+      "cleanup": "Open all finite gates even on assertion failure; signal-stop unfinished pipes; join original pipe and callback promises; release manual owners; prove readable/writable terminal states with closed promises; cancel/abort only still-open local resources; release probe owners. Owned supervisor teardown remains mandatory.",
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 539,
+          "line_end": 663
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 414,
+          "line_end": 454
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 291,
+          "line_end": 527
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 168,
+          "line_end": 197
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 10532,
+          "line_end": 10589
+        }
+      ],
+      "primary_contract_refs": [
+        "https://streams.spec.whatwg.org/#readable-stream-pipe-to"
+      ],
+      "distinctness": "H017 concerns pre-dispatch HTTP abort; X013 is an already-running native pipe. This exercises the ordinary pipe pre-abort reason branch with a valid falsy reason, not malformed input.",
+      "source_predicted_gap": {
+        "classification": "EXPECTED_FAILURE_CANDIDATE",
+        "source_evidence": "streams.js:568-573 substitutes DOMException via signal.reason || fallback; harness.js:10584-10588 accepts numeric zero.",
+        "intended_oracle": "Pipe rejection and cleanup reasons equal numeric zero exactly."
+      },
+      "os_relevance": "Core OS supporting stream/cancellation primitive; preserved native-transform OS provenance provides context only. This is not a claim that OS callers set these flags, nor a new product service."
+    },
+    {
+      "id": "S208",
+      "intent": "Join pre-aborted asynchronous cleanup",
+      "mechanism": "pre-aborted-both-actions-join-before-release",
+      "implementation": "cases.js:S208",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/S208",
+        "request_body": null
+      },
+      "classification": "ordinary-functional-stream-lifecycle",
+      "primary_candidate": true,
+      "independently_reviewed": false,
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "preconditions": [
+        "Exact guarded source and actual direct-celld build/deployment identity verified.",
+        "One active Worker.fetch; real built-in ReadableStream/WritableStream/AbortController.",
+        "Independent supervisor enforces all schedule deadlines and limits; no reference runtime substitution."
+      ],
+      "trace": [
+        "Use a pre-aborted real signal and queue one value.",
+        "Hold both source cancel and sink abort callbacks.",
+        "Release cancel first; require pipe and locks remain pending until sink abort is released."
+      ],
+      "fixed_runtime_assertions": [
+        "t.equal(pipe.status, 'pending', 'pre-abort waits for both cleanup actions');",
+        "t.locked(source, sink, 'pre-abort keeps locks until cleanup joins');",
+        "t.equal(pipe.status, 'pending', 'sink abort completion is still required');",
+        "t.equal(result.status, 'rejected', 'pre-abort rejects after actions finish');",
+        "t.same(result.reason, reason, 'joined cleanup preserves signal error');",
+        "t.deep([writes, aborts, cancels, abortDone, cancelDone], [0, 1, 1, true, true], 'no transfer and both cleanup completions witnessed');",
+        "t.unlocked(source, sink, 'joined pre-abort releases locks');"
+      ],
+      "assertion_count": 7,
+      "oracle": "All literal assertions execute and pass; no pending promise or public lock remains after joined cleanup.",
+      "cleanup": "Open all finite gates even on assertion failure; signal-stop unfinished pipes; join original pipe and callback promises; release manual owners; prove readable/writable terminal states with closed promises; cancel/abort only still-open local resources; release probe owners. Owned supervisor teardown remains mandatory.",
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 539,
+          "line_end": 663
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 414,
+          "line_end": 454
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 291,
+          "line_end": 527
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 168,
+          "line_end": 197
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 10532,
+          "line_end": 10589
+        }
+      ],
+      "primary_contract_refs": [
+        "https://streams.spec.whatwg.org/#readable-stream-pipe-to"
+      ],
+      "distinctness": "S207 covers zero identity, while this covers early-branch asynchronous join and ownership duration. S205 reaches shutdown after a held write; pre-abort is a different implementation branch.",
+      "source_predicted_gap": {
+        "classification": "EXPECTED_FAILURE_CANDIDATE",
+        "source_evidence": "streams.js:568-573 invokes cancellation and abort without joining their returned promises and returns an immediate rejection before acquiring pipe owners.",
+        "intended_oracle": "Pipe and locks remain live until both asynchronous shutdown callbacks complete; no data transfer."
+      },
+      "os_relevance": "Core OS supporting stream/cancellation primitive; preserved native-transform OS provenance provides context only. This is not a claim that OS callers set these flags, nor a new product service."
+    },
+    {
+      "id": "S209",
+      "intent": "Surface cancellation failure after signal abort",
+      "mechanism": "shutdown-action-rejection-precedence",
+      "implementation": "cases.js:S209",
+      "entrypoint": {
+        "method": "GET",
+        "path": "/case/S209",
+        "request_body": null
+      },
+      "classification": "ordinary-functional-stream-lifecycle",
+      "primary_candidate": true,
+      "independently_reviewed": false,
+      "status": "NOT_RUN",
+      "runtime_status": "UNRUN",
+      "actual_runtime_executions": 0,
+      "preconditions": [
+        "Exact guarded source and actual direct-celld build/deployment identity verified.",
+        "One active Worker.fetch; real built-in ReadableStream/WritableStream/AbortController.",
+        "Independent supervisor enforces all schedule deadlines and limits; no reference runtime substitution."
+      ],
+      "trace": [
+        "Accept one fixed value, then signal abort with preventAbort.",
+        "Hold source cancel callback and then reject it with a separate application Error.",
+        "Require the cancellation Error to replace the signal Error; independently write and close surviving sink."
+      ],
+      "fixed_runtime_assertions": [
+        "t.equal(pipe.status, 'pending', 'pipe waits for rejecting cancellation callback');",
+        "t.equal(result.status, 'rejected', 'failed cancellation rejects pipe');",
+        "t.same(result.reason, cancelReason, 'cancel failure supersedes signal reason');",
+        "t.same(receivedReason, signalReason, 'cancel callback still receives original signal reason');",
+        "t.deep([aborts, cancels], [0, 1], 'preventAbort isolates one cancellation action');",
+        "t.unlocked(source, sink, 'cancellation rejection releases locks');",
+        "t.deep(writes, [91, 92], 'sink survives source cancellation failure');",
+        "t.equal(closes, 1, 'surviving sink closes explicitly once');",
+        "t.unlocked(source, sink, 'final cleanup leaves both unlocked');"
+      ],
+      "assertion_count": 9,
+      "oracle": "All literal assertions execute and pass; no pending promise or public lock remains after joined cleanup.",
+      "cleanup": "Open all finite gates even on assertion failure; signal-stop unfinished pipes; join original pipe and callback promises; release manual owners; prove readable/writable terminal states with closed promises; cancel/abort only still-open local resources; release probe owners. Owned supervisor teardown remains mandatory.",
+      "runtime_source_refs": [
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 539,
+          "line_end": 663
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/streams.js",
+          "line_start": 414,
+          "line_end": 454
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 291,
+          "line_end": 527
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+          "line_start": 168,
+          "line_end": 197
+        },
+        {
+          "path": "celld-os-project/celld/crates/celld/js/harness.js",
+          "line_start": 10532,
+          "line_end": 10589
+        }
+      ],
+      "primary_contract_refs": [
+        "https://streams.spec.whatwg.org/#readable-stream-pipe-to"
+      ],
+      "distinctness": "Neither S016 nor X013 tests shutdown action failure precedence. preventAbort deliberately isolates one failing action, so no simultaneous-rejection ordering is assumed.",
+      "source_predicted_gap": {
+        "classification": "EXPECTED_FAILURE_CANDIDATE",
+        "source_evidence": "streams.js:617-619 catches and discards source cancellation rejection; 620-621 finishes with original signal reason.",
+        "intended_oracle": "The source cancel callback rejection replaces the initiating signal reason."
+      },
+      "os_relevance": "Core OS supporting stream/cancellation primitive; preserved native-transform OS provenance provides context only. This is not a claim that OS callers set these flags, nor a new product service."
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "direct-r2-semantics-v1",
+  "main": "fixture.js",
+  "compatibility_date": "2026-09-04",
+  "r2_buckets": [
+    { "binding": "A", "bucket_name": "owned-test-r2-semantics-a" },
+    { "binding": "B", "bucket_name": "owned-test-r2-semantics-b" }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "reviewed_at_utc": "2026-10-09T07:12:49.507947+00:00",
+  "reviewer": "review_celld_test_additions",
+  "wave": "identity-admission-semantics",
+  "verdict": "ACCEPTED_PRIMARY_STATIC",
+  "counts": {
+    "authored": 5,
+    "accepted_primary_static": 5,
+    "accepted_characterization": 0,
+    "case_static_assertion_call_sites": 30,
+    "shared_fixture_assertion_call_sites": 2,
+    "static_predicted_failure_candidates": 1,
+    "runtime_executions": 0,
+    "runtime_passes": 0
+  },
+  "scope": "Independent complete handwritten case/fixture, public contract, source and semantic overlap review. Read/hash/JSON/Python AST and node --check only; no case, SQL, reference implementation, SUT, build or download execution.",
+  "primary_contract_references": [
+    "https://developers.cloudflare.com/durable-objects/api/id/",
+    "https://developers.cloudflare.com/durable-objects/api/stub/#name",
+    "https://developers.cloudflare.com/durable-objects/api/state/#blockconcurrencywhile",
+    "https://developers.cloudflare.com/durable-objects/api/namespace/",
+    "celld-os-project/celld/docs/services/durable-objects.md"
+  ],
+  "contract_findings": [
+    {
+      "case": "A201",
+      "finding": "Original incidental assertion required an already activated object to retain its name after parsed-ID access. Official per-access wording does not clearly settle reuse of an existing state.id object, while celld retains activation metadata.",
+      "resolution": "Removed this unsupported incidental assumption from the primary continuity oracle; ambiguity and no name-retention compatibility claim are explicit. Zero separate metadata-case credit."
+    },
+    {
+      "case": "A203",
+      "finding": "The documented 1024-byte server ctx.id.name cutoff does not authorize truncating client stub.name. Source sets client name from truncated dispatchName at harness.js 5702-5719.",
+      "resolution": "Correct full client names retained as intended oracle; source-predicted compatibility failure remains UNRUN. Server-name cutoff and exact full-name state routing are checked first."
+    }
+  ],
+  "duplicate_review": "Compared baseline 575 and three frozen tranches (180 designs). Valid idFromString state continuity is absent from namespace/class/script isolation and facet identity tests. Random-ID mint/reopen is one separate creation contract, not a larger randomness matrix. One compound Unicode byte-boundary case covers client/server metadata and full routing. Constructor readiness and already-live per-request blocking have distinct dispatch paths; T001/T031 transaction queue scaffolding and distributed RPC reentry are not repeated as new mechanisms. No template-generated cases or numeric variants.",
+  "execution_contract": {
+    "fixture": "Four explicitly bound/migrated classes; each case uses at most three activated real roots and actual stub.fetch calls. Lazy unused Control stub in A205 peer creates no fourth activation.",
+    "case_endpoints": [
+      "GET /case/A201",
+      "GET /case/A202",
+      "GET /case/A203",
+      "GET /case/A204",
+      "GET /case/A205"
+    ],
+    "public_schedule": "A204/A205 observe a real target-to-Control hold, start the target request, complete an independent peer operation, snapshot zero target entries, explicitly release and join actual target handlers. A205 peer has the same class.",
+    "observation_limit": "Pending client promises and independent Control entry logs are public observations; the fixture does not claim native queue-arrival instrumentation, distributed placement or fairness.",
+    "fallback": "One 2500ms fuse resolves normally; any fallback makes the schedule BLOCKED and cannot satisfy runtime credit. No runtime timeout/reset path is intentionally invoked.",
+    "max_created_roots": 3,
+    "max_supervisor_fetches": 100,
+    "max_total_fetches": 110,
+    "max_concurrent_supervisor_fetches": 3,
+    "max_control_polls": 60,
+    "max_KV_keys_per_root": 1,
+    "max_name_utf8_bytes": 1025,
+    "max_response_bytes": 65536,
+    "trace_deadline_ms": 6000,
+    "cleanup_deadline_ms": 3500,
+    "outer_HTTP_seconds": 12,
+    "owned_process_case_seconds": 20,
+    "whole_wave_seconds": 120,
+    "max_RSS_bytes": 1073741824,
+    "cleanup": "Only after trace settlement: release owned Control, join every pending request, clear tracked root storage and verify empty KV, Control last with zero waiters/timers. Unsettled trace forbids racing data cleanup. Independent owned process/store reap remains mandatory.",
+    "runtime_status": "UNRUN"
+  },
+  "static_checks": {
+    "source_pins_verified": 23,
+    "source_reference_ranges_validated": 17,
+    "concurrent_wave_pins_verified": 4,
+    "case_manifest_schedule_bijection": 5,
+    "SHA256SUMS_entries": 11,
+    "JavaScript_syntax_files": 2,
+    "Python_AST_only_files": 2,
+    "author_validator_executed": false,
+    "no_prior_case_ID_collisions": true
+  },
+  "case_verdicts": [
+    {
+      "id": "A201",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "reason": "Exact durable state continuity across named/getByName/valid parsed address routes, including writes in both directions.",
+      "runtime_status": "UNRUN"
+    },
+    {
+      "id": "A202",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "reason": "Real unique-ID creation and serialized reopening of two independent nameless object states; no entropy certification.",
+      "runtime_status": "UNRUN"
+    },
+    {
+      "id": "A203",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "reason": "Compound UTF-8 server-name cutoff, full-name routing independence and complete client stub-name contract.",
+      "predicted_status": "SOURCE_PREDICTED_COMPATIBILITY_FAILURE",
+      "runtime_status": "UNRUN"
+    },
+    {
+      "id": "A204",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "reason": "Successful constructor readiness gates first and subsequent real requests, with independent root progress and post-release entry witnesses.",
+      "runtime_status": "UNRUN"
+    },
+    {
+      "id": "A205",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "reason": "Successful already-live request block protects terminal state while another root of the same class progresses.",
+      "runtime_status": "UNRUN"
+    }
+  ],
+  "OS_relevance": "Supporting public DO component coverage based on retained OS acceptance/namespace evidence. Specific OS use of parsed/random IDs, long names or these initialization patterns is unverified; original OS checkout absent. No OS end-to-end result or separate eligibility count.",
+  "authored_artifact_sha256": {
+    "README.md": "28d499c20860fcc24c596cd98a3722c03834c7e62b149cb40e9ea1a4dc28ac97",
+    "SHA256SUMS": "1a3c57a2599c66599a9265561d1b7716752ba4ac033c788340243158d26cb8c5",
+    "author_manifest.py": "cb0876ebef169104b822e6d46cd0d14aef6482ec17aff175f2ff49ebe637a8ab",
+    "cases.js": "7845a408e306d0e2d2b35b94de5b6857e2874220a1623edb23b7faf7107a6ba4",
+    "fixture.js": "eeb4d839f7c818b31988e205b843f6584c6cfc066b4723dcb8382d7ca8bf5e33",
+    "manifest.json": "e5eae8135cebe5822551cd30d5fad64d7273726f60d70a8899cd014f3500951e",
+    "overlap-audit.json": "3449d3f72b169da3637198ec95ac8b75700095227876749d1eae7435b2baf2fa",
+    "schedule.json": "1bea9576442c175db39a73d0c041d845fa3536a8fc18a29ccf887ccc5f1a330d",
+    "source-pins.json": "d6cfa6f0f05c36ec335ee32c3951529f5b7c2561a2ae52ea42071f47b80761b2",
+    "static-validation.json": "3bdc7e95d775f27e990629411a8203ffcfc9bc516f23b770d0ebf7e1b43bd446",
+    "validate_static.py": "c840c46318c04ee3d6bf6f51d279924a5841dc49de5cdc13b5f41a0693d34e41",
+    "wrangler.jsonc": "de1895f760ca587c0dc4062fbc5fc9a22676190b0268bc889a5c2d0edd2f39d1"
+  },
+  "combined_census_after_acceptance": {
+    "authored": 760,
+    "primary_static": 645,
+    "characterization": 115,
+    "target_primary": 2000,
+    "remaining_primary": 1355,
+    "all_added_cases_UNRUN": true
+  }
+}

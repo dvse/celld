@@ -1,0 +1,54 @@
+{
+  "id": "logic/lease-acquisition/conflict-consumes-newer-released-epoch-and-rejects-late-old-cas",
+  "layer": "logic",
+  "behaviour": "lease-acquisition",
+  "title": "Conflict consumes newer released epoch and rejects late old CAS",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic",
+      "legacy_id": "corpus/routing-acquisition-logic/N004"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+      "sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/routing-acquisition-logic/N004"
+  ],
+  "adapter": "native",
+  "corpus_id": "N004",
+  "corpus_wave": "routing-acquisition-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/lease-acquisition/fixtures/decision-cases/tests/routing_acquisition.rs",
+  "source_sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06",
+  "test_filter": "n004_conflict_restarts_from_new_released_epoch",
+  "contract": {
+    "intent": "Conflict consumes newer released epoch and rejects late old CAS",
+    "preconditions": [
+      "Fresh test-owned State; only frozen production celld_logic::on_event mutates it.",
+      "Empty State; a/1 reads released epoch2 tagged r2.",
+      "All completion operation IDs and timers come from the exact emitted effects; late IDs are previously issued IDs, never fabricated authority.",
+      "All input storage/lease/proof replies are synthetic facts. No executor, network, runtime, or fleet service is simulated as empirical evidence.",
+      "Static source/pin check and independent review required; compiler, test and runtime have not been launched."
+    ],
+    "trace": [
+      "Capture CAS epoch3",
+      "Reject CAS and capture reread",
+      "Return released epoch7 tagged r7; capture replacement CAS8",
+      "Deliver stale Applied for retired CAS3",
+      "Assert replacement remains exact op/guard r7",
+      "Apply CAS8 and publish; finish1"
+    ],
+    "oracle": "Retired CAS cannot restore epoch3 or overwrite new guard; next writer is8",
+    "cleanup": "Finish every locally completed request and cancel each remaining ownership-only waiter as shown. H::done checks no pending requests, active cells, activation/capacity queues, activation/eviction/release/adoption permits, or nonterminal phases. Drop isolated in-memory State; no external resources created. Stored timer descriptors are never launched.",
+    "implementation": "tests/routing_acquisition.rs:n004_conflict_restarts_from_new_released_epoch"
+  },
+  "selector": "N004"
+}

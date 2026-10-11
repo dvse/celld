@@ -1,0 +1,49 @@
+{
+  "adapter": "topology",
+  "behaviour": "dynamic-workers-and-tails",
+  "contract": {
+    "cleanup": "Case-specific finally disposes restored handles and drains finite cancellation hold where used; common cleanup releases code gates, aborts every owned facet, disposes entrypoints and worker handles, removes only tracked fixture KV rows. Parent tears down disposable fleet/storage.",
+    "implementation": "cases.js:loaderCases.L006",
+    "intent": "Recover a missing module dependency with a complete versioned graph",
+    "oracle": "v1 rejects; v2 returns dependency-restored exactly",
+    "preconditions": [
+      "Importer references absent dependency.js in v1",
+      "Disposable private fixture with fresh supervisor name, live LOADER, facets, restore flag, and positive Loader control",
+      "External reviewed adapter has exclusive run slot and enforces wall/memory/PID/load limits"
+    ],
+    "trace": [
+      "Call v1 verify and record rejection",
+      "Create v2 with explicit dependency.js module",
+      "Call verify"
+    ]
+  },
+  "corpus_id": "L006",
+  "corpus_wave": "loader-props",
+  "fixture": "tests/conformance/dynamic-workers-and-tails/fixtures/loading-and-environment",
+  "id": "conformance/dynamic-workers-and-tails/recover-a-missing-module-dependency-with-a-complete-versioned-graph",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/loader-props/L006"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/loader-props/L006",
+      "source": "guarded-source-archive/celld-os-stress/waves/loader-props"
+    },
+    {
+      "sha256": "6bf5d0056b5a83052017c38c9141c1da4873c9969fb699ede26b93c5ff0613d9",
+      "source": "guarded-source-archive/celld-os-stress/waves/loader-props/index.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "L006",
+  "source": "tests/conformance/dynamic-workers-and-tails/fixtures/loading-and-environment/index.js",
+  "source_sha256": "6bf5d0056b5a83052017c38c9141c1da4873c9969fb699ede26b93c5ff0613d9",
+  "title": "Recover a missing module dependency with a complete versioned graph"
+}

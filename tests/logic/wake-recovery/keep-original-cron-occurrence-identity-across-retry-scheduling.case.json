@@ -1,0 +1,53 @@
+{
+  "id": "logic/wake-recovery/keep-original-cron-occurrence-identity-across-retry-scheduling",
+  "layer": "logic",
+  "behaviour": "wake-recovery",
+  "title": "Keep original cron occurrence identity across retry scheduling",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic",
+      "legacy_id": "corpus/wake-recovery-logic/K014"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+      "sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/wake-recovery-logic/K014"
+  ],
+  "adapter": "native",
+  "corpus_id": "K014",
+  "corpus_wave": "wake-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/wake-recovery/fixtures/decision-cases/tests/wake_recovery.rs",
+  "source_sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86",
+  "test_filter": "k014_cron_retry_owes_original_occurrence_and_success_resumes_schedule",
+  "contract": {
+    "intent": "Keep original cron occurrence identity across retry scheduling",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Plan initial arm at0.",
+      "Plan first failed occurrence0 to retry3000.",
+      "Plan retry still for occurrence0 to7000.",
+      "Plan successful retry to next hourly3600000 and verify minute1 is not the hourly occurrence."
+    ],
+    "oracle": [
+      "Matching indices stay tied to fired occurrence0; retry versus occurrence flag is exact.",
+      "Success resumes the next hourly occurrence."
+    ],
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k014_cron_retry_owes_original_occurrence_and_success_resumes_schedule"
+  },
+  "selector": "K014"
+}

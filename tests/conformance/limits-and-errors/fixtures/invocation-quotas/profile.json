@@ -1,0 +1,10 @@
+{
+  "id": "bounded-resource-frozen-v1",
+  "compatibility_date": "2026-09-04",
+  "binary_sha256": "62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e",
+  "runtime_env": {"CELLD_MAX_DYNAMIC_WORKER_CODE_BYTES": "8192", "CELLD_TOKIO_THREADS": "2"},
+  "limits": {"case_wall_seconds": 30, "memory_mib_per_guest": 1024, "pids_per_guest": 128, "vcpus_per_guest": 2, "trace_rpc_attempts_max": 16, "logical_payload_bytes_max": 33554432, "loaded_workers_max": 4, "live_foreground_requests_max": 4},
+  "resource_meaning": "32MiB bounds fixture-controlled cumulative payload/copy allowance, not total process RSS. External disposable guest memory/PID/wall enforcement is mandatory and separately reviewed. Sixteen counts all trace attempted invocation RPCs including Audit-to-root hops; Loader handles, setup and cleanup are separately bounded.",
+  "placement": "One owned disposable native celld runtime is sufficient. Dynamic isolates and native RPC are exercised; cross-process, cross-VM and OS end-to-end proof is not claimed.",
+  "execution": "NOT_RUN; parent run-slot and exact source/profile independent review required. No guest or workload launched by authoring."
+}

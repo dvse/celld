@@ -1,0 +1,33 @@
+{
+  "adapter": "example",
+  "behaviour": "dynamic-workers-and-tails",
+  "fixture": "tests/conformance/dynamic-workers-and-tails/fixtures/module-lockdown",
+  "id": "conformance/dynamic-workers-and-tails/island-lockdown",
+  "layer": "conformance",
+  "legacy_ids": [
+    "hyperbob/island-lockdown"
+  ],
+  "origins": [
+    {
+      "legacy_id": "hyperbob/island-lockdown",
+      "source": "celld@9c0fca5/tests-hyperbob/island-lockdown"
+    },
+    {
+      "sha256": "33e118702f95380b82838a79101f54af8410dfd4a013455bc6c605b20df6da60",
+      "source": "celld@9c0fca5/tests-hyperbob/island-lockdown/wrangler.json"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/?v=suite"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/dynamic-workers-and-tails/fixtures/module-lockdown/wrangler.json",
+  "source_sha256": "33e118702f95380b82838a79101f54af8410dfd4a013455bc6c605b20df6da60",
+  "title": "island lockdown"
+}

@@ -1,0 +1,30 @@
+{
+  "id": "conformance/rpc/server-return-thenable-assimilates-before-result-serialization",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "Server return thenable assimilates before result serialization",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/fixture",
+      "legacy_id": "base/R023"
+    }
+  ],
+  "corpus_wave": "base",
+  "corpus_id": "R023",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "R023",
+    "intent": "Server return thenable assimilates before result serialization",
+    "preconditions": "Peer returns ordinary thenable resolving plain data",
+    "trace": [
+      "invoke thenable-return method",
+      "await reply",
+      "compare value"
+    ],
+    "stress": "thenable promise assimilation at RPC return boundary",
+    "oracle": "plain value assimilated arrives",
+    "cleanup": "request completion",
+    "gate": "characterization"
+  }
+}

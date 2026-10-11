@@ -1,0 +1,60 @@
+{
+  "id": "logic/lease-acquisition/cross-cell-lease-cache-invalidation-has-explicit-route-scope",
+  "layer": "logic",
+  "behaviour": "lease-acquisition",
+  "title": "Cross-cell lease cache invalidation has explicit route scope",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic",
+      "legacy_id": "routing-acquisition-logic/N023"
+    }
+  ],
+  "corpus_wave": "routing-acquisition-logic",
+  "corpus_id": "N023",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "N023",
+    "intent": "Cross-cell lease cache invalidation has explicit route scope",
+    "failure_hypothesis": "Nonpromoting characterization: a invalidation clears shared lease but does not retroactively rewrite b would be violated by the interleaving.",
+    "preconditions": [
+      "Fresh test-owned State; only frozen production celld_logic::on_event mutates it.",
+      "Empty State; residency1, activations2; a resolves peer epoch3 generation1 address.",
+      "All completion operation IDs and timers come from the exact emitted effects; late IDs are previously issued IDs, never fabricated authority.",
+      "All input storage/lease/proof replies are synthetic facts. No executor, network, runtime, or fleet service is simulated as empirical evidence.",
+      "Static source/pin check and independent review required; compiler, test and runtime have not been launched."
+    ],
+    "initial_state": "Empty State; residency1, activations2; a resolves peer epoch3 generation1 address.",
+    "trace": [
+      "b/2 reads same peer owner epoch8 and reuses node lease without ReadNodeLease",
+      "Invalidate a peer/3",
+      "c/3 reads same peer epoch12 and requires new lease read",
+      "Return generation2 at new address for c",
+      "Request b/4 reuses still-live cached b route at old address",
+      "Assert exact per-cell routes"
+    ],
+    "stress": "Shared node-lease cache versus already materialized per-cell route cache; <=120 events, <=3 cells in any schedule, <=3 activation permits; no size/seed matrix.",
+    "oracle": "Nonpromoting characterization: a invalidation clears shared lease but does not retroactively rewrite b",
+    "safety_oracle": "Nonpromoting characterization: a invalidation clears shared lease but does not retroactively rewrite b",
+    "liveness_oracle": "c uses new address; b retains old route until its own invalidation/expiry; all requests terminate",
+    "terminal_witness": "c uses new address; b retains old route until its own invalidation/expiry; all requests terminate",
+    "cleanup": "Finish every locally completed request and cancel each remaining ownership-only waiter as shown. H::done checks no pending requests, active cells, activation/capacity queues, activation/eviction/release/adoption permits, or nonterminal phases. Drop isolated in-memory State; no external resources created. Stored timer descriptors are never launched.",
+    "implementation": "tests/routing_acquisition.rs:n023_cross_cell_lease_cache_is_cleared_by_exact_route_failure",
+    "test_function": "n023_cross_cell_lease_cache_is_cleared_by_exact_route_failure",
+    "layer": "native-component",
+    "sublayer": "state-trace",
+    "classification": "characterization",
+    "qualification": "characterization",
+    "promotion": false,
+    "promotion_gate": "Nonpromoting characterization of source-pinned behavior; no policy verdict inferred.",
+    "source_pins": "source-pins.json",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "execution_readiness": "Complete standalone Rust test body; syntax checked, not compiled or linked.",
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  }
+}

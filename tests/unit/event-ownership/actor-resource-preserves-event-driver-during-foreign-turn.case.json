@@ -1,0 +1,24 @@
+{
+  "id": "unit/event-ownership/actor-resource-preserves-event-driver-during-foreign-turn",
+  "layer": "unit",
+  "behaviour": "event-ownership",
+  "title": "actor resource preserves event driver during foreign turn",
+  "origins": [
+    {
+      "source": "crates/celld/js/ownership_tests.rs",
+      "legacy_id": "unit/celld/js::ownership_tests::actor_resource_preserves_event_driver_during_foreign_turn"
+    }
+  ],
+  "legacy_ids": [
+    "unit/celld/js::ownership_tests::actor_resource_preserves_event_driver_during_foreign_turn"
+  ],
+  "adapter": "cargo",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "crates/celld/js/ownership_tests.rs",
+  "source_sha256": "6c20d4fcde25d6d71e873e01fe08dc0759be4d29c5114d900a7f2cca51ab1e6b",
+  "test_filter": "js::ownership_tests::actor_resource_preserves_event_driver_during_foreign_turn"
+}

@@ -1,0 +1,105 @@
+{
+  "schema": 1,
+  "baseline_read": [
+    "T001–T032 native storage transaction/cursor wave",
+    "D201–D220 ordinary native storage/SQL wave",
+    "T201–T215 synthetic atomic-accounting wave",
+    "Z201–Z219 accepted facet cases",
+    "K201–K220 env-KV cases"
+  ],
+  "proposed_then_retired": [
+    {
+      "id": "C208",
+      "reason": "Undocumented observer timing characterization; no primary credit and no body authored."
+    }
+  ],
+  "reserved_unused_ids": [
+    "C209",
+    "C210",
+    "C211",
+    "C212",
+    "C213",
+    "C214",
+    "C215",
+    "C216",
+    "C217",
+    "C218",
+    "C219"
+  ],
+  "cases": [
+    {
+      "id": "C201",
+      "closest_cases": [
+        "T029",
+        "D207",
+        "D208",
+        "K215",
+        "K216"
+      ],
+      "decision": "RETAIN_PENDING_INDEPENDENT_BODY_REVIEW",
+      "mechanism_delta": "T029 characterizes raw native iterator invalidation; D207/D208/K215/K216 cover low-level listing. This case exercises the actual OS module nested index traversal and documented key-count versus record-count semantics, with option permutations combined into one case."
+    },
+    {
+      "id": "C202",
+      "closest_cases": [
+        "T016",
+        "T008",
+        "D220",
+        "T206"
+      ],
+      "decision": "RETAIN_PENDING_INDEPENDENT_BODY_REVIEW",
+      "mechanism_delta": "T016 is native SQL conflict with a held reader; T008/D220 are generic rollback APIs; T206 is a SQL partial-index UPSERT. Here byte-exact OS subscribers execute several real sync-KV index changes inside their own transaction and a later subscriber rejects a valid business uniqueness conflict."
+    },
+    {
+      "id": "C203",
+      "closest_cases": [
+        "T203",
+        "T206",
+        "T215"
+      ],
+      "decision": "RETAIN_PENDING_INDEPENDENT_BODY_REVIEW",
+      "mechanism_delta": "Those cases maintain SQL triggers, partial SQL indexes or FTS postings. This case executes the actual OS addIndexSubscriber array/scalar/null delta algorithm and nonunique child reclamation; actual action history schema returns both scalar and array index keys."
+    },
+    {
+      "id": "C204",
+      "closest_cases": [
+        "T208",
+        "T008",
+        "D211"
+      ],
+      "decision": "RETAIN_PENDING_INDEPENDENT_BODY_REVIEW",
+      "mechanism_delta": "T208 explicitly rebuilds a synthetic SQL ancestry relation; D211 clears raw storage; T008 nests raw transactions. This is the production module migration API, including its physical child sweep and intentionally retained allocation counter."
+    },
+    {
+      "id": "C205",
+      "closest_cases": [
+        "T029",
+        "T027",
+        "D210",
+        "T207"
+      ],
+      "decision": "RETAIN_PENDING_INDEPENDENT_BODY_REVIEW",
+      "mechanism_delta": "T029 triggers raw iterator invalidation, D210 is raw batch deletion, T027 restores a raw delete and T207 extracts a synthetic partition. This executes production nonunique delete buffering across real index-subscriber native list calls plus an ordinary read-and-audit callback. No callback timing oracle is asserted."
+    },
+    {
+      "id": "C206",
+      "closest_cases": [
+        "D210",
+        "C205"
+      ],
+      "decision": "RETAIN_PENDING_INDEPENDENT_BODY_REVIEW",
+      "mechanism_delta": "D210 takes raw keys; C205 deletes every member of an index group. This documented helper must read only computed primary-key fields from a caller record while removing actual stored index data, including when non-key fields are stale."
+    },
+    {
+      "id": "C207",
+      "closest_cases": [
+        "Z206",
+        "Z208",
+        "D204"
+      ],
+      "decision": "RETAIN_PENDING_INDEPENDENT_BODY_REVIEW",
+      "mechanism_delta": "Z206/Z208 test distinct facet scopes and D204 sync/async API coherence. This tests explicit same-storage migration aliases on one native DO with sequential schemas only. The actual singleton alias call site establishes relevance; storageName uses the documented module contract, with no concrete application caller claimed."
+    }
+  ],
+  "counting_rule": "Seven independently authored mechanism-level candidates; options, retries, raw receipts and multiple assertions add no separate case credit. Independent review remains external."
+}

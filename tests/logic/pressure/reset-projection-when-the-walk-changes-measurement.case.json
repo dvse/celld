@@ -1,0 +1,54 @@
+{
+  "id": "logic/pressure/reset-projection-when-the-walk-changes-measurement",
+  "layer": "logic",
+  "behaviour": "pressure",
+  "title": "Reset projection when the walk changes measurement",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic",
+      "legacy_id": "corpus/pressure-recovery-logic/P018"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic/tests/pressure_recovery.rs",
+      "sha256": "ccb9c2001ec9d427c142017a426801dde5631b1252fae8b2e10ce0e12cc73e47"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/pressure-recovery-logic/P018"
+  ],
+  "adapter": "native",
+  "corpus_id": "P018",
+  "corpus_wave": "pressure-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/pressure/fixtures/decision-cases/tests/pressure_recovery.rs",
+  "source_sha256": "ccb9c2001ec9d427c142017a426801dde5631b1252fae8b2e10ce0e12cc73e47",
+  "test_filter": "p018_metric_switch_discards_incomparable_futility_baseline",
+  "contract": {
+    "intent": "Reset projection when the walk changes measurement",
+    "preconditions": [
+      "Fresh State::new(\"fixture\", config()) per case; only production on_event transitions; no direct State-field mutation",
+      "Each resident created by RequestAt -> absent OwnerRead -> Applied epoch1 CAS -> RestoreCompleted -> RuntimeStarted generation1 -> Published; exact operation IDs come from effects",
+      "Every transition invokes State::validate; occupied<=4, activating<=4, evicting<=2; local completions tracked exactly once",
+      "Default require_node_lease=false isolates admission from fleet authority; this does not exercise actual lease authorization",
+      "Pressure samples are synthetic byte-valued facts, not measured RSS, allocator, cgroup or container enforcement",
+      "The immutable source/runtime-manifest pins and exact implementation must pass preflight before any authorized future run"
+    ],
+    "trace": [
+      "sample240/240 and complete a cut using ordinary metric",
+      "repeat240/240 and require futility stop",
+      "sample80/240 clears ordinary but keeps hard latched with equal240 old/new metric bytes",
+      "complete newly emitted b cut after metric reset",
+      "sample80/160 clears hard latch"
+    ],
+    "oracle": "Equal240 metric bytes cannot trigger growth rearming; b cut therefore depends on resetting the incomparable ordinary baseline; b reaches Dormant; both latches clear only after final hard160",
+    "cleanup": "Finish every successful local request; settle all emitted stop/release/adoption effects shown by the trace; assert pending demand and activation/eviction/release/adoption counts empty. Drop owned in-memory State on return/unwind. No external resource created",
+    "implementation": "tests/pressure_recovery.rs:p018_metric_switch_discards_incomparable_futility_baseline"
+  },
+  "selector": "P018"
+}

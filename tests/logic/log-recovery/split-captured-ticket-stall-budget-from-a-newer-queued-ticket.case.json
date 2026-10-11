@@ -1,0 +1,54 @@
+{
+  "id": "logic/log-recovery/split-captured-ticket-stall-budget-from-a-newer-queued-ticket",
+  "layer": "logic",
+  "behaviour": "log-recovery",
+  "title": "Split captured-ticket stall budget from a newer queued ticket",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic",
+      "legacy_id": "corpus/log-recovery-logic/J023"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic/tests/log_recovery.rs",
+      "sha256": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/log-recovery-logic/J023"
+  ],
+  "adapter": "native",
+  "corpus_id": "J023",
+  "corpus_wave": "log-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/log-recovery/fixtures/decision-cases/tests/log_recovery.rs",
+  "source_sha256": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c",
+  "test_filter": "j023_same_cell_tickets_split_inflight_stall_from_queued_node_progress",
+  "contract": {
+    "intent": "Split captured-ticket stall budget from a newer queued ticket",
+    "preconditions": [
+      "Each test owns all in-memory values and directly calls public frozen production celld_logic components; no substitute decision implementation",
+      "Storage PUT/delete success, failure, CAS ordering, member confirmations and restore chains are explicit synthetic environmental facts; no disk, bucket, network, actor or VM is exercised",
+      "Every supplied finish_recovery certificate has a stipulated prior durable per-cell/bucket receipt; the pure finish function does not validate that I/O premise",
+      "GC chains are supplied from the stipulated production restore walk, oldest-first and ending at own epoch except the deliberate missing-opener schedules; no restore walk is reimplemented",
+      "GC listed vectors intentionally include base/own/off-chain epochs beyond the current executor scan.below input; these are public-component API robustness premises, not claimed live executor traces",
+      "Hash checks must match delivered runtime manifest lineage before future review/build/run; no compiler or SUT was launched while authoring"
+    ],
+    "trace": [
+      "Node proof110 with lower capture9 gives both queued deadlines130",
+      "Supply capture10 started115 plus unrelated proof140",
+      "Require older fixed deadline135 and newer queued deadline160",
+      "Advance unrelated proof155; older remains135, newer extends175",
+      "Supply capture11 started160; newer switches to fixed deadline180"
+    ],
+    "oracle": "In-flight older ticket ignores unrelated proof progress; newer ticket ignores noncovering capture; Covering newer capture selects its own bounded in-flight deadline180",
+    "cleanup": "Drop only this test-owned records, maps, fragments, health tracker and ledger. No external resources exist; unwind also drops all owned values.",
+    "implementation": "tests/log_recovery.rs:j023_same_cell_tickets_split_inflight_stall_from_queued_node_progress"
+  },
+  "selector": "J023"
+}

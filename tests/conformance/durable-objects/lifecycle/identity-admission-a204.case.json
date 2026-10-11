@@ -1,0 +1,159 @@
+{
+  "adapter": "http",
+  "behaviour": "durable-objects/lifecycle",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "classification": "PRIMARY_DIRECT_PUBLIC_API_CANDIDATE",
+    "cleanup": [
+      "Release any owned Control wait normally; join all already dispatched requests before any data cleanup.",
+      "Delete only the three-or-fewer tracked fixture roots storage and verify empty KV; Control is cleaned last and must have zero waiters/timers.",
+      "An unsettled trace or cleanup requires bounded external owned-process reap and store removal; it never earns runtime credit.",
+      "External supervisor verifies final process/store teardown; fixture cleanup alone does not prove it."
+    ],
+    "distinct": "Constructor readiness gates the very first event plus a newly arriving event. This is ordinary public initialization, with no nested blocks, competing gate owners, stale continuations, reset, timer failure, runtime fault or native-state seam.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/A204"
+    },
+    "external_contract_refs": [
+      {
+        "checked_on": "2026-10-09",
+        "last_updated": "2026-09-30",
+        "url": "https://developers.cloudflare.com/durable-objects/api/state/#blockconcurrencywhile"
+      }
+    ],
+    "fixed_assertions": [
+      "c.eq(held.targetId,target.id.toString(),'constructor hold belongs to the requested live target');",
+      "c.eq((await c.send(peer,'write',{value:'peer-before-release'})).value,'peer-before-release','an independent ordinary root completes while constructor admission is closed');",
+      "c.eq([before.phase,before.entries.length,first.settled,second.settled],['held',0,false,false],'both incoming reads remain unadmitted at the witnessed constructor hold');",
+      "c.eq(results.map(x=>[x.value,x.ready,x.explicitRelease]),[['initialized',true,true],['initialized',true,true]],'first and queued requests see the fully completed successful initialization');",
+      "c.eq(after.entries.map(x=>x.request).sort(),['first','second'],'two distinct request handlers actually entered');",
+      "c.eq(after.entries.every(x=>x.afterRelease&&x.ready&&x.targetId===target.id.toString()),true,'every target admission follows explicit release and completed initialization');",
+      "c.eq(after.fallbackUsed,false,'no fallback timer supplied constructor completion');"
+    ],
+    "id": "A204",
+    "implementation": "cases.js:A204",
+    "limits": {
+      "cleanup_deadline_ms": 3500,
+      "control_successful_fallback_ms": 2500,
+      "external_case_process_deadline_seconds": 20,
+      "external_http_deadline_seconds": 12,
+      "external_rss_limit_bytes": 1073741824,
+      "external_wave_deadline_seconds": 120,
+      "max_concurrent_supervisor_fetches": 3,
+      "max_control_entries": 2,
+      "max_control_poll_calls": 60,
+      "max_created_roots": 3,
+      "max_external_case_requests": 1,
+      "max_keys_per_root": 1,
+      "max_name_utf8_bytes": 1025,
+      "max_response_bytes": 65536,
+      "max_supervisor_do_fetches": 100,
+      "max_total_do_fetches_including_target_control": 110,
+      "max_total_name_bytes": 3074,
+      "max_value_characters": 32,
+      "poll_interval_ms": 15,
+      "trace_deadline_ms": 6000
+    },
+    "literal_assertion_call_sites": 7,
+    "mechanism": "successful-constructor-input-admission",
+    "nearest": [
+      "distributed-rpc Root.reentry",
+      "T001/T031 storage transaction scheduling",
+      "Z211 successful facet startup options"
+    ],
+    "oracle": "Both actual target handlers enter only after successful initialization and explicit release, and return initialized state. A separate root completes before release. Fallback expiration is BLOCKED, never positive evidence.",
+    "os_relevance": {
+      "actual_os_checkout_available": false,
+      "actual_os_execution_claimed": false,
+      "evidence": [
+        "celld-os-project/tests/ACCEPTANCE.md",
+        "celld-os-project/tests/duplicate-names/account.js",
+        "celld-os-project/tests/duplicate-names/router.js",
+        "celld-os-project/tests/fixtures/distributed-rpc/index.js"
+      ],
+      "evidence_status": "INFERRED_COMPONENT_RELEVANCE_ONLY",
+      "label": "Public input-admission support for evidenced OS DO roots; specific constructor use inferred, not inspected"
+    },
+    "preconditions": [
+      "Exact reviewed celld source/build/executable identity with a fresh private disposable store and current live migrated DOs.",
+      "Finite external process/HTTP/RSS limits independently enforceable; no runtime or dependency substitution.",
+      "One external GET at a time; no process faults, reconfiguration, restart, foreign-ID operations or retained stateless handles."
+    ],
+    "primary_contract_refs": [
+      {
+        "line_end": 31,
+        "line_start": 19,
+        "path": "celld-os-project/celld/docs/services/durable-objects.md"
+      }
+    ],
+    "review_status": "PENDING_INDEPENDENT_REVIEW",
+    "runtime_passes": 0,
+    "runtime_source_refs": [
+      {
+        "line_end": 2694,
+        "line_start": 2689,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      },
+      {
+        "line_end": 2803,
+        "line_start": 2721,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      },
+      {
+        "line_end": 2879,
+        "line_start": 2879,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      },
+      {
+        "line_end": 2974,
+        "line_start": 2952,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "static_source_assessment": "NO_RUNTIME_PREDICTION_REQUIRED",
+    "title": "Admit first requests after successful constructor initialization",
+    "trace": [
+      "Start the first fetch to a fresh InitTarget whose constructor calls blockConcurrencyWhile.",
+      "Observe its hold through a separately addressed real Control DO.",
+      "Submit the second target fetch and complete an independent Record root write while the constructor remains held.",
+      "Witness held/unadmitted state, explicitly release Control, and join both target fetches."
+    ]
+  },
+  "corpus_id": "A204",
+  "corpus_wave": "identity-admission-semantics",
+  "fixture": "tests/conformance/durable-objects/lifecycle/fixtures/identity-admission-semantics",
+  "id": "conformance/durable-objects/lifecycle/identity-admission-a204",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/identity-admission-semantics/A204"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/identity-admission-semantics/A204",
+      "manifest_sha256": "e5eae8135cebe5822551cd30d5fad64d7273726f60d70a8899cd014f3500951e",
+      "review_sha256": "bf9e7422bb248a7b602faf4fc928e16eb392f783c71ac17275ec3f6a4c8356f2",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/identity-admission-semantics",
+      "tranche": "004"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/A204",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "A204",
+  "source": "tests/conformance/durable-objects/lifecycle/fixtures/identity-admission-semantics/fixture.js",
+  "source_sha256": "eeb4d839f7c818b31988e205b843f6584c6cfc066b4723dcb8382d7ca8bf5e33",
+  "title": "Admit first requests after successful constructor initialization"
+}

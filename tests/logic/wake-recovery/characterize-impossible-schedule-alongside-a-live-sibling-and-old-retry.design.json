@@ -1,0 +1,61 @@
+{
+  "id": "logic/wake-recovery/characterize-impossible-schedule-alongside-a-live-sibling-and-old-retry",
+  "layer": "logic",
+  "behaviour": "wake-recovery",
+  "title": "Characterize impossible schedule alongside a live sibling and old retry",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic",
+      "legacy_id": "wake-recovery-logic/K019"
+    }
+  ],
+  "corpus_wave": "wake-recovery-logic",
+  "corpus_id": "K019",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "K019",
+    "title": "Characterize impossible schedule alongside a live sibling and old retry",
+    "intent": "Characterize impossible schedule alongside a live sibling and old retry",
+    "failure_hypothesis": "An impossible but valid expression hides another schedule or permits retry with no terminal ceiling",
+    "initial_state": "Valid unsatisfiable February31 expression; minute schedule sibling; old owed handler represented by explicit failed input.",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Run next_after on impossible expression to None within one Gregorian scan.",
+      "Plan impossible plus minute sibling and require60000.",
+      "After synthetic config replacement leaves only impossible expression, represent old owed work and require retry2000.",
+      "Execute all intermediate failures at2000,6000,14000,30000,62000 using counts1..5 and exact deadlines6000,14000,30000,62000,126000; at126000 count6 requires no alarm remaining."
+    ],
+    "stress": "Unsatisfiable calendar scan plus a viable sibling and an externally retained old failure after config replacement.",
+    "safety_oracle": "No matching index is invented for impossible schedule; unsatisfiable expression does not mask viable sibling.",
+    "liveness_oracle": "Plan-only failure budget eventually produces no further arm; actual deploy/removal policy is outside this test.",
+    "oracle": [
+      "No matching index is invented for impossible schedule; unsatisfiable expression does not mask viable sibling.",
+      "Plan-only failure budget eventually produces no further arm; actual deploy/removal policy is outside this test."
+    ],
+    "terminal_witness": "Assertions finish; minimum four TRANSITION receipts from returned production calls; END K019 and Rust test PASS; State cases also require zero pending activation/eviction/release/adoption slots.",
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k019_unsatisfiable_schedule_cannot_hide_viable_sibling_or_spin_retry",
+    "test_function": "k019_unsatisfiable_schedule_cannot_hide_viable_sibling_or_spin_retry",
+    "source_contract": [
+      "cron.rs:next_after",
+      "cron.rs:next_across",
+      "cron.rs:plan"
+    ],
+    "layer": "native-component",
+    "sublayer": "public-component-model-trace",
+    "classification": "characterization",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "compiler_verified": false,
+    "promotion": false,
+    "status": "NOT_RUN",
+    "run": false,
+    "passed": false
+  }
+}

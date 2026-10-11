@@ -1,0 +1,33 @@
+{
+  "id": "conformance/rpc/rpc-dispose",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "rpc dispose",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/rpc-dispose",
+      "legacy_id": "hyperbob/rpc-dispose"
+    },
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/rpc-dispose/wrangler.json",
+      "sha256": "97bdd07bf025193e78feff9327eca776a0b15e61df5c3b618967a0cbcb643852"
+    }
+  ],
+  "legacy_ids": [
+    "hyperbob/rpc-dispose"
+  ],
+  "adapter": "example",
+  "fixture": "tests/conformance/rpc/fixtures/handle-disposal",
+  "profiles": [
+    "full"
+  ],
+  "reason": "",
+  "requests": [
+    {
+      "path": "/?v=suite"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/rpc/fixtures/handle-disposal/wrangler.json",
+  "source_sha256": "97bdd07bf025193e78feff9327eca776a0b15e61df5c3b618967a0cbcb643852"
+}

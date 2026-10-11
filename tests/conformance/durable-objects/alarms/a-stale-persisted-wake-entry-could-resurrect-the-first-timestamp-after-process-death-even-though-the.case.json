@@ -1,0 +1,62 @@
+{
+  "adapter": "recovery",
+  "behaviour": "durable-objects/alarms",
+  "contract": {
+    "cleanup": [
+      "Keep store guest alive until recovery assertions finish, then cancel schedules and consume both owned guests.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A025",
+    "intent": "A stale persisted wake entry could resurrect the first timestamp after process death even though the newer alarm was acknowledged.",
+    "oracle": [
+      "No stale event after recovery; replacement timestamp remains exact.",
+      "Only restored-replacement retry0 succeeds once."
+    ],
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "Bucket durability; store guest survives;90-second old deadline and112-second replacement both remain future around the verified cold restart."
+    ],
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "trace": [
+      "Arm stale-before-crash then overwrite with restored-replacement.",
+      "Verify pre-due state and terminate the exact owned runtimes with pidfd.",
+      "Restart with fresh local caches, verify new isolate/owner epoch, and recheck the old deadline window.",
+      "Exclude the old native wake after its deadline, then observe the replacement."
+    ]
+  },
+  "corpus_id": "A025",
+  "corpus_wave": "alarm-event-stress",
+  "fixture": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces",
+  "id": "conformance/durable-objects/alarms/a-stale-persisted-wake-entry-could-resurrect-the-first-timestamp-after-process-death-even-though-the",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/alarm-event-stress/A025"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/alarm-event-stress/A025",
+      "source": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress"
+    },
+    {
+      "sha256": "ccde8a8c9c8c7a4cfe02567f656fc149da1ee24fd78973455e64a8fe1c6ea3f3",
+      "source": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress/fixture.js"
+    }
+  ],
+  "phase2_harness": "real process and bucket fault schedule",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "A025",
+  "source": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces/fixture.js",
+  "source_sha256": "ccde8a8c9c8c7a4cfe02567f656fc149da1ee24fd78973455e64a8fe1c6ea3f3",
+  "title": "A stale persisted wake entry could resurrect the first timestamp after process death even though the newer alarm was acknowledged."
+}

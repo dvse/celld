@@ -1,0 +1,29 @@
+{
+  "id": "conformance/web-platform/urlsearchparams-sort-any",
+  "layer": "conformance",
+  "behaviour": "web-platform",
+  "title": "urlsearchparams sort.any",
+  "origins": [
+    {
+      "source": "wpt@8b139c3a3 (workerd pinned dependency)",
+      "legacy_id": "wpt/urlsearchparams-sort.any"
+    },
+    {
+      "source": "https://raw.githubusercontent.com/web-platform-tests/wpt/8b139c3a3/url/urlsearchparams-sort.any.js",
+      "sha256": "cdfc1ef89cfcefa5fae94ebdeaa2a869c47b47b47d08aba4c7db0b6e44b31fca"
+    }
+  ],
+  "legacy_ids": [
+    "wpt/urlsearchparams-sort.any"
+  ],
+  "adapter": "http",
+  "fixture": "tests/conformance/web-platform/fixtures/urlsearchparams-sort.any",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/conformance/web-platform/fixtures/urlsearchparams-sort.any/upstream.js",
+  "source_sha256": "cdfc1ef89cfcefa5fae94ebdeaa2a869c47b47b47d08aba4c7db0b6e44b31fca"
+}

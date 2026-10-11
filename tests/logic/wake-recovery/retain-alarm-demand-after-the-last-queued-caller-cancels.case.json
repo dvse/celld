@@ -1,0 +1,53 @@
+{
+  "id": "logic/wake-recovery/retain-alarm-demand-after-the-last-queued-caller-cancels",
+  "layer": "logic",
+  "behaviour": "wake-recovery",
+  "title": "Retain alarm demand after the last queued caller cancels",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic",
+      "legacy_id": "corpus/wake-recovery-logic/K009"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+      "sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/wake-recovery-logic/K009"
+  ],
+  "adapter": "native",
+  "corpus_id": "K009",
+  "corpus_wave": "wake-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/wake-recovery/fixtures/decision-cases/tests/wake_recovery.rs",
+  "source_sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86",
+  "test_filter": "k009_cancelled_last_caller_preserves_queued_alarm_wake_demand",
+  "contract": {
+    "intent": "Retain alarm demand after the last queued caller cancels",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Hold busy owner read.",
+      "Queue caller7 and join a Fleet wake on alarm.",
+      "Cancel caller7 and check alarm remains queued.",
+      "Fail busy read, capture newly emitted alarm read and complete its full cold path."
+    ],
+    "oracle": [
+      "Cancelled caller7 never gets a Complete effect.",
+      "Alarm-only demand receives released capacity and becomes resident."
+    ],
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k009_cancelled_last_caller_preserves_queued_alarm_wake_demand"
+  },
+  "selector": "K009"
+}

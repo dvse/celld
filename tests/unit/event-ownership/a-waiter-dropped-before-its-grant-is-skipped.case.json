@@ -1,0 +1,24 @@
+{
+  "id": "unit/event-ownership/a-waiter-dropped-before-its-grant-is-skipped",
+  "layer": "unit",
+  "behaviour": "event-ownership",
+  "title": "a waiter dropped before its grant is skipped",
+  "origins": [
+    {
+      "source": "crates/celld/pool.rs",
+      "legacy_id": "unit/celld/pool::turn_scheduler_tests::a_waiter_dropped_before_its_grant_is_skipped"
+    }
+  ],
+  "legacy_ids": [
+    "unit/celld/pool::turn_scheduler_tests::a_waiter_dropped_before_its_grant_is_skipped"
+  ],
+  "adapter": "cargo",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "crates/celld/pool.rs",
+  "source_sha256": "4b0489ae3ff216c20370fa8ac7b1604903bc2e65d988735f2b6718aa2313b691",
+  "test_filter": "pool::turn_scheduler_tests::a_waiter_dropped_before_its_grant_is_skipped"
+}

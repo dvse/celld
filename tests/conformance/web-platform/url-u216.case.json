@@ -1,0 +1,128 @@
+{
+  "adapter": "http",
+  "behaviour": "web-platform",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "application_relevance": "Workers adapt iterable key/value sources and clone a query before changing it.",
+    "assertion_count": 4,
+    "authored": true,
+    "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+    "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+    "desired_behavior": "Iterable input wins, is consumed once, and both array-pair and params-copy construction take detached snapshots.",
+    "distinctness": "Constructor overload and input lifetime versus the output-pair lifetime in U215.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/U216",
+      "request_body": null
+    },
+    "fixed_runtime_assertions": [
+      "t.equal(visits, 1, 'constructor consumes iterable exactly once');",
+      "t.deep([...params], [['tag', 'red'], ['tag', 'blue']], 'iterable takes precedence over record and is copied');",
+      "t.equal(params.has('ignoredRecordKey'), false, 'enumerable record property is not mixed with iterable entries');",
+      "t.deep([...copy], [['tag', 'red'], ['tag', 'blue']], 'copy construction is a detached snapshot');"
+    ],
+    "hypothesis": "Construction may enumerate record keys despite an iterator or retain the input pair arrays and source params by reference.",
+    "id": "U216",
+    "implementation": {
+      "end_line": 203,
+      "file": "cases.js",
+      "start_line": 183,
+      "symbol": "U216"
+    },
+    "independently_reviewed": false,
+    "layer": "direct-celld-worker-fetch-global-web-api",
+    "limits": {
+      "case_assertion_max_count": 16,
+      "case_input_max_code_units": 1024,
+      "case_tuple_max_count": 16,
+      "concurrent_requests": 1,
+      "network_calls_from_fixture": 0,
+      "repetitions": 1,
+      "request_body_bytes": 0,
+      "request_outer_deadline_seconds": 5,
+      "requests_per_case": 1,
+      "response_max_bytes": 65536,
+      "storage_writes_from_fixture": 0,
+      "timers_from_fixture": 0
+    },
+    "mechanism": "Constructor iterable-versus-record selection and detached snapshots",
+    "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+    "preconditions": [
+      "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+      "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+      "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+    ],
+    "prediction_is_runtime_evidence": false,
+    "primary_contract_refs": [
+      "https://url.spec.whatwg.org/#urlsearchparams"
+    ],
+    "review_status": "UNREVIEWED",
+    "runtime_pass_claimed": false,
+    "runtime_source_refs": [
+      {
+        "line_end": 140,
+        "line_start": 97,
+        "path": "celld-os-project/celld/crates/celld/js/url_search_params.js"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "schedule": {
+      "depends_on": [],
+      "kind": "one synchronous finite trace",
+      "overlap": "none",
+      "path": "/case/U216",
+      "request_ordinal": 16,
+      "runtime_operations": [
+        "Construct params from a two-pair custom iterable that also has an enumerable record key.",
+        "Edit and extend the source arrays after construction.",
+        "Assert one iterator visit, exact copied pairs, and no record-key entry.",
+        "Copy the params, then mutate the original and assert the copy is unchanged."
+      ]
+    },
+    "source_observation": "Pinned constructor checks iterator before record conversion and creates new pairs. Valid two-element iterables only.",
+    "static_prediction": "NO_FAILURE_PREDICTION",
+    "status": "NOT_RUN",
+    "title": "Prefer iterable constructor input and copy its values eagerly",
+    "trace": [
+      "Construct params from a two-pair custom iterable that also has an enumerable record key.",
+      "Edit and extend the source arrays after construction.",
+      "Assert one iterator visit, exact copied pairs, and no record-key entry.",
+      "Copy the params, then mutate the original and assert the copy is unchanged."
+    ]
+  },
+  "corpus_id": "U216",
+  "corpus_wave": "url-semantics",
+  "fixture": "tests/conformance/web-platform/fixtures/url-semantics",
+  "id": "conformance/web-platform/url-u216",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/url-semantics/U216"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/url-semantics/U216",
+      "manifest_sha256": "d61fdb1b4d070ae5aff0ad1456c39d2842c341f9737a20b67c67c251f638ae91",
+      "review_sha256": "13b98102e846487ca6304032863d1edb29b691c8649ebdea0ad53161ac6da486",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics",
+      "tranche": "001"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/U216",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "U216",
+  "source": "tests/conformance/web-platform/fixtures/url-semantics/fixture.js",
+  "source_sha256": "ccbb1cf21c3f719aa06ed64b498fc396f00736cc96d7cbd2aea437f2cc221ca6",
+  "title": "Prefer iterable constructor input and copy its values eagerly"
+}

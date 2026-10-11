@@ -1,0 +1,156 @@
+[
+  {
+    "sha256": "e7d525c86af2a4c6d2b0509dd2cd30c2c56301a8f4cf80908d2b1a5ab3d60db1",
+    "canonical": "tests/conformance/durable-objects/persistent-stubs/fixtures/duplicate-restore/run.sh",
+    "paths": [
+      "tests/conformance/durable-objects/persistent-stubs/fixtures/duplicate-restore/run.sh",
+      "tests/conformance/durable-objects/persistent-stubs/fixtures/restore-disposal/run.sh",
+      "tests/conformance/rpc/fixtures/cross-cell-continuation/run.sh",
+      "tests/conformance/rpc/fixtures/error-propagation/run.sh",
+      "tests/conformance/rpc/fixtures/handle-disposal/run.sh",
+      "tests/conformance/rpc/fixtures/object-properties/run.sh",
+      "tests/conformance/web-platform/fixtures/abort-accessors/run.sh"
+    ],
+    "origins": [
+      "celld@9c0fca5/tests-hyperbob/cross-cell-continuation/run.sh",
+      "celld@9c0fca5/tests-hyperbob/do-property/run.sh",
+      "celld@9c0fca5/tests-hyperbob/persistent-dup/run.sh",
+      "celld@9c0fca5/tests-hyperbob/restore-disposer/run.sh",
+      "celld@9c0fca5/tests-hyperbob/rpc-dispose/run.sh",
+      "celld@9c0fca5/tests-hyperbob/rpc-errors/run.sh",
+      "celld@9c0fca5/tests-hyperbob/webidl-accessors/run.sh"
+    ]
+  },
+  {
+    "sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+    "canonical": "tests/conformance/rpc/fixtures/accessor-visibility/rpc.js",
+    "paths": [
+      "tests/conformance/rpc/fixtures/accessor-visibility/rpc.js",
+      "tests/conformance/rpc/fixtures/object-capabilities/fixture/rpc.js"
+    ],
+    "origins": [
+      "guarded-source-archive/celld-os-stress/fixture/rpc.js",
+      "guarded-source-archive/celld-os-stress/waves/do-visibility-regression/rpc.js"
+    ]
+  },
+  {
+    "sha256": "8b7b1e0c54afd4c2d6be00be6b6f7ff04e19ac80e1a92c3a6eef709862b3dac2",
+    "canonical": "tests/conformance/rpc/fixtures/accessor-visibility/wrangler.jsonc",
+    "paths": [
+      "tests/conformance/rpc/fixtures/accessor-visibility/wrangler.jsonc",
+      "tests/conformance/rpc/fixtures/object-capabilities/fixture/wrangler.jsonc"
+    ],
+    "origins": [
+      "guarded-source-archive/celld-os-stress/fixture/wrangler.jsonc",
+      "guarded-source-archive/celld-os-stress/waves/do-visibility-regression/wrangler.jsonc"
+    ]
+  },
+  {
+    "sha256": "42da2dfd881bf1ceeffb4ac84689e939ece424909e91d43c237a9ee8eb99e7c6",
+    "canonical": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces/http_jobs.py",
+    "paths": [
+      "tests/conformance/durable-objects/alarms/fixtures/recovery-traces/http_jobs.py",
+      "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/http_jobs.py",
+      "tests/conformance/durable-objects/storage-kv/fixtures/durable-recovery/http_jobs.py"
+    ],
+    "origins": [
+      "guarded-source-archive/celld-os-stress/waves/alarm-event-stress/http_jobs.py",
+      "guarded-source-archive/celld-os-stress/waves/deployment-recovery/http_jobs.py",
+      "guarded-source-archive/celld-os-stress/waves/durable-recovery-stress/http_jobs.py"
+    ]
+  },
+  {
+    "sha256": "f23feb07760fb3b6ebaef99ff55c90bb31da927355db4c8e4d80f073ca88331a",
+    "canonical": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/front.js",
+    "paths": [
+      "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/front.js",
+      "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/front-missing/fixture.js",
+      "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/front-new/fixture.js",
+      "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/front-old/fixture.js"
+    ],
+    "origins": [
+      "guarded-source-archive/celld-os-stress/waves/deployment-recovery/front.js",
+      "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/front-missing/fixture.js",
+      "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/front-new/fixture.js",
+      "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/front-old/fixture.js"
+    ]
+  },
+  {
+    "sha256": "18ec6afc81275ed855d97e45bc0ddfc2ada13af7e1ab055c82cb16a66ac05371",
+    "canonical": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/bad-rename/fixture.js",
+    "paths": [
+      "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/bad-rename/fixture.js",
+      "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v1/fixture.js"
+    ],
+    "origins": [
+      "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/bad-rename/fixture.js",
+      "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v1/fixture.js"
+    ]
+  },
+  {
+    "sha256": "c6ee9f7fe0c948a5a3f284fde1b47b86434f39113622b53ec90c72d5d44b9c53",
+    "canonical": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/bad-syntax/wrangler.jsonc",
+    "paths": [
+      "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/bad-syntax/wrangler.jsonc",
+      "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v1/wrangler.jsonc",
+      "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v2-abort/wrangler.jsonc",
+      "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v2-add/wrangler.jsonc",
+      "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v2-code/wrangler.jsonc",
+      "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v2-rebuild/wrangler.jsonc",
+      "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/versions/v2-unique/wrangler.jsonc"
+    ],
+    "origins": [
+      "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/bad-syntax/wrangler.jsonc",
+      "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v1/wrangler.jsonc",
+      "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v2-abort/wrangler.jsonc",
+      "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v2-add/wrangler.jsonc",
+      "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v2-code/wrangler.jsonc",
+      "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v2-rebuild/wrangler.jsonc",
+      "guarded-source-archive/celld-os-stress/waves/deployment-recovery/versions/v2-unique/wrangler.jsonc"
+    ]
+  },
+  {
+    "sha256": "faaf069f57d9e564ce0665263fb271e68c8aeb40eaae23bcb8d763ea792025e6",
+    "canonical": "tests/conformance/durable-objects/storage-kv/fixtures/reference-contracts/actor-kv-test.js",
+    "paths": [
+      "tests/conformance/durable-objects/storage-kv/fixtures/operation-contracts/upstream.js",
+      "tests/conformance/durable-objects/storage-kv/fixtures/reference-contracts/actor-kv-test.js"
+    ],
+    "origins": [
+      "workerd@19b1657bd/src/workerd/api/tests/actor-kv-test.js"
+    ]
+  },
+  {
+    "sha256": "fe85f6e4f765ee54e3ddecf0407b9d612d978df211b974a99f72ad2a3cfdbab9",
+    "canonical": "tests/conformance/web-platform/fixtures/standard-reference/api-surrogates-utf8.any.js",
+    "paths": [
+      "tests/conformance/web-platform/fixtures/api-surrogates-utf8.any/upstream.js",
+      "tests/conformance/web-platform/fixtures/standard-reference/api-surrogates-utf8.any.js"
+    ],
+    "origins": [
+      "https://raw.githubusercontent.com/web-platform-tests/wpt/8b139c3a3/encoding/api-surrogates-utf8.any.js"
+    ]
+  },
+  {
+    "sha256": "1be7707aee5c456bcdf50ae2f84478119f738fc301cda1209e5697175cdb4327",
+    "canonical": "tests/conformance/web-platform/fixtures/reference-contracts/global-scope-test.js",
+    "paths": [
+      "tests/conformance/web-platform/fixtures/global-contracts/upstream.js",
+      "tests/conformance/web-platform/fixtures/reference-contracts/global-scope-test.js"
+    ],
+    "origins": [
+      "workerd@19b1657bd/src/workerd/api/tests/global-scope-test.js"
+    ]
+  },
+  {
+    "sha256": "cdfc1ef89cfcefa5fae94ebdeaa2a869c47b47b47d08aba4c7db0b6e44b31fca",
+    "canonical": "tests/conformance/web-platform/fixtures/standard-reference/urlsearchparams-sort.any.js",
+    "paths": [
+      "tests/conformance/web-platform/fixtures/urlsearchparams-sort.any/upstream.js",
+      "tests/conformance/web-platform/fixtures/standard-reference/urlsearchparams-sort.any.js"
+    ],
+    "origins": [
+      "https://raw.githubusercontent.com/web-platform-tests/wpt/8b139c3a3/url/urlsearchparams-sort.any.js"
+    ]
+  }
+]

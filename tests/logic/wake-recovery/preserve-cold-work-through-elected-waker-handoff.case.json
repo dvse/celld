@@ -1,0 +1,53 @@
+{
+  "id": "logic/wake-recovery/preserve-cold-work-through-elected-waker-handoff",
+  "layer": "logic",
+  "behaviour": "wake-recovery",
+  "title": "Preserve cold work through elected-waker handoff",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic",
+      "legacy_id": "corpus/wake-recovery-logic/K004"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/wake-recovery-logic/tests/wake_recovery.rs",
+      "sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/wake-recovery-logic/K004"
+  ],
+  "adapter": "native",
+  "corpus_id": "K004",
+  "corpus_wave": "wake-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/wake-recovery/fixtures/decision-cases/tests/wake_recovery.rs",
+  "source_sha256": "116c071d2fe89fefe1c3c0e2cf28791d4f859488007b2c6e02012c4a61f02c86",
+  "test_filter": "k004_elected_waker_handoff_keeps_self_and_dead_owner_work",
+  "contract": {
+    "intent": "Preserve cold work through elected-waker handoff",
+    "preconditions": [
+      "Exact frozen celld-logic production source pins verified before any future native run.",
+      "All store/row/time/scan facts are synthetic inputs, not evidence of SQLite, object-store, scanner, fleet or VM behavior.",
+      "Production State cases use lease-disabled fixture authority; this is not a lease or tenant-security proof."
+    ],
+    "trace": [
+      "Check global role unavailable before expiry and live remote owner filtered.",
+      "Check role claim eligibility exactly at expiry.",
+      "Assume external role CAS success; check self-owned dormant and dead remote cells both need hints.",
+      "Check released cell needs a hint and healed remote owner no longer does."
+    ],
+    "oracle": [
+      "Role eligibility does not allow a premature foreign claim; live remote cells avoid redundant activation.",
+      "After explicit role-CAS and liveness premises, self/dead/unowned classes stay discoverable."
+    ],
+    "cleanup": "Drop only wave-owned in-memory state. No process, file, network, timer thread, bucket or guest exists in the case.",
+    "implementation": "tests/wake_recovery.rs:k004_elected_waker_handoff_keeps_self_and_dead_owner_work"
+  },
+  "selector": "K004"
+}

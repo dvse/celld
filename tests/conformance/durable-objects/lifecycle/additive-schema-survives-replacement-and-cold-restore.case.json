@@ -1,0 +1,63 @@
+{
+  "adapter": "deployment",
+  "behaviour": "durable-objects/lifecycle",
+  "contract": {
+    "cleanup": [
+      "Release trusted owned-store hold when possible",
+      "TERM both exact verified QEMU process groups before a shared10s grace",
+      "Escalate only exact verified survivors; reap each within2s",
+      "Enforce independent35s cleanup deadline plus bounded forced reap; cleanup failure cannot earn PASS",
+      "Fresh run ID, bucket, Guest pair and state directories for the next case; store guest lives until final teardown"
+    ],
+    "implementation": {
+      "driver": "driver.py:run_case",
+      "file": "cases.py",
+      "fixtures": "versions/*/fixture.js and wrangler.jsonc; actual selections in named function",
+      "function": "U001"
+    },
+    "intent": "Additive schema survives replacement and cold restore",
+    "oracle": "Exact values a=12/b=11, four unique writer-tagged operations, notes legacy, schema2 and migration count1 survive with same DO ID and new isolate/owner epoch.",
+    "preconditions": [
+      "Exact frozen binary/source pins and real native APIs verified",
+      "No active runtime execution during authoring; future exclusive supervisor approval required",
+      "v1 already deployed with no_bundle, fixture-only credentials and selector/module verification",
+      "Two owned bounded QEMU guests; guest2 store survives runtime-only cold fault",
+      "Case-specific operation/hold/clock barriers must be observed; missed pre-adoption/pre-cold alarm windows or45s fixture overlap fuses are BLOCKED with original receipts"
+    ],
+    "trace": [
+      "Seed and acknowledge v1 rows; release two waiting v1 writers a+2/b-1",
+      "Native deploy v2-add; reload both nodes; witness v2-add on unchanged root ID",
+      "Run one transactional ADD COLUMN migration; release two v2-add writers a+3/b+1",
+      "Kill both exact owned runtimes; retain store; wait35s; start fresh local directories; restore on guest2"
+    ]
+  },
+  "corpus_id": "U001",
+  "corpus_wave": "deployment-recovery",
+  "fixture": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations",
+  "id": "conformance/durable-objects/lifecycle/additive-schema-survives-replacement-and-cold-restore",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/deployment-recovery/U001"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/deployment-recovery/U001",
+      "source": "guarded-source-archive/celld-os-stress/waves/deployment-recovery"
+    },
+    {
+      "sha256": "49de28e3fc01e79ef63ba813af9358e5f772ba9002e9ed7da8611dfc07d15a20",
+      "source": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/manifest.json"
+    }
+  ],
+  "phase2_harness": "native generation cutover plus process/bucket recovery",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "U001",
+  "source": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/manifest.json",
+  "source_sha256": "49de28e3fc01e79ef63ba813af9358e5f772ba9002e9ed7da8611dfc07d15a20",
+  "title": "Additive schema survives replacement and cold restore"
+}

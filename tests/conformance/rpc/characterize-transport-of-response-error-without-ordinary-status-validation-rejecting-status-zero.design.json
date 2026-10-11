@@ -1,0 +1,35 @@
+{
+  "id": "conformance/rpc/characterize-transport-of-response-error-without-ordinary-status-validation-rejecting-status-zero",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "Characterize transport of Response.error without ordinary status validation rejecting status zero",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec",
+      "legacy_id": "rpc-codec/C020"
+    }
+  ],
+  "corpus_wave": "rpc-codec",
+  "corpus_id": "C020",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "C020",
+    "intent": "Characterize transport of Response.error without ordinary status validation rejecting status zero",
+    "preconditions": "COMMON; provider uses legal Response.error factory",
+    "trace": [
+      "request a network-error Response as successful RPC data",
+      "check Response brand, error type, status zero and null body",
+      "verify next control RPC"
+    ],
+    "stress": "One error Response, no body or real network activity",
+    "oracle": "RPC fulfills with Response type error, status 0 and body null; later control works",
+    "cleanup": "Shared codecCleanup; no external request or stream",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-HOST",
+      "SC-REVIVE"
+    ]
+  }
+}

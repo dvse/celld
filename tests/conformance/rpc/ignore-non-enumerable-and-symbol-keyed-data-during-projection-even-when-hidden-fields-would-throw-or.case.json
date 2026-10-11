@@ -1,0 +1,50 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "Dispose result in finally; shared codecCleanup",
+    "intent": "Ignore non-enumerable and symbol-keyed data during projection even when hidden fields would throw or fail cloning",
+    "oracle": "Visible value and target work; hidden getter calls zero; hidden own property and symbol-keyed payload absent",
+    "preconditions": "COMMON; result has non-enumerable throwing getter, symbol-keyed unsupported class and visible target",
+    "source_contracts": [
+      "SC-PROJECT",
+      "SC-LIFT"
+    ],
+    "trace": [
+      "request mixed visible/hidden result",
+      "verify only visible payload crosses",
+      "check hidden getter counter stays zero",
+      "check symbol-keyed unsupported payload did not cross",
+      "call visible target"
+    ]
+  },
+  "corpus_id": "C037",
+  "corpus_wave": "rpc-codec",
+  "fixture": "tests/conformance/rpc/fixtures/value-codec",
+  "id": "conformance/rpc/ignore-non-enumerable-and-symbol-keyed-data-during-projection-even-when-hidden-fields-would-throw-or",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/rpc-codec/C037"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/rpc-codec/C037",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec"
+    },
+    {
+      "sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "C037",
+  "source": "tests/conformance/rpc/fixtures/value-codec/entry.js",
+  "source_sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+  "title": "Ignore non-enumerable and symbol-keyed data during projection even when hidden fields would throw or fail cloning"
+}

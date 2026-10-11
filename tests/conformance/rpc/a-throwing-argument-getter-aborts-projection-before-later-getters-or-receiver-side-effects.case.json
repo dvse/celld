@@ -1,0 +1,50 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "No lifted resource is created; shared codecCleanup removes state",
+    "intent": "A throwing argument getter aborts projection before later getters or receiver side effects",
+    "oracle": "Rejection includes argument-getter-stop; counts 1,0; accepted count zero; healthy control succeeds",
+    "preconditions": "COMMON; first enumerable getter throws and second getter counts evaluation",
+    "source_contracts": [
+      "SC-PROJECT",
+      "SC-ENVELOPE"
+    ],
+    "trace": [
+      "submit getter-bearing argument",
+      "catch original getter rejection",
+      "verify first getter once and later getter never",
+      "verify receiver not entered",
+      "run healthy control RPC"
+    ]
+  },
+  "corpus_id": "C006",
+  "corpus_wave": "rpc-codec",
+  "fixture": "tests/conformance/rpc/fixtures/value-codec",
+  "id": "conformance/rpc/a-throwing-argument-getter-aborts-projection-before-later-getters-or-receiver-side-effects",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/rpc-codec/C006"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/rpc-codec/C006",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec"
+    },
+    {
+      "sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+      "source": "guarded-source-archive/celld-os-stress/waves/rpc-codec/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "C006",
+  "source": "tests/conformance/rpc/fixtures/value-codec/entry.js",
+  "source_sha256": "ea8d1830ee485efaf9ec9a807aaf2aa5d00de551fce68a49df25a83009bdb5d8",
+  "title": "A throwing argument getter aborts projection before later getters or receiver side effects"
+}

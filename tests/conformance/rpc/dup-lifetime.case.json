@@ -1,0 +1,33 @@
+{
+  "id": "conformance/rpc/dup-lifetime",
+  "layer": "conformance",
+  "behaviour": "rpc",
+  "title": "dup lifetime",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/dup-lifetime",
+      "legacy_id": "hyperbob/dup-lifetime"
+    },
+    {
+      "source": "celld@9c0fca5/tests-hyperbob/dup-lifetime/wrangler.json",
+      "sha256": "3ad76e491d2f377548fb5228a386bff1e5bfeb5ca4fbf75f4dd3894466816db9"
+    }
+  ],
+  "legacy_ids": [
+    "hyperbob/dup-lifetime"
+  ],
+  "adapter": "example",
+  "fixture": "tests/conformance/rpc/fixtures/duplicate-lifetime",
+  "profiles": [
+    "full"
+  ],
+  "reason": "",
+  "requests": [
+    {
+      "path": "/?v=suite"
+    }
+  ],
+  "runnable": true,
+  "source": "tests/conformance/rpc/fixtures/duplicate-lifetime/wrangler.json",
+  "source_sha256": "3ad76e491d2f377548fb5228a386bff1e5bfeb5ca4fbf75f4dd3894466816db9"
+}

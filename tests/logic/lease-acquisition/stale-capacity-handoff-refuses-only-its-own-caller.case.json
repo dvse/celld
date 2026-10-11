@@ -1,0 +1,54 @@
+{
+  "id": "logic/lease-acquisition/stale-capacity-handoff-refuses-only-its-own-caller",
+  "layer": "logic",
+  "behaviour": "lease-acquisition",
+  "title": "Stale capacity handoff refuses only its own caller",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic",
+      "legacy_id": "corpus/routing-acquisition-logic/N036"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+      "sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/routing-acquisition-logic/N036"
+  ],
+  "adapter": "native",
+  "corpus_id": "N036",
+  "corpus_wave": "routing-acquisition-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/lease-acquisition/fixtures/decision-cases/tests/routing_acquisition.rs",
+  "source_sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06",
+  "test_filter": "n036_stale_capacity_handoff_refuses_only_its_caller",
+  "contract": {
+    "intent": "Stale capacity handoff refuses only its own caller",
+    "preconditions": [
+      "Fresh test-owned State; only frozen production celld_logic::on_event mutates it.",
+      "Leased self; hot Resident1 active; full residency1 and one activation slot.",
+      "All completion operation IDs and timers come from the exact emitted effects; late IDs are previously issued IDs, never fabricated authority.",
+      "All input storage/lease/proof replies are synthetic facts. No executor, network, runtime, or fleet service is simulated as empirical evidence.",
+      "Static source/pin check and independent review required; compiler, test and runtime have not been launched."
+    ],
+    "trace": [
+      "CapacityRequestAt a/2 captures owner read",
+      "Ordinary a/3 joins same pending route",
+      "OwnerRead absent refuses2 CapacityExhausted",
+      "Assert3 still pending and no local CAS",
+      "Capacity lookup returns x sample10",
+      "Assert3 Remote x/0; finish hot1"
+    ],
+    "oracle": "Refusing a stale capacity handoff cannot reject the ordinary colocated waiter",
+    "cleanup": "Finish every locally completed request and cancel each remaining ownership-only waiter as shown. H::done checks no pending requests, active cells, activation/capacity queues, activation/eviction/release/adoption permits, or nonterminal phases. Drop isolated in-memory State; no external resources created. Stored timer descriptors are never launched.",
+    "implementation": "tests/routing_acquisition.rs:n036_stale_capacity_handoff_refuses_only_its_caller"
+  },
+  "selector": "N036"
+}

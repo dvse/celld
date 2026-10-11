@@ -1,0 +1,69 @@
+{
+  "source_archive": "celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "pins": [
+    {
+      "path": "BUILD_AND_TEST.md",
+      "sha256": "14d182794d90bed90ee488abde70a9cba2004112e21a946441e621666196ecb1"
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/deploy.rs",
+      "sha256": "b9383268709233302082eb2dc08753499ac3a69a983a598f41ab9a9383dae7e2"
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js/bootstrap.rs",
+      "sha256": "0210c1f17ec80959aa071724e1a612b181f72715d20afcbd29226674636d6d05"
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js/harness.js",
+      "sha256": "8d3be5ef1b78d302cb2da745c63f8d2e1222115c49a8d08f1096bca7d235c237"
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js/services/kv.js",
+      "sha256": "6588b315acb0e8ca19728ed027972ac5adde877f54b245ee8879346df60746bf"
+    },
+    {
+      "path": "celld-os-project/celld/crates/logic/kv.rs",
+      "sha256": "a6330ace5fbda162245c816cace4e65778db80a354f1f36232c96042f9531520"
+    },
+    {
+      "path": "celld-os-project/celld/docs/services/kv.md",
+      "sha256": "a434f1864678ac78b193f482dd0b621c22879596ed703c46a1a5474181d2c294"
+    },
+    {
+      "path": "celld-os-project/celld/docs/testing.md",
+      "sha256": "dafe8638e0de082d104595d5e84cdb6b8feb9094496fef2e7a56b6d8b7f4c366"
+    },
+    {
+      "path": "celld-os-project/celld/examples/kv/index.js",
+      "sha256": "479317f9afa3b2d08df20b7fd0ee8d14c1ec5f16258cc09cddb30c27359f0ad9"
+    },
+    {
+      "path": "celld-os-project/celld/examples/kv/wrangler.jsonc",
+      "sha256": "6aaa89a015facbd0b0ef8687fc9794a1814ef1c4bf29f804fd1046c73069c1c1"
+    },
+    {
+      "path": "celld-os-project/tests/ACCEPTANCE.md",
+      "sha256": "225d224b02186c96adde8415069286f67b63da5b4bc8938a5c19bc29b4b46256"
+    },
+    {
+      "path": "celld-os-project/tests/README.md",
+      "sha256": "22e06588b95ccaa267bb1befe20987fdc90778a3c057c718c9fe2dbd66c8af74"
+    },
+    {
+      "path": "celld-os-project/tests/foreign-class/provider.js",
+      "sha256": "57f61f6a381881ef8442ffee08cb8d24cb386dc0c01bd4f457021acde5afd25e"
+    },
+    {
+      "path": "celld-os-stress/COUNTS.json",
+      "sha256": "8221870307e3a6aa652f68df167a636d1235b2babd0573753809c94adde72be2"
+    },
+    {
+      "path": "celld-os-stress/README.md",
+      "sha256": "478ba102b90eb4a9021a1b2fa60095da1f2c1b2d7a82af5266ca5d8ac651c387"
+    },
+    {
+      "path": "celld-os-stress/SOURCE-FILES.json",
+      "sha256": "eeab75b82b6ef052c9728b1b36cbd343ba656f655f4692ae693aff82e5d586bc"
+    }
+  ]
+}

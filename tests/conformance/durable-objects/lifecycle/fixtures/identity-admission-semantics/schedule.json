@@ -1,0 +1,63 @@
+{
+  "runtime_status": "UNRUN",
+  "run_order": [
+    "A201",
+    "A202",
+    "A203",
+    "A204",
+    "A205"
+  ],
+  "entrypoints": [
+    {
+      "method": "GET",
+      "path": "/case/A201"
+    },
+    {
+      "method": "GET",
+      "path": "/case/A202"
+    },
+    {
+      "method": "GET",
+      "path": "/case/A203"
+    },
+    {
+      "method": "GET",
+      "path": "/case/A204"
+    },
+    {
+      "method": "GET",
+      "path": "/case/A205"
+    }
+  ],
+  "limits": {
+    "max_external_case_requests": 1,
+    "max_created_roots": 3,
+    "max_supervisor_do_fetches": 100,
+    "max_total_do_fetches_including_target_control": 110,
+    "max_concurrent_supervisor_fetches": 3,
+    "max_control_poll_calls": 60,
+    "poll_interval_ms": 15,
+    "control_successful_fallback_ms": 2500,
+    "max_control_entries": 2,
+    "max_keys_per_root": 1,
+    "max_value_characters": 32,
+    "max_name_utf8_bytes": 1025,
+    "max_total_name_bytes": 3074,
+    "max_response_bytes": 65536,
+    "trace_deadline_ms": 6000,
+    "cleanup_deadline_ms": 3500,
+    "external_http_deadline_seconds": 12,
+    "external_case_process_deadline_seconds": 20,
+    "external_wave_deadline_seconds": 120,
+    "external_rss_limit_bytes": 1073741824
+  },
+  "schedule": "Cases A201-A203 have written dependency-ordered valid identity calls. A204/A205 use two genuine target incoming fetches, a separately addressed Control DO, and an independent peer; no local replacement object registry. One wave request at a time.",
+  "runtime_requirements": [
+    "Independent exact source/binary/build pins and reviewed deployed fixture hashes.",
+    "Fresh private direct-celld deployment; all four declared classes migrated.",
+    "One-GiB process envelope, external hard deadline/reap, fresh owned store.",
+    "No topology claim: real DO roots/control need not be on different hosts.",
+    "Full OS and restart acceptance require separate evidence and remain unclaimed."
+  ],
+  "result_gate": "HTTP 200, ASSERTIONS_SATISFIED, traceSettled true, all nonempty assertions true, zero fallback, identity-correlated responses, COMPLETE empty owned-storage cleanup, independently verified final process/store teardown."
+}

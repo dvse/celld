@@ -1,0 +1,59 @@
+{
+  "adapter": "topology",
+  "behaviour": "fetch-and-http",
+  "contract": {
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "HTTP declared response-body length is absent from RPC stream tests",
+    "implementation": "cases.js:H013",
+    "intent": "Preserve declared length through streamed response",
+    "oracle": "Content-Length32771 survives; each response has its own exact bytes and stable EOF; no connection-reuse claim",
+    "preconditions": [
+      "Known32771-byte streamed body with explicit length; independent16387-byte unknown-length body",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Open known-length response and verify header",
+      "Read known prefix",
+      "Drain unknown-length sibling",
+      "Release known tail and drain exact body"
+    ]
+  },
+  "corpus_id": "H013",
+  "corpus_wave": "http-stream-stress",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/body-streaming",
+  "id": "conformance/fetch-and-http/preserve-declared-length-through-streamed-response",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/http-stream-stress/H013"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/http-stream-stress/H013",
+      "source": "guarded-source-archive/celld-os-stress/waves/http-stream-stress"
+    },
+    {
+      "sha256": "bc36e6548386869fea496e7073ebc08ff4a068d89f1860e89f28a03515006e6b",
+      "source": "guarded-source-archive/celld-os-stress/waves/http-stream-stress/fixture.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "H013",
+  "source": "tests/conformance/fetch-and-http/fixtures/body-streaming/fixture.js",
+  "source_sha256": "bc36e6548386869fea496e7073ebc08ff4a068d89f1860e89f28a03515006e6b",
+  "title": "Preserve declared length through streamed response"
+}

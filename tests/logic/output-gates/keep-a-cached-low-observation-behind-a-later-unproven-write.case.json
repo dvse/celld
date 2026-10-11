@@ -1,0 +1,54 @@
+{
+  "id": "logic/output-gates/keep-a-cached-low-observation-behind-a-later-unproven-write",
+  "layer": "logic",
+  "behaviour": "output-gates",
+  "title": "Keep a cached low observation behind a later unproven write",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/output-gate-logic",
+      "legacy_id": "corpus/output-gate-logic/G006"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/output-gate-logic/tests/output_gate.rs",
+      "sha256": "4111d744a514b64a36f285dbf4a8b51ca56ce3f3f128dbd5ea1cc188ebed88ba"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/output-gate-logic/G006"
+  ],
+  "adapter": "native",
+  "corpus_id": "G006",
+  "corpus_wave": "output-gate-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/output-gates/fixtures/decision-cases/tests/output_gate.rs",
+  "source_sha256": "4111d744a514b64a36f285dbf4a8b51ca56ce3f3f128dbd5ea1cc188ebed88ba",
+  "test_filter": "g006_cached_observation_still_trails_later_unproven_state",
+  "contract": {
+    "intent": "Keep a cached low observation behind a later unproven write",
+    "preconditions": [
+      "Fresh State::new(\"fixture\", config) in this test only; no direct State field mutation",
+      "Initial config is fully pinned in profile.json; actual celld-logic::on_event is the only transition",
+      "For each resident: RequestAt -> OwnerRead (absent or exact prior local epoch) -> OwnerCasCompleted Applied -> RestoreCompleted -> RuntimeStarted generation1 -> Published; expect Local and exact epoch",
+      "Every real completion operation ID is captured from an exact emitted effect; G017 deliberately supplies gate+1000 as an unknown-op negative control. Every transition calls State::validate",
+      "No actual clock, I/O, runtime, object store, host credentials, or external traffic; source/pin/toolchain preflight required"
+    ],
+    "trace": [
+      "prove writer1 Response10",
+      "writer2 Fetch20 pending",
+      "reader3 Service observes5",
+      "fail20",
+      "reset",
+      "independent witness"
+    ],
+    "oracle": "Reader waits despite cached5 coverage;2 and3 fail together; independent cell succeeds",
+    "cleanup": "Finish explicit request activities/reset/runtime transitions shown in test. Drop the test-owned State at return or unwind; all state is in-memory and isolated. No production resource is created. Runner reaps only its owned compiler/test process groups and preserves evidence.",
+    "implementation": "tests/output_gate.rs:g006_cached_observation_still_trails_later_unproven_state"
+  },
+  "selector": "G006"
+}

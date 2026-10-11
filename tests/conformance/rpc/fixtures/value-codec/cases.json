@@ -1,0 +1,834 @@
+[
+  {
+    "id": "C001",
+    "intent": "Preserve cyclic by-value graph identity across object, array, Map keys and Set membership without sharing caller memory",
+    "preconditions": "COMMON; plain structured-clone graph, no capabilities",
+    "trace": [
+      "build shared leaf and parent cycle with Map key and Set members",
+      "round-trip through codecEcho",
+      "assert clone identity relations and mutate returned leaf",
+      "assert original caller leaf unchanged"
+    ],
+    "stress": "One round-trip, six ordinary graph nodes, two cycles, bounded alias fan-in",
+    "oracle": "Exact identity comparisons within receiver graph succeed; caller and returned identities differ; caller leaf remains 5",
+    "cleanup": "Shared codecCleanup removes per-tag state; ordinary graphs become unreachable",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-CLONE",
+      "SC-PROJECT"
+    ]
+  },
+  {
+    "id": "C002",
+    "intent": "Keep cyclic mixed container topology intact when a returned RpcTarget forces the lifted envelope",
+    "preconditions": "COMMON; peer implements codecMixedGraph and CodecToken",
+    "trace": [
+      "request cyclic mixed graph with one live target",
+      "verify self/back edges and shared Map/Set identities",
+      "invoke nested target",
+      "dispose result tree"
+    ],
+    "stress": "One result with six graph nodes, one target, two cycles and Map/Set alias edges",
+    "oracle": "All graph identity relations remain exact; target returns mixed",
+    "cleanup": "Dispose result tree in finally, then shared codecCleanup; fixture teardown releases any failed-revival capability",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PROJECT",
+      "SC-LIFT",
+      "SC-REVIVE"
+    ]
+  },
+  {
+    "id": "C003",
+    "intent": "A lifted sparse array preserves holes and trailing length rather than densifying or truncating",
+    "preconditions": "COMMON; sparse array length 8 has only indices 2 and 4, the latter a target",
+    "trace": [
+      "receive sparse array with nested capability",
+      "compare length and exact enumerable index keys",
+      "verify holes at both ends",
+      "invoke index-4 target",
+      "dispose array result"
+    ],
+    "stress": "Length 8 with two occupied slots and a trailing hole run; one capability",
+    "oracle": "Length 8; keys exactly 2 and 4; indices 0 and 7 absent; target label sparse",
+    "cleanup": "Dispose array result in finally and shared codecCleanup; fixture teardown if assertion fails before full revival",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-CLONE",
+      "SC-PROJECT",
+      "SC-LIFT",
+      "SC-REVIVE"
+    ]
+  },
+  {
+    "id": "C004",
+    "intent": "Ordinary own __proto__ data survives lifting without altering the cloned object's prototype",
+    "preconditions": "COMMON; benign object owns an enumerable data property named __proto__ and one target; no reserved wire keys or raw envelopes",
+    "trace": [
+      "request object created using Object.defineProperty",
+      "verify own data property and its value",
+      "verify ordinary result prototype",
+      "call sibling capability"
+    ],
+    "stress": "One special ordinary property plus one target in a single result",
+    "oracle": "Own __proto__ exists with ordinary=data; actual prototype stays Object.prototype; sibling target returns proto-data",
+    "cleanup": "Dispose result tree in finally; shared codecCleanup and owned fixture teardown",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PROJECT",
+      "SC-LIFT",
+      "SC-REVIVE"
+    ]
+  },
+  {
+    "id": "C005",
+    "intent": "Argument projection snapshots enumerable getters only once before fallback capability lifting",
+    "preconditions": "COMMON; caller argument has two counted getters and a callable callback",
+    "trace": [
+      "build counted a and b getters with callback",
+      "send to codecReadGetter",
+      "callee reads snapshot fields and calls callback",
+      "compare local getter order, result and accepted count"
+    ],
+    "stress": "Two getters, one callback, one forward and one reverse call",
+    "oracle": "Getter log exactly a,b; values 7 and 8; callback getter-callback; receiver accepted exactly once",
+    "cleanup": "Call-end disposes callback parameter; shared codecCleanup and event teardown",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PROJECT",
+      "SC-LIFT",
+      "SC-ARG-DISPOSE"
+    ]
+  },
+  {
+    "id": "C006",
+    "intent": "A throwing argument getter aborts projection before later getters or receiver side effects",
+    "preconditions": "COMMON; first enumerable getter throws and second getter counts evaluation",
+    "trace": [
+      "submit getter-bearing argument",
+      "catch original getter rejection",
+      "verify first getter once and later getter never",
+      "verify receiver not entered",
+      "run healthy control RPC"
+    ],
+    "stress": "Two property slots, one projection failure and one recovery call",
+    "oracle": "Rejection includes argument-getter-stop; counts 1,0; accepted count zero; healthy control succeeds",
+    "cleanup": "No lifted resource is created; shared codecCleanup removes state",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PROJECT",
+      "SC-ENVELOPE"
+    ]
+  },
+  {
+    "id": "C007",
+    "intent": "Reject nested null-prototype objects before ordinary structured clone can erase their unsupported prototype",
+    "preconditions": "COMMON; nested array contains Object.create(null) with ordinary data",
+    "trace": [
+      "submit nested unsupported prototype",
+      "require DataCloneError",
+      "check zero receiver invocations",
+      "verify subsequent healthy RPC"
+    ],
+    "stress": "One unsupported node at array depth 2, no capabilities",
+    "oracle": "DataCloneError; codecAccept never runs; later control succeeds",
+    "cleanup": "Shared codecCleanup; no external resource or capability minted",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PROJECT",
+      "SC-CLONE"
+    ]
+  },
+  {
+    "id": "C008",
+    "intent": "Validate custom prototypes in Map keys as well as Map values before dispatch",
+    "preconditions": "COMMON; two-entry Map places ordinary object first and UnsupportedMapKey second",
+    "trace": [
+      "construct Map with unsupported class only in key position",
+      "submit Map argument",
+      "require DataCloneError and no receiver side effect",
+      "verify recovery"
+    ],
+    "stress": "Two Map entries, invalid second key after valid first entry",
+    "oracle": "Whole call rejected before accepted counter changes; receiver remains healthy",
+    "cleanup": "Shared codecCleanup; no runtime capability created",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PROJECT",
+      "SC-CLONE"
+    ]
+  },
+  {
+    "id": "C009",
+    "intent": "Reject a non-cloneable Set member atomically after traversing a Set self-cycle",
+    "preconditions": "COMMON; Set contains itself followed by a Symbol value",
+    "trace": [
+      "build cyclic Set containing an unsupported symbol",
+      "submit as argument",
+      "require DataCloneError without receiver dispatch",
+      "make healthy control call"
+    ],
+    "stress": "Two Set members including one self-edge; one failed argument encode",
+    "oracle": "DataCloneError, zero receiver entries and successful later control",
+    "cleanup": "Drop local Set and shared codecCleanup",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PROJECT",
+      "SC-LIFT",
+      "SC-ENVELOPE"
+    ]
+  },
+  {
+    "id": "C010",
+    "intent": "Characterize rollback of an unpublished result target when final graph encoding fails after target lift",
+    "preconditions": "COMMON; fresh owned fixture required; result insertion order is target then Symbol; disposer counted on peer",
+    "trace": [
+      "request result that lifts target before uncloneable Symbol",
+      "require DataCloneError",
+      "poll target disposer count before ending caller event",
+      "check target never called",
+      "verify healthy RPC"
+    ],
+    "stress": "One unpublished target; maximum 100 settlement checks at 10ms intervals",
+    "oracle": "Target disposer reaches exactly 1 within bounded settlement and calls stays zero; healthy control succeeds; lack of rollback is FAIL",
+    "cleanup": "Shared codecCleanup removes observations; always tear down owned fixture after this case because a leaked runtime entry has no public repair handle",
+    "isolation": "fresh-owned-fixture-required",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-LIFT",
+      "SC-ENVELOPE",
+      "SC-DISPOSE"
+    ]
+  },
+  {
+    "id": "C011",
+    "intent": "Characterize rollback of the first readable argument when lifting a later already-locked readable fails",
+    "preconditions": "COMMON; fresh owned fixture required; first stream unlocked, second stream held by caller reader",
+    "trace": [
+      "submit ordered object containing first stream then locked second stream",
+      "require locked-stream rejection",
+      "verify receiver was never called",
+      "poll first stream lock and cancel count",
+      "release second reader and clean up public handles"
+    ],
+    "stress": "Two streams, one held reader, at most 100 checks with 10ms spacing; no data production",
+    "oracle": "First origin unlocks and cancel executes once; receiver accepted zero; later RPC works; leaked lock is explicit FAIL/CLEANUP_BLOCKED",
+    "cleanup": "Cancel and release held reader in finally; cancel first stream only if unlocked; always owned fixture teardown, never hidden runtime table access",
+    "isolation": "fresh-owned-fixture-required",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-LIFT",
+      "SC-STREAM-LIFT",
+      "SC-ENVELOPE"
+    ]
+  },
+  {
+    "id": "C012",
+    "intent": "Characterize writable bridge cleanup when a result's final native encoding fails after acquiring its writer",
+    "preconditions": "COMMON; fresh owned fixture required; peer retains writable origin for lock/abort observation",
+    "trace": [
+      "request writable followed by Symbol in result",
+      "require DataCloneError",
+      "poll peer origin lock and abort count",
+      "verify healthy control",
+      "audit public cleanup"
+    ],
+    "stress": "One writable with zero writes and at most 100 settlement checks at 10ms intervals",
+    "oracle": "Origin becomes unlocked and abort count exactly 1; leaked writer blocks cleanup and is never called a pass",
+    "cleanup": "Shared cleanup aborts only an unlocked writable; locked origin reports CLEANUP_BLOCKED; always owned fixture teardown",
+    "isolation": "fresh-owned-fixture-required",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-STREAM-LIFT",
+      "SC-LIFT",
+      "SC-ENVELOPE"
+    ]
+  },
+  {
+    "id": "C013",
+    "intent": "Reject an unresolved RpcPromise embedded as argument data while preserving its original awaitability",
+    "preconditions": "COMMON; existing rpc.js Surface fixture and exported RpcPromise brand; real target.method() result must satisfy instanceof RpcPromise or BLOCKED",
+    "trace": [
+      "mint existing Surface target",
+      "start target.method without awaiting and verify RpcPromise brand",
+      "send handle nested in another argument and require DataCloneError",
+      "await original handle and verify private-value plus actual peer root",
+      "verify rejected receiver was never entered"
+    ],
+    "stress": "One real returned RpcTarget, two call handles and one invalid nested branded RpcPromise",
+    "oracle": "DataCloneError; original branded RpcPromise returns private-value with actual peer root; accepted counter stays zero",
+    "cleanup": "Settle/dispose original promise and minted target in finally; shared codecCleanup",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PROMISES",
+      "SC-PROJECT",
+      "SC-LIFT"
+    ]
+  },
+  {
+    "id": "C014",
+    "intent": "Reject a lazy RpcProperty embedded as data without consuming the property's later ordinary fetch",
+    "preconditions": "COMMON; existing rpc.js extendRoot supplies mint, Surface.exposed and effectCount; property must satisfy instanceof RpcProperty or BLOCKED",
+    "trace": [
+      "mint existing Surface and record getter counter",
+      "obtain exposed property handle and verify RpcProperty brand",
+      "submit nested property handle and require DataCloneError",
+      "verify getter counter unchanged after serialization rejection",
+      "explicitly await property and verify counter increment exactly one",
+      "verify no codecAccept entry"
+    ],
+    "stress": "One target, one lazy property handle and one rejected serialization",
+    "oracle": "DataCloneError; getter count unchanged after rejection and exactly plus one after explicit await; property instance-only; accepted count zero",
+    "cleanup": "Dispose minted target in finally, then shared codecCleanup",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PROMISES",
+      "SC-LIFT"
+    ]
+  },
+  {
+    "id": "C015",
+    "intent": "Clone Headers with merged ordinary entries and separate Set-Cookie entries as a detached snapshot",
+    "preconditions": "COMMON; Headers.getSetCookie available on received Headers or typed CodecPreconditionError produces BLOCKED",
+    "trace": [
+      "receive Headers with differently cased list fields and two cookies",
+      "check brand and exact list/cookie values",
+      "mutate peer original Headers",
+      "recheck caller snapshot"
+    ],
+    "stress": "Four initial header entries and one later server-side mutation",
+    "oracle": "List is first, second; cookies remain a=1 and b=2 separately; peer mutation does not change caller",
+    "cleanup": "Shared codecCleanup releases retained peer Headers",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-HOST",
+      "SC-REVIVE"
+    ]
+  },
+  {
+    "id": "C016",
+    "intent": "Blob serialization respects typed-array source view boundaries and pre-construction copying",
+    "preconditions": "COMMON; Blob constructed from a three-byte view between sentinels, then source backing array overwritten",
+    "trace": [
+      "construct Blob from bounded subarray and mutate backing bytes",
+      "round-trip nested Blob",
+      "check Blob brand and normalized MIME",
+      "read and compare exact bytes"
+    ],
+    "stress": "Five-byte backing array, three-byte payload, one nested Blob",
+    "oracle": "Received bytes exactly 0,128,255 with no sentinels or overwritten bytes; application/x-codec MIME",
+    "cleanup": "Shared codecCleanup; all Blob data by value",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-HOST",
+      "SC-REVIVE"
+    ]
+  },
+  {
+    "id": "C017",
+    "intent": "File revival keeps File subtype, Unicode name and an explicit zero lastModified",
+    "preconditions": "COMMON; File constructor separately checked on caller and provider; missing API throws typed CodecPreconditionError and produces BLOCKED",
+    "trace": [
+      "request nested File with three binary bytes",
+      "check File and Blob brands",
+      "compare name, timestamp, normalized MIME and size",
+      "read bytes"
+    ],
+    "stress": "One three-byte File with non-ASCII filename and zero timestamp",
+    "oracle": "résumé.bin; lastModified exactly 0; application/x-codec; size 3; exact binary payload",
+    "cleanup": "Shared codecCleanup; by-value File has no live RPC lease",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-HOST",
+      "SC-REVIVE"
+    ]
+  },
+  {
+    "id": "C018",
+    "intent": "Buffered Request transport preserves HTTP metadata and binary body when consumed only by the RPC recipient",
+    "preconditions": "COMMON; Request URL is inert codec.invalid data and must never be fetched",
+    "trace": [
+      "construct POST Request with manual redirect, header and three-byte body",
+      "pass Request to peer",
+      "peer verifies brand and consumes arrayBuffer",
+      "compare exact metadata, bytes and bodyUsed"
+    ],
+    "stress": "One buffered Request, three body bytes, no external traffic",
+    "oracle": "Expected URL, POST method, manual redirect, header and bytes; receiver bodyUsed true after read",
+    "cleanup": "Receiver fully consumes body; shared codecCleanup and event teardown",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-HOST",
+      "SC-REVIVE"
+    ]
+  },
+  {
+    "id": "C019",
+    "intent": "A bodyless Response keeps a null body through host marker revival rather than acquiring a stream",
+    "preconditions": "COMMON; provider constructs legal 204 Response with null body and custom statusText",
+    "trace": [
+      "receive bodyless Response",
+      "verify brand and null body before reading",
+      "compare status, custom text and header",
+      "read empty text"
+    ],
+    "stress": "One null-body response with three metadata fields",
+    "oracle": "Body remains null; status 204; No Payload text; null-body header; text() empty",
+    "cleanup": "No stream resource created; shared codecCleanup",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-HOST",
+      "SC-REVIVE"
+    ]
+  },
+  {
+    "id": "C020",
+    "intent": "Characterize transport of Response.error without ordinary status validation rejecting status zero",
+    "preconditions": "COMMON; provider uses legal Response.error factory",
+    "trace": [
+      "request a network-error Response as successful RPC data",
+      "check Response brand, error type, status zero and null body",
+      "verify next control RPC"
+    ],
+    "stress": "One error Response, no body or real network activity",
+    "oracle": "RPC fulfills with Response type error, status 0 and body null; later control works",
+    "cleanup": "Shared codecCleanup; no external request or stream",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-HOST",
+      "SC-REVIVE"
+    ]
+  },
+  {
+    "id": "C021",
+    "intent": "Characterize alias identity of a by-value host object used in ordinary paths and as Map key/value",
+    "preconditions": "COMMON; one Headers instance appears in four result locations",
+    "trace": [
+      "request shared Headers graph",
+      "compare object/list identities",
+      "look up Map using revived root Headers and compare value identity",
+      "mutate through one alias and read another"
+    ],
+    "stress": "One host object, four references, one Map",
+    "oracle": "All four paths resolve same host identity; Map lookup works with revived root; mutation shared across aliases",
+    "cleanup": "Shared codecCleanup; by-value host graph has no RPC capabilities",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-LIFT",
+      "SC-REVIVE"
+    ]
+  },
+  {
+    "id": "C022",
+    "intent": "Retain backing-buffer aliasing, view types and offsets when binary leaves share a result with a capability",
+    "preconditions": "COMMON; peer creates one buffer with overlapping Uint8Array and DataView plus RpcTarget",
+    "trace": [
+      "receive mixed binary/capability graph",
+      "compare buffer identity and view offsets/lengths",
+      "compare view bytes against sentinels",
+      "mutate overlap and read through DataView",
+      "invoke capability"
+    ],
+    "stress": "Six-byte buffer, two overlapping views, one capability",
+    "oracle": "Both views share returned buffer; offsets 1 and 2; exact view bytes; cross-view mutation 61 visible; target views callable",
+    "cleanup": "Dispose result tree in finally; shared codecCleanup",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-CLONE",
+      "SC-LIFT",
+      "SC-REVIVE"
+    ]
+  },
+  {
+    "id": "C023",
+    "intent": "Ordinary RPC clones ArrayBuffer-backed arguments without detaching or sharing the caller's buffer",
+    "preconditions": "COMMON; caller owns three-byte Uint8Array; peer mutates the received copy and returns it",
+    "trace": [
+      "send typed array to mutating peer",
+      "verify caller buffer remains attached and unchanged",
+      "verify returned peer mutation",
+      "mutate returned array and recheck caller"
+    ],
+    "stress": "Three-byte argument, two mutation sites across round-trip",
+    "oracle": "Caller bytes stay 1,2,3 and byteLength 3; returned middle byte 77; later result mutation not reflected in caller",
+    "cleanup": "Shared codecCleanup; no transfer list or native handle created",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-CLONE",
+      "SC-ENVELOPE"
+    ]
+  },
+  {
+    "id": "C024",
+    "intent": "Preserve non-JSON numeric representations and explicit undefined slots within a capability-bearing envelope",
+    "preconditions": "COMMON; peer returns fixed mixed numeric vector plus one target",
+    "trace": [
+      "receive numeric vector with lifted target",
+      "check own undefined slot and signed zero using non-JSON predicates",
+      "check NaN, infinities and exact signed bigints",
+      "invoke target"
+    ],
+    "stress": "Seven fixed scalar representations and one capability; no size/seed variants",
+    "oracle": "Undefined remains present; Object.is(-0), Number.isNaN and exact infinity/bigint comparisons succeed",
+    "cleanup": "Dispose result tree in finally; shared codecCleanup; evidence converts bigint to decimal strings",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-CLONE",
+      "SC-LIFT"
+    ]
+  },
+  {
+    "id": "C025",
+    "intent": "Preserve Date/RegExp native clone behavior instead of traversing their properties during capability lift",
+    "preconditions": "COMMON; graph contains negative-epoch and invalid Date, stateful RegExp and target",
+    "trace": [
+      "request mixed native-leaf graph",
+      "verify Date and RegExp brands",
+      "compare negative timestamp, invalid-date NaN, pattern and flags",
+      "verify RegExp lastIndex resets under structured clone",
+      "call sibling target"
+    ],
+    "stress": "Three native leaves and one capability in one result",
+    "oracle": "Native types retained; timestamp -123456789; invalid Date remains invalid; /codec/gi with lastIndex 0",
+    "cleanup": "Dispose result in finally; shared codecCleanup",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-CLONE",
+      "SC-LIFT"
+    ]
+  },
+  {
+    "id": "C026",
+    "intent": "Characterize rich exception serialization including cause and cyclic custom own data under the pinned legacy profile",
+    "preconditions": "COMMON; current 2026-01-01 profile does not imply enhanced_error_serialization; use only as characterization",
+    "trace": [
+      "invoke peer TypeError with cause, code and cyclic details",
+      "catch reconstructed Error",
+      "check effective fields and cause",
+      "check details self-cycle and exactly one provider throw",
+      "verify recovery"
+    ],
+    "stress": "One exception with nested cause and a two-field cyclic details object",
+    "oracle": "name/message/code/cause preserved, details cycle intact, one throw and successful control; no custom-class instanceof contract assumed",
+    "cleanup": "Shared codecCleanup; exception carries no capabilities",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-ERRORS",
+      "SC-ERROR-DOC"
+    ]
+  },
+  {
+    "id": "C027",
+    "intent": "Characterize safe error-envelope fallback when a custom error property is an unserializable function",
+    "preconditions": "COMMON; error owns a callback that increments peer state if invoked",
+    "trace": [
+      "invoke error with callback property",
+      "catch fallback exception",
+      "check name/message and absence of callable property",
+      "verify callback never executed",
+      "verify recovery"
+    ],
+    "stress": "One exception and one unsupported own property; no callback invocation requested",
+    "oracle": "Fallback retains FixtureFallbackError and fallback-failure; callback absent; call counter zero; peer usable",
+    "cleanup": "Shared codecCleanup; fallback must not lift or grant the function",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-ERRORS",
+      "SC-ERROR-DOC"
+    ]
+  },
+  {
+    "id": "C028",
+    "intent": "Characterize thrown non-Error object topology without silently converting it into an Error",
+    "preconditions": "COMMON; provider throws a plain object that points to itself",
+    "trace": [
+      "invoke plain-object throw",
+      "catch reason",
+      "check non-Error kind, reason field and self-cycle",
+      "verify subsequent healthy RPC"
+    ],
+    "stress": "One thrown object with one self-edge",
+    "oracle": "Caught value is non-Error object with reason plain-object and self===value; control succeeds",
+    "cleanup": "Shared codecCleanup; by-value rejection becomes unreachable",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-ERRORS"
+    ]
+  },
+  {
+    "id": "C029",
+    "intent": "Distinguish throw undefined from successful undefined return at the exception-envelope boundary",
+    "preconditions": "COMMON; provider increments throw counter and explicitly throws undefined",
+    "trace": [
+      "invoke provider inside explicit try/catch",
+      "record whether catch ran separately from caught value",
+      "assert caught undefined and exactly one throw",
+      "verify recovery"
+    ],
+    "stress": "One zero-payload rejection and one healthy control",
+    "oracle": "Catch executes with value undefined; no accidental fulfillment; provider count one",
+    "cleanup": "Shared codecCleanup",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-ERRORS",
+      "SC-ENVELOPE"
+    ]
+  },
+  {
+    "id": "C030",
+    "intent": "Propagate an asynchronous callee rejection after one completed reverse callback without replaying the callback",
+    "preconditions": "COMMON; callee awaits caller callback then throws",
+    "trace": [
+      "pass callback recording received argument",
+      "callee invokes and awaits it then rejects",
+      "verify exact local callback sequence",
+      "verify callee accepted and threw once",
+      "verify recovery"
+    ],
+    "stress": "One forward call, one reverse callback and one post-callback rejection",
+    "oracle": "Callback log exactly before-reject; exception includes after-callback; accepted and throws both one; peer healthy",
+    "cleanup": "Call-end releases parameter stub; shared codecCleanup and request teardown",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-ARG-DISPOSE",
+      "SC-ERRORS"
+    ]
+  },
+  {
+    "id": "C031",
+    "intent": "Treat an Error nested in a successful result as data rather than a remote exception envelope",
+    "preconditions": "COMMON; peer returns an ordinary object containing RangeError with cause and scalar sibling",
+    "trace": [
+      "await successful result containing Error",
+      "verify sibling and Error data fields",
+      "verify no exception-only remote marker injected"
+    ],
+    "stress": "One Error data leaf with cause and one sibling scalar",
+    "oracle": "Call fulfills; value 42; RangeError/value-error and value-cause preserved; remote flag not true",
+    "cleanup": "Shared codecCleanup; no live capability",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-CLONE",
+      "SC-ERRORS"
+    ]
+  },
+  {
+    "id": "C032",
+    "intent": "Retain a thrown DOMException's semantic name instead of reducing every exception to Error",
+    "preconditions": "COMMON; peer throws DOMException named DataCloneError with fixed message",
+    "trace": [
+      "invoke semantic DOMException throw",
+      "compare name and message",
+      "verify subsequent healthy call"
+    ],
+    "stress": "One named exception crossing one boundary",
+    "oracle": "DataCloneError and dom-codec-failure preserved; healthy control succeeds; DOMException instanceof not required",
+    "cleanup": "Shared codecCleanup",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-ERRORS",
+      "SC-ERROR-DOC"
+    ]
+  },
+  {
+    "id": "C033",
+    "intent": "Keep concurrent successful clone results and an exception attached to their own calls",
+    "preconditions": "COMMON; three calls share peer and tag but return distinct left/error/right values",
+    "trace": [
+      "launch fixed three-call allSettled fanout",
+      "assert fulfilled/rejected/fulfilled in request order",
+      "check left array, middle exception and right Map exact data",
+      "check two accepts and one throw"
+    ],
+    "stress": "Exactly three concurrent RPCs, one intentional rejection, no retry or seed grid",
+    "oracle": "No sibling contamination, correct response association and exact invocation counts",
+    "cleanup": "allSettled observes every result; shared codecCleanup",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-ENVELOPE",
+      "SC-ERRORS"
+    ]
+  },
+  {
+    "id": "C034",
+    "intent": "Characterize rich exception fields across both reverse callback and forward relay boundaries",
+    "preconditions": "COMMON; caller callback throws an Error with cause/code; callee awaits and relays its rejection",
+    "trace": [
+      "send throwing caller callback to peer relay",
+      "catch twice-transported error",
+      "verify original callback ran exactly once",
+      "verify message/code/cause after second envelope",
+      "verify peer recovery"
+    ],
+    "stress": "Two exception serialization boundaries in one request and one callback",
+    "oracle": "One callback call; callback-origin, E_CALLBACK and callback-cause preserved; healthy control succeeds",
+    "cleanup": "Call-end releases callback stub; shared codecCleanup and request teardown",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-ERRORS",
+      "SC-ERROR-DOC",
+      "SC-ARG-DISPOSE"
+    ]
+  },
+  {
+    "id": "C035",
+    "intent": "Characterize effective non-enumerable Error name independent from enumerable custom property transport",
+    "preconditions": "COMMON; provider defines non-enumerable name FixtureNamedError and enumerable code",
+    "trace": [
+      "invoke custom-named Error throw",
+      "check effective name, message and code",
+      "check reconstructed generic Error brand without custom-class identity assumption",
+      "verify recovery"
+    ],
+    "stress": "One non-enumerable name property plus one ordinary code",
+    "oracle": "FixtureNamedError/named-failure/E_NAME preserved and result remains Error-compatible",
+    "cleanup": "Shared codecCleanup",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-ERRORS",
+      "SC-ERROR-DOC"
+    ]
+  },
+  {
+    "id": "C036",
+    "intent": "Snapshot provider result getters once per call even when each result also mints a capability",
+    "preconditions": "COMMON; provider creates enumerable sequence getter backed by tag-scoped counter",
+    "trace": [
+      "request first getter/capability result",
+      "request second result",
+      "compare sequences and total getter count",
+      "call both retained target handles",
+      "dispose both result trees"
+    ],
+    "stress": "Two sequential result projections and two simultaneously retained targets",
+    "oracle": "Sequences exactly 1 and 2; getter counter 2; both targets remain usable",
+    "cleanup": "Dispose second then first result in finally; shared codecCleanup",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PROJECT",
+      "SC-LIFT",
+      "SC-DISPOSE"
+    ]
+  },
+  {
+    "id": "C037",
+    "intent": "Ignore non-enumerable and symbol-keyed data during projection even when hidden fields would throw or fail cloning",
+    "preconditions": "COMMON; result has non-enumerable throwing getter, symbol-keyed unsupported class and visible target",
+    "trace": [
+      "request mixed visible/hidden result",
+      "verify only visible payload crosses",
+      "check hidden getter counter stays zero",
+      "check symbol-keyed unsupported payload did not cross",
+      "call visible target"
+    ],
+    "stress": "One hidden getter, one symbol-keyed unsupported value and one visible capability",
+    "oracle": "Visible value and target work; hidden getter calls zero; hidden own property and symbol-keyed payload absent",
+    "cleanup": "Dispose result in finally; shared codecCleanup",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PROJECT",
+      "SC-LIFT"
+    ]
+  },
+  {
+    "id": "C038",
+    "intent": "Characterize pinned celld plain-Proxy snapshot/access-count behavior, explicitly diverging from upstream Workers proxy-as-stub semantics",
+    "preconditions": "COMMON; peer returns Proxy over ordinary object containing scalar and nested target; only field reads counted; this expected snapshot is a native implementation characterization, not the upstream proxy-as-stub contract",
+    "trace": [
+      "request plain-emulating Proxy result",
+      "verify scalar and invoke nested capability",
+      "verify field get trap ran once",
+      "verify caller receives ordinary object prototype"
+    ],
+    "stress": "One Proxy, one counted scalar access, one nested capability",
+    "oracle": "proxy-field and proxy-data arrive; exactly one field read; ordinary result prototype",
+    "cleanup": "Dispose result tree in finally; shared codecCleanup",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-PROJECT",
+      "SC-LIFT",
+      "SC-REVIVE"
+    ],
+    "source_scope": "pinned-celld-only; not a Workers conformance promotion gate"
+  },
+  {
+    "id": "C039",
+    "intent": "Characterize revival of a capability stored in an enumerable non-index array property",
+    "preconditions": "COMMON; array has one numeric element and extra.token outside its indexed range",
+    "trace": [
+      "receive array with ordinary index and extra property",
+      "verify array length and indexed data",
+      "verify extra property is present",
+      "call its nested target"
+    ],
+    "stress": "One indexed array element, one non-index enumerable property and one target",
+    "oracle": "Length 1, indexed value 13, extra property retained and target array-extra callable",
+    "cleanup": "Dispose result tree in finally; fixture teardown releases any capability omitted by failed revival; shared codecCleanup",
+    "layer": "real-process-RPC",
+    "gate": "characterization",
+    "source_contracts": [
+      "SC-PROJECT",
+      "SC-LIFT",
+      "SC-REVIVE"
+    ]
+  },
+  {
+    "id": "C040",
+    "intent": "Reject native Promise values nested in arguments without treating them as top-level return thenables",
+    "preconditions": "COMMON; already-settled ordinary Promise nested inside argument array",
+    "trace": [
+      "create settled native Promise",
+      "submit Promise as nested data",
+      "require DataCloneError and no receiver invocation",
+      "await original Promise",
+      "verify subsequent healthy RPC"
+    ],
+    "stress": "One settled native Promise at depth 2 and one rejected argument call",
+    "oracle": "Nested Promise rejected; original resolves its exact object; receiver accepted zero and remains usable",
+    "cleanup": "Original Promise observed and settled; shared codecCleanup",
+    "layer": "real-process-RPC",
+    "gate": "promotion",
+    "source_contracts": [
+      "SC-PROJECT",
+      "SC-PROMISES"
+    ]
+  }
+]

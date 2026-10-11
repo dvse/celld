@@ -1,0 +1,483 @@
+{
+  "branch": "fixes",
+  "commit": "c877e5523378b189a4dc3e5798572b8d03a81345",
+  "files": [
+    {
+      "path": "tests/regressions/R4-01/README.md",
+      "sha256": "9ef2fa2cbeadd093224638b4baf086e09899a52e13d0f31e7e0d49f56502904d"
+    },
+    {
+      "path": "tests/regressions/R4-01/case.json",
+      "sha256": "556c262d97ac20efb43b98d4fa4bdc605285e3a7901d80c418a9c984e0470833"
+    },
+    {
+      "path": "tests/regressions/R4-01/expected.json",
+      "sha256": "79becc56cacc2f6e158258f9bb105b81e946cf302d9dc43ed7223ffcddc5233f"
+    },
+    {
+      "path": "tests/regressions/R4-01/index.js",
+      "sha256": "7f29e47df6b0a0d60de3962007c2f9d1b6849460295ad72008b7c353d9ed3635"
+    },
+    {
+      "path": "tests/regressions/R4-01/wrangler.jsonc",
+      "sha256": "f0058fb9780bad3b1adab9254176d931033fb59f71082ee77f9cca7ea59f0ae2"
+    },
+    {
+      "path": "tests/regressions/R4-02/README.md",
+      "sha256": "cb125c21f860a9eb05c52a9dfe6c3f3319836312f212ed77cead2aeb6006bd86"
+    },
+    {
+      "path": "tests/regressions/R4-02/case.json",
+      "sha256": "bf6b780c9a59b2972d889cd8aff4753f2fd53b9f7804832c4ac2a91fb572e158"
+    },
+    {
+      "path": "tests/regressions/R4-02/http/expected.json",
+      "sha256": "a236ab292ebe281971439255bfb5301c4e8691663e72bc1c7267bf0cd540b44d"
+    },
+    {
+      "path": "tests/regressions/R4-02/http/index.js",
+      "sha256": "642780b8b9b44fa1ac31488096abfca8abb8090ed1ef43e3cd2e7e07c60978c4"
+    },
+    {
+      "path": "tests/regressions/R4-02/http/wrangler.jsonc",
+      "sha256": "773625bd7c7ed915eb7db0071efaeb9572c7939a509bf081604e94e6c1d1a541"
+    },
+    {
+      "path": "tests/regressions/R4-02/run.mjs",
+      "sha256": "9af1b2d370292be020f6f2481e7e3ccca8cf144852fa581560d27823e6ec0e9e"
+    },
+    {
+      "path": "tests/regressions/R4-02/run.py",
+      "sha256": "530b28a574214590c2cad00bda59b52c99e544e9a51aa3116e35955451742441"
+    },
+    {
+      "path": "tests/regressions/R4-03/README.md",
+      "sha256": "4197304f9e47e3d16eac5eb56c7b0e33d8a3b5ead230eb9d3bf8c3a8575cf2f8"
+    },
+    {
+      "path": "tests/regressions/R4-03/case.json",
+      "sha256": "5abf40b2e3e88f16b2bb4183fa19c86a13489ba92bf99a39f866670d4a001836"
+    },
+    {
+      "path": "tests/regressions/R4-03/run.mjs",
+      "sha256": "cdfe077c46b37faa535021f45330d251c28eca380f8501c57c80d66627bf115f"
+    },
+    {
+      "path": "tests/regressions/R4-04/README.md",
+      "sha256": "d96e40eb2433b3894e0210da21691e15fb77d4a33584acab9d89bb76b131e3ac"
+    },
+    {
+      "path": "tests/regressions/R4-04/case.json",
+      "sha256": "19bc5db672f1c79cd8ca0f24133413796fe080bd86d1ab6c61316908517bddd0"
+    },
+    {
+      "path": "tests/regressions/R4-04/native.rs",
+      "sha256": "d7c8c5afd758f9c748e609fe81e378259d213c2c8a737ce73cb99b075d83bfe7"
+    },
+    {
+      "path": "tests/regressions/R4-04/run.py",
+      "sha256": "52e83548300430c4490f23722f1196f359f20349b3f93b3f57c5228984b82c67"
+    },
+    {
+      "path": "tests/regressions/R4-05/README.md",
+      "sha256": "ff278bbd06d43754aaed2bef4604c8f029fc1585ac3265ae717d9c268f282b5e"
+    },
+    {
+      "path": "tests/regressions/R4-05/case.json",
+      "sha256": "04cc18e14861c487870522a71db6652233c30833aecd8e19c0ea025e366feb5b"
+    },
+    {
+      "path": "tests/regressions/R4-05/expected.json",
+      "sha256": "53155a650f98b35173a5f28f7f3779c7a9360921a3ca9bdc82a8a6115985da9f"
+    },
+    {
+      "path": "tests/regressions/R4-05/index.js",
+      "sha256": "da8c3dd89325b68247189e11b9dadcaf451abd60e4d4a1d217a7513dde0ae08b"
+    },
+    {
+      "path": "tests/regressions/R4-05/wrangler.jsonc",
+      "sha256": "2047291d7b090e7384347a4e61ca47253c0d565fc2ca7fb2e82b6c7a2b77776f"
+    },
+    {
+      "path": "tests/regressions/R4-06/README.md",
+      "sha256": "3617d4f734586002b0f4e0eac03e25aab0230b12c78835764469f3020e57cc7b"
+    },
+    {
+      "path": "tests/regressions/R4-06/case.json",
+      "sha256": "74087f8e315183655aa277804df6a9fa57782fa2377e4737dafb42cd755001f0"
+    },
+    {
+      "path": "tests/regressions/R4-06/expected.json",
+      "sha256": "e9dcb4fcab9dcdce6712ce5d9bbd24678a530ff549b7092d0009d8433c255875"
+    },
+    {
+      "path": "tests/regressions/R4-06/index.js",
+      "sha256": "54d136fbe82deb4dc09495013fbfb4cdce3deeaecee31eed2a92e88644d314b3"
+    },
+    {
+      "path": "tests/regressions/R4-06/wrangler.jsonc",
+      "sha256": "9167415f93f39ebb5d9f6f809f7ddeb3828417607026d734f6e6270a54e28278"
+    },
+    {
+      "path": "tests/regressions/R4-07/README.md",
+      "sha256": "bd77b37b73d8a54eb7cfb13bbe841dd5b0d3a78a9a5169598271aa50296220cf"
+    },
+    {
+      "path": "tests/regressions/R4-07/case.json",
+      "sha256": "3b9160d056c178cd2b4b8ea9e13f5f813dd0b46d70e62105dc76b7d9f9c320bb"
+    },
+    {
+      "path": "tests/regressions/R4-07/run.mjs",
+      "sha256": "6b2c2003083a8811ff6383bed399fd0b416727cdd2808679b0aaf8d3b59dd0c2"
+    },
+    {
+      "path": "tests/regressions/R4-08/README.md",
+      "sha256": "f960f2fc320677882206fdfedd0ebb23e784e89e139d87f9c37f311b0460549e"
+    },
+    {
+      "path": "tests/regressions/R4-08/case.json",
+      "sha256": "f9e345018ff63ed83afc5cbd6b69aa9697c80cac60db48635c4426a970cf6caf"
+    },
+    {
+      "path": "tests/regressions/R4-08/instance/expected.json",
+      "sha256": "c5f5dc387b3916407b9457802a7aee4d357f4518b73ace4e467e30ebcd4f2dfc"
+    },
+    {
+      "path": "tests/regressions/R4-08/instance/index.js",
+      "sha256": "fba792be88fac8e26d95012a4241cf3a842e982245253f8326a43f2486483f9d"
+    },
+    {
+      "path": "tests/regressions/R4-08/instance/wrangler.jsonc",
+      "sha256": "9bfa8eca918ecc5e8a106dcad01fc7600c6411e9879a508813b6f7bc930cc1b4"
+    },
+    {
+      "path": "tests/regressions/R4-08/prototype/expected.json",
+      "sha256": "d9ab1c470b1a807f9b484686084a0e4b79c01d719df36d6fc15c8a97a483db86"
+    },
+    {
+      "path": "tests/regressions/R4-08/prototype/index.js",
+      "sha256": "fba792be88fac8e26d95012a4241cf3a842e982245253f8326a43f2486483f9d"
+    },
+    {
+      "path": "tests/regressions/R4-08/prototype/wrangler.jsonc",
+      "sha256": "fdfbd16160571b157a3e035b0126db882a2b1ddd9cbdcf4a8f8938a005c39017"
+    },
+    {
+      "path": "tests/regressions/R4-08/run.py",
+      "sha256": "402ddc93a67b0676b751a5a0fe66d47aa6e0c84d57cab152a1a039593530465f"
+    },
+    {
+      "path": "tests/regressions/R4-09/README.md",
+      "sha256": "2a02072d053dac3cb70c0528b1c315578263e37b2f691b8d9436a52fe79f01eb"
+    },
+    {
+      "path": "tests/regressions/R4-09/case.json",
+      "sha256": "e06385d88dea09a277731de727c6e6a6fd52288c9ce7bdf65036f789dfdd1408"
+    },
+    {
+      "path": "tests/regressions/R4-09/run.mjs",
+      "sha256": "667b54a6860a752e733b7563db83e2c1bb03898658c57adc4d97ebf4e10533c3"
+    },
+    {
+      "path": "tests/regressions/R4-10/README.md",
+      "sha256": "e570da32ec938a1d3bd742f09f194bd4341fcccb2b2ea9a261e69c9d654d652c"
+    },
+    {
+      "path": "tests/regressions/R4-10/case.json",
+      "sha256": "7aef5f9f5bd1680431cf4ccddc9b9c74d601e990f40db0948ee85b8b305af5dc"
+    },
+    {
+      "path": "tests/regressions/R4-10/disabled/expected.json",
+      "sha256": "47cfdf15b1c972147299917c152d2dff4d0c8f052dca34bd600f33be87264a5e"
+    },
+    {
+      "path": "tests/regressions/R4-10/disabled/index.js",
+      "sha256": "8aa757bcc435a402eb8493330f26098cbd8bf9b401258cd157f5b1b23357d4b9"
+    },
+    {
+      "path": "tests/regressions/R4-10/disabled/wrangler.jsonc",
+      "sha256": "f74694e4cf88a0572e0b65db9ca6a269187d1f5f034bc1d52f692e9685c59d48"
+    },
+    {
+      "path": "tests/regressions/R4-10/enabled/expected.json",
+      "sha256": "c5ee10299a26e70c743d8fcfb5575cc9393d1b7e8951f3c6f88acee068c28339"
+    },
+    {
+      "path": "tests/regressions/R4-10/enabled/index.js",
+      "sha256": "8aa757bcc435a402eb8493330f26098cbd8bf9b401258cd157f5b1b23357d4b9"
+    },
+    {
+      "path": "tests/regressions/R4-10/enabled/wrangler.jsonc",
+      "sha256": "e646facbd3ec78ef76d010980dab6938e0eb63b1151ab0e391c4121312305256"
+    },
+    {
+      "path": "tests/regressions/R4-10/run.py",
+      "sha256": "96d38bee27c28c12626b3c5096b8d865152d99f73153340b504f1ad8a940bcf0"
+    },
+    {
+      "path": "tests/regressions/R4-11/README.md",
+      "sha256": "4861a3e5365251fae4ef37a66b4f25456f41a0b1dc4a6769471c63d8d14d796b"
+    },
+    {
+      "path": "tests/regressions/R4-11/case.json",
+      "sha256": "c598174fc824dc1feaf9780dba8f431a43d4f42ac9f630f80e709070d6d68143"
+    },
+    {
+      "path": "tests/regressions/R4-11/expected.json",
+      "sha256": "b40f114413043ad9f1988a3f200b01d2df661ae8489970a55b86d64ca4140c92"
+    },
+    {
+      "path": "tests/regressions/R4-11/index.js",
+      "sha256": "1fae5faf0ddbf002194e776c51ef7d663b7b3663c89cf2930782d5cd74bc4e38"
+    },
+    {
+      "path": "tests/regressions/R4-11/wrangler.jsonc",
+      "sha256": "fb6712cece079bbb6e58025c53aceb95a601d6758ff434eb45da9f8e17307d61"
+    },
+    {
+      "path": "tests/regressions/R4-12/README.md",
+      "sha256": "27e19edb55a966469d06116e2fd00ecf0706d44468c465fdbccf1bb909feef08"
+    },
+    {
+      "path": "tests/regressions/R4-12/case.json",
+      "sha256": "ef9fb73997aa04e15f74f5fb25e49ae8b3e0079dd04dbc7adce6234bc8d03c49"
+    },
+    {
+      "path": "tests/regressions/R4-12/expected.json",
+      "sha256": "25360f37fc1d28d57999a51d0fe22d1a6706b605bac2990db5111864b7854cc2"
+    },
+    {
+      "path": "tests/regressions/R4-12/index.js",
+      "sha256": "c5830cb0904e826c9f7b952e09755fd38761920d8e7ffbdac2f5ca1d6123fe75"
+    },
+    {
+      "path": "tests/regressions/R4-12/wrangler.jsonc",
+      "sha256": "90cb82afa12d4e4cd76f5d616623b1267dd9ec95425ebbbe566999bda39e206a"
+    },
+    {
+      "path": "tests/regressions/R4-13/README.md",
+      "sha256": "6be10047fc7ea5c43c7865ac0d3a36cac633f9405f8466ddbee2f66b95f5c654"
+    },
+    {
+      "path": "tests/regressions/R4-13/case.json",
+      "sha256": "b62a461081f994bf8a5d2380203d2a77e8e4e7b1ed7ebc4dc7540afe339a4788"
+    },
+    {
+      "path": "tests/regressions/R4-13/expected.json",
+      "sha256": "28254894d35061633093246422eda7d01da569048acd3a2f77d290c9131d4be3"
+    },
+    {
+      "path": "tests/regressions/R4-13/index.js",
+      "sha256": "2b639ab8dbcb2908e69b28bea3fb04b6b0c3ff0021ae7a328f6ad739b30d09f1"
+    },
+    {
+      "path": "tests/regressions/R4-13/wrangler.jsonc",
+      "sha256": "be3f45294e3b5cef82b0ff40aada74fbd1452d168b794289e956e80c1afec91e"
+    },
+    {
+      "path": "tests/regressions/R4-14/README.md",
+      "sha256": "1c3fa252bb59e8673008e759d1540e131bbe3d0145661932ea7d611641eeee7c"
+    },
+    {
+      "path": "tests/regressions/R4-14/case.json",
+      "sha256": "fe75d62dfd513cef5ffbe0f596f15180faaebdee624e430dbb5accfacc851022"
+    },
+    {
+      "path": "tests/regressions/R4-14/expected.json",
+      "sha256": "5b15a46fab7447da911013ee3701d1691962763a534a49930df038823b0c4b43"
+    },
+    {
+      "path": "tests/regressions/R4-14/index.js",
+      "sha256": "6d6d238616c75ba15503d912e6b72e11a34b5116e1125971713cbc40a51fd3b0"
+    },
+    {
+      "path": "tests/regressions/R4-14/wrangler.jsonc",
+      "sha256": "46ae7461e0ee2cb98c52f88493bc56e1c1f8a4afcd5d8cebca177b08c451c737"
+    },
+    {
+      "path": "tests/regressions/R4-15/README.md",
+      "sha256": "80fd2551c6fc7aad40d85b5cfe9ff87f01765f4cae007351064aaca73e20b2a3"
+    },
+    {
+      "path": "tests/regressions/R4-15/case.json",
+      "sha256": "1bc493730d73249989b12f979fa7b572de099c8ae48a261647b1240e8f235671"
+    },
+    {
+      "path": "tests/regressions/R4-15/run.mjs",
+      "sha256": "9c3d61df90fe69f82e886972316c972216b2d81f4bcdbdc686a9b7767c9e98b8"
+    },
+    {
+      "path": "tests/regressions/R4-16/README.md",
+      "sha256": "5dfbe37068de940cce93d2bfd8e1fde14aef1690e60e50bbbc006d97b9dc01ed"
+    },
+    {
+      "path": "tests/regressions/R4-16/case.json",
+      "sha256": "b9a508e6629e1715b0b8d1a90da8b8481686c51bd052fcaaac58f72e7be4ba26"
+    },
+    {
+      "path": "tests/regressions/R4-16/expected.json",
+      "sha256": "c783334695630626ab5c25ee3b0b37cd331a4ab7fc5505c8b08e53d13dd623fa"
+    },
+    {
+      "path": "tests/regressions/R4-16/index.js",
+      "sha256": "d55cf61746227ece41c4d645f86d9b0152b07e6d85bfc60590fa29dcf0fff2ac"
+    },
+    {
+      "path": "tests/regressions/R4-16/wrangler.jsonc",
+      "sha256": "fd75114541217fd3ab29ab586ab5b522a3ad11307da6eeb97e032357222cd37e"
+    },
+    {
+      "path": "tests/regressions/R5-03/README.md",
+      "sha256": "373fd2e149496f4213892791b6716702c844118e50e41c5b99ef49e415f565c5"
+    },
+    {
+      "path": "tests/regressions/R5-03/case.json",
+      "sha256": "7638c1d74686b96f13fb1c3630910fe12de3b6da8f341de5acafee1dc7307e93"
+    },
+    {
+      "path": "tests/regressions/R5-03/expected.json",
+      "sha256": "ea5388110988df0bf1741256ddf492668b307f6e2b7764995a5d30688057fb04"
+    },
+    {
+      "path": "tests/regressions/R5-03/fault.py",
+      "sha256": "20747b640d59a568b7add71350897e2ddade52a3f554c9fd2baa82f696253f33"
+    },
+    {
+      "path": "tests/regressions/R5-03/http_runner.py",
+      "sha256": "4e7914bf6361308b5a25be4bff01099f1759a6280f55922a39c013504d73d106"
+    },
+    {
+      "path": "tests/regressions/R5-03/index.js",
+      "sha256": "40830e7e35ebfd630eda7e58a4591a6b44a160349b01b20a7d3d3c110255df86"
+    },
+    {
+      "path": "tests/regressions/R5-03/native.rs",
+      "sha256": "846411117d80a918aed997d52c5b4bd58b569264224d0f0e23e28b84f57ad049"
+    },
+    {
+      "path": "tests/regressions/R5-03/run.py",
+      "sha256": "ed427f54e02ccaffd1a46f47c52b64849cc89cfab9cf93bdb3cdf8dc3a4f2993"
+    },
+    {
+      "path": "tests/regressions/R5-03/wrangler.jsonc",
+      "sha256": "cb0a00bc92ecdd0ab6dbfbf0e9cdc7751d42ace4f8b88e5d39db3e07c1c40d81"
+    },
+    {
+      "path": "tests/regressions/R5-05/README.md",
+      "sha256": "cce74cdfa2881f019976cae858760981339481a3fc871ef4f0b49a14402b649e"
+    },
+    {
+      "path": "tests/regressions/R5-05/case.json",
+      "sha256": "2bb0a16b0ba8a6c352c8cb2c2d59d466cf645ecfec22fb9afb4f37ebef70e292"
+    },
+    {
+      "path": "tests/regressions/R5-05/expected.json",
+      "sha256": "93c9b20a14f900f0ad15c340efd4b22fa4cce5efebbc03a55637ddbfdb1354e4"
+    },
+    {
+      "path": "tests/regressions/R5-05/index.js",
+      "sha256": "5800f7fa8cccee8140e186257656f77db5888cb777c17d356e037b700ab395b3"
+    },
+    {
+      "path": "tests/regressions/R5-05/wrangler.jsonc",
+      "sha256": "6d5944a9b99022e5e751281c83283fc93d46e0c8939c397115afbd4c029d3dec"
+    },
+    {
+      "path": "tests/regressions/R5-06/README.md",
+      "sha256": "9360619f33036e65d29130354a73b2fad6371cbabe01b2792c18c906a704ac10"
+    },
+    {
+      "path": "tests/regressions/R5-06/case.json",
+      "sha256": "7a9f74ce53e8e24db9ebe1614fea37cce8fd73839de226ffa84b84ef22d5b5b2"
+    },
+    {
+      "path": "tests/regressions/R5-06/expected.json",
+      "sha256": "530cd9ad3f2015cecc403541de75a32da24ad95af684ea1380399db8ac3f2f72"
+    },
+    {
+      "path": "tests/regressions/R5-06/index.js",
+      "sha256": "b67eb9f1818c14c958bfd63cf82a13b4c6295eca44b6b98c0bb732326affa9ef"
+    },
+    {
+      "path": "tests/regressions/R5-06/wrangler.jsonc",
+      "sha256": "722e0542ea353bbddf9b64995c952b7221eadbfacbe2c36543120341f40caacd"
+    },
+    {
+      "path": "tests/regressions/R5-07/README.md",
+      "sha256": "6ab24aa467e0f658f2c339cc1322616ee14f93acf7d4d050e0e99bdc7526c716"
+    },
+    {
+      "path": "tests/regressions/R5-07/case.json",
+      "sha256": "9b60d2230c8f7ef03c68f0998c7f22320e13d8c3a610ce1b74ef8794ed436230"
+    },
+    {
+      "path": "tests/regressions/R5-07/expected.json",
+      "sha256": "3f373ae68e6f8edde025153ca22cdf704f87c63c3f3289fe36aa2d35a836763a"
+    },
+    {
+      "path": "tests/regressions/R5-07/index.js",
+      "sha256": "5636aa7d350c17408ba8e81bfda9948ff1cb03c690c26287e5f35399260e4960"
+    },
+    {
+      "path": "tests/regressions/R5-07/wrangler.jsonc",
+      "sha256": "4c17c0f16f3438d7324a019435c38e23c920878bf302009cb37f2446e876046f"
+    },
+    {
+      "path": "tests/regressions/R5-08/README.md",
+      "sha256": "0952f1e31b00ffa5075a2868b8fe7af7888602b8d587d6c0799ed2f3c6570652"
+    },
+    {
+      "path": "tests/regressions/R5-08/case.json",
+      "sha256": "4187903ad9d192eff1a16389b17a663fbd9c2b8c507c9ea70d032db578189660"
+    },
+    {
+      "path": "tests/regressions/R5-08/run.mjs",
+      "sha256": "4056847b8d93b458e9736c0ce1ca8035d249875a3922d15323ba39bacca47051"
+    },
+    {
+      "path": "tests/regressions/R5-09/README.md",
+      "sha256": "68954f1bce23414b0abf0813b698451dea2533714dbffb19552023b94abf2939"
+    },
+    {
+      "path": "tests/regressions/R5-09/case.json",
+      "sha256": "c977fa14e9d1b3170bfadc4b1960c3b4b265521f3b93887708cadde34fdd9dab"
+    },
+    {
+      "path": "tests/regressions/R5-09/instance/expected.json",
+      "sha256": "7fe0a8bbcb23bb4e1a09536c18b64b626edf39259ab4e814b03b2f724b06ec2b"
+    },
+    {
+      "path": "tests/regressions/R5-09/instance/index.js",
+      "sha256": "079a68e12095dfbf388925c9e6bb8eaf5d6bfe28b13e8518fe6b9c9c0147b048"
+    },
+    {
+      "path": "tests/regressions/R5-09/instance/wrangler.jsonc",
+      "sha256": "e301e93669cb4dbe87831967a1dfb33cba9d6bed5d6f60a250560c58fe9b4862"
+    },
+    {
+      "path": "tests/regressions/R5-09/prototype/expected.json",
+      "sha256": "d4577a2453f46346b24c0ae538ac33c27e3eeb1805d46d83a646a8a93aded54b"
+    },
+    {
+      "path": "tests/regressions/R5-09/prototype/index.js",
+      "sha256": "079a68e12095dfbf388925c9e6bb8eaf5d6bfe28b13e8518fe6b9c9c0147b048"
+    },
+    {
+      "path": "tests/regressions/R5-09/prototype/wrangler.jsonc",
+      "sha256": "a76910f46b81b3cc15a106c0fac31fee6a4c065e7d3cae0e387c638681e110de"
+    },
+    {
+      "path": "tests/regressions/R5-09/run.py",
+      "sha256": "402ddc93a67b0676b751a5a0fe66d47aa6e0c84d57cab152a1a039593530465f"
+    },
+    {
+      "path": "tests/regressions/harness_unit.mjs",
+      "sha256": "9387af9dd2f09d6c350fd4ba5fd3892dec216c018890aa71f69df4ef4495b133"
+    },
+    {
+      "path": "tests/regressions/http_case.py",
+      "sha256": "02c60e711e212e0b821b84c1f7c267ff3a7c5264289499f002ec6a4011be0d40"
+    }
+  ],
+  "source_clone": "$LAB/celld-suite-20261010/celld"
+}

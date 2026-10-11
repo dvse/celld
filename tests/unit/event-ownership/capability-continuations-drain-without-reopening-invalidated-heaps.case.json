@@ -1,0 +1,24 @@
+{
+  "id": "unit/event-ownership/capability-continuations-drain-without-reopening-invalidated-heaps",
+  "layer": "unit",
+  "behaviour": "event-ownership",
+  "title": "capability continuations drain without reopening invalidated heaps",
+  "origins": [
+    {
+      "source": "crates/celld/pool.rs",
+      "legacy_id": "unit/celld/pool::capability_drain_tests::capability_continuations_drain_without_reopening_invalidated_heaps"
+    }
+  ],
+  "legacy_ids": [
+    "unit/celld/pool::capability_drain_tests::capability_continuations_drain_without_reopening_invalidated_heaps"
+  ],
+  "adapter": "cargo",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "crates/celld/pool.rs",
+  "source_sha256": "4b0489ae3ff216c20370fa8ac7b1604903bc2e65d988735f2b6718aa2313b691",
+  "test_filter": "pool::capability_drain_tests::capability_continuations_drain_without_reopening_invalidated_heaps"
+}

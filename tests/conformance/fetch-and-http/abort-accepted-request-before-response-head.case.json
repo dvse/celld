@@ -1,0 +1,60 @@
+{
+  "adapter": "topology",
+  "behaviour": "fetch-and-http",
+  "contract": {
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "Native request cancellation window after entry but before response head, unlike H017 pre-dispatch",
+    "implementation": "cases.js:H018",
+    "intent": "Abort accepted request before response head",
+    "oracle": "Caller rejection, stopped operation effect0, independent exact receipt/effect1; abort alone is not claimed to roll back writes Native fetch rejection must preserve exact caller abort-reason identity, Error name and case-specific message. Helper/assertion errors cannot count as expected native rejection.",
+    "preconditions": [
+      "Recipient header gate prevents input consumption and response release",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Start signaled upload",
+      "Observe accepted recipient entry",
+      "Abort and require rejection",
+      "Explicitly stop held application operation",
+      "Complete independent upload and inspect effects"
+    ]
+  },
+  "corpus_id": "H018",
+  "corpus_wave": "http-stream-stress",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/body-streaming",
+  "id": "conformance/fetch-and-http/abort-accepted-request-before-response-head",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/http-stream-stress/H018"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/http-stream-stress/H018",
+      "source": "guarded-source-archive/celld-os-stress/waves/http-stream-stress"
+    },
+    {
+      "sha256": "bc36e6548386869fea496e7073ebc08ff4a068d89f1860e89f28a03515006e6b",
+      "source": "guarded-source-archive/celld-os-stress/waves/http-stream-stress/fixture.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "H018",
+  "source": "tests/conformance/fetch-and-http/fixtures/body-streaming/fixture.js",
+  "source_sha256": "bc36e6548386869fea496e7073ebc08ff4a068d89f1860e89f28a03515006e6b",
+  "title": "Abort accepted request before response head"
+}

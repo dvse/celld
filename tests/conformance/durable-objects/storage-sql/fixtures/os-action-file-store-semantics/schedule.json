@@ -1,0 +1,109 @@
+{
+  "schema": 1,
+  "wave": "os-action-file-store-semantics",
+  "runtime_status": "NOT_RUN",
+  "ids": [
+    "F201",
+    "F202",
+    "F203",
+    "F204",
+    "F205",
+    "F206"
+  ],
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/case/F201",
+      "max_calls": 1,
+      "fresh_roots": 1
+    },
+    {
+      "method": "GET",
+      "path": "/case/F202",
+      "max_calls": 1,
+      "fresh_roots": 1
+    },
+    {
+      "method": "GET",
+      "path": "/case/F203",
+      "max_calls": 1,
+      "fresh_roots": 1
+    },
+    {
+      "method": "GET",
+      "path": "/case/F204",
+      "max_calls": 1,
+      "fresh_roots": 1
+    },
+    {
+      "method": "GET",
+      "path": "/case/F205",
+      "max_calls": 1,
+      "fresh_roots": 1
+    },
+    {
+      "method": "GET",
+      "path": "/case/F206",
+      "max_calls": 1,
+      "fresh_roots": 1
+    }
+  ],
+  "schedule": "Strictly sequential outer requests; one fresh migrated DO and one public DO.fetch per case; await every original module promise inside the active request.",
+  "F201": "Direct call capture(view); synchronously fill backing; await same original promise; no scheduler hook.",
+  "F205": "Genuine timestamps only; at most32 five-ms waits then explicit strict young>cutoff witness. Missing witness is BLOCKED_WITNESS. Never alter Date.now/storage.",
+  "limits": {
+    "max_external_case_http_requests": 1,
+    "max_frontend_do_fetches": 1,
+    "max_created_do_roots": 1,
+    "max_outbound_public_network_requests": 0,
+    "max_native_storage_entries": 16,
+    "actual_max_native_entries": 10,
+    "max_total_retained_payload_bytes": 2097169,
+    "visible_js_byte_buffer_estimate_bytes": 16777216,
+    "byte_buffer_estimate_scope": "Conservative visible-JS payload-view estimate only, not a total memory cap. Native serialization, WebCrypto transient copies, runtime heaps and allocator retention remain covered by the independently enforced aggregate RSS ceiling.",
+    "max_rows_per_fully_consumed_iterator": 64,
+    "max_native_list_calls": 64,
+    "max_native_kv_point_operations": 256,
+    "max_native_transactions": 16,
+    "max_public_module_calls": 12,
+    "max_webcrypto_digest_calls": 8,
+    "max_streams": 0,
+    "max_clock_waits": 32,
+    "clock_wait_interval_ms": 5,
+    "max_external_receipt_bytes": 32768,
+    "precondition_deadline_ms": 1000,
+    "trace_deadline_ms": 5000,
+    "cleanup_deadline_ms": 2000,
+    "outer_http_deadline_seconds": 10,
+    "outer_case_process_deadline_seconds": 15,
+    "outer_wave_deadline_seconds": 120,
+    "outer_rss_bytes": 1073741824,
+    "max_owned_domain_processes": 32,
+    "max_owned_writable_bytes": 134217728,
+    "descendant_supervision": "Entire proven-owned dev, trusted-bundler and runtime descendant tree across PGIDs; prefer one enforceable cgroup and ownership domain. A single PGID or parent PID is insufficient.",
+    "writable_quota_scope": "All generated bundles, staging config, logs, temporary files and private store. Do not copy externally supplied read-only source/binaries into the writable domain."
+  },
+  "cleanup": [
+    "Await every capture/read and its digest before marking original trace settled; no streams exist.",
+    "If original trace remains unsettled, do not race in-object teardown; external supervisor reaps the entire owned domain.",
+    "After settlement open and completely drain one public native sync-KV iterator to replace any abandoned cursor; never call next after done.",
+    "DeleteAll only this fresh owned DO and verify KV empty; cleanup failures are typed blockers.",
+    "Independently terminate and verify every proven-owned dev/bundler/runtime descendant across PGIDs and remove only owned staging/bundles/logs/temp/private store, regardless of fixture outcome."
+  ],
+  "runtime_qualification": [
+    "Exact guarded runtime binary/source/build and immutable vendor/helper/bundle/config witnessed independently",
+    "Fresh owned private store and actual object/process identity",
+    "Complete externally enforced descendant/resource domain across PGIDs",
+    "HTTP200 plus ASSERTIONS_SATISFIED plus nonempty all-true assertions plus traceSettled plus matching object labels plus cleanup COMPLETE",
+    "Independent all-descendant termination and owned writable artifact removal"
+  ],
+  "forbidden_substitutes": [
+    "Node executing cases",
+    "workerd",
+    "mock or in-memory storage",
+    "rewritten ActionFileStore",
+    "private harness hooks",
+    "unreviewed larger budgets"
+  ],
+  "full_os_claim": false
+}

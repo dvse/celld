@@ -1,0 +1,232 @@
+{
+  "reviewed_at_utc": "2026-10-09T06:20:05.022760+00:00",
+  "reviewer": "review_celld_test_additions",
+  "wave": "url-semantics",
+  "verdict": "ACCEPTED_PRIMARY_STATIC",
+  "counts": {
+    "authored": 20,
+    "accepted_primary_static": 20,
+    "characterization": 0,
+    "fixed_runtime_assertions": 114,
+    "static_predicted_failure_candidates": 8,
+    "runtime_executions": 0,
+    "runtime_passes": 0,
+    "observed_runtime_failures": 0
+  },
+  "scope": "Independent actual case-body, intended-contract, source-path, fixture, bounds and semantic-uniqueness review. Only syntax/hash/metadata checks executed.",
+  "baseline_designs_compared": 575,
+  "duplicate_review": "No matching semantic design in baseline or concurrent waves. F002 redirect resolution and other routing helpers use URL incidentally; U201 directly checks constructor base-object semantics and fixed components. URLSearchParams/URLPattern mechanisms are otherwise absent. Similar iterator concepts in Headers use a distinct API contract and implementation, not copied test bodies.",
+  "execution_contract": {
+    "route": "Actual direct-celld Worker fetch imports local cases; route regex avoids the URL API under test.",
+    "documented_cli_source": "dev.rs:330-346 accepts a Wrangler config and loopback host/port/no-watch.",
+    "per_request_deadline_seconds": 5,
+    "suite_deadline_seconds": 300,
+    "cleanup_deadline_seconds": 20,
+    "runtime_status": "UNRUN",
+    "qualified_runtime_pass_requires_external_identity_limits_and_cleanup": true
+  },
+  "static_checks": [
+    {
+      "check": "sha256_runtime_sources",
+      "files": 8,
+      "passed": true
+    },
+    {
+      "check": "sha256_baseline_evidence",
+      "files": 30,
+      "passed": true
+    },
+    {
+      "check": "sha256_fixture_artifacts",
+      "files": 9,
+      "passed": true
+    },
+    {
+      "check": "delivered_SHA256SUMS",
+      "passed": true
+    },
+    {
+      "check": "javascript_syntax_only",
+      "path": "cases.js",
+      "passed": true
+    },
+    {
+      "check": "javascript_syntax_only",
+      "path": "fixture.js",
+      "passed": true
+    }
+  ],
+  "case_verdicts": [
+    {
+      "id": "U201",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "reason": "Base URL object and hierarchical resolution, unchanged source URL."
+    },
+    {
+      "id": "U202",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "static_prediction": "EXPECTED_FAILURE_CANDIDATE",
+      "reason": "Literal path data encoding; source setter currently copies raw characters."
+    },
+    {
+      "id": "U203",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "static_prediction": "EXPECTED_FAILURE_CANDIDATE",
+      "reason": "IDNA/case hostname canonicalization; source setter currently copies raw hostname."
+    },
+    {
+      "id": "U204",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "static_prediction": "EXPECTED_FAILURE_CANDIDATE",
+      "reason": "Bracket-aware IPv6 replacement; source currently splits first colon."
+    },
+    {
+      "id": "U205",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "static_prediction": "EXPECTED_FAILURE_CANDIDATE",
+      "reason": "Numeric port canonicalization before default elision; source preserves leading zeros."
+    },
+    {
+      "id": "U206",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "reason": "Existing query object and iterator track href replacement and subsequent append."
+    },
+    {
+      "id": "U207",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "static_prediction": "EXPECTED_FAILURE_CANDIDATE",
+      "reason": "Preserve empty-present delimiters across unrelated mutation; source loses presence state."
+    },
+    {
+      "id": "U208",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "static_prediction": "EXPECTED_FAILURE_CANDIDATE",
+      "reason": "Opaque blob serialization during mutation; source reconstructs all schemes with authority slashes."
+    },
+    {
+      "id": "U209",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "reason": "Valid form parsing with plus, first equals, duplicate keys and empty-value distinction."
+    },
+    {
+      "id": "U210",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "reason": "Form-specific escaping and valid Unicode roundtrip."
+    },
+    {
+      "id": "U211",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "reason": "Set preserves first duplicate position, removes later duplicates and updates owning URL."
+    },
+    {
+      "id": "U212",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "reason": "Value-specific membership/removal including empty-string values."
+    },
+    {
+      "id": "U213",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "reason": "Stable UTF-16 query sort with owning-URL encoding normalization."
+    },
+    {
+      "id": "U214",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "static_prediction": "EXPECTED_FAILURE_CANDIDATE",
+      "reason": "Pair iterator rechecks a grown list after earlier done; source generator latches completion."
+    },
+    {
+      "id": "U215",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "static_prediction": "EXPECTED_FAILURE_CANDIDATE",
+      "reason": "Pair iteration returns detached arrays; source currently yields internal arrays."
+    },
+    {
+      "id": "U216",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "reason": "Constructor iterable priority and detached input/copy tuples."
+    },
+    {
+      "id": "U217",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "reason": "URLPattern base canonicalization and retention of original exec input arguments."
+    },
+    {
+      "id": "U218",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "reason": "Optional capture own-property shape and independently allocated result groups."
+    },
+    {
+      "id": "U219",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "reason": "ignoreCase across constrained components while captured case remains input-derived."
+    },
+    {
+      "id": "U220",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "static_prediction": "NO_FAILURE_PREDICTION",
+      "reason": "Custom regexp capture plus all-component conjunction and hasRegExpGroups."
+    }
+  ],
+  "normative_review": {
+    "urls_consulted": [
+      "https://url.spec.whatwg.org/#url-class",
+      "https://url.spec.whatwg.org/#concept-url-serializer",
+      "https://urlpattern.spec.whatwg.org/",
+      "https://webidl.spec.whatwg.org/#es-iterable-iterator-prototype-object"
+    ],
+    "checked_at_utc": "2026-10-09",
+    "conclusion": "Intended URL, URLPattern and Web IDL contracts support the fixed positive oracles. Correct oracles are retained when pinned source disagrees. Source-gap hypotheses are not executed failures.",
+    "review_correction": "U214 originally assumed permanent iterator exhaustion. Corrected to the Web IDL current-list recheck before acceptance; expected failure is now explicitly predicted from generator source."
+  },
+  "qualifications": [
+    "No celld binary, build, case execution, reference-runtime comparison or deployment took place.",
+    "A source-based predicted failure must still run unchanged; prediction is not a skip or inverted pass oracle.",
+    "No included supervisor enforces the deferred envelope yet. Synchronous API hangs require the documented external deadline.",
+    "Claims cover this reviewed corpus, not absent private WPT/conformance suites."
+  ],
+  "reviewed_file_sha256": {
+    "README.md": "a6a5a6b8ad3ab04f8f1e46f43c3f20b0ceb2218fad5d09df95b1dfeedb0ec603",
+    "SHA256SUMS": "f8088a898011b26c4cdada8c15b4ed1adcd55e551b235e47017bb2db30fdde45",
+    "author_manifest.py": "53a1aee514699bb65e446600a0879f27563c95b448b7ab1cda6883e01b6ad191",
+    "cases.js": "05079e449a0839cbe790f111ad63e5155a8482d16fcb66c71a7e111ffa4c2276",
+    "fixture.js": "ccbb1cf21c3f719aa06ed64b498fc396f00736cc96d7cbd2aea437f2cc221ca6",
+    "manifest.json": "d61fdb1b4d070ae5aff0ad1456c39d2842c341f9737a20b67c67c251f638ae91",
+    "overlap-audit.json": "3f0d128064bb3f76212378ce724a3a5037aaf781247bbb8c19bcae152640cb3f",
+    "schedule.json": "ed241045ee78c9efef4d8c6440119aa813929f802cf4eafcfedfc776db2f1ee1",
+    "source-pins.json": "2254e29189caf162853607947a47a2e8097302aa3992508bda758ce1d07da641",
+    "static-validation.json": "83227c6b6c8b21b7d23e78490e55d1a286d121fadb55530d0afb4ffffbf8de2c",
+    "validate_static.py": "007bac5bf1a54acfe0388aea1c4c859e2b6018169d7cb8fc3efb0f60298cab5f",
+    "wrangler.json": "8f5ef34ebe9550ac822ff9dd4589c4cf4a5ee9fd73e14e9d7b00cf1e47c91e61"
+  }
+}

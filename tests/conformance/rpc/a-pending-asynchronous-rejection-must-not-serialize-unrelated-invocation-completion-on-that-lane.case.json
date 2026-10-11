@@ -1,0 +1,53 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "distinctness": "Literal O002 state transition; counts, repetitions and deployment placements do not create additional cases.",
+    "intent": "A pending asynchronous rejection must not serialize unrelated invocation completion on that lane",
+    "oracle": "Later invocation executes before held exit; held error has intended category and later call still works",
+    "preconditions": [
+      "COMMON",
+      "Provider failure gate closed; main endpoint live"
+    ],
+    "source_contracts": [
+      "SC-ORDER",
+      "SC-ERROR"
+    ],
+    "trace": [
+      "Start a held call that will reject after gate release",
+      "Observe main:enter:held through independent control RPC",
+      "Complete a later mark while the earlier result remains held",
+      "Release failure gate; require planned:held Error; complete post-rejection mark"
+    ]
+  },
+  "corpus_id": "O002",
+  "corpus_wave": "capability-order",
+  "fixture": "tests/conformance/rpc/fixtures/ordering-and-lifetime",
+  "id": "conformance/rpc/a-pending-asynchronous-rejection-must-not-serialize-unrelated-invocation-completion-on-that-lane",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/capability-order/O002"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/capability-order/O002",
+      "source": "guarded-source-archive/celld-os-stress/waves/capability-order"
+    },
+    {
+      "sha256": "2dd846ea32e9b72b740619d977febe62cdc0aa8157e08c5261436c00e030e187",
+      "source": "guarded-source-archive/celld-os-stress/waves/capability-order/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "O002",
+  "source": "tests/conformance/rpc/fixtures/ordering-and-lifetime/entry.js",
+  "source_sha256": "2dd846ea32e9b72b740619d977febe62cdc0aa8157e08c5261436c00e030e187",
+  "title": "A pending asynchronous rejection must not serialize unrelated invocation completion on that lane"
+}

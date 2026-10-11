@@ -1,0 +1,54 @@
+{
+  "id": "logic/lease-acquisition/last-owner-read-waiter-cancellation-suppresses-unnecessary-claim",
+  "layer": "logic",
+  "behaviour": "lease-acquisition",
+  "title": "Last owner-read waiter cancellation suppresses unnecessary claim",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic",
+      "legacy_id": "corpus/routing-acquisition-logic/N032"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+      "sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/routing-acquisition-logic/N032"
+  ],
+  "adapter": "native",
+  "corpus_id": "N032",
+  "corpus_wave": "routing-acquisition-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/lease-acquisition/fixtures/decision-cases/tests/routing_acquisition.rs",
+  "source_sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06",
+  "test_filter": "n032_last_owner_read_waiter_cancel_prevents_unneeded_claim",
+  "contract": {
+    "intent": "Last owner-read waiter cancellation suppresses unnecessary claim",
+    "preconditions": [
+      "Fresh test-owned State; only frozen production celld_logic::on_event mutates it.",
+      "Empty State; residency1, activations1; a requests1,2 share one owner read.",
+      "All completion operation IDs and timers come from the exact emitted effects; late IDs are previously issued IDs, never fabricated authority.",
+      "All input storage/lease/proof replies are synthetic facts. No executor, network, runtime, or fleet service is simulated as empirical evidence.",
+      "Static source/pin check and independent review required; compiler, test and runtime have not been launched."
+    ],
+    "trace": [
+      "Capture ReadOwner for1; join2",
+      "Cancel2 then1 before read completion",
+      "Return absent owner on still-issued read",
+      "Assert Inactive, no CAS and occupancy0",
+      "New request3 starts independent absent-owner activation",
+      "Finish3"
+    ],
+    "oracle": "Completing a read with no surviving demand must not acquire ownership",
+    "cleanup": "Finish every locally completed request and cancel each remaining ownership-only waiter as shown. H::done checks no pending requests, active cells, activation/capacity queues, activation/eviction/release/adoption permits, or nonterminal phases. Drop isolated in-memory State; no external resources created. Stored timer descriptors are never launched.",
+    "implementation": "tests/routing_acquisition.rs:n032_last_owner_read_waiter_cancel_prevents_unneeded_claim"
+  },
+  "selector": "N032"
+}

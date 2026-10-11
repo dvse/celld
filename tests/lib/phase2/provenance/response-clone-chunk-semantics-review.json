@@ -1,0 +1,127 @@
+{
+  "schema": 1,
+  "reviewed_at_utc": "2026-10-09T10:21:54.886334+00:00",
+  "reviewer": "/root/review_celld_test_additions",
+  "verdict": "ACCEPTED_PRIMARY_STATIC",
+  "wave": "response-clone-chunk-semantics",
+  "counts": {
+    "accepted_primary_static": 1,
+    "accepted_characterization": 0,
+    "runtime_executions": 0,
+    "runtime_passes": 0,
+    "static_assertion_call_sites": 11
+  },
+  "case_verdicts": [
+    {
+      "id": "Y301",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "novel_mechanism": "Raw default-stream Response.clone branch chunk mutation and ArrayBuffer storage independence before Body consumers can copy outputs."
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "/workspace/shared/celld-campaign-next/response-clone-chunk-semantics/README.md",
+      "sha256": "97b90c0c21481ddcc290468363ca12e7d70e53320554e8789cfd417364fa7295",
+      "bytes": 6672
+    },
+    {
+      "path": "/workspace/shared/celld-campaign-next/response-clone-chunk-semantics/SHA256SUMS",
+      "sha256": "cb329726cdab61383dc09cd7f764438db1ef922dc8248cec94aed148ef1c82e8",
+      "bytes": 984
+    },
+    {
+      "path": "/workspace/shared/celld-campaign-next/response-clone-chunk-semantics/author_manifest.py",
+      "sha256": "128d085f3b72b8cba0e9c9dd7d1779aa032f853592796b9d52774a70068edfde",
+      "bytes": 14487
+    },
+    {
+      "path": "/workspace/shared/celld-campaign-next/response-clone-chunk-semantics/cases.js",
+      "sha256": "c85acc7520eceaea54f5cc6e7651c21c761e9a213a21d50a695ca5c35817896c",
+      "bytes": 2193
+    },
+    {
+      "path": "/workspace/shared/celld-campaign-next/response-clone-chunk-semantics/fixture.js",
+      "sha256": "744bc0261c9cdcb63ecb972ac3185eaad51d7115ee07100dd88d77ca283fb3a7",
+      "bytes": 7447
+    },
+    {
+      "path": "/workspace/shared/celld-campaign-next/response-clone-chunk-semantics/manifest.json",
+      "sha256": "048b55c13a991eeedb8c7cd39d89644ac278c740fb7d24e9eb4ba4d5608e26b9",
+      "bytes": 7846
+    },
+    {
+      "path": "/workspace/shared/celld-campaign-next/response-clone-chunk-semantics/overlap-audit.json",
+      "sha256": "435d64b6cd9614b385cc247d99fb6245a8981b263a719cb3285dfb45a36afad2",
+      "bytes": 5838
+    },
+    {
+      "path": "/workspace/shared/celld-campaign-next/response-clone-chunk-semantics/overlap-inventory.json",
+      "sha256": "74359ab909cdacbd638a5365e7ba108acc79ccebaa108d8f083c24af3d93330a",
+      "bytes": 96565
+    },
+    {
+      "path": "/workspace/shared/celld-campaign-next/response-clone-chunk-semantics/schedule.json",
+      "sha256": "7de4d389be984e3b27ac7a0b81146c73e9fcb068687298f518416cfa9dbc3290",
+      "bytes": 2318
+    },
+    {
+      "path": "/workspace/shared/celld-campaign-next/response-clone-chunk-semantics/source-pins.json",
+      "sha256": "f372973c550aa580bafbbd2dfdb26a5687a14e0bc5d1bb7bfb054341aa6e9669",
+      "bytes": 10774
+    },
+    {
+      "path": "/workspace/shared/celld-campaign-next/response-clone-chunk-semantics/static-validation.json",
+      "sha256": "96ac16a1f315338d98b7a524576c101f667185e5f23bd26d4073073cc26b84c3",
+      "bytes": 1959
+    },
+    {
+      "path": "/workspace/shared/celld-campaign-next/response-clone-chunk-semantics/validate_static.py",
+      "sha256": "1eadb1104a1ce18007de30270ad3cc695f2de68ba36b59ad5f4a621a82bebeba",
+      "bytes": 4318
+    },
+    {
+      "path": "/workspace/shared/celld-campaign-next/response-clone-chunk-semantics/wrangler.json",
+      "sha256": "8fc28d0d31a268317b63e4d1c388b5acba200729602a2e61a889171bbda47d43",
+      "bytes": 124
+    },
+    {
+      "path": "/workspace/shared/celld-campaign-next/reviews/response-clone-chunk-independent-static-check.json",
+      "sha256": "96ac16a1f315338d98b7a524576c101f667185e5f23bd26d4073073cc26b84c3",
+      "bytes": 1959
+    }
+  ],
+  "findings": [
+    "The one handwritten case invokes real Response.clone over a finite local default ReadableStream with exactly one four-byte chunk. Both first reads are joined before mutation, and both EOF reads are joined afterward. No host/network chunk partition is assumed.",
+    "The mutation oracle is fixed and independently meaningful: changing the original raw chunk first byte must leave the sibling raw bytes unchanged, with distinct backing buffers. Its 11 assertions support one design; they do not multiply the case count.",
+    "All recorded compound evidence is a fresh primitive snapshot and the recorder also snapshots values at assertion time. Later raw-chunk mutation cannot rewrite earlier assertion records.",
+    "Fixture tracks the raw source and both clone branches, every started read, both explicit readers, cancellations and releases. Cleanup joins started reads first, initiates all relevant cancellations before awaiting them, releases readers, then records every stream terminal proof and retained source lock. An unsettled read/cancel cannot falsely complete; the external deadline yields UNKNOWN and requires owned teardown.",
+    "Retained tee-source lock is accepted only through both tracked descendants terminal proofs, not mistaken for released runtime state. Partial clone failure with an inaccessible branch or unexplained lock cannot qualify cleanup.",
+    "Distinct from Y220 final arrayBuffer consumer copies, Y215 buffered-body clone result mutation, Y202 Blob buffer copies, V215 cache clone consumption, and prior tee/transport/cancellation primitives. Static overlap inventory hashes for all 259 baseline and 268 campaign files match; Y301 has no prior ID collision.",
+    "Final documentation requires proven-owned descendants across process groups, owned temporary/log/stage/store containment and removal, independent tree emptiness and listener closure. Strict profile enforcement remains unobserved, distinct from a separately reviewed sampled functional-only run.",
+    "Independent static checks verified case/manifest/schedule correspondence, 11 exact assertion declarations, source/evidence/original57 pins, all 12 package checksum entries, Python/JSON parsing and two Node parser-only checks. No JavaScript evaluation, SUT, build, install or runtime occurred."
+  ],
+  "normative_sources": [
+    {
+      "url": "https://fetch.spec.whatwg.org/#concept-body-clone",
+      "basis": "Body clone selects two tee branches."
+    },
+    {
+      "url": "https://streams.spec.whatwg.org/#readablestream-tee",
+      "basis": "The specification-level tee operation requests cloned branch-two chunks."
+    }
+  ],
+  "runtime_gate": "Future execution requires the separately reviewed candidate002 build/binary provenance, one-case fixed oracle and finite parent-owned runtime envelope. This receipt awards only static design credit.",
+  "strict_frozen_resource_profile_qualified": false,
+  "limitations": [
+    "No native HTTP, remote/capability lifetime, stream-core security or full clone-conformance qualification.",
+    "No strict resource enforcement or runtime success has been observed for Y301.",
+    "Original 57-case artifacts and oracles remain unchanged."
+  ],
+  "campaign_census_after_credit": {
+    "designs": 786,
+    "primary": 671,
+    "characterization": 115
+  },
+  "preservation": "Author manifest remains historically UNREVIEWED/UNRUN; this independent append-only receipt owns the one static acceptance."
+}

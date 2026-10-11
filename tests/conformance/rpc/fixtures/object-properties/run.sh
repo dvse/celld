@@ -1,0 +1,1 @@
+../../../durable-objects/persistent-stubs/fixtures/duplicate-restore/run.sh

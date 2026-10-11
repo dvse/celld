@@ -1,0 +1,216 @@
+{
+  "reviewed_at_utc": "2026-10-09T06:39:05.045093+00:00",
+  "reviewer": "review_celld_test_additions",
+  "wave": "r2-semantics",
+  "verdict": "ACCEPTED_PRIMARY_STATIC",
+  "counts": {
+    "authored": 20,
+    "accepted_primary_static": 20,
+    "accepted_characterization": 0,
+    "static_assertion_call_sites": 73,
+    "runtime_executions": 0,
+    "runtime_passes": 0
+  },
+  "scope": "Independent actual case/fixture, intended public contract and source review; baseline 575 and accepted campaign 118 designs compared. Only static hashing, JSON/Python AST and node syntax checks.",
+  "contract_sources": [
+    {
+      "url": "https://developers.cloudflare.com/r2/api/workers/workers-api-reference/",
+      "supports": "Public object shapes, conditional get/put, valid ranges, cursor completion, metadata inclusion and checksums."
+    },
+    {
+      "path": "celld-os-project/celld/docs/services/r2.md",
+      "supports": "Real fleet-bucket prerequisite, binding keyspace, source-specific encoded-key ordering and same-node multipart scope."
+    }
+  ],
+  "review_corrections": [
+    {
+      "case": "I212",
+      "finding": "Initial expected delimitedPrefixes array assumed order not specified by the public field contract.",
+      "resolution": "Author now sorts the actual prefix set; no ordering guarantee claimed."
+    },
+    {
+      "case": "I213",
+      "finding": "Exact empty-map representation of omitted metadata needed source-cut qualification.",
+      "resolution": "Author explicitly identifies celld object shaping as the basis, separate from public metadata-inclusion semantics."
+    }
+  ],
+  "duplicate_review": "No R2 public binding case exists in baseline inventory; source object-proxy example lacks assertion coverage. Shared KV/D1/DO data primitives are not themselves credited. New cases exercise separate R2 __r2Value/object/envelope/list/condition/host-stream/multipart/storage-path mechanisms. Body/form local Blob ownership is not repeated merely as a new container.",
+  "static_checks": {
+    "source_sha256_pins_verified": 6,
+    "additional_binding_source_files_reviewed_and_hashed": 2,
+    "source_ranges_validated": 57,
+    "case_manifest_bijection": 20,
+    "literal_assertion_call_sites_match": true,
+    "javascript_syntax_files": 2,
+    "python_AST_JSON_only": true,
+    "two_distinct_bucket_names_in_config": true,
+    "author_validator_executed": false,
+    "no_case_or_SUT_execution": true
+  },
+  "execution_contract": {
+    "fixture": "Standalone Worker module delegates to actual env.A/env.B R2 bindings. Native r2_ops/r2_store reach the real fleet Bucket; source without a bucket cannot execute these tests.",
+    "external_requests_per_case": 1,
+    "max_API_calls_including_cleanup": 80,
+    "max_payload_bytes": 4096,
+    "max_keys_per_bucket": 8,
+    "max_multipart_uploads": 1,
+    "max_parts": 1,
+    "max_listing_pages": 6,
+    "max_listing_limit": 20,
+    "internal_precondition_trace_cleanup_ms": [
+      2000,
+      8000,
+      3000
+    ],
+    "outer_http_seconds": 15,
+    "owned_process_deadline_seconds": 20,
+    "wave_deadline_seconds": 450,
+    "max_RSS_bytes": 1073741824,
+    "max_private_store_bytes": 268435456,
+    "cleanup": "Only after settled trace: consume/cancel tracked object bodies, witness finite input EOF or cancel unlocked input, abort owned unfinished upload, delete registered keys, verify both random prefixes empty. Unsettled native work or locked unfinished readers require owned process/store teardown; no in-isolate cancellation claim.",
+    "runtime_status": "UNRUN",
+    "runtime_blockers": [
+      "Fresh disposable private actual fleet-bucket backend and two bindings, with no user data.",
+      "Independent exact executable/source/deployment/process identity and enforced resource bounds.",
+      "Independent final owned process and fresh store teardown, including unfinished backend operation residue."
+    ],
+    "execution_authorization_granted": false
+  },
+  "case_verdicts": [
+    {
+      "id": "I201",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "R2 stored object metadata/body boundary with UTF-8 size, metadata-only head and opaque ETag relationships."
+    },
+    {
+      "id": "I202",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "R2 value conversion accepts sliced DataView and Blob; distinct __r2Value/native upload path, without an admission-time mutation claim."
+    },
+    {
+      "id": "I203",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Finite public streaming put chunk bridge handles empty chunk and EOF before accepted object read."
+    },
+    {
+      "id": "I204",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "R2 metadata envelope roundtrip and writeHttpMetadata projection including Date revival and Unicode custom values."
+    },
+    {
+      "id": "I205",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Full object overwrite replaces body and metadata rather than merging stale fields."
+    },
+    {
+      "id": "I206",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Two independently opened host object readers remain isolated under one reader cancellation; stored content remains."
+    },
+    {
+      "id": "I207",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Conditional get distinguishes metadata-only existing object, matched body and missing key."
+    },
+    {
+      "id": "I208",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Valid ETag compare-and-set updates one version and preserves it after a stale condition refusal."
+    },
+    {
+      "id": "I209",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Wildcard create-only condition across Headers/object inputs and absent-versus-existing object states."
+    },
+    {
+      "id": "I210",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Native R2 structured and header byte ranges retain full object size and do not modify source."
+    },
+    {
+      "id": "I211",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Bounded opaque-cursor pagination without assuming pages fill; ASCII listing order and terminal cursor shape."
+    },
+    {
+      "id": "I212",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Delimiter directory grouping returns direct objects and unique child prefixes as an order-independent set."
+    },
+    {
+      "id": "I213",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Selective metadata projection, with exact empty maps explicitly scoped to celld representation."
+    },
+    {
+      "id": "I214",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Production bucket-name prefix isolation for equal logical keys and deletion."
+    },
+    {
+      "id": "I215",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Bulk R2 selected deletion is idempotent and preserves an unrequested neighbor."
+    },
+    {
+      "id": "I216",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Public key-to-object-path mapping preserves empty segments and Unicode roundtrip; no non-ASCII sort claim."
+    },
+    {
+      "id": "I217",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Correct supplied SHA-256 and default MD5 digest records survive write/head conversion."
+    },
+    {
+      "id": "I218",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "One valid final multipart part completes into an ordinary stored object with creation metadata."
+    },
+    {
+      "id": "I219",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Uncommitted multipart data and ordinary abort preserve an existing object."
+    },
+    {
+      "id": "I220",
+      "verdict": "ACCEPTED_PRIMARY_STATIC",
+      "runtime_status": "UNRUN",
+      "reason": "Same-active-request resume handle attaches to its own upload and completes it; no cross-request capability, restart or cross-node claim."
+    }
+  ],
+  "reviewed_artifact_sha256": {
+    "README.md": "5c5f3903261a10e40c464c1f3b9ec28c452422b9e86849d9e42b5793aa0b4efd",
+    "author_manifest.py": "34fcc69cca1b977bd6df86abcf18d64d9a729a585009ef6212742f0638712ba7",
+    "cases.js": "c42593afe0ea2d40afcddd122e4a4b91dbcf3a1ae6ce8b70ec5ee208efcfcc54",
+    "fixture.js": "15abdbedb54e6303b7751fe87bf34b7b6bfdeaad9f8e523f412157db5d61b793",
+    "manifest.json": "729bd31ba60fb9c6ff47f4689b48d2a21d120ec10e54e5b484647ca6adbd2179",
+    "source-pins.json": "78e71acb97bf11f7126b3b1f814345e4d14cc697110cb824e3541cdaabfbcb65",
+    "static-report.json": "c3e621e9bf34a46b721b3843ba0009ed05ed6f919dd1e83c4e0330fd965edd70",
+    "validate_static.py": "b52c95507ee71a8ef30156dd8a32549b1cbfcb4283a3591734dbb1c3e7592d4f",
+    "wrangler.jsonc": "82833332737daceba63d0fcf10d936597b24354ffa89fd757ce3203cc943e6ec"
+  },
+  "additional_source_sha256": {
+    "celld-os-project/celld/crates/celld/js/bootstrap.rs": "0210c1f17ec80959aa071724e1a612b181f72715d20afcbd29226674636d6d05",
+    "celld-os-project/celld/crates/celld/deploy.rs": "b9383268709233302082eb2dc08753499ac3a69a983a598f41ab9a9383dae7e2"
+  }
+}

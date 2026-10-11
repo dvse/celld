@@ -1,0 +1,111 @@
+{
+  "schema": 1,
+  "source_snapshot": "celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "source_root": "/workspace/shared/celld-recovered/celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "os_root": "/workspace/shared/celld-campaign-next/os-source-inventory/historical-4358072",
+  "overlap_root": "/workspace/shared/celld-campaign-next",
+  "os_commit": "4358072f8cb1bc9ddfb6ee11122e194c76cd71e0",
+  "binary_sha256": null,
+  "runtime_status": "NOT_RUN",
+  "files": {
+    "celld-os-project/celld/crates/celld/js/harness.js": "8d3be5ef1b78d302cb2da745c63f8d2e1222115c49a8d08f1096bca7d235c237",
+    "celld-os-project/celld/crates/celld/js/storage_ops.rs": "33aae2a9d2c25dd46b5ef33e343a20a923e0bd90117e1cf67afe2137e2dcc010",
+    "celld-os-project/celld/crates/celld/storage.rs": "99ce80c6e273234787ca38367210ebca43baa9df49286dc911cd179f52b6dc2d",
+    "celld-os-project/celld/crates/celld/js/crypto.js": "bcd8e83a9ac832d8a375dd2358967ce76b5ca784b864f82a55ffc87b6a716684",
+    "celld-os-project/celld/crates/celld/js/crypto.rs": "151130269b188fc715d310ed65e0e8143c21b1ed202185b52a0d889e6015d8cb",
+    "celld-os-project/celld/crates/logic/lib.rs": "72b1be2cc362e6664270faedf8e0d17d7217307e27df36a84f92bc7e526bf53a",
+    "celld-os-stress/waves/sqlite-concurrency/cell-cases.js": "0e5116557fa02ad82edc28032c82d9cb7c96530e04880465fc6517acad7095d6",
+    "celld-os-stress/waves/native-transform-stress/operations.js": "3c56ee242a504ad001125fec4ec2ba54d07c00ff4757b36be2826624f7e751c6"
+  },
+  "os_files": [
+    {
+      "path": "raw/packages/gatekeeper-kit/src/action-files.ts",
+      "sha256": "e735cdd41333be3297a6e8d7114553483772b33f310edfb0844296650c855da0",
+      "bytes": 10338
+    },
+    {
+      "path": "raw/LICENSE",
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "bytes": 10174
+    },
+    {
+      "path": "raw/AGENTS.md",
+      "sha256": "2537132325242c1e2478e287b4ce806f473f7baf75ddb4d0660714edf9187412",
+      "bytes": 46091
+    },
+    {
+      "path": "raw/packages/gatekeeper-google/src/gmail-state.ts",
+      "sha256": "d9199d23a9eb40d7f57636ef7d5e628b6b27370d322ca66e45e05c8cc6f3430f",
+      "bytes": 14656
+    },
+    {
+      "path": "raw/packages/gatekeeper-google/src/gmail.ts",
+      "sha256": "0834876d29e3201171b7baf699603ab96461b66e741e85701ad53d24dc97132a",
+      "bytes": 203313
+    },
+    {
+      "path": "SOURCE-MANIFEST.json",
+      "sha256": "fe3dc1ca7a3f717836d21eda731828376fce928fef9ef2246ec5b5f3df33d64e",
+      "bytes": 18337
+    },
+    {
+      "path": "SNAPSHOT-SHA256SUMS",
+      "sha256": "bc7fc1eafe2cd98712f2aff54f60b140010341f8b8504afe4c1e0153f91edf73",
+      "bytes": 2576
+    },
+    {
+      "path": "VERIFICATION.json",
+      "sha256": "55953c7f936fbf77bedce4a29452ca97044a306493f5cd10ac89129c9c5c94aa",
+      "bytes": 634
+    }
+  ],
+  "overlap_files": [
+    {
+      "path": "storage-sql-semantics/cases.js",
+      "sha256": "1dec37fd6a3caae833bbc95620f407a7d866836410275c1b4b7637ae468bb7f9",
+      "bytes": 12968
+    },
+    {
+      "path": "atomic-accounting-semantics/cases.js",
+      "sha256": "b989812ac2fb83e206a9068aa18f77ea92833e76bbb620f6bf8cb024cbdf75e3",
+      "bytes": 23529
+    },
+    {
+      "path": "os-typed-storage-semantics/cases.js",
+      "sha256": "2b0a192f9bfdf32f3f0e064513c18b3aac1a915b67186ea073e3427c434adea2",
+      "bytes": 14208
+    },
+    {
+      "path": "r2-semantics/cases.js",
+      "sha256": "c42593afe0ea2d40afcddd122e4a4b91dbcf3a1ae6ce8b70ec5ee208efcfcc54",
+      "bytes": 14668
+    }
+  ],
+  "vendor_files": [
+    {
+      "path": "vendor/cloudflare-os/LICENSE",
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "bytes": 10174
+    },
+    {
+      "path": "vendor/cloudflare-os/packages/gatekeeper-kit/AGENTS.md",
+      "sha256": "3b8299d87f6b2893699648e2fcf5b878b9ede3ee05e5f71268f244ffa06cf2df",
+      "bytes": 2054
+    },
+    {
+      "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/action-files.ts",
+      "sha256": "e735cdd41333be3297a6e8d7114553483772b33f310edfb0844296650c855da0",
+      "bytes": 10338
+    },
+    {
+      "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/kv.ts",
+      "sha256": "2dd68d8822cb4737d8563da0595e250894d0f7f0b2ed2dc4b1505336a1f4ef9d",
+      "bytes": 1201
+    },
+    {
+      "path": "vendor/cloudflare-os/packages/gatekeeper-kit/src/positive-int.ts",
+      "sha256": "e9813ec2bd5121a0384dc6bd4af4467ea6aa27f169e11ddc27673a88879bded1",
+      "bytes": 763
+    }
+  ]
+}

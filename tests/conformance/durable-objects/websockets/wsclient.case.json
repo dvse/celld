@@ -1,0 +1,29 @@
+{
+  "id": "conformance/durable-objects/websockets/wsclient",
+  "layer": "conformance",
+  "behaviour": "durable-objects/websockets",
+  "title": "wsclient",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/examples/wsclient",
+      "legacy_id": "examples/wsclient"
+    },
+    {
+      "source": "celld@9c0fca5/examples/wsclient/wrangler.jsonc",
+      "sha256": "21f0556648aefe290b845d65fa44014de13a616ee55c9d14ea392f89879ec64c"
+    }
+  ],
+  "legacy_ids": [
+    "examples/wsclient"
+  ],
+  "adapter": "example",
+  "fixture": "tests/conformance/durable-objects/websockets/fixtures/outbound-client",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": "",
+  "runnable": true,
+  "source": "tests/conformance/durable-objects/websockets/fixtures/outbound-client/wrangler.jsonc",
+  "source_sha256": "21f0556648aefe290b845d65fa44014de13a616ee55c9d14ea392f89879ec64c"
+}

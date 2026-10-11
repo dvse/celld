@@ -1,0 +1,45 @@
+{
+  "id": "conformance/dynamic-workers-and-tails/static-and-dynamic-namespace-identity",
+  "layer": "conformance",
+  "behaviour": "dynamic-workers-and-tails",
+  "title": "Static and dynamic namespace identity",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/module-graph-stress",
+      "legacy_id": "module-graph-stress/M008"
+    }
+  ],
+  "corpus_wave": "module-graph-stress",
+  "corpus_id": "M008",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "M008",
+    "intent": "Static and dynamic namespace identity",
+    "failure_hypothesis": "Dynamic import can create a second namespace/state instance for a statically imported module.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Initialize static namespace at0.",
+      "Issue two dynamic mutators.",
+      "Assert in-receiver namespace identity and static final value."
+    ],
+    "stress": "Two dynamic imports mutate an already statically imported module.",
+    "oracle": "Both namespaces === static namespace; returned values sort1,2; final static state2.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M008",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request concurrent dispatch; completion order unconstrained",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  }
+}

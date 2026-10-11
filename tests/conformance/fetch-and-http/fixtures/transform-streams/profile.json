@@ -1,0 +1,58 @@
+{
+  "profile": "native-transform-frozen-v1",
+  "binary_sha256": "62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e",
+  "layer": "real-process-RPC",
+  "enforced_here": false,
+  "execution_state": "NOT_RUN",
+  "required_limits": {
+    "case_wall_seconds": 30,
+    "memory_mib": 512,
+    "pids": 128,
+    "vcpus": 1,
+    "native_operations_max": 4,
+    "operation_output_bytes_max": 262144,
+    "total_fixture_bytes_max": 4194304,
+    "receipt_bytes_max": 1048576,
+    "control_requests_max": 5
+  },
+  "fixture_bounds": {
+    "roots": 3,
+    "active_operation_requests": 2,
+    "per_recipient_native_handles_live_max": 3,
+    "per_recipient_native_handles_created_max": 12,
+    "per_recipient_byte_charges_max": 2097152,
+    "per_reader_steps_max": 4096,
+    "per_recipient_promises_max": 128,
+    "events_max": 64,
+    "hold_timeout_ms": 8000,
+    "case_body_timeout_ms": 15000,
+    "local_cleanup_timeout_ms": 4000,
+    "coordinator_drain_timeout_ms": 4000,
+    "cleanup_per_action_timeout_ms": 500,
+    "original_body_drain_timeout_ms": 2000
+  },
+  "excluded": [
+    "builds",
+    "VM or SUT launch",
+    "production edits",
+    "external network",
+    "real credentials",
+    "native bombs",
+    "unbounded native loops",
+    "native preemption claims",
+    "auth or forgery",
+    "retained stateless capabilities",
+    "Loader",
+    "WebSocket retirement",
+    "host pressure"
+  ],
+  "supervisor_required": [
+    "fresh owned guest and exact runtime identity",
+    "hard limits verified before requests",
+    "recipient roots on the same pinned process for registry claims",
+    "exclusive parent run slot",
+    "independent implementation review",
+    "independent terminal process/storage/resource teardown"
+  ],
+  "removed_duplicate_id": "X017"
+}

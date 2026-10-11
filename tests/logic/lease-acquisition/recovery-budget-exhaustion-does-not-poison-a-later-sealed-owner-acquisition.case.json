@@ -1,0 +1,54 @@
+{
+  "id": "logic/lease-acquisition/recovery-budget-exhaustion-does-not-poison-a-later-sealed-owner-acquisition",
+  "layer": "logic",
+  "behaviour": "lease-acquisition",
+  "title": "Recovery budget exhaustion does not poison a later sealed-owner acquisition",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic",
+      "legacy_id": "corpus/routing-acquisition-logic/N028"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+      "sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/routing-acquisition-logic/N028"
+  ],
+  "adapter": "native",
+  "corpus_id": "N028",
+  "corpus_wave": "routing-acquisition-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/lease-acquisition/fixtures/decision-cases/tests/routing_acquisition.rs",
+  "source_sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06",
+  "test_filter": "n028_recovery_budget_exhausts_without_poisoning_next_request",
+  "contract": {
+    "intent": "Recovery budget exhaustion does not poison a later sealed-owner acquisition",
+    "preconditions": [
+      "Fresh test-owned State; only frozen production celld_logic::on_event mutates it.",
+      "Empty State; residency1, activations1; dead4 Open-log recovery; retry budget2.",
+      "All completion operation IDs and timers come from the exact emitted effects; late IDs are previously issued IDs, never fabricated authority.",
+      "All input storage/lease/proof replies are synthetic facts. No executor, network, runtime, or fleet service is simulated as empirical evidence.",
+      "Static source/pin check and independent review required; compiler, test and runtime have not been launched."
+    ],
+    "trace": [
+      "First recovery Definite failure schedules retry",
+      "Fire retry110, reread dead4 and expired Open lease",
+      "Second recovery failure emits ResolveFailed with no claim",
+      "Assert zero activation permits",
+      "Request2 rereads dead4 now with Sealed log",
+      "Assert no recovery; CAS5 restore/start/publish succeeds; finish2"
+    ],
+    "oracle": "Budget exhaustion is terminal for old caller but does not poison later acquisition",
+    "cleanup": "Finish every locally completed request and cancel each remaining ownership-only waiter as shown. H::done checks no pending requests, active cells, activation/capacity queues, activation/eviction/release/adoption permits, or nonterminal phases. Drop isolated in-memory State; no external resources created. Stored timer descriptors are never launched.",
+    "implementation": "tests/routing_acquisition.rs:n028_recovery_budget_exhausts_without_poisoning_next_request"
+  },
+  "selector": "N028"
+}

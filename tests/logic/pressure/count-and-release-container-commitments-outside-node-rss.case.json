@@ -1,0 +1,54 @@
+{
+  "id": "logic/pressure/count-and-release-container-commitments-outside-node-rss",
+  "layer": "logic",
+  "behaviour": "pressure",
+  "title": "Count and release container commitments outside node RSS",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic",
+      "legacy_id": "corpus/pressure-recovery-logic/P007"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic/tests/pressure_recovery.rs",
+      "sha256": "ccb9c2001ec9d427c142017a426801dde5631b1252fae8b2e10ce0e12cc73e47"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/pressure-recovery-logic/P007"
+  ],
+  "adapter": "native",
+  "corpus_id": "P007",
+  "corpus_wave": "pressure-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/pressure/fixtures/decision-cases/tests/pressure_recovery.rs",
+  "source_sha256": "ccb9c2001ec9d427c142017a426801dde5631b1252fae8b2e10ce0e12cc73e47",
+  "test_filter": "p007_container_commitment_release_drives_both_latches",
+  "contract": {
+    "intent": "Count and release container commitments outside node RSS",
+    "preconditions": [
+      "Fresh State::new(\"fixture\", config()) per case; only production on_event transitions; no direct State-field mutation",
+      "Each resident created by RequestAt -> absent OwnerRead -> Applied epoch1 CAS -> RestoreCompleted -> RuntimeStarted generation1 -> Published; exact operation IDs come from effects",
+      "Every transition invokes State::validate; occupied<=4, activating<=4, evicting<=2; local completions tracked exactly once",
+      "Default require_node_lease=false isolates admission from fleet authority; this does not exercise actual lease authorization",
+      "Pressure samples are synthetic byte-valued facts, not measured RSS, allocator, cgroup or container enforcement",
+      "The immutable source/runtime-manifest pins and exact implementation must pass preflight before any authorized future run"
+    ],
+    "trace": [
+      "sample reservation100 yields ordinary160 and hard200",
+      "queue a/request1",
+      "reservation60 yields ordinary120 and hard160: hard clears but memory alone blocks",
+      "reservation20 yields ordinary80 and hard120 and emits CAS",
+      "complete a and finish1"
+    ],
+    "oracle": "Reservation60 exposes memory reason after hard relief, detecting omission of reservations from ordinary accounting; reservation20 releases; a completes Local after reservation falls to20 without changing either base process measurement",
+    "cleanup": "Finish every successful local request; settle all emitted stop/release/adoption effects shown by the trace; assert pending demand and activation/eviction/release/adoption counts empty. Drop owned in-memory State on return/unwind. No external resource created",
+    "implementation": "tests/pressure_recovery.rs:p007_container_commitment_release_drives_both_latches"
+  },
+  "selector": "P007"
+}

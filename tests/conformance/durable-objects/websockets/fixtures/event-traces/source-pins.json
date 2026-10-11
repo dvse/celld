@@ -1,0 +1,60 @@
+{
+  "binary_sha256": "8d27f1d423e74dd582dd36d47cc61aef2017344da84720fd5bbe1ff7fbff105f",
+  "runtime_manifest": "/workspace/shared/celld-os-stress/pilots/http-h001-v4/provenance/runtime-manifest.json",
+  "runtime_manifest_sha256": "e84f9ec275ce62bb67af53a5b97ddce90375016be136d49709d85dd9f52fcf8e",
+  "sources": [
+    {
+      "role": "candidate-direct",
+      "path": "/workspace/shared/celld-os-stress/waves/active-websocket-stress/provenance/crates/celld/js/harness.js",
+      "manifest_key": "celld/crates/celld/js/harness.js",
+      "sha256": "8d3be5ef1b78d302cb2da745c63f8d2e1222115c49a8d08f1096bca7d235c237",
+      "verified_against": "/workspace/shared/celld-os-stress/pilots/http-h001-v4/provenance/runtime-manifest.json"
+    },
+    {
+      "role": "candidate-direct",
+      "path": "/workspace/shared/celld-os-stress/waves/active-websocket-stress/provenance/crates/celld/main.rs",
+      "manifest_key": "celld/crates/celld/main.rs",
+      "sha256": "6d661101df7c44142e7338c493560cf212438116b3d65c06186217ee3182e892",
+      "verified_against": "/workspace/shared/celld-os-stress/pilots/http-h001-v4/provenance/runtime-manifest.json"
+    },
+    {
+      "role": "candidate-direct",
+      "path": "/workspace/shared/celld-os-stress/waves/active-websocket-stress/provenance/crates/celld/js/websocket.rs",
+      "manifest_key": "celld/crates/celld/js/websocket.rs",
+      "sha256": "684629808086e9a1832002648f0a893db6a48c08f1094156bfbe05fac8a41728",
+      "verified_against": "/workspace/shared/celld-os-stress/pilots/http-h001-v4/provenance/runtime-manifest.json"
+    },
+    {
+      "role": "candidate-direct",
+      "path": "/workspace/shared/celld-os-stress/waves/active-websocket-stress/provenance/crates/celld/main/websocket.rs",
+      "manifest_key": "celld/crates/celld/main/websocket.rs",
+      "sha256": "9d1522bcce245b08aa5237dfd30e8e8b908617b29529e9057e853506d6ea20b0",
+      "verified_against": "/workspace/shared/celld-os-stress/pilots/http-h001-v4/provenance/runtime-manifest.json"
+    },
+    {
+      "role": "upstream-reference-only",
+      "path": "/workspace/shared/celld-os-stress/waves/active-websocket-stress/provenance/workerd/src/workerd/api/web-socket.c++",
+      "commit": "9f247e0d5feae1f98ffcee5c9f44a0ded87bb334",
+      "repo_path": "src/workerd/api/web-socket.c++",
+      "sha256": "086f8bc5cc106fd733d522fa99bedb67106c212e79c6e9cc104e55c129244c92",
+      "repository": "/workspace/shared/celld-workerd-hybrid/workerd"
+    },
+    {
+      "role": "upstream-reference-only",
+      "path": "/workspace/shared/celld-os-stress/waves/active-websocket-stress/provenance/workerd/src/workerd/api/web-socket.h",
+      "commit": "9f247e0d5feae1f98ffcee5c9f44a0ded87bb334",
+      "repo_path": "src/workerd/api/web-socket.h",
+      "sha256": "9c1a5c14c488a5459d9cb3a3555106fa50070d18031b681f66fb4649dad0bfab",
+      "repository": "/workspace/shared/celld-workerd-hybrid/workerd"
+    },
+    {
+      "role": "upstream-reference-only",
+      "path": "/workspace/shared/celld-os-stress/waves/active-websocket-stress/provenance/workerd/src/workerd/io/compatibility-date.capnp",
+      "commit": "9f247e0d5feae1f98ffcee5c9f44a0ded87bb334",
+      "repo_path": "src/workerd/io/compatibility-date.capnp",
+      "sha256": "7e40443eaa49903597cf1866d2657cf354ed6397c37598f6371a8bb83514c0e7",
+      "repository": "/workspace/shared/celld-workerd-hybrid/workerd"
+    }
+  ],
+  "upstream_runtime_executed": false
+}

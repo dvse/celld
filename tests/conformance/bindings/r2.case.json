@@ -1,0 +1,28 @@
+{
+  "adapter": "example",
+  "behaviour": "bindings",
+  "fixture": "tests/conformance/bindings/fixtures/r2-bucket",
+  "id": "conformance/bindings/r2",
+  "layer": "conformance",
+  "legacy_ids": [
+    "examples/r2"
+  ],
+  "origins": [
+    {
+      "legacy_id": "examples/r2",
+      "source": "celld@9c0fca5/examples/r2"
+    },
+    {
+      "sha256": "76e7d04bf606530e813d0b744b8afad9b5c3615178277819cceaf247902f812f",
+      "source": "celld@9c0fca5/examples/r2/wrangler.jsonc"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/conformance/bindings/fixtures/r2-bucket/wrangler.jsonc",
+  "source_sha256": "76e7d04bf606530e813d0b744b8afad9b5c3615178277819cceaf247902f812f",
+  "title": "r2"
+}

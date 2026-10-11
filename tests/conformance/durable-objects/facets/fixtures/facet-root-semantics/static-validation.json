@@ -1,0 +1,100 @@
+{
+  "status": "STATIC_ONLY",
+  "runtime_status": "UNRUN",
+  "runtime_executions": 0,
+  "authored_cases": 18,
+  "fixed_assertions": 59,
+  "independent_review_claimed": false,
+  "checks": [
+    {
+      "check": "json-parse",
+      "file": "manifest.json",
+      "status": "PASS"
+    },
+    {
+      "check": "json-parse",
+      "file": "overlap-audit.json",
+      "status": "PASS"
+    },
+    {
+      "check": "json-parse",
+      "file": "schedule.json",
+      "status": "PASS"
+    },
+    {
+      "check": "json-parse",
+      "file": "source-pins.json",
+      "status": "PASS"
+    },
+    {
+      "check": "json-parse",
+      "file": "wrangler.json",
+      "status": "PASS"
+    },
+    {
+      "check": "python-ast-only",
+      "file": "author_manifest.py",
+      "status": "PASS"
+    },
+    {
+      "check": "python-ast-only",
+      "file": "validate_static.py",
+      "status": "PASS"
+    },
+    {
+      "check": "case-manifest-fixed-assertion-correspondence",
+      "cases": 18,
+      "assertions": 59,
+      "status": "PASS"
+    },
+    {
+      "check": "config-and-finite-schedule",
+      "status": "PASS"
+    },
+    {
+      "check": "exact-loaded-source-mirror",
+      "sha256": "0c1e77551454e2f4ec65e266e0b4e9768e6bac296550e2960d1242d52c0c0e75",
+      "status": "PASS"
+    },
+    {
+      "check": "sha256-runtime_sources",
+      "files": 7,
+      "status": "PASS"
+    },
+    {
+      "check": "sha256-baseline_evidence",
+      "files": 12,
+      "status": "PASS"
+    },
+    {
+      "check": "sha256-campaign_evidence",
+      "files": 2,
+      "status": "PASS"
+    },
+    {
+      "check": "sha256-fixture_artifacts",
+      "files": 11,
+      "status": "PASS"
+    },
+    {
+      "check": "node-syntax-only",
+      "file": "cases.js",
+      "status": "PASS"
+    },
+    {
+      "check": "node-syntax-only",
+      "file": "facets.js",
+      "status": "PASS"
+    },
+    {
+      "check": "node-syntax-only",
+      "file": "fixture.js",
+      "status": "PASS"
+    },
+    {
+      "check": "node-syntax-only",
+      "file": "sources.js",
+      "status": "PASS"
+    }
+  ]
+}

@@ -1,0 +1,221 @@
+{
+  "scope": "All 32 restored T cases and all20 D201-D220 case bodies read; baseline immutable. Reused scheduling/control/API primitives earn zero additional credit.",
+  "baseline_case_count": 32,
+  "other_storage_case_count": 20,
+  "baseline_file_sha256": "0e5116557fa02ad82edc28032c82d9cb7c96530e04880465fc6517acad7095d6",
+  "d_cases_file": "/workspace/shared/celld-campaign-next/storage-sql-semantics/cases.js",
+  "d_cases_sha256": "1dec37fd6a3caae833bbc95620f407a7d866836410275c1b4b7637ae468bb7f9",
+  "reviewed_baseline_ids": [
+    "T001",
+    "T002",
+    "T003",
+    "T004",
+    "T005",
+    "T006",
+    "T007",
+    "T008",
+    "T009",
+    "T010",
+    "T011",
+    "T012",
+    "T013",
+    "T014",
+    "T015",
+    "T016",
+    "T017",
+    "T018",
+    "T019",
+    "T020",
+    "T021",
+    "T022",
+    "T023",
+    "T024",
+    "T025",
+    "T026",
+    "T027",
+    "T028",
+    "T029",
+    "T030",
+    "T031",
+    "T032"
+  ],
+  "reviewed_d_ids": [
+    "D201",
+    "D202",
+    "D203",
+    "D204",
+    "D205",
+    "D206",
+    "D207",
+    "D208",
+    "D209",
+    "D210",
+    "D211",
+    "D212",
+    "D213",
+    "D214",
+    "D215",
+    "D216",
+    "D217",
+    "D218",
+    "D219",
+    "D220"
+  ],
+  "case_audit": [
+    {
+      "id": "T201",
+      "mechanism": "Conditional native UPDATE affects one quota row only when capacity remains; that receipt controls SQL allocation and KV document/index creation.",
+      "nearest_existing": [
+        "T001",
+        "T031",
+        "D214"
+      ],
+      "distinctness": "T001/T031 supply reused ordering controls; D214 unconditionally inserts two RETURNING rows. New credit is bounded conditional mutation receipt governing a compound allocation."
+    },
+    {
+      "id": "T202",
+      "mechanism": "Native UPSERT takes a first-insert then conflict-update path while preserving one BLOB and adding a second logical document.",
+      "nearest_existing": [
+        "T001",
+        "T019",
+        "D212",
+        "D214"
+      ],
+      "distinctness": "No baseline tests native UPSERT conflict-update plus shared payload reference accounting. BLOB conversion and transaction queue alone earn no credit."
+    },
+    {
+      "id": "T203",
+      "mechanism": "Native INSERT/UPDATE/DELETE trigger bodies maintain both sides of a collection move while explicit KV indexes follow the same transaction.",
+      "nearest_existing": [
+        "T008",
+        "D218"
+      ],
+      "distinctness": "D218 tests ingest parser boundaries and trigger row-count metadata. Here ordinary exec triggers maintain old/new relational aggregates across queued requests; sql.ingest is not used."
+    },
+    {
+      "id": "T204",
+      "mechanism": "Native foreign keys cascade primary-key rename and later parent deletion into composite-key chunk rows; an unrelated document survives.",
+      "nearest_existing": [
+        "T003",
+        "T027",
+        "D210"
+      ],
+      "distinctness": "Existing deletion tests cover KV counts/rollback, not native ON UPDATE and ON DELETE cascade propagation through relational ownership."
+    },
+    {
+      "id": "T205",
+      "mechanism": "A DEFERRABLE INITIALLY DEFERRED cyclic document/head relationship is temporarily unresolved inside a valid transaction and completed by an awaited successful child savepoint.",
+      "nearest_existing": [
+        "T004",
+        "T008",
+        "T009"
+      ],
+      "distinctness": "Nested commit ownership is reused, not counted. New mechanism is valid deferred cyclic relational integrity across successful nested savepoints and cross-surface head state. No failing commit is attempted."
+    },
+    {
+      "id": "T206",
+      "mechanism": "A partial UNIQUE index releases an archived slug and an UPSERT conflict target WHERE live=1 selects only the replacement active row.",
+      "nearest_existing": [
+        "D214",
+        "T024",
+        "T001"
+      ],
+      "distinctness": "Distinct from schema recompilation T024 and unconditional RETURNING D214. Native partial-index conflict selection preserves historical identities; it is not another quota UPDATE."
+    },
+    {
+      "id": "T207",
+      "mechanism": "A finite prefix list selects a page whose rows move into SQL before bulk deletion and remaining-byte accounting; the next queued extraction must select the next disjoint page.",
+      "nearest_existing": [
+        "D207",
+        "D210",
+        "T027",
+        "T028"
+      ],
+      "distinctness": "Those cases establish individual list bounds, deletion counts, rollback and microtask ordering. This candidate asserts a disjoint two-request destructive partition transfer with a fixed cross-store conservation oracle; reviewer may withhold credit if judged redundant."
+    },
+    {
+      "id": "T208",
+      "mechanism": "Native recursive CTEs derive materialized ancestry after a subtree move; a queued insert uses the new graph and all ancestor rollups must agree.",
+      "nearest_existing": [
+        "T030"
+      ],
+      "distinctness": "T030 runs an unrelated fixed 64x64 arithmetic query. This is a native recursive traversal feeding INSERT with relational membership and aggregate consistency, never a scalability or liveness benchmark."
+    },
+    {
+      "id": "T209",
+      "mechanism": "Native row_number partitioning selects obsolete unpinned versions for DELETE RETURNING while preserving each document current pointer and byte total.",
+      "nearest_existing": [
+        "D214",
+        "T027"
+      ],
+      "distinctness": "New native window-function partitioning plus conditional row deletion, distinct from unconditional INSERT RETURNING and restored KV rollback. Repeated left/right actions form one case, not two credits."
+    },
+    {
+      "id": "T210",
+      "mechanism": "Finite byte-range read/modify/write spans two native BLOB rows; the later request overwrites only its overlap and leaves allocation/size unchanged.",
+      "nearest_existing": [
+        "T019",
+        "D201",
+        "D212"
+      ],
+      "distinctness": "Typed bind conversion is a reused prerequisite. New oracle is an exact multi-row overlapping range merge with preserved bytes and zero-growth accounting, not alias/snapshot ownership."
+    },
+    {
+      "id": "T211",
+      "mechanism": "Native LAG of predecessor end offsets detects the exact hole between disjoint BLOB extents; queued gap-fill removes that gap while changing physical bytes without changing logical EOF.",
+      "nearest_existing": [
+        "D212",
+        "T019",
+        "T210"
+      ],
+      "distinctness": "T210 overwrites existing fixed chunks. This native LAG predecessor-boundary query discovers an actual extent gap and proves its removal after fill; fixture zero-fill earns no independent credit. T209 ranks whole revision rows for retention, whereas this case computes interval adjacency from BLOB lengths and offsets."
+    },
+    {
+      "id": "T212",
+      "mechanism": "Native DELETE removes tail extents and substr clips a crossing BLOB; a queued append fills that partial chunk then creates a new one.",
+      "nearest_existing": [
+        "D210",
+        "D212",
+        "T210",
+        "T211"
+      ],
+      "distinctness": "Distinct native deletion plus BLOB truncation path, then partial terminal reuse; neither existing overwrite nor sparse gap-fill removes physical data or clips native BLOBs."
+    },
+    {
+      "id": "T213",
+      "mechanism": "A native aggregate HAVING predicate validates contiguous fixed chunks before materializing a manifest and transferring reserved bytes into live bytes.",
+      "nearest_existing": [
+        "T001",
+        "D206",
+        "T201"
+      ],
+      "distinctness": "No new generic queue credit. Unlike conditional quota UPDATE, this admission is a multi-row relational completeness reduction with manifest creation and a two-bucket charge transfer."
+    },
+    {
+      "id": "T214",
+      "mechanism": "Stored generated byte length and virtual character length recompute on text mutation; an index on generated bytes must agree with document accounting.",
+      "nearest_existing": [
+        "D212",
+        "T024"
+      ],
+      "distinctness": "Basic text conversion and schema recompilation are reused. New mechanism is stored/virtual generated recomputation and native generated-column index maintenance during ordinary rewrites."
+    },
+    {
+      "id": "T215",
+      "mechanism": "Native FTS5 virtual-table UPDATE removes old token postings and DELETE removes another document while KV documents and counts track the same transactions.",
+      "nearest_existing": [
+        "D218",
+        "T024"
+      ],
+      "distinctness": "No FTS5 posting mutation case exists in T001\u2013T032 or D201\u2013D220. Ordinary virtual-table index maintenance is a separate native path from SQL triggers or cached schema statements."
+    }
+  ],
+  "not_authored_for_extra_credit": [
+    "Plain allocation/counter variants",
+    "Generic version-CAS variants",
+    "Standalone nested-commit/rollback variants",
+    "Reference-count decrement/GC arithmetic duplicate",
+    "Folder/tag/index renamings with identical API paths"
+  ],
+  "runtime_status": "NOT_RUN"
+}

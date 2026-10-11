@@ -1,0 +1,46 @@
+{
+  "id": "conformance/dynamic-workers-and-tails/reject-missing-named-export-while-retaining-a-valid-export",
+  "layer": "conformance",
+  "behaviour": "dynamic-workers-and-tails",
+  "title": "Reject missing named export while retaining a valid export",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/loader-props",
+      "legacy_id": "loader-props/L010"
+    }
+  ],
+  "corpus_wave": "loader-props",
+  "corpus_id": "L010",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "L010",
+    "intent": "Reject missing named export while retaining a valid export",
+    "failure_hypothesis": "Missing named export silently falls back to default or destroys loaded module",
+    "preconditions": [
+      "Missing export is absent; default has a positive control",
+      "Disposable private fixture with fresh supervisor name, live LOADER, facets, restore flag, and positive Loader control",
+      "External reviewed adapter has exclusive run slot and enforces wall/memory/PID/load limits"
+    ],
+    "trace": [
+      "Call valid default",
+      "Invoke Missing.verify",
+      "Reinvoke default"
+    ],
+    "stress": "1 worker; 3 calls",
+    "oracle": "Missing rejection names Missing; good export token remains identical",
+    "cleanup": "Case-specific finally disposes restored handles and drains finite cancellation hold where used; common cleanup releases code gates, aborts every owned facet, disposes entrypoints and worker handles, removes only tracked fixture KV rows. Parent tears down disposable fleet/storage.",
+    "implementation": "cases.js:loaderCases.L010",
+    "contract_group": "entrypoint",
+    "qualification": "characterization",
+    "promotion": "NOT_PROMOTED: independent source/oracle review and recorded frozen-runtime run required",
+    "layer": "real-process-RPC",
+    "profile": "loader-props-2026-09-04",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  }
+}

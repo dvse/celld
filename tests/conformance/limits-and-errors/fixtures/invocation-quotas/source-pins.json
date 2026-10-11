@@ -1,0 +1,71 @@
+{
+  "runtime_manifest": "/workspace/shared/celld-os-project/deliverable/package/reports/final/runtime-manifest.json",
+  "runtime_manifest_sha256": "54da8304fb90c06694cd44c114e0917b8db89ecefa08920a913c99b286359f28",
+  "binary_sha256": "62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e",
+  "celld_commit": "90b43017241f81189453d326d05948f388b34652",
+  "os_commit": "4358072f8cb1bc9ddfb6ee11122e194c76cd71e0",
+  "sources": [
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/js.rs",
+      "manifest_key": "celld/crates/celld/js.rs",
+      "sha256": "164b11bb2b0f7321d316bcd417b13fea3bf907b1eae335c97d8ebecaacb9ba17",
+      "lines": "1841-1862,2605-2775,7140-7220,7321-7459,7605-7789,7888-8038,9120-9140,11272-11324",
+      "contract": "Exact CPU/subrequest limit application; quotas before egress; code/env/props guards; startup spawn_blocking has no watchdog; loaded request bypasses normal pool admission"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/pool.rs",
+      "manifest_key": "celld/crates/celld/pool.rs",
+      "sha256": "b55734234b58847d598bad1c98be41b403015c327b51c58c5d7be2ba7d4fa341",
+      "lines": "1-40,230-277",
+      "contract": "Shared native Tokio turn execution and round-robin returned turns, not hard per-tenant scheduling"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/runtime.rs",
+      "manifest_key": "celld/crates/celld/runtime.rs",
+      "sha256": "6aaeccd97084cc4d9002d551e1246fd9fbc145c074978bee192549456775e068",
+      "lines": "2240-2340",
+      "contract": "Real turn/operation drive and cancellation lifecycle; no fixture simulation"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/lib.rs",
+      "manifest_key": "celld/crates/celld/lib.rs",
+      "sha256": "24efebb359d84402f4996adebdb80f5fe963044657fbaa47f450e15e99637faf",
+      "lines": "219-229",
+      "contract": "WorkerInvocationLimits u32 cpuMs/subRequests and deny_unknown_fields"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/js/harness.js",
+      "manifest_key": "celld/crates/celld/js/harness.js",
+      "sha256": "9d31b01bd4d1a6b136cfbc02bcb26a47deba29f27066009fc3f3b9c6d8d9c407",
+      "lines": "Worker Loader and service binding implementations",
+      "contract": "Public Loader.load/getEntrypoint/dispose and native capability transport"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/js/crypto.rs",
+      "manifest_key": "celld/crates/celld/js/crypto.rs",
+      "sha256": "151130269b188fc715d310ed65e0e8143c21b1ed202185b52a0d889e6015d8cb",
+      "lines": "1435-1510,1690-1750",
+      "contract": "Native PBKDF2 runs inline; observing a V8 error cannot prove native interruption"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/crates/celld/js/crypto.js",
+      "manifest_key": "celld/crates/celld/js/crypto.js",
+      "sha256": "bcd8e83a9ac832d8a375dd2358967ce76b5ca784b864f82a55ffc87b6a716684",
+      "lines": "734-761",
+      "contract": "getRandomValues 65536-byte check before native random operation"
+    },
+    {
+      "path": "/workspace/shared/celld-os-project/deliverable/patch-check-final/docs/services/dynamic-workers.md",
+      "manifest_key": "celld/docs/services/dynamic-workers.md",
+      "sha256": "ecc4810cbaed2b9bbcfd0fe6d4a8cef0374050a5ad7d0ee130c29e0459112c94",
+      "lines": "entire document",
+      "contract": "Supported Loader limits and API contracts; hard global loaded count256 not safely reached by this envelope"
+    }
+  ],
+  "os_context": {
+    "path": "/workspace/shared/celld-os-project/os/packages/workshop-backend/src/overseer.ts",
+    "sha256": "835e7c1ce74a99ae9e54f00537f7e89937ce500255c1c21f6fa7fc93dc0a67bc",
+    "lines": "4315-4378,8160-8182",
+    "meaning": "OS uses Loader/globalOutbound:null but these frozen gadget/code-mode paths do not configure cpuMs/subRequests. This fixture configures them explicitly and is not unchanged OS end-to-end proof."
+  }
+}

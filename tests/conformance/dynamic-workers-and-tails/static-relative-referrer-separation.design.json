@@ -1,0 +1,45 @@
+{
+  "id": "conformance/dynamic-workers-and-tails/static-relative-referrer-separation",
+  "layer": "conformance",
+  "behaviour": "dynamic-workers-and-tails",
+  "title": "Static relative referrer separation",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/module-graph-stress",
+      "legacy_id": "module-graph-stress/M004"
+    }
+  ],
+  "corpus_wave": "module-graph-stress",
+  "corpus_id": "M004",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "M004",
+    "intent": "Static relative referrer separation",
+    "failure_hypothesis": "Static resolution can collapse two same-basename dependencies or fail to share one canonical left dependency.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Initialize left/view and right/view using sibling state.js imports.",
+      "Read both and the root direct left import.",
+      "Mutate through left view; repeat direct and sibling reads."
+    ],
+    "stress": "Two static referrers with identical sibling filenames.",
+    "oracle": "[1,10,1] becomes [2,10,2]; right state remains10.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M004",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request ordered RPCs",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  }
+}

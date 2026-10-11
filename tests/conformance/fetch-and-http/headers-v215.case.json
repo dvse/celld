@@ -1,0 +1,104 @@
+{
+  "adapter": "http",
+  "behaviour": "fetch-and-http",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runs": 0,
+    "application_relevance": "Worker origin handlers commonly put a clone while returning the original response.",
+    "authored": true,
+    "classification": "functional-regression-candidate",
+    "cleanup": [
+      "No stores, capabilities, external sockets or timers owned by the case.",
+      "Join complete trace; cancel unlocked tracked bodies; locked runtime readers allowed only with explicit finite-source closure witness.",
+      "On unsettled trace/cleanup the supervisor must reap only owned deployment resources; fixture observation cannot qualify as PASS."
+    ],
+    "distinctness": "Cache ownership at cloned buffered response boundary; does not exercise returned-capability lifetime.",
+    "executable_source_implementation": true,
+    "failure_hypothesis": "Cache put may disturb the application-owned original response when given a buffered clone.",
+    "id": "V215",
+    "implementation": "cases.js:V215",
+    "independently_reviewed": false,
+    "intent": "Consume a cache clone while preserving its original body",
+    "layer": "direct-celld-public-Web-API",
+    "limits": {
+      "cleanup_deadline_ms": 1000,
+      "max_case_http_requests": 1,
+      "max_fixture_iterator_steps": 16,
+      "max_headers": 8,
+      "max_logical_payload_bytes": 256,
+      "max_outbound_network_requests": 0,
+      "max_parallel_api_calls": 1,
+      "outer_case_process_deadline_seconds": 10,
+      "outer_http_deadline_seconds": 5,
+      "trace_deadline_ms": 2000
+    },
+    "oracle": "Clone bodyUsed true, original bodyUsed false before read; original text exactly cache-copy-\u03bb.",
+    "preconditions": [
+      "Exact source snapshot and independently reviewed fixture hashes.",
+      "Actual direct celld process, V8 runtime and supplied worker; no hybrid, Node polyfill or simulated SUT.",
+      "Fresh owned deployment/store, loopback-only ingress, external bounded supervisor and recorded executable/source identity."
+    ],
+    "promotion_candidate": true,
+    "runtime_passes": 0,
+    "schedule": "One active GET /case/V215; operations in the written source order, each await settled before the next dependent step",
+    "source_expectation": "Pinned direct celld implementation contract; Cache always-miss assertions are not universal edge-cache guarantees.",
+    "source_refs": [
+      {
+        "line_end": 27,
+        "line_start": 16,
+        "path": "celld-os-project/celld/crates/celld/js/cache.js"
+      },
+      {
+        "line_end": 63,
+        "line_start": 37,
+        "path": "celld-os-project/celld/crates/celld/js/cache.js"
+      },
+      {
+        "line_end": 373,
+        "line_start": 361,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js"
+      }
+    ],
+    "status": "NOT_RUN",
+    "title": "Consume a cache clone while preserving its original body",
+    "trace": [
+      "Construct a buffered response containing cache-copy-lambda.",
+      "Clone it and await put of the clone using a Request key.",
+      "Assert only clone bodyUsed then read original exact Unicode text."
+    ]
+  },
+  "corpus_id": "V215",
+  "corpus_wave": "headers-semantics",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/headers-semantics",
+  "id": "conformance/fetch-and-http/headers-v215",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/headers-semantics/V215"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/headers-semantics/V215",
+      "manifest_sha256": "7ab0ac34b1ab6bcd773176ff2225a2c246ca835b9487d18b774833a4fc3afd88",
+      "review_sha256": "28eaaf318220793be282b62c84f95481f4b4a0a3a25e1b2b5e9bc18ac4432bff",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/headers-semantics",
+      "tranche": "001"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/V215",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "V215",
+  "source": "tests/conformance/fetch-and-http/fixtures/headers-semantics/fixture.js",
+  "source_sha256": "db81f86f93ee27f81864134f3323405a4410c1672f92531fbd0d780931fdafbf",
+  "title": "Consume a cache clone while preserving its original body"
+}

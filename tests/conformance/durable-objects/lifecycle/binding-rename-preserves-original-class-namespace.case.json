@@ -1,0 +1,63 @@
+{
+  "adapter": "deployment",
+  "behaviour": "durable-objects/lifecycle",
+  "contract": {
+    "cleanup": [
+      "Release trusted owned-store hold when possible",
+      "TERM both exact verified QEMU process groups before a shared10s grace",
+      "Escalate only exact verified survivors; reap each within2s",
+      "Enforce independent35s cleanup deadline plus bounded forced reap; cleanup failure cannot earn PASS",
+      "Fresh run ID, bucket, Guest pair and state directories for the next case; store guest lives until final teardown"
+    ],
+    "implementation": {
+      "driver": "driver.py:run_case",
+      "file": "cases.py",
+      "fixtures": "versions/*/fixture.js and wrangler.jsonc; actual selections in named function",
+      "function": "U015"
+    },
+    "intent": "Binding rename preserves original class namespace",
+    "oracle": "Binding variable names do not enter durable namespace identity; exact a10/b9 and two replacement operations persist.",
+    "preconditions": [
+      "Exact frozen binary/source pins and real native APIs verified",
+      "No active runtime execution during authoring; future exclusive supervisor approval required",
+      "v1 already deployed with no_bundle, fixture-only credentials and selector/module verification",
+      "Two owned bounded QEMU guests; guest2 store survives runtime-only cold fault",
+      "Case-specific operation/hold/clock barriers must be observed; missed pre-adoption/pre-cold alarm windows or45s fixture overlap fuses are BLOCKED with original receipts"
+    ],
+    "trace": [
+      "Publish binding-only deployment and witness unchanged native root ID",
+      "Overlap v2-binding writes a+3/b-2",
+      "Acknowledge exact operations",
+      "Cold restore with renamed binding"
+    ]
+  },
+  "corpus_id": "U015",
+  "corpus_wave": "deployment-recovery",
+  "fixture": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations",
+  "id": "conformance/durable-objects/lifecycle/binding-rename-preserves-original-class-namespace",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/deployment-recovery/U015"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/deployment-recovery/U015",
+      "source": "guarded-source-archive/celld-os-stress/waves/deployment-recovery"
+    },
+    {
+      "sha256": "49de28e3fc01e79ef63ba813af9358e5f772ba9002e9ed7da8611dfc07d15a20",
+      "source": "guarded-source-archive/celld-os-stress/waves/deployment-recovery/manifest.json"
+    }
+  ],
+  "phase2_harness": "native generation cutover plus process/bucket recovery",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "U015",
+  "source": "tests/conformance/durable-objects/lifecycle/fixtures/deployment-generations/manifest.json",
+  "source_sha256": "49de28e3fc01e79ef63ba813af9358e5f772ba9002e9ed7da8611dfc07d15a20",
+  "title": "Binding rename preserves original class namespace"
+}

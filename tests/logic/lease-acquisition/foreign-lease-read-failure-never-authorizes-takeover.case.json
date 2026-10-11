@@ -1,0 +1,54 @@
+{
+  "id": "logic/lease-acquisition/foreign-lease-read-failure-never-authorizes-takeover",
+  "layer": "logic",
+  "behaviour": "lease-acquisition",
+  "title": "Foreign lease read failure never authorizes takeover",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic",
+      "legacy_id": "corpus/routing-acquisition-logic/N019"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+      "sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/routing-acquisition-logic/N019"
+  ],
+  "adapter": "native",
+  "corpus_id": "N019",
+  "corpus_wave": "routing-acquisition-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/lease-acquisition/fixtures/decision-cases/tests/routing_acquisition.rs",
+  "source_sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06",
+  "test_filter": "n019_foreign_lease_error_fails_cohort_without_stealing_owner",
+  "contract": {
+    "intent": "Foreign lease read failure never authorizes takeover",
+    "preconditions": [
+      "Fresh test-owned State; only frozen production celld_logic::on_event mutates it.",
+      "Empty State; residency1, activations1; a requests1,2 read peer owner epoch3.",
+      "All completion operation IDs and timers come from the exact emitted effects; late IDs are previously issued IDs, never fabricated authority.",
+      "All input storage/lease/proof replies are synthetic facts. No executor, network, runtime, or fleet service is simulated as empirical evidence.",
+      "Static source/pin check and independent review required; compiler, test and runtime have not been launched."
+    ],
+    "trace": [
+      "Capture ReadNodeLease",
+      "Return ambiguous lease read failure",
+      "Assert both ResolveFailed and no CAS",
+      "New a/3 rereads same owner",
+      "Read live compatible peer lease",
+      "Assert Remote peer/epoch3"
+    ],
+    "oracle": "Unknown lease is not evidence of expiry and cannot trigger local acquisition",
+    "cleanup": "Finish every locally completed request and cancel each remaining ownership-only waiter as shown. H::done checks no pending requests, active cells, activation/capacity queues, activation/eviction/release/adoption permits, or nonterminal phases. Drop isolated in-memory State; no external resources created. Stored timer descriptors are never launched.",
+    "implementation": "tests/routing_acquisition.rs:n019_foreign_lease_error_fails_cohort_without_stealing_owner"
+  },
+  "selector": "N019"
+}

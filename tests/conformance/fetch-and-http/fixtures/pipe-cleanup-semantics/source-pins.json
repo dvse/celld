@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "source_snapshot": "celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "source_root_at_authoring": "/workspace/shared/celld-recovered/celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "upstream_commit": "90b43017241f81189453d326d05948f388b34652",
+  "binary_sha256": null,
+  "binary_note": "No runtime built or run; historic unguarded binary hashes are not qualification evidence for these new guarded-source tests.",
+  "runtime_sources": [
+    {
+      "path": "celld-os-project/celld/crates/celld/js/streams.js",
+      "sha256": "f77b1f59b2abdfeb73d770e0f12952df3a80a014c9fd9db1b277131b47cd054b",
+      "bytes": 26221
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js/writable_stream.js",
+      "sha256": "6b871978c796ffdb6eca104358332e3834aa4945d16fd019754bb28c7b2a3584",
+      "bytes": 22385
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js/harness.js",
+      "sha256": "8d3be5ef1b78d302cb2da745c63f8d2e1222115c49a8d08f1096bca7d235c237",
+      "bytes": 491759
+    }
+  ],
+  "baseline_evidence": [
+    {
+      "path": "celld-os-stress/cases/streams.json",
+      "sha256": "5229ce8e44ad3e541e7f96dc788ad946e7d2beade8f7c63aee02aed70b1a1684",
+      "bytes": 15183
+    },
+    {
+      "path": "celld-os-stress/fixture/index.js",
+      "sha256": "3e137fc03ca2b2e6ca40d538291aaf0e022bdfe491d3ddcdf4f8f9c4eb4c6b72",
+      "bytes": 14347
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/manifest.json",
+      "sha256": "5cacd1bfe0e3c07d2f2eb469bbcaa19cfdfb140f81a3ad351a5356cada5f17e1",
+      "bytes": 43665
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/operations.js",
+      "sha256": "3c56ee242a504ad001125fec4ec2ba54d07c00ff4757b36be2826624f7e751c6",
+      "bytes": 14588
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/source-pins.json",
+      "sha256": "22850dc72e870f4ae1a5f9e7a512534c8e11fed24ca93e56161613d8e3619987",
+      "bytes": 6269
+    },
+    {
+      "path": "celld-os-stress/waves/http-stream-stress/manifest.json",
+      "sha256": "089c5862ac6c145045dceb77b5e22106f7666e928074dadd27d55f2c81d68c00",
+      "bytes": 84278
+    },
+    {
+      "path": "celld-os-stress/waves/http-stream-stress/cases.js",
+      "sha256": "96fb832714b9437de94f48bb1c2fdb1fb5dc2eedb723901040c06cfb9bb305aa",
+      "bytes": 18310
+    },
+    {
+      "path": "celld-os-stress/COUNTS.json",
+      "sha256": "8221870307e3a6aa652f68df167a636d1235b2babd0573753809c94adde72be2",
+      "bytes": 20716
+    },
+    {
+      "path": "BUILD_AND_TEST.md",
+      "sha256": "14d182794d90bed90ee488abde70a9cba2004112e21a946441e621666196ecb1",
+      "bytes": 11861
+    }
+  ],
+  "campaign_evidence": [
+    {
+      "path": "reviews/baseline-inventory-review.json",
+      "sha256": "8ebb424c0bffbc0ba5d0bda9e669f094326bc338cb437c15507444a57025d9da",
+      "bytes": 145357
+    },
+    {
+      "path": "body-form-semantics/cases.js",
+      "sha256": "180471bf87e871d625acdc530f33d9829a3c6cd676a19747327f796894d4573d",
+      "bytes": 17359
+    }
+  ],
+  "fixture_artifacts": [
+    {
+      "path": "cases.js",
+      "sha256": "c854fc02b5d268af0d7ed55c58df23f3f67954ef36ce23d04b7a3cf21e78638e",
+      "bytes": 12235
+    },
+    {
+      "path": "fixture.js",
+      "sha256": "9903a92f43f96b3b38046171b7575e99b84eac2ef8e626b2377fb621f5a821b5",
+      "bytes": 9395
+    },
+    {
+      "path": "wrangler.json",
+      "sha256": "999ff4362bbaef67fc5f25cc150bea37064d930323074cfc1362c0d2b303196f",
+      "bytes": 116
+    }
+  ],
+  "primary_standard": {
+    "url": "https://streams.spec.whatwg.org/#readable-stream-pipe-to",
+    "retrieved_date": "2026-10-09",
+    "authority": "WHATWG Streams Standard normative pipe algorithm; implementation gaps do not weaken intended oracles."
+  },
+  "os_provenance_context": {
+    "status": "PRESERVED_METADATA_ONLY_OS_CHECKOUT_ABSENT",
+    "os_commit": "4358072f8cb1bc9ddfb6ee11122e194c76cd71e0",
+    "source_manifest": "celld-os-stress/waves/native-transform-stress/source-pins.json",
+    "preserved_records": [
+      {
+        "path": "/workspace/shared/celld-os-project/os/packages/workshop-backend/src/blueprint-archive.ts",
+        "sha256": "3169045728d1eb6a9de86afa08b1eddf8c14766affda28e8e95f1d01a2a846c1",
+        "manifest_key": null,
+        "lines": "95-113",
+        "purpose": "OS gzip archive imports",
+        "authority": "OS-use-source-only-not-in-runtime-manifest"
+      },
+      {
+        "path": "/workspace/shared/celld-os-project/os/packages/bundled-blueprints/blueprints/workspace-sheets/files/lib/zip.ts",
+        "sha256": "9033a9d3db083296a96f59a13424e05d79aeb8c3ee04fbb7b5aa06f3ab1c248f",
+        "manifest_key": null,
+        "lines": "106-140",
+        "purpose": "OS raw-deflate streaming XLSX export",
+        "authority": "OS-use-source-only-not-in-runtime-manifest"
+      },
+      {
+        "path": "/workspace/shared/celld-os-project/os/packages/workshop-backend/src/git-codec.ts",
+        "sha256": "56814f3f0608c88e6e83ba08e43f5af87ed4fabf972554e696c390809e9e1538",
+        "manifest_key": null,
+        "lines": "616-735",
+        "purpose": "OS SHA1 DigestStream pack reader and close",
+        "authority": "OS-use-source-only-not-in-runtime-manifest"
+      },
+      {
+        "path": "/workspace/shared/celld-os-project/os/packages/gatekeeper-kit/src/action-files.ts",
+        "sha256": "e735cdd41333be3297a6e8d7114553483772b33f310edfb0844296650c855da0",
+        "manifest_key": null,
+        "lines": "250",
+        "purpose": "OS SHA256 attachment/content digest",
+        "authority": "OS-use-source-only-not-in-runtime-manifest"
+      },
+      {
+        "path": "/workspace/shared/celld-os-project/os/packages/workshop-backend/src/sharing.ts",
+        "sha256": "0e10443304ae850a008b3b8771d26d28e5fa1f6240c0091cc01516627c8672af",
+        "manifest_key": null,
+        "lines": "55-74",
+        "purpose": "OS public HMAC personalization; fixture uses its own public key bytes",
+        "authority": "OS-use-source-only-not-in-runtime-manifest"
+      }
+    ],
+    "qualification": "Historical OS archive/worksheet-export/digest stream-use evidence supports testing the shared stream primitive. OS source was not reread; no new live OS behavior or exact prevent* flag usage is asserted."
+  }
+}

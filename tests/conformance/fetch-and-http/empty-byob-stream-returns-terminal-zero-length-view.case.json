@@ -1,0 +1,44 @@
+{
+  "adapter": "topology",
+  "behaviour": "fetch-and-http",
+  "contract": {
+    "cleanup": "release reader; forget source",
+    "intent": "Empty BYOB stream returns terminal zero-length view",
+    "oracle": "done=true; value.byteLength=0; unlocked",
+    "preconditions": "Empty source; four-byte BYOB destination",
+    "trace": [
+      "read destination",
+      "check terminal shape",
+      "release reader"
+    ]
+  },
+  "corpus_id": "S014",
+  "corpus_wave": "base",
+  "fixture": "tests/conformance/rpc/fixtures/object-capabilities/fixture",
+  "id": "conformance/fetch-and-http/empty-byob-stream-returns-terminal-zero-length-view",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/base/S014"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/base/S014",
+      "source": "guarded-source-archive/celld-os-stress/fixture"
+    },
+    {
+      "sha256": "3e137fc03ca2b2e6ca40d538291aaf0e022bdfe491d3ddcdf4f8f9c4eb4c6b72",
+      "source": "guarded-source-archive/celld-os-stress/fixture/index.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "S014",
+  "source": "tests/conformance/rpc/fixtures/object-capabilities/fixture/index.js",
+  "source_sha256": "3e137fc03ca2b2e6ca40d538291aaf0e022bdfe491d3ddcdf4f8f9c4eb4c6b72",
+  "title": "Empty BYOB stream returns terminal zero-length view"
+}

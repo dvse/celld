@@ -1,0 +1,54 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "Release all local and provider barriers, remove retained and borrowed handles, await tracked calls, dispose every owned handle in reverse order, verify local callback cohort counts and provider created/disposed equality, then delete per-case state. Supervisor tears down owned fleet after timeout or unknown cleanup.",
+    "distinctness": "Literal O028 state transition; counts, repetitions and deployment placements do not create additional cases.",
+    "intent": "A capability returned from a reverse callback must outlive both callback parameter scope and parent",
+    "oracle": "Child ownership survives both intermediate parameter and callback owner cleanup",
+    "preconditions": [
+      "COMMON",
+      "Callback child hook returns duplicate leaf stub"
+    ],
+    "source_contracts": [
+      "SC-PARAM",
+      "SC-RESULT",
+      "SC-DISPOSE"
+    ],
+    "trace": [
+      "Request child through remote target and reverse parent callback",
+      "Release parent and original leaf",
+      "Invoke returned leaf after both releases",
+      "Dispose result and verify independent parent/leaf finalizers plus forward target liveness"
+    ]
+  },
+  "corpus_id": "O028",
+  "corpus_wave": "capability-order",
+  "fixture": "tests/conformance/rpc/fixtures/ordering-and-lifetime",
+  "id": "conformance/rpc/a-capability-returned-from-a-reverse-callback-must-outlive-both-callback-parameter-scope-and-parent",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/capability-order/O028"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/capability-order/O028",
+      "source": "guarded-source-archive/celld-os-stress/waves/capability-order"
+    },
+    {
+      "sha256": "2dd846ea32e9b72b740619d977febe62cdc0aa8157e08c5261436c00e030e187",
+      "source": "guarded-source-archive/celld-os-stress/waves/capability-order/entry.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "O028",
+  "source": "tests/conformance/rpc/fixtures/ordering-and-lifetime/entry.js",
+  "source_sha256": "2dd846ea32e9b72b740619d977febe62cdc0aa8157e08c5261436c00e030e187",
+  "title": "A capability returned from a reverse callback must outlive both callback parameter scope and parent"
+}

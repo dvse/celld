@@ -1,0 +1,29 @@
+{
+  "id": "conformance/dynamic-workers-and-tails/dynamic-worker-tails",
+  "layer": "conformance",
+  "behaviour": "dynamic-workers-and-tails",
+  "title": "dynamic worker tails",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/examples/dynamic-worker-tails",
+      "legacy_id": "examples/dynamic-worker-tails"
+    },
+    {
+      "source": "celld@9c0fca5/examples/dynamic-worker-tails/wrangler.jsonc",
+      "sha256": "739ff9fb5a22e1dfa5c1a9b8c94d655d6180ac39379de6d3b51a48614aedcc6e"
+    }
+  ],
+  "legacy_ids": [
+    "examples/dynamic-worker-tails"
+  ],
+  "adapter": "example",
+  "fixture": "tests/conformance/dynamic-workers-and-tails/fixtures/tail-events",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": "",
+  "runnable": true,
+  "source": "tests/conformance/dynamic-workers-and-tails/fixtures/tail-events/wrangler.jsonc",
+  "source_sha256": "739ff9fb5a22e1dfa5c1a9b8c94d655d6180ac39379de6d3b51a48614aedcc6e"
+}

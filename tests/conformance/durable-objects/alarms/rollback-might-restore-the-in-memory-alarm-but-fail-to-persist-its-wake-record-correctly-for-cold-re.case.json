@@ -1,0 +1,62 @@
+{
+  "adapter": "recovery",
+  "behaviour": "durable-objects/alarms",
+  "contract": {
+    "cleanup": [
+      "Preserve the store through restore, then remove pending schedules and teardown both guests.",
+      "All transferred guests have independent bounded teardown; cleanup failure cannot qualify PASS. Before ownership verification no guest action is allowed."
+    ],
+    "implementation": "cases.py:A026",
+    "intent": "Rollback might restore the in-memory alarm but fail to persist its wake record correctly for cold restoration.",
+    "oracle": [
+      "Exact original timestamp survives cold recovery without the deletion marker.",
+      "Only rollback-survivor succeeds and produces one effect."
+    ],
+    "preconditions": [
+      "Independent review must accept the exact implementation hashes and selected A-ID; no runtime execution is authorized by this manifest.",
+      "Supervisor owns the exclusive run slot and transfers two exact live disposable QEMU guests in dedicated process groups, with pre-provisioned verified memory/PID/CPU bounds.",
+      "Exact staged fixture, client and configuration hashes, selected original62695 or candidate8d27 source-to-binary manifest, fresh16-hex run ID and fresh bucket/root are verified.",
+      "All requests stay on the owned private guest endpoints. No public traffic, real credentials, denied raw protocol experiment or returned-stateless-capability lifetime path is used.",
+      "Original90-second alarm stays future before and after cold restart; transaction deletion is definitely rolled back."
+    ],
+    "source_contracts": [
+      "source-pins.json:runtimes.original",
+      "source-pins.json:runtimes.candidate"
+    ],
+    "trace": [
+      "Arm rollback-survivor.",
+      "Transactionally delete and write a marker, then throw.",
+      "Verify original alarm, kill owned runtimes, and restart into fresh local caches.",
+      "Verify restored alarm and absence of the rolled-back marker before native delivery."
+    ]
+  },
+  "corpus_id": "A026",
+  "corpus_wave": "alarm-event-stress",
+  "fixture": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces",
+  "id": "conformance/durable-objects/alarms/rollback-might-restore-the-in-memory-alarm-but-fail-to-persist-its-wake-record-correctly-for-cold-re",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/alarm-event-stress/A026"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/alarm-event-stress/A026",
+      "source": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress"
+    },
+    {
+      "sha256": "ccde8a8c9c8c7a4cfe02567f656fc149da1ee24fd78973455e64a8fe1c6ea3f3",
+      "source": "guarded-source-archive/celld-os-stress/waves/alarm-event-stress/fixture.js"
+    }
+  ],
+  "phase2_harness": "real process and bucket fault schedule",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "A026",
+  "source": "tests/conformance/durable-objects/alarms/fixtures/recovery-traces/fixture.js",
+  "source_sha256": "ccde8a8c9c8c7a4cfe02567f656fc149da1ee24fd78973455e64a8fe1c6ea3f3",
+  "title": "Rollback might restore the in-memory alarm but fail to persist its wake record correctly for cold restoration."
+}

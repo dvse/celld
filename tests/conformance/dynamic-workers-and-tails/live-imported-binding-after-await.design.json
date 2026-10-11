@@ -1,0 +1,45 @@
+{
+  "id": "conformance/dynamic-workers-and-tails/live-imported-binding-after-await",
+  "layer": "conformance",
+  "behaviour": "dynamic-workers-and-tails",
+  "title": "Live imported binding after await",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/module-graph-stress",
+      "legacy_id": "module-graph-stress/M019"
+    }
+  ],
+  "corpus_wave": "module-graph-stress",
+  "corpus_id": "M019",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "M019",
+    "intent": "Live imported binding after await",
+    "failure_hypothesis": "A suspended module can read the binding value from before its await rather than the latest assignment.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Hold lazy reader after it has imported live value.",
+      "Witness its receiver ID; another invocation assigns9.",
+      "Release; reader snapshots9; assign12 afterward and ensure completed const stays9."
+    ],
+    "stress": "One lazy initializer suspended across live binding mutation.",
+    "oracle": "Captured9 after release, constant remains9 after value12; read:9 appears once.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M019",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request receiver overlap: initializer and mutator",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  }
+}

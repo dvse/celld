@@ -1,0 +1,60 @@
+{
+  "adapter": "topology",
+  "behaviour": "fetch-and-http",
+  "contract": {
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "HTTP failure after DO request input exposure, unlike zero-data H020 and direct RPC readable S007",
+    "implementation": "cases.js:H021",
+    "intent": "Fail relayed source after sink observes prefix",
+    "oracle": "Source error, sink inputBytes below32768/effect0, healthy effect1; no exact network error text asserted Native fetch/read rejection requires exact recipient plannedError marker; EOF, byte mismatch and fuse timeout cannot satisfy planned failure. Helper/assertion errors cannot count as expected native rejection.",
+    "preconditions": [
+      "Source4096-byte prefix and fail gate; sink expects32768 bytes",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Start relay",
+      "Observe sink at least4096 bytes before fault",
+      "Complete healthy writer",
+      "Release source failure",
+      "Require relay rejection and inspect sink/source"
+    ]
+  },
+  "corpus_id": "H021",
+  "corpus_wave": "http-stream-stress",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/body-streaming",
+  "id": "conformance/fetch-and-http/fail-relayed-source-after-sink-observes-prefix",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/http-stream-stress/H021"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/http-stream-stress/H021",
+      "source": "guarded-source-archive/celld-os-stress/waves/http-stream-stress"
+    },
+    {
+      "sha256": "bc36e6548386869fea496e7073ebc08ff4a068d89f1860e89f28a03515006e6b",
+      "source": "guarded-source-archive/celld-os-stress/waves/http-stream-stress/fixture.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "H021",
+  "source": "tests/conformance/fetch-and-http/fixtures/body-streaming/fixture.js",
+  "source_sha256": "bc36e6548386869fea496e7073ebc08ff4a068d89f1860e89f28a03515006e6b",
+  "title": "Fail relayed source after sink observes prefix"
+}

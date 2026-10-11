@@ -1,0 +1,45 @@
+{
+  "id": "conformance/dynamic-workers-and-tails/independent-lazy-branches-release-out-of-order",
+  "layer": "conformance",
+  "behaviour": "dynamic-workers-and-tails",
+  "title": "Independent lazy branches release out of order",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/module-graph-stress",
+      "legacy_id": "module-graph-stress/M013"
+    }
+  ],
+  "corpus_wave": "module-graph-stress",
+  "corpus_id": "M013",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "M013",
+    "intent": "Independent lazy branches release out of order",
+    "failure_hypothesis": "One pending module evaluation can globally block a different module or release the wrong branch.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Start left and right imports in one graph.",
+      "Witness both IDs and both gates.",
+      "Release right; assert left still pending; release left."
+    ],
+    "stress": "Two independent module evaluation promises and reverse release order.",
+    "oracle": "Right resolves right; left remains active without left-ready; then left resolves left.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M013",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request overlap of two actual loaded-worker invocations",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  }
+}

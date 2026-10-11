@@ -1,0 +1,47 @@
+{
+  "adapter": "topology",
+  "behaviour": "rpc",
+  "contract": {
+    "cleanup": "request completion",
+    "intent": "Public DO prototype getter is available as asynchronous property",
+    "oracle": "exact public-getter string",
+    "preconditions": "DO declares publicValue getter",
+    "trace": [
+      "await stub publicValue",
+      "compare result"
+    ]
+  },
+  "corpus_id": "R005",
+  "corpus_wave": "base",
+  "fixture": "tests/conformance/rpc/fixtures/object-capabilities/fixture",
+  "id": "conformance/rpc/public-do-prototype-getter-is-available-as-asynchronous-property",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/base/R005"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/base/R005",
+      "source": "guarded-source-archive/celld-os-stress/fixture"
+    },
+    {
+      "sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+      "source": "guarded-source-archive/celld-os-stress/fixture/rpc.js"
+    },
+    {
+      "sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+      "source": "guarded-source-archive/celld-os-stress/waves/do-visibility-regression/rpc.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "R005",
+  "source": "tests/conformance/rpc/fixtures/object-capabilities/fixture/rpc.js",
+  "source_sha256": "8e478959461178f2dd1b83040177232581f7f1543f51d83fa4fe585ab4fb22b5",
+  "title": "Public DO prototype getter is available as asynchronous property"
+}

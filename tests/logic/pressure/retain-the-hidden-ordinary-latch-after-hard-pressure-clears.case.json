@@ -1,0 +1,54 @@
+{
+  "id": "logic/pressure/retain-the-hidden-ordinary-latch-after-hard-pressure-clears",
+  "layer": "logic",
+  "behaviour": "pressure",
+  "title": "Retain the hidden ordinary latch after hard pressure clears",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic",
+      "legacy_id": "corpus/pressure-recovery-logic/P004"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/pressure-recovery-logic/tests/pressure_recovery.rs",
+      "sha256": "ccb9c2001ec9d427c142017a426801dde5631b1252fae8b2e10ce0e12cc73e47"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/pressure-recovery-logic/P004"
+  ],
+  "adapter": "native",
+  "corpus_id": "P004",
+  "corpus_wave": "pressure-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/pressure/fixtures/decision-cases/tests/pressure_recovery.rs",
+  "source_sha256": "ccb9c2001ec9d427c142017a426801dde5631b1252fae8b2e10ce0e12cc73e47",
+  "test_filter": "p004_dual_crossing_requires_both_independent_resume_lines",
+  "contract": {
+    "intent": "Retain the hidden ordinary latch after hard pressure clears",
+    "preconditions": [
+      "Fresh State::new(\"fixture\", config()) per case; only production on_event transitions; no direct State-field mutation",
+      "Each resident created by RequestAt -> absent OwnerRead -> Applied epoch1 CAS -> RestoreCompleted -> RuntimeStarted generation1 -> Published; exact operation IDs come from effects",
+      "Every transition invokes State::validate; occupied<=4, activating<=4, evicting<=2; local completions tracked exactly once",
+      "Default require_node_lease=false isolates admission from fleet authority; this does not exercise actual lease authorization",
+      "Pressure samples are synthetic byte-valued facts, not measured RSS, allocator, cgroup or container enforcement",
+      "The immutable source/runtime-manifest pins and exact implementation must pass preflight before any authorized future run"
+    ],
+    "trace": [
+      "sample100/200; queue a/request1",
+      "sample90/180 leaves both latched while only hard is reported",
+      "sample90/160 clears hard and exposes the retained ordinary latch without a new high crossing",
+      "sample80/160 clears ordinary",
+      "complete captured a CAS and finish1"
+    ],
+    "oracle": "Both warm samples emit no CAS; reason changes rss-hard to memory at ordinary90, which cannot newly arm; only ordinary80 finally admits; a completes Local on the final joint relief",
+    "cleanup": "Finish every successful local request; settle all emitted stop/release/adoption effects shown by the trace; assert pending demand and activation/eviction/release/adoption counts empty. Drop owned in-memory State on return/unwind. No external resource created",
+    "implementation": "tests/pressure_recovery.rs:p004_dual_crossing_requires_both_independent_resume_lines"
+  },
+  "selector": "P004"
+}

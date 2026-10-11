@@ -1,0 +1,54 @@
+{
+  "id": "logic/log-recovery/preserve-restore-selected-base-despite-an-excluded-newer-snapshot",
+  "layer": "logic",
+  "behaviour": "log-recovery",
+  "title": "Preserve restore-selected base despite an excluded newer snapshot",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic",
+      "legacy_id": "corpus/log-recovery-logic/J017"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/log-recovery-logic/tests/log_recovery.rs",
+      "sha256": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/log-recovery-logic/J017"
+  ],
+  "adapter": "native",
+  "corpus_id": "J017",
+  "corpus_wave": "log-recovery-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/log-recovery/fixtures/decision-cases/tests/log_recovery.rs",
+  "source_sha256": "136e796bf530b9b37970aa3fdedfee432c592f600d04566c4d448f057b58891c",
+  "test_filter": "j017_off_chain_late_snapshot_does_not_replace_restore_selected_base",
+  "contract": {
+    "intent": "Preserve restore-selected base despite an excluded newer snapshot",
+    "preconditions": [
+      "Each test owns all in-memory values and directly calls public frozen production celld_logic components; no substitute decision implementation",
+      "Storage PUT/delete success, failure, CAS ordering, member confirmations and restore chains are explicit synthetic environmental facts; no disk, bucket, network, actor or VM is exercised",
+      "Every supplied finish_recovery certificate has a stipulated prior durable per-cell/bucket receipt; the pure finish function does not validate that I/O premise",
+      "GC chains are supplied from the stipulated production restore walk, oldest-first and ending at own epoch except the deliberate missing-opener schedules; no restore walk is reimplemented",
+      "GC listed vectors intentionally include base/own/off-chain epochs beyond the current executor scan.below input; these are public-component API robustness premises, not claimed live executor traces",
+      "Hash checks must match delivered runtime manifest lineage before future review/build/run; no compiler or SUT was launched while authoring"
+    ],
+    "trace": [
+      "Plan from supplied restore chain and require retired_below=3",
+      "Require exact victims [1,2], preserving off-chain 5 and chain base 3",
+      "Verify mark 3 retires neither 5 nor 3",
+      "Age late snapshot from now100 to now200 without changing supplied chain",
+      "Require unchanged base 3 and victims [1,2]"
+    ],
+    "oracle": "Only restore-selected chain base controls GC; listing an intermediate snapshot is insufficient; Stable valid chain permits repeated exact planning while preserving necessary base",
+    "cleanup": "Drop only this test-owned records, maps, fragments, health tracker and ledger. No external resources exist; unwind also drops all owned values.",
+    "implementation": "tests/log_recovery.rs:j017_off_chain_late_snapshot_does_not_replace_restore_selected_base"
+  },
+  "selector": "J017"
+}

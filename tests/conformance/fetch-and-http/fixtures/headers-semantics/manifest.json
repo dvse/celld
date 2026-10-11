@@ -1,0 +1,1082 @@
+[
+  {
+    "id": "V201",
+    "title": "Enumerate header records in observable order",
+    "intent": "Enumerate header records in observable order",
+    "failure_hypothesis": "A record conversion may include inherited or hidden fields, or invoke a getter out of order.",
+    "preconditions": [
+      "Exact source snapshot and independently reviewed fixture hashes.",
+      "Actual direct celld process, V8 runtime and supplied worker; no hybrid, Node polyfill or simulated SUT.",
+      "Fresh owned deployment/store, loopback-only ingress, external bounded supervisor and recorded executable/source identity."
+    ],
+    "trace": [
+      "Construct a record with one inherited field, one own hidden field and one enumerable getter.",
+      "Wrap with a tracing Proxy; construct Headers once.",
+      "Compare the exact access trace and sole normalized output field."
+    ],
+    "oracle": "Trace is keys, descriptor:X-Hidden, descriptor:X-Public, get:X-Public, getter; output is only x-public=public.",
+    "source_expectation": "Pinned direct celld implementation contract; Cache always-miss assertions are not universal edge-cache guarantees.",
+    "source_refs": [
+      {
+        "path": "celld-os-project/celld/crates/celld/js/headers.js",
+        "line_start": 145,
+        "line_end": 180
+      }
+    ],
+    "application_relevance": "Middleware often constructs headers from option records with lazy getters.",
+    "distinctness": "Own-key WebIDL record conversion order, not RPC cloning.",
+    "implementation": "cases.js:V201",
+    "schedule": "One active GET /case/V201; operations in the written source order, each await settled before the next dependent step",
+    "limits": {
+      "max_case_http_requests": 1,
+      "max_outbound_network_requests": 0,
+      "max_parallel_api_calls": 1,
+      "max_logical_payload_bytes": 256,
+      "max_headers": 8,
+      "max_fixture_iterator_steps": 16,
+      "trace_deadline_ms": 2000,
+      "cleanup_deadline_ms": 1000,
+      "outer_http_deadline_seconds": 5,
+      "outer_case_process_deadline_seconds": 10
+    },
+    "cleanup": [
+      "No stores, capabilities, external sockets or timers owned by the case.",
+      "Join complete trace; cancel unlocked tracked bodies; locked runtime readers allowed only with explicit finite-source closure witness.",
+      "On unsettled trace/cleanup the supervisor must reap only owned deployment resources; fixture observation cannot qualify as PASS."
+    ],
+    "layer": "direct-celld-public-Web-API",
+    "classification": "functional-regression-candidate",
+    "promotion_candidate": true,
+    "authored": true,
+    "independently_reviewed": false,
+    "executable_source_implementation": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0,
+    "runtime_passes": 0
+  },
+  {
+    "id": "V202",
+    "title": "Prefer custom iterable over header record fields",
+    "intent": "Prefer custom iterable over header record fields",
+    "failure_hypothesis": "Constructor might use enumerable fields instead of the supplied iterator or consume it twice.",
+    "preconditions": [
+      "Exact source snapshot and independently reviewed fixture hashes.",
+      "Actual direct celld process, V8 runtime and supplied worker; no hybrid, Node polyfill or simulated SUT.",
+      "Fresh owned deployment/store, loopback-only ingress, external bounded supervisor and recorded executable/source identity."
+    ],
+    "trace": [
+      "Provide two yielded valid tuples plus a record-only field.",
+      "Construct Headers and compare complete generator trace.",
+      "Check sorted results and absence of record-only field."
+    ],
+    "oracle": "Generator trace begin,second,end once; x-count=two and x-mode=iterable; x-record absent.",
+    "source_expectation": "Pinned direct celld implementation contract; Cache always-miss assertions are not universal edge-cache guarantees.",
+    "source_refs": [
+      {
+        "path": "celld-os-project/celld/crates/celld/js/headers.js",
+        "line_start": 145,
+        "line_end": 180
+      }
+    ],
+    "application_relevance": "Header-building helpers expose iterable projections over richer objects.",
+    "distinctness": "Constructor union branch selection and finite iterable exhaustion.",
+    "implementation": "cases.js:V202",
+    "schedule": "One active GET /case/V202; operations in the written source order, each await settled before the next dependent step",
+    "limits": {
+      "max_case_http_requests": 1,
+      "max_outbound_network_requests": 0,
+      "max_parallel_api_calls": 1,
+      "max_logical_payload_bytes": 256,
+      "max_headers": 8,
+      "max_fixture_iterator_steps": 16,
+      "trace_deadline_ms": 2000,
+      "cleanup_deadline_ms": 1000,
+      "outer_http_deadline_seconds": 5,
+      "outer_case_process_deadline_seconds": 10
+    },
+    "cleanup": [
+      "No stores, capabilities, external sockets or timers owned by the case.",
+      "Join complete trace; cancel unlocked tracked bodies; locked runtime readers allowed only with explicit finite-source closure witness.",
+      "On unsettled trace/cleanup the supervisor must reap only owned deployment resources; fixture observation cannot qualify as PASS."
+    ],
+    "layer": "direct-celld-public-Web-API",
+    "classification": "functional-regression-candidate",
+    "promotion_candidate": true,
+    "authored": true,
+    "independently_reviewed": false,
+    "executable_source_implementation": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0,
+    "runtime_passes": 0
+  },
+  {
+    "id": "V203",
+    "title": "Honor overridden iterator on Headers input",
+    "intent": "Honor overridden iterator on Headers input",
+    "failure_hypothesis": "Headers constructor might special-case another Headers and bypass its user-visible iterator.",
+    "preconditions": [
+      "Exact source snapshot and independently reviewed fixture hashes.",
+      "Actual direct celld process, V8 runtime and supplied worker; no hybrid, Node polyfill or simulated SUT.",
+      "Fresh owned deployment/store, loopback-only ingress, external bounded supervisor and recorded executable/source identity."
+    ],
+    "trace": [
+      "Create source Headers with x-origin=one.",
+      "Override only its iterator to yield x-view=projected.",
+      "Construct copy and assert projection, one iteration, unchanged source getter."
+    ],
+    "oracle": "Override called once; copy has only x-view=projected; source retains x-origin=one.",
+    "source_expectation": "Pinned direct celld implementation contract; Cache always-miss assertions are not universal edge-cache guarantees.",
+    "source_refs": [
+      {
+        "path": "celld-os-project/celld/crates/celld/js/headers.js",
+        "line_start": 145,
+        "line_end": 159
+      }
+    ],
+    "application_relevance": "Middleware can project a safe subset by overriding public iteration.",
+    "distinctness": "Constructor respects public overridden iterator even for same-brand inputs; C015 only exercises RPC encoding.",
+    "implementation": "cases.js:V203",
+    "schedule": "One active GET /case/V203; operations in the written source order, each await settled before the next dependent step",
+    "limits": {
+      "max_case_http_requests": 1,
+      "max_outbound_network_requests": 0,
+      "max_parallel_api_calls": 1,
+      "max_logical_payload_bytes": 256,
+      "max_headers": 8,
+      "max_fixture_iterator_steps": 16,
+      "trace_deadline_ms": 2000,
+      "cleanup_deadline_ms": 1000,
+      "outer_http_deadline_seconds": 5,
+      "outer_case_process_deadline_seconds": 10
+    },
+    "cleanup": [
+      "No stores, capabilities, external sockets or timers owned by the case.",
+      "Join complete trace; cancel unlocked tracked bodies; locked runtime readers allowed only with explicit finite-source closure witness.",
+      "On unsettled trace/cleanup the supervisor must reap only owned deployment resources; fixture observation cannot qualify as PASS."
+    ],
+    "layer": "direct-celld-public-Web-API",
+    "classification": "functional-regression-candidate",
+    "promotion_candidate": true,
+    "authored": true,
+    "independently_reviewed": false,
+    "executable_source_implementation": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0,
+    "runtime_passes": 0
+  },
+  {
+    "id": "V204",
+    "title": "Coerce ordinary header arguments in order",
+    "intent": "Coerce ordinary header arguments in order",
+    "failure_hypothesis": "Header value coercion could precede name coercion, occur twice, or retain edge whitespace.",
+    "preconditions": [
+      "Exact source snapshot and independently reviewed fixture hashes.",
+      "Actual direct celld process, V8 runtime and supplied worker; no hybrid, Node polyfill or simulated SUT.",
+      "Fresh owned deployment/store, loopback-only ingress, external bounded supervisor and recorded executable/source identity."
+    ],
+    "trace": [
+      "Append an object-valued name and object-valued value with tracing toString methods.",
+      "Compare exact coercion order and normalized value.",
+      "Append numeric value 42 to the same logical field."
+    ],
+    "oracle": "Trace name,value exactly once each; initial value accepted value; final value accepted value, 42.",
+    "source_expectation": "Pinned direct celld implementation contract; Cache always-miss assertions are not universal edge-cache guarantees.",
+    "source_refs": [
+      {
+        "path": "celld-os-project/celld/crates/celld/js/headers.js",
+        "line_start": 9,
+        "line_end": 57
+      },
+      {
+        "path": "celld-os-project/celld/crates/celld/js/headers.js",
+        "line_start": 182,
+        "line_end": 197
+      }
+    ],
+    "application_relevance": "Request builders accept numeric configuration values and computed field names.",
+    "distinctness": "Observable WebIDL string conversion with valid arguments; not duplicate-field-only coverage.",
+    "implementation": "cases.js:V204",
+    "schedule": "One active GET /case/V204; operations in the written source order, each await settled before the next dependent step",
+    "limits": {
+      "max_case_http_requests": 1,
+      "max_outbound_network_requests": 0,
+      "max_parallel_api_calls": 1,
+      "max_logical_payload_bytes": 256,
+      "max_headers": 8,
+      "max_fixture_iterator_steps": 16,
+      "trace_deadline_ms": 2000,
+      "cleanup_deadline_ms": 1000,
+      "outer_http_deadline_seconds": 5,
+      "outer_case_process_deadline_seconds": 10
+    },
+    "cleanup": [
+      "No stores, capabilities, external sockets or timers owned by the case.",
+      "Join complete trace; cancel unlocked tracked bodies; locked runtime readers allowed only with explicit finite-source closure witness.",
+      "On unsettled trace/cleanup the supervisor must reap only owned deployment resources; fixture observation cannot qualify as PASS."
+    ],
+    "layer": "direct-celld-public-Web-API",
+    "classification": "functional-regression-candidate",
+    "promotion_candidate": true,
+    "authored": true,
+    "independently_reviewed": false,
+    "executable_source_implementation": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0,
+    "runtime_passes": 0
+  },
+  {
+    "id": "V205",
+    "title": "Compact duplicate header values after cached iteration",
+    "intent": "Compact duplicate header values after cached iteration",
+    "failure_hypothesis": "Set may leave duplicate rows or desynchronize parallel names after the pair memo is populated.",
+    "preconditions": [
+      "Exact source snapshot and independently reviewed fixture hashes.",
+      "Actual direct celld process, V8 runtime and supplied worker; no hybrid, Node polyfill or simulated SUT.",
+      "Fresh owned deployment/store, loopback-only ingress, external bounded supervisor and recorded executable/source identity."
+    ],
+    "trace": [
+      "Construct repeated x-a between x-b and x-c.",
+      "Enumerate once to prime the sorted memo.",
+      "Set x-a to replacement, append tail, and compare full output plus x-c lookup."
+    ],
+    "oracle": "After mutation x-a=replacement, tail; x-b=left; x-c=right; exactly three logical names.",
+    "source_expectation": "Pinned direct celld implementation contract; Cache always-miss assertions are not universal edge-cache guarantees.",
+    "source_refs": [
+      {
+        "path": "celld-os-project/celld/crates/celld/js/headers.js",
+        "line_start": 87,
+        "line_end": 117
+      },
+      {
+        "path": "celld-os-project/celld/crates/celld/js/headers.js",
+        "line_start": 199,
+        "line_end": 231
+      }
+    ],
+    "application_relevance": "Response middleware replaces a repeated field after logging existing headers.",
+    "distinctness": "Set duplicate compaction plus memo invalidation and survivor alignment.",
+    "implementation": "cases.js:V205",
+    "schedule": "One active GET /case/V205; operations in the written source order, each await settled before the next dependent step",
+    "limits": {
+      "max_case_http_requests": 1,
+      "max_outbound_network_requests": 0,
+      "max_parallel_api_calls": 1,
+      "max_logical_payload_bytes": 256,
+      "max_headers": 8,
+      "max_fixture_iterator_steps": 16,
+      "trace_deadline_ms": 2000,
+      "cleanup_deadline_ms": 1000,
+      "outer_http_deadline_seconds": 5,
+      "outer_case_process_deadline_seconds": 10
+    },
+    "cleanup": [
+      "No stores, capabilities, external sockets or timers owned by the case.",
+      "Join complete trace; cancel unlocked tracked bodies; locked runtime readers allowed only with explicit finite-source closure witness.",
+      "On unsettled trace/cleanup the supervisor must reap only owned deployment resources; fixture observation cannot qualify as PASS."
+    ],
+    "layer": "direct-celld-public-Web-API",
+    "classification": "functional-regression-candidate",
+    "promotion_candidate": true,
+    "authored": true,
+    "independently_reviewed": false,
+    "executable_source_implementation": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0,
+    "runtime_passes": 0
+  },
+  {
+    "id": "V206",
+    "title": "Delete repeated fields without losing empty survivors",
+    "intent": "Delete repeated fields without losing empty survivors",
+    "failure_hypothesis": "Deletion may remove only one repeat, misalign survivors, or conflate empty values with absence.",
+    "preconditions": [
+      "Exact source snapshot and independently reviewed fixture hashes.",
+      "Actual direct celld process, V8 runtime and supplied worker; no hybrid, Node polyfill or simulated SUT.",
+      "Fresh owned deployment/store, loopback-only ingress, external bounded supervisor and recorded executable/source identity."
+    ],
+    "trace": [
+      "Delete two differently cased x-a entries surrounding an empty x-b.",
+      "Compare remaining fields and null-versus-empty lookup results.",
+      "Reinsert x-a and delete a missing name."
+    ],
+    "oracle": "x-a absent/null, x-b present/empty; x-c remains keep; reinsertion yields x-a=new with both survivors.",
+    "source_expectation": "Pinned direct celld implementation contract; Cache always-miss assertions are not universal edge-cache guarantees.",
+    "source_refs": [
+      {
+        "path": "celld-os-project/celld/crates/celld/js/headers.js",
+        "line_start": 232,
+        "line_end": 251
+      }
+    ],
+    "application_relevance": "Middleware strips prior values while preserving deliberately empty control fields.",
+    "distinctness": "Full delete compaction, absent/empty distinction and clean reinsertion.",
+    "implementation": "cases.js:V206",
+    "schedule": "One active GET /case/V206; operations in the written source order, each await settled before the next dependent step",
+    "limits": {
+      "max_case_http_requests": 1,
+      "max_outbound_network_requests": 0,
+      "max_parallel_api_calls": 1,
+      "max_logical_payload_bytes": 256,
+      "max_headers": 8,
+      "max_fixture_iterator_steps": 16,
+      "trace_deadline_ms": 2000,
+      "cleanup_deadline_ms": 1000,
+      "outer_http_deadline_seconds": 5,
+      "outer_case_process_deadline_seconds": 10
+    },
+    "cleanup": [
+      "No stores, capabilities, external sockets or timers owned by the case.",
+      "Join complete trace; cancel unlocked tracked bodies; locked runtime readers allowed only with explicit finite-source closure witness.",
+      "On unsettled trace/cleanup the supervisor must reap only owned deployment resources; fixture observation cannot qualify as PASS."
+    ],
+    "layer": "direct-celld-public-Web-API",
+    "classification": "functional-regression-candidate",
+    "promotion_candidate": true,
+    "authored": true,
+    "independently_reviewed": false,
+    "executable_source_implementation": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0,
+    "runtime_passes": 0
+  },
+  {
+    "id": "V207",
+    "title": "Keep iterator views aligned across split cookie fields",
+    "intent": "Keep iterator views aligned across split cookie fields",
+    "failure_hypothesis": "Sorting/combining may reorder cookie fields or make keys/values disagree with entries.",
+    "preconditions": [
+      "Exact source snapshot and independently reviewed fixture hashes.",
+      "Actual direct celld process, V8 runtime and supplied worker; no hybrid, Node polyfill or simulated SUT.",
+      "Fresh owned deployment/store, loopback-only ingress, external bounded supervisor and recorded executable/source identity."
+    ],
+    "trace": [
+      "Construct mixed ordinary and Set-Cookie fields in interleaved input order.",
+      "Read entries, keys and values separately.",
+      "Compare every view to independent fixed lists."
+    ],
+    "oracle": "Sorted entries contain two separate ordered set-cookie values, then merged x-list, then z-tail; keys and values preserve the same four positions.",
+    "source_expectation": "Pinned direct celld implementation contract; Cache always-miss assertions are not universal edge-cache guarantees.",
+    "source_refs": [
+      {
+        "path": "celld-os-project/celld/crates/celld/js/headers.js",
+        "line_start": 87,
+        "line_end": 117
+      },
+      {
+        "path": "celld-os-project/celld/crates/celld/js/headers.js",
+        "line_start": 281,
+        "line_end": 284
+      },
+      {
+        "path": "celld-os-project/celld/crates/celld/js/headers.js",
+        "line_start": 300,
+        "line_end": 318
+      }
+    ],
+    "application_relevance": "Response processing zips header names and values, including multiple cookies.",
+    "distinctness": "Cross-view sort/multiplicity alignment; C015 checks RPC cookie revival but not iterator-kind projection.",
+    "implementation": "cases.js:V207",
+    "schedule": "One active GET /case/V207; operations in the written source order, each await settled before the next dependent step",
+    "limits": {
+      "max_case_http_requests": 1,
+      "max_outbound_network_requests": 0,
+      "max_parallel_api_calls": 1,
+      "max_logical_payload_bytes": 256,
+      "max_headers": 8,
+      "max_fixture_iterator_steps": 16,
+      "trace_deadline_ms": 2000,
+      "cleanup_deadline_ms": 1000,
+      "outer_http_deadline_seconds": 5,
+      "outer_case_process_deadline_seconds": 10
+    },
+    "cleanup": [
+      "No stores, capabilities, external sockets or timers owned by the case.",
+      "Join complete trace; cancel unlocked tracked bodies; locked runtime readers allowed only with explicit finite-source closure witness.",
+      "On unsettled trace/cleanup the supervisor must reap only owned deployment resources; fixture observation cannot qualify as PASS."
+    ],
+    "layer": "direct-celld-public-Web-API",
+    "classification": "functional-regression-candidate",
+    "promotion_candidate": true,
+    "authored": true,
+    "independently_reviewed": false,
+    "executable_source_implementation": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0,
+    "runtime_passes": 0
+  },
+  {
+    "id": "V208",
+    "title": "Observe insertion after a live iterator cursor",
+    "intent": "Observe insertion after a live iterator cursor",
+    "failure_hypothesis": "Cached iteration may omit a new name inserted after the consumed sorted position.",
+    "preconditions": [
+      "Exact source snapshot and independently reviewed fixture hashes.",
+      "Actual direct celld process, V8 runtime and supplied worker; no hybrid, Node polyfill or simulated SUT.",
+      "Fresh owned deployment/store, loopback-only ingress, external bounded supervisor and recorded executable/source identity."
+    ],
+    "trace": [
+      "Consume x-a from an x-a/x-c iterator.",
+      "Insert x-b.",
+      "Take exactly three more iterator steps including terminal done."
+    ],
+    "oracle": "Next values x-b/two then x-c/three; terminal done with undefined value.",
+    "source_expectation": "Pinned direct celld implementation contract; Cache always-miss assertions are not universal edge-cache guarantees.",
+    "source_refs": [
+      {
+        "path": "celld-os-project/celld/crates/celld/js/headers.js",
+        "line_start": 127,
+        "line_end": 142
+      },
+      {
+        "path": "celld-os-project/celld/crates/celld/js/headers.js",
+        "line_start": 276,
+        "line_end": 325
+      }
+    ],
+    "application_relevance": "Middleware augments headers during one traversal.",
+    "distinctness": "Live iterator insertion and sorted memo invalidation, distinct from static sorted views.",
+    "implementation": "cases.js:V208",
+    "schedule": "One active GET /case/V208; operations in the written source order, each await settled before the next dependent step",
+    "limits": {
+      "max_case_http_requests": 1,
+      "max_outbound_network_requests": 0,
+      "max_parallel_api_calls": 1,
+      "max_logical_payload_bytes": 256,
+      "max_headers": 8,
+      "max_fixture_iterator_steps": 16,
+      "trace_deadline_ms": 2000,
+      "cleanup_deadline_ms": 1000,
+      "outer_http_deadline_seconds": 5,
+      "outer_case_process_deadline_seconds": 10
+    },
+    "cleanup": [
+      "No stores, capabilities, external sockets or timers owned by the case.",
+      "Join complete trace; cancel unlocked tracked bodies; locked runtime readers allowed only with explicit finite-source closure witness.",
+      "On unsettled trace/cleanup the supervisor must reap only owned deployment resources; fixture observation cannot qualify as PASS."
+    ],
+    "layer": "direct-celld-public-Web-API",
+    "classification": "functional-regression-candidate",
+    "promotion_candidate": true,
+    "authored": true,
+    "independently_reviewed": false,
+    "executable_source_implementation": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0,
+    "runtime_passes": 0
+  },
+  {
+    "id": "V209",
+    "title": "Apply deletion shifts to a live iterator",
+    "intent": "Apply deletion shifts to a live iterator",
+    "failure_hypothesis": "Iterator may retain a stale pair array after deletion before its numeric cursor.",
+    "preconditions": [
+      "Exact source snapshot and independently reviewed fixture hashes.",
+      "Actual direct celld process, V8 runtime and supplied worker; no hybrid, Node polyfill or simulated SUT.",
+      "Fresh owned deployment/store, loopback-only ingress, external bounded supervisor and recorded executable/source identity."
+    ],
+    "trace": [
+      "Consume x-a from x-a/x-b/x-c.",
+      "Delete x-a.",
+      "Read next and done; compare a fresh full iteration."
+    ],
+    "oracle": "Existing iterator next is x-c/three then done; fresh iterator still contains x-b/two,x-c/three.",
+    "source_expectation": "Pinned direct celld implementation contract; Cache always-miss assertions are not universal edge-cache guarantees.",
+    "source_refs": [
+      {
+        "path": "celld-os-project/celld/crates/celld/js/headers.js",
+        "line_start": 236,
+        "line_end": 250
+      },
+      {
+        "path": "celld-os-project/celld/crates/celld/js/headers.js",
+        "line_start": 300,
+        "line_end": 318
+      }
+    ],
+    "application_relevance": "Transforms that remove visited headers must not see stale deleted records.",
+    "distinctness": "Live numeric-cursor shift on deletion; expectation is explicitly source-backed current list semantics.",
+    "implementation": "cases.js:V209",
+    "schedule": "One active GET /case/V209; operations in the written source order, each await settled before the next dependent step",
+    "limits": {
+      "max_case_http_requests": 1,
+      "max_outbound_network_requests": 0,
+      "max_parallel_api_calls": 1,
+      "max_logical_payload_bytes": 256,
+      "max_headers": 8,
+      "max_fixture_iterator_steps": 16,
+      "trace_deadline_ms": 2000,
+      "cleanup_deadline_ms": 1000,
+      "outer_http_deadline_seconds": 5,
+      "outer_case_process_deadline_seconds": 10
+    },
+    "cleanup": [
+      "No stores, capabilities, external sockets or timers owned by the case.",
+      "Join complete trace; cancel unlocked tracked bodies; locked runtime readers allowed only with explicit finite-source closure witness.",
+      "On unsettled trace/cleanup the supervisor must reap only owned deployment resources; fixture observation cannot qualify as PASS."
+    ],
+    "layer": "direct-celld-public-Web-API",
+    "classification": "functional-regression-candidate",
+    "promotion_candidate": true,
+    "authored": true,
+    "independently_reviewed": false,
+    "executable_source_implementation": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0,
+    "runtime_passes": 0
+  },
+  {
+    "id": "V210",
+    "title": "Refresh an unvisited iterator value after mutations",
+    "intent": "Refresh an unvisited iterator value after mutations",
+    "failure_hypothesis": "Iterator may capture an old value when set and append invalidate the current pair memo.",
+    "preconditions": [
+      "Exact source snapshot and independently reviewed fixture hashes.",
+      "Actual direct celld process, V8 runtime and supplied worker; no hybrid, Node polyfill or simulated SUT.",
+      "Fresh owned deployment/store, loopback-only ingress, external bounded supervisor and recorded executable/source identity."
+    ],
+    "trace": [
+      "Consume first entry from x-a/x-b.",
+      "Set x-b=new and append tail.",
+      "Read remaining entry then done."
+    ],
+    "oracle": "Remaining value exactly x-b/new, tail; no extra logical field appears.",
+    "source_expectation": "Pinned direct celld implementation contract; Cache always-miss assertions are not universal edge-cache guarantees.",
+    "source_refs": [
+      {
+        "path": "celld-os-project/celld/crates/celld/js/headers.js",
+        "line_start": 182,
+        "line_end": 186
+      },
+      {
+        "path": "celld-os-project/celld/crates/celld/js/headers.js",
+        "line_start": 199,
+        "line_end": 231
+      },
+      {
+        "path": "celld-os-project/celld/crates/celld/js/headers.js",
+        "line_start": 300,
+        "line_end": 318
+      }
+    ],
+    "application_relevance": "A middleware pass revises a later field while traversing the current header set.",
+    "distinctness": "Mutation of an unvisited existing row rather than insertion or deletion.",
+    "implementation": "cases.js:V210",
+    "schedule": "One active GET /case/V210; operations in the written source order, each await settled before the next dependent step",
+    "limits": {
+      "max_case_http_requests": 1,
+      "max_outbound_network_requests": 0,
+      "max_parallel_api_calls": 1,
+      "max_logical_payload_bytes": 256,
+      "max_headers": 8,
+      "max_fixture_iterator_steps": 16,
+      "trace_deadline_ms": 2000,
+      "cleanup_deadline_ms": 1000,
+      "outer_http_deadline_seconds": 5,
+      "outer_case_process_deadline_seconds": 10
+    },
+    "cleanup": [
+      "No stores, capabilities, external sockets or timers owned by the case.",
+      "Join complete trace; cancel unlocked tracked bodies; locked runtime readers allowed only with explicit finite-source closure witness.",
+      "On unsettled trace/cleanup the supervisor must reap only owned deployment resources; fixture observation cannot qualify as PASS."
+    ],
+    "layer": "direct-celld-public-Web-API",
+    "classification": "functional-regression-candidate",
+    "promotion_candidate": true,
+    "authored": true,
+    "independently_reviewed": false,
+    "executable_source_implementation": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0,
+    "runtime_passes": 0
+  },
+  {
+    "id": "V211",
+    "title": "Preserve callback receiver during finite live traversal",
+    "intent": "Preserve callback receiver during finite live traversal",
+    "failure_hypothesis": "forEach may bind the wrong thisArg/owner or snapshot fields rather than honor a live insertion.",
+    "preconditions": [
+      "Exact source snapshot and independently reviewed fixture hashes.",
+      "Actual direct celld process, V8 runtime and supplied worker; no hybrid, Node polyfill or simulated SUT.",
+      "Fresh owned deployment/store, loopback-only ingress, external bounded supervisor and recorded executable/source identity."
+    ],
+    "trace": [
+      "Traverse x-a/x-c with an explicit receiver.",
+      "Assert this and owner identities on each callback.",
+      "Insert x-b once from x-a callback and compare three callbacks."
+    ],
+    "oracle": "Every callback has the exact supplied thisArg and Headers owner; order x-a/one,x-b/two,x-c/three.",
+    "source_expectation": "Pinned direct celld implementation contract; Cache always-miss assertions are not universal edge-cache guarantees.",
+    "source_refs": [
+      {
+        "path": "celld-os-project/celld/crates/celld/js/headers.js",
+        "line_start": 285,
+        "line_end": 291
+      }
+    ],
+    "application_relevance": "Header transformation utilities use callback thisArg and mutate through the owner argument.",
+    "distinctness": "forEach callback calling convention plus exactly one mutation, not another standalone iterator case.",
+    "implementation": "cases.js:V211",
+    "schedule": "One active GET /case/V211; operations in the written source order, each await settled before the next dependent step",
+    "limits": {
+      "max_case_http_requests": 1,
+      "max_outbound_network_requests": 0,
+      "max_parallel_api_calls": 1,
+      "max_logical_payload_bytes": 256,
+      "max_headers": 8,
+      "max_fixture_iterator_steps": 16,
+      "trace_deadline_ms": 2000,
+      "cleanup_deadline_ms": 1000,
+      "outer_http_deadline_seconds": 5,
+      "outer_case_process_deadline_seconds": 10
+    },
+    "cleanup": [
+      "No stores, capabilities, external sockets or timers owned by the case.",
+      "Join complete trace; cancel unlocked tracked bodies; locked runtime readers allowed only with explicit finite-source closure witness.",
+      "On unsettled trace/cleanup the supervisor must reap only owned deployment resources; fixture observation cannot qualify as PASS."
+    ],
+    "layer": "direct-celld-public-Web-API",
+    "classification": "functional-regression-candidate",
+    "promotion_candidate": true,
+    "authored": true,
+    "independently_reviewed": false,
+    "executable_source_implementation": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0,
+    "runtime_passes": 0
+  },
+  {
+    "id": "V212",
+    "title": "Detach returned iteration and cookie arrays",
+    "intent": "Detach returned iteration and cookie arrays",
+    "failure_hypothesis": "A caller-mutated entry pair or cookie array may corrupt the shared pair memo or internal header list.",
+    "preconditions": [
+      "Exact source snapshot and independently reviewed fixture hashes.",
+      "Actual direct celld process, V8 runtime and supplied worker; no hybrid, Node polyfill or simulated SUT.",
+      "Fresh owned deployment/store, loopback-only ingress, external bounded supervisor and recorded executable/source identity."
+    ],
+    "trace": [
+      "Obtain first iterator pair and getSetCookie array.",
+      "Mutate both arrays and append a fake cookie to the returned array.",
+      "Reiterate and reread cookies, then mutate an actual field and recheck old pair."
+    ],
+    "oracle": "Header output remains a=1,b=2 cookies and x-a=untouched; old pair stays caller-mutated independently.",
+    "source_expectation": "Pinned direct celld implementation contract; Cache always-miss assertions are not universal edge-cache guarantees.",
+    "source_refs": [
+      {
+        "path": "celld-os-project/celld/crates/celld/js/headers.js",
+        "line_start": 252,
+        "line_end": 258
+      },
+      {
+        "path": "celld-os-project/celld/crates/celld/js/headers.js",
+        "line_start": 300,
+        "line_end": 318
+      }
+    ],
+    "application_relevance": "Consumers annotate or reuse arrays returned by standard iteration helpers.",
+    "distinctness": "Returned-view alias isolation; C015 only isolates remote source snapshot, not returned iterator memo arrays.",
+    "implementation": "cases.js:V212",
+    "schedule": "One active GET /case/V212; operations in the written source order, each await settled before the next dependent step",
+    "limits": {
+      "max_case_http_requests": 1,
+      "max_outbound_network_requests": 0,
+      "max_parallel_api_calls": 1,
+      "max_logical_payload_bytes": 256,
+      "max_headers": 8,
+      "max_fixture_iterator_steps": 16,
+      "trace_deadline_ms": 2000,
+      "cleanup_deadline_ms": 1000,
+      "outer_http_deadline_seconds": 5,
+      "outer_case_process_deadline_seconds": 10
+    },
+    "cleanup": [
+      "No stores, capabilities, external sockets or timers owned by the case.",
+      "Join complete trace; cancel unlocked tracked bodies; locked runtime readers allowed only with explicit finite-source closure witness.",
+      "On unsettled trace/cleanup the supervisor must reap only owned deployment resources; fixture observation cannot qualify as PASS."
+    ],
+    "layer": "direct-celld-public-Web-API",
+    "classification": "functional-regression-candidate",
+    "promotion_candidate": true,
+    "authored": true,
+    "independently_reviewed": false,
+    "executable_source_implementation": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0,
+    "runtime_passes": 0
+  },
+  {
+    "id": "V213",
+    "title": "Snapshot a reused iterable tuple at each yield",
+    "intent": "Snapshot a reused iterable tuple at each yield",
+    "failure_hypothesis": "Constructor may store yielded tuple references rather than copying converted strings immediately.",
+    "preconditions": [
+      "Exact source snapshot and independently reviewed fixture hashes.",
+      "Actual direct celld process, V8 runtime and supplied worker; no hybrid, Node polyfill or simulated SUT.",
+      "Fresh owned deployment/store, loopback-only ingress, external bounded supervisor and recorded executable/source identity."
+    ],
+    "trace": [
+      "Yield one tuple as x-a/one.",
+      "Reuse the same tuple as x-b/two and finish construction.",
+      "Mutate tuple again to x-c/after and compare constructed list."
+    ],
+    "oracle": "Output is x-a/one,x-b/two; x-c absent despite later mutation of the single reused tuple.",
+    "source_expectation": "Pinned direct celld implementation contract; Cache always-miss assertions are not universal edge-cache guarantees.",
+    "source_refs": [
+      {
+        "path": "celld-os-project/celld/crates/celld/js/headers.js",
+        "line_start": 153,
+        "line_end": 159
+      },
+      {
+        "path": "celld-os-project/celld/crates/celld/js/headers.js",
+        "line_start": 127,
+        "line_end": 142
+      }
+    ],
+    "application_relevance": "Allocation-conscious iterators may reuse one tuple while enumerating configuration.",
+    "distinctness": "Input tuple alias isolation across generator yield steps, separate from copying a Headers or RPC object.",
+    "implementation": "cases.js:V213",
+    "schedule": "One active GET /case/V213; operations in the written source order, each await settled before the next dependent step",
+    "limits": {
+      "max_case_http_requests": 1,
+      "max_outbound_network_requests": 0,
+      "max_parallel_api_calls": 1,
+      "max_logical_payload_bytes": 256,
+      "max_headers": 8,
+      "max_fixture_iterator_steps": 16,
+      "trace_deadline_ms": 2000,
+      "cleanup_deadline_ms": 1000,
+      "outer_http_deadline_seconds": 5,
+      "outer_case_process_deadline_seconds": 10
+    },
+    "cleanup": [
+      "No stores, capabilities, external sockets or timers owned by the case.",
+      "Join complete trace; cancel unlocked tracked bodies; locked runtime readers allowed only with explicit finite-source closure witness.",
+      "On unsettled trace/cleanup the supervisor must reap only owned deployment resources; fixture observation cannot qualify as PASS."
+    ],
+    "layer": "direct-celld-public-Web-API",
+    "classification": "functional-regression-candidate",
+    "promotion_candidate": true,
+    "authored": true,
+    "independently_reviewed": false,
+    "executable_source_implementation": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0,
+    "runtime_passes": 0
+  },
+  {
+    "id": "V214",
+    "title": "Drain a finite response producer before cache put resolves",
+    "intent": "Drain a finite response producer before cache put resolves",
+    "failure_hypothesis": "Always-miss cache could skip consumption and strand a finite streaming producer.",
+    "preconditions": [
+      "Exact source snapshot and independently reviewed fixture hashes.",
+      "Actual direct celld process, V8 runtime and supplied worker; no hybrid, Node polyfill or simulated SUT.",
+      "Fresh owned deployment/store, loopback-only ingress, external bounded supervisor and recorded executable/source identity."
+    ],
+    "trace": [
+      "Create a pull source with exactly three chunks totaling five bytes followed by close.",
+      "Await caches.default.put for a valid GET URL.",
+      "Assert three chunks produced, close reached and response bodyUsed true."
+    ],
+    "oracle": "pull counter 3, closed true, bodyUsed true after put completion.",
+    "source_expectation": "Pinned direct celld implementation contract; Cache always-miss assertions are not universal edge-cache guarantees.",
+    "source_refs": [
+      {
+        "path": "celld-os-project/celld/crates/celld/js/cache.js",
+        "line_start": 37,
+        "line_end": 63
+      },
+      {
+        "path": "celld-os-project/celld/crates/celld/js/harness.js",
+        "line_start": 137,
+        "line_end": 159
+      },
+      {
+        "path": "celld-os-project/celld/crates/celld/js/harness.js",
+        "line_start": 330,
+        "line_end": 355
+      }
+    ],
+    "application_relevance": "Applications use best-effort cache.put on generated response bodies even without shared edge storage.",
+    "distinctness": "Cache put producer completion contract, not streaming fetch throughput.",
+    "implementation": "cases.js:V214",
+    "schedule": "One active GET /case/V214; operations in the written source order, each await settled before the next dependent step",
+    "limits": {
+      "max_case_http_requests": 1,
+      "max_outbound_network_requests": 0,
+      "max_parallel_api_calls": 1,
+      "max_logical_payload_bytes": 256,
+      "max_headers": 8,
+      "max_fixture_iterator_steps": 16,
+      "trace_deadline_ms": 2000,
+      "cleanup_deadline_ms": 1000,
+      "outer_http_deadline_seconds": 5,
+      "outer_case_process_deadline_seconds": 10
+    },
+    "cleanup": [
+      "No stores, capabilities, external sockets or timers owned by the case.",
+      "Join complete trace; cancel unlocked tracked bodies; locked runtime readers allowed only with explicit finite-source closure witness.",
+      "On unsettled trace/cleanup the supervisor must reap only owned deployment resources; fixture observation cannot qualify as PASS."
+    ],
+    "layer": "direct-celld-public-Web-API",
+    "classification": "functional-regression-candidate",
+    "promotion_candidate": true,
+    "authored": true,
+    "independently_reviewed": false,
+    "executable_source_implementation": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0,
+    "runtime_passes": 0
+  },
+  {
+    "id": "V215",
+    "title": "Consume a cache clone while preserving its original body",
+    "intent": "Consume a cache clone while preserving its original body",
+    "failure_hypothesis": "Cache put may disturb the application-owned original response when given a buffered clone.",
+    "preconditions": [
+      "Exact source snapshot and independently reviewed fixture hashes.",
+      "Actual direct celld process, V8 runtime and supplied worker; no hybrid, Node polyfill or simulated SUT.",
+      "Fresh owned deployment/store, loopback-only ingress, external bounded supervisor and recorded executable/source identity."
+    ],
+    "trace": [
+      "Construct a buffered response containing cache-copy-lambda.",
+      "Clone it and await put of the clone using a Request key.",
+      "Assert only clone bodyUsed then read original exact Unicode text."
+    ],
+    "oracle": "Clone bodyUsed true, original bodyUsed false before read; original text exactly cache-copy-λ.",
+    "source_expectation": "Pinned direct celld implementation contract; Cache always-miss assertions are not universal edge-cache guarantees.",
+    "source_refs": [
+      {
+        "path": "celld-os-project/celld/crates/celld/js/cache.js",
+        "line_start": 16,
+        "line_end": 27
+      },
+      {
+        "path": "celld-os-project/celld/crates/celld/js/cache.js",
+        "line_start": 37,
+        "line_end": 63
+      },
+      {
+        "path": "celld-os-project/celld/crates/celld/js/harness.js",
+        "line_start": 361,
+        "line_end": 373
+      }
+    ],
+    "application_relevance": "Worker origin handlers commonly put a clone while returning the original response.",
+    "distinctness": "Cache ownership at cloned buffered response boundary; does not exercise returned-capability lifetime.",
+    "implementation": "cases.js:V215",
+    "schedule": "One active GET /case/V215; operations in the written source order, each await settled before the next dependent step",
+    "limits": {
+      "max_case_http_requests": 1,
+      "max_outbound_network_requests": 0,
+      "max_parallel_api_calls": 1,
+      "max_logical_payload_bytes": 256,
+      "max_headers": 8,
+      "max_fixture_iterator_steps": 16,
+      "trace_deadline_ms": 2000,
+      "cleanup_deadline_ms": 1000,
+      "outer_http_deadline_seconds": 5,
+      "outer_case_process_deadline_seconds": 10
+    },
+    "cleanup": [
+      "No stores, capabilities, external sockets or timers owned by the case.",
+      "Join complete trace; cancel unlocked tracked bodies; locked runtime readers allowed only with explicit finite-source closure witness.",
+      "On unsettled trace/cleanup the supervisor must reap only owned deployment resources; fixture observation cannot qualify as PASS."
+    ],
+    "layer": "direct-celld-public-Web-API",
+    "classification": "functional-regression-candidate",
+    "promotion_candidate": true,
+    "authored": true,
+    "independently_reviewed": false,
+    "executable_source_implementation": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0,
+    "runtime_passes": 0
+  },
+  {
+    "id": "V216",
+    "title": "Maintain pinned always-miss cache behavior after put",
+    "intent": "Maintain pinned always-miss cache behavior after put",
+    "failure_hypothesis": "No-store compatibility layer may report a fictional hit or deletion success after consuming put.",
+    "preconditions": [
+      "Exact source snapshot and independently reviewed fixture hashes.",
+      "Actual direct celld process, V8 runtime and supplied worker; no hybrid, Node polyfill or simulated SUT.",
+      "Fresh owned deployment/store, loopback-only ingress, external bounded supervisor and recorded executable/source identity."
+    ],
+    "trace": [
+      "Put one ordinary buffered response.",
+      "Check bodyUsed, match, delete and match in order.",
+      "Do not issue any fetch to the URL used only as a cache key."
+    ],
+    "oracle": "bodyUsed true; match strictly undefined; delete false; next match strictly undefined.",
+    "source_expectation": "Pinned direct celld implementation contract; Cache always-miss assertions are not universal edge-cache guarantees.",
+    "source_refs": [
+      {
+        "path": "celld-os-project/celld/crates/celld/js/cache.js",
+        "line_start": 1,
+        "line_end": 10
+      },
+      {
+        "path": "celld-os-project/celld/crates/celld/js/cache.js",
+        "line_start": 58,
+        "line_end": 77
+      }
+    ],
+    "application_relevance": "Best-effort cache wrappers must continue their origin fallback when celld has no shared cache.",
+    "distinctness": "Explicit pinned celld always-miss source regression; no universal Cache API storage claim.",
+    "implementation": "cases.js:V216",
+    "schedule": "One active GET /case/V216; operations in the written source order, each await settled before the next dependent step",
+    "limits": {
+      "max_case_http_requests": 1,
+      "max_outbound_network_requests": 0,
+      "max_parallel_api_calls": 1,
+      "max_logical_payload_bytes": 256,
+      "max_headers": 8,
+      "max_fixture_iterator_steps": 16,
+      "trace_deadline_ms": 2000,
+      "cleanup_deadline_ms": 1000,
+      "outer_http_deadline_seconds": 5,
+      "outer_case_process_deadline_seconds": 10
+    },
+    "cleanup": [
+      "No stores, capabilities, external sockets or timers owned by the case.",
+      "Join complete trace; cancel unlocked tracked bodies; locked runtime readers allowed only with explicit finite-source closure witness.",
+      "On unsettled trace/cleanup the supervisor must reap only owned deployment resources; fixture observation cannot qualify as PASS."
+    ],
+    "layer": "direct-celld-public-Web-API",
+    "classification": "implementation-characterization",
+    "promotion_candidate": false,
+    "authored": true,
+    "independently_reviewed": false,
+    "executable_source_implementation": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0,
+    "runtime_passes": 0
+  },
+  {
+    "id": "V217",
+    "title": "Preserve bodyless response state through cache put",
+    "intent": "Preserve bodyless response state through cache put",
+    "failure_hypothesis": "Put may fabricate a body or mark a null body disturbed.",
+    "preconditions": [
+      "Exact source snapshot and independently reviewed fixture hashes.",
+      "Actual direct celld process, V8 runtime and supplied worker; no hybrid, Node polyfill or simulated SUT.",
+      "Fresh owned deployment/store, loopback-only ingress, external bounded supervisor and recorded executable/source identity."
+    ],
+    "trace": [
+      "Create status 204 response with null body and a header.",
+      "Await valid put.",
+      "Assert body/status/bodyUsed and then change the ordinary header."
+    ],
+    "oracle": "Status 204, body null, bodyUsed false; headers remain mutable and contain still-mutable.",
+    "source_expectation": "Pinned direct celld implementation contract; Cache always-miss assertions are not universal edge-cache guarantees.",
+    "source_refs": [
+      {
+        "path": "celld-os-project/celld/crates/celld/js/cache.js",
+        "line_start": 58,
+        "line_end": 62
+      },
+      {
+        "path": "celld-os-project/celld/crates/celld/js/harness.js",
+        "line_start": 280,
+        "line_end": 296
+      }
+    ],
+    "application_relevance": "Applications cache successful no-content responses without producing payload resources.",
+    "distinctness": "Null-body branch of put versus finite-stream and buffered-body branches.",
+    "implementation": "cases.js:V217",
+    "schedule": "One active GET /case/V217; operations in the written source order, each await settled before the next dependent step",
+    "limits": {
+      "max_case_http_requests": 1,
+      "max_outbound_network_requests": 0,
+      "max_parallel_api_calls": 1,
+      "max_logical_payload_bytes": 256,
+      "max_headers": 8,
+      "max_fixture_iterator_steps": 16,
+      "trace_deadline_ms": 2000,
+      "cleanup_deadline_ms": 1000,
+      "outer_http_deadline_seconds": 5,
+      "outer_case_process_deadline_seconds": 10
+    },
+    "cleanup": [
+      "No stores, capabilities, external sockets or timers owned by the case.",
+      "Join complete trace; cancel unlocked tracked bodies; locked runtime readers allowed only with explicit finite-source closure witness.",
+      "On unsettled trace/cleanup the supervisor must reap only owned deployment resources; fixture observation cannot qualify as PASS."
+    ],
+    "layer": "direct-celld-public-Web-API",
+    "classification": "functional-regression-candidate",
+    "promotion_candidate": true,
+    "authored": true,
+    "independently_reviewed": false,
+    "executable_source_implementation": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0,
+    "runtime_passes": 0
+  },
+  {
+    "id": "V218",
+    "title": "Complete independent named and default cache consumers",
+    "intent": "Complete independent named and default cache consumers",
+    "failure_hypothesis": "Two dispatched puts on separate cache handles may fail to consume one finite response.",
+    "preconditions": [
+      "Exact source snapshot and independently reviewed fixture hashes.",
+      "Actual direct celld process, V8 runtime and supplied worker; no hybrid, Node polyfill or simulated SUT.",
+      "Fresh owned deployment/store, loopback-only ingress, external bounded supervisor and recorded executable/source identity."
+    ],
+    "trace": [
+      "Create two already-closed finite sources containing one and two bytes.",
+      "Open one named cache.",
+      "Dispatch its put and default cache put without awaiting either individually, then join both."
+    ],
+    "oracle": "Both finite source close witnesses recorded once; both responses bodyUsed true after join.",
+    "source_expectation": "Pinned direct celld implementation contract; Cache always-miss assertions are not universal edge-cache guarantees.",
+    "source_refs": [
+      {
+        "path": "celld-os-project/celld/crates/celld/js/cache.js",
+        "line_start": 37,
+        "line_end": 63
+      },
+      {
+        "path": "celld-os-project/celld/crates/celld/js/cache.js",
+        "line_start": 88,
+        "line_end": 99
+      },
+      {
+        "path": "celld-os-project/celld/crates/celld/js/harness.js",
+        "line_start": 137,
+        "line_end": 159
+      }
+    ],
+    "application_relevance": "Parallel response assembly may dispatch cache writes to multiple scopes before joining work.",
+    "distinctness": "Independent pending public API consumers across named/default handles; no fairness or actual overlap claim.",
+    "implementation": "cases.js:V218",
+    "schedule": "One active GET /case/V218; two finite Cache.put calls joined with Promise.all",
+    "limits": {
+      "max_case_http_requests": 1,
+      "max_outbound_network_requests": 0,
+      "max_parallel_api_calls": 2,
+      "max_logical_payload_bytes": 256,
+      "max_headers": 8,
+      "max_fixture_iterator_steps": 16,
+      "trace_deadline_ms": 2000,
+      "cleanup_deadline_ms": 1000,
+      "outer_http_deadline_seconds": 5,
+      "outer_case_process_deadline_seconds": 10
+    },
+    "cleanup": [
+      "No stores, capabilities, external sockets or timers owned by the case.",
+      "Join complete trace; cancel unlocked tracked bodies; locked runtime readers allowed only with explicit finite-source closure witness.",
+      "On unsettled trace/cleanup the supervisor must reap only owned deployment resources; fixture observation cannot qualify as PASS."
+    ],
+    "layer": "direct-celld-public-Web-API",
+    "classification": "functional-regression-candidate",
+    "promotion_candidate": true,
+    "authored": true,
+    "independently_reviewed": false,
+    "executable_source_implementation": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0,
+    "runtime_passes": 0
+  }
+]

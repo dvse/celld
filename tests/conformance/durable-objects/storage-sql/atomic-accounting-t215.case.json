@@ -1,0 +1,131 @@
+{
+  "adapter": "http",
+  "behaviour": "durable-objects/storage-sql",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runs": 0,
+    "application_algorithm_qualification": "Application composition is fixture-authored; direct public API/native behavior supplies the SUT boundary.",
+    "authored": true,
+    "classification": "synthetic-ordinary-functional-regression-candidate",
+    "cleanup": [
+      "All actor handlers/transactions and gate timers must settle before audit/cleanup.",
+      "Every native SQL cursor is immediately drained, retained only for bounded final drain.",
+      "DeleteAll only on the correlated fresh owned root; verify KV empty and SQL application tables absent.",
+      "External supervisor must enforce independent deadlines/RSS and reap owned processes/store; receipts cannot self-prove placement or teardown."
+    ],
+    "distinctness": "No FTS5 posting mutation case exists in T001\u2013T032 or D201\u2013D220. Ordinary virtual-table index maintenance is a separate native path from SQL triggers or cached schema statements.",
+    "failure_hypothesis": "Search postings can outlive document edits/deletion or virtual-table row content can diverge from document/count/byte state.",
+    "id": "T215",
+    "implementation": "cases.js:T215",
+    "independently_reviewed": false,
+    "intent": "Native FTS5 virtual-table UPDATE removes old token postings and DELETE removes another document while KV documents and counts track the same transactions.",
+    "left_checkpoint": "Left updates a to green blue, holds, then writes KV and total20.",
+    "limits": {
+      "max_active_actor_requests": 2,
+      "max_application_storage_call_sites_executed": 400,
+      "max_chunk_loop_input_bytes": 3,
+      "max_external_case_requests": 1,
+      "max_internal_do_fetches": 4,
+      "max_native_cursors": 240,
+      "max_public_network_requests": 0,
+      "max_recursive_depth": 8,
+      "max_roots": 1,
+      "max_rows_per_cursor": 64,
+      "max_user_kv_keys": 16,
+      "max_user_payload_bytes": 4096
+    },
+    "literal_assertion_call_sites": 5,
+    "nearest_existing": [
+      "D218",
+      "T024"
+    ],
+    "normative_references": [
+      "https://www.sqlite.org/fts5.html"
+    ],
+    "oracle": "MATCH red empty; MATCH green AND blue yields only a/green blue; FTS count1/bytes10; KV only doc/a plus matching totals.",
+    "os_evidence_status": "RETAINED_PROVENANCE_ONLY: synthetic platform composition; no OS checkout/callsite was reread, and this is not an actual OS integration test.",
+    "os_relevance": "synthetic OS document search/index consistency",
+    "preconditions": [
+      "Exact pinned direct celld source and reviewed matching executable; no substitute runtime.",
+      "Fresh owned SQLite DO root, one stable activation, no preexisting KV or user SQL.",
+      "Two ordinary same-deployment DO.fetch requests must pre-enter one recipient before its transaction input gate closes.",
+      "All storage and SQL operations execute on real ctx.storage with public APIs and native SQLite."
+    ],
+    "promotion_candidate": true,
+    "runtime_passes": 0,
+    "runtime_status": "NOT_RUN",
+    "schedule": "schedule.json:preentered-two-request-fifo",
+    "source_refs": [
+      {
+        "line_end": 2008,
+        "line_start": 1898,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js",
+        "purpose": "Real root transactions serialize distinct pre-entered request owners; ordinary input gate and transaction tail."
+      },
+      {
+        "line_end": 3312,
+        "line_start": 3235,
+        "path": "celld-os-project/celld/crates/celld/storage.rs",
+        "purpose": "Public storage transaction controls map to native BEGIN IMMEDIATE, COMMIT and nested SAVEPOINT/RELEASE."
+      },
+      {
+        "line_end": 1435,
+        "line_start": 1287,
+        "path": "celld-os-project/celld/crates/celld/js/harness.js",
+        "purpose": "Public native SQL cursor shaping, typed bindings and finite draining."
+      },
+      {
+        "line_end": 2153,
+        "line_start": 1902,
+        "path": "celld-os-project/celld/crates/celld/storage.rs",
+        "purpose": "Queries execute through native SQLite prepare/bind/step, not a JavaScript SQL emulator."
+      },
+      {
+        "line_end": 588,
+        "line_start": 578,
+        "path": "celld-os-project/celld/crates/celld/storage.rs",
+        "purpose": "FTS5 virtual table module is explicitly allowlisted; ordinary extension loading is not used."
+      }
+    ],
+    "title": "Reconcile FTS postings with document byte totals",
+    "trace": [
+      "Seed a red blue and b red orange with total18.",
+      "Left updates a to green blue, holds, then writes KV and total20.",
+      "Right searches red and sees onlyb, deletes b, and writes count1/bytes10."
+    ]
+  },
+  "corpus_id": "T215",
+  "corpus_wave": "atomic-accounting-semantics",
+  "fixture": "tests/conformance/durable-objects/storage-sql/fixtures/atomic-accounting-semantics",
+  "id": "conformance/durable-objects/storage-sql/atomic-accounting-t215",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/atomic-accounting-semantics/T215"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/atomic-accounting-semantics/T215",
+      "manifest_sha256": "74ca24883b66b7505190af93acdb03199887fecbe09f5d377d344cfafb2cad69",
+      "review_sha256": "ba79e6a940a0c497277bf34361f3b1ad34a6b1a4c9a638701793cacc4ebd10c8",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/atomic-accounting-semantics",
+      "tranche": "003"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/T215",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "T215",
+  "source": "tests/conformance/durable-objects/storage-sql/fixtures/atomic-accounting-semantics/fixture.js",
+  "source_sha256": "686846d5a7b0fac00f11906a8c79c13ca1cb293244ef37fec33f1a6a90871f7e",
+  "title": "Reconcile FTS postings with document byte totals"
+}

@@ -1,0 +1,1688 @@
+[
+  {
+    "id": "B001",
+    "title": "Slow subscriber beside fast fan-out",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "One held callback incorrectly stalls five independent notifications and metadata RPC.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Six native callbacks can be issued in one fan-out; only subscriber0 waits on a local gate."
+    ],
+    "ordered_trace": [
+      "Issue six native callbacks before awaiting the broadcast.",
+      "Observe all six callback starts and five remote effect completions.",
+      "Check one provider job remains active and call owner recovery while it remains gated.",
+      "Release the slow callback and await the exact six receipts."
+    ],
+    "stress_dimension": "Six concurrent native callback requests; one finite consumer stall and independent metadata RPC.",
+    "safety_oracle": [
+      "Fast five effects are exactly one before release; slow effect remains zero.",
+      "All six results preserve ID and value; final effects exactly once; maxActive is six."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 0,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Six concurrent native callback requests; one finite consumer stall and independent metadata RPC."
+    },
+    "source_contracts": [
+      {
+        "key": "subscribers",
+        "path": "os/packages/bundled-blueprints/libraries/sync/src/subscribers.ts",
+        "lines": "3-13, 73-103, 121-170",
+        "contract": "Native callback retention, concurrent unawaited broadcast, per-subscriber failure isolation and reentry."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B001"
+    },
+    "qualification_gate": "promotion-candidate",
+    "identity_assumption": "Caller/provider placement is an externally witnessed precondition.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "No authorized run slot or independently qualified deployed adapter supplied; static authoring only.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "B002",
+    "title": "Fail subscriber amid pending cohort",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "A callback rejection contaminates five pending siblings or poisons the next broadcast.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Six callbacks all wait on individually controlled gates; subscriber2 throws after release."
+    ],
+    "ordered_trace": [
+      "Saturate six callback invocations and observe maxActive six.",
+      "Release only subscriber2 and await its provider settlement.",
+      "Verify five remain active and no effects occurred; probe liveness.",
+      "Release siblings, inspect each terminal result, then broadcast a new two-item cohort."
+    ],
+    "stress_dimension": "Six pending callbacks with one selective failure plus a separate recovery cohort.",
+    "safety_oracle": [
+      "Only subscriber2 rejects with planned:callback:subscriber2; its effect count stays zero.",
+      "Five survivors and two recovery notifications have exact receipts/effects; all original settlements occur once."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 0,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Six pending callbacks with one selective failure plus a separate recovery cohort."
+    },
+    "source_contracts": [
+      {
+        "key": "subscribers",
+        "path": "os/packages/bundled-blueprints/libraries/sync/src/subscribers.ts",
+        "lines": "3-13, 73-103, 121-170",
+        "contract": "Native callback retention, concurrent unawaited broadcast, per-subscriber failure isolation and reentry."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B002"
+    },
+    "qualification_gate": "promotion-candidate",
+    "identity_assumption": "Caller/provider placement is an externally witnessed precondition.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "No authorized run slot or independently qualified deployed adapter supplied; static authoring only.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "B003",
+    "title": "Reenter broadcaster under stalled fan-out",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "Three callback-to-owner reentries deadlock behind three unrelated slow subscribers.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Three callbacks are locally held; three perform awaited native calls back to the same owner."
+    ],
+    "ordered_trace": [
+      "Issue held0..2 and reenter0..2 in one overlapping fan-out.",
+      "Observe six callback starts and all three nested owner notes.",
+      "Require reentrant effects to complete while held callbacks have no effects.",
+      "Release the held cohort and verify six exact receipts and owner recovery."
+    ],
+    "stress_dimension": "Six outer callbacks plus three nested reentry requests, with explicit split-cohort gates.",
+    "safety_oracle": [
+      "Nested calls report the original owner identity exactly once.",
+      "Three held jobs remain active during reentry completion; final six effects occur once."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 0,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Six outer callbacks plus three nested reentry requests, with explicit split-cohort gates."
+    },
+    "source_contracts": [
+      {
+        "key": "subscribers",
+        "path": "os/packages/bundled-blueprints/libraries/sync/src/subscribers.ts",
+        "lines": "3-13, 73-103, 121-170",
+        "contract": "Native callback retention, concurrent unawaited broadcast, per-subscriber failure isolation and reentry."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B003"
+    },
+    "qualification_gate": "promotion-candidate",
+    "identity_assumption": "Caller/provider placement is an externally witnessed precondition.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "No authorized run slot or independently qualified deployed adapter supplied; static authoring only.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "B004",
+    "title": "Detached callbacks drain after dispatch",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "Returning a background dispatch loses borrowed callback authority or strands its outstanding jobs.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Native callback duplication and disposal are available; background fan-out retains one duplicate."
+    ],
+    "ordered_trace": [
+      "Launch six detached callbacks and receive scheduled:6.",
+      "Observe all callbacks started after the initiating method has returned; keep them gated.",
+      "Confirm six provider jobs remain active and owner metadata works.",
+      "Release all and await a background terminal receipt before cleanup."
+    ],
+    "stress_dimension": "Six post-response native callbacks retaining one owned callback cohort.",
+    "safety_oracle": [
+      "No background completion before release; all six effects/results exactly once afterward.",
+      "Active count drains to zero; retained callback is released and destructor occurs once during cleanup."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 0,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Six post-response native callbacks retaining one owned callback cohort."
+    },
+    "source_contracts": [
+      {
+        "key": "subscribers",
+        "path": "os/packages/bundled-blueprints/libraries/sync/src/subscribers.ts",
+        "lines": "3-13, 73-103, 121-170",
+        "contract": "Native callback retention, concurrent unawaited broadcast, per-subscriber failure isolation and reentry."
+      },
+      {
+        "key": "background",
+        "path": "os/packages/observability/src/error-reporting.ts",
+        "lines": "75-100",
+        "contract": "Dispatch is eager, waitUntil extends worker work; caught reporting failure must not disturb foreground work. DO waitUntil has no additional lifetime effect."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B004"
+    },
+    "qualification_gate": "promotion-candidate",
+    "identity_assumption": "Caller/provider placement is an externally witnessed precondition.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "No authorized run slot or independently qualified deployed adapter supplied; static authoring only.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "B005",
+    "title": "Detached failure beside foreground work",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "One detached callback failure blocks unrelated foreground traffic or hides failed background work.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Six background callbacks are gated separately; tail0 rejects when released."
+    ],
+    "ordered_trace": [
+      "Return background dispatch, observe six callbacks, and release only tail0.",
+      "Complete four foreground owner RPCs while five background calls remain gated.",
+      "Release the five survivors and inspect the detached all-settled receipt.",
+      "Probe owner liveness and release retained references in cleanup."
+    ],
+    "stress_dimension": "Six detached callbacks plus four foreground calls sharing the native owner.",
+    "safety_oracle": [
+      "Only tail0 has planned:callback:tail0 and zero effect.",
+      "Four foreground effects finish while five background jobs remain active; five survivor effects and one background terminal receipt follow."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 0,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Six detached callbacks plus four foreground calls sharing the native owner."
+    },
+    "source_contracts": [
+      {
+        "key": "subscribers",
+        "path": "os/packages/bundled-blueprints/libraries/sync/src/subscribers.ts",
+        "lines": "3-13, 73-103, 121-170",
+        "contract": "Native callback retention, concurrent unawaited broadcast, per-subscriber failure isolation and reentry."
+      },
+      {
+        "key": "background",
+        "path": "os/packages/observability/src/error-reporting.ts",
+        "lines": "75-100",
+        "contract": "Dispatch is eager, waitUntil extends worker work; caught reporting failure must not disturb foreground work. DO waitUntil has no additional lifetime effect."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B005"
+    },
+    "qualification_gate": "promotion-candidate",
+    "identity_assumption": "Caller/provider placement is an externally witnessed precondition.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "No authorized run slot or independently qualified deployed adapter supplied; static authoring only.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "B006",
+    "title": "Cancel backlog under bounded admission",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "Cancelling middle queued requests leaks an application admission slot or dispatches cancelled effects.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Fixture-level lane width is two, not a runtime admission claim; eight distinct requests are submitted."
+    ],
+    "ordered_trace": [
+      "Observe two active and six queued requests behind the active gate.",
+      "Cancel request3 and request6 while they are demonstrably queued.",
+      "Check intended errors and owner liveness before releasing active work.",
+      "Drain six survivors and admit one replacement request."
+    ],
+    "stress_dimension": "Eight pending admission RPCs, two active and six queued, with selective queue cancellation.",
+    "safety_oracle": [
+      "Fixture-queue cancelled IDs reject with their exact planned:cancel markers; enter and effect counters stay zero.",
+      "Six survivors and replacement return exact IDs; lane active=0, queue=[], maxActive=2."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 0,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Eight pending admission RPCs, two active and six queued, with selective queue cancellation."
+    },
+    "source_contracts": [
+      {
+        "key": "subscribers",
+        "path": "os/packages/bundled-blueprints/libraries/sync/src/subscribers.ts",
+        "lines": "3-13, 73-103, 121-170",
+        "contract": "Native callback retention, concurrent unawaited broadcast, per-subscriber failure isolation and reentry."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B006"
+    },
+    "qualification_gate": "promotion-candidate",
+    "identity_assumption": "Caller/provider placement is an externally witnessed precondition.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "No authorized run slot or independently qualified deployed adapter supplied; static authoring only.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "B007",
+    "title": "Failed active job releases queue slot",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "A rejecting admitted callback prevents queued work from using its freed slot while another slot remains occupied.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Six requests share a two-slot fixture lane; active request0 will fail and request1 will remain gated."
+    ],
+    "ordered_trace": [
+      "Admit six and observe both active callbacks.",
+      "Release only the failing callback and observe its intended error.",
+      "Require requests2..5 to complete through the freed slot before releasing request1.",
+      "Probe liveness, release the slow callback and drain."
+    ],
+    "stress_dimension": "Six pending admitted RPCs with failure-driven queue progress around one held slot.",
+    "safety_oracle": [
+      "request0 has no effect and only the exact callback error.",
+      "Four queued effects complete while one slot remains active; all six settle once and high-water stays two."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 0,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Six pending admitted RPCs with failure-driven queue progress around one held slot."
+    },
+    "source_contracts": [
+      {
+        "key": "subscribers",
+        "path": "os/packages/bundled-blueprints/libraries/sync/src/subscribers.ts",
+        "lines": "3-13, 73-103, 121-170",
+        "contract": "Native callback retention, concurrent unawaited broadcast, per-subscriber failure isolation and reentry."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B007"
+    },
+    "qualification_gate": "promotion-candidate",
+    "identity_assumption": "Caller/provider placement is an externally witnessed precondition.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "No authorized run slot or independently qualified deployed adapter supplied; static authoring only.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "B008",
+    "title": "Independent lanes progress under backlog",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "A saturated document lane wrongly causes head-of-line blocking for an independent Git lane.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Two separate fixture-level lanes have independent width-two queues."
+    ],
+    "ordered_trace": [
+      "Fill documents with two held active requests and four queued requests.",
+      "Submit and complete two Git-lane requests before releasing documents.",
+      "Verify document backlog is unchanged while Git effects are committed.",
+      "Release documents and check both queues drain."
+    ],
+    "stress_dimension": "Six document-lane calls overlap two independent-lane calls on one native provider.",
+    "safety_oracle": [
+      "Git effects and exact receipts occur while document effects are zero.",
+      "All six document effects eventually occur once and no queued entries remain."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 0,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Six document-lane calls overlap two independent-lane calls on one native provider."
+    },
+    "source_contracts": [
+      {
+        "key": "subscribers",
+        "path": "os/packages/bundled-blueprints/libraries/sync/src/subscribers.ts",
+        "lines": "3-13, 73-103, 121-170",
+        "contract": "Native callback retention, concurrent unawaited broadcast, per-subscriber failure isolation and reentry."
+      },
+      {
+        "key": "git-streams",
+        "path": "os/packages/workshop-backend/src/git-cache.ts",
+        "lines": "307-328, 1170-1203, 1368-1378",
+        "contract": "GitCache accepts and returns native byte streams; fixture traffic is synthetic pack-like bytes, never a claim of valid Git parsing."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B008"
+    },
+    "qualification_gate": "promotion-candidate",
+    "identity_assumption": "Caller/provider placement is an externally witnessed precondition.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "No authorized run slot or independently qualified deployed adapter supplied; static authoring only.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "B009",
+    "title": "Resume download cohorts out of order",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "Independently stalled download streams are cross-wired or coupled when completion order differs from creation order.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Four remote byte streams gate their producers before the second logical frame."
+    ],
+    "ordered_trace": [
+      "Start four readers and observe all producer-pause and consumer-prefix barriers.",
+      "Probe owner liveness with four stream stalls.",
+      "Release pack3 and pack1, require their complete bytes while pack0 and pack2 stay pending.",
+      "Release the remaining cohort and inspect producer terminal counters."
+    ],
+    "stress_dimension": "Four simultaneous native stream results with finite independent producer stalls.",
+    "safety_oracle": [
+      "Every completed stream has all 24576 expected bytes in order, independent of chunking.",
+      "Each source closes exactly once and none cancels."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 0,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Four simultaneous native stream results with finite independent producer stalls."
+    },
+    "source_contracts": [
+      {
+        "key": "git-streams",
+        "path": "os/packages/workshop-backend/src/git-cache.ts",
+        "lines": "307-328, 1170-1203, 1368-1378",
+        "contract": "GitCache accepts and returns native byte streams; fixture traffic is synthetic pack-like bytes, never a claim of valid Git parsing."
+      },
+      {
+        "key": "stream-runtime",
+        "path": "deliverable/patch-check-final/crates/celld/js/streams.js",
+        "lines": "106-182, 411-665",
+        "contract": "Readable stream readers, cancellation, tee and piping terminal semantics."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B009"
+    },
+    "qualification_gate": "promotion-candidate",
+    "identity_assumption": "Caller/provider placement is an externally witnessed precondition.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "No authorized run slot or independently qualified deployed adapter supplied; static authoring only.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "B010",
+    "title": "Slow receivers beside metadata traffic",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "Six native stream arguments waiting in receivers starve unrelated metadata RPCs or corrupt their resumed bytes.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Six remote consumers pause after observing a nonempty prefix; payloads remain finite."
+    ],
+    "ordered_trace": [
+      "Issue six upload RPCs with separate local byte sources.",
+      "Observe each consumer-prefix barrier and at least six pending jobs with zero commit effects.",
+      "Complete two unrelated metadata requests while every receiver remains held.",
+      "Release receivers and await exact totals and effects."
+    ],
+    "stress_dimension": "Six overlapping upload streams plus two foreground RPCs with consumer-side stalls.",
+    "safety_oracle": [
+      "All six receive exactly 24576 correct bytes and produce one consume-effect; no consume-error.",
+      "Metadata results return exact IDs before receiver release."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 0,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Six overlapping upload streams plus two foreground RPCs with consumer-side stalls."
+    },
+    "source_contracts": [
+      {
+        "key": "git-streams",
+        "path": "os/packages/workshop-backend/src/git-cache.ts",
+        "lines": "307-328, 1170-1203, 1368-1378",
+        "contract": "GitCache accepts and returns native byte streams; fixture traffic is synthetic pack-like bytes, never a claim of valid Git parsing."
+      },
+      {
+        "key": "stream-runtime",
+        "path": "deliverable/patch-check-final/crates/celld/js/streams.js",
+        "lines": "106-182, 411-665",
+        "contract": "Readable stream readers, cancellation, tee and piping terminal semantics."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B010"
+    },
+    "qualification_gate": "promotion-candidate",
+    "identity_assumption": "Caller/provider placement is an externally witnessed precondition.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "No authorized run slot or independently qualified deployed adapter supplied; static authoring only.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "B011",
+    "title": "Opposite stream directions recover separately",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "Blocked download result streams prevent independent upload argument streams from completing on the same owner connection.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Four remote downloads and four local uploads each gate after one source frame."
+    ],
+    "ordered_trace": [
+      "Establish all eight streams and explicit producer/consumer prefix barriers.",
+      "Require zero upload commits and zero download closes while gates hold.",
+      "Release only local upload producers and require all four uploads to complete.",
+      "Verify downloads remain pending, then release them and drain."
+    ],
+    "stress_dimension": "Eight bidirectional native streams through one provider, with independent directional recovery.",
+    "safety_oracle": [
+      "Both directions preserve every byte and each terminal/effect count is one.",
+      "One direction completes while the opposite four readers are demonstrably still gated."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 0,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Eight bidirectional native streams through one provider, with independent directional recovery."
+    },
+    "source_contracts": [
+      {
+        "key": "git-streams",
+        "path": "os/packages/workshop-backend/src/git-cache.ts",
+        "lines": "307-328, 1170-1203, 1368-1378",
+        "contract": "GitCache accepts and returns native byte streams; fixture traffic is synthetic pack-like bytes, never a claim of valid Git parsing."
+      },
+      {
+        "key": "stream-runtime",
+        "path": "deliverable/patch-check-final/crates/celld/js/streams.js",
+        "lines": "106-182, 411-665",
+        "contract": "Readable stream readers, cancellation, tee and piping terminal semantics."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B011"
+    },
+    "qualification_gate": "promotion-candidate",
+    "identity_assumption": "Caller/provider placement is an externally witnessed precondition.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "No authorized run slot or independently qualified deployed adapter supplied; static authoring only.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "B012",
+    "title": "Selective cancellation amid six downloads",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "Cancelling two pending readers leaks their producers, emits post-cancel frames, or cancels unrelated streams.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Six sources stop after one logical frame; two consumers cancel while all producers are pending."
+    ],
+    "ordered_trace": [
+      "Observe six source pauses and six received prefixes.",
+      "Cancel pack1 and pack4 with distinct planned reasons and await source cancellation witnesses.",
+      "Check cancelled producer bytes/terminal state and probe owner recovery.",
+      "Release four survivors and await all consumer terminal receipts."
+    ],
+    "stress_dimension": "Six held downloads with simultaneous selective cancellation of two participants.",
+    "safety_oracle": [
+      "Cancelled sources report exactly one matching reason, zero normal closes and at most one frame emitted.",
+      "Cancelled consumers report cancelled; other four preserve exact total bytes and close once."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 0,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Six held downloads with simultaneous selective cancellation of two participants."
+    },
+    "source_contracts": [
+      {
+        "key": "git-streams",
+        "path": "os/packages/workshop-backend/src/git-cache.ts",
+        "lines": "307-328, 1170-1203, 1368-1378",
+        "contract": "GitCache accepts and returns native byte streams; fixture traffic is synthetic pack-like bytes, never a claim of valid Git parsing."
+      },
+      {
+        "key": "stream-runtime",
+        "path": "deliverable/patch-check-final/crates/celld/js/streams.js",
+        "lines": "106-182, 411-665",
+        "contract": "Readable stream readers, cancellation, tee and piping terminal semantics."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B012"
+    },
+    "qualification_gate": "promotion-candidate",
+    "identity_assumption": "Caller/provider placement is an externally witnessed precondition.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "No authorized run slot or independently qualified deployed adapter supplied; static authoring only.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "B013",
+    "title": "Producer error among held downloads",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "A late error after an observed prefix is swallowed or poisons other pending streams and future transfers.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Six gated producers exist; pack2 throws after its first frame; prefixes must be observed before fault release."
+    ],
+    "ordered_trace": [
+      "Start all six readers, observe producer gates and consumer prefixes.",
+      "Release only pack2 and inspect its failed drain.",
+      "Require the other five to remain pending, then release and complete them.",
+      "Create and complete a new recovery stream on the same owner."
+    ],
+    "stress_dimension": "Six overlapping downloads with one post-prefix producer failure and fresh-stream recovery.",
+    "safety_oracle": [
+      "Fault receiver reports normalized premature readable disconnect, source witness equals planned:source:pack2, valid prefix is retained and no normal-close witness exists.",
+      "Five survivors and recovery stream have exact byte totals; source error count for pack2 is one."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 0,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Six overlapping downloads with one post-prefix producer failure and fresh-stream recovery."
+    },
+    "source_contracts": [
+      {
+        "key": "git-streams",
+        "path": "os/packages/workshop-backend/src/git-cache.ts",
+        "lines": "307-328, 1170-1203, 1368-1378",
+        "contract": "GitCache accepts and returns native byte streams; fixture traffic is synthetic pack-like bytes, never a claim of valid Git parsing."
+      },
+      {
+        "key": "stream-runtime",
+        "path": "deliverable/patch-check-final/crates/celld/js/streams.js",
+        "lines": "106-182, 411-665",
+        "contract": "Readable stream readers, cancellation, tee and piping terminal semantics."
+      },
+      {
+        "key": "native-transport",
+        "path": "deliverable/patch-check-final/crates/celld/js/harness.js",
+        "lines": "4186-4237, 4622-4666",
+        "contract": "Frozen native stream bridge: readable errors normalize to premature disconnect, cancellation carries its reason, writable errors propagate."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B013"
+    },
+    "qualification_gate": "promotion-candidate",
+    "identity_assumption": "Caller/provider placement is an externally witnessed precondition.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "No authorized run slot or independently qualified deployed adapter supplied; static authoring only.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "B014",
+    "title": "Receiver rejection cancels one upload",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "An abandoned upload leaves its source live or propagates receiver failure into five sibling uploads.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Six consumers pause after a prefix; each source is bounded behind its next-frame gate; upload3 rejects on receiver release."
+    ],
+    "ordered_trace": [
+      "Start all uploads and observe six consumer-prefix barriers.",
+      "Release only the failing receiver, require its intended error and source cancellation.",
+      "Check no upload commit has occurred and owner remains responsive.",
+      "Release healthy receiver/source pairs and await five exact totals."
+    ],
+    "stress_dimension": "Six stream-argument calls with receiver-originated failure and upstream cancellation under load.",
+    "safety_oracle": [
+      "Only upload3 emits consume-error and no consume-effect; its source cancels once with the planned receiver-stop reason.",
+      "Healthy five commit exactly once; all six remote consumers settle once."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 0,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Six stream-argument calls with receiver-originated failure and upstream cancellation under load."
+    },
+    "source_contracts": [
+      {
+        "key": "git-streams",
+        "path": "os/packages/workshop-backend/src/git-cache.ts",
+        "lines": "307-328, 1170-1203, 1368-1378",
+        "contract": "GitCache accepts and returns native byte streams; fixture traffic is synthetic pack-like bytes, never a claim of valid Git parsing."
+      },
+      {
+        "key": "stream-runtime",
+        "path": "deliverable/patch-check-final/crates/celld/js/streams.js",
+        "lines": "106-182, 411-665",
+        "contract": "Readable stream readers, cancellation, tee and piping terminal semantics."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B014"
+    },
+    "qualification_gate": "promotion-candidate",
+    "identity_assumption": "Caller/provider placement is an externally witnessed precondition.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "No authorized run slot or independently qualified deployed adapter supplied; static authoring only.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "B015",
+    "title": "Returned sink fails with queued writes",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "A returned WritableStream loses a remote failure at terminal close or conflates failure with three other saturated sinks.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "A native returned writable positive control succeeds before trace; four remote sinks gate their first write."
+    ],
+    "ordered_trace": [
+      "Acquire four writers, enqueue three fixed byte frames plus close on each without awaiting write acknowledgements.",
+      "Observe all four remote sink-entry barriers.",
+      "Release the failing sink, require close rejection and collect every write settlement.",
+      "Release three survivors and await their writes and terminal closes."
+    ],
+    "stress_dimension": "Four native writable results with twelve queued writes and four terminal close requests.",
+    "safety_oracle": [
+      "Failed sink close rejects with planned:sink:sink0, stores zero bytes and never closes normally.",
+      "Each survivor records all 24576 validated bytes and exactly one close; no constraint on when write promises resolve."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 0,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Four native writable results with twelve queued writes and four terminal close requests."
+    },
+    "source_contracts": [
+      {
+        "key": "git-streams",
+        "path": "os/packages/workshop-backend/src/git-cache.ts",
+        "lines": "307-328, 1170-1203, 1368-1378",
+        "contract": "GitCache accepts and returns native byte streams; fixture traffic is synthetic pack-like bytes, never a claim of valid Git parsing."
+      },
+      {
+        "key": "writable-runtime",
+        "path": "deliverable/patch-check-final/crates/celld/js/writable_stream.js",
+        "lines": "1-130",
+        "contract": "Writable queue, errors, close and abort semantics; write-ack timing is not a cross-runtime oracle."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B015"
+    },
+    "qualification_gate": "promotion-candidate",
+    "identity_assumption": "Caller/provider placement is an externally witnessed precondition.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "No authorized run slot or independently qualified deployed adapter supplied; static authoring only.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "B016",
+    "title": "Tee slow branches remain independent",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "Three slow tee consumers prevent fast branches draining, or late branch cancellation incorrectly cancels already-completed sources.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Native tee exists; three finite remote streams are each split into fast and manually read slow branches."
+    ],
+    "ordered_trace": [
+      "Read one prefix from each slow branch while all fast branches drain.",
+      "Require three complete fast receipts and three source closes before slow branches proceed.",
+      "Cancel two slow branches after fast completion.",
+      "Read the third slow branch to EOF and validate prefix plus remainder."
+    ],
+    "stress_dimension": "Six simultaneous tee consumer branches across three native stream results.",
+    "safety_oracle": [
+      "All fast streams and the resumed slow stream contain exact ordered bytes.",
+      "Source close counts are one; source cancellation counters stay zero before and after two branch cancellations."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 0,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Six simultaneous tee consumer branches across three native stream results."
+    },
+    "source_contracts": [
+      {
+        "key": "git-streams",
+        "path": "os/packages/workshop-backend/src/git-cache.ts",
+        "lines": "307-328, 1170-1203, 1368-1378",
+        "contract": "GitCache accepts and returns native byte streams; fixture traffic is synthetic pack-like bytes, never a claim of valid Git parsing."
+      },
+      {
+        "key": "stream-runtime",
+        "path": "deliverable/patch-check-final/crates/celld/js/streams.js",
+        "lines": "106-182, 411-665",
+        "contract": "Readable stream readers, cancellation, tee and piping terminal semantics."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B016"
+    },
+    "qualification_gate": "promotion-candidate",
+    "identity_assumption": "Caller/provider placement is an externally witnessed precondition.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "No authorized run slot or independently qualified deployed adapter supplied; static authoring only.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "B017",
+    "title": "Loaded workers progress independently",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "Two held method calls in one loaded worker stall six calls and recovery requests to other loaded workers.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Four anonymous real Worker Loader entries have distinct module tokens; each can issue native audit RPC."
+    ],
+    "ordered_trace": [
+      "Dispatch two held calls per worker and observe all eight audit entries.",
+      "Release workers1..3 and require six owner-token-preserving results.",
+      "Keep worker0 held while all four entrypoint ping calls succeed.",
+      "Release worker0 and require all effects and unchanged module identities."
+    ],
+    "stress_dimension": "Eight concurrent loaded-worker-to-owner RPC chains across four loaded isolates.",
+    "safety_oracle": [
+      "Eight delegates overlap; exactly two remain active during the independent-worker progress checkpoint.",
+      "Every result reports its expected loaded module token; eight effects occur once."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 4,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Eight concurrent loaded-worker-to-owner RPC chains across four loaded isolates."
+    },
+    "source_contracts": [
+      {
+        "key": "loader",
+        "path": "os/packages/workshop-backend/src/overseer.ts",
+        "lines": "4329-4360, 8182",
+        "contract": "OS dynamically loads worker code and obtains entrypoints; these tests use separate anonymous owned workers."
+      },
+      {
+        "key": "subscribers",
+        "path": "os/packages/bundled-blueprints/libraries/sync/src/subscribers.ts",
+        "lines": "3-13, 73-103, 121-170",
+        "contract": "Native callback retention, concurrent unawaited broadcast, per-subscriber failure isolation and reentry."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B017"
+    },
+    "qualification_gate": "pinned-native-characterization",
+    "identity_assumption": "Loaded worker token uniqueness/stability is a frozen-native characterization, not a universal Worker Loader replacement guarantee.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "Explicit owner overlap/authorization review required for possible overlap with separately restricted stateless-capability lifetime work; request adapter refuses B017-B024.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "B018",
+    "title": "Loaded method fails amid seven delegates",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "A worker method failure after an audit effect corrupts other in-flight calls or prevents same-worker recovery.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Four loaded workers serve two calls each; request2 throws in its worker after its gated audit call succeeds."
+    ],
+    "ordered_trace": [
+      "Observe eight audit entries and release only request2.",
+      "Require planned:loaded:request2 and one audit effect while seven jobs stay gated.",
+      "Complete two new calls in the same failed worker before releasing siblings.",
+      "Drain remaining originals and probe every original module token."
+    ],
+    "stress_dimension": "Eight loaded calls with a post-effect method rejection and same-instance recovery under ongoing load.",
+    "safety_oracle": [
+      "Failed request has exactly one deliberate pre-error audit effect; no sibling effects before their gates open.",
+      "Two recovery and seven sibling results preserve recipient identities; all original settlements occur once."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 4,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Eight loaded calls with a post-effect method rejection and same-instance recovery under ongoing load."
+    },
+    "source_contracts": [
+      {
+        "key": "loader",
+        "path": "os/packages/workshop-backend/src/overseer.ts",
+        "lines": "4329-4360, 8182",
+        "contract": "OS dynamically loads worker code and obtains entrypoints; these tests use separate anonymous owned workers."
+      },
+      {
+        "key": "subscribers",
+        "path": "os/packages/bundled-blueprints/libraries/sync/src/subscribers.ts",
+        "lines": "3-13, 73-103, 121-170",
+        "contract": "Native callback retention, concurrent unawaited broadcast, per-subscriber failure isolation and reentry."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B018"
+    },
+    "qualification_gate": "pinned-native-characterization",
+    "identity_assumption": "Loaded worker token uniqueness/stability is a frozen-native characterization, not a universal Worker Loader replacement guarantee.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "Explicit owner overlap/authorization review required for possible overlap with separately restricted stateless-capability lifetime work; request adapter refuses B017-B024.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "B019",
+    "title": "Loaded upload fails before document effect",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "A source failure during one of four loaded-worker uploads causes a false document effect or contaminates sibling consumers.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Four loaded workers each consume one gated byte stream; document1 source errors after an observed prefix."
+    ],
+    "ordered_trace": [
+      "Observe four worker upload entries/prefixes and four local source pauses.",
+      "Release only document1 and require its propagated source error.",
+      "Ping the failed worker while sibling uploads remain incomplete.",
+      "Release healthy producers and verify exactly three upload effects and complete bytes."
+    ],
+    "stress_dimension": "Four native streams crossing loaded-worker consumers, one interrupted before effect publication.",
+    "safety_oracle": [
+      "document1 receiver reports normalized premature readable disconnect, never records upload-effect, and local source has exactly one planned:source:document1 error.",
+      "Three good results carry 24576 bytes and the correct worker token; all four workers remain callable."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 4,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Four native streams crossing loaded-worker consumers, one interrupted before effect publication."
+    },
+    "source_contracts": [
+      {
+        "key": "loader",
+        "path": "os/packages/workshop-backend/src/overseer.ts",
+        "lines": "4329-4360, 8182",
+        "contract": "OS dynamically loads worker code and obtains entrypoints; these tests use separate anonymous owned workers."
+      },
+      {
+        "key": "git-streams",
+        "path": "os/packages/workshop-backend/src/git-cache.ts",
+        "lines": "307-328, 1170-1203, 1368-1378",
+        "contract": "GitCache accepts and returns native byte streams; fixture traffic is synthetic pack-like bytes, never a claim of valid Git parsing."
+      },
+      {
+        "key": "native-transport",
+        "path": "deliverable/patch-check-final/crates/celld/js/harness.js",
+        "lines": "4186-4237, 4622-4666",
+        "contract": "Frozen native stream bridge: readable errors normalize to premature disconnect, cancellation carries its reason, writable errors propagate."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B019"
+    },
+    "qualification_gate": "pinned-native-characterization",
+    "identity_assumption": "Loaded worker token uniqueness/stability is a frozen-native characterization, not a universal Worker Loader replacement guarantee.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "Explicit owner overlap/authorization review required for possible overlap with separately restricted stateless-capability lifetime work; request adapter refuses B017-B024.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "B020",
+    "title": "Cancel loaded stream amid callback load",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "A cancelled loaded-worker result stream keeps producing after its pending nested RPC resumes, or stalls independent notification callbacks.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Four loaded producer streams gate through native audit calls; four separate native callbacks are held concurrently."
+    ],
+    "ordered_trace": [
+      "Observe eight active owner jobs and nonempty consumer prefixes.",
+      "Release pack0 and pack2 and require full bytes.",
+      "Cancel pack3, observe its cancel audit, then release its outstanding audit call.",
+      "Complete pack1 while notifications remain held; finally release notifications and inspect all worker identities."
+    ],
+    "stress_dimension": "Four loaded streams plus four native callbacks and their nested owner traffic.",
+    "safety_oracle": [
+      "Three sources close once and preserve exact bytes; pack3 cancels once, never closes, and its nested audit settles.",
+      "Four callbacks stay active until their own gate opens, then each has exactly one effect and result."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 4,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Four loaded streams plus four native callbacks and their nested owner traffic."
+    },
+    "source_contracts": [
+      {
+        "key": "loader",
+        "path": "os/packages/workshop-backend/src/overseer.ts",
+        "lines": "4329-4360, 8182",
+        "contract": "OS dynamically loads worker code and obtains entrypoints; these tests use separate anonymous owned workers."
+      },
+      {
+        "key": "git-streams",
+        "path": "os/packages/workshop-backend/src/git-cache.ts",
+        "lines": "307-328, 1170-1203, 1368-1378",
+        "contract": "GitCache accepts and returns native byte streams; fixture traffic is synthetic pack-like bytes, never a claim of valid Git parsing."
+      },
+      {
+        "key": "subscribers",
+        "path": "os/packages/bundled-blueprints/libraries/sync/src/subscribers.ts",
+        "lines": "3-13, 73-103, 121-170",
+        "contract": "Native callback retention, concurrent unawaited broadcast, per-subscriber failure isolation and reentry."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B020"
+    },
+    "qualification_gate": "pinned-native-characterization",
+    "identity_assumption": "Loaded worker token uniqueness/stability is a frozen-native characterization, not a universal Worker Loader replacement guarantee.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "Explicit owner overlap/authorization review required for possible overlap with separately restricted stateless-capability lifetime work; request adapter refuses B017-B024.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "B021",
+    "title": "Bounded waitUntil work drains in cohorts",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "Returned loaded-worker background jobs are lost, block foreground traffic, or fail to drain after finite release.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Four loaded workers expose waitUntil; each schedules two audited jobs with distinct gates."
+    ],
+    "ordered_trace": [
+      "Receive all eight scheduling responses and then observe eight outstanding audit jobs.",
+      "Ping all loaded entries while background work is held.",
+      "Release one job per worker, then complete four new foreground delegates with the other cohort still pending.",
+      "Release remaining jobs and require eight background-ok markers and zero active work."
+    ],
+    "stress_dimension": "Eight post-response waitUntil jobs plus four foreground calls on four loaded workers.",
+    "safety_oracle": [
+      "Dispatch responses and all later results preserve the original worker tokens.",
+      "Exactly eight background-ok and zero background-failed markers; foreground effects complete while four background jobs remain held."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 4,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Eight post-response waitUntil jobs plus four foreground calls on four loaded workers."
+    },
+    "source_contracts": [
+      {
+        "key": "loader",
+        "path": "os/packages/workshop-backend/src/overseer.ts",
+        "lines": "4329-4360, 8182",
+        "contract": "OS dynamically loads worker code and obtains entrypoints; these tests use separate anonymous owned workers."
+      },
+      {
+        "key": "background",
+        "path": "os/packages/observability/src/error-reporting.ts",
+        "lines": "75-100",
+        "contract": "Dispatch is eager, waitUntil extends worker work; caught reporting failure must not disturb foreground work. DO waitUntil has no additional lifetime effect."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B021"
+    },
+    "qualification_gate": "pinned-native-characterization",
+    "identity_assumption": "Loaded worker token uniqueness/stability is a frozen-native characterization, not a universal Worker Loader replacement guarantee.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "Explicit owner overlap/authorization review required for possible overlap with separately restricted stateless-capability lifetime work; request adapter refuses B017-B024.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "B022",
+    "title": "Background rejection leaves foreground intact",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "A handled waitUntil rejection escapes into held foreground requests or leaves active background accounting stranded.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Four loaded background jobs and four loaded foreground calls are held; tail1 audit deliberately fails after its effect."
+    ],
+    "ordered_trace": [
+      "Observe all eight audit entries and release only tail1.",
+      "Require one background-failed marker with its intended error while foreground effects stay zero.",
+      "Release three healthy background jobs and ping the worker that handled failure.",
+      "Release foreground calls and require all final audit effects and zero active work."
+    ],
+    "stress_dimension": "Four waitUntil jobs overlap four pending foreground loaded calls with one isolated rejection.",
+    "safety_oracle": [
+      "Only tail1 has background-failed with planned:work:tail1 and no background-ok.",
+      "Three good backgrounds and four foreground calls finish on correct module tokens; eight deliberate audit effects occur once."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 4,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Four waitUntil jobs overlap four pending foreground loaded calls with one isolated rejection."
+    },
+    "source_contracts": [
+      {
+        "key": "loader",
+        "path": "os/packages/workshop-backend/src/overseer.ts",
+        "lines": "4329-4360, 8182",
+        "contract": "OS dynamically loads worker code and obtains entrypoints; these tests use separate anonymous owned workers."
+      },
+      {
+        "key": "background",
+        "path": "os/packages/observability/src/error-reporting.ts",
+        "lines": "75-100",
+        "contract": "Dispatch is eager, waitUntil extends worker work; caught reporting failure must not disturb foreground work. DO waitUntil has no additional lifetime effect."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B022"
+    },
+    "qualification_gate": "pinned-native-characterization",
+    "identity_assumption": "Loaded worker token uniqueness/stability is a frozen-native characterization, not a universal Worker Loader replacement guarantee.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "Explicit owner overlap/authorization review required for possible overlap with separately restricted stateless-capability lifetime work; request adapter refuses B017-B024.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "B023",
+    "title": "Finite native digests recover by cohort",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "Concurrent native digest work loses data/results or blocks still-held work from later resuming across loaded workers.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Four loaded workers and native SHA-256 are available; eight inputs are fixed at 131072 bytes and known hash."
+    ],
+    "ordered_trace": [
+      "Hold eight digest requests at their audit barriers and probe owner liveness.",
+      "Release one request per worker and verify four independently precomputed digests.",
+      "Require four unreleased jobs to remain active without digest effects.",
+      "Release the second cohort and check all eight digest effects and loaded worker recovery."
+    ],
+    "stress_dimension": "Eight overlapping requests with pre-compute audit barriers and 1 MiB aggregate native SHA-256 input; simultaneous compute is not measured.",
+    "safety_oracle": [
+      "Each 131072-byte deterministic payload hashes to 76cdfa3abecd13b27aa85019f063e95da9ab8f1f729594293411c0a63e15e198.",
+      "Result identities stay correct; eight digest effects occur once and all entries remain live."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 4,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Eight overlapping requests with pre-compute audit barriers and 1 MiB aggregate native SHA-256 input; simultaneous compute is not measured."
+    },
+    "source_contracts": [
+      {
+        "key": "loader",
+        "path": "os/packages/workshop-backend/src/overseer.ts",
+        "lines": "4329-4360, 8182",
+        "contract": "OS dynamically loads worker code and obtains entrypoints; these tests use separate anonymous owned workers."
+      },
+      {
+        "key": "codec",
+        "path": "os/packages/workshop-backend/src/git-codec.ts",
+        "lines": "17-27, 65-100, 454-530",
+        "contract": "Native node:zlib and crypto/byte-stream object processing motivate finite native work under concurrent RPC."
+      },
+      {
+        "key": "crypto-runtime",
+        "path": "deliverable/patch-check-final/crates/celld/js/crypto.rs",
+        "lines": "1-120",
+        "contract": "Native digest implementation is exercised through loaded worker entrypoints."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B023"
+    },
+    "qualification_gate": "pinned-native-characterization",
+    "identity_assumption": "Loaded worker token uniqueness/stability is a frozen-native characterization, not a universal Worker Loader replacement guarantee.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "Explicit owner overlap/authorization review required for possible overlap with separately restricted stateless-capability lifetime work; request adapter refuses B017-B024.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  },
+  {
+    "id": "B024",
+    "title": "Native codec load beside notifications",
+    "classification": "bounded-concurrent-stress",
+    "layer": "real-process-RPC",
+    "intent": "Finite synchronous native compression work corrupts restored bytes or requires unrelated held callbacks to drain before making progress.",
+    "preconditions": [
+      "Fresh owned disposable fixture roots on distinct verified runtime processes, with origin/provider root and isolate identity witnesses.",
+      "Exact frozen runtime SHA256 62695e9e0eaec3e2a4c62279144ef42b47d60a571343356509a758f3f895853e and staged fixture/profile hashes.",
+      "Exclusive parent run slot, private IP literal endpoint, enforced wall/RSS/PID/CPU limits, readiness and owned storage teardown evidence.",
+      "Modern rpc_params_dup_stubs, native RpcStub/Symbol.dispose and native stream input/output positive controls succeed before traceEntered.",
+      "Loaded node:zlib deflateSync/inflateSync positive control resolves; four real workers each accept two fixed 65536-byte inputs."
+    ],
+    "ordered_trace": [
+      "Hold eight codec audit delegates while four native notification callbacks also wait.",
+      "Observe twelve active owner jobs, then release only codec delegates.",
+      "Require eight compression roundtrips and exact restored-byte hashes while four callbacks remain active.",
+      "Probe owner liveness, release notifications and verify loaded worker recovery."
+    ],
+    "stress_dimension": "Eight requests with pre-compute audit barriers across four loaded workers plus four held callbacks; 512 KiB finite native zlib input; simultaneous compute/fair CPU scheduling not measured.",
+    "safety_oracle": [
+      "Every inflated output has 65536 exact bytes and SHA-256 01e0998ccd387dccb4cb1335e9981d7861ab6402de8965553be8a5fa808bb837; compressed size remains 1..65800.",
+      "Eight codec effects finish before callback release; four callbacks later complete exactly once on unchanged owners."
+    ],
+    "liveness_oracle": [
+      "All advertised terminal/effect witnesses arrive before the absolute supervised 30-second case deadline.",
+      "Per-case recovery calls and exact instance identities succeed before teardown."
+    ],
+    "cleanup": [
+      "Release every local and remote gate; cancel remaining readers including tee branches and queued application jobs.",
+      "Await all tracked foreground/background RPC settlements; verify provider active/pending/queued/readers all zero.",
+      "Dispose each retained callback, entrypoint and worker handle; require callback destructor count exactly one and callback active count zero.",
+      "On any hung/failed cleanup, require external supervisor teardown of only the owned fleet and storage, with PID reap evidence; no PASS credit without that evidence."
+    ],
+    "bounds": {
+      "case_wall_seconds": 30,
+      "logical_payload_bytes_max": 2097152,
+      "loaded_workers_max": 4,
+      "fixture_active_jobs_max": 16,
+      "event_rows_per_book_max": 512,
+      "read_operations_per_stream_max": 65536,
+      "case_specific_logical_load": "Eight requests with pre-compute audit barriers across four loaded workers plus four held callbacks; 512 KiB finite native zlib input; simultaneous compute/fair CPU scheduling not measured."
+    },
+    "source_contracts": [
+      {
+        "key": "loader",
+        "path": "os/packages/workshop-backend/src/overseer.ts",
+        "lines": "4329-4360, 8182",
+        "contract": "OS dynamically loads worker code and obtains entrypoints; these tests use separate anonymous owned workers."
+      },
+      {
+        "key": "codec",
+        "path": "os/packages/workshop-backend/src/git-codec.ts",
+        "lines": "17-27, 65-100, 454-530",
+        "contract": "Native node:zlib and crypto/byte-stream object processing motivate finite native work under concurrent RPC."
+      },
+      {
+        "key": "zlib-runtime",
+        "path": "deliverable/patch-check-final/crates/celld/js/zlib.rs",
+        "lines": "1-120",
+        "contract": "Native zlib implementation is exercised through loaded worker entrypoints."
+      },
+      {
+        "key": "subscribers",
+        "path": "os/packages/bundled-blueprints/libraries/sync/src/subscribers.ts",
+        "lines": "3-13, 73-103, 121-170",
+        "contract": "Native callback retention, concurrent unawaited broadcast, per-subscriber failure isolation and reentry."
+      }
+    ],
+    "implementation": {
+      "file": "cases.js",
+      "function": "cases.B024"
+    },
+    "qualification_gate": "pinned-native-characterization",
+    "identity_assumption": "Loaded worker token uniqueness/stability is a frozen-native characterization, not a universal Worker Loader replacement guarantee.",
+    "execution_status": "BLOCKED",
+    "execution_blocker": "Explicit owner overlap/authorization review required for possible overlap with separately restricted stateless-capability lifetime work; request adapter refuses B017-B024.",
+    "status": "NOT_RUN",
+    "review_status": "PENDING",
+    "run": false,
+    "passed": false
+  }
+]

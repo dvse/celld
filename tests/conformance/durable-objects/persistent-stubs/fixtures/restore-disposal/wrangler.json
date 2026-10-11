@@ -1,0 +1,4 @@
+{"name": "restore-disposer", "main": "index.js", "compatibility_date": "2026-08-14",
+ "compatibility_flags": ["allow_irrevocable_stub_storage"],
+ "durable_objects": {"bindings": [{"name": "VAULT", "class_name": "Vault"}]},
+ "migrations": [{"tag": "v1", "new_sqlite_classes": ["Vault"]}]}

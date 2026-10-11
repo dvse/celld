@@ -1,0 +1,29 @@
+{
+  "id": "conformance/languages/wasm",
+  "layer": "conformance",
+  "behaviour": "languages",
+  "title": "wasm",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/examples/wasm",
+      "legacy_id": "examples/wasm"
+    },
+    {
+      "source": "celld@9c0fca5/examples/wasm/wrangler.jsonc",
+      "sha256": "fcbb22e75f5cb572a5f523f63610998db500a241d9dca42c1354270826397faf"
+    }
+  ],
+  "legacy_ids": [
+    "examples/wasm"
+  ],
+  "adapter": "example",
+  "fixture": "tests/conformance/languages/fixtures/wasm-worker",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": "",
+  "runnable": true,
+  "source": "tests/conformance/languages/fixtures/wasm-worker/wrangler.jsonc",
+  "source_sha256": "fcbb22e75f5cb572a5f523f63610998db500a241d9dca42c1354270826397faf"
+}

@@ -1,0 +1,59 @@
+{
+  "id": "logic/output-gates/observe-bucket-ownership-settlement-after-known-lease-expiry",
+  "layer": "logic",
+  "behaviour": "output-gates",
+  "title": "Observe bucket ownership settlement after known lease expiry",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/output-gate-logic",
+      "legacy_id": "output-gate-logic/G022"
+    }
+  ],
+  "corpus_wave": "output-gate-logic",
+  "corpus_id": "G022",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "G022",
+    "intent": "Observe bucket ownership settlement after known lease expiry",
+    "failure_hypothesis": "Ownership read linearization and late acknowledgment may differ from no-late-output policy",
+    "preconditions": [
+      "Fresh State::new(\"fixture\", config) in this test only; no direct State field mutation",
+      "Initial config is fully pinned in profile.json; actual celld-logic::on_event is the only transition",
+      "For each resident: RequestAt -> OwnerRead (absent or exact prior local epoch) -> OwnerCasCompleted Applied -> RestoreCompleted -> RuntimeStarted generation1 -> Published; expect Local and exact epoch",
+      "Every real completion operation ID is captured from an exact emitted effect; G017 deliberately supplies gate+1000 as an unknown-op negative control. Every transition calls State::validate",
+      "No actual clock, I/O, runtime, object store, host credentials, or external traffic; source/pin/toolchain preflight required"
+    ],
+    "initial_state": "live lease anchored100 TTL100; a epoch1 request1",
+    "trace": [
+      "positive Sync5 bucket+ownership proof",
+      "Response10 ticket199",
+      "bucket proof10",
+      "RequestAt200 request2 refused",
+      "capture authority=false fenced=false",
+      "ownership success10",
+      "record settlement",
+      "actual fence200"
+    ],
+    "stress": "Finite ordered schedule, <=100 total State events; <=3 resident cells; <=3 simultaneous barriers; no randomness or repetition multiplier",
+    "safety_oracle": "Positive control succeeds; expired request refused; preserve readback and fence vectors; no policy verdict for late Ok; exactly one response settlement by fence; terminal fenced",
+    "liveness_oracle": "The explicit successful proof/recovery, independent witness, terminal fence or swap in this trace must reach its asserted terminal effect; no wall-time eventuality is assumed",
+    "oracle": "Positive control succeeds; expired request refused; preserve readback and fence vectors; no policy verdict for late Ok; exactly one response settlement by fence; terminal fenced",
+    "cleanup": "Finish explicit request activities/reset/runtime transitions shown in test. Drop the test-owned State at return or unwind; all state is in-memory and isolated. No production resource is created. Runner reaps only its owned compiler/test process groups and preserves evidence.",
+    "implementation": "tests/output_gate.rs:g022_bucket_verification_after_authority_expiry_records_settlement",
+    "test_function": "g022_bucket_verification_after_authority_expiry_records_settlement",
+    "contract_group": "lease-characterization",
+    "layer": "native-component",
+    "sublayer": "state-trace",
+    "qualification": "characterization",
+    "promotion": "NOT_PROMOTED: characterize late acknowledgment semantics; passing observation is not evidence for no-late-output policy",
+    "source_pins": "source-pins.json",
+    "profile": "profile.json",
+    "authored": true,
+    "reviewed": false,
+    "executable": true,
+    "run": false,
+    "passed": false,
+    "status": "NOT_RUN"
+  }
+}

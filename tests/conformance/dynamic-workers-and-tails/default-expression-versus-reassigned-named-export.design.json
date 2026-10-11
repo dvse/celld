@@ -1,0 +1,45 @@
+{
+  "id": "conformance/dynamic-workers-and-tails/default-expression-versus-reassigned-named-export",
+  "layer": "conformance",
+  "behaviour": "dynamic-workers-and-tails",
+  "title": "Default expression versus reassigned named export",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/module-graph-stress",
+      "legacy_id": "module-graph-stress/M003"
+    }
+  ],
+  "corpus_wave": "module-graph-stress",
+  "corpus_id": "M003",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "M003",
+    "intent": "Default expression versus reassigned named export",
+    "failure_hypothesis": "Reassigning a live named export can incorrectly rebind a default expression snapshot or leave another importer stale.",
+    "preconditions": [
+      "Fresh owned supervisor root; exact candidate/profile/pins; isolated private disposable runtime under reviewed external limits.",
+      "Real Loader positive control succeeds; all positive graph mains are callable before any lazy evaluation starts.",
+      "Any claimed held overlap must show unique actual receiver invocation IDs and matching finite gates."
+    ],
+    "trace": [
+      "Read shared initial object.",
+      "Replace the exported named binding with a new object.",
+      "Issue two later readers and compare default snapshot, current binding and observer."
+    ],
+    "stress": "One rebind observed through three distinct import forms.",
+    "oracle": "Default remains1; named and observer become2; identity changes exactly once.",
+    "cleanup": "Observe startup of every opened worker; close scope; reject remaining owned module gates; settle complete setup/trace tasks and every tracked RPC; only then dispose entries/workers. Any unresolved stop/drain is BLOCKED and external owned teardown is mandatory.",
+    "implementation": "cases.mjs:M003",
+    "graph_source": "graphs.mjs",
+    "overlap": "same-request concurrent dispatch after reassignment; no held overlap claim",
+    "profile": "module-graph-candidate8d27-v1",
+    "qualification": "characterization-candidate; no universal Cloudflare cache/scheduling guarantee; no promotion",
+    "layer": "real-process-RPC",
+    "authored": true,
+    "independently_reviewed": false,
+    "executable": true,
+    "status": "NOT_RUN",
+    "actual_runs": 0
+  }
+}

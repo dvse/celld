@@ -1,0 +1,251 @@
+{
+  "schema_version": 1,
+  "source_snapshot": "celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "source_root_at_authoring": "/workspace/shared/celld-recovered/celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "upstream_commit": "90b43017241f81189453d326d05948f388b34652",
+  "source_cut_utc": "2026-10-09T00:52:35.905873Z",
+  "binary_sha256": null,
+  "binary_note": "No binary was built or run. A future runtime receipt must provide exact binary and complete-source build provenance. Historical 8d27 is not a pin for a guarded build.",
+  "runtime_sources": [
+    {
+      "path": "celld-os-project/celld/crates/celld/js/url.js",
+      "sha256": "f67b1782ce676157516147bcc0109a33b874221e305d4ec2afd22a284ebe38b6",
+      "bytes": 10150
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js/url_search_params.js",
+      "sha256": "b75c92388a536c43dcc65fa9695af003eefb0cc48bb18c238561bda9a1d82dfb",
+      "bytes": 6915
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js/url_pattern.js",
+      "sha256": "0b541c296d0e35f7cf3e1c914785fcec373091ef685711884dc2e06e12c6a04e",
+      "bytes": 3885
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js.rs",
+      "sha256": "164b11bb2b0f7321d316bcd417b13fea3bf907b1eae335c97d8ebecaacb9ba17",
+      "bytes": 513744
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js/bootstrap.rs",
+      "sha256": "0210c1f17ec80959aa071724e1a612b181f72715d20afcbd29226674636d6d05",
+      "bytes": 45950
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/js/modules.rs",
+      "sha256": "9a16938eb5b2b50d32df41957507245dbbd59b63c28f906c825230cb19315e32",
+      "bytes": 42357
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/dev.rs",
+      "sha256": "829ea2e7f02ec22c8376bc23406ffb2a80cbd3165bfa59164a4d75e4fd98c313",
+      "bytes": 33127
+    },
+    {
+      "path": "celld-os-project/celld/crates/celld/deploy.rs",
+      "sha256": "b9383268709233302082eb2dc08753499ac3a69a983a598f41ab9a9383dae7e2",
+      "bytes": 123934
+    }
+  ],
+  "baseline_evidence": [
+    {
+      "path": "MANIFEST.json",
+      "sha256": "8855fac9fd4598c697fc6344bee3a4440a4979e8f2c740ece032be2f7bcbeb99",
+      "bytes": 147489
+    },
+    {
+      "path": "SHA256SUMS",
+      "sha256": "e00663780ee5233a6bf5da8f090af1ffd48e1b44aae2fbe9aa88572c255ebd55",
+      "bytes": 73692
+    },
+    {
+      "path": "README.md",
+      "sha256": "8718d62d532312c28215884f99aaf8fb999586283a39b7036a2c3432083f92d8",
+      "bytes": 3023
+    },
+    {
+      "path": "BUILD_AND_TEST.md",
+      "sha256": "14d182794d90bed90ee488abde70a9cba2004112e21a946441e621666196ecb1",
+      "bytes": 11861
+    },
+    {
+      "path": "celld-os-project/celld/README.md",
+      "sha256": "efa49d58801989684ce3ccfc5b3acb4995bee11b37ddbf4702c0aa74f4223518",
+      "bytes": 18975
+    },
+    {
+      "path": "celld-os-project/celld/docs/README.md",
+      "sha256": "9dc98386cdec787adb077d581c4f236c3b98e9148a52ae907bf8c7945d67858a",
+      "bytes": 36797
+    },
+    {
+      "path": "celld-os-project/celld/docs/testing.md",
+      "sha256": "dafe8638e0de082d104595d5e84cdb6b8feb9094496fef2e7a56b6d8b7f4c366",
+      "bytes": 7557
+    },
+    {
+      "path": "celld-os-project/tests/README.md",
+      "sha256": "22e06588b95ccaa267bb1befe20987fdc90778a3c057c718c9fe2dbd66c8af74",
+      "bytes": 10761
+    },
+    {
+      "path": "celld-os-project/celld/examples/webapi/index.js",
+      "sha256": "4369c5727ff65da18b2fa8ee3dddc35e4a57757855a01301d64e8c44dfed5981",
+      "bytes": 523
+    },
+    {
+      "path": "celld-os-stress/README.md",
+      "sha256": "478ba102b90eb4a9021a1b2fa60095da1f2c1b2d7a82af5266ca5d8ac651c387",
+      "bytes": 2968
+    },
+    {
+      "path": "celld-os-stress/RUNNERS.md",
+      "sha256": "9d83be79fec067a64c2f2448c9a7353775b1ce26b7de093ddabcee73405391f1",
+      "bytes": 2031
+    },
+    {
+      "path": "celld-os-stress/SOURCE-FILES.json",
+      "sha256": "eeab75b82b6ef052c9728b1b36cbd343ba656f655f4692ae693aff82e5d586bc",
+      "bytes": 37087
+    },
+    {
+      "path": "celld-os-stress/COUNTS.json",
+      "sha256": "8221870307e3a6aa652f68df167a636d1235b2babd0573753809c94adde72be2",
+      "bytes": 20716
+    },
+    {
+      "path": "celld-os-stress/waves/active-websocket-stress/manifest.json",
+      "sha256": "b48994aa5d1dbdb02bb5fb7472d3ae0caa9f9710e246413bc6a413b78ea9e5e9",
+      "bytes": 63813
+    },
+    {
+      "path": "celld-os-stress/waves/alarm-event-stress/manifest.json",
+      "sha256": "865ae3a9e5f61df64bded511650269e53e34a4d680a024d6dfcb57917c0548b8",
+      "bytes": 80418
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-load/manifest.json",
+      "sha256": "3f5bd7c6edaeaff0d0e64f61f3057d470ff3797c9433705a02e007e2b9ab8138",
+      "bytes": 98229
+    },
+    {
+      "path": "celld-os-stress/waves/bounded-resource/manifest.json",
+      "sha256": "146a361928473370af035feab68842898b962535623b2e9e3e2d2d4fb2e668b2",
+      "bytes": 42242
+    },
+    {
+      "path": "celld-os-stress/waves/deployment-recovery/manifest.json",
+      "sha256": "49de28e3fc01e79ef63ba813af9358e5f772ba9002e9ed7da8611dfc07d15a20",
+      "bytes": 159227
+    },
+    {
+      "path": "celld-os-stress/waves/durable-recovery-stress/manifest.json",
+      "sha256": "8bfa3397e84966fa629d7adce3504e3674aeb3cdf5f5d56a4615703576ea52b1",
+      "bytes": 101023
+    },
+    {
+      "path": "celld-os-stress/waves/fetch-redirect-stress/manifest.json",
+      "sha256": "ad3d52c7e21c4e1bb943bc7e5cf1c07a81f50329e342d2927905a2d5f9c29398",
+      "bytes": 46983
+    },
+    {
+      "path": "celld-os-stress/waves/http-stream-stress/manifest.json",
+      "sha256": "089c5862ac6c145045dceb77b5e22106f7666e928074dadd27d55f2c81d68c00",
+      "bytes": 84278
+    },
+    {
+      "path": "celld-os-stress/waves/loader-props/manifest.json",
+      "sha256": "c8768ca53d71e6b6193c4732dac7dd7aa22f2faec8dd8e83f430d5a5c22fe083",
+      "bytes": 63297
+    },
+    {
+      "path": "celld-os-stress/waves/log-recovery-logic/manifest.json",
+      "sha256": "731cc2389086c96d370eca18ce7bc1b62415bcb022ad6f75756e7aea74f74f90",
+      "bytes": 86458
+    },
+    {
+      "path": "celld-os-stress/waves/module-graph-stress/manifest.json",
+      "sha256": "28a4b34caa2b858fa1da7066013e23bdf99339ba2c8a6f15ebd2e180ace1014b",
+      "bytes": 36773
+    },
+    {
+      "path": "celld-os-stress/waves/native-transform-stress/manifest.json",
+      "sha256": "5cacd1bfe0e3c07d2f2eb469bbcaa19cfdfb140f81a3ad351a5356cada5f17e1",
+      "bytes": 43665
+    },
+    {
+      "path": "celld-os-stress/waves/output-gate-logic/manifest.json",
+      "sha256": "84148f9f295e44ae68cb2fd33fab2bc0168ad34102ffc8e057a927a78b119a62",
+      "bytes": 100281
+    },
+    {
+      "path": "celld-os-stress/waves/pressure-recovery-logic/manifest.json",
+      "sha256": "8c20b20d5f3848fbea5226c2c099cd0691a8ce21e6b7f4c46b8b78f5a1370141",
+      "bytes": 80399
+    },
+    {
+      "path": "celld-os-stress/waves/routing-acquisition-logic/manifest.json",
+      "sha256": "f055a1b302e5f2546df23910f8713d3b39344fef98cfa2e30c946081ba2e1b66",
+      "bytes": 107853
+    },
+    {
+      "path": "celld-os-stress/waves/sqlite-concurrency/manifest.json",
+      "sha256": "991cfa1edce682ba4dcfbb6b6070abedee80b43af45c6bcc300ba27666516bab",
+      "bytes": 74170
+    },
+    {
+      "path": "celld-os-stress/waves/wake-recovery-logic/manifest.json",
+      "sha256": "1b97975b95f13eb02997fa304a74290761ac3c5b54d0709d71f9907f83269aab",
+      "bytes": 62614
+    }
+  ],
+  "fixture_artifacts": [
+    {
+      "path": "cases.js",
+      "sha256": "05079e449a0839cbe790f111ad63e5155a8482d16fcb66c71a7e111ffa4c2276",
+      "bytes": 16421
+    },
+    {
+      "path": "fixture.js",
+      "sha256": "ccbb1cf21c3f719aa06ed64b498fc396f00736cc96d7cbd2aea437f2cc221ca6",
+      "bytes": 2113
+    },
+    {
+      "path": "wrangler.json",
+      "sha256": "8f5ef34ebe9550ac822ff9dd4589c4cf4a5ee9fd73e14e9d7b00cf1e47c91e61",
+      "bytes": 107
+    },
+    {
+      "path": "manifest.json",
+      "sha256": "d61fdb1b4d070ae5aff0ad1456c39d2842c341f9737a20b67c67c251f638ae91",
+      "bytes": 107854
+    },
+    {
+      "path": "schedule.json",
+      "sha256": "ed241045ee78c9efef4d8c6440119aa813929f802cf4eafcfedfc776db2f1ee1",
+      "bytes": 5403
+    },
+    {
+      "path": "overlap-audit.json",
+      "sha256": "3f0d128064bb3f76212378ce724a3a5037aaf781247bbb8c19bcae152640cb3f",
+      "bytes": 17388
+    },
+    {
+      "path": "README.md",
+      "sha256": "a6a5a6b8ad3ab04f8f1e46f43c3f20b0ceb2218fad5d09df95b1dfeedb0ec603",
+      "bytes": 7996
+    },
+    {
+      "path": "author_manifest.py",
+      "sha256": "53a1aee514699bb65e446600a0879f27563c95b448b7ab1cda6883e01b6ad191",
+      "bytes": 31582
+    },
+    {
+      "path": "validate_static.py",
+      "sha256": "007bac5bf1a54acfe0388aea1c4c859e2b6018169d7cb8fc3efb0f60298cab5f",
+      "bytes": 4631
+    }
+  ],
+  "qualification": "SHA256 equality and source syntax are static evidence only. The top-level baseline MANIFEST and SHA256SUMS bind the full restored cut."
+}

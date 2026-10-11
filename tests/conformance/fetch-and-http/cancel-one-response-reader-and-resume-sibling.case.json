@@ -1,0 +1,59 @@
+{
+  "adapter": "topology",
+  "behaviour": "fetch-and-http",
+  "contract": {
+    "cleanup": [
+      "Keep every coordinator case within active DO fetch; release all local gates, abort owned outstanding requests and cancel/release owned readers and branches",
+      "Recipient cleanup marks all operations stopped before releasing gates; cancel inputs, error unfinished outputs, join entered operations and require zero active/readers/controllers",
+      "Join caller task outcomes and verify no live request/reader/pending task; terminal receipt correlates run/root/isolate",
+      "Every run requires separate supervisor evidence for bounded destruction/reaping of only owned fleet, sockets and fresh case storage; semantic PASS alone remains BLOCKED until teardown receipt"
+    ],
+    "distinctness": "Registered HTTP body cancellation differs from pre-head AbortSignal and B012 RPC stream cancellation",
+    "implementation": "cases.js:H019",
+    "intent": "Cancel one response reader and resume sibling",
+    "oracle": "Canceled reader terminal done, observed prefix retained, survivor exact full bytes/stable EOF",
+    "preconditions": [
+      "Two response prefixes observed with independent held tails",
+      "Independent review of exact wave/source/profile hashes and explicit parent exclusive run slot",
+      "Already-running owned disposable bounded fleet, at most2 runtimes; actual PID/boot/executable and enforced memory/PID/CPU/wall bounds witnessed",
+      "Fresh caller/recipient DO names on independently witnessed runtime processes and distinct root/isolate IDs",
+      "Recipient DO placed locally to fixed private HTTP ingress192.168.77.1:18080; no cross-node incremental request premise",
+      "Native fetch/ReadableStream/AbortController/crypto APIs, matching profile/identity and empty recipient operation journal; missing prerequisite is typed BLOCKED before traceEntered"
+    ],
+    "trace": [
+      "Read both logical prefixes",
+      "Cancel abandoned reader and verify repeated read done",
+      "Stop abandoned application producer",
+      "Release live tail and drain survivor"
+    ]
+  },
+  "corpus_id": "H019",
+  "corpus_wave": "http-stream-stress",
+  "fixture": "tests/conformance/fetch-and-http/fixtures/body-streaming",
+  "id": "conformance/fetch-and-http/cancel-one-response-reader-and-resume-sibling",
+  "layer": "conformance",
+  "legacy_ids": [
+    "corpus/http-stream-stress/H019"
+  ],
+  "origins": [
+    {
+      "legacy_id": "corpus/http-stream-stress/H019",
+      "source": "guarded-source-archive/celld-os-stress/waves/http-stream-stress"
+    },
+    {
+      "sha256": "bc36e6548386869fea496e7073ebc08ff4a068d89f1860e89f28a03515006e6b",
+      "source": "guarded-source-archive/celld-os-stress/waves/http-stream-stress/fixture.js"
+    }
+  ],
+  "phase2_harness": "five-process SeaweedFS fleet with separately witnessed recipient ownership",
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "selector": "H019",
+  "source": "tests/conformance/fetch-and-http/fixtures/body-streaming/fixture.js",
+  "source_sha256": "bc36e6548386869fea496e7073ebc08ff4a068d89f1860e89f28a03515006e6b",
+  "title": "Cancel one response reader and resume sibling"
+}

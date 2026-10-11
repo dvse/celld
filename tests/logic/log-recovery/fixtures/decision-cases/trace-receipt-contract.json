@@ -1,0 +1,17 @@
+{
+  "schema": 1,
+  "execution_receipts_present": false,
+  "receipt_source": "tests/log_recovery.rs Receipt::new/observe/done; generated only during a future authorized native test invocation",
+  "begin": "Exactly one BEGIN <case_id>: native-component; synthetic storage facts; no I/O",
+  "observations": "The selected case ID, strictly increasing three-digit count, literal step label and Debug-formatted actual component result or explicitly labeled synthetic premise",
+  "observation_bounds": {"minimum":4,"maximum":100},
+  "end": "Exactly one END <case_id> observations=<count>; cleanup=drop owned values; external resources=0",
+  "success_conditions": [
+    "Exact test function selected with --exact; native harness reports exactly 1 passed, 0 failed",
+    "Process exits 0 inside profile limits and BEGIN/END case identities match selected manifest entry",
+    "No panic, skip, ignored case, timeout or source/preflight mismatch",
+    "All required source, profile, manifest, toolchain and native executable SHA-256s bind the receipt",
+    "Owned process cleanup completes and is recorded"
+  ],
+  "meaning": "Conditional public-component model result only; storage and CAS receipts printed by the fixture are synthetic premises, never disk/VM/durability evidence"
+}

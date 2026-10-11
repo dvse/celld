@@ -1,0 +1,29 @@
+{
+  "id": "conformance/bindings/workflow",
+  "layer": "conformance",
+  "behaviour": "bindings",
+  "title": "workflow",
+  "origins": [
+    {
+      "source": "celld@9c0fca5/examples/workflow",
+      "legacy_id": "examples/workflow"
+    },
+    {
+      "source": "celld@9c0fca5/examples/workflow/wrangler.jsonc",
+      "sha256": "dd09d547315cc9cd926e957c0db509bb9a6ce54ee32e424388910b7b6e0a7300"
+    }
+  ],
+  "legacy_ids": [
+    "examples/workflow"
+  ],
+  "adapter": "example",
+  "fixture": "tests/conformance/bindings/fixtures/workflow-execution",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": "",
+  "runnable": true,
+  "source": "tests/conformance/bindings/fixtures/workflow-execution/wrangler.jsonc",
+  "source_sha256": "dd09d547315cc9cd926e957c0db509bb9a6ce54ee32e424388910b7b6e0a7300"
+}

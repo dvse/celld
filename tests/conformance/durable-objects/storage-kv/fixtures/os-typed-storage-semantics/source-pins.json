@@ -1,0 +1,121 @@
+{
+  "schema": 1,
+  "source_snapshot": "celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "binary_sha256": null,
+  "runtime_status": "NOT_RUN",
+  "source_root": "/workspace/shared/celld-recovered/celld-direct-source-v0.6.2-8d27-guard-20261009",
+  "files": {
+    "celld-os-project/celld/crates/celld/js/harness.js": "8d3be5ef1b78d302cb2da745c63f8d2e1222115c49a8d08f1096bca7d235c237",
+    "celld-os-project/celld/crates/celld/js/storage_ops.rs": "33aae2a9d2c25dd46b5ef33e343a20a923e0bd90117e1cf67afe2137e2dcc010",
+    "celld-os-project/celld/crates/celld/storage.rs": "99ce80c6e273234787ca38367210ebca43baa9df49286dc911cd179f52b6dc2d",
+    "celld-os-stress/waves/sqlite-concurrency/cell-cases.js": "0e5116557fa02ad82edc28032c82d9cb7c96530e04880465fc6517acad7095d6",
+    "celld-os-stress/waves/sqlite-concurrency/cases.js": "691eb28d4cee7679b56385040712298155124a272d15d5674e44088bede9080f",
+    "celld-os-stress/waves/sqlite-concurrency/manifest.json": "991cfa1edce682ba4dcfbb6b6070abedee80b43af45c6bcc300ba27666516bab",
+    "celld-os-stress/waves/sqlite-concurrency/source-pins.json": "24b0037a4fca2b354dcfdacd12561813cf8b369329257867243f95feed5500a6"
+  },
+  "os_root": "/workspace/shared/celld-campaign-next/os-source-inventory/historical-4358072",
+  "os_commit": "4358072f8cb1bc9ddfb6ee11122e194c76cd71e0",
+  "os_files": [
+    {
+      "path": "raw/packages/typed-storage/src/index.ts",
+      "sha256": "561111a1a0787d5158ddfa9df5c1910285b156906d874f5f58719a901e004c12",
+      "bytes": 29223
+    },
+    {
+      "path": "raw/LICENSE",
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "bytes": 10174
+    },
+    {
+      "path": "raw/packages/workshop-backend/src/storage-schema/overseer-storage.ts",
+      "sha256": "dc91a6110ec7d455b5a4b07d87fac1cc989a4605ba63f41ae6f8241385c92a26",
+      "bytes": 67488
+    },
+    {
+      "path": "raw/packages/workshop-backend/src/storage-schema/overseer-migrations.ts",
+      "sha256": "3a5ab49d37fb0328eda6f0a265eb13887cbc46960944f47b69198c2435e44923",
+      "bytes": 17423
+    },
+    {
+      "path": "raw/packages/workshop-backend/src/overseer.ts",
+      "sha256": "835e7c1ce74a99ae9e54f00537f7e89937ce500255c1c21f6fa7fc93dc0a67bc",
+      "bytes": 612095
+    },
+    {
+      "path": "SOURCE-MANIFEST.json",
+      "sha256": "fe3dc1ca7a3f717836d21eda731828376fce928fef9ef2246ec5b5f3df33d64e",
+      "bytes": 18337
+    },
+    {
+      "path": "SOURCE-SHA256SUMS",
+      "sha256": "0ff12342dd7f15fd187d4258b7d970b568871e6b336fd9f291487656af2c2ec9",
+      "bytes": 2061
+    },
+    {
+      "path": "INITIAL-FIVE-SOURCES.json",
+      "sha256": "1115dd8560a3987922cc97eb556d2d6c25cefeb59fa1ac41bab1b7d42b06e3ee",
+      "bytes": 2967
+    },
+    {
+      "path": "VERIFICATION.json",
+      "sha256": "55953c7f936fbf77bedce4a29452ca97044a306493f5cd10ac89129c9c5c94aa",
+      "bytes": 634
+    }
+  ],
+  "vendor_files": [
+    {
+      "path": "vendor/cloudflare-os/packages/typed-storage/src/index.ts",
+      "sha256": "561111a1a0787d5158ddfa9df5c1910285b156906d874f5f58719a901e004c12",
+      "bytes": 29223
+    },
+    {
+      "path": "vendor/cloudflare-os/LICENSE",
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+      "bytes": 10174
+    }
+  ],
+  "overlap_root": "/workspace/shared/celld-campaign-next",
+  "overlap_files": [
+    {
+      "path": "storage-sql-semantics/cases.js",
+      "sha256": "1dec37fd6a3caae833bbc95620f407a7d866836410275c1b4b7637ae468bb7f9",
+      "bytes": 12968
+    },
+    {
+      "path": "storage-sql-semantics/manifest.json",
+      "sha256": "25b49a3bc5158a1b8277be37a06ef424e24da72c8ada091d9bd57d2c68d8bb7c",
+      "bytes": 64972
+    },
+    {
+      "path": "atomic-accounting-semantics/cases.js",
+      "sha256": "b989812ac2fb83e206a9068aa18f77ea92833e76bbb620f6bf8cb024cbdf75e3",
+      "bytes": 23529
+    },
+    {
+      "path": "atomic-accounting-semantics/manifest.json",
+      "sha256": "74ca24883b66b7505190af93acdb03199887fecbe09f5d377d344cfafb2cad69",
+      "bytes": 73564
+    },
+    {
+      "path": "facet-root-semantics/cases.js",
+      "sha256": "3e0d3a30c5c60b02f026d26d58012c6b3a244df8858e3a2fe40b2f3aa9aea359",
+      "bytes": 11832
+    },
+    {
+      "path": "facet-root-semantics/manifest.json",
+      "sha256": "a1615598800adf714f1786dbf6db36365b035d4b9e54a4c56c12e5a427ed7e1f",
+      "bytes": 92170
+    },
+    {
+      "path": "kv-semantics/worker.js",
+      "sha256": "87ce92492bd300bbf0763c43d37be1edddfffb41fe9cfb06ffbfe7c348b90ee3",
+      "bytes": 21572
+    },
+    {
+      "path": "kv-semantics/manifest.json",
+      "sha256": "f4906cd842457c8b9a75c0e069decbdcb702bfb3789ce06e6e1a55e2929069c9",
+      "bytes": 105818
+    }
+  ],
+  "qualification": "Exact OS module imported as production code over native direct-celld storage; actual application call sites establish relevance only, not whole-OS execution."
+}

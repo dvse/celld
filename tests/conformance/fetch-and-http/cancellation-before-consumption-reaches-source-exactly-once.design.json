@@ -1,0 +1,32 @@
+{
+  "id": "conformance/fetch-and-http/cancellation-before-consumption-reaches-source-exactly-once",
+  "layer": "conformance",
+  "behaviour": "fetch-and-http",
+  "title": "Cancellation before consumption reaches source exactly once",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/fixture",
+      "legacy_id": "base/S002"
+    }
+  ],
+  "corpus_wave": "base",
+  "corpus_id": "S002",
+  "runnable": false,
+  "reason": "Reviewed non-promoting characterization/design; excluded from the 461 assertion-bearing case credit; source retained.",
+  "contract": {
+    "id": "S002",
+    "intent": "Cancellation before consumption reaches source exactly once",
+    "preconditions": "Two-chunk remote source; no reader acquired",
+    "trace": [
+      "obtain stream",
+      "cancel with structured code",
+      "inspect source"
+    ],
+    "stress": "cancel before first consumer read",
+    "oracle": "cancelled=1; reason.code=unread; at most one prefetched chunk; unlocked",
+    "cleanup": "cancel; forget unlocked source",
+    "contract_scope": "celld native bridge robustness; not a promise that Cloudflare transport preserves chunk boundaries or remote write acknowledgement timing",
+    "gate": "characterization",
+    "contract_status": "At-most-one-prefetch needs pinned transport qualification before promotion"
+  }
+}

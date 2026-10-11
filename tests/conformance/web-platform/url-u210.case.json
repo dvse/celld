@@ -1,0 +1,135 @@
+{
+  "adapter": "http",
+  "behaviour": "web-platform",
+  "campaign": true,
+  "characterization": false,
+  "contract": {
+    "actual_runtime_executions": 0,
+    "application_relevance": "Workers construct ordinary query strings and URL-encoded form values from tuples.",
+    "assertion_count": 3,
+    "authored": true,
+    "candidate_classification": "assertion-bearing ordinary API correctness candidate; no reviewed census credit yet",
+    "cleanup": "All URL, params, iterator, pattern, array, and result values are request-local. Return from synchronous fetch releases references. No timer, outgoing fetch, binding, durable write, object URL allocation, or retained cross-request capability. External supervisor stops only owned processes and deletes only its fresh deployment/store directory after receipt capture.",
+    "desired_behavior": "Punctuation !'()~ is escaped, *-._ remains, spaces become +, literal + becomes %2B, and Unicode uses fixed UTF-8 percent bytes.",
+    "distinctness": "Independent exact serialization oracle; round trip is secondary and cannot mask a mutually wrong encoder/decoder.",
+    "entrypoint": {
+      "method": "GET",
+      "path": "/case/U210",
+      "request_body": null
+    },
+    "fixed_runtime_assertions": [
+      "t.equal(params.toString(), 'symbols=%21*%27%28%29%7E-._&word=caf%C3%A9+%2B+tea&snow=%E9%9B%AA', 'form serializer uses its own encode set and space rule');",
+      "t.deep([...new URLSearchParams(params.toString())], [['symbols', \"!*'()~-._\"], ['word', 'caf\u00e9 + tea'], ['snow', '\u96ea']], 'ordinary Unicode and punctuation round trip');",
+      "t.equal(params.get('word'), 'caf\u00e9 + tea', 'serialization does not mutate stored value');"
+    ],
+    "hypothesis": "A generic URI encoder may leave form-reserved punctuation unescaped or confuse literal plus with space.",
+    "id": "U210",
+    "implementation": {
+      "end_line": 114,
+      "file": "cases.js",
+      "start_line": 109,
+      "symbol": "U210"
+    },
+    "independently_reviewed": false,
+    "layer": "direct-celld-worker-fetch-global-web-api",
+    "limits": {
+      "case_assertion_max_count": 16,
+      "case_input_max_code_units": 1024,
+      "case_tuple_max_count": 16,
+      "concurrent_requests": 1,
+      "network_calls_from_fixture": 0,
+      "repetitions": 1,
+      "request_body_bytes": 0,
+      "request_outer_deadline_seconds": 5,
+      "requests_per_case": 1,
+      "response_max_bytes": 65536,
+      "storage_writes_from_fixture": 0,
+      "timers_from_fixture": 0
+    },
+    "mechanism": "application/x-www-form-urlencoded tuple serialization",
+    "ordinary_input_scope": "Successful public API calls on complete ordinary URL strings or valid property, pair, and pattern inputs. Valid URL nonmatches are intentional boolean/null outcomes, never malformed-input probes. Example domains and documentation IPv6 addresses are data only.",
+    "preconditions": [
+      "Fresh isolated fixture deployment on the exact reviewed direct-celld build; external source/build/process witness required.",
+      "Global URL, URLSearchParams, and for U217-U220 URLPattern are supplied by celld, not by Node, a shim, or a mock.",
+      "External finite-deadline supervisor and owned-process cleanup are available; missing runtime prerequisites are BLOCKED."
+    ],
+    "prediction_is_runtime_evidence": false,
+    "primary_contract_refs": [
+      "https://url.spec.whatwg.org/#urlsearchparams"
+    ],
+    "review_status": "UNREVIEWED",
+    "runtime_pass_claimed": false,
+    "runtime_source_refs": [
+      {
+        "line_end": 73,
+        "line_start": 66,
+        "path": "celld-os-project/celld/crates/celld/js/url_search_params.js"
+      },
+      {
+        "line_end": 124,
+        "line_start": 111,
+        "path": "celld-os-project/celld/crates/celld/js/url_search_params.js"
+      },
+      {
+        "line_end": 225,
+        "line_start": 220,
+        "path": "celld-os-project/celld/crates/celld/js/url_search_params.js"
+      }
+    ],
+    "runtime_status": "UNRUN",
+    "schedule": {
+      "depends_on": [],
+      "kind": "one synchronous finite trace",
+      "overlap": "none",
+      "path": "/case/U210",
+      "request_ordinal": 10,
+      "runtime_operations": [
+        "Construct params from three fixed key/value pairs.",
+        "Assert the complete serialized form string.",
+        "Parse that string and assert the original tuples, then assert stored word was not mutated."
+      ]
+    },
+    "source_observation": "Pinned serializer supplements encodeURIComponent for form-only punctuation. No observed runtime verdict.",
+    "static_prediction": "NO_FAILURE_PREDICTION",
+    "status": "NOT_RUN",
+    "title": "Serialize form punctuation and Unicode with the form encode set",
+    "trace": [
+      "Construct params from three fixed key/value pairs.",
+      "Assert the complete serialized form string.",
+      "Parse that string and assert the original tuples, then assert stored word was not mutated."
+    ]
+  },
+  "corpus_id": "U210",
+  "corpus_wave": "url-semantics",
+  "fixture": "tests/conformance/web-platform/fixtures/url-semantics",
+  "id": "conformance/web-platform/url-u210",
+  "layer": "conformance",
+  "legacy_ids": [
+    "campaign/url-semantics/U210"
+  ],
+  "origins": [
+    {
+      "legacy_id": "campaign/url-semantics/U210",
+      "manifest_sha256": "d61fdb1b4d070ae5aff0ad1456c39d2842c341f9737a20b67c67c251f638ae91",
+      "review_sha256": "13b98102e846487ca6304032863d1edb29b691c8649ebdea0ad53161ac6da486",
+      "source": "$LAB/celld-20261009/vm-and-campaign-sources-20261010/bodyfix/historical-checkpoint/additions/url-semantics",
+      "tranche": "001"
+    }
+  ],
+  "profiles": [
+    "full"
+  ],
+  "reason": null,
+  "requests": [
+    {
+      "path": "/case/U210",
+      "timeout": 30
+    }
+  ],
+  "reviewed": true,
+  "runnable": true,
+  "selector": "U210",
+  "source": "tests/conformance/web-platform/fixtures/url-semantics/fixture.js",
+  "source_sha256": "ccbb1cf21c3f719aa06ed64b498fc396f00736cc96d7cbd2aea437f2cc221ca6",
+  "title": "Serialize form punctuation and Unicode with the form encode set"
+}

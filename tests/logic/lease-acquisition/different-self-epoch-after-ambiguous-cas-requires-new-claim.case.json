@@ -1,0 +1,53 @@
+{
+  "id": "logic/lease-acquisition/different-self-epoch-after-ambiguous-cas-requires-new-claim",
+  "layer": "logic",
+  "behaviour": "lease-acquisition",
+  "title": "Different self epoch after ambiguous CAS requires new claim",
+  "origins": [
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic",
+      "legacy_id": "corpus/routing-acquisition-logic/N006"
+    },
+    {
+      "source": "guarded-source-archive/celld-os-stress/waves/routing-acquisition-logic/tests/routing_acquisition.rs",
+      "sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06"
+    }
+  ],
+  "legacy_ids": [
+    "corpus/routing-acquisition-logic/N006"
+  ],
+  "adapter": "native",
+  "corpus_id": "N006",
+  "corpus_wave": "routing-acquisition-logic",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "reviewed": true,
+  "runnable": true,
+  "source": "tests/logic/lease-acquisition/fixtures/decision-cases/tests/routing_acquisition.rs",
+  "source_sha256": "f6d8692f41d79d449b51cca1ef452eb5dfda8ecc4bcdfa3a273347a9944d0b06",
+  "test_filter": "n006_ambiguous_claim_different_self_epoch_requires_new_cas",
+  "contract": {
+    "intent": "Different self epoch after ambiguous CAS requires new claim",
+    "preconditions": [
+      "Fresh test-owned State; only frozen production celld_logic::on_event mutates it.",
+      "Empty State; a/1 attempts absent-owner CAS1.",
+      "All completion operation IDs and timers come from the exact emitted effects; late IDs are previously issued IDs, never fabricated authority.",
+      "All input storage/lease/proof replies are synthetic facts. No executor, network, runtime, or fleet service is simulated as empirical evidence.",
+      "Static source/pin check and independent review required; compiler, test and runtime have not been launched."
+    ],
+    "trace": [
+      "CAS Ambiguous emits reconcile read",
+      "Read self epoch11 tagged self11",
+      "Assert no Restore and CAS epoch12",
+      "Assert reconciles counter remains1",
+      "Apply new claim; restore/start/publish; finish1"
+    ],
+    "oracle": "Self ownership alone does not prove the exact uncertain claim applied",
+    "cleanup": "Finish every locally completed request and cancel each remaining ownership-only waiter as shown. H::done checks no pending requests, active cells, activation/capacity queues, activation/eviction/release/adoption permits, or nonterminal phases. Drop isolated in-memory State; no external resources created. Stored timer descriptors are never launched.",
+    "implementation": "tests/routing_acquisition.rs:n006_ambiguous_claim_different_self_epoch_requires_new_cas"
+  },
+  "selector": "N006"
+}

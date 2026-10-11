@@ -1,0 +1,25 @@
+{
+  "id": "unit/input-gates/empty-gate-is-open",
+  "layer": "unit",
+  "behaviour": "input-gates",
+  "title": "empty gate is open",
+  "origins": [
+    {
+      "source": "tests/unit/input_gate.rs",
+      "legacy_id": "unit/input-gate/empty_gate_is_open"
+    }
+  ],
+  "legacy_ids": [
+    "unit/input-gate/empty_gate_is_open"
+  ],
+  "adapter": "native",
+  "profiles": [
+    "quick",
+    "full"
+  ],
+  "reason": null,
+  "runnable": true,
+  "source": "tests/unit/input-gates/input_gate.rs",
+  "source_sha256": "55f675467a77b00df646bb2d3409cb979fe90f4037b4b520f9a42fed6d4c1fec",
+  "test_filter": "empty_gate_is_open"
+}
