@@ -4806,7 +4806,7 @@ __celld.__releaseCapability = async (token, _path, _args, startTicket) => {
 // methods and accessors are visible -- never own instance state
 // (env/ctx live there) and never Object.prototype.
 const __entrypointReserved = new Set([
-  "constructor", "fetch", "connect", "alarm", "scheduled",
+  "constructor", "fetch", "connect", "alarm",
   "webSocketMessage", "webSocketClose", "webSocketError", "dup",
 ]);
 const __entrypointResolve = (inst, prop) => {
@@ -5965,7 +5965,10 @@ const __rpcTargetMethod = async (scope, method) => {
     return [inst, function(descriptor, path, args) {
       return __withRestore(descriptor, () => __rpcWalk(this, path, args, true));
     }];
-  const fn = inst[method];
+  // A Durable Object is an entrypoint class, not a plain RPC object.
+  // Match WorkerEntrypoint lookup before evaluating a getter: own instance
+  // state and reserved lifecycle handlers must never become RPC methods.
+  const fn = __entrypointResolve(inst, method);
   if (typeof fn !== "function")
     throw new TypeError(method + " is not a function");
   return [inst, fn];
