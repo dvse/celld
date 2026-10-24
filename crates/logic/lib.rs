@@ -2582,6 +2582,18 @@ impl State {
             };
             return;
         }
+        // Every renewal readback must preserve the prior authority window.
+        // In particular, an intermediate self-authored record must not move
+        // the old fence after that lease has already expired, even when the
+        // read completion is processed before its overdue fence timer.
+        if let Some(prior) = &pending.prior {
+            if now_ms >= prior.record.expires_ms
+                || now_mono_ms.saturating_sub(prior.last_ok_mono_ms) >= prior.spec.ttl_ms
+            {
+                self.fence_node(HaltReason::NodeLeaseExpired, effects);
+                return;
+            }
+        }
         match result {
             Err(_) => {
                 if let Some(prior) = pending.prior {
