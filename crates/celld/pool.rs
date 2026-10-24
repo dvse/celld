@@ -176,8 +176,9 @@ pub struct Slot {
     ///
     /// `None` once the isolate has been retired and freed. Retirement only
     /// frees a slot that is drained — no turns, no affiliations — and a
-    /// retiring slot is filtered out of every placement decision, so nothing
-    /// can arrive afterwards. Entering one would be a bug in this module.
+    /// retiring slot is filtered out of every placement decision. Existing
+    /// capability continuations acquire an affiliation under this same lock;
+    /// entering after the worker has been freed would be a bug.
     worker: tokio::sync::Mutex<Option<js::Worker>>,
     turn_scheduler: TurnScheduler,
     queue_producers: Mutex<std::collections::HashMap<String, usize>>,
@@ -201,6 +202,9 @@ pub struct Slot {
     // toward the collection boundary. Residency drop retires both counts.
     adopted_cells: AtomicUsize,
     retiring: AtomicBool,
+    // Ordinary shrink stops placement while existing requests drain. Fatal
+    // condemnation and generation shutdown also forbid capability continuation.
+    capabilities_closed: AtomicBool,
     #[cfg(celld_internal_tests)]
     turn_observations: Mutex<Vec<String>>,
 }
@@ -301,18 +305,25 @@ impl Slot {
         }
     }
 
-    /// Mark a request as living in this isolate. Held for the request's whole
-    /// life, including while it is suspended, because its promise stays in
-    /// this heap and every later turn must come back here.
-    /// Acquire only a still-live incarnation, without reviving a retired heap.
-    pub(crate) async fn try_affiliate(self: &Arc<Self>) -> Option<Affiliation> {
+    /// Continue an existing exported capability on its exact live heap. Normal
+    /// pool shrink stops new placement, but a WebSocket or suspended request may
+    /// still own this draining heap. Share the free-retired lock so this never
+    /// revives a freed heap. Generation shutdown and condemnation remain closed.
+    pub(crate) async fn try_affiliate_capability(self: &Arc<Self>) -> Option<Affiliation> {
         let worker = self.worker.lock().await;
-        if self.is_retiring() || worker.is_none() {
+        if self.capabilities_closed() || worker.is_none() {
             return None;
         }
         Some(self.affiliate())
     }
 
+    pub(crate) fn capabilities_closed(&self) -> bool {
+        self.capabilities_closed.load(Ordering::Acquire)
+    }
+
+    /// Mark a request as living in this isolate. Held for the request's whole
+    /// life, including while it is suspended, because its promise stays in
+    /// this heap and every later turn must come back here.
     pub fn affiliate(self: &Arc<Self>) -> Affiliation {
         self.requests.fetch_add(1, Ordering::Relaxed);
         Affiliation(self.clone())
@@ -343,6 +354,7 @@ impl Slot {
             cells: AtomicUsize::new(0),
             adopted_cells: AtomicUsize::new(0),
             retiring: AtomicBool::new(false),
+            capabilities_closed: AtomicBool::new(false),
             #[cfg(celld_internal_tests)]
             turn_observations: Mutex::new(Vec::new()),
         })
@@ -375,6 +387,7 @@ impl Slot {
             cells: AtomicUsize::new(0),
             adopted_cells: AtomicUsize::new(0),
             retiring: AtomicBool::new(false),
+            capabilities_closed: AtomicBool::new(false),
             turn_observations: Mutex::new(Vec::new()),
         })
     }
@@ -443,6 +456,7 @@ impl Slot {
         let Some(reclaim) = &self.reclaim else {
             return false;
         };
+        self.capabilities_closed.store(true, Ordering::Release);
         if !self.retiring.swap(true, Ordering::Relaxed) {
             tracing::warn!(isolate = %self.heap_id, slot = self.id, reason, "isolate condemned");
         }
@@ -645,6 +659,7 @@ impl Pool {
             cells: AtomicUsize::new(0),
             adopted_cells: AtomicUsize::new(0),
             retiring: AtomicBool::new(self.retired.load(Ordering::Relaxed)),
+            capabilities_closed: AtomicBool::new(self.retired.load(Ordering::Relaxed)),
             #[cfg(celld_internal_tests)]
             turn_observations: Mutex::new(Vec::new()),
         });
@@ -820,6 +835,7 @@ impl Pool {
         let _maintenance = self.maintenance.write().expect("pool poisoned");
         self.retired.store(true, Ordering::Relaxed);
         for slot in self.slots.read().expect("pool poisoned").iter() {
+            slot.capabilities_closed.store(true, Ordering::Release);
             if !slot.retiring.swap(true, Ordering::Relaxed) {
                 tracing::info!(isolate = %slot.heap_id, slot = slot.id, "isolate retiring");
             }
@@ -941,3 +957,128 @@ const _: fn() = || {
     assert_send_sync::<Slot>();
     assert_send_sync::<Affiliation>();
 };
+
+#[cfg(test)]
+mod capability_drain_tests {
+    use super::*;
+
+    fn pool() -> Pool {
+        js::Engine::init();
+        Pool::new(
+            PoolLimits {
+                grow_at: 2,
+                shrink_under: 1,
+                max_stateless: 4,
+                max_requests: None,
+                max_cells: 8,
+            },
+            std::time::Duration::from_secs(1),
+            Box::new(|| {
+                js::Worker::load_config(Arc::new(js::WorkerConfig::new(js::WorkerConfigOptions {
+                    src: "export default {fetch(){return new Response('ok')}}".into(),
+                    script_name: "capability-drain-test".into(),
+                    do_classes: vec![],
+                    bindings: vec![],
+                    r2_bindings: vec![],
+                    d1_bindings: vec![],
+                    kv_bindings: vec![],
+                    queue_bindings: vec![],
+                    queue_consumers: vec![],
+                    workflow_bindings: vec![],
+                    vars: vec![],
+                    node: String::new(),
+                    modules: vec![],
+                    compat: Default::default(),
+                })))
+            }),
+        )
+    }
+
+    #[test]
+    fn capability_continuations_drain_without_reopening_invalidated_heaps() {
+        tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .unwrap()
+            .block_on(async {
+                let pool = pool();
+                let slot = pool.grow(None).unwrap();
+                let request = slot.affiliate();
+                let route: crate::capability::Route = serde_json::from_str(
+                    &crate::capability::export(
+                        slot.clone(),
+                        "test-target".into(),
+                        None,
+                        None,
+                        None,
+                    )
+                    .unwrap(),
+                )
+                .unwrap();
+                pool.reap();
+                assert!(slot.is_retiring());
+                assert_eq!(pool.live(), 0, "draining heap is excluded from placement");
+                let continuation = slot
+                    .try_affiliate_capability()
+                    .await
+                    .expect("live request may receive its callback");
+                assert!(slot
+                    .turn(|_| crate::capability::validate(&route))
+                    .await
+                    .is_ok());
+                drop(request);
+                pool.free_drained();
+                assert!(
+                    slot.worker.lock().await.is_some(),
+                    "continuation holds its heap during dispatch"
+                );
+                drop(continuation);
+                pool.free_drained();
+                assert!(slot.worker.lock().await.is_none());
+                assert!(
+                    slot.try_affiliate_capability().await.is_none(),
+                    "freed heap cannot be revived"
+                );
+
+                let condemned = pool.grow(None).unwrap();
+                let live = condemned.affiliate();
+                assert!(condemned.condemn("test fatal guest failure"));
+                assert!(condemned.worker.lock().await.is_some());
+                assert!(condemned.try_affiliate_capability().await.is_none());
+                drop(live);
+                pool.free_drained();
+
+                let draining = pool.grow(None).unwrap();
+                let live = draining.affiliate();
+                let route: crate::capability::Route = serde_json::from_str(
+                    &crate::capability::export(
+                        draining.clone(),
+                        "pending-target".into(),
+                        None,
+                        None,
+                        None,
+                    )
+                    .unwrap(),
+                )
+                .unwrap();
+                let admitted = draining.try_affiliate_capability().await.unwrap();
+                pool.retire_all();
+                assert!(draining.try_affiliate_capability().await.is_none());
+                let rejected = draining
+                    .turn(|_| crate::capability::validate(&route))
+                    .await
+                    .unwrap_err();
+                assert!(rejected.to_string().contains("invalidated"), "{rejected}");
+                drop(admitted);
+                drop(live);
+                pool.free_drained();
+                let late = pool.grow(None).unwrap();
+                assert!(late.is_retiring());
+                assert!(
+                    late.try_affiliate_capability().await.is_none(),
+                    "a late placement in a retired pool stays invalidated"
+                );
+                pool.free_drained();
+            });
+    }
+}

@@ -221,6 +221,12 @@ fn validate_before_dispatch(route: &Route) -> Result<String> {
         slot.heap_id().to_string() == route.heap,
         "capability heap changed"
     );
+    // Invalidation closes later dispatch; it does not retroactively cancel JS
+    // already running. Existing actor fencing and output gates still apply.
+    anyhow::ensure!(
+        !slot.capabilities_closed(),
+        "capability owner isolate invalidated"
+    );
     if let Some(scope) = &route.storage_scope {
         anyhow::ensure!(
             crate::storage::activation_epoch(scope) == route.epoch && route.epoch.is_some(),
@@ -371,7 +377,7 @@ pub async fn invoke_local(request: Request) -> Result<Vec<u8>> {
     // The temporary affiliation closes the retirement race, but exports never
     // pin an isolate between calls or obstruct actor migration.
     let _live = slot
-        .try_affiliate()
+        .try_affiliate_capability()
         .await
         .ok_or_else(|| not_executed("capability owner isolate retired"))?;
     let (reply, mut receive) = tokio::sync::oneshot::channel();
