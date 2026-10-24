@@ -247,6 +247,42 @@ impl PeerAuth {
         Ok(())
     }
 
+    /// Authenticate an immutable exported route before another node dials its
+    /// address. This domain is disjoint from HTTP request authentication.
+    pub(crate) fn seal_capability(&self, payload: &[u8]) -> String {
+        let mut mac = <Hmac<Sha256> as Mac>::new_from_slice(&self.key).expect("HMAC key");
+        mac.update(b"celld-live-capability-route-v1\0");
+        mac.update(payload);
+        encode_hex(&mac.finalize().into_bytes())
+    }
+
+    pub(crate) fn verify_capability(&self, payload: &[u8], seal: &str) -> bool {
+        let Ok(signature) = decode_hex::<32>(seal) else {
+            return false;
+        };
+        let mut mac = <Hmac<Sha256> as Mac>::new_from_slice(&self.key).expect("HMAC key");
+        mac.update(b"celld-live-capability-route-v1\0");
+        mac.update(payload);
+        mac.verify_slice(&signature).is_ok()
+    }
+
+    pub(crate) fn seal_static_class(&self, payload: &[u8]) -> String {
+        let mut mac = <Hmac<Sha256> as Mac>::new_from_slice(&self.key).expect("HMAC key");
+        mac.update(b"celld-static-class-reference-v1\0");
+        mac.update(payload);
+        encode_hex(&mac.finalize().into_bytes())
+    }
+
+    pub(crate) fn verify_static_class(&self, payload: &[u8], seal: &str) -> bool {
+        let Ok(signature) = decode_hex::<32>(seal) else {
+            return false;
+        };
+        let mut mac = <Hmac<Sha256> as Mac>::new_from_slice(&self.key).expect("HMAC key");
+        mac.update(b"celld-static-class-reference-v1\0");
+        mac.update(payload);
+        mac.verify_slice(&signature).is_ok()
+    }
+
     fn signature(&self, request: &CanonicalRequest<'_>) -> String {
         encode_hex(&self.mac(request).finalize().into_bytes())
     }
@@ -383,5 +419,56 @@ fn hex_nibble(value: u8) -> anyhow::Result<u8> {
         b'0'..=b'9' => Ok(value - b'0'),
         b'a'..=b'f' => Ok(value - b'a' + 10),
         _ => Err(anyhow!("hexadecimal must be lowercase ASCII")),
+    }
+}
+
+#[cfg(test)]
+mod capability_route_tests {
+    use super::*;
+
+    #[test]
+    fn capability_seal_authenticates_route_across_nodes() {
+        let exporter = PeerAuth::new([7; 32], "exporter").unwrap();
+        let caller = PeerAuth::new([7; 32], "caller").unwrap();
+        let route = br#"{"node":"exporter","addr":"127.0.0.1:8001","process":"p","heap":"1","token":"secret","epoch":42}"#;
+        let seal = exporter.seal_capability(route);
+        assert!(caller.verify_capability(route, &seal));
+        assert!(!caller.verify_capability(br#"{"addr":"attacker:80"}"#, &seal));
+        assert!(!caller.verify_capability(route, "bad"));
+        assert!(!PeerAuth::new([8; 32], "other-fleet")
+            .unwrap()
+            .verify_capability(route, &seal));
+    }
+
+    #[test]
+    fn static_class_seal_binds_storage_authority_and_has_separate_domain() {
+        let source = PeerAuth::new([7; 32], "source").unwrap();
+        let receiver = PeerAuth::new([7; 32], "receiver").unwrap();
+        let reference = br#"{"script":"source","version":"v1","graph":"g1","name":"Thing","allow_storage":true,"seal":""}"#;
+        let seal = source.seal_static_class(reference);
+        assert!(receiver.verify_static_class(reference, &seal));
+        assert!(!receiver.verify_static_class(
+            br#"{"script":"source","version":"v1","graph":"g1","name":"Thing","allow_storage":false,"seal":""}"#,
+            &seal,
+        ));
+        assert!(!receiver.verify_capability(reference, &seal));
+        assert!(!receiver.verify_static_class(reference, &source.seal_capability(reference)));
+    }
+
+    #[test]
+    fn capability_seal_does_not_authorize_http_requests() {
+        let auth = PeerAuth::new([7; 32], "exporter").unwrap();
+        let route = b"route";
+        let seal = auth.seal_capability(route);
+        let canonical = CanonicalRequest {
+            method: "POST",
+            path_and_query: "/peer/capability",
+            body_hash: "route",
+            source: "exporter",
+            target: "caller",
+            timestamp: 1,
+            nonce: "nonce",
+        };
+        assert_ne!(seal, auth.signature(&canonical));
     }
 }

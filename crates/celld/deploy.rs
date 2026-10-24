@@ -1398,7 +1398,9 @@ fn read_project(path: &Path, root: &Path, overrides: &VarOverrides) -> anyhow::R
     // Wrangler-shaped upload metadata, so a manifest written here and one
     // written by the control plane describe a deployment the same way.
     let mut bindings = Vec::new();
-    let mut do_classes = Vec::new();
+    // A migrated class owns storage even without an env binding. Workers
+    // commonly address these namespaces solely through ctx.exports.
+    let mut do_classes = sqlite_classes.clone();
     for binding in object
         .get("durable_objects")
         .and_then(|value| value.get("bindings"))
@@ -1414,7 +1416,9 @@ fn read_project(path: &Path, root: &Path, overrides: &VarOverrides) -> anyhow::R
             .get("class_name")
             .and_then(Value::as_str)
             .ok_or_else(|| anyhow!("durable object binding {name} has no `class_name`"))?;
-        do_classes.push(class_name.to_string());
+        if !do_classes.iter().any(|class| class == class_name) {
+            do_classes.push(class_name.to_string());
+        }
         bindings.push(json!({
             "type": "durable_object_namespace",
             "name": name,
@@ -3040,4 +3044,45 @@ fn strip_jsonc(source: &str) -> String {
 #[cfg(all(test, celld_internal_tests))]
 mod deploy_contract {
     include!(env!("CELLD_INTERNAL_DEPLOY_TESTS"));
+}
+
+#[cfg(test)]
+mod migrated_namespace_tests {
+    use super::*;
+
+    fn project(bindings: Value) -> Project {
+        let directory = tempfile::tempdir().unwrap();
+        std::fs::write(
+            directory.path().join("index.js"),
+            "export default { fetch() {} }; export class AdminSettings {}",
+        )
+        .unwrap();
+        let path = directory.path().join("wrangler.json");
+        std::fs::write(
+            &path,
+            serde_json::to_vec(&json!({
+                "name": "migration-test", "main": "index.js", "no_bundle": true,
+                "migrations": [{"tag": "v1", "new_sqlite_classes": ["AdminSettings"]}],
+                "durable_objects": {"bindings": bindings},
+            }))
+            .unwrap(),
+        )
+        .unwrap();
+        read_project(&path, directory.path(), &VarOverrides::None).unwrap()
+    }
+
+    #[test]
+    fn migrated_unbound_class_has_namespace_without_env_binding() {
+        let project = project(json!([]));
+        assert_eq!(project.do_classes, ["AdminSettings"]);
+        assert_eq!(project.sqlite_classes, ["AdminSettings"]);
+        assert!(project.metadata["bindings"].as_array().unwrap().is_empty());
+    }
+
+    #[test]
+    fn migrated_bound_class_is_registered_once() {
+        let project = project(json!([{"name": "ADMIN", "class_name": "AdminSettings"}]));
+        assert_eq!(project.do_classes, ["AdminSettings"]);
+        assert_eq!(project.metadata["bindings"].as_array().unwrap().len(), 1);
+    }
 }

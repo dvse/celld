@@ -285,7 +285,7 @@ pub struct Generation {
     pub(crate) script_name: String,
     pub(crate) stateless: crate::runtime::StatelessRuntime,
     pub(crate) services: HashMap<String, crate::runtime::StatelessRuntime>,
-    pub(crate) cell_configs: HashMap<String, Arc<WorkerConfig>>,
+    pub(crate) cell_configs: HashMap<String, Vec<Arc<WorkerConfig>>>,
     /// The isolates a Worker script's cells live in — the same `Pool` the
     /// stateless path admits into, because an isolate is an isolate. Cells
     /// of one script share them, so cells of one class share module scope
@@ -341,11 +341,16 @@ impl Generation {
     pub fn cron_cell(&self) -> Option<String> {
         self.cell_configs
             .get(celld_logic::cron::RESERVED_CLASS)
+            .and_then(|configs| configs.first())
             .map(|config| celld_logic::cron::reserved_cell(&config.script_name))
     }
 
-    pub(crate) fn cell_config(&self, class: &str) -> Option<Arc<WorkerConfig>> {
-        self.cell_configs.get(class).cloned()
+    pub(crate) fn cell_config(
+        &self,
+        class: &str,
+        id: &str,
+    ) -> anyhow::Result<Option<Arc<WorkerConfig>>> {
+        resolve_cell_config(&self.cell_configs, class, id)
     }
 
     /// The engine's reserved Durable Object classes this generation
@@ -501,6 +506,20 @@ impl Generation {
 
         let node: Arc<str> = Arc::from(node);
         let region: Arc<str> = Arc::from(region);
+        // Fleet-stable graph identity, unlike the process-local generation id.
+        // A class reference must not silently bind the same script bytes to a
+        // different set of service deployments after a reload.
+        let graph_versions: BTreeMap<_, _> = std::iter::once(&primary)
+            .chain(cohosted.iter())
+            .map(|deployment| (deployment.script_name.clone(), deployment.version.clone()))
+            .collect();
+        let graph_identity = {
+            use sha2::Digest as _;
+            format!(
+                "{:x}",
+                sha2::Sha256::digest(serde_json::to_vec(&graph_versions)?)
+            )
+        };
         let primary_script = primary.script_name.clone();
         let version = primary.version.clone();
         let prefix = primary.prefix.clone();
@@ -527,21 +546,12 @@ impl Generation {
             .collect();
         let default_do_class =
             (user_classes.len() == 1).then(|| Arc::from(user_classes[0].as_str()));
-        // Two scripts exporting one class name is genuinely ambiguous and is
-        // refused — but a *reserved* class is not an export, and the two kinds
-        // behave differently:
-        //
-        // `__D1Database` is deliberately shared. Its namespace is fleet-wide so
-        // that several Workers can bind one database and a rename cannot rename
-        // it, so two scripts declaring `d1_databases` address the same cells on
-        // purpose. A D1 cell runs SQL and reads no user code, binding or var,
-        // so whichever config serves it is immaterial and the first wins.
-        // Refusing the second made the node exit instead of start.
-        //
-        // A workflow class is script-scoped (`deploy::workflow_class`), so two
-        // scripts produce two distinct names and never reach this branch. If
-        // one ever did, it would be a real collision and must still be refused.
-        let mut cell_configs: HashMap<String, Arc<WorkerConfig>> = HashMap::new();
+        // Namespace-minted IDs already carry a signature derived from the
+        // source script and class. Keep every same-named user class and use
+        // that existing signature at activation; no durable scope/key changes
+        // or node-placement assumptions are needed. Shared reserved classes
+        // deliberately keep their fleet-wide identity and first config.
+        let mut cell_configs: HashMap<String, Vec<Arc<WorkerConfig>>> = HashMap::new();
         let mut service_pools = HashMap::new();
         let mut assets = HashMap::new();
         // Primary first: shared reserved classes retain the first script's
@@ -552,6 +562,7 @@ impl Generation {
             let crate::fleet::LoadedDeployment {
                 options,
                 script_name: script,
+                version: script_version,
                 asset_binding,
                 loader_bindings,
                 assets: resolver,
@@ -575,8 +586,10 @@ impl Generation {
                     .with_queue_consumers(queue_catalog.clone())
                     .with_crons(if is_primary { crons } else { Vec::new() })
                     .with_containers(containers)
-                    .with_generation(id),
+                    .with_generation(id)
+                    .with_static_identity(script_version, graph_identity.clone()),
             );
+            crate::js::register_static_config(&config);
             let pool = crate::runtime::StatelessRuntime::start(
                 config.clone(),
                 node.clone(),
@@ -599,12 +612,13 @@ impl Generation {
             // Cron is runtime-supplied, not a manifest class. Its alarm calls
             // the primary script's scheduled handler with that script's bindings.
             if !config.crons.is_empty() {
-                cell_configs.insert(celld_logic::cron::RESERVED_CLASS.to_string(), config);
+                cell_configs.insert(celld_logic::cron::RESERVED_CLASS.to_string(), vec![config]);
             }
         }
         let stateless = service_pools[&primary_script].clone();
         let cell_isolates: HashMap<String, Arc<crate::pool::Pool>> = cell_configs
             .values()
+            .flatten()
             .map(|config| {
                 (
                     config.script_name.clone(),
@@ -628,25 +642,270 @@ impl Generation {
         })
     }
 }
-/// Claim one class name in a deployment's cell registry.
-///
-/// A duplicate is an error for a user class, because `start_cell` resolves a
-/// cell from the class its scope names and two exports of one name are
-/// genuinely ambiguous. A duplicate of a *shared* reserved class is not: see
-/// `deploy::is_shared_reserved_class`. The caller supplies the error so the
-/// message can say whether the collision was inside one script or across two.
+/// Retain every distinct source of a user class. A duplicate declaration in
+/// one script is still malformed; shared reserved classes retain first-wins
+/// because they intentionally address one fleet-wide namespace.
 fn register_cell_class(
-    configs: &mut HashMap<String, Arc<WorkerConfig>>,
+    configs: &mut HashMap<String, Vec<Arc<WorkerConfig>>>,
     class: String,
     config: Arc<WorkerConfig>,
     duplicate: &dyn Fn(&str) -> anyhow::Error,
 ) -> anyhow::Result<()> {
     match configs.entry(class) {
         Entry::Vacant(slot) => {
-            slot.insert(config);
+            slot.insert(vec![config]);
             Ok(())
         }
         Entry::Occupied(slot) if crate::deploy::is_shared_reserved_class(slot.key()) => Ok(()),
-        Entry::Occupied(slot) => Err(duplicate(slot.key())),
+        Entry::Occupied(mut slot) => {
+            if crate::deploy::is_reserved_class(slot.key()) {
+                return Err(duplicate(slot.key()));
+            }
+            if slot
+                .get()
+                .iter()
+                .any(|candidate| candidate.script_name == config.script_name)
+            {
+                return Err(duplicate(slot.key()));
+            }
+            slot.get_mut().push(config);
+            Ok(())
+        }
+    }
+}
+
+/// Validate the namespace component already embedded in both named and
+/// random Durable Object IDs. It selects source code, not a node or actor
+/// owner. A stale owner record therefore cannot change this decision.
+fn resolve_namespace_candidate<'a>(
+    class: &str,
+    id: &str,
+    scripts: impl Iterator<Item = &'a str>,
+) -> anyhow::Result<usize> {
+    use hmac::Mac as _;
+    let decoded = crate::engine_api::decode_durable_object_id(id).ok_or_else(|| {
+        anyhow!("Durable Object class {class} requires a namespace-minted 64-hex-digit ID to select its source worker")
+    })?;
+    let mut selected = None;
+    for (index, script) in scripts.enumerate() {
+        let namespace = crate::engine_api::namespace_key(script, class);
+        let key = crate::engine_api::durable_object_id_key(&namespace);
+        if crate::engine_api::durable_object_id_hmac(&key, &decoded[..16])
+            .verify_truncated_left(&decoded[16..])
+            .is_ok()
+        {
+            anyhow::ensure!(
+                selected.is_none(),
+                "Durable Object namespace for class {class} is ambiguous across source workers"
+            );
+            selected = Some(index);
+        }
+    }
+    selected.ok_or_else(|| {
+        anyhow!(
+            "Durable Object ID does not belong to any loaded source namespace for class {class}"
+        )
+    })
+}
+
+fn resolve_cell_config(
+    configs: &HashMap<String, Vec<Arc<WorkerConfig>>>,
+    class: &str,
+    id: &str,
+) -> anyhow::Result<Option<Arc<WorkerConfig>>> {
+    let Some(candidates) = configs.get(class) else {
+        return Ok(None);
+    };
+    // Runtime-supplied namespaces retain their existing rules. For user
+    // classes, even a singleton must authenticate canonical IDs: removing a
+    // source must not reinterpret its durable state as another worker's.
+    // Unambiguous non-64-hex legacy scopes still retain their old behavior.
+    if candidates.len() == 1
+        && (crate::deploy::is_reserved_class(class)
+            || class == celld_logic::cron::RESERVED_CLASS
+            || crate::engine_api::decode_durable_object_id(id).is_none())
+    {
+        return Ok(candidates.first().cloned());
+    }
+    let index = resolve_namespace_candidate(
+        class,
+        id,
+        candidates.iter().map(|config| config.script_name.as_str()),
+    )?;
+    Ok(Some(candidates[index].clone()))
+}
+
+#[cfg(test)]
+mod namespace_collision_tests {
+    use super::*;
+    use crate::engine_api::{durable_object_id_for_name, durable_object_id_hex, namespace_key};
+
+    fn config(script: &str, class: &str) -> Arc<WorkerConfig> {
+        Arc::new(WorkerConfig::new(WorkerConfigOptions {
+            src: String::new(),
+            script_name: script.into(),
+            do_classes: vec![class.into()],
+            bindings: vec![],
+            r2_bindings: vec![],
+            d1_bindings: vec![],
+            kv_bindings: vec![],
+            queue_bindings: vec![],
+            queue_consumers: vec![],
+            workflow_bindings: vec![],
+            vars: vec![],
+            node: String::new(),
+            modules: vec![],
+            compat: Default::default(),
+        }))
+    }
+    fn named(script: &str, class: &str, name: &str) -> String {
+        durable_object_id_hex(&durable_object_id_for_name(
+            &namespace_key(script, class),
+            name,
+        ))
+    }
+    fn register(
+        configs: &mut HashMap<String, Vec<Arc<WorkerConfig>>>,
+        script: &str,
+        class: &str,
+    ) -> anyhow::Result<()> {
+        register_cell_class(configs, class.into(), config(script, class), &|class| {
+            anyhow!("duplicate {class}")
+        })
+    }
+
+    #[test]
+    fn same_named_class_routes_by_existing_namespace_signature() {
+        let mut configs = HashMap::new();
+        register(&mut configs, "gatekeeper-github", "UserAccount").unwrap();
+        register(&mut configs, "gatekeeper-slack", "UserAccount").unwrap();
+        let github = named("gatekeeper-github", "UserAccount", "same-user");
+        let slack = named("gatekeeper-slack", "UserAccount", "same-user");
+        assert_eq!(
+            github,
+            "ae114a315c271989da42f5b5b74bf08e041732814532c8309d3ac35c848cc771"
+        );
+        assert_ne!(github, slack);
+        assert_eq!(
+            resolve_cell_config(&configs, "UserAccount", &github)
+                .unwrap()
+                .unwrap()
+                .script_name,
+            "gatekeeper-github"
+        );
+        assert_eq!(
+            resolve_cell_config(&configs, "UserAccount", &slack)
+                .unwrap()
+                .unwrap()
+                .script_name,
+            "gatekeeper-slack"
+        );
+        assert_eq!(
+            format!("UserAccount:{github}"),
+            "UserAccount:ae114a315c271989da42f5b5b74bf08e041732814532c8309d3ac35c848cc771"
+        );
+    }
+
+    #[test]
+    fn random_ids_and_uppercase_id_input_select_source() {
+        use hmac::Mac as _;
+        let namespace = namespace_key("second-worker", "UserAccount");
+        let key = crate::engine_api::durable_object_id_key(&namespace);
+        let mut id = [0x51_u8; 32];
+        let signature = crate::engine_api::durable_object_id_hmac(&key, &id[..16])
+            .finalize()
+            .into_bytes();
+        id[16..].copy_from_slice(&signature[..16]);
+        let id = durable_object_id_hex(&id).to_ascii_uppercase();
+        assert_eq!(
+            resolve_namespace_candidate(
+                "UserAccount",
+                &id,
+                ["first-worker", "second-worker"].into_iter()
+            )
+            .unwrap(),
+            1
+        );
+    }
+
+    #[test]
+    fn colliding_class_rejects_unsigned_tampered_and_foreign_ids() {
+        let mut configs = HashMap::new();
+        register(&mut configs, "first-worker", "UserAccount").unwrap();
+        register(&mut configs, "second-worker", "UserAccount").unwrap();
+        assert!(resolve_cell_config(&configs, "UserAccount", "legacy-id").is_err());
+        let foreign = named("third-worker", "UserAccount", "x");
+        assert!(resolve_cell_config(&configs, "UserAccount", &foreign).is_err());
+        let mut tampered = named("first-worker", "UserAccount", "x").into_bytes();
+        tampered[63] = if tampered[63] == b'0' { b'1' } else { b'0' };
+        assert!(resolve_cell_config(
+            &configs,
+            "UserAccount",
+            std::str::from_utf8(&tampered).unwrap()
+        )
+        .is_err());
+    }
+
+    #[test]
+    fn ambiguous_namespace_never_selects_first_match() {
+        let id = named("same-worker", "UserAccount", "x");
+        let error = resolve_namespace_candidate(
+            "UserAccount",
+            &id,
+            ["same-worker", "same-worker"].into_iter(),
+        )
+        .unwrap_err();
+        assert!(error.to_string().contains("ambiguous"));
+    }
+
+    #[test]
+    fn removed_source_cannot_be_reinterpreted_as_remaining_singleton() {
+        let mut configs = HashMap::new();
+        register(&mut configs, "remaining-worker", "UserAccount").unwrap();
+        let removed = named("removed-worker", "UserAccount", "existing-object");
+        assert!(resolve_cell_config(&configs, "UserAccount", &removed).is_err());
+        let current = named("remaining-worker", "UserAccount", "existing-object");
+        assert!(resolve_cell_config(&configs, "UserAccount", &current)
+            .unwrap()
+            .is_some());
+    }
+
+    #[test]
+    fn unambiguous_nonhex_legacy_scope_and_missing_class_are_preserved() {
+        let mut configs = HashMap::new();
+        register(&mut configs, "legacy-worker", "Counter").unwrap();
+        assert_eq!(
+            resolve_cell_config(&configs, "Counter", "legacy-id")
+                .unwrap()
+                .unwrap()
+                .script_name,
+            "legacy-worker"
+        );
+        assert!(resolve_cell_config(&configs, "Missing", "legacy-id")
+            .unwrap()
+            .is_none());
+    }
+
+    #[test]
+    fn duplicate_declaration_in_one_script_is_still_an_error() {
+        let mut configs = HashMap::new();
+        register(&mut configs, "same-worker", "UserAccount").unwrap();
+        assert!(register(&mut configs, "same-worker", "UserAccount").is_err());
+        assert_eq!(configs["UserAccount"].len(), 1);
+    }
+
+    #[test]
+    fn shared_reserved_classes_keep_one_fleet_wide_config() {
+        let mut configs = HashMap::new();
+        register(&mut configs, "first-worker", crate::deploy::D1_CLASS).unwrap();
+        register(&mut configs, "second-worker", crate::deploy::D1_CLASS).unwrap();
+        assert_eq!(configs[crate::deploy::D1_CLASS].len(), 1);
+        assert_eq!(
+            resolve_cell_config(&configs, crate::deploy::D1_CLASS, "legacy-d1-id")
+                .unwrap()
+                .unwrap()
+                .script_name,
+            "first-worker"
+        );
     }
 }

@@ -580,6 +580,17 @@ pub(super) fn inject_compatibility_flags(scope: &mut v8::PinScope, compat: Compa
         "delete_all_deletes_alarm",
         compat.delete_all_deletes_alarm,
     );
+    set_flag(
+        scope,
+        "allow_irrevocable_stub_storage",
+        compat.allow_irrevocable_stub_storage,
+    );
+    set_flag(scope, "rpc_params_dup_stubs", compat.rpc_params_dup_stubs);
+    set_flag(
+        scope,
+        "rpc_params_transfer_stubs",
+        !compat.rpc_params_dup_stubs,
+    );
     set_flag(scope, "js_rpc", compat.js_rpc);
     set_flag(scope, "sqlite_vec", compat.sqlite_vec);
     set_flag(
@@ -969,8 +980,12 @@ pub(super) fn adopt_embedded_cell(
     let props = if startup.props_sc.is_empty() {
         v8::undefined(tc).into()
     } else {
-        storage_ops::deserialize_storage_value(tc, storage::StoredValue::V8(startup.props_sc))
-            .ok_or_else(|| anyhow!("decode facet props"))?
+        let decode = internal_function(tc, "__decodeRpcProps")?;
+        let bytes = super::bytes_value(tc, startup.props_sc);
+        let receiver = v8::undefined(tc).into();
+        decode
+            .call(tc, receiver, &[bytes])
+            .ok_or_else(|| anyhow!("decode facet RPC props"))?
     };
     let props_key = v8::String::new(tc, "props").unwrap();
     config.set(tc, props_key.into(), props);

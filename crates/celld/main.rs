@@ -1404,6 +1404,90 @@ async fn dispatch_do_call(app: AppHandle, call: DoCallReq) {
     let _ = reply.send(result);
 }
 
+/// A live reference never follows a replacement actor. The core admission
+/// pins the current owner only for this invocation; the exporting activation
+/// and heap incarnation are checked again on its isolate turn.
+async fn dispatch_capability(
+    app: AppHandle,
+    call: celld::capability::Request,
+) -> anyhow::Result<Vec<u8>> {
+    celld::capability::preflight(&call.route)?;
+    let Some(scope) = call.route.owner_scope.clone() else {
+        return celld::capability::invoke_local(call).await;
+    };
+    let Routed { request, route } = app.request(scope.clone()).await.map_err(|error| {
+        celld::capability::not_executed(format!("capability owner unavailable: {error:?}"))
+    })?;
+    if !matches!(route, Route::Local) {
+        return Err(celld::capability::not_executed(
+            "capability actor moved; restore a persistent reference",
+        ));
+    }
+    let completed = app
+        .local_request(request, scope, None, "capability")
+        .run(async {
+            let data = celld::capability::invoke_local(call).await?;
+            // The isolate already gated successful live-capability bytes through
+            // the actor/facet egress proof. Errors carry normal FailedInTurn tickets.
+            Ok(celld::js::RpcOutcome {
+                data: celld::js::RpcData::V8(bytes::Bytes::from(data)),
+                write_position: None,
+                observed_position: None,
+            })
+        })
+        .await;
+    match completed.result.map_err(local_request_error)?.data {
+        celld::js::RpcData::V8(bytes) => Ok(bytes.to_vec()),
+        _ => unreachable!("capability replies are structured clone"),
+    }
+}
+
+async fn internal_capability(request: Request<Incoming>, app: AppHandle) -> HttpReply {
+    let (parts, body) = request.into_parts();
+    let body = match collect_limited_body(body, 16 * 1024 * 1024).await {
+        Ok(body) => body,
+        Err(error) => return peer_response(body_read_error("capability", error)),
+    };
+    if let Err(error) = app.peer_auth.verify(
+        &parts.method,
+        celld::capability::PATH,
+        &parts.headers,
+        &body,
+        app.peer_auth.source(),
+    ) {
+        return peer_response(response(error.status(), error.message()));
+    }
+    if parts.method != hyper::Method::POST {
+        return peer_response(response(
+            StatusCode::METHOD_NOT_ALLOWED,
+            "method not allowed",
+        ));
+    }
+    let call = match serde_json::from_slice::<celld::capability::Request>(&body) {
+        Ok(call) => call,
+        Err(_) => {
+            return peer_response(response(
+                StatusCode::BAD_REQUEST,
+                "invalid capability request",
+            ));
+        }
+    };
+    match dispatch_capability(app, call).await {
+        Ok(bytes) => peer_response(response(StatusCode::OK, bytes)),
+        Err(error) => {
+            let not_run = celld::capability::was_not_executed(&error);
+            let mut response = peer_response(response(StatusCode::GONE, format!("{error:#}")));
+            if not_run {
+                response.headers_mut().insert(
+                    hyper::header::HeaderName::from_static(celld::capability::NOT_EXECUTED_HEADER),
+                    hyper::header::HeaderValue::from_static("1"),
+                );
+            }
+            response
+        }
+    }
+}
+
 async fn dispatch_rpc_call(app: AppHandle, call: RpcCallReq) {
     let RpcCallReq {
         scope,
@@ -2400,10 +2484,18 @@ async fn handle_ingress(
 }
 
 async fn dispatch_asset_call(app: AppHandle, call: AssetCallReq) {
-    let generation = app
+    let generation = match app
         .runtime
         .as_ref()
-        .map(|runtime| runtime.generation_by_id(call.generation));
+        .map(|runtime| runtime.generation_by_id(call.generation))
+        .transpose()
+    {
+        Ok(generation) => generation,
+        Err(error) => {
+            let _ = call.reply.send(Err(error));
+            return;
+        }
+    };
     let response = match generation.as_deref().and_then(|g| g.assets(&call.script)) {
         Some(resolver) => {
             resolver
@@ -2877,6 +2969,7 @@ async fn handle_internal(
     let cell_scope = path.strip_prefix("/cell/");
     let evict_scope = path.strip_prefix("/evict/");
     let result = match path.as_str() {
+        celld::capability::PATH => internal_capability(request, app).await,
         "/peer/probe" => internal_probe(request, app).await,
         "/peer/handoff" => internal_handoff(request, app).await,
         _ if path.starts_with("/peer/log/") => internal_log(request, app, path.clone()).await,
@@ -3051,31 +3144,31 @@ async fn handle_internal(
             } else {
                 let cell = cell.to_string();
                 match app.request(cell.clone()).await {
-                Ok(Routed {
-                    request,
-                    route: Route::Local,
-                }) => {
-                    let _activity = app.activity(request, cell.clone());
-                    response(
-                        StatusCode::OK,
-                        format!("{{\"route\":\"local\",\"cell\":{cell:?}}}"),
-                    )
-                }
-                Ok(Routed {
-                    route:
-                        Route::Remote {
-                            node,
-                            addr,
-                            epoch,
-                            peer_protocol,
-                        },
-                    ..
-                }) => response(
-                    StatusCode::TEMPORARY_REDIRECT,
-                    format!(
-                        "{{\"route\":\"remote\",\"node\":{node:?},\"addr\":{addr:?},\"epoch\":{epoch},\"peer_protocol\":{peer_protocol}}}"
+                    Ok(Routed {
+                        request,
+                        route: Route::Local,
+                    }) => {
+                        let _activity = app.activity(request, cell.clone());
+                        response(
+                            StatusCode::OK,
+                            format!("{{\"route\":\"local\",\"cell\":{cell:?}}}"),
+                        )
+                    }
+                    Ok(Routed {
+                        route:
+                            Route::Remote {
+                                node,
+                                addr,
+                                epoch,
+                                peer_protocol,
+                            },
+                        ..
+                    }) => response(
+                        StatusCode::TEMPORARY_REDIRECT,
+                        format!(
+                            "{{\"route\":\"remote\",\"node\":{node:?},\"addr\":{addr:?},\"epoch\":{epoch},\"peer_protocol\":{peer_protocol}}}"
+                        ),
                     ),
-                ),
                     Err(error) => response(
                         StatusCode::SERVICE_UNAVAILABLE,
                         format!("{{\"error\":\"{error:?}\"}}"),
@@ -3527,16 +3620,16 @@ async fn async_main(telemetry_config: Option<celld::telemetry::Config>) -> anyho
         Action::Queue(arguments) => return celld::queue_cli::run(arguments).await,
         Action::R2(arguments) => return celld::r2_cli::run(arguments).await,
         Action::Connect(arguments) => {
-            return celld::control_plane::handle_connect_command(arguments).await
+            return celld::control_plane::handle_connect_command(arguments).await;
         }
         Action::Credentials(arguments) => {
-            return celld::control_plane::handle_credentials_command(arguments).await
+            return celld::control_plane::handle_credentials_command(arguments).await;
         }
         Action::Token(arguments) => {
-            return celld::control_plane::handle_token_command(arguments).await
+            return celld::control_plane::handle_token_command(arguments).await;
         }
         Action::Disconnect(arguments) => {
-            return celld::control_plane::handle_disconnect_command(arguments).await
+            return celld::control_plane::handle_disconnect_command(arguments).await;
         }
         Action::Help => {
             print_help()?;
@@ -4227,6 +4320,15 @@ async fn async_main(telemetry_config: Option<celld::telemetry::Config>) -> anyho
         operation_deadline_ms: celld::actor::operation_deadline_ms()?,
         follower: follower.clone(),
     };
+
+    let capability_app = app.clone();
+    celld::capability::configure(
+        node.clone(),
+        advertise.clone(),
+        app.peer_http.clone(),
+        app.peer_auth.clone(),
+        Arc::new(move |request| Box::pin(dispatch_capability(capability_app.clone(), request))),
+    );
 
     // The in-fleet log tier, v0. The takeover interlock is installed in
     // every posture — a bucket-posture node can take over from a
@@ -5404,10 +5506,7 @@ async fn async_main(telemetry_config: Option<celld::telemetry::Config>) -> anyho
         .unwrap_or_else(|| "{\"error\":\"process_deadline\"}".to_string());
         match before_process_deadline(
             process_deadline,
-            tokio::time::timeout(
-                std::time::Duration::from_millis(50),
-                app.drain_status(),
-            ),
+            tokio::time::timeout(std::time::Duration::from_millis(50), app.drain_status()),
         )
         .await
         .and_then(Result::ok)

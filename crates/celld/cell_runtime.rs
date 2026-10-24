@@ -31,6 +31,20 @@ pub(crate) struct Generations {
     pub(crate) draining: Vec<Arc<Generation>>,
 }
 
+/// Select under the caller's one generation lock. `None` is current; a
+/// draining index is exact. Zero is the sole current-generation wildcard.
+fn dispatch_generation_position(
+    requested: GenerationId,
+    current: GenerationId,
+    draining: impl Iterator<Item = GenerationId>,
+) -> anyhow::Result<Option<usize>> {
+    if requested == 0 || requested == current {
+        return Ok(None);
+    }
+    draining.enumerate().find_map(|(index, id)| (id == requested).then_some(Some(index)))
+        .ok_or_else(|| anyhow!("application generation {requested} has retired; refusing dispatch through a different deployment graph"))
+}
+
 #[derive(Clone)]
 pub struct CellRuntime {
     /// The generations a call can resolve against. A reader takes one
@@ -87,23 +101,23 @@ impl CellRuntime {
 
     /// The generation an isolate was built for: the current one when the id
     /// matches, otherwise a superseded generation still draining. Zero — the
-    /// tag of an isolate built outside any generation — and an id whose
-    /// generation has finished draining both resolve to the current one.
-    pub fn generation_by_id(&self, id: GenerationId) -> Arc<Generation> {
+    /// tag of an isolate built outside any generation — resolves to current.
+    /// An expired nonzero generation must fail instead of silently lending
+    /// a retained capability the new deployment's service graph.
+    pub fn generation_by_id(&self, id: GenerationId) -> anyhow::Result<Arc<Generation>> {
         // One lock over both halves: read separately, a caller from the
         // previous generation could observe the new one as current before
         // the previous one was resolvable, find neither, and fall through to
         // the new graph -- the cross-generation call this exists to prevent.
         let generations = self.generations.read().expect("generation lock poisoned");
-        if id == 0 || generations.current.id == id {
-            return generations.current.clone();
+        match dispatch_generation_position(
+            id,
+            generations.current.id,
+            generations.draining.iter().map(|generation| generation.id),
+        )? {
+            None => Ok(generations.current.clone()),
+            Some(index) => Ok(generations.draining[index].clone()),
         }
-        generations
-            .draining
-            .iter()
-            .find(|generation| generation.id == id)
-            .cloned()
-            .unwrap_or_else(|| generations.current.clone())
     }
 
     /// The id the next generation takes: one past the newest this node has
@@ -307,4 +321,32 @@ pub(crate) fn require_cell_scope_name_max(name_max: usize) -> anyhow::Result<()>
         celld_logic::cell::MAX_CELL_SCOPE
     );
     Ok(())
+}
+
+#[cfg(test)]
+mod generation_dispatch_tests {
+    use super::dispatch_generation_position;
+
+    #[test]
+    fn zero_generation_resolves_current_and_draining_resolves_exactly() {
+        assert_eq!(
+            dispatch_generation_position(0, 3, [1, 2].into_iter()).unwrap(),
+            None
+        );
+        assert_eq!(
+            dispatch_generation_position(3, 3, [1, 2].into_iter()).unwrap(),
+            None
+        );
+        assert_eq!(
+            dispatch_generation_position(2, 3, [1, 2].into_iter()).unwrap(),
+            Some(1)
+        );
+    }
+
+    #[test]
+    fn expired_nonzero_generation_fails_instead_of_current_fallback() {
+        let error = dispatch_generation_position(1, 3, [2].into_iter()).unwrap_err();
+        assert!(error.to_string().contains("generation 1 has retired"));
+        assert!(dispatch_generation_position(4, 3, [].into_iter()).is_err());
+    }
 }

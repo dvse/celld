@@ -836,8 +836,8 @@ impl RuntimeManager {
             let previous = std::mem::replace(&mut generations.current, next.clone());
             // Installed in the same instant the new one becomes current. A
             // call from an isolate of the previous generation must never
-            // find neither, because `generation_by_id` answers "neither"
-            // with the current generation and the call would cross.
+            // find neither: the exact generation resolver must keep a
+            // still-draining source available and rejects an expired one.
             generations.draining.push(previous.clone());
             previous
         };
@@ -893,6 +893,7 @@ impl RuntimeManager {
                     .position(|candidate| Arc::ptr_eq(candidate, &generation))
                 {
                     generations.draining.remove(index);
+                    crate::js::retire_static_generation(generation.id);
                     tracing::info!(
                         event = "deployment_generation_freed",
                         generation = generation.id,
@@ -1017,7 +1018,7 @@ impl RuntimeManager {
             headers,
             cancel,
         } = call;
-        let generation = self.generation_by_id(generation);
+        let generation = self.generation_by_id(generation)?;
         let pool = generation
             .service(&script)
             .ok_or_else(|| anyhow!("no service Worker for script {script}"))?;
@@ -1041,7 +1042,7 @@ impl RuntimeManager {
         props: Vec<u8>,
         operation: crate::WorkerRpcOperation,
     ) -> anyhow::Result<Vec<u8>> {
-        let generation = self.generation_by_id(generation);
+        let generation = self.generation_by_id(generation)?;
         generation
             .service(script)
             .ok_or_else(|| anyhow!("no service Worker for script {script}"))?
@@ -1056,7 +1057,7 @@ impl RuntimeManager {
         script: &str,
         batch: js::QueueBatch,
     ) -> anyhow::Result<js::QueueDispatchResult> {
-        let generation = self.generation_by_id(generation);
+        let generation = self.generation_by_id(generation)?;
         generation
             .service(script)
             .ok_or_else(|| anyhow!("no Queue consumer Worker for script {script}"))?
@@ -1247,13 +1248,12 @@ impl RuntimeManager {
         fresh: bool,
     ) -> anyhow::Result<(celld_logic::isolate::HeapId, GenerationId)> {
         let db_path = self.db_path(&cell, epoch);
-        let class = cell
+        let (class, object_id) = cell
             .split_once(':')
-            .map(|(class, _)| class)
             .ok_or_else(|| anyhow!("cell scope has no class: {cell}"))?;
         let generation = self.generation();
         let config = generation
-            .cell_config(class)
+            .cell_config(class, object_id)?
             .ok_or_else(|| anyhow!("no Worker exports Durable Object class {class}"))?;
         // The object's `running` is read synchronously, so the engine
         // answers it here, before the object exists. A container a previous
@@ -2908,6 +2908,7 @@ impl StatelessRuntime {
             operation,
             props,
             invocation_limits: None,
+            tail_report: None,
             reply,
         })
         .await

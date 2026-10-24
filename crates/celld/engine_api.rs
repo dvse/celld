@@ -245,6 +245,8 @@ impl std::error::Error for CellOverloaded {}
 /// is every switch off; production derives real values in `main`.
 #[derive(Clone, Copy, Default)]
 pub struct Compat {
+    pub allow_irrevocable_stub_storage: bool,
+    pub rpc_params_dup_stubs: bool,
     pub delete_all_deletes_alarm: bool,
     /// `js_rpc`: RPC on a Durable Object class that does not extend
     /// `DurableObject` (Workerd worker-rpc.c++ getTargetInfo()).

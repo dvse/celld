@@ -459,10 +459,28 @@ impl WorkerWebSocket {
     pub fn inbound(&self) -> WsPullSender {
         self.inbound.clone()
     }
+
+    /// Move a returned Worker socket across an isolate response. Socket IDs
+    /// start at one; zero disarms this object's cleanup after ownership moves
+    /// back into the existing handoff registry.
+    pub(crate) fn park(mut self) -> u64 {
+        let id = self.id;
+        let previous = ws_registry()
+            .lock()
+            .unwrap()
+            .worker_handoffs
+            .insert(id, self.inbound.clone());
+        drop(previous);
+        self.id = 0;
+        id
+    }
 }
 
 impl Drop for WorkerWebSocket {
     fn drop(&mut self) {
+        if self.id == 0 {
+            return;
+        }
         ws_pull_unregister(self.id);
         ws_unregister(self.id);
     }

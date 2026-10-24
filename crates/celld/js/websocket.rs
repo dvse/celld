@@ -41,6 +41,18 @@ pub(super) fn transfer_worker_websocket_handoff(id: u64) -> Option<WorkerWebSock
     Some(WorkerWebSocket { id, inbound })
 }
 
+/// The caller's pending service-response operation owns the transferred
+/// socket before JS can observe it. Cancellation or an ignored response thus
+/// closes it through ordinary request cleanup rather than leaking a handoff.
+pub(crate) fn park_worker_websocket_handoff(
+    worker: WorkerWebSocket,
+    context: &Arc<IoContext>,
+) -> u64 {
+    let id = worker.park();
+    context.sockets.lock().unwrap().push(id);
+    id
+}
+
 /// Close every isolate-polled socket a finished request opened.
 ///
 /// The close frame is what actually ends the connection: the connector task
@@ -591,6 +603,40 @@ pub(super) fn op_ws_bind_target(
     // a socket the registry has never heard of. `accept()` opens the socket
     // synchronously, so that window is reachable by an ordinary `send()`.
     ws_register_outbound(id, &cell, facet);
+    if target.scope.is_empty() && target.tunnel.is_none() {
+        let Some(worker) = transfer_worker_websocket_handoff(target.id) else {
+            ws_pull_unregister(id);
+            ws_unregister(id);
+            return loader_throw(scope, "Worker WebSocket handoff is no longer available");
+        };
+        asyncrt::spawn(async move {
+            let (caller_send, mut caller_recv) = tokio::sync::mpsc::unbounded_channel();
+            let (server_send, mut server_recv) = tokio::sync::mpsc::unbounded_channel();
+            ws_register(id, caller_send);
+            ws_register(worker.id(), server_send);
+            loop {
+                asyncrt::select_biased! {
+                    "a caller close ends the local Worker pipe before delivering more frames";
+                    frame = caller_recv.recv() => match frame {
+                        Some(WsOut::Text(text)) => { if worker.inbound().send(WsPull::Text(text)).await.is_err() { break; } },
+                        Some(WsOut::Binary(bytes)) => { if worker.inbound().send(WsPull::Binary(bytes)).await.is_err() { break; } },
+                        Some(WsOut::Close(code, reason)) => { let _ = worker.inbound().send_close(code, reason, true); break; },
+                        None => break,
+                    },
+                    frame = server_recv.recv() => match frame {
+                        Some(WsOut::Text(text)) => { if pull_tx.send(WsPull::Text(text)).await.is_err() { break; } },
+                        Some(WsOut::Binary(bytes)) => { if pull_tx.send(WsPull::Binary(bytes)).await.is_err() { break; } },
+                        Some(WsOut::Close(code, reason)) => { let _ = pull_tx.send_close(code, reason, true); break; },
+                        None => break,
+                    },
+                }
+            }
+            ws_unregister(id);
+            ws_pull_unregister(id);
+            drop(worker);
+        }).detach();
+        return;
+    }
     let (tx, rx) = tokio::sync::oneshot::channel();
     let sent = outbound_ws_tx().is_some_and(|sender| {
         sender

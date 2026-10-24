@@ -1752,17 +1752,22 @@ pub(crate) fn encode_http_response(
     mut response: HttpResponse,
     ws_target: bool,
     stream_service: &Arc<HttpStreamService>,
+    park_worker: impl FnOnce(crate::ws_registry::WorkerWebSocket) -> u64,
 ) -> Result<String, String> {
     let mut obj = serde_json::json!({
         "status": response.status,
         "headers": response.headers,
     });
-    if ws_target {
-        let target = match response.websocket.as_ref() {
-            Some(HttpResponseWebSocket::Cell(target)) => Some(target),
-            _ => None,
-        };
-        obj["wsTarget"] = serde_json::json!(target);
+    match response.websocket.take() {
+        Some(HttpResponseWebSocket::Cell(target)) => obj["wsTarget"] = serde_json::json!(target),
+        Some(HttpResponseWebSocket::Worker(worker)) => {
+            // Empty scope is the process-local Worker handoff, never an
+            // actor route. The final response reader restores its RAII owner.
+            let id = park_worker(worker);
+            obj["wsTarget"] = serde_json::json!({"id": id, "scope": ""});
+        }
+        None if ws_target => obj["wsTarget"] = serde_json::Value::Null,
+        None => {}
     }
     if let Some(stream) = response.stream.take() {
         let Some(stream_id) = stream_service.register_source(HttpStreamSource::Stream(stream))

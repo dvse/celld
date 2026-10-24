@@ -39,6 +39,7 @@ mod asyncrt_contract_tests {
     include!(env!("CELLD_INTERNAL_ASYNCRT_TESTS"));
 }
 pub mod bucket;
+pub mod capability;
 pub mod cell_cli;
 pub mod cell_dispatch;
 mod cell_host;
@@ -257,6 +258,8 @@ pub enum WorkerJob {
         /// Service Binding can set it.
         props: Vec<u8>,
         invocation_limits: Option<WorkerInvocationLimits>,
+        /// Completed invocation report for a loaded Worker RPC.
+        tail_report: Option<tokio::sync::oneshot::Sender<String>>,
         reply: tokio::sync::oneshot::Sender<anyhow::Result<Vec<u8>>>,
     },
     Queue {
@@ -295,6 +298,12 @@ pub fn worker_compat(metadata: &serde_json::Value) -> js::Compat {
         date.is_some_and(|date| date >= since)
     };
     js::Compat {
+        allow_irrevocable_stub_storage: has_flag("allow_irrevocable_stub_storage"),
+        rpc_params_dup_stubs: switch(
+            "rpc_params_dup_stubs",
+            "rpc_params_transfer_stubs",
+            "2026-01-20",
+        ),
         delete_all_deletes_alarm: switch(
             "delete_all_deletes_alarm",
             "delete_all_preserves_alarm",
@@ -309,5 +318,69 @@ pub fn worker_compat(metadata: &serde_json::Value) -> js::Compat {
         sqlite_vec: has_flag("sqlite_vec"),
         websocket_standard_binary_type: has_flag("websocket_standard_binary_type"),
         queue_json_messages: switch("queue_json_messages", "queue_v8_messages", "2024-03-18"),
+    }
+}
+
+#[cfg(test)]
+mod rpc_params_compat_tests {
+    use super::worker_compat;
+    use serde_json::json;
+
+    #[test]
+    fn rpc_params_dup_defaults_on_exact_2026_01_20_boundary() {
+        assert!(!worker_compat(&json!({"compatibility_date": "2026-01-19"})).rpc_params_dup_stubs);
+        assert!(worker_compat(&json!({"compatibility_date": "2026-01-20"})).rpc_params_dup_stubs);
+        assert!(worker_compat(&json!({"compatibility_date": "2026-09-04"})).rpc_params_dup_stubs);
+    }
+
+    #[test]
+    fn rpc_params_old_or_missing_date_preserves_transfer_default() {
+        assert!(!worker_compat(&json!({"compatibility_date": "2025-12-31"})).rpc_params_dup_stubs);
+        assert!(!worker_compat(&json!({})).rpc_params_dup_stubs);
+    }
+
+    #[test]
+    fn rpc_params_explicit_dup_enables_old_and_undated_workers() {
+        assert!(
+            worker_compat(&json!({
+                "compatibility_date": "2025-12-31",
+                "compatibility_flags": ["rpc_params_dup_stubs"]
+            }))
+            .rpc_params_dup_stubs
+        );
+        assert!(
+            worker_compat(&json!({
+                "compatibility_flags": ["rpc_params_dup_stubs"]
+            }))
+            .rpc_params_dup_stubs
+        );
+    }
+
+    #[test]
+    fn rpc_params_explicit_transfer_disables_new_date_default() {
+        assert!(
+            !worker_compat(&json!({
+                "compatibility_date": "2026-09-04",
+                "compatibility_flags": ["rpc_params_transfer_stubs"]
+            }))
+            .rpc_params_dup_stubs
+        );
+    }
+
+    #[test]
+    fn rpc_params_explicit_enable_has_declared_precedence_over_disable() {
+        // Match worker_compat's existing switch policy: the explicit enable
+        // branch is evaluated first, independently of flag ordering.
+        for flags in [
+            ["rpc_params_dup_stubs", "rpc_params_transfer_stubs"],
+            ["rpc_params_transfer_stubs", "rpc_params_dup_stubs"],
+        ] {
+            assert!(
+                worker_compat(&json!({
+                    "compatibility_date": "2025-01-01", "compatibility_flags": flags
+                }))
+                .rpc_params_dup_stubs
+            );
+        }
     }
 }

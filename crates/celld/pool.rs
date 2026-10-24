@@ -304,6 +304,15 @@ impl Slot {
     /// Mark a request as living in this isolate. Held for the request's whole
     /// life, including while it is suspended, because its promise stays in
     /// this heap and every later turn must come back here.
+    /// Acquire only a still-live incarnation, without reviving a retired heap.
+    pub(crate) async fn try_affiliate(self: &Arc<Self>) -> Option<Affiliation> {
+        let worker = self.worker.lock().await;
+        if self.is_retiring() || worker.is_none() {
+            return None;
+        }
+        Some(self.affiliate())
+    }
+
     pub fn affiliate(self: &Arc<Self>) -> Affiliation {
         self.requests.fetch_add(1, Ordering::Relaxed);
         Affiliation(self.clone())
@@ -852,6 +861,11 @@ impl Pool {
             let Ok(mut worker) = slot.worker.try_lock() else {
                 continue;
             };
+            // A live-capability admission can affiliate under this same
+            // lock after the first snapshot. Never free that admitted heap.
+            if !celld_logic::isolate::may_free(&slot.observe()) {
+                continue;
+            }
             if worker.take().is_some() {
                 tracing::info!(isolate = %slot.heap_id, slot = slot.id, "isolate freed");
             }

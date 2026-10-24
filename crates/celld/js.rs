@@ -24,6 +24,10 @@ use std::sync::{Arc, Mutex, OnceLock, Weak};
 use std::time::{Duration, Instant};
 use v8::{ValueDeserializerHelper, ValueSerializerHelper};
 
+mod capability_ops;
+mod static_class;
+pub(crate) use static_class::register as register_static_config;
+pub(crate) use static_class::retire_generation as retire_static_generation;
 pub(crate) mod input_gate_lifecycle;
 use input_gate_lifecycle::{CrossEntryGateClaim, CrossEntryGateClaims};
 
@@ -1938,6 +1942,8 @@ pub struct WorkerConfig {
     /// isolate built from it carries the value as a slot, so its host calls
     /// resolve against the deployment graph it was built with.
     pub generation: crate::generation::GenerationId,
+    static_version: Option<String>,
+    static_graph: Option<String>,
     /// The external (`node:*`/`cloudflare:*`) imports of `src`.
     ///
     /// The scan walks the whole bundle, which an esbuild artifact makes
@@ -2071,6 +2077,8 @@ impl WorkerConfig {
             crons: Vec::new(),
             containers: Vec::new(),
             generation: 0,
+            static_version: None,
+            static_graph: None,
             main_imports,
             module_imports,
         }
@@ -2089,6 +2097,12 @@ impl WorkerConfig {
     /// Stamp this Worker with the application generation it serves.
     pub fn with_generation(mut self, generation: crate::generation::GenerationId) -> Self {
         self.generation = generation;
+        self
+    }
+
+    pub(crate) fn with_static_identity(mut self, version: String, graph: String) -> Self {
+        self.static_version = Some(version);
+        self.static_graph = Some(graph);
         self
     }
 
@@ -2940,6 +2954,7 @@ pub enum Answer {
 /// work finishes. The response sender stays independent, so tail delivery
 /// cannot delay or replace the Dynamic Worker response.
 struct TailReportState {
+    rpc_method: Option<String>,
     reply: tokio::sync::oneshot::Sender<String>,
     script_name: String,
     event_timestamp: i64,
@@ -2956,7 +2971,7 @@ struct TailReportState {
 #[derive(serde::Serialize)]
 struct TailException {
     timestamp: i64,
-    name: &'static str,
+    name: String,
     message: String,
 }
 
@@ -2964,7 +2979,7 @@ impl TailException {
     fn new(message: String) -> Self {
         Self {
             timestamp: crate::telemetry::now_unix_us() / 1_000,
-            name: "Error",
+            name: "Error".to_string(),
             message,
         }
     }
@@ -2997,25 +3012,25 @@ impl TailReportState {
     }
 
     fn finish(self, context: &IoContext) {
-        let outcome = if self.failure.is_some() {
+        let mut exceptions = std::mem::take(&mut *context.tail_exceptions.lock().unwrap());
+        exceptions.extend(self.failure);
+        let outcome = if !exceptions.is_empty() {
             "exception"
         } else {
             "ok"
         };
-        let exceptions: Vec<_> = self.failure.into_iter().collect();
+        let event_info = if let Some(method) = self.rpc_method {
+            serde_json::json!({ "rpcMethod": method })
+        } else {
+            serde_json::json!({
+                "request": { "cf": {}, "headers": self.headers,
+                    "method": self.method, "url": self.url },
+                "response": self.response_status.map(|status| serde_json::json!({"status": status})),
+            })
+        };
         let event = serde_json::json!([{
             "scriptName": self.script_name,
-            "event": {
-                "request": {
-                    "cf": {},
-                    "headers": self.headers,
-                    "method": self.method,
-                    "url": self.url,
-                },
-                "response": self.response_status.map(|status| serde_json::json!({
-                    "status": status,
-                })),
-            },
+            "event": event_info,
             "eventTimestamp": self.event_timestamp,
             "logs": context.take_tail_logs(),
             "exceptions": exceptions,
@@ -3374,8 +3389,22 @@ impl InFlight {
                 send_and_end(tc, &self.context, reply, read)
             }
             Answer::Rpc(reply) => {
+                // Heap capabilities can execute under a cell event while
+                // returning entrypoint-shaped bytes. Gate those bytes too.
+                if self.scope.is_some() {
+                    capability_ops::gate_reply(&self.context);
+                }
+                if self.tail_report.is_some() {
+                    if let Ok(record) = internal_function(tc, "__tailRpcResult") {
+                        let recv = v8::undefined(tc).into();
+                        let _ = record.call(tc, recv, &[value]);
+                    }
+                }
                 let read =
                     view_bytes(value).ok_or_else(|| anyhow!("entrypoint RPC answered non-bytes"));
+                if let (Some(report), Err(error)) = (&mut self.tail_report, &read) {
+                    report.record_failure(format!("{error:#}"));
+                }
                 send_and_end(tc, &self.context, reply, read)
             }
             Answer::Queue(reply) => {
@@ -4524,6 +4553,7 @@ fn begin<'s>(
             operation,
             props,
             invocation_limits,
+            tail_report,
             reply,
         } => {
             return begin_entrypoint_rpc(
@@ -4532,6 +4562,7 @@ fn begin<'s>(
                 operation,
                 props,
                 invocation_limits,
+                tail_report,
                 reply,
             );
         }
@@ -4581,6 +4612,7 @@ fn begin<'s>(
     let started = start_fetch(tc, target, &url, &method, body, &headers, request_id);
     let tail_headers = tail_request_headers(&headers);
     let mut tail_report = tail_report.map(|reply| TailReportState {
+        rpc_method: None,
         reply,
         script_name: runtime_state.script_name.clone(),
         event_timestamp: unix_now_ms(),
@@ -4661,12 +4693,42 @@ fn begin_entrypoint_rpc(
     operation: crate::WorkerRpcOperation,
     props: Vec<u8>,
     invocation_limits: Option<ResourceLimits>,
+    tail_report: Option<tokio::sync::oneshot::Sender<String>>,
     reply: tokio::sync::oneshot::Sender<Result<Vec<u8>>>,
 ) -> Begun {
-    let context = IoContext::with_resource_limits(effective_resource_limits(
-        actor_runtime_state(tc).resource_limits,
-        invocation_limits,
-    ));
+    if entrypoint == crate::capability::ENTRYPOINT
+        || entrypoint == crate::capability::RELEASE_ENTRYPOINT
+    {
+        return capability_ops::begin(
+            tc,
+            props,
+            operation,
+            entrypoint == crate::capability::RELEASE_ENTRYPOINT,
+            reply,
+        );
+    }
+
+    let runtime_state = actor_runtime_state(tc);
+    let context = IoContext::with_options(
+        effective_resource_limits(runtime_state.resource_limits, invocation_limits),
+        tail_report.is_some(),
+    );
+    let rpc_method = match &operation {
+        crate::WorkerRpcOperation::Get { path } | crate::WorkerRpcOperation::Call { path, .. } => {
+            path.join(".")
+        }
+    };
+    let mut tail_report = tail_report.map(|reply| TailReportState {
+        rpc_method: Some(rpc_method),
+        reply,
+        script_name: runtime_state.script_name.clone(),
+        event_timestamp: unix_now_ms(),
+        url: String::new(),
+        method: String::new(),
+        headers: serde_json::Map::new(),
+        response_status: None,
+        failure: None,
+    });
     let guard = CurrentGuard::enter(context.clone());
     context.begin_cpu_turn();
     let started = (|| {
@@ -4722,7 +4784,7 @@ fn begin_entrypoint_rpc(
                 started: event_started,
                 trace: None,
                 failure: None,
-                tail_report: None,
+                tail_report,
             };
             drop(guard);
             Begun::Running(Box::new(entry))
@@ -4733,6 +4795,10 @@ fn begin_entrypoint_rpc(
             let error = take_execution_termination(tc)
                 .or(cpu_error)
                 .unwrap_or(error);
+            if let Some(mut report) = tail_report.take() {
+                report.record_failure(format!("{error:#}"));
+                report.finish(&context);
+            }
             drop(guard);
             let _ = reply.send(Err(error));
             Begun::Nothing
@@ -5082,6 +5148,11 @@ fn start_cell_event<'s>(
     capture_frames: bool,
     call: impl FnOnce(&mut v8::PinScope<'s, '_>) -> Result<v8::Local<'s, v8::Value>>,
 ) -> Begun {
+    if !static_class::generation_available(current_generation(tc)) {
+        answer.fail(anyhow!("source application generation has retired"));
+        return Begun::Nothing;
+    }
+
     let runtime_state = actor_runtime_state(tc);
     let context = IoContext::tracked(&runtime_state);
     if let Some(stream_id) = body_stream_id {
@@ -6766,6 +6837,7 @@ ops! { OP_NAMES, install_op_functions,
         "__d1_run" => storage_ops::op_d1_run,
         "__storage_transaction_control" => storage_ops::op_storage_transaction_control,
         "__log" => op_log,
+        "__tail_exception" => op_tail_exception,
         "__storage_put" => storage_ops::op_storage_put,
         "__storage_put_many" => storage_ops::op_storage_put_many,
         "__storage_queue_put" => storage_ops::op_storage_queue_put,
@@ -6810,6 +6882,13 @@ ops! { OP_NAMES, install_op_functions,
         "__do_call" => op_do_call,
         "__svc_call" => op_svc_call,
         "__svc_call_cancellable" => op_svc_call_cancellable,
+        "__static_class_reference" => static_class::reference,
+        "__loadStaticClass" => static_class::load,
+        "__capability_export" => capability_ops::export,
+        "__capability_call" => capability_ops::call,
+        "__capability_release" => capability_ops::release,
+        "__capability_revoke" => capability_ops::revoke,
+        "__capability_started" => capability_ops::started,
         "__svc_rpc" => op_svc_rpc,
         "__queue_dispatch" => op_queue_dispatch,
         "__queue_policy" => op_queue_policy,
@@ -7028,7 +7107,7 @@ fn op_queue_policy(
         match serde_json::from_str(&args.get(0).to_rust_string_lossy(scope)) {
             Ok(request) => request,
             Err(error) => {
-                return loader_throw(scope, &format!("invalid Queue policy input: {error}"))
+                return loader_throw(scope, &format!("invalid Queue policy input: {error}"));
             }
         };
     #[cfg(celld_internal_tests)]
@@ -7167,7 +7246,7 @@ fn op_svc_call_impl(
                     &format!(
                         "service binding: the request headers are not a name/value list: {error}"
                     ),
-                )
+                );
             }
         };
     let body_guard = match body.stream_id() {
@@ -7211,12 +7290,15 @@ fn op_svc_call_impl(
         headers,
         reply: tx,
     };
+    let response_context = event_context(scope);
     let stream_service = http_stream_service();
     let id = asyncrt::enqueue(async move {
         let mut cancel_guard = cancel_guard;
         gated_channel_send(gate, &SVC_CALL_TX, request, "no service binding channel").await?;
         let result = match rx.await {
-            Ok(Ok(response)) => encode_http_response(response, true, &stream_service),
+            Ok(Ok(response)) => encode_http_response(response, true, &stream_service, |worker| {
+                websocket::park_worker_websocket_handoff(worker, &response_context)
+            }),
             Ok(Err(error)) => Err(format!("{error}")),
             Err(error) => Err(format!("service dropped: {error}")),
         };
@@ -7314,6 +7396,8 @@ impl LoaderOwner {
 pub struct LoaderEntry {
     owner: LoaderOwner,
     state: tokio::sync::watch::Receiver<LoaderState>,
+    static_class: Option<String>,
+    static_generation: Option<crate::generation::GenerationId>,
 }
 
 type LoaderRegistry = HashMap<u64, LoaderEntry>;
@@ -7373,7 +7457,15 @@ fn admit_loaded_worker(
     }
 
     let id = LOADER_NEXT_ID.fetch_add(1, Ordering::Relaxed);
-    registry.insert(id, LoaderEntry { owner, state });
+    registry.insert(
+        id,
+        LoaderEntry {
+            owner,
+            state,
+            static_class: None,
+            static_generation: None,
+        },
+    );
     Ok(id)
 }
 
@@ -7612,7 +7704,7 @@ fn op_loader_load(
                 return loader_throw(
                     scope,
                     &format!("worker loader: malformed globalOutbound route: {error}"),
-                )
+                );
             }
         };
         let props = match view_bytes(outbound_props) {
@@ -7621,7 +7713,7 @@ fn op_loader_load(
                 return loader_throw(
                     scope,
                     "worker loader: globalOutbound props are not a typed array",
-                )
+                );
             }
         };
         let entrypoint = match route.entrypoint {
@@ -7631,7 +7723,7 @@ fn op_loader_load(
                 return loader_throw(
                     scope,
                     "worker loader: globalOutbound props require an entrypoint",
-                )
+                );
             }
         };
         EgressPolicy::Broker(OutboundBroker {
@@ -7757,7 +7849,7 @@ fn op_loader_fetch(
                     &format!(
                         "worker loader: the request headers are not a name/value list: {error}"
                     ),
-                )
+                );
             }
         };
     let want_tail_report = args.get(9).boolean_value(scope);
@@ -7799,6 +7891,7 @@ fn op_loader_fetch(
         .get(&id)
         .map(|entry| entry.state.clone());
     let gate = egress_gate_request(&event_context(scope), celld_logic::Channel::Service);
+    let response_context = event_context(scope);
     let stream_service = http_stream_service();
     let async_id = asyncrt::enqueue(async move {
         let mut cancel_guard = cancel_guard;
@@ -7850,7 +7943,9 @@ fn op_loader_fetch(
         // context. That context owns an unread body tail through its
         // waitUntil work.
         body_guard.disarm();
-        encode_http_response(response, false, &stream_service)
+        encode_http_response(response, false, &stream_service, |worker| {
+            websocket::park_worker_websocket_handoff(worker, &response_context)
+        })
     });
     let response = promise_for(scope, async_id);
     if let Some(request_id) = cancel_id {
@@ -7892,6 +7987,12 @@ fn op_loader_rpc(
         Ok(limits) => limits,
         Err(error) => return loader_throw(scope, &error),
     };
+    let (tail_report, tail_receive) = if args.get(6).boolean_value(scope) {
+        let (send, receive) = tokio::sync::oneshot::channel();
+        (Some(send), Some(receive))
+    } else {
+        (None, None)
+    };
     // The props ride on `WorkerJob::Rpc` for the whole call, so an unbounded
     // value is an unbounded per-call allocation in the host. The harness checks
     // nothing here: it runs in the calling worker's isolate beside the
@@ -7916,6 +8017,7 @@ fn op_loader_rpc(
             },
             props,
             invocation_limits,
+            tail_report,
             reply,
         };
         let driving = tokio::spawn(crate::runtime::drive(slot, job, None));
@@ -7928,7 +8030,19 @@ fn op_loader_rpc(
             },
         }
     });
-    rv.set(promise_for(scope, async_id));
+    let response = promise_for(scope, async_id);
+    let Some(tail_receive) = tail_receive else {
+        rv.set(response);
+        return;
+    };
+    let report_id = asyncrt::enqueue(async move {
+        tail_receive
+            .await
+            .map_err(|error| format!("loaded worker dropped tail report: {error}"))
+    });
+    let report = promise_for(scope, report_id);
+    let pair = v8::Array::new_with_elements(scope, &[response, report]);
+    rv.set(pair.into());
 }
 
 fn facet_scope(class_name: &str, parent_scope: &str, owner: &str, name: &str) -> String {
@@ -8066,18 +8180,30 @@ enum FacetHost {
 
 impl FacetHost {
     /// Resolved in the op, while the root's turn names its slot.
-    fn of(loader: u64) -> Result<Self, String> {
+    fn of(loader: u64, class_name: &str) -> Result<Self, String> {
         if loader == OWN_SCRIPT_LOADER {
             return crate::pool::current_slot()
                 .map(Self::Own)
                 .ok_or_else(|| "facet: no isolate runs this turn".to_string());
         }
-        loader_registry()
-            .lock()
-            .unwrap()
+        let registry = loader_registry().lock().unwrap();
+        let entry = registry
             .get(&loader)
-            .map(|entry| Self::Loaded(entry.state.clone()))
-            .ok_or_else(|| "worker loader: unknown worker".to_string())
+            .ok_or_else(|| "worker loader: unknown worker".to_string())?;
+        if entry
+            .static_class
+            .as_deref()
+            .is_some_and(|allowed| allowed != class_name)
+        {
+            return Err("static class reference does not authorize this class".into());
+        }
+        if entry
+            .static_generation
+            .is_some_and(|generation| !static_class::generation_available(generation))
+        {
+            return Err("static class source generation has retired".into());
+        }
+        Ok(Self::Loaded(entry.state.clone()))
     }
 
     async fn slot(self) -> Result<Arc<crate::pool::Slot>, String> {
@@ -8384,11 +8510,11 @@ fn op_facet_rpc(
             return loader_throw(
                 scope,
                 "facets are available only inside a Durable Object event",
-            )
+            );
         }
         Err(error) => return loader_throw(scope, &error.to_string()),
     };
-    let host = FacetHost::of(loader);
+    let host = FacetHost::of(loader, &class_name);
     let trace = current_trace_context(scope);
     let async_id = asyncrt::enqueue(async move {
         let facet = prepare_facet(
@@ -8487,12 +8613,13 @@ fn op_facet_fetch(
             return loader_throw(
                 scope,
                 "facets are available only inside a Durable Object event",
-            )
+            );
         }
         Err(error) => return loader_throw(scope, &error.to_string()),
     };
-    let host = FacetHost::of(loader);
+    let host = FacetHost::of(loader, &class_name);
     let trace = current_trace_context(scope);
+    let response_context = event_context(scope);
     let stream_service = http_stream_service();
     let async_id = asyncrt::enqueue(async move {
         let facet = prepare_facet(
@@ -8539,7 +8666,9 @@ fn op_facet_fetch(
                 };
                 facet.gate_response(socket).await?;
                 facet.attach_websocket(&response);
-                encode_http_response(response, true, &stream_service)
+                encode_http_response(response, true, &stream_service, |worker| {
+                    websocket::park_worker_websocket_handoff(worker, &response_context)
+                })
             }
             Ok(Err(error)) => Err(format!("{error}")),
             Err(_) => match driving.await {
@@ -8561,7 +8690,7 @@ fn op_facet_abort(
     let parent_scope = args.get(2).to_rust_string_lossy(scope);
     let owner = args.get(3).to_rust_string_lossy(scope);
     let name = args.get(4).to_rust_string_lossy(scope);
-    let host = FacetHost::of(loader);
+    let host = FacetHost::of(loader, &class_name);
     let facet_scope = facet_scope(&class_name, &parent_scope, &owner, &name);
     // The root that recorded the facet, and the facet's place below it. A
     // parent without storage has no record to drop and no facet below.
@@ -8630,7 +8759,7 @@ fn op_facet_delete(
             return loader_throw(
                 scope,
                 "facets are available only inside a Durable Object event",
-            )
+            );
         }
         Err(error) => return loader_throw(scope, &error.to_string()),
     };
@@ -8738,7 +8867,7 @@ fn op_do_call_impl(
                     &format!(
                         "durable object: the request headers are not a name/value list: {error}"
                     ),
-                )
+                );
             }
         };
     let body_guard = match body.stream_id() {
@@ -8778,11 +8907,14 @@ fn op_do_call_impl(
         order,
         parent: current_trace_context(scope),
     };
+    let response_context = event_context(scope);
     let stream_service = http_stream_service();
     let id = asyncrt::enqueue(async move {
         gated_channel_send(gate, &DO_CALL_TX, request, "no proxy channel").await?;
         let result = match rx.await {
-            Ok(Ok(response)) => encode_http_response(response, true, &stream_service),
+            Ok(Ok(response)) => encode_http_response(response, true, &stream_service, |worker| {
+                websocket::park_worker_websocket_handoff(worker, &response_context)
+            }),
             Ok(Err(e)) => Err(format!("{e}")),
             Err(e) => Err(format!("proxy dropped: {e}")),
         };
@@ -9038,7 +9170,7 @@ fn op_fetch(
             return loader_throw(
                 scope,
                 &format!("fetch: the request headers are not a name/value list: {error}"),
-            )
+            );
         }
     };
     let redirect = args.get(4).to_rust_string_lossy(scope);
@@ -9090,12 +9222,17 @@ fn op_fetch(
             headers,
             reply: tx,
         };
+        let response_context = event_context(scope);
         let stream_service = http_stream_service();
         let id = asyncrt::enqueue(async move {
             let mut cancel_guard = cancel_guard;
             gated_channel_send(gate, &SVC_CALL_TX, request, "no service binding channel").await?;
             let result = match rx.await {
-                Ok(Ok(response)) => encode_http_response(response, true, &stream_service),
+                Ok(Ok(response)) => {
+                    encode_http_response(response, true, &stream_service, |worker| {
+                        websocket::park_worker_websocket_handoff(worker, &response_context)
+                    })
+                }
                 Ok(Err(error)) => Err(format!("{error}")),
                 Err(error) => Err(format!("globalOutbound Fetcher dropped: {error}")),
             };
@@ -9304,7 +9441,7 @@ fn op_asset_fetch(
                 return loader_throw(
                     scope,
                     &format!("assets: the request headers are not a name/value list: {error}"),
-                )
+                );
             }
         };
     let generation = current_generation(scope);
@@ -9321,13 +9458,16 @@ fn op_asset_fetch(
             })
             .is_ok()
     });
+    let response_context = event_context(scope);
     let stream_service = http_stream_service();
     let id = asyncrt::enqueue(async move {
         if !sent {
             return Err("no asset resolver channel".to_string());
         }
         match rx.await {
-            Ok(Ok(response)) => encode_http_response(response, false, &stream_service),
+            Ok(Ok(response)) => encode_http_response(response, false, &stream_service, |worker| {
+                websocket::park_worker_websocket_handoff(worker, &response_context)
+            }),
             Ok(Err(error)) => Err(format!("asset fetch: {error}")),
             Err(error) => Err(format!("asset resolver dropped: {error}")),
         }
@@ -9675,7 +9815,7 @@ fn op_gate_acquire(
                         // fresh gate.
                         Ok(Err(failure)) => return Err(failure),
                         Err(_) => {
-                            return Err("cell stopped while waiting for its input gate".to_string())
+                            return Err("cell stopped while waiting for its input gate".to_string());
                         }
                     }
                     let Some(context) = context.upgrade() else {
@@ -9732,7 +9872,7 @@ fn op_gate_wait(
                     Ok(Ok(())) => {}
                     Ok(Err(failure)) => return Err(failure),
                     Err(_) => {
-                        return Err("cell stopped while waiting for its input gate".to_string())
+                        return Err("cell stopped while waiting for its input gate".to_string());
                     }
                 },
             }
@@ -10021,6 +10161,24 @@ fn op_process_exit(
         context_id: context.continuation_id(),
     });
     scope.terminate_execution();
+}
+
+fn op_tail_exception(
+    scope: &mut v8::PinScope,
+    args: v8::FunctionCallbackArguments,
+    _rv: v8::ReturnValue<v8::Value>,
+) {
+    if let Some(context) = current_reaction_or_untracked_io_context(scope) {
+        if context.tail_reporting {
+            let mut exceptions = context.tail_exceptions.lock().unwrap();
+            if exceptions.len() < 32 {
+                let mut error = TailException::new(args.get(1).to_rust_string_lossy(scope));
+                error.name = crate::telemetry::cap_error(args.get(0).to_rust_string_lossy(scope));
+                error.message = crate::telemetry::cap_error(error.message);
+                exceptions.push(error);
+            }
+        }
+    }
 }
 
 fn op_log(
@@ -11027,6 +11185,7 @@ pub struct IoContext {
     /// Whether this event records console calls for a Dynamic Worker tail.
     tail_reporting: bool,
     tail_logs: Mutex<TailLogCapture>,
+    tail_exceptions: Mutex<Vec<TailException>>,
 }
 
 /// An op enqueued by one event's continuation during another event's turn: the
@@ -11205,6 +11364,7 @@ impl IoContext {
             cpu_turn: Mutex::new(None),
             tail_reporting,
             tail_logs: Mutex::new(TailLogCapture::default()),
+            tail_exceptions: Mutex::new(Vec::new()),
         })
     }
 
@@ -11243,6 +11403,7 @@ impl IoContext {
             // context is constructed from the report sender in `begin`.
             tail_reporting: false,
             tail_logs: Mutex::new(TailLogCapture::default()),
+            tail_exceptions: Mutex::new(Vec::new()),
         });
         runtime_state
             .io_contexts
@@ -12638,12 +12799,20 @@ fn read_response(scope: &mut v8::PinScope, ret: v8::Local<v8::Value>) -> Result<
         .get(scope, wk.into())
         .map(|v| v.to_rust_string_lossy(scope))
         .unwrap_or_else(|| "null".into());
-    let ws = serde_json::from_str(&ws_json).ok();
+    let ws: Option<WsTarget> = serde_json::from_str(&ws_json).ok();
     let worker_id = out
         .get(scope, worker_wk.into())
         .and_then(|value| value.integer_value(scope))
         .unwrap_or(0)
         .max(0) as u64;
+    let worker_id = if worker_id == 0 {
+        ws.as_ref()
+            .filter(|target| target.scope.is_empty() && target.tunnel.is_none())
+            .map_or(0, |target| target.id)
+    } else {
+        worker_id
+    };
+    let ws = ws.filter(|target| !target.scope.is_empty() || target.tunnel.is_some());
     let worker_ws = if worker_id == 0 {
         None
     } else {
