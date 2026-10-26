@@ -59083,6 +59083,45 @@
     {
       "adapter": "regression",
       "behaviour": "finding-specific",
+      "fixture": "tests/regressions/H26-01",
+      "id": "regressions/H26-01",
+      "layer": "regressions",
+      "legacy_ids": [],
+      "origins": [
+        {
+          "source": "fixes branch; see tests/regressions/IMPORT.json"
+        }
+      ],
+      "profiles": [
+        "quick",
+        "full"
+      ],
+      "reason": null,
+      "regression": {
+        "command": [
+          "python3",
+          "run.py"
+        ],
+        "description": "Unnamed Dynamic Worker loads dropped without dispose() never exhaust a live-count admission cap: 300 sequential loads in a stateless request and in a Durable Object all run, as in workerd",
+        "id": "H26-01",
+        "profiles": [
+          "quick",
+          "full"
+        ],
+        "runtimes": [
+          "celld",
+          "workerd"
+        ],
+        "timeout_seconds": 300
+      },
+      "runnable": true,
+      "source": "tests/regressions/H26-01/case.json",
+      "source_sha256": "96480cf15a2c72974eecf2e8d437033d9ffe9878d48ab4af508d8d463fa2c4a2",
+      "title": "Unnamed Dynamic Worker loads dropped without dispose() never exhaust a live-count admission cap: 300 sequential loads in a stateless request and in a Durable Object all run, as in workerd"
+    },
+    {
+      "adapter": "regression",
+      "behaviour": "finding-specific",
       "fixture": "tests/regressions/OR1-01",
       "id": "regressions/OR1-01",
       "layer": "regressions",

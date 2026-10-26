@@ -8053,38 +8053,23 @@ fn take_loader_owner(owner: &LoaderOwner) -> Vec<tokio::sync::watch::Receiver<Lo
         .collect()
 }
 
-// Bound live Dynamic Workers so a runaway loader cannot exhaust isolates.
-// Keep admission policy inside the registry: a caller-selected bound would let
-// different entry points disagree about how much process capacity remains.
-const MAX_LOADED_WORKERS: usize = 256;
-// Reserve only the final process slot. A fixed fraction needlessly reduces
-// single-script capacity without giving every competing principal a share.
-const MAX_LOADED_WORKERS_PER_PRINCIPAL: usize = MAX_LOADED_WORKERS - 1;
-
-/// Check both limits and install the live state under one registry lock. A
-/// separate check and insert lets concurrent isolates exceed either limit.
+/// Install a loaded Worker's live state in the registry and return its id.
+///
+/// workerd admits every load: `WorkerLoader::load()`/`get()`
+/// (src/workerd/api/worker-loader.c++:76-123, release 2026-10-19) hand the
+/// source to `WorkerLoaderNamespace::load()`
+/// (src/workerd/server/server/loader.rs:66-120), which counts nothing. An
+/// unnamed Worker lives as long as its JS handles (loader.rs:50) and a named
+/// one as long as its namespace entry; neither path refuses a load because
+/// others are still alive. celld formerly refused past 255 live loads per
+/// script generation and 256 per process, so a caller that drops its stubs
+/// without `dispose()` (they are released only when collected) failed with
+/// "too many loaded workers" where workerd keeps serving.
 fn admit_loaded_worker(
     owner: LoaderOwner,
     state: tokio::sync::watch::Receiver<LoaderState>,
-) -> Result<u64, String> {
+) -> u64 {
     let mut registry = loader_registry().lock().unwrap();
-    let principal_limit = MAX_LOADED_WORKERS_PER_PRINCIPAL;
-    let principal_count = registry
-        .values()
-        .filter(|entry| entry.owner.principal == owner.principal)
-        .count();
-    if principal_count >= principal_limit {
-        return Err(format!(
-            "worker loader: too many loaded workers for script \"{}\" in generation {} (limit {principal_limit})",
-            owner.principal.script, owner.principal.generation
-        ));
-    }
-    if registry.len() >= MAX_LOADED_WORKERS {
-        return Err(format!(
-            "worker loader: too many loaded workers (limit {MAX_LOADED_WORKERS})"
-        ));
-    }
-
     let id = LOADER_NEXT_ID.fetch_add(1, Ordering::Relaxed);
     registry.insert(
         id,
@@ -8095,7 +8080,7 @@ fn admit_loaded_worker(
             static_generation: None,
         },
     );
-    Ok(id)
+    id
 }
 
 fn loader_throw(scope: &mut v8::PinScope, message: &str) {
@@ -8381,10 +8366,7 @@ fn op_loader_load(
         Err(error) => return loader_throw(scope, &format!("worker loader: {error}")),
     };
     let (loaded, state) = tokio::sync::watch::channel(LoaderState::Loading);
-    let id = match admit_loaded_worker(owner, state) {
-        Ok(id) => id,
-        Err(error) => return loader_throw(scope, &error),
-    };
+    let id = admit_loaded_worker(owner, state);
     let config = Arc::new(
         WorkerConfig::new(WorkerConfigOptions {
             src,

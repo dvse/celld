@@ -143,10 +143,7 @@ pub(super) fn load(
         None => return loader_throw(scope, "static class import has no loader owner"),
     };
     let (loaded, state) = tokio::sync::watch::channel(LoaderState::Loading);
-    let id = match admit_loaded_worker(owner, state) {
-        Ok(id) => id,
-        Err(error) => return loader_throw(scope, &error),
-    };
+    let id = admit_loaded_worker(owner, state);
     {
         let mut registry = loader_registry().lock().unwrap();
         let entry = registry.get_mut(&id).unwrap();

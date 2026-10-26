@@ -98,9 +98,6 @@ compiles the code again.
 
 ## Differences from Cloudflare
 
-- The process limit is 256 live Dynamic Workers, and each script generation can
-  use 255 slots, so one loader cannot take the whole process. Every loader and
-  script shares the process limit, and a load over either limit throws.
 - The process rejects the removed `CELLD_MAX_LOADED_WORKERS` environment
   variable.
 - `getEntrypoint()` supports `props` and `limits` options, while
