@@ -59122,6 +59122,45 @@
     {
       "adapter": "regression",
       "behaviour": "finding-specific",
+      "fixture": "tests/regressions/H26-02",
+      "id": "regressions/H26-02",
+      "layer": "regressions",
+      "legacy_ids": [],
+      "origins": [
+        {
+          "source": "fixes branch; see tests/regressions/IMPORT.json"
+        }
+      ],
+      "profiles": [
+        "quick",
+        "full"
+      ],
+      "reason": null,
+      "regression": {
+        "command": [
+          "python3",
+          "run.py"
+        ],
+        "description": "The `in` operator on RPC stubs, service bindings, Durable Object stubs and RPC promises/properties answers as workerd's wildcard property query (every string but `then`, Symbol.dispose where the type is disposable), so `'dup' in stub ? stub.dup() : stub` duplicates a received stub",
+        "id": "H26-02",
+        "profiles": [
+          "quick",
+          "full"
+        ],
+        "runtimes": [
+          "celld",
+          "workerd"
+        ],
+        "timeout_seconds": 120
+      },
+      "runnable": true,
+      "source": "tests/regressions/H26-02/case.json",
+      "source_sha256": "a9e2e6094d5f2f0d3c045fd563d26e0d2c523d0e8c2f0e38fff7a180f472e917",
+      "title": "The `in` operator on RPC stubs, service bindings, Durable Object stubs and RPC promises/properties answers as workerd's wildcard property query (every string but `then`, Symbol.dispose where the type is disposable), so `'dup' in stub ? stub.dup() : stub` duplicates a received stub"
+    },
+    {
+      "adapter": "regression",
+      "behaviour": "finding-specific",
       "fixture": "tests/regressions/OR1-01",
       "id": "regressions/OR1-01",
       "layer": "regressions",

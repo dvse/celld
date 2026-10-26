@@ -1,0 +1,70 @@
+{
+  "durableObjectStub": {
+    "dup": true,
+    "ping": true,
+    "anything": true,
+    "then": false,
+    "catch": true,
+    "constructor": true,
+    "fetch": true,
+    "toString": true,
+    "Symbol.dispose": false
+  },
+  "exportsEntrypoint": {
+    "dup": true,
+    "ping": true,
+    "anything": true,
+    "then": false,
+    "catch": true,
+    "constructor": true,
+    "fetch": true,
+    "toString": true,
+    "Symbol.dispose": false
+  },
+  "rpcPromise": {
+    "dup": true,
+    "ping": true,
+    "anything": true,
+    "then": true,
+    "catch": true,
+    "constructor": true,
+    "fetch": true,
+    "toString": true,
+    "Symbol.dispose": true
+  },
+  "rpcProperty": {
+    "dup": true,
+    "ping": true,
+    "anything": true,
+    "then": true,
+    "catch": true,
+    "constructor": true,
+    "fetch": true,
+    "toString": true,
+    "Symbol.dispose": false
+  },
+  "receivedStub": {
+    "dup": true,
+    "ping": true,
+    "anything": true,
+    "then": false,
+    "catch": true,
+    "constructor": true,
+    "fetch": true,
+    "toString": true,
+    "Symbol.dispose": true
+  },
+  "dupedStub": {
+    "dup": true,
+    "ping": true,
+    "anything": true,
+    "then": false,
+    "catch": true,
+    "constructor": true,
+    "fetch": true,
+    "toString": true,
+    "Symbol.dispose": true
+  },
+  "firstResolution": "pong",
+  "secondResolution": "pong"
+}

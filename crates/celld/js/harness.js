@@ -2350,6 +2350,7 @@ class DurableObjectFacets {
     };
     const boundSession = __boundSession(session, bound);
     record.stub = new Proxy(target, {
+      has: (base, prop) => __rpcHas(base, prop),
       get(base, prop) {
         if (prop === "then") return undefined;
         if (Reflect.has(base, prop)) return Reflect.get(base, prop);
@@ -3492,6 +3493,7 @@ __celld.__makeLoader = () => {
     };
     const boundSession = __boundSession(session, bound);
     const stub = new Proxy(target, {
+      has: (base, prop) => __rpcHas(base, prop),
       get: (base, prop) => {
         if (prop === "then") return undefined;
         if (Reflect.has(base, prop)) return Reflect.get(base, prop);
@@ -3860,6 +3862,7 @@ const __makeServiceBinding = __celld.__makeServiceBinding =
   const session = check === undefined ? unbound : __boundSession(unbound, check);
   const binding = new Proxy(target, {
     getPrototypeOf: () => __cf.ServiceStub.prototype,
+    has: (base, prop) => __rpcHas(base, prop),
     get: (base, prop) => {
     if (prop === "then") return undefined; // a stub is not a thenable
     if (Reflect.has(base, prop)) {
@@ -5674,6 +5677,23 @@ const __disposablePromise = (promise) => {
     { configurable: true, value: __disposeWhenSettled(promise) });
   return promise;
 };
+// `name in stub`. workerd exposes RPC members through a JSG wildcard property,
+// a V8 named interceptor (jsg/resource.h:1219-1259) that is non-masking and
+// intercepts strings only: its query callback reports a name present whenever
+// the wildcard getter answers it, and everything else (symbols, prototype
+// members) is the ordinary lookup. JsRpcStub::getRpcMethod and
+// Fetcher::getRpcMethodInternal answer every name but "then"
+// (api/worker-rpc.c++:1817-1824, api/http.c++:2411-2419); JsRpcPromise and
+// JsRpcProperty getProperty answer every name (api/worker-rpc.h:441-447,
+// 558-569). JSG_DISPOSE puts Symbol.dispose on JsRpcStub and JsRpcPromise
+// only (api/worker-rpc.h:444,677); a Durable Object stub or service binding is
+// a Fetcher, which has none (api/http.h:480-535). So
+// `"dup" in stub ? stub.dup() : stub` duplicates a received stub, as it does
+// on workerd.
+const __rpcHas = (prototype, prop, { then = false, dispose = false } = {}) =>
+  typeof prop === "string"
+    ? prop !== "then" || then || Reflect.has(prototype, prop)
+    : (dispose && prop === Symbol.dispose) || Reflect.has(prototype, prop);
 const __makeNode = (session, path, ctx, root) => {
   let promise;
   // Disposal ends pipeline dispatch; ordinary promise observation survives.
@@ -5691,6 +5711,8 @@ const __makeNode = (session, path, ctx, root) => {
     path.length === 0 ? __cf.RpcPromise : __cf.RpcProperty;
   return new Proxy(function () {}, {
     getPrototypeOf: () => brand.prototype,
+    has: (_b, p) => __rpcHas(brand.prototype, p,
+      { then: true, dispose: path.length === 0 }),
     get: (_b, p) => {
       if (p === "then")
         return (onOk, onErr) => value().then(onOk, onErr);
@@ -5742,6 +5764,7 @@ const __makeStub = (entry, callable) => {
   __ctxRegister(meta);
   const stub = new Proxy(function () {}, {
     getPrototypeOf: () => __cf.RpcStub.prototype,
+    has: (_b, prop) => __rpcHas(__cf.RpcStub.prototype, prop, { dispose: true }),
     get: (_b, prop) => {
       if (prop === "then") return undefined;
       if (prop === Symbol.dispose) return () => __disposeStub(meta);
@@ -5836,6 +5859,7 @@ const __entrypointStub = (name, props, propsSc = __capturePropsBytes(props), che
   const session = check === undefined ? unbound : __boundSession(unbound, check);
   const stub = new Proxy(function () {}, {
     getPrototypeOf: () => __cf.ServiceStub.prototype,
+    has: (_b, prop) => __rpcHas(__cf.ServiceStub.prototype, prop),
     get: (_b, prop) => {
       if (prop === "then") return undefined;
       if (typeof prop !== "string") return undefined;
@@ -6110,6 +6134,7 @@ const __makePersistentStub = (descriptor, live) => {
   };
   const stub = new Proxy(function () {}, {
     getPrototypeOf: () => __cf.RpcStub.prototype,
+    has: (_base, prop) => __rpcHas(__cf.RpcStub.prototype, prop, { dispose: true }),
     get: (_base, prop) => {
       if (prop === "then") return undefined;
       if (prop === "fetch" && descriptor.channel === "fetcher") return async (input, init) => {
@@ -6805,7 +6830,9 @@ class DurableObjectNamespace {
       call: (path, admission) =>
         doCall(path.length === 1 ? path[0] : __DO_WALK, admission.bytes),
     };
-    const stub = new Proxy(target, { get: (_target, prop) => {
+    const stub = new Proxy(target, {
+      has: (_target, prop) => __rpcHas(_target, prop),
+      get: (_target, prop) => {
       if (prop === "then") return undefined;
       if (Reflect.has(_target, prop)) return Reflect.get(_target, prop);
       if (prop === "fetch") return doFetch;
