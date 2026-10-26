@@ -110,6 +110,22 @@ and checks its first open by this version; set `CELLD_V051_BIN` for that test.
   received over RPC were already bound. Bindings of the isolate (`env`,
   `ctx.exports`' own entries, namespaces) stay shared (C7-02, C7-03).
 
+### Found on Hyperbob main (October 2026)
+- **Dynamic Worker admission.** celld refused a Worker Loader load once
+  255 loads were live for one script generation (256 per process). A
+  loader that drops its stubs without `dispose()` keeps them live until
+  they are collected, so the Workshop's isolated computations exhausted
+  the cap and an Island stopped opening. workerd admits every load
+  (`api/worker-loader.c++`, `server/server/loader.rs`); so does celld now
+  (H26-01).
+- **`name in stub`.** RPC stubs, RPC promises and properties, Durable
+  Object stubs and service bindings answered `in` as plain objects, so
+  `"dup" in stub` was false. workerd's JSG wildcard property reports every
+  name but `then` (and `Symbol.dispose` where the type is disposable).
+  A published route whose lease duplicates its identity only when
+  `"dup" in identity` disposed its own identity and failed with "RPC stub
+  used after being disposed." (H26-02).
+
 ### Known open gaps
 - Facet databases written by v0.5.1 can read back empty on first open
   ([upstream #292](https://github.com/denoland/celld/issues/292)). LTX capture

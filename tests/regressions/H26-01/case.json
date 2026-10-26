@@ -1,5 +1,6 @@
 {
   "id": "H26-01",
+  "behaviour": "dynamic-workers/admission",
   "description": "Unnamed Dynamic Worker loads dropped without dispose() never exhaust a live-count admission cap: 300 sequential loads in a stateless request and in a Durable Object all run, as in workerd",
   "command": [
     "python3",

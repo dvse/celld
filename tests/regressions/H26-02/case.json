@@ -1,5 +1,6 @@
 {
   "id": "H26-02",
+  "behaviour": "rpc/stub-property-query",
   "description": "The `in` operator on RPC stubs, service bindings, Durable Object stubs and RPC promises/properties answers as workerd's wildcard property query (every string but `then`, Symbol.dispose where the type is disposable), so `'dup' in stub ? stub.dup() : stub` duplicates a received stub",
   "command": [
     "python3",

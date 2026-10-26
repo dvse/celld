@@ -59082,7 +59082,7 @@
     },
     {
       "adapter": "regression",
-      "behaviour": "finding-specific",
+      "behaviour": "dynamic-workers/admission",
       "fixture": "tests/regressions/H26-01",
       "id": "regressions/H26-01",
       "layer": "regressions",
@@ -59098,6 +59098,7 @@
       ],
       "reason": null,
       "regression": {
+        "behaviour": "dynamic-workers/admission",
         "command": [
           "python3",
           "run.py"
@@ -59116,12 +59117,12 @@
       },
       "runnable": true,
       "source": "tests/regressions/H26-01/case.json",
-      "source_sha256": "96480cf15a2c72974eecf2e8d437033d9ffe9878d48ab4af508d8d463fa2c4a2",
+      "source_sha256": "4418cde69625f29b24246a19c0c092fb2c85ec62de3a12d332a81fc577ecead3",
       "title": "Unnamed Dynamic Worker loads dropped without dispose() never exhaust a live-count admission cap: 300 sequential loads in a stateless request and in a Durable Object all run, as in workerd"
     },
     {
       "adapter": "regression",
-      "behaviour": "finding-specific",
+      "behaviour": "rpc/stub-property-query",
       "fixture": "tests/regressions/H26-02",
       "id": "regressions/H26-02",
       "layer": "regressions",
@@ -59137,6 +59138,7 @@
       ],
       "reason": null,
       "regression": {
+        "behaviour": "rpc/stub-property-query",
         "command": [
           "python3",
           "run.py"
@@ -59155,7 +59157,7 @@
       },
       "runnable": true,
       "source": "tests/regressions/H26-02/case.json",
-      "source_sha256": "a9e2e6094d5f2f0d3c045fd563d26e0d2c523d0e8c2f0e38fff7a180f472e917",
+      "source_sha256": "73361105a5e243e87115be5ebd3a53d02bb2e414fa809c77aaf682ee776fb187",
       "title": "The `in` operator on RPC stubs, service bindings, Durable Object stubs and RPC promises/properties answers as workerd's wildcard property query (every string but `then`, Symbol.dispose where the type is disposable), so `'dup' in stub ? stub.dup() : stub` duplicates a received stub"
     },
     {

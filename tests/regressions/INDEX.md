@@ -18,6 +18,8 @@
 | rpc/pipelining-and-cloning | [R4-14](R4-14/README.md) | Pipeline results clone values and own independent capability references |
 | rpc/property-observation | [R4-15](R4-15/README.md) | Each RpcProperty then/catch/finally starts a fresh GET while root promises remain cached |
 | rpc/data-shape | [R4-16](R4-16/README.md) | Capability envelopes preserve own data keys and sparse array shape |
+| dynamic-workers/admission | [H26-01](H26-01/README.md) | Unnamed Dynamic Worker loads dropped without dispose() are never refused by a live-count cap |
+| rpc/stub-property-query | [H26-02](H26-02/README.md) | `name in` RPC stubs, promises, properties and Fetchers answers as workerd's wildcard property query |
 
 Imported files are unchanged; IMPORT.json pins the fixes commit and hashes.
 These assertions run against this branch's celld build; fixes present only on
